@@ -1,0 +1,5 @@
+.venv/
+.env
+.cache/
+output/
+export.log
