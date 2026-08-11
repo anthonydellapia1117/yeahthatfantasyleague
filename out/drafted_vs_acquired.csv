@@ -1,0 +1,157 @@
+season,franchise,starter_points,drafted_points,acquired_points,drafted_share,starter_weeks,acquired_valid,basis
+2013,Antdell & Ernie,1686.2,1275.6,410.6,75.6,135,no,bonus_exclusive
+2013,Cambrias,1841.2,1275.9,565.3,69.3,135,no,bonus_exclusive
+2013,Chris & Dom,1914.02,1621.02,293.0,84.7,135,no,bonus_exclusive
+2013,Frank & Julian,1705.46,836.9,868.56,49.1,135,no,bonus_exclusive
+2013,GaTTa,1853.14,926.96,926.18,50.0,135,no,bonus_exclusive
+2013,LFTLR,1918.36,1742.46,175.9,90.8,144,no,bonus_exclusive
+2013,Nolan & Vinny,1702.46,770.2,932.26,45.2,135,no,bonus_exclusive
+2013,Pung & Tralie,1790.76,1097.78,692.98,61.3,135,no,bonus_exclusive
+2013,Richie,1869.86,1482.26,387.6,79.3,144,no,bonus_exclusive
+2013,Rob & GregBo,1619.72,1080.62,539.1,66.7,135,no,bonus_exclusive
+2013,Ronnie,2006.94,1595.84,411.1,79.5,144,no,bonus_exclusive
+2013,Team JoeBa,1881.12,1727.5,153.62,91.8,144,no,bonus_exclusive
+2014,Antdell & Ernie,1891.0,1696.1,194.9,89.7,144,yes,bonus_exclusive
+2014,Cambrias,2057.14,1441.34,615.8,70.1,144,yes,bonus_exclusive
+2014,Chris & Dom,1751.88,1386.82,365.06,79.2,135,yes,bonus_exclusive
+2014,Frank & Julian,1595.84,1396.12,199.72,87.5,135,yes,bonus_exclusive
+2014,GaTTa,2048.0,1469.5,578.5,71.8,144,yes,bonus_exclusive
+2014,LFTLR,1371.98,692.38,679.6,50.5,135,yes,bonus_exclusive
+2014,Nolan & Vinny,1640.68,1112.36,528.32,67.8,135,yes,bonus_exclusive
+2014,Pung & Tralie,1718.06,975.02,743.04,56.8,135,yes,bonus_exclusive
+2014,Richie,1838.44,1451.18,387.26,78.9,135,yes,bonus_exclusive
+2014,Rob & GregBo,1553.84,1382.12,171.72,88.9,135,yes,bonus_exclusive
+2014,Ronnie,1920.44,1622.94,297.5,84.5,135,yes,bonus_exclusive
+2014,Team JoeBa,1632.8,1455.1,177.7,89.1,144,yes,bonus_exclusive
+2015,Antdell & Ernie,1787.12,1125.48,661.64,63.0,144,yes,bonus_exclusive
+2015,Cambrias,2270.1,1452.04,818.06,64.0,135,yes,bonus_exclusive
+2015,Chris & Dom,2063.12,1493.7,569.42,72.4,135,yes,bonus_exclusive
+2015,Frank & Julian,1618.96,1427.76,191.2,88.2,135,yes,bonus_exclusive
+2015,GaTTa,1528.48,940.68,587.8,61.5,144,yes,bonus_exclusive
+2015,LFTLR,1531.72,895.2,636.52,58.4,134,yes,bonus_exclusive
+2015,Nolan & Vinny,1579.76,1228.8,350.96,77.8,135,yes,bonus_exclusive
+2015,Pung & Tralie,1558.22,985.24,572.98,63.2,135,yes,bonus_exclusive
+2015,Richie,1866.02,1601.82,264.2,85.8,143,yes,bonus_exclusive
+2015,Rob & GregBo,1786.88,1445.2,341.68,80.9,135,yes,bonus_exclusive
+2015,Ronnie,1713.64,1409.64,304.0,82.3,135,yes,bonus_exclusive
+2015,Team JoeBa,2001.66,1594.06,407.6,79.6,144,yes,bonus_exclusive
+2016,Antdell & Ernie,1736.06,1300.14,435.92,74.9,135,yes,bonus_exclusive
+2016,Cambrias,1573.38,450.9,1122.48,28.7,135,yes,bonus_exclusive
+2016,Chris & Dom,1945.1,983.2,961.9,50.5,135,yes,bonus_exclusive
+2016,Frank & Julian,1765.66,793.86,971.8,45.0,144,yes,bonus_exclusive
+2016,GaTTa,1729.84,738.52,991.32,42.7,144,yes,bonus_exclusive
+2016,LFTLR,1764.58,1316.62,447.96,74.6,135,yes,bonus_exclusive
+2016,Nolan & Vinny,1656.14,1055.56,600.58,63.7,135,yes,bonus_exclusive
+2016,Pung & Tralie,1882.0,1193.46,688.54,63.4,144,yes,bonus_exclusive
+2016,Richie,1671.36,1310.96,360.4,78.4,135,yes,bonus_exclusive
+2016,Rob & GregBo,1548.98,1166.38,382.6,75.3,135,yes,bonus_exclusive
+2016,Ronnie,1868.22,1662.62,205.6,89.0,144,yes,bonus_exclusive
+2016,Team JoeBa,1938.18,992.42,945.76,51.2,135,yes,bonus_exclusive
+2017,Antdell & Ernie,1772.26,1075.94,696.32,60.7,135,yes,bonus_exclusive
+2017,Cambrias,1839.2,1300.2,539.0,70.7,135,yes,bonus_exclusive
+2017,Chris & Dom,1830.46,1124.14,706.32,61.4,144,yes,bonus_exclusive
+2017,Frank & Julian,1690.9,1283.84,407.06,75.9,135,yes,bonus_exclusive
+2017,LFTLR,1638.02,836.54,801.48,51.1,135,yes,bonus_exclusive
+2017,Nolan & Vinny,1600.68,603.48,997.2,37.7,135,yes,bonus_exclusive
+2017,Phil Baldino,1538.56,1029.84,508.72,66.9,135,yes,bonus_exclusive
+2017,Pung & Tralie,1663.42,1027.32,636.1,61.8,144,yes,bonus_exclusive
+2017,Richie,1987.16,1363.54,623.62,68.6,144,yes,bonus_exclusive
+2017,Rob & GregBo,1769.04,1169.46,599.58,66.1,144,yes,bonus_exclusive
+2017,Ronnie,1690.3,883.0,807.3,52.2,135,yes,bonus_exclusive
+2017,Team JoeBa,1595.72,1312.32,283.4,82.2,135,yes,bonus_exclusive
+2018,Antdell & Ernie,1659.96,994.98,664.98,59.9,135,yes,bonus_exclusive
+2018,Cambrias,2138.1,1741.3,396.8,81.4,143,yes,bonus_exclusive
+2018,Chris & Dom,1746.44,1234.6,511.84,70.7,135,yes,bonus_exclusive
+2018,Frank & Julian,1956.26,1122.2,834.06,57.4,135,yes,bonus_exclusive
+2018,LFTLR,1931.44,1629.24,302.2,84.4,135,yes,bonus_exclusive
+2018,Nolan & Vinny,2221.08,1194.8,1026.28,53.8,144,yes,bonus_exclusive
+2018,Phil Baldino,2045.02,1804.92,240.1,88.3,135,yes,bonus_exclusive
+2018,Pung & Tralie,1944.44,1589.96,354.48,81.8,135,yes,bonus_exclusive
+2018,Richie,1616.12,1012.02,604.1,62.6,144,yes,bonus_exclusive
+2018,Rob & GregBo,1828.3,1555.48,272.82,85.1,135,yes,bonus_exclusive
+2018,Ronnie,1572.4,1124.96,447.44,71.5,135,yes,bonus_exclusive
+2018,Team JoeBa,1750.82,1411.7,339.12,80.6,144,yes,bonus_exclusive
+2019,Antdell & Ernie,1780.22,1139.98,640.24,64.0,135,yes,bonus_exclusive
+2019,Cambrias,2050.92,1442.0,608.92,70.3,135,yes,bonus_exclusive
+2019,Chris & Dom,1950.88,1713.18,237.7,87.8,144,yes,bonus_exclusive
+2019,Frank & Julian,1888.88,1185.58,703.3,62.8,144,yes,bonus_exclusive
+2019,LFTLR,1622.94,1275.58,347.36,78.6,135,yes,bonus_exclusive
+2019,Nolan & Vinny,1598.68,768.5,830.18,48.1,135,yes,bonus_exclusive
+2019,Phil Baldino,1835.8,1115.64,720.16,60.8,135,yes,bonus_exclusive
+2019,Pung & Tralie,1802.64,924.36,878.28,51.3,135,yes,bonus_exclusive
+2019,Richie,1985.72,1511.2,474.52,76.1,135,yes,bonus_exclusive
+2019,Rob & GregBo,1774.82,1354.34,420.48,76.3,144,yes,bonus_exclusive
+2019,Ronnie,1908.44,1448.44,460.0,75.9,144,yes,bonus_exclusive
+2019,Team JoeBa,1811.1,1594.8,216.3,88.1,135,yes,bonus_exclusive
+2020,Antdell & Ernie,1979.32,1520.08,459.24,76.8,144,yes,bonus_exclusive
+2020,Cambrias,1555.38,1013.78,541.6,65.2,135,yes,bonus_exclusive
+2020,Chris & Dom,1799.08,1328.94,470.14,73.9,135,yes,bonus_exclusive
+2020,Frank & Julian,1990.2,996.9,993.3,50.1,144,yes,bonus_exclusive
+2020,LFTLR,1624.1,1518.1,106.0,93.5,144,yes,bonus_exclusive
+2020,Nolan & Vinny,1872.68,1560.34,312.34,83.3,135,yes,bonus_exclusive
+2020,Phil Baldino,2040.68,1556.48,484.2,76.3,135,yes,bonus_exclusive
+2020,Pung & Tralie,2135.56,1488.38,647.18,69.7,135,yes,bonus_exclusive
+2020,Richie,1668.82,1206.52,462.3,72.3,144,yes,bonus_exclusive
+2020,Rob & GregBo,1575.58,1265.16,310.42,80.3,135,yes,bonus_exclusive
+2020,Ronnie,2030.96,1770.04,260.92,87.2,135,yes,bonus_exclusive
+2020,Team JoeBa,1385.98,968.44,417.54,69.9,135,yes,bonus_exclusive
+2021,Antdell & Ernie,1828.86,1427.3,401.56,78.0,153,yes,bonus_exclusive
+2021,Cambrias,1903.82,1451.3,452.52,76.2,144,yes,bonus_exclusive
+2021,Chris & Dom,1863.76,1013.86,849.9,54.4,144,yes,bonus_exclusive
+2021,Frank & Julian,1810.42,1294.26,516.16,71.5,153,yes,bonus_exclusive
+2021,John Juliano,1870.64,1471.22,399.42,78.6,144,yes,bonus_exclusive
+2021,Nolan & Vinny,1975.62,1478.8,496.82,74.9,144,yes,bonus_exclusive
+2021,Phil Baldino,2031.88,1535.88,496.0,75.6,153,yes,bonus_exclusive
+2021,Pung & Tralie,2037.46,1506.06,531.4,73.9,153,yes,bonus_exclusive
+2021,Richie,1797.46,1043.96,753.5,58.1,144,yes,bonus_exclusive
+2021,Rob & GregBo,2080.66,1669.82,410.84,80.3,144,yes,bonus_exclusive
+2021,Ronnie,2140.74,1995.34,145.4,93.2,144,yes,bonus_exclusive
+2021,Team JoeBa,1817.78,1594.78,223.0,87.7,144,yes,bonus_exclusive
+2022,Antdell & Ernie,2011.88,803.82,1208.06,40.0,144,yes,bonus_exclusive
+2022,Cambrias,2017.04,1059.18,957.86,52.5,144,yes,bonus_exclusive
+2022,Chris & Dom,1758.62,1592.22,166.4,90.5,144,yes,bonus_exclusive
+2022,Frank & Julian,1672.36,1362.36,310.0,81.5,144,yes,bonus_exclusive
+2022,John Juliano,1927.16,1562.14,365.02,81.1,153,yes,bonus_exclusive
+2022,Mike Long,1972.2,1718.22,253.98,87.1,153,yes,bonus_exclusive
+2022,Nolan & Vinny,2121.28,1860.9,260.38,87.7,144,yes,bonus_exclusive
+2022,Phil Baldino,1789.14,1444.0,345.14,80.7,144,yes,bonus_exclusive
+2022,Pung & Tralie,1658.0,1011.18,646.82,61.0,144,yes,bonus_exclusive
+2022,Richie,1991.24,1205.76,785.48,60.6,153,yes,bonus_exclusive
+2022,Rob & GregBo,1921.74,1744.4,177.34,90.8,144,yes,bonus_exclusive
+2022,Ronnie,1842.52,1150.94,691.58,62.5,153,yes,bonus_exclusive
+2023,Antdell & Ernie,1958.36,917.42,1040.94,46.8,153,yes,bonus_exclusive
+2023,Cambrias,1877.1,1266.02,611.08,67.4,144,yes,bonus_exclusive
+2023,Chris & Dom,1924.18,1371.66,552.52,71.3,153,yes,bonus_exclusive
+2023,Frank & Julian,2038.06,1245.6,792.46,61.1,153,yes,bonus_exclusive
+2023,John Juliano,1836.16,750.52,1085.64,40.9,144,yes,bonus_exclusive
+2023,Mike Long,1777.4,686.48,1090.92,38.6,144,yes,bonus_exclusive
+2023,Nolan & Vinny,1904.24,735.14,1169.1,38.6,144,yes,bonus_exclusive
+2023,Phil Baldino,2117.18,1296.98,820.2,61.3,144,yes,bonus_exclusive
+2023,Pung & Tralie,1758.98,1454.02,304.96,82.7,144,yes,bonus_exclusive
+2023,Richie,1943.86,1021.92,921.94,52.6,143,yes,bonus_exclusive
+2023,Rob & GregBo,1738.36,1419.34,319.02,81.6,144,yes,bonus_exclusive
+2023,Ronnie,2054.46,1622.76,431.7,79.0,153,yes,bonus_exclusive
+2024,Antdell & Ernie,1828.74,861.68,967.06,47.1,144,yes,bonus_exclusive
+2024,Cambrias,2256.62,1592.8,663.82,70.6,153,yes,bonus_exclusive
+2024,Chris & Dom,2007.68,1323.86,683.82,65.9,144,yes,bonus_exclusive
+2024,Frank & Julian,1825.54,1096.82,728.72,60.1,153,yes,bonus_exclusive
+2024,John Juliano,2183.72,1129.04,1054.68,51.7,153,yes,bonus_exclusive
+2024,Mike Long,1586.0,942.78,643.22,59.4,144,yes,bonus_exclusive
+2024,Nolan & Vinny,1854.7,1295.14,559.56,69.8,144,yes,bonus_exclusive
+2024,Phil Baldino,1992.46,1731.16,261.3,86.9,144,yes,bonus_exclusive
+2024,Pung & Tralie,1867.72,1034.08,833.64,55.4,144,yes,bonus_exclusive
+2024,Richie,1857.0,1022.94,834.06,55.1,144,yes,bonus_exclusive
+2024,Rob & GregBo,2196.56,1985.08,211.48,90.4,144,yes,bonus_exclusive
+2024,Ronnie,1773.86,577.56,1196.3,32.6,153,yes,bonus_exclusive
+2025,Antdell & Ernie,2204.66,1614.48,590.18,73.2,153,yes,complete
+2025,Cambrias,1989.94,1228.08,761.86,61.7,144,yes,complete
+2025,Chris & Dom,2097.06,1674.46,422.6,79.8,144,yes,complete
+2025,Frank & Julian,1895.9,1251.82,644.08,66.0,144,yes,complete
+2025,John Juliano,1819.56,1038.5,781.06,57.1,144,yes,complete
+2025,Mike Long,2072.2,1603.8,468.4,77.4,153,yes,complete
+2025,Nolan & Vinny,1898.64,1066.42,832.22,56.2,144,yes,complete
+2025,Phil Baldino,1996.94,1073.64,923.3,53.8,153,yes,complete
+2025,Pung & Tralie,1673.76,786.46,887.3,47.0,143,yes,complete
+2025,Richie,1898.18,969.76,928.42,51.1,144,yes,complete
+2025,Rob & GregBo,2088.46,1946.22,142.24,93.2,144,yes,complete
+2025,Ronnie,1842.92,1058.06,784.86,57.4,153,yes,complete

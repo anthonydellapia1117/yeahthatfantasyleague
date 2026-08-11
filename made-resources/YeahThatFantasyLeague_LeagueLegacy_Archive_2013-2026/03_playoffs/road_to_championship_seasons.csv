@@ -1,0 +1,14 @@
+season,season_name,season_id,champion_member_id,champion_member_name,is_co_champion,champion_member_ids,runner_up_member_id,runner_up_member_name,num_games
+2025,2025,29821,54774,Cambrias,false,[54774],54762,Antdell & Ernie,2
+2024,2024,29820,108589,Phil Baldino,false,[108589],54774,Cambrias,2
+2023,2023,16792,108589,Phil Baldino,false,[108589],54773,Ronnie,2
+2022,2022,16793,54774,Cambrias,false,[54774],108581,Richie,2
+2021,2021,16816,108590,Rob & GregBo,false,[108590],54773,Ronnie,2
+2020,2020,16817,54773,Ronnie,false,[54773],108587,Pung & Tralie,2
+2019,2019,16818,54774,Cambrias,false,[54774],108581,Richie,2
+2018,2018,16819,108589,Phil Baldino,false,[108589],108588,Frank & Julian,2
+2017,2017,16820,108581,Richie,false,[108581],108592,Chris & Dom,3
+2016,2016,16821,108592,Chris & Dom,false,[108592],54846,Team JoeBa,2
+2015,2015,16822,108592,Chris & Dom,false,[108592],54774,Cambrias,2
+2014,2014,16823,54855,GaTTa,false,[54855],54774,Cambrias,3
+2013,2013,16824,54773,Ronnie,false,[54773],54850,LFTLR,3

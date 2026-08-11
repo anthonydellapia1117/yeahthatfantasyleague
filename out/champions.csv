@@ -1,0 +1,14 @@
+season,champion,runner_up,winner_points,loser_points,margin,source,source_ref,fetched_at,confidence
+2013,Ronnie,LFTLR,129.5,80.24,49.26,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2014,GaTTa,Cambrias,158.14,153.06,5.08,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2015,Chris & Dom,Cambrias,147.14,146.64,0.5,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2016,Chris & Dom,Team JoeBa,120.24,117.36,2.88,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2017,Richie,Chris & Dom,139.22,125.08,14.14,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2018,Phil Baldino,Frank & Julian,140.26,138.08,2.18,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2019,Cambrias,Richie,156.72,139.7,17.02,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2020,Ronnie,Pung & Tralie,149.02,128.02,21,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2021,Rob & GregBo,Ronnie,132.5,113.12,19.38,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2022,Cambrias,Richie,133.08,96.46,36.62,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2023,Phil Baldino,Ronnie,159.1,108.08,51.02,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2024,Phil Baldino,Cambrias,173.88,146.36,27.52,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified
+2025,Cambrias,Antdell & Ernie,164.92,152.48,12.44,leaguelegacy,03_playoffs/championship_games.csv,2026-08-11T08:00:41,verified

@@ -1,0 +1,5 @@
+kind,event_id,event_type,event_at,event_week,event_name,color,event_display_time,event_description
+scheduled,event-67138,event,2026-09-06T05:00:00.000000Z,1,Fantasy Season Starts,green,0,
+scheduled,event-67139,event,2026-11-17T05:00:00.000000Z,11,Trade Deadline,green,0,
+scheduled,event-67140,event,2026-12-15T05:00:00.000000Z,15,Fantasy Playoffs Start,green,0,
+scheduled,event-67141,event,2027-01-05T05:00:00.000000Z,18,Championship Week,green,0,

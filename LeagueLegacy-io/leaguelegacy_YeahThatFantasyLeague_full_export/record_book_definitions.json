@@ -1,0 +1,5657 @@
+{
+ "category": null,
+ "display": {
+  "0": {
+   "key": "league-wins",
+   "name": "Total Wins",
+   "label": "Wins",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "1": {
+   "key": "league-losses",
+   "name": "Total Losses",
+   "label": "Losses",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "2": {
+   "key": "league-all-play-win-perc",
+   "name": "All-Play Win Percentage",
+   "label": "Win %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "3": {
+   "key": "league-all-play-wins",
+   "name": "All-Play Wins",
+   "label": "Wins",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "4": {
+   "key": "league-all-play-losses",
+   "name": "All-Play Losses",
+   "label": "Losses",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "5": {
+   "key": "league-win-perc",
+   "name": "Win Percentage",
+   "label": "Win %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "6": {
+   "key": "league-high-scores",
+   "name": "High Scores (#)",
+   "label": "High-Scores",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "7": {
+   "key": "league-high-scores-perc",
+   "name": "High Scores (%)",
+   "label": "High-Scores %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "8": {
+   "key": "league-top-scores",
+   "name": "Top Scores (#)",
+   "label": "Top Scores",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "9": {
+   "key": "league-top-scores-perc",
+   "name": "Top Scores (%)",
+   "label": "Top Scores %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "10": {
+   "key": "league-top-half-scores",
+   "name": "Top Half Scores (#)",
+   "label": "Top Half Scores",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "11": {
+   "key": "league-top-half-scores-perc",
+   "name": "Top Half Scores (%)",
+   "label": "Top Half Scores %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "12": {
+   "key": "league-worst-scores",
+   "name": "Worst Scores (#)",
+   "label": "Worst-Scores",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "13": {
+   "key": "league-worst-scores-perc",
+   "name": "Worst Scores (%)",
+   "label": "Worst-Scores %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "14": {
+   "key": "league-bottom-scores",
+   "name": "Bottom Scores (#)",
+   "label": "Bottom Scores",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "15": {
+   "key": "league-bottom-scores-perc",
+   "name": "Bottom Scores (%)",
+   "label": "Bottom Scores %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "16": {
+   "key": "league-bottom-half-scores",
+   "name": "Bottom Half Scores (#)",
+   "label": "Bottom Half Scores",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "17": {
+   "key": "league-bottom-half-scores-perc",
+   "name": "Bottom Half Scores (%)",
+   "label": "Bottom Half Scores %",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "18": {
+   "key": "league-blowout-wins",
+   "name": "Blowout Wins",
+   "label": "Wins",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "19": {
+   "key": "league-blowout-losses",
+   "name": "Blowout Losses",
+   "label": "Losses",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "20": {
+   "key": "league-slim-wins",
+   "name": "Narrowest Wins",
+   "label": "Wins",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "21": {
+   "key": "league-slim-losses",
+   "name": "Narrowest Losses",
+   "label": "Losses",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "22": {
+   "key": "league-seasons-winning-record",
+   "name": "Seasons Winning Record",
+   "label": "Seasons",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "23": {
+   "key": "league-seasons-losing-record",
+   "name": "Seasons Losing Record",
+   "label": "Seasons",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "24": {
+   "key": "league-season-titles",
+   "name": "Regular Season Titles",
+   "label": "Seasons",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "25": {
+   "key": "league-season-points-titles",
+   "name": "Season Points Titles",
+   "label": "Seasons",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "26": {
+   "key": "league-season-all-play-titles",
+   "name": "Season All-Play Titles",
+   "label": "Seasons",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "27": {
+   "key": "league-total-points",
+   "name": "Total Points",
+   "label": "Points",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "28": {
+   "key": "league-total-opponent-points",
+   "name": "Total Opponent Points",
+   "label": "Points",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "29": {
+   "key": "league-points-share-avg",
+   "name": "Points Share Average",
+   "label": "Avg",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "30": {
+   "key": "league-opponent-points-share-avg",
+   "name": "Opponent Points Share Average",
+   "label": "Avg",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "31": {
+   "key": "league-schedule-strength-avg",
+   "name": "Toughest Strength of Schedule on Average",
+   "label": "Avg Strength of Schedule",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "32": {
+   "key": "league-schedule-strength-avg-lowest",
+   "name": "Easiest Strength of Schedule on Average",
+   "label": "Avg Strength of Schedule",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "33": {
+   "key": "league-luckiest-avg",
+   "name": "Luckiest",
+   "label": "Avg Matchup Luck",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "34": {
+   "key": "league-luckiest-avg-lowest",
+   "name": "Least Luckiest",
+   "label": "Avg Matchup Luck",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "35": {
+   "key": "league-playoff-appearances",
+   "name": "Playoff Appearances",
+   "label": "Appearances",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "36": {
+   "key": "league-playoff-wins",
+   "name": "Playoff Wins",
+   "label": "Wins",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "37": {
+   "key": "league-playoff-losses",
+   "name": "Playoff Losses",
+   "label": "Losses",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "38": {
+   "key": "league-playoff-points",
+   "name": "Playoff Points",
+   "label": "Points",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "39": {
+   "key": "league-playoff-opponent-points",
+   "name": "Opponent Playoff Points",
+   "label": "Points",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "40": {
+   "key": "league-medals",
+   "name": "Total Medals",
+   "label": "Medals",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "41": {
+   "key": "league-medal-score",
+   "name": "Medal Score",
+   "label": "Medal Score",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "42": {
+   "key": "league-championships",
+   "name": "Championships",
+   "label": "Championships",
+   "display_type": "league",
+   "category": "league",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "43": {
+   "key": "season-score",
+   "name": "Season Score",
+   "label": "Season Score",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "44": {
+   "key": "season-score-lowest",
+   "name": "Season Score Lowest",
+   "label": "Season Score",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "45": {
+   "key": "season-wins",
+   "name": "Most Season Wins",
+   "label": "Wins",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "46": {
+   "key": "season-losses",
+   "name": "Most Season Losses",
+   "label": "Losses",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "47": {
+   "key": "season-all-play-win-perc",
+   "name": "Best All-Play Season Win Percentage",
+   "label": "Win %",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "48": {
+   "key": "season-all-play-wins",
+   "name": "Most All-Play Season Wins",
+   "label": "Wins",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "49": {
+   "key": "season-all-play-losses",
+   "name": "Most All-Play Season Losses",
+   "label": "Losses",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "50": {
+   "key": "season-luckiest",
+   "name": "Luckiest Season",
+   "label": "Total Season Luck",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "51": {
+   "key": "season-luckiest-lowest",
+   "name": "Least Luckiest Season",
+   "label": "Total Season Luck",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "52": {
+   "key": "season-schedule-strength-avg",
+   "name": "Toughest Strength of Schedule Season",
+   "label": "Strength of Schedule",
+   "display_type": "season",
+   "category": "season",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "53": {
+   "key": "season-schedule-strength-avg-lowest",
+   "name": "Easiest Strength of Schedule Season",
+   "label": "Strength of Schedule",
+   "display_type": "season",
+   "category": "season",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "54": {
+   "key": "season-points",
+   "name": "Most Season Points",
+   "label": "Points",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "55": {
+   "key": "season-opponent-points",
+   "name": "Most Opponent Season Points",
+   "label": "Opponent Points",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "56": {
+   "key": "season-points-fewest",
+   "name": "Fewest Season Points",
+   "label": "Points",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "57": {
+   "key": "season-opponent-points-fewest",
+   "name": "Fewest Opponent Season Points",
+   "label": "Opponent Points",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "58": {
+   "key": "season-high-scores",
+   "name": "High Scores (#)",
+   "label": "High-Scores",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "59": {
+   "key": "season-top-scores",
+   "name": "Top Scores (#)",
+   "label": "Top Scores",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "60": {
+   "key": "season-top-half-scores",
+   "name": "Top Half Scores (#)",
+   "label": "Top Half Scores",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "61": {
+   "key": "season-worst-scores",
+   "name": "Worst Scores (#)",
+   "label": "Worst-Scores",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "62": {
+   "key": "season-bottom-scores",
+   "name": "Bottom Scores (#)",
+   "label": "Bottom Scores",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "63": {
+   "key": "season-bottom-half-scores",
+   "name": "Bottom Half Scores (#)",
+   "label": "Bottom Half Scores",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "64": {
+   "key": "season-blowout-wins",
+   "name": "Most Blowout Season Wins",
+   "label": "Wins",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "65": {
+   "key": "season-blowout-losses",
+   "name": "Most Blowout Season Losses",
+   "label": "Losses",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "66": {
+   "key": "season-slim-wins",
+   "name": "Most Narrow Season Wins",
+   "label": "Wins",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "67": {
+   "key": "season-slim-losses",
+   "name": "Most Narrow Season Losses",
+   "label": "Losses",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "68": {
+   "key": "season-points-share",
+   "name": "Highest Season Points Share",
+   "label": "Points Share",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "69": {
+   "key": "season-points-share-lowest",
+   "name": "Lowest Season Points Share",
+   "label": "Points Share",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "70": {
+   "key": "season-opponent-points-share",
+   "name": "Highest Opponents Season Points Share",
+   "label": "Points Share",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "71": {
+   "key": "season-opponent-points-share-lowest",
+   "name": "Lowest Opponents Season Points Share",
+   "label": "Points Share",
+   "display_type": "season",
+   "category": "season",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "72": {
+   "key": "matchup-points",
+   "name": "Most Matchup Points",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "73": {
+   "key": "matchup-points-fewest",
+   "name": "Fewest Matchup Points",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "74": {
+   "key": "matchup-combined-score",
+   "name": "Highest Combined Matchup Score",
+   "label": "Total Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "75": {
+   "key": "matchup-combined-score-lowest",
+   "name": "Lowest Combined Matchup Score",
+   "label": "Total Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "76": {
+   "key": "matchup-margin",
+   "name": "Biggest Matchup Blowout",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "77": {
+   "key": "matchup-margin-fewest",
+   "name": "Narrowest Matchup Win",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "78": {
+   "key": "matchup-points-share",
+   "name": "Highest Matchup Points Share",
+   "label": "Points Share %",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "79": {
+   "key": "matchup-points-share-lowest",
+   "name": "Lowest Matchup Points Share",
+   "label": "Points Share %",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "80": {
+   "key": "matchup-playoffs-points",
+   "name": "Most Playoff Matchup Points",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "81": {
+   "key": "matchup-playoffs-points-fewest",
+   "name": "Fewests Playoff Matchup Points",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "82": {
+   "key": "matchup-playoffs-combined-score",
+   "name": "Highest Playoff Combined Matchup Score",
+   "label": "Total Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "83": {
+   "key": "matchup-playoffs-combined-score-lowest",
+   "name": "Lowest Playoff Combined Matchup Score",
+   "label": "Total Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "84": {
+   "key": "matchup-playoffs-margin",
+   "name": "Biggest Playoff Matchup Blowout",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "85": {
+   "key": "matchup-playoffs-margin-fewest",
+   "name": "Narrowest Playoff Matchup Win",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "matchup",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "86": {
+   "key": "streak-wins",
+   "name": "Win Streak",
+   "label": "Win Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "87": {
+   "key": "streak-losses",
+   "name": "Loss Streak",
+   "label": "Loss Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "88": {
+   "key": "streak-high-scores",
+   "name": "High-Score Streak",
+   "label": "Matchup Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "89": {
+   "key": "streak-top-scores",
+   "name": "Top Score Streak",
+   "label": "Matchup Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "90": {
+   "key": "streak-top-half-scores",
+   "name": "Top Half Score Streak",
+   "label": "Matchup Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "91": {
+   "key": "streak-winning-record",
+   "name": "Winning Record Streak",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "92": {
+   "key": "streak-coach-score-perfect",
+   "name": "Coach Score - Perfect Streak",
+   "label": "Matchup Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "93": {
+   "key": "streak-playoff-appearances",
+   "name": "Playoff Appearances Streak",
+   "label": "Appearances",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "94": {
+   "key": "streak-playoff-wins",
+   "name": "Playoff Win Streak",
+   "label": "Win Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "95": {
+   "key": "streak-playoff-losses",
+   "name": "Playoff Loss Streak",
+   "label": "Loss Streak",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "96": {
+   "key": "streak-medals",
+   "name": "Playoff Medal Streak",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "97": {
+   "key": "streak-title-game",
+   "name": "Title Game Streak",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "98": {
+   "key": "streak-championships",
+   "name": "Championship Streak",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "streak",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "99": {
+   "key": "drought-championships",
+   "name": "Championship Drought",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "100": {
+   "key": "drought-title-game",
+   "name": "Title Game Drought",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "101": {
+   "key": "drought-medal",
+   "name": "Playoff Medal Drought",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "102": {
+   "key": "drought-playoff-appearances",
+   "name": "Playoff Appearance Drought",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "103": {
+   "key": "drought-winning-record",
+   "name": "Winning Record Drought",
+   "label": "Seasons",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "104": {
+   "key": "drought-high-score",
+   "name": "High-Score Drought",
+   "label": "Weeks",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "105": {
+   "key": "drought-top-score",
+   "name": "Top Score Drought",
+   "label": "Weeks",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "106": {
+   "key": "drought-top-half-score",
+   "name": "Top Half Score Drought",
+   "label": "Weeks",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "107": {
+   "key": "drought-coach-score-perfect",
+   "name": "Coach Score - Perfect Drought",
+   "label": "Weeks",
+   "display_type": "streak",
+   "category": "drought",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "108": {
+   "key": "milestone-league-wins",
+   "name": "Total Wins Milestone",
+   "label": "Wins",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "109": {
+   "key": "milestone-league-losses",
+   "name": "Total Losses Milestone",
+   "label": "Losses",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "110": {
+   "key": "milestone-league-all-play-wins",
+   "name": "Total All-Play Wins Milestone",
+   "label": "All-Play Wins",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "111": {
+   "key": "milestone-league-all-play-losses",
+   "name": "Total All-Play Losses Milestone",
+   "label": "All-Play Losses",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "112": {
+   "key": "milestone-league-points",
+   "name": "Total Points Milestone",
+   "label": "Points",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "113": {
+   "key": "milestone-league-opponent-points",
+   "name": "Total Opponent Points Milestone",
+   "label": "Points",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "114": {
+   "key": "milestone-league-high-scores",
+   "name": "High Scores Milestone",
+   "label": "High Scores",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "115": {
+   "key": "milestone-league-top-scores",
+   "name": "Top Scores Milestone",
+   "label": "Top Scores",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "116": {
+   "key": "milestone-league-top-half-scores",
+   "name": "Top Half Score Milestone",
+   "label": "Top Half Scores",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "117": {
+   "key": "milestone-league-worst-scores",
+   "name": "Worst Scores Milestone",
+   "label": "Worst Scores",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "118": {
+   "key": "milestone-league-bottom-scores",
+   "name": "Bottom Scores Milestone",
+   "label": "Bottom Scores",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "119": {
+   "key": "milestone-league-bottom-half-scores",
+   "name": "Bottom Half Score Milestone",
+   "label": "Bottom Half Scores",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "120": {
+   "key": "milestone-perfect-coach-scores",
+   "name": "Coach Score - Perfect Milestone",
+   "label": "Matchups",
+   "display_type": null,
+   "category": "milestone",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "121": {
+   "key": "draft-value-avg",
+   "name": "Draft Value Avg - (Overall Best Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "122": {
+   "key": "draft-qb-value-avg",
+   "name": "QB Draft Value Avg - (Best QB Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "123": {
+   "key": "draft-rb-value-avg",
+   "name": "RB Draft Value Avg - (Best RB Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "124": {
+   "key": "draft-wr-value-avg",
+   "name": "WR Draft Value Avg - (Best WR Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "125": {
+   "key": "draft-te-value-avg",
+   "name": "TE Draft Value Avg - (Best TE Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "126": {
+   "key": "draft-k-value-avg",
+   "name": "K Draft Value Avg - (Best K Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "127": {
+   "key": "draft-def-value-avg",
+   "name": "DEF Draft Value Avg - (Best DEF Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "131": {
+   "key": "draft-value-avg-season",
+   "name": "Draft Value Avg - (Best Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "132": {
+   "key": "draft-qb-value-avg-season",
+   "name": "QB Draft Value Avg - (Best QB Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "133": {
+   "key": "draft-rb-value-avg-season",
+   "name": "RB Draft Value Avg - (Best RB Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "134": {
+   "key": "draft-wr-value-avg-season",
+   "name": "WR Draft Value Avg - (Best WR Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "135": {
+   "key": "draft-te-value-avg-season",
+   "name": "TE Draft Value Avg - (Best TE Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "136": {
+   "key": "draft-k-value-avg-season",
+   "name": "K Draft Value Avg - (Best K Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "137": {
+   "key": "draft-def-value-avg-season",
+   "name": "DEF Draft Value Avg - (Best DEF Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "141": {
+   "key": "draft-value-avg-season-lowest",
+   "name": "Draft Value Avg - (Worst Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "142": {
+   "key": "draft-qb-value-avg-season-lowest",
+   "name": "QB Draft Value Avg - (Worst LB Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "143": {
+   "key": "draft-rb-value-avg-season-lowest",
+   "name": "RB Draft Value Avg - (Worst RB Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "144": {
+   "key": "draft-wr-value-avg-season-lowest",
+   "name": "WR Draft Value Avg - (Worst WR Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "145": {
+   "key": "draft-te-value-avg-season-lowest",
+   "name": "TE Draft Value Avg - (Worst TE Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "146": {
+   "key": "draft-k-value-avg-season-lowest",
+   "name": "K Draft Value Avg - (Worst K Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "147": {
+   "key": "draft-def-value-avg-season-lowest",
+   "name": "DEF Draft Value Avg - (Worst DEF Drafted Season)",
+   "label": "Value per Pick",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "151": {
+   "key": "draft-pick",
+   "name": "All-Time Best Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "152": {
+   "key": "draft-qb-pick",
+   "name": "All-Time Best QB Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "153": {
+   "key": "draft-rb-pick",
+   "name": "All-Time Best RB Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "154": {
+   "key": "draft-wr-pick",
+   "name": "All-Time Best WR Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "155": {
+   "key": "draft-te-pick",
+   "name": "All-Time Best TE Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "156": {
+   "key": "draft-k-pick",
+   "name": "All-Time Best K Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "157": {
+   "key": "draft-def-pick",
+   "name": "All-Time Best DEF Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "161": {
+   "key": "draft-pick-lowest",
+   "name": "All-Time Worst Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "162": {
+   "key": "draft-qb-pick-lowest",
+   "name": "All-Time Worst QB Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "163": {
+   "key": "draft-rb-pick-lowest",
+   "name": "All-Time Worst RB Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "164": {
+   "key": "draft-wr-pick-lowest",
+   "name": "All-Time Worst WR Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "165": {
+   "key": "draft-te-pick-lowest",
+   "name": "All-Time Worst TE Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "166": {
+   "key": "draft-k-pick-lowest",
+   "name": "All-Time Worst K Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "167": {
+   "key": "draft-def-pick-lowest",
+   "name": "All-Time Worst DEF Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "171": {
+   "key": "draft-keeper-value-avg",
+   "name": "Draft Keeper Value Avg - (Best Keeper Drafter)",
+   "label": "Value per Pick",
+   "display_type": "league",
+   "category": "draft",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "172": {
+   "key": "draft-keeper-pick",
+   "name": "All-Time Best Keeper Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "173": {
+   "key": "draft-keeper-pick-lowest",
+   "name": "All-Time Worst Keeper Draft Pick",
+   "label": "Value",
+   "display_type": "season",
+   "category": "draft",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "174": {
+   "key": "transaction-total-count",
+   "name": "Most Transactions All-Time",
+   "label": "Transactions",
+   "display_type": "league",
+   "category": "transaction",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "175": {
+   "key": "transaction-trades-count",
+   "name": "Most Trades All-Time",
+   "label": "Trades",
+   "display_type": "league",
+   "category": "transaction",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "176": {
+   "key": "transaction-manager",
+   "name": "Overall Manager Value - (Best Transaction Manager)",
+   "label": "Avg Value per Season",
+   "display_type": "league",
+   "category": "transaction",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "177": {
+   "key": "transaction-waiver-manager",
+   "name": "Waiver Manager Value - (Best Waiver Wire Manager)",
+   "label": "Avg Value per Season",
+   "display_type": "league",
+   "category": "transaction",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "178": {
+   "key": "transaction-trade-manager",
+   "name": "Trade Manager Value - (Best Trade Manager)",
+   "label": "Avg Value per Trade",
+   "display_type": "league",
+   "category": "transaction",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "179": {
+   "key": "transaction-manager-season",
+   "name": "Best Manager Season",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "180": {
+   "key": "transaction-manager-season-lowest",
+   "name": "Worst Manager Season",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "181": {
+   "key": "transaction-waiver-manager-season",
+   "name": "Best Waiver Manager Season",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "182": {
+   "key": "transaction-waiver-manager-season-lowest",
+   "name": "Worst Waiver Manager Season",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "183": {
+   "key": "transaction-trade-manager-season",
+   "name": "Best Trade Manager Season",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "184": {
+   "key": "transaction-trade-manager-season-lowest",
+   "name": "Worst Trade Manager Season",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "185": {
+   "key": "transaction-trade-player",
+   "name": "Best Trade - All-Time",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "186": {
+   "key": "transaction-trade-player-lowest",
+   "name": "Worst Trade - All-Time",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "187": {
+   "key": "transaction-waiver-player",
+   "name": "Best Waiver Add - All-Time",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "188": {
+   "key": "transaction-waiver-player-lowest",
+   "name": "Worst Waiver Drop - All-Time",
+   "label": "Value",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggreagte",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "189": {
+   "key": "transaction-faab",
+   "name": "Highest FAAB Bids - All-Time",
+   "label": "$",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "190": {
+   "key": "transaction-faab-value",
+   "name": "Best FAAB Value - All-Time",
+   "label": "Value per $",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "191": {
+   "key": "transaction-faab-value-lowest",
+   "name": "Worst FAAB Value - All-Time",
+   "label": "Value per $",
+   "display_type": "season",
+   "category": "transaction",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "192": {
+   "key": "roster-coach-score",
+   "name": "Coach Score",
+   "label": "Score",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "193": {
+   "key": "roster-coach-score-lowest",
+   "name": "Coach Score Lowest",
+   "label": "Score",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "194": {
+   "key": "roster-coach-score-total-perfect",
+   "name": "Coach Score - Num Perfect Games",
+   "label": "Matchups",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "195": {
+   "key": "roster-qb-avg",
+   "name": "QB Avg Points Per Matchup - All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "196": {
+   "key": "roster-qb-avg-lowest",
+   "name": "QB Avg Points Per Matchup - Lowest All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "197": {
+   "key": "roster-rb-avg",
+   "name": "RB Avg Points Per Matchup - All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "198": {
+   "key": "roster-rb-avg-lowest",
+   "name": "RB Avg Points Per Matchup - Lowest All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "199": {
+   "key": "roster-wr-avg",
+   "name": "WR Avg Points Per Matchup - All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "200": {
+   "key": "roster-wr-avg-lowest",
+   "name": "WR Avg Points Per Matchup - Lowest All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "201": {
+   "key": "roster-te-avg",
+   "name": "TE Avg Points Per Matchup - All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "202": {
+   "key": "roster-te-avg-lowest",
+   "name": "TE Avg Points Per Matchup - Lowest All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "203": {
+   "key": "roster-k-avg",
+   "name": "K Avg Points Per Matchup - All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "204": {
+   "key": "roster-k-avg-lowest",
+   "name": "K Avg Points Per Matchup - Lowest All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "205": {
+   "key": "roster-def-avg",
+   "name": "DEF Avg Points Per Matchup - All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "206": {
+   "key": "roster-def-avg-lowest",
+   "name": "DEF Avg Points Per Matchup - Lowest All-Time",
+   "label": "Avg Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "213": {
+   "key": "roster-optimal-points-missed",
+   "name": "Most Optimal Points Missed - All-Time",
+   "label": "Points",
+   "display_type": "league",
+   "category": "roster",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "214": {
+   "key": "roster-coach-score-season",
+   "name": "Coach Score - Season",
+   "label": "Score",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "215": {
+   "key": "roster-coach-score-lowest-season",
+   "name": "Coach Score Lowest - Season",
+   "label": "Score",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "216": {
+   "key": "roster-coach-score-total-perfect-season",
+   "name": "Coach Scores - Num Perfect Games in Season",
+   "label": "Matchups",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "217": {
+   "key": "roster-top-player-season",
+   "name": "Top Player - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "218": {
+   "key": "roster-optimal-points-missed-season",
+   "name": "Most Optimal Points Missed - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "219": {
+   "key": "roster-top-qb-player-season",
+   "name": "Top QB Player - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "220": {
+   "key": "roster-top-rb-player-season",
+   "name": "Top RB Player - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "221": {
+   "key": "roster-top-wr-player-season",
+   "name": "Top WR Player - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "222": {
+   "key": "roster-top-te-player-season",
+   "name": "Top TE Player - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "223": {
+   "key": "roster-top-k-player-season",
+   "name": "Top K Player - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "224": {
+   "key": "roster-top-def-player-season",
+   "name": "Top DEF Player - Season",
+   "label": "Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "228": {
+   "key": "roster-qb-avg-season",
+   "name": "QB Avg Points Per Matchup - Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "229": {
+   "key": "roster-qb-avg-lowest-season",
+   "name": "QB Avg Points Per Matchup - Lowest Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "230": {
+   "key": "roster-rb-avg-season",
+   "name": "RB Avg Points Per Matchup - Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "231": {
+   "key": "roster-rb-avg-lowest-season",
+   "name": "RB Avg Points Per Matchup - Lowest Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "232": {
+   "key": "roster-wr-avg-season",
+   "name": "WR Avg Points Per Matchup - Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "233": {
+   "key": "roster-wr-avg-lowest-season",
+   "name": "WR Avg Points Per Matchup - Lowest Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "234": {
+   "key": "roster-te-avg-season",
+   "name": "TE Avg Points Per Matchup - Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "235": {
+   "key": "roster-te-avg-lowest-season",
+   "name": "TE Avg Points Per Matchup - Lowest Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "236": {
+   "key": "roster-k-avg-season",
+   "name": "K Avg Points Per Matchup - Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "237": {
+   "key": "roster-k-avg-lowest-season",
+   "name": "K Avg Points Per Matchup - Lowest Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "238": {
+   "key": "roster-def-avg-season",
+   "name": "DEF Avg Points Per Matchup - Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "239": {
+   "key": "roster-def-avg-lowest-season",
+   "name": "DEF Avg Points Per Matchup - Lowest Season",
+   "label": "Avg Points",
+   "display_type": "season",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "246": {
+   "key": "roster-optimal-points-missed-matchup",
+   "name": "Most Optimal Points Missed - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "247": {
+   "key": "roster-top-player-matchup",
+   "name": "Top Player - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "248": {
+   "key": "roster-top-qb-player-matchup",
+   "name": "Top QB Player - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "249": {
+   "key": "roster-top-rb-player-matchup",
+   "name": "Top RB Player - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "250": {
+   "key": "roster-top-wr-player-matchup",
+   "name": "Top WR Player - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "251": {
+   "key": "roster-top-te-player-matchup",
+   "name": "Top TE Player - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "252": {
+   "key": "roster-top-k-player-matchup",
+   "name": "Top K Player - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "253": {
+   "key": "roster-top-def-player-matchup",
+   "name": "Top DEF Player - Matchup",
+   "label": "Points",
+   "display_type": "matchup",
+   "category": "roster",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "257": {
+   "key": "roster-passing-yards-stat",
+   "name": "Most Passing Yards - All-Time",
+   "label": "Yards",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "258": {
+   "key": "roster-passing-tds-stat",
+   "name": "Most Passing Touchdowns - All-Time",
+   "label": "Touchdowns",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "259": {
+   "key": "roster-rushing-yards-stat",
+   "name": "Most Rushing Yards - All-Time",
+   "label": "Yards",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "260": {
+   "key": "roster-rushing-tds-stat",
+   "name": "Most Rushing Touchdowns - All-Time",
+   "label": "Touchdowns",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "261": {
+   "key": "roster-receiving-yards-stat",
+   "name": "Most Receiving Yards - All-Time",
+   "label": "Yards",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "262": {
+   "key": "roster-receiving-tds-stat",
+   "name": "Most Receiving Touchdowns - All-Time",
+   "label": "Touchdowns",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "263": {
+   "key": "roster-receptions-stat",
+   "name": "Most Receptions - All-Time",
+   "label": "Receptions",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "264": {
+   "key": "roster-def-tds-stat",
+   "name": "Most Defensive Touchdowns - All-Time",
+   "label": "Touchdowns",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "265": {
+   "key": "roster-fumbles-stat",
+   "name": "Most Fumbles - All-Time",
+   "label": "Fumbles",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "266": {
+   "key": "roster-interceptions-stat",
+   "name": "Most Interceptions - All-Time",
+   "label": "Interceptions",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "267": {
+   "key": "roster-field-goals-stat",
+   "name": "Most Fields Goals - All-Time",
+   "label": "Field Goals",
+   "display_type": "league",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "268": {
+   "key": "roster-passing-yards-stat-player",
+   "name": "Most Passing Yards - Player All-Time",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "269": {
+   "key": "roster-passing-tds-stat-player",
+   "name": "Most Passing Touchdowns - Player All-Time",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "270": {
+   "key": "roster-rushing-yards-stat-player",
+   "name": "Most Rushing Yards - Player All-Time",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "271": {
+   "key": "roster-rushing-tds-stat-player",
+   "name": "Most Rushing Touchdowns - Player All-Time",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "272": {
+   "key": "roster-receiving-yards-stat-player",
+   "name": "Most Receiving Yards - Player All-Time",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "273": {
+   "key": "roster-receiving-tds-stat-player",
+   "name": "Most Receiving Touchdowns - Player All-Time",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "274": {
+   "key": "roster-receptions-stat-player",
+   "name": "Most Receptions - Player All-Time",
+   "label": "Receptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "275": {
+   "key": "roster-def-tds-stat-player",
+   "name": "Most Defensive Touchdowns - Player All-Time",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "276": {
+   "key": "roster-fumbles-stat-player",
+   "name": "Most Fumbles - Player All-Time",
+   "label": "Fumbles",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "277": {
+   "key": "roster-interceptions-stat-player",
+   "name": "Most Interceptions - Player All-Time",
+   "label": "Interceptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "278": {
+   "key": "roster-field-goals-stat-player",
+   "name": "Most Fields Goals - Player All-Time",
+   "label": "Field Goals",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "cumulative",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "279": {
+   "key": "roster-passing-yards-stat-season",
+   "name": "Most Passing Yards - Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "280": {
+   "key": "roster-passing-tds-stat-season",
+   "name": "Most Passing Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "281": {
+   "key": "roster-rushing-yards-stat-season",
+   "name": "Most Rushing Yards - Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "282": {
+   "key": "roster-rushing-tds-stat-season",
+   "name": "Most Rushing Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "283": {
+   "key": "roster-receiving-yards-stat-season",
+   "name": "Most Receiving Yards - Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "284": {
+   "key": "roster-receiving-tds-stat-season",
+   "name": "Most Receiving Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "285": {
+   "key": "roster-receptions-stat-season",
+   "name": "Most Receptions - Season",
+   "label": "Receptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "286": {
+   "key": "roster-def-tds-stat-season",
+   "name": "Most Defensive Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "287": {
+   "key": "roster-fumbles-stat-season",
+   "name": "Most Fumbles - Season",
+   "label": "Fumbles",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "288": {
+   "key": "roster-interceptions-stat-season",
+   "name": "Most Interceptions - Season",
+   "label": "Interceptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "289": {
+   "key": "roster-field-goals-stat-season",
+   "name": "Most Fields Goals - Season",
+   "label": "Field Goals",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "290": {
+   "key": "roster-passing-yards-stat-lowest-season",
+   "name": "Fewest Passing Yards - Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "291": {
+   "key": "roster-passing-tds-stat-lowest-season",
+   "name": "Fewest Passing Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "292": {
+   "key": "roster-rushing-yards-stat-lowest-season",
+   "name": "Fewest Rushing Yards - Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "293": {
+   "key": "roster-rushing-tds-stat-lowest-season",
+   "name": "Fewest Rushing Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "294": {
+   "key": "roster-receiving-yards-stat-lowest-season",
+   "name": "Fewest Receiving Yards - Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "295": {
+   "key": "roster-receiving-tds-stat-lowest-season",
+   "name": "Fewest Receiving Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "296": {
+   "key": "roster-receptions-stat-lowest-season",
+   "name": "Fewest Receptions - Season",
+   "label": "Receptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "297": {
+   "key": "roster-def-tds-stat-lowest-season",
+   "name": "Fewest Defensive Touchdowns - Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "298": {
+   "key": "roster-fumbles-stat-lowest-season",
+   "name": "Fewest Fumbles - Season",
+   "label": "Fumbles",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "299": {
+   "key": "roster-interceptions-stat-lowest-season",
+   "name": "Fewest Interceptions - Season",
+   "label": "Interceptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "300": {
+   "key": "roster-field-goals-stat-lowest-season",
+   "name": "Fewest Fields Goals - Season",
+   "label": "Field Goals",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "301": {
+   "key": "roster-passing-yards-stat-player-season",
+   "name": "Most Passing Yards - Player in a Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "302": {
+   "key": "roster-passing-tds-stat-player-season",
+   "name": "Most Passing Touchdowns - Player in a Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "303": {
+   "key": "roster-rushing-yards-stat-player-season",
+   "name": "Most Rushing Yards - Player in a Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "304": {
+   "key": "roster-rushing-tds-stat-player-season",
+   "name": "Most Rushing Touchdowns - Player in a Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "305": {
+   "key": "roster-receiving-yards-stat-player-season",
+   "name": "Most Receiving Yards - Player in a Season",
+   "label": "Yards",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "306": {
+   "key": "roster-receiving-tds-stat-player-season",
+   "name": "Most Receiving Touchdowns - Player in a Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "307": {
+   "key": "roster-receptions-stat-player-season",
+   "name": "Most Receptions - Player in a Season",
+   "label": "Receptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "308": {
+   "key": "roster-def-tds-stat-player-season",
+   "name": "Most Defensive Touchdowns - Player in a Season",
+   "label": "Touchdowns",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "309": {
+   "key": "roster-fumbles-stat-player-season",
+   "name": "Most Fumbles - Player in a Season",
+   "label": "Fumbles",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "310": {
+   "key": "roster-interceptions-stat-player-season",
+   "name": "Most Interceptions - Player in a Season",
+   "label": "Interceptions",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 0
+  },
+  "311": {
+   "key": "roster-field-goals-stat-player-season",
+   "name": "Most Fields Goals - Player in a Season",
+   "label": "Field Goals",
+   "display_type": "season",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 1,
+   "is_positive": 1
+  },
+  "312": {
+   "key": "roster-passing-yards-stat-matchup",
+   "name": "Most Passing Yards - Matchup",
+   "label": "Yards",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "313": {
+   "key": "roster-passing-tds-stat-matchup",
+   "name": "Most Passing Touchdowns - Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "314": {
+   "key": "roster-rushing-yards-stat-matchup",
+   "name": "Most Rushing Yards - Matchup",
+   "label": "Yards",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "315": {
+   "key": "roster-rushing-tds-stat-matchup",
+   "name": "Most Rushing Touchdowns - Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "316": {
+   "key": "roster-receiving-yards-stat-matchup",
+   "name": "Most Receiving Yards - Matchup",
+   "label": "Yards",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "317": {
+   "key": "roster-receiving-tds-stat-matchup",
+   "name": "Most Receiving Touchdowns - Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "318": {
+   "key": "roster-receptions-stat-matchup",
+   "name": "Most Receptions - Matchup",
+   "label": "Receptions",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "319": {
+   "key": "roster-def-tds-stat-matchup",
+   "name": "Most Defensive Touchdowns - Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "320": {
+   "key": "roster-fumbles-stat-matchup",
+   "name": "Most Fumbles - Matchup",
+   "label": "Fumbles",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "321": {
+   "key": "roster-interceptions-stat-matchup",
+   "name": "Most Interceptions - Matchup",
+   "label": "Interceptions",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "322": {
+   "key": "roster-field-goals-stat-matchup",
+   "name": "Most Fields Goals - Matchup",
+   "label": "Field Goals",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "323": {
+   "key": "roster-passing-yards-stat-player-matchup",
+   "name": "Most Passing Yards - Player in a Matchup",
+   "label": "Yards",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "324": {
+   "key": "roster-passing-tds-stat-player-matchup",
+   "name": "Most Passing Touchdowns - Player in a Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "325": {
+   "key": "roster-rushing-yards-stat-player-matchup",
+   "name": "Most Rushing Yards - Player in a Matchup",
+   "label": "Yards",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "326": {
+   "key": "roster-rushing-tds-stat-player-matchup",
+   "name": "Most Rushing Touchdowns - Player in a Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "327": {
+   "key": "roster-receiving-yards-stat-player-matchup",
+   "name": "Most Receiving Yards - Player in a Matchup",
+   "label": "Yards",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "328": {
+   "key": "roster-receiving-tds-stat-player-matchup",
+   "name": "Most Receiving Touchdowns - Player in a Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "329": {
+   "key": "roster-receptions-stat-player-matchup",
+   "name": "Most Receptions - Player in a Matchup",
+   "label": "Receptions",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "330": {
+   "key": "roster-def-tds-stat-player-matchup",
+   "name": "Most Defensive Touchdowns - Player in a Matchup",
+   "label": "Touchdowns",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "331": {
+   "key": "roster-fumbles-stat-player-matchup",
+   "name": "Most Fumbles - Player in a Matchup",
+   "label": "Fumbles",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "332": {
+   "key": "roster-interceptions-stat-player-matchup",
+   "name": "cMost Interceptions - Player in a Matchup",
+   "label": "Interceptions",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "333": {
+   "key": "roster-field-goals-stat-player-matchup",
+   "name": "Most Fields Goals - Player in a Matchup",
+   "label": "Field Goals",
+   "display_type": "matchup",
+   "category": "roster-stat",
+   "type": "aggregate",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "334": {
+   "key": "achievement-champion-season",
+   "name": "Season Title",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "335": {
+   "key": "achievement-champion-points",
+   "name": "Season Points Title",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "336": {
+   "key": "achievement-champion-all-play",
+   "name": "Season All-Play Title",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "337": {
+   "key": "achievement-champion-triple-crown",
+   "name": "Triple Crown",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "338": {
+   "key": "achievement-champion",
+   "name": "Champion",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "339": {
+   "key": "achievement-champion-twice",
+   "name": "Back-to-Back Champ",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "340": {
+   "key": "achievement-champion-thrice",
+   "name": "Three-peat Champ",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "341": {
+   "key": "achievement-champion-four",
+   "name": "Four-Told",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "342": {
+   "key": "achievement-champion-five",
+   "name": "High-Five",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "343": {
+   "key": "achievement-champion-six",
+   "name": "The Jordan",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "344": {
+   "key": "achievement-champion-first-season",
+   "name": "The Ringer",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "345": {
+   "key": "achievement-champion-dynasty",
+   "name": "Dynasty",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "346": {
+   "key": "achievement-champion-grand-slam",
+   "name": "Grand Slam",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "347": {
+   "key": "achievement-champion-perfect",
+   "name": "Immaculate Season",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "348": {
+   "key": "achievement-champion-worst-to-first",
+   "name": "Phoenix Award",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "349": {
+   "key": "achievement-champion-hard",
+   "name": "Heavyweight Champion",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "350": {
+   "key": "achievement-champion-luck-not",
+   "name": "Against the Odds",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "351": {
+   "key": "achievement-champion-top-draft-manager",
+   "name": "Draft King",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "352": {
+   "key": "achievement-champion-top-transaction-manager",
+   "name": "Action King",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "353": {
+   "key": "achievement-champion-top-coach",
+   "name": "Optimus Prime",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "354": {
+   "key": "achievement-champion-twice-silver",
+   "name": "Silverback-to-back",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "355": {
+   "key": "achievement-champion-twice-bronze",
+   "name": "A Bronze Age",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "356": {
+   "key": "achievement-champion-comeback",
+   "name": "Comeback Kid",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "357": {
+   "key": "achievement-champion-playoffs-5",
+   "name": "Playoff Appearances - 5",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "358": {
+   "key": "achievement-champion-playoffs-10",
+   "name": "Playoff Appearances - 10",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "359": {
+   "key": "achievement-champion-playoffs-20",
+   "name": "Playoff Appearances - 20",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "360": {
+   "key": "achievement-champion-not",
+   "name": "The Worst",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "361": {
+   "key": "achievement-champion-twice-not",
+   "name": "Still the Worst",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "362": {
+   "key": "achievement-champion-thrice-not",
+   "name": "Always the Worst",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "363": {
+   "key": "achievement-champion-triple-crown-not",
+   "name": "Trash Trifecta",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "364": {
+   "key": "achievement-champion-grand-slam-not",
+   "name": "Flawless Garbage",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "365": {
+   "key": "achievement-champion-perfect-not",
+   "name": "Imperfection",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "366": {
+   "key": "achievement-champion-imperfect",
+   "name": "Ultimate Fumble",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "367": {
+   "key": "achievement-champion-first-to-worst",
+   "name": "Icarus Award",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "368": {
+   "key": "achievement-champion-easy",
+   "name": "Cupcake Champion",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "369": {
+   "key": "achievement-champion-luck",
+   "name": "Fortune Favored",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "370": {
+   "key": "achievement-champion-worst-draft-manager",
+   "name": "Trash to Treasure",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "371": {
+   "key": "achievement-champion-worst-transaction-manager",
+   "name": "Salvaged from Sabotage",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "372": {
+   "key": "achievement-champion-worst-coach",
+   "name": "Accidental King",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "373": {
+   "key": "achievement-champion-choke",
+   "name": "Slipped Away",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "374": {
+   "key": "achievement-champion-playoffs-drought-5",
+   "name": "Playoff Drought - 5",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "375": {
+   "key": "achievement-champion-playoffs-drought-10",
+   "name": "Playoff Drought - 10",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "376": {
+   "key": "achievement-champion-playoffs-drought-20",
+   "name": "Playoff Drought - 20",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "377": {
+   "key": "achievement-champion-drought-5",
+   "name": "Champion Drought - 5",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "378": {
+   "key": "achievement-champion-drought-10",
+   "name": "Champion Drought - 10",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "379": {
+   "key": "achievement-champion-drought-20",
+   "name": "Champion Drought - 20",
+   "label": "",
+   "display_type": "champion",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "380": {
+   "key": "achievement-season-score-bronze",
+   "name": "Bronze Season",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "381": {
+   "key": "achievement-season-score-silver",
+   "name": "Silver Season",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "382": {
+   "key": "achievement-season-score-gold",
+   "name": "Gold Season",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "383": {
+   "key": "achievement-season-score-diamond",
+   "name": "Diamond Season",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "384": {
+   "key": "achievement-season-undefeated",
+   "name": "Flawless",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "385": {
+   "key": "achievement-season-hardest-schedule",
+   "name": "The Gauntlet",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "386": {
+   "key": "achievement-season-luck-top",
+   "name": "Lady Luck",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "387": {
+   "key": "achievement-season-high-scores-5",
+   "name": "Season High-Scores - 5",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "388": {
+   "key": "achievement-season-high-scores-10",
+   "name": "Season High-Scores - 10",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "389": {
+   "key": "achievement-season-top-half-many",
+   "name": "Season Top-Half Scoring - 75%",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "390": {
+   "key": "achievement-season-top-half-all",
+   "name": "Season Top-Half Scoring - 100%",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "391": {
+   "key": "achievement-season-even-points",
+   "name": "Even Steven",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "392": {
+   "key": "achievement-season-points-share",
+   "name": "One-Man Show",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "393": {
+   "key": "achievement-season-score-iron",
+   "name": "Iron Season",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "394": {
+   "key": "achievement-season-score-wood",
+   "name": "Wood Season",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "395": {
+   "key": "achievement-season-score-clay",
+   "name": "Clay Season",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "396": {
+   "key": "achievement-season-winless",
+   "name": "Goose Egg",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "397": {
+   "key": "achievement-season-easiest-schedule",
+   "name": "The Cupcake",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "398": {
+   "key": "achievement-season-luck-worst",
+   "name": "Cursed",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "399": {
+   "key": "achievement-season-worst-scores-5",
+   "name": "Season Worst-Scores - 5",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "400": {
+   "key": "achievement-season-worst-scores-10",
+   "name": "Season Worst-Scores - 10",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "401": {
+   "key": "achievement-season-bottom-half-many",
+   "name": "Season Bottom-Half Scoring - 75%",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "402": {
+   "key": "achievement-season-bottom-half-all",
+   "name": "Season Bottom-Half Scoring - 100%",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "403": {
+   "key": "achievement-season-even-all-play",
+   "name": "Average Joe",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "404": {
+   "key": "achievement-season-points-share-lowest",
+   "name": "No-Show",
+   "label": "",
+   "display_type": "season",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "405": {
+   "key": "achievement-veteran-presence",
+   "name": "Veteran Presence",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "406": {
+   "key": "achievement-old-timer",
+   "name": "Old Timer",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "407": {
+   "key": "achievement-greybeard",
+   "name": "Ancient Wisdom",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "408": {
+   "key": "achievement-wins-25",
+   "name": "Total Wins - 25",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "409": {
+   "key": "achievement-wins-50",
+   "name": "Total Wins - 50",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "410": {
+   "key": "achievement-wins-100",
+   "name": "Total Wins - 100",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "411": {
+   "key": "achievement-wins-250",
+   "name": "Total Wins - 250",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "412": {
+   "key": "achievement-all-play-wins-250",
+   "name": "All-Play Wins - 250",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "413": {
+   "key": "achievement-all-play-wins-500",
+   "name": "All-Play Wins - 500",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "414": {
+   "key": "achievement-all-play-wins-1000",
+   "name": "All-Play Wins - 1000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "415": {
+   "key": "achievement-all-play-wins-2500",
+   "name": "All-Play Wins - 2500",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "416": {
+   "key": "achievement-points-10000",
+   "name": "Total Points - 10000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "417": {
+   "key": "achievement-points-25000",
+   "name": "Total Points - 25000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "418": {
+   "key": "achievement-points-50000",
+   "name": "Total Points - 50000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "419": {
+   "key": "achievement-losses-25",
+   "name": "Total Losses - 25",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "420": {
+   "key": "achievement-losses-50",
+   "name": "Total Losses - 50",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "421": {
+   "key": "achievement-losses-100",
+   "name": "Total Losses - 100",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "422": {
+   "key": "achievement-losses-250",
+   "name": "Total Losses - 250",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "423": {
+   "key": "achievement-all-play-losses-250",
+   "name": "All-Play Losses - 250",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "424": {
+   "key": "achievement-all-play-losses-500",
+   "name": "All-Play Losses - 500",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "425": {
+   "key": "achievement-all-play-losses-1000",
+   "name": "All-Play Losses - 1000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "426": {
+   "key": "achievement-all-play-losses-2500",
+   "name": "All-Play Losses - 2500",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "427": {
+   "key": "achievement-opponent-points-10000",
+   "name": "Total Opponent Points - 10000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "428": {
+   "key": "achievement-opponent-points-25000",
+   "name": "Total Opponent Points - 25000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "429": {
+   "key": "achievement-opponent-points-50000",
+   "name": "Total Opponent Points - 50000",
+   "label": "",
+   "display_type": "league",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "430": {
+   "key": "achievement-matchup-highest",
+   "name": "Peak Performance",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "431": {
+   "key": "achievement-matchup-shootout",
+   "name": "The Shootout",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "432": {
+   "key": "achievement-matchup-blowout",
+   "name": "Massacre",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "433": {
+   "key": "achievement-matchup-nailbiter",
+   "name": "Thread the Needle",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "434": {
+   "key": "achievement-matchup-points-share",
+   "name": "Firing Squad",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "435": {
+   "key": "achievement-matchup-win-small",
+   "name": "A Small Victory",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "436": {
+   "key": "achievement-matchup-win-smaller",
+   "name": "A Micro Victory",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "437": {
+   "key": "achievement-matchup-win-smallest",
+   "name": "A Nano Victory",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "438": {
+   "key": "achievement-matchup-double-up",
+   "name": "Double Up",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "439": {
+   "key": "achievement-matchup-high-over-second",
+   "name": "Perfectly Peaked",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "440": {
+   "key": "achievement-matchup-sweep",
+   "name": "Bully",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "441": {
+   "key": "achievement-matchup-lowest",
+   "name": "The Dud Bowl",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "442": {
+   "key": "achievement-matchup-blowout-loss",
+   "name": "The Bye Week",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "443": {
+   "key": "achievement-matchup-nailbiter-loss",
+   "name": "Heartbreaker",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "444": {
+   "key": "achievement-matchup-snoozer",
+   "name": "The Snoozer",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "445": {
+   "key": "achievement-matchup-points-share-lowest",
+   "name": "The Undercard",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "446": {
+   "key": "achievement-matchup-loss-small",
+   "name": "A Small Defeat",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "447": {
+   "key": "achievement-matchup-loss-smaller",
+   "name": "A Micro Defeat",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "448": {
+   "key": "achievement-matchup-loss-smallest",
+   "name": "A Nano Defeat",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "449": {
+   "key": "achievement-matchup-doubled-up",
+   "name": "Doubled Up",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "450": {
+   "key": "achievement-matchup-last-under-second",
+   "name": "True Lowlight",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "451": {
+   "key": "achievement-matchup-second-under-high",
+   "name": "Spoiled Goods",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "452": {
+   "key": "achievement-matchup-sweep-loss",
+   "name": "Bullied",
+   "label": "",
+   "display_type": "matchup",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "453": {
+   "key": "achievement-draft-top",
+   "name": "The Mastermind",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "454": {
+   "key": "achievement-transaction-manager-top",
+   "name": "The Architect",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "455": {
+   "key": "achievement-transaction-waiver-top",
+   "name": "The Scavenger",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "456": {
+   "key": "achievement-transaction-trade-manager-top",
+   "name": "The Negotiator",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "457": {
+   "key": "achievement-draft-pick-top",
+   "name": "Top Draft Pick",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "458": {
+   "key": "achievement-draft-qb-top",
+   "name": "Top QB Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "459": {
+   "key": "achievement-draft-rb-top",
+   "name": "Top RB Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "460": {
+   "key": "achievement-draft-wr-top",
+   "name": "Top WR Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "461": {
+   "key": "achievement-draft-te-top",
+   "name": "Top TE Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "462": {
+   "key": "achievement-draft-k-top",
+   "name": "Top K Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "463": {
+   "key": "achievement-draft-def-top",
+   "name": "Top DEF Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "467": {
+   "key": "achievement-transaction-trade-top",
+   "name": "Top Trade",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "468": {
+   "key": "achievement-transaction-season-50",
+   "name": "Season Transactions - 50",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "469": {
+   "key": "achievement-transaction-season-100",
+   "name": "Season Transactions - 100",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "470": {
+   "key": "achievement-transaction-season-250",
+   "name": "Season Transactions - 250",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "471": {
+   "key": "achievement-transaction-season-500",
+   "name": "Total Season Transactions - 500",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "472": {
+   "key": "achievement-transaction-all-time-500",
+   "name": "All-Time Transactions - 500",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "473": {
+   "key": "achievement-transaction-all-time-1000",
+   "name": "All-Time Transactions - 1000",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "474": {
+   "key": "achievement-transaction-all-time-5000",
+   "name": "All-Time Transactions - 5000",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "475": {
+   "key": "achievement-transaction-trades-season-5",
+   "name": "Season Trades - 5",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "476": {
+   "key": "achievement-transaction-trades-season-10",
+   "name": "Season Trades - 10",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "477": {
+   "key": "achievement-transaction-trades-season-25",
+   "name": "Total Season Trades - 25",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "478": {
+   "key": "achievement-transaction-trades-all-time-10",
+   "name": "Total Trades - 10",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "479": {
+   "key": "achievement-transaction-trades-all-time-25",
+   "name": "Total Trades - 25",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "480": {
+   "key": "achievement-transaction-trades-all-time-50",
+   "name": "Total Trades - 50",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "481": {
+   "key": "achievement-transaction-trades-all-time-100",
+   "name": "Total Trades - 100",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "482": {
+   "key": "achievement-transaction-trades-all-time-250",
+   "name": "Total Trades - 250",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "483": {
+   "key": "achievement-draft-worst",
+   "name": "The Madman",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "484": {
+   "key": "achievement-transaction-manager-worst",
+   "name": "The Saboteur",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "485": {
+   "key": "achievement-transaction-waiver-worst",
+   "name": "The Garbageman",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "486": {
+   "key": "achievement-transaction-trade-manager-worst",
+   "name": "The Pawn",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "487": {
+   "key": "achievement-draft-pick-worst",
+   "name": "Worst Draft Pick",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "488": {
+   "key": "achievement-draft-qb-worst",
+   "name": "Worst QB Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "489": {
+   "key": "achievement-draft-rb-worst",
+   "name": "Worst RB Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "490": {
+   "key": "achievement-draft-wr-worst",
+   "name": "Worst WR Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "491": {
+   "key": "achievement-draft-te-worst",
+   "name": "Worst TE Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "492": {
+   "key": "achievement-draft-k-worst",
+   "name": "Worst K Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "493": {
+   "key": "achievement-draft-def-worst",
+   "name": "Worst DEF Draft",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "497": {
+   "key": "achievement-transaction-trade-worst",
+   "name": "Worst Trade",
+   "label": "",
+   "display_type": "draft-transaction",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "498": {
+   "key": "achievement-roster-coach-score-top",
+   "name": "The General",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "499": {
+   "key": "achievement-roster-coach-score-good",
+   "name": "The Tactician",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "500": {
+   "key": "achievement-roster-coach-score-perfect",
+   "name": "The Algorithm",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "501": {
+   "key": "achievement-roster-qb-top",
+   "name": "Top QB Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "502": {
+   "key": "achievement-roster-rb-top",
+   "name": "Top RB Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "503": {
+   "key": "achievement-roster-wr-top",
+   "name": "Top WR Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "504": {
+   "key": "achievement-roster-te-top",
+   "name": "Top TE Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "505": {
+   "key": "achievement-roster-k-top",
+   "name": "Top K Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "506": {
+   "key": "achievement-roster-def-top",
+   "name": "Top DEF Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 1
+  },
+  "510": {
+   "key": "achievement-roster-coach-score-worst",
+   "name": "The Mascot",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "511": {
+   "key": "achievement-roster-coach-score-poor",
+   "name": "The Liability",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "512": {
+   "key": "achievement-roster-qb-worst",
+   "name": "Worst QB Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "513": {
+   "key": "achievement-roster-rb-worst",
+   "name": "Worst RB Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "514": {
+   "key": "achievement-roster-wr-worst",
+   "name": "Worst WR Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "515": {
+   "key": "achievement-roster-te-worst",
+   "name": "Worst TE Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "516": {
+   "key": "achievement-roster-k-worst",
+   "name": "Worst K Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  },
+  "517": {
+   "key": "achievement-roster-def-worst",
+   "name": "Worst DEF Roster",
+   "label": "",
+   "display_type": "roster",
+   "category": "achievement",
+   "type": "cumulative",
+   "use_season_data": 0,
+   "is_positive": 0
+  }
+ },
+ "record": null,
+ "recentRecords": [],
+ "recentOtherRecords": [],
+ "topHolders": [
+  {
+   "league_member_id": 54762,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 54773,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 54774,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 54776,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108581,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108582,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108584,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108587,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108588,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108589,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108590,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 108592,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259920,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259921,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259922,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259923,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259924,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259925,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259926,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259927,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  },
+  {
+   "league_member_id": 259928,
+   "positive_records": 0,
+   "positive_ranked_records": 0,
+   "negative_records": 0,
+   "negative_ranked_records": 0,
+   "total_records": 0,
+   "total_ranked_records": 0
+  }
+ ],
+ "watchers": {
+  "milestone-league-wins": {
+   "milestone": {
+    "id": 2448,
+    "league_id": null,
+    "key": "milestone-league-wins",
+    "name": "Total Wins Milestone",
+    "sport": null,
+    "label": "Wins",
+    "description": "This record recognizes a team that reaches a significant benchmark in all-time league victories. This achievement highlights long-term success, consistency, and dominance over multiple seasons.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 1,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701544,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54773,
+     "key": "milestone-league-wins",
+     "milestone": "10",
+     "week": "13",
+     "duration": 2
+    },
+    {
+     "id": 14701549,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108588,
+     "key": "milestone-league-wins",
+     "milestone": "10",
+     "week": "13",
+     "duration": 4
+    },
+    {
+     "id": 14701554,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108587,
+     "key": "milestone-league-wins",
+     "milestone": "10",
+     "week": "13",
+     "duration": 4
+    },
+    {
+     "id": 14701561,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108590,
+     "key": "milestone-league-wins",
+     "milestone": "10",
+     "week": "13",
+     "duration": 2
+    },
+    {
+     "id": 14701567,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108592,
+     "key": "milestone-league-wins",
+     "milestone": "10",
+     "week": "13",
+     "duration": 1
+    },
+    {
+     "id": 14701570,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54762,
+     "key": "milestone-league-wins",
+     "milestone": "10",
+     "week": "13",
+     "duration": 4
+    },
+    {
+     "id": 14701581,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54774,
+     "key": "milestone-league-wins",
+     "milestone": "10",
+     "week": "13",
+     "duration": 3
+    }
+   ]
+  },
+  "milestone-league-losses": {
+   "milestone": {
+    "id": 2449,
+    "league_id": null,
+    "key": "milestone-league-losses",
+    "name": "Total Losses Milestone",
+    "sport": null,
+    "label": "Losses",
+    "description": "This record marks a significant threshold in total career losses within the league. It reflects the team's longevity and perseverance, highlighting their continued participation and resilience despite the challenges faced over multiple seasons.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 0,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701545,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54773,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    },
+    {
+     "id": 14701550,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108588,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 3
+    },
+    {
+     "id": 14701555,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108587,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 3
+    },
+    {
+     "id": 14701562,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108590,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    },
+    {
+     "id": 14701571,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54762,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 3
+    },
+    {
+     "id": 14701577,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108581,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 1
+    },
+    {
+     "id": 14701582,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54774,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 4
+    },
+    {
+     "id": 14701584,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108584,
+     "key": "milestone-league-losses",
+     "milestone": "10",
+     "week": "13",
+     "duration": 1
+    }
+   ]
+  },
+  "milestone-league-all-play-wins": {
+   "milestone": {
+    "id": 2450,
+    "league_id": null,
+    "key": "milestone-league-all-play-wins",
+    "name": "Total All-Play Wins Milestone",
+    "sport": null,
+    "label": "All-Play Wins",
+    "description": "This record marks a significant benchmark in total all-play wins, reflecting a team's consistent ability to outperform the competition across multiple seasons. It highlights sustained success, demonstrating strong week-to-week performances against the entire league.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 1,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701546,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54773,
+     "key": "milestone-league-all-play-wins",
+     "milestone": "100",
+     "week": "13",
+     "duration": 19
+    },
+    {
+     "id": 14701583,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54774,
+     "key": "milestone-league-all-play-wins",
+     "milestone": "100",
+     "week": "13",
+     "duration": 13
+    }
+   ]
+  },
+  "milestone-league-top-half-scores": {
+   "milestone": {
+    "id": 2456,
+    "league_id": null,
+    "key": "milestone-league-top-half-scores",
+    "name": "Top Half Score Milestone",
+    "sport": null,
+    "label": "Top Half Scores",
+    "description": "This milestone recognizes a team for accumulating a significant number of weeks in the top half of league scoring, reflecting ongoing competitive play.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 1,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701547,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54773,
+     "key": "milestone-league-top-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 4
+    },
+    {
+     "id": 14701552,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108588,
+     "key": "milestone-league-top-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    },
+    {
+     "id": 14701558,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108587,
+     "key": "milestone-league-top-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 4
+    },
+    {
+     "id": 14701564,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108590,
+     "key": "milestone-league-top-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    },
+    {
+     "id": 14701573,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54762,
+     "key": "milestone-league-top-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 4
+    },
+    {
+     "id": 14701579,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108581,
+     "key": "milestone-league-top-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    }
+   ]
+  },
+  "milestone-league-bottom-half-scores": {
+   "milestone": {
+    "id": 2459,
+    "league_id": null,
+    "key": "milestone-league-bottom-half-scores",
+    "name": "Bottom Half Score Milestone",
+    "sport": null,
+    "label": "Bottom Half Scores",
+    "description": "This milestone recognizes a team for accumulating a significant number of weeks in the bottom half of league scoring, reflecting a lack of ongoing competitive play.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 0,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701548,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54773,
+     "key": "milestone-league-bottom-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 3
+    },
+    {
+     "id": 14701553,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108588,
+     "key": "milestone-league-bottom-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 2
+    },
+    {
+     "id": 14701560,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108587,
+     "key": "milestone-league-bottom-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 3
+    },
+    {
+     "id": 14701566,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108590,
+     "key": "milestone-league-bottom-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 2
+    },
+    {
+     "id": 14701576,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54762,
+     "key": "milestone-league-bottom-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 3
+    },
+    {
+     "id": 14701580,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108581,
+     "key": "milestone-league-bottom-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 2
+    },
+    {
+     "id": 14701586,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108584,
+     "key": "milestone-league-bottom-half-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 1
+    }
+   ]
+  },
+  "milestone-league-all-play-losses": {
+   "milestone": {
+    "id": 2451,
+    "league_id": null,
+    "key": "milestone-league-all-play-losses",
+    "name": "Total All-Play Losses Milestone",
+    "sport": null,
+    "label": "All-Play Losses",
+    "description": "This record marks a significant threshold in total all-play losses, reflecting a team's consistent ability to underperform the competition across multiple seasons. It highlights sustained poor performance, demonstrating weak week-to-week performances against the entire league.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 1,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701551,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108588,
+     "key": "milestone-league-all-play-losses",
+     "milestone": "100",
+     "week": "13",
+     "duration": 24
+    },
+    {
+     "id": 14701556,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108587,
+     "key": "milestone-league-all-play-losses",
+     "milestone": "100",
+     "week": "13",
+     "duration": 24
+    },
+    {
+     "id": 14701563,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108590,
+     "key": "milestone-league-all-play-losses",
+     "milestone": "100",
+     "week": "13",
+     "duration": 10
+    },
+    {
+     "id": 14701572,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54762,
+     "key": "milestone-league-all-play-losses",
+     "milestone": "100",
+     "week": "13",
+     "duration": 19
+    },
+    {
+     "id": 14701578,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108581,
+     "key": "milestone-league-all-play-losses",
+     "milestone": "100",
+     "week": "13",
+     "duration": 23
+    },
+    {
+     "id": 14701585,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108584,
+     "key": "milestone-league-all-play-losses",
+     "milestone": "100",
+     "week": "13",
+     "duration": 11
+    }
+   ]
+  },
+  "milestone-league-high-scores": {
+   "milestone": {
+    "id": 2454,
+    "league_id": null,
+    "key": "milestone-league-high-scores",
+    "name": "High Scores Milestone",
+    "sport": null,
+    "label": "High Scores",
+    "description": "This record marks a significant threshold in the total number of weeks a team has posted the highest score in the league. It reflects their explosive performances, dominance in matchups, and ability to outscore the competition on multiple occasions.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 1,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701557,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108587,
+     "key": "milestone-league-high-scores",
+     "milestone": "5",
+     "week": "13",
+     "duration": 3
+    },
+    {
+     "id": 14701568,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108592,
+     "key": "milestone-league-high-scores",
+     "milestone": "5",
+     "week": "13",
+     "duration": 1
+    }
+   ]
+  },
+  "milestone-league-bottom-scores": {
+   "milestone": {
+    "id": 2458,
+    "league_id": null,
+    "key": "milestone-league-bottom-scores",
+    "name": "Bottom Scores Milestone",
+    "sport": null,
+    "label": "Bottom Scores",
+    "description": "This milestone recognizes a team reaching a notable total of weeks with a bottom score, highlighting repeated bursts of low-scoring misery.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 0,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701559,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108587,
+     "key": "milestone-league-bottom-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    },
+    {
+     "id": 14701575,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54762,
+     "key": "milestone-league-bottom-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    }
+   ]
+  },
+  "milestone-league-worst-scores": {
+   "milestone": {
+    "id": 2457,
+    "league_id": null,
+    "key": "milestone-league-worst-scores",
+    "name": "Worst Scores Milestone",
+    "sport": null,
+    "label": "Worst Scores",
+    "description": "This record marks a significant threshold in the total number of weeks a team has posted the lowest score in the league. It reflects their disastrous performances, weakness in matchups, and in-ability to outscore the competition on multiple occasions.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 0,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701565,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108590,
+     "key": "milestone-league-worst-scores",
+     "milestone": "5",
+     "week": "13",
+     "duration": 2
+    },
+    {
+     "id": 14701574,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 54762,
+     "key": "milestone-league-worst-scores",
+     "milestone": "5",
+     "week": "13",
+     "duration": 3
+    }
+   ]
+  },
+  "milestone-league-top-scores": {
+   "milestone": {
+    "id": 2455,
+    "league_id": null,
+    "key": "milestone-league-top-scores",
+    "name": "Top Scores Milestone",
+    "sport": null,
+    "label": "Top Scores",
+    "description": "This milestone celebrates a team reaching a notable total of weeks with a top score, highlighting repeated bursts of high-scoring excellence.",
+    "type": "cumulative",
+    "image": null,
+    "category": "milestone",
+    "display_order": 0,
+    "display_type": null,
+    "display_format": null,
+    "is_positive": 1,
+    "use_season_data": 0,
+    "use_players": 0,
+    "use_completed_seasons": 0,
+    "created_at": null,
+    "updated_at": null
+   },
+   "items": [
+    {
+     "id": 14701569,
+     "league_id": 3854,
+     "season_id": 16824,
+     "league_member_id": 108592,
+     "key": "milestone-league-top-scores",
+     "milestone": "10",
+     "week": "13",
+     "duration": 5
+    }
+   ]
+  }
+ },
+ "jobStatus": {
+  "id": 19093,
+  "league_id": 3854,
+  "season_id": null,
+  "key": "league-records",
+  "initiated_by": 7278,
+  "queued_at": "2026-08-11T08:38:12.000000Z",
+  "started_at": "2026-08-11T10:17:03.000000Z",
+  "completed_at": null,
+  "failed_at": "2026-08-11T11:18:01.000000Z",
+  "created_at": null,
+  "updated_at": "2026-08-11T11:18:01.000000Z",
+  "can_dispatch": true,
+  "can_dispatch_minutes": 0,
+  "status": "failed"
+ }
+}

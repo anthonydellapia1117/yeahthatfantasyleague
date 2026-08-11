@@ -1,0 +1,668 @@
+{
+ "YeahThatFantasyLeague!": {
+  "rows": [
+   {
+    "sleeper": "juliano89",
+    "real": "John Juliano",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 3.5,
+    "first_TE_rd": 6,
+    "first_K_rd": 11.5,
+    "first_DEF_rd": 13.5,
+    "reach_2025": 4.9,
+    "rd1_4": {
+     "RB": 3,
+     "WR": 3,
+     "QB": 2
+    }
+   },
+   {
+    "sleeper": "Rocksolid1018",
+    "real": "Mike Long",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 4.5,
+    "first_TE_rd": 7.5,
+    "first_K_rd": 11,
+    "first_DEF_rd": 11,
+    "reach_2025": 20.0,
+    "rd1_4": {
+     "WR": 4,
+     "RB": 3,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "FrankieSponge",
+    "real": "Julian Podagrasi",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 5.5,
+    "first_TE_rd": 5.5,
+    "first_K_rd": 12.5,
+    "first_DEF_rd": 11,
+    "reach_2025": -5.5,
+    "rd1_4": {
+     "WR": 3,
+     "RB": 3,
+     "TE": 1,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "mpung",
+    "real": "Michael Pungitore",
+    "seasons": [
+     "2024"
+    ],
+    "first_QB_rd": 12,
+    "first_TE_rd": 9,
+    "first_K_rd": 14,
+    "first_DEF_rd": 10,
+    "reach_2025": null,
+    "rd1_4": {
+     "RB": 2,
+     "WR": 2
+    }
+   },
+   {
+    "sleeper": "RobFlacc",
+    "real": "Rob Flacco",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 7.5,
+    "first_TE_rd": 3,
+    "first_K_rd": 13,
+    "first_DEF_rd": 13,
+    "reach_2025": -1.9,
+    "rd1_4": {
+     "WR": 3,
+     "TE": 2,
+     "RB": 2,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "ENolan90",
+    "real": "Nolan Lawrence",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 6,
+    "first_TE_rd": 4,
+    "first_K_rd": 11,
+    "first_DEF_rd": 11.5,
+    "reach_2025": 6.5,
+    "rd1_4": {
+     "WR": 4,
+     "RB": 3,
+     "TE": 1
+    }
+   },
+   {
+    "sleeper": "antdell",
+    "real": "Anthony DellaPia",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 7.5,
+    "first_TE_rd": 9.5,
+    "first_K_rd": 14,
+    "first_DEF_rd": 13,
+    "reach_2025": 4.0,
+    "rd1_4": {
+     "RB": 3,
+     "WR": 5
+    }
+   },
+   {
+    "sleeper": "rondro9",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 9.5,
+    "first_TE_rd": 6,
+    "first_K_rd": 12,
+    "first_DEF_rd": 12.5,
+    "reach_2025": 13.6,
+    "rd1_4": {
+     "RB": 5,
+     "WR": 3
+    }
+   },
+   {
+    "sleeper": "lefty3",
+    "real": "Rich Nolfi",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 7,
+    "first_TE_rd": 9.5,
+    "first_K_rd": 13,
+    "first_DEF_rd": 12.5,
+    "reach_2025": 0.4,
+    "rd1_4": {
+     "WR": 4,
+     "RB": 3,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "pbaldino",
+    "real": "Phil Baldino",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 3.5,
+    "first_TE_rd": 6,
+    "first_K_rd": 14,
+    "first_DEF_rd": 12,
+    "reach_2025": -2.7,
+    "rd1_4": {
+     "WR": 3,
+     "RB": 3,
+     "QB": 2
+    }
+   },
+   {
+    "sleeper": "dcambs",
+    "real": "Dante Cambria",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 10,
+    "first_TE_rd": 5,
+    "first_K_rd": 12.5,
+    "first_DEF_rd": 11.5,
+    "reach_2025": -3.7,
+    "rd1_4": {
+     "RB": 6,
+     "WR": 1,
+     "TE": 1
+    }
+   },
+   {
+    "sleeper": "chrisanddom",
+    "real": "Chris Juliano",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 5.5,
+    "first_TE_rd": 5,
+    "first_K_rd": 11,
+    "first_DEF_rd": 11,
+    "reach_2025": 0.8,
+    "rd1_4": {
+     "WR": 3,
+     "TE": 1,
+     "RB": 3,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "ForthepeopleEsq",
+    "real": "",
+    "seasons": [
+     "2025"
+    ],
+    "first_QB_rd": 3,
+    "first_TE_rd": 6,
+    "first_K_rd": 14,
+    "first_DEF_rd": 13,
+    "reach_2025": 4.2,
+    "rd1_4": {
+     "WR": 2,
+     "QB": 1,
+     "RB": 1
+    }
+   }
+  ]
+ },
+ "Facilities Fantasy Football": {
+  "rows": [
+   {
+    "sleeper": "antdell",
+    "real": "Anthony DellaPia",
+    "seasons": [
+     "2022",
+     "2023"
+    ],
+    "first_QB_rd": 6.5,
+    "first_TE_rd": 7.5,
+    "first_K_rd": 12.5,
+    "first_DEF_rd": 11,
+    "reach_2025": null,
+    "rd1_4": {
+     "RB": 3,
+     "WR": 5
+    }
+   },
+   {
+    "sleeper": "LeonSandcastle0917",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 5,
+    "first_TE_rd": 5.5,
+    "first_K_rd": 11.8,
+    "first_DEF_rd": 11.5,
+    "reach_2025": -3.7,
+    "rd1_4": {
+     "RB": 8,
+     "WR": 5,
+     "TE": 1,
+     "QB": 2
+    }
+   },
+   {
+    "sleeper": "Renaldo",
+    "real": "",
+    "seasons": [
+     "2022"
+    ],
+    "first_QB_rd": 6,
+    "first_TE_rd": 9,
+    "first_K_rd": 13,
+    "first_DEF_rd": 12,
+    "reach_2025": null,
+    "rd1_4": {
+     "RB": 2,
+     "WR": 2
+    }
+   },
+   {
+    "sleeper": "rtaggart26",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 5.5,
+    "first_TE_rd": 9.3,
+    "first_K_rd": 13.8,
+    "first_DEF_rd": 13.2,
+    "reach_2025": -3.7,
+    "rd1_4": {
+     "RB": 7,
+     "WR": 8,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "IIIIllIIllI",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 8.8,
+    "first_TE_rd": 3.5,
+    "first_K_rd": 12.8,
+    "first_DEF_rd": 13,
+    "reach_2025": 6.6,
+    "rd1_4": {
+     "WR": 8,
+     "RB": 5,
+     "TE": 3
+    }
+   },
+   {
+    "sleeper": "CapeMayDrive",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "first_QB_rd": 3,
+    "first_TE_rd": 3.7,
+    "first_K_rd": 12,
+    "first_DEF_rd": 14,
+    "reach_2025": null,
+    "rd1_4": {
+     "WR": 5,
+     "TE": 2,
+     "QB": 3,
+     "RB": 2
+    }
+   },
+   {
+    "sleeper": "stevienelson",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 5.2,
+    "first_TE_rd": 4.8,
+    "first_K_rd": 13,
+    "first_DEF_rd": 13.2,
+    "reach_2025": 9.7,
+    "rd1_4": {
+     "WR": 7,
+     "RB": 4,
+     "TE": 3,
+     "QB": 2
+    }
+   },
+   {
+    "sleeper": "Tropea920",
+    "real": "",
+    "seasons": [
+     "2022"
+    ],
+    "first_QB_rd": 8,
+    "first_TE_rd": 2,
+    "first_K_rd": 13,
+    "first_DEF_rd": 11,
+    "reach_2025": null,
+    "rd1_4": {
+     "RB": 1,
+     "TE": 1,
+     "WR": 2
+    }
+   },
+   {
+    "sleeper": "ehoing",
+    "real": "",
+    "seasons": [
+     "2022"
+    ],
+    "first_QB_rd": 8,
+    "first_TE_rd": 3,
+    "first_K_rd": 13,
+    "first_DEF_rd": 12,
+    "reach_2025": null,
+    "rd1_4": {
+     "RB": 1,
+     "WR": 2,
+     "TE": 1
+    }
+   },
+   {
+    "sleeper": "4thN26",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023"
+    ],
+    "first_QB_rd": 7,
+    "first_TE_rd": 13,
+    "first_K_rd": null,
+    "first_DEF_rd": 10,
+    "reach_2025": null,
+    "rd1_4": {
+     "WR": 2,
+     "RB": 5,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "cmhamlett",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 4.5,
+    "first_TE_rd": 6.2,
+    "first_K_rd": 11,
+    "first_DEF_rd": 12.3,
+    "reach_2025": 5.8,
+    "rd1_4": {
+     "RB": 8,
+     "WR": 6,
+     "QB": 2
+    }
+   },
+   {
+    "sleeper": "steelcheeks",
+    "real": "",
+    "seasons": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 6.8,
+    "first_TE_rd": 9.5,
+    "first_K_rd": 12.7,
+    "first_DEF_rd": 11.7,
+    "reach_2025": 17.3,
+    "rd1_4": {
+     "RB": 5,
+     "WR": 10,
+     "TE": 1
+    }
+   },
+   {
+    "sleeper": "MisterrrH",
+    "real": "",
+    "seasons": [
+     "2023"
+    ],
+    "first_QB_rd": 2,
+    "first_TE_rd": 4,
+    "first_K_rd": 9,
+    "first_DEF_rd": 8,
+    "reach_2025": null,
+    "rd1_4": {
+     "RB": 1,
+     "QB": 1,
+     "WR": 1,
+     "TE": 1
+    }
+   },
+   {
+    "sleeper": "mperri12",
+    "real": "",
+    "seasons": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 4,
+    "first_TE_rd": 6,
+    "first_K_rd": 13.3,
+    "first_DEF_rd": 12,
+    "reach_2025": 11.7,
+    "rd1_4": {
+     "RB": 5,
+     "WR": 4,
+     "TE": 1,
+     "QB": 2
+    }
+   },
+   {
+    "sleeper": "Tw127",
+    "real": "",
+    "seasons": [
+     "2023"
+    ],
+    "first_QB_rd": 7,
+    "first_TE_rd": 5,
+    "first_K_rd": 14,
+    "first_DEF_rd": 13,
+    "reach_2025": null,
+    "rd1_4": {
+     "WR": 2,
+     "RB": 2
+    }
+   },
+   {
+    "sleeper": "TirEoghainExtreme",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 8.5,
+    "first_TE_rd": 3.5,
+    "first_K_rd": 12,
+    "first_DEF_rd": 11,
+    "reach_2025": 6.4,
+    "rd1_4": {
+     "RB": 3,
+     "WR": 3,
+     "TE": 2
+    }
+   },
+   {
+    "sleeper": "ELGSES",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 11.5,
+    "first_TE_rd": 7,
+    "first_K_rd": null,
+    "first_DEF_rd": null,
+    "reach_2025": -0.8,
+    "rd1_4": {
+     "WR": 5,
+     "RB": 2,
+     "TE": 1
+    }
+   },
+   {
+    "sleeper": "TheMottman",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 1.5,
+    "first_TE_rd": 4.5,
+    "first_K_rd": 5,
+    "first_DEF_rd": 5,
+    "reach_2025": 13.6,
+    "rd1_4": {
+     "WR": 2,
+     "QB": 2,
+     "RB": 1,
+     "TE": 1,
+     "DEF": 1,
+     "K": 1
+    }
+   },
+   {
+    "sleeper": "ernie706",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 8.5,
+    "first_TE_rd": 4.5,
+    "first_K_rd": 14,
+    "first_DEF_rd": 12.5,
+    "reach_2025": -5.2,
+    "rd1_4": {
+     "WR": 4,
+     "TE": 1,
+     "RB": 3
+    }
+   },
+   {
+    "sleeper": "zmohn",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 2,
+    "first_TE_rd": 6.5,
+    "first_K_rd": 11,
+    "first_DEF_rd": 10.5,
+    "reach_2025": -5.4,
+    "rd1_4": {
+     "WR": 4,
+     "QB": 2,
+     "RB": 2
+    }
+   },
+   {
+    "sleeper": "coburnnaf",
+    "real": "",
+    "seasons": [
+     "2024"
+    ],
+    "first_QB_rd": 5,
+    "first_TE_rd": 4,
+    "first_K_rd": 7,
+    "first_DEF_rd": 12,
+    "reach_2025": null,
+    "rd1_4": {
+     "RB": 1,
+     "WR": 2,
+     "TE": 1
+    }
+   },
+   {
+    "sleeper": "domflacco",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 6,
+    "first_TE_rd": 6,
+    "first_K_rd": 11.5,
+    "first_DEF_rd": 12,
+    "reach_2025": 5.8,
+    "rd1_4": {
+     "RB": 5,
+     "WR": 2,
+     "QB": 1
+    }
+   },
+   {
+    "sleeper": "Hismael",
+    "real": "",
+    "seasons": [
+     "2024",
+     "2025"
+    ],
+    "first_QB_rd": 6.5,
+    "first_TE_rd": 6.5,
+    "first_K_rd": 11.5,
+    "first_DEF_rd": 12.5,
+    "reach_2025": 4.5,
+    "rd1_4": {
+     "WR": 6,
+     "RB": 2
+    }
+   }
+  ]
+ }
+}

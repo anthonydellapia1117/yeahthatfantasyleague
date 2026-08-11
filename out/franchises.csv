@@ -1,0 +1,16 @@
+franchise,first_season,last_season,seasons,active_2026,sleeper_handle,titles,status,source,source_ref,confidence
+Antdell & Ernie,2013,2025,13,yes,antdell,0,active,derived,picks.csv x identity_map.csv,verified
+Cambrias,2013,2025,13,yes,dcambs,3,active,derived,picks.csv x identity_map.csv,verified
+Chris & Dom,2013,2025,13,yes,chrisanddom,2,active,derived,picks.csv x identity_map.csv,verified
+Frank & Julian,2013,2025,13,yes,FrankieSponge,0,active,derived,picks.csv x identity_map.csv,verified
+Nolan & Vinny,2013,2025,13,yes,ENolan90,0,active,derived,picks.csv x identity_map.csv,verified
+Pung & Tralie,2013,2025,13,yes,ForthepeopleEsq,0,active,derived,picks.csv x identity_map.csv,verified
+Richie,2013,2025,13,yes,lefty3,1,active,derived,picks.csv x identity_map.csv,verified
+Rob & GregBo,2013,2025,13,yes,RobFlacc,1,active,derived,picks.csv x identity_map.csv,verified
+Ronnie,2013,2025,13,yes,rondro9,2,active,derived,picks.csv x identity_map.csv,verified
+Phil Baldino,2017,2025,9,yes,pbaldino,3,active,derived,picks.csv x identity_map.csv,verified
+John Juliano,2021,2025,5,yes,juliano89,0,active,derived,picks.csv x identity_map.csv,verified
+Mike Long,2022,2025,4,yes,Rocksolid1018,0,active,derived,picks.csv x identity_map.csv,verified
+Team JoeBa,2013,2021,9,no,,0,departed,derived,picks.csv x identity_map.csv,verified
+LFTLR,2013,2020,8,no,,0,departed,derived,picks.csv x identity_map.csv,verified
+GaTTa,2013,2016,4,no,,1,departed,derived,picks.csv x identity_map.csv,verified

@@ -1,0 +1,209 @@
+{
+ "championship_games": [
+  {
+   "season": "2025",
+   "season_name": "2025",
+   "season_slug": "2025",
+   "winner_member_id": 54774,
+   "loser_member_id": 54762,
+   "winner_points": 164.92,
+   "loser_points": 152.48,
+   "margin": 12.44
+  },
+  {
+   "season": "2024",
+   "season_name": "2024",
+   "season_slug": "2024",
+   "winner_member_id": 108589,
+   "loser_member_id": 54774,
+   "winner_points": 173.88,
+   "loser_points": 146.36,
+   "margin": 27.52
+  },
+  {
+   "season": "2023",
+   "season_name": "2023",
+   "season_slug": "2023",
+   "winner_member_id": 108589,
+   "loser_member_id": 54773,
+   "winner_points": 159.1,
+   "loser_points": 108.08,
+   "margin": 51.02
+  },
+  {
+   "season": "2022",
+   "season_name": "2022",
+   "season_slug": "2022",
+   "winner_member_id": 54774,
+   "loser_member_id": 108581,
+   "winner_points": 133.08,
+   "loser_points": 96.46,
+   "margin": 36.62
+  },
+  {
+   "season": "2021",
+   "season_name": "2021",
+   "season_slug": "2021",
+   "winner_member_id": 108590,
+   "loser_member_id": 54773,
+   "winner_points": 132.5,
+   "loser_points": 113.12,
+   "margin": 19.38
+  },
+  {
+   "season": "2020",
+   "season_name": "2020",
+   "season_slug": "2020",
+   "winner_member_id": 54773,
+   "loser_member_id": 108587,
+   "winner_points": 149.02,
+   "loser_points": 128.02,
+   "margin": 21
+  },
+  {
+   "season": "2019",
+   "season_name": "2019",
+   "season_slug": "2019",
+   "winner_member_id": 54774,
+   "loser_member_id": 108581,
+   "winner_points": 156.72,
+   "loser_points": 139.7,
+   "margin": 17.02
+  },
+  {
+   "season": "2018",
+   "season_name": "2018",
+   "season_slug": "2018",
+   "winner_member_id": 108589,
+   "loser_member_id": 108588,
+   "winner_points": 140.26,
+   "loser_points": 138.08,
+   "margin": 2.18
+  },
+  {
+   "season": "2017",
+   "season_name": "2017",
+   "season_slug": "2017",
+   "winner_member_id": 108581,
+   "loser_member_id": 108592,
+   "winner_points": 139.22,
+   "loser_points": 125.08,
+   "margin": 14.14
+  },
+  {
+   "season": "2016",
+   "season_name": "2016",
+   "season_slug": "2016",
+   "winner_member_id": 108592,
+   "loser_member_id": 54846,
+   "winner_points": 120.24,
+   "loser_points": 117.36,
+   "margin": 2.88
+  },
+  {
+   "season": "2015",
+   "season_name": "2015",
+   "season_slug": "2015",
+   "winner_member_id": 108592,
+   "loser_member_id": 54774,
+   "winner_points": 147.14,
+   "loser_points": 146.64,
+   "margin": 0.5
+  },
+  {
+   "season": "2014",
+   "season_name": "2014",
+   "season_slug": "2014",
+   "winner_member_id": 54855,
+   "loser_member_id": 54774,
+   "winner_points": 158.14,
+   "loser_points": 153.06,
+   "margin": 5.08
+  },
+  {
+   "season": "2013",
+   "season_name": "2013",
+   "season_slug": "2013",
+   "winner_member_id": 54773,
+   "loser_member_id": 54850,
+   "winner_points": 129.5,
+   "loser_points": 80.24,
+   "margin": 49.26
+  }
+ ],
+ "stat_pills": {
+  "closest_title": {
+   "margin": 0.5,
+   "winner_member_id": 108592,
+   "loser_member_id": 54774,
+   "winner_points": 147.14,
+   "loser_points": 146.64,
+   "season": "2015"
+  },
+  "biggest_blowout": {
+   "margin": 51.02,
+   "winner_member_id": 108589,
+   "season": "2023"
+  },
+  "highest_playoff_score": {
+   "points": 198.48,
+   "member_id": 108592,
+   "season": "2015"
+  },
+  "best_cinderella": {
+   "seed": 4,
+   "member_id": 108581,
+   "season": "2017"
+  }
+ },
+ "scoring_extremes": [
+  {
+   "label": "Highest Playoff Score",
+   "value": 198.48,
+   "member_id": 108592,
+   "season": "2015",
+   "context": "pts",
+   "type": "high"
+  },
+  {
+   "label": "Lowest Playoff Score",
+   "value": 66.98,
+   "member_id": 108587,
+   "season": "2015",
+   "context": "pts",
+   "type": "low"
+  },
+  {
+   "label": "Biggest Blowout",
+   "value": 97.8,
+   "member_id": 108592,
+   "season": "2024",
+   "context": "margin",
+   "type": "high"
+  },
+  {
+   "label": "Closest Game",
+   "value": 0.5,
+   "member_id": 108592,
+   "season": "2015",
+   "context": "margin",
+   "type": "low"
+  },
+  {
+   "label": "Highest Combined Score",
+   "value": 366.26,
+   "member_id": null,
+   "season": "2025",
+   "context": "combined pts",
+   "type": "high"
+  },
+  {
+   "label": "Closest Championship",
+   "value": 0.5,
+   "member_id": 108592,
+   "season": "2015",
+   "context": "margin",
+   "type": "low"
+  }
+ ]
+}

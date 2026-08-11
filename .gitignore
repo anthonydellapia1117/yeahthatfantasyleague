@@ -1,0 +1,31 @@
+# Secrets - never commit
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+token.json
+
+# Yahoo notebooks carry hardcoded OAuth tokens in source cells.
+# Sanitized copies live in notebooks/ instead. Do not un-ignore these.
+made-resources/py/*.ipynb
+
+# Local Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# Immutable raw pulls are kept locally, not versioned, except small snapshots
+raw/**/*.json
+raw/**/*.zip
+!raw/**/manifest*.json
+
+# Scratch
+out/**/*.tmp
+
+# Contains the league owner email address - excluded from the public repo
+made-resources/YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026/16_franchise/franchise_dashboard.json

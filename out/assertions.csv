@@ -1,0 +1,53 @@
+season,check,result,detail,teams,rounds
+2013,picks <= teams x rounds,PASS,192 of 12x16=192,12,16
+2013,"overall picks contiguous, forfeits allowed",PASS,min 1 max 192 n 192,12,16
+2013,one roster per round,PASS,duplicate team within a round,12,16
+2013,no duplicate player,PASS,repeated player_id,12,16
+2014,picks <= teams x rounds,PASS,192 of 12x16=192,12,16
+2014,"overall picks contiguous, forfeits allowed",PASS,min 1 max 192 n 192,12,16
+2014,one roster per round,PASS,duplicate team within a round,12,16
+2014,no duplicate player,PASS,repeated player_id,12,16
+2015,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2015,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2015,one roster per round,PASS,duplicate team within a round,12,15
+2015,no duplicate player,PASS,repeated player_id,12,15
+2016,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2016,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2016,one roster per round,PASS,duplicate team within a round,12,15
+2016,no duplicate player,PASS,repeated player_id,12,15
+2017,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2017,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2017,one roster per round,PASS,duplicate team within a round,12,15
+2017,no duplicate player,PASS,repeated player_id,12,15
+2018,picks <= teams x rounds,PASS,"179 of 12x15=180, 1 forfeit(s)",12,15
+2018,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 179,12,15
+2018,one roster per round,PASS,duplicate team within a round,12,15
+2018,no duplicate player,PASS,repeated player_id,12,15
+2019,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2019,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2019,one roster per round,PASS,duplicate team within a round,12,15
+2019,no duplicate player,PASS,repeated player_id,12,15
+2020,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2020,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2020,one roster per round,PASS,duplicate team within a round,12,15
+2020,no duplicate player,PASS,repeated player_id,12,15
+2021,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2021,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2021,one roster per round,PASS,duplicate team within a round,12,15
+2021,no duplicate player,PASS,repeated player_id,12,15
+2022,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2022,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2022,one roster per round,PASS,duplicate team within a round,12,15
+2022,no duplicate player,PASS,repeated player_id,12,15
+2023,picks <= teams x rounds,PASS,180 of 12x15=180,12,15
+2023,"overall picks contiguous, forfeits allowed",PASS,min 1 max 180 n 180,12,15
+2023,one roster per round,PASS,duplicate team within a round,12,15
+2023,no duplicate player,PASS,repeated player_id,12,15
+2024,picks <= teams x rounds,PASS,168 of 12x14=168,12,14
+2024,"overall picks contiguous, forfeits allowed",PASS,min 1 max 168 n 168,12,14
+2024,one roster per round,PASS,duplicate team within a round,12,14
+2024,no duplicate player,PASS,repeated player_id,12,14
+2025,picks <= teams x rounds,PASS,168 of 12x14=168,12,14
+2025,"overall picks contiguous, forfeits allowed",PASS,min 1 max 168 n 168,12,14
+2025,one roster per round,PASS,duplicate team within a round,12,14
+2025,no duplicate player,PASS,repeated player_id,12,14

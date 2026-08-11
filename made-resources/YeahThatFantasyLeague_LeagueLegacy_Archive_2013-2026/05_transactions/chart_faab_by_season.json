@@ -1,0 +1,3 @@
+[
+ "{\"labels\":[\"2016\",\"2017\",\"2018\",\"2019\",\"2020\",\"2021\",\"2022\",\"2023\",\"2024\"],\"datasets\":[{\"label\":\"Total FAAB Spend\",\"data\":[7363,8462,1012,936,852,1014,1010,855,1000],\"type\":\"line\",\"borderColor\":\"#22c55e\",\"backgroundColor\":\"#86efac\",\"fill\":true,\"yAxisID\":\"y-axis-1\"},{\"label\":\"Avg. Value \\/ FAAB $\",\"data\":[0.01,0.03,0.14,0.13,0.16,0.2,0.12,0.12,0.08],\"type\":\"bar\",\"borderColor\":\"#0ea5e9\",\"backgroundColor\":\"#0ea5e9\",\"fill\":true,\"yAxisID\":\"y-axis-2\"}]}"
+]

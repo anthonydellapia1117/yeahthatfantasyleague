@@ -1,0 +1,286 @@
+[
+ {
+  "roster": 2,
+  "team": "Riley Reid Option",
+  "accounts": [
+   "juliano89"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 4.0,
+  "avg_first_TE": 7.8,
+  "avg_first_K": 12.5,
+  "avg_first_DEF": 14.0,
+  "rd1_5_RB_pct": 45,
+  "rd1_5_WR_pct": 35,
+  "rd1_5_QB_pct": 20,
+  "rd1_5_TE_pct": 0
+ },
+ {
+  "roster": 3,
+  "team": "Rocksolid1018",
+  "accounts": [
+   "Rocksolid1018"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 4.2,
+  "avg_first_TE": 6.8,
+  "avg_first_K": 10.8,
+  "avg_first_DEF": 12.0,
+  "rd1_5_RB_pct": 30,
+  "rd1_5_WR_pct": 45,
+  "rd1_5_QB_pct": 20,
+  "rd1_5_TE_pct": 5
+ },
+ {
+  "roster": 9,
+  "team": "pbaldino",
+  "accounts": [
+   "pbaldino",
+   "jasonbonanno"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 4.5,
+  "avg_first_TE": 6.5,
+  "avg_first_K": 14.5,
+  "avg_first_DEF": 11.0,
+  "rd1_5_RB_pct": 50,
+  "rd1_5_WR_pct": 30,
+  "rd1_5_QB_pct": 15,
+  "rd1_5_TE_pct": 5
+ },
+ {
+  "roster": 12,
+  "team": "chrisanddom",
+  "accounts": [
+   "chrisanddom",
+   "JulianoBreadman"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 4.5,
+  "avg_first_TE": 5.2,
+  "avg_first_K": 10.5,
+  "avg_first_DEF": 11.0,
+  "rd1_5_RB_pct": 30,
+  "rd1_5_WR_pct": 45,
+  "rd1_5_QB_pct": 15,
+  "rd1_5_TE_pct": 10
+ },
+ {
+  "roster": 4,
+  "team": "Kelce\u2019s Toothy Blowjobs",
+  "accounts": [
+   "ENolan90",
+   "gatta"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 5.0,
+  "avg_first_TE": 4.8,
+  "avg_first_K": 11.2,
+  "avg_first_DEF": 12.0,
+  "rd1_5_RB_pct": 30,
+  "rd1_5_WR_pct": 45,
+  "rd1_5_QB_pct": 15,
+  "rd1_5_TE_pct": 10
+ },
+ {
+  "roster": 8,
+  "team": "FrankieSponge",
+  "accounts": [
+   "FrankieSponge",
+   "JPod17"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 5.5,
+  "avg_first_TE": 7.3,
+  "avg_first_K": 11.5,
+  "avg_first_DEF": 9.0,
+  "rd1_5_RB_pct": 40,
+  "rd1_5_WR_pct": 45,
+  "rd1_5_QB_pct": 10,
+  "rd1_5_TE_pct": 5
+ },
+ {
+  "roster": 10,
+  "team": "Rob and GregBo",
+  "accounts": [
+   "RobFlacc"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 5.5,
+  "avg_first_TE": 3.2,
+  "avg_first_K": 14.0,
+  "avg_first_DEF": 13.0,
+  "rd1_5_RB_pct": 35,
+  "rd1_5_WR_pct": 30,
+  "rd1_5_QB_pct": 15,
+  "rd1_5_TE_pct": 20
+ },
+ {
+  "roster": 6,
+  "team": "My Back Hurts",
+  "accounts": [
+   "ForthepeopleEsq",
+   "jtralie1213"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 7.0,
+  "avg_first_TE": 7.2,
+  "avg_first_K": 13.8,
+  "avg_first_DEF": 13.0,
+  "rd1_5_RB_pct": 40,
+  "rd1_5_WR_pct": 50,
+  "rd1_5_QB_pct": 10,
+  "rd1_5_TE_pct": 0
+ },
+ {
+  "roster": 11,
+  "team": "rondro9",
+  "accounts": [
+   "rondro9",
+   "HarrySells"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 8.0,
+  "avg_first_TE": 6.0,
+  "avg_first_K": 11.3,
+  "avg_first_DEF": 14.0,
+  "rd1_5_RB_pct": 45,
+  "rd1_5_WR_pct": 40,
+  "rd1_5_QB_pct": 5,
+  "rd1_5_TE_pct": 10
+ },
+ {
+  "roster": 7,
+  "team": "Taylor Made",
+  "accounts": [
+   "antdell",
+   "ernie706"
+  ],
+  "is_self": true,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 9.2,
+  "avg_first_TE": 6.2,
+  "avg_first_K": 14.7,
+  "avg_first_DEF": 13.0,
+  "rd1_5_RB_pct": 30,
+  "rd1_5_WR_pct": 55,
+  "rd1_5_QB_pct": 5,
+  "rd1_5_TE_pct": 10
+ },
+ {
+  "roster": 1,
+  "team": "lefty3",
+  "accounts": [
+   "lefty3"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 9.8,
+  "avg_first_TE": 9.0,
+  "avg_first_K": 13.0,
+  "avg_first_DEF": 12.0,
+  "rd1_5_RB_pct": 40,
+  "rd1_5_WR_pct": 45,
+  "rd1_5_QB_pct": 5,
+  "rd1_5_TE_pct": 10
+ },
+ {
+  "roster": 5,
+  "team": "Sex Panther",
+  "accounts": [
+   "dcambs",
+   "johngalt1957"
+  ],
+  "is_self": false,
+  "seasons": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "picks": 58,
+  "avg_first_QB": 9.8,
+  "avg_first_TE": 4.8,
+  "avg_first_K": 13.2,
+  "avg_first_DEF": 11.0,
+  "rd1_5_RB_pct": 65,
+  "rd1_5_WR_pct": 25,
+  "rd1_5_QB_pct": 0,
+  "rd1_5_TE_pct": 10
+ }
+]

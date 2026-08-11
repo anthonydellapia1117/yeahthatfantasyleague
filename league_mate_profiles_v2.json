@@ -1,0 +1,667 @@
+{
+ "1389378429505241088": {
+  "league_name": "YeahThatFantasyLeague!",
+  "league_id": "1389378429505241088",
+  "teams": 12,
+  "scoring": {
+   "rec": 1.0,
+   "pass_td": 6,
+   "pass_int": -1
+  },
+  "anthony_owns_roster_2026": true,
+  "realname_map_source": "this league's 2024 draft, player-matched 24/24",
+  "managers": [
+   {
+    "user_id": "741128841325649920",
+    "display_name": "ForthepeopleEsq",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2025"
+    ],
+    "picks": 14,
+    "first_QB_rd": 3,
+    "first_TE_rd": 6,
+    "first_K_rd": 14,
+    "first_DEF_rd": 13,
+    "reach_2025": 4.2
+   },
+   {
+    "user_id": "1092593997857673216",
+    "display_name": "juliano89",
+    "real_name": "John Juliano",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 3.5,
+    "first_TE_rd": 6,
+    "first_K_rd": 11.5,
+    "first_DEF_rd": 13.5,
+    "reach_2025": 4.9
+   },
+   {
+    "user_id": "1131785934086807552",
+    "display_name": "pbaldino",
+    "real_name": "Phil Baldino",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 3.5,
+    "first_TE_rd": 6,
+    "first_K_rd": 14,
+    "first_DEF_rd": 12,
+    "reach_2025": -2.7
+   },
+   {
+    "user_id": "1092594622741770240",
+    "display_name": "Rocksolid1018",
+    "real_name": "Mike Long",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 4.5,
+    "first_TE_rd": 7.5,
+    "first_K_rd": 11,
+    "first_DEF_rd": 11,
+    "reach_2025": 20.0
+   },
+   {
+    "user_id": "860741469600854016",
+    "display_name": "FrankieSponge",
+    "real_name": "Julian Podagrasi",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 5.5,
+    "first_TE_rd": 5.5,
+    "first_K_rd": 12.5,
+    "first_DEF_rd": 11,
+    "reach_2025": -5.5
+   },
+   {
+    "user_id": "1132354082896986112",
+    "display_name": "chrisanddom",
+    "real_name": "Chris Juliano",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 5.5,
+    "first_TE_rd": 5,
+    "first_K_rd": 11,
+    "first_DEF_rd": 11,
+    "reach_2025": 0.8
+   },
+   {
+    "user_id": "1092594720267702272",
+    "display_name": "ENolan90",
+    "real_name": "Nolan Lawrence",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 6,
+    "first_TE_rd": 4,
+    "first_K_rd": 11,
+    "first_DEF_rd": 11.5,
+    "reach_2025": 6.5
+   },
+   {
+    "user_id": "741129160759619584",
+    "display_name": "rondro9",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2025"
+    ],
+    "picks": 14,
+    "first_QB_rd": 6,
+    "first_TE_rd": 7,
+    "first_K_rd": null,
+    "first_DEF_rd": 14,
+    "reach_2025": 13.6
+   },
+   {
+    "user_id": "740765967986204672",
+    "display_name": "lefty3",
+    "real_name": "Rich Nolfi",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 7,
+    "first_TE_rd": 9.5,
+    "first_K_rd": 13,
+    "first_DEF_rd": 12.5,
+    "reach_2025": 0.4
+   },
+   {
+    "user_id": "1076422875726299136",
+    "display_name": "RobFlacc",
+    "real_name": "Rob Flacco",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 7.5,
+    "first_TE_rd": 3,
+    "first_K_rd": 13,
+    "first_DEF_rd": 13,
+    "reach_2025": -1.9
+   },
+   {
+    "user_id": "460972700463001600",
+    "display_name": "dcambs",
+    "real_name": "Dante Cambria",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 10,
+    "first_TE_rd": 5,
+    "first_K_rd": 12.5,
+    "first_DEF_rd": 11.5,
+    "reach_2025": -3.7
+   },
+   {
+    "user_id": "345197760305307648",
+    "display_name": "antdell",
+    "real_name": "Anthony DellaPia",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "SELF",
+    "seasons_with_attributed_picks": [
+     "2025"
+    ],
+    "picks": 14,
+    "first_QB_rd": 10,
+    "first_TE_rd": 11,
+    "first_K_rd": 14,
+    "first_DEF_rd": 13,
+    "reach_2025": 4.0
+   },
+   {
+    "user_id": "872906191322468352",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024"
+    ],
+    "picks": 14,
+    "first_QB_rd": 12,
+    "first_TE_rd": 9,
+    "first_K_rd": 14,
+    "first_DEF_rd": 10,
+    "reach_2025": null
+   },
+   {
+    "user_id": "872897363507855360",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024"
+    ],
+    "picks": 14,
+    "first_QB_rd": 13,
+    "first_TE_rd": 5,
+    "first_K_rd": 12,
+    "first_DEF_rd": 11,
+    "reach_2025": null
+   }
+  ]
+ },
+ "1387959935878316032": {
+  "league_name": "Facilities Fantasy Football",
+  "league_id": "1387959935878316032",
+  "teams": 14,
+  "scoring": {
+   "rec": 1.0,
+   "pass_td": 4,
+   "pass_int": -2
+  },
+  "anthony_owns_roster_2026": false,
+  "realname_map_source": "NONE - no verified mapping for this league",
+  "managers": [
+   {
+    "user_id": "1124826919725256704",
+    "display_name": "TheMottman",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 1.5,
+    "first_TE_rd": 4.5,
+    "first_K_rd": 5,
+    "first_DEF_rd": 5,
+    "reach_2025": 13.6
+   },
+   {
+    "user_id": "1124790695283269632",
+    "display_name": "zmohn",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 2,
+    "first_TE_rd": 6.5,
+    "first_K_rd": 11,
+    "first_DEF_rd": 10.5,
+    "reach_2025": -5.4
+   },
+   {
+    "user_id": "870083723805446144",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "picks": 42,
+    "first_QB_rd": 3,
+    "first_TE_rd": 3.7,
+    "first_K_rd": 12,
+    "first_DEF_rd": 14,
+    "reach_2025": null
+   },
+   {
+    "user_id": "1002419899102269440",
+    "display_name": "mperri12",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 42,
+    "first_QB_rd": 4,
+    "first_TE_rd": 6,
+    "first_K_rd": 13.3,
+    "first_DEF_rd": 12,
+    "reach_2025": 11.7
+   },
+   {
+    "user_id": "469568000794554368",
+    "display_name": "cmhamlett",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 56,
+    "first_QB_rd": 4.5,
+    "first_TE_rd": 6.2,
+    "first_K_rd": 11,
+    "first_DEF_rd": 12.3,
+    "reach_2025": 5.8
+   },
+   {
+    "user_id": "871124122334396416",
+    "display_name": "LeonSandcastle0917",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 56,
+    "first_QB_rd": 5,
+    "first_TE_rd": 5.5,
+    "first_K_rd": 11.8,
+    "first_DEF_rd": 11.5,
+    "reach_2025": -3.7
+   },
+   {
+    "user_id": "1002427817738498048",
+    "display_name": "Hismael",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 42,
+    "first_QB_rd": 5,
+    "first_TE_rd": 5.7,
+    "first_K_rd": 10.7,
+    "first_DEF_rd": 11,
+    "reach_2025": 4.5
+   },
+   {
+    "user_id": "1124821754070818816",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024"
+    ],
+    "picks": 14,
+    "first_QB_rd": 5,
+    "first_TE_rd": 4,
+    "first_K_rd": 7,
+    "first_DEF_rd": 12,
+    "reach_2025": null
+   },
+   {
+    "user_id": "870133325447204864",
+    "display_name": "stevienelson",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 56,
+    "first_QB_rd": 5.2,
+    "first_TE_rd": 4.8,
+    "first_K_rd": 13,
+    "first_DEF_rd": 13.2,
+    "reach_2025": 9.7
+   },
+   {
+    "user_id": "471493679480041472",
+    "display_name": "rtaggart26",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 56,
+    "first_QB_rd": 5.5,
+    "first_TE_rd": 9.3,
+    "first_K_rd": 13.8,
+    "first_DEF_rd": 13.2,
+    "reach_2025": -3.7
+   },
+   {
+    "user_id": "474659594258345984",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022"
+    ],
+    "picks": 14,
+    "first_QB_rd": 6,
+    "first_TE_rd": 9,
+    "first_K_rd": 13,
+    "first_DEF_rd": 12,
+    "reach_2025": null
+   },
+   {
+    "user_id": "1124786500408856576",
+    "display_name": "domflacco",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 6,
+    "first_TE_rd": 6,
+    "first_K_rd": 11.5,
+    "first_DEF_rd": 12,
+    "reach_2025": 5.8
+   },
+   {
+    "user_id": "345197760305307648",
+    "display_name": "antdell",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "SELF",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023"
+    ],
+    "picks": 28,
+    "first_QB_rd": 6.5,
+    "first_TE_rd": 7.5,
+    "first_K_rd": 12.5,
+    "first_DEF_rd": 11,
+    "reach_2025": null
+   },
+   {
+    "user_id": "626519007289237504",
+    "display_name": "steelcheeks",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 56,
+    "first_QB_rd": 6.8,
+    "first_TE_rd": 9.5,
+    "first_K_rd": 12.7,
+    "first_DEF_rd": 11.7,
+    "reach_2025": 17.3
+   },
+   {
+    "user_id": "1002441007973236736",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2023"
+    ],
+    "picks": 14,
+    "first_QB_rd": 7,
+    "first_TE_rd": 5,
+    "first_K_rd": 14,
+    "first_DEF_rd": 13,
+    "reach_2025": null
+   },
+   {
+    "user_id": "870126274415366144",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022"
+    ],
+    "picks": 14,
+    "first_QB_rd": 8,
+    "first_TE_rd": 2,
+    "first_K_rd": 13,
+    "first_DEF_rd": 11,
+    "reach_2025": null
+   },
+   {
+    "user_id": "871044693469913088",
+    "display_name": "(not in 2026)",
+    "real_name": "",
+    "in_2026": false,
+    "owns_2026_roster": false,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022"
+    ],
+    "picks": 14,
+    "first_QB_rd": 8,
+    "first_TE_rd": 3,
+    "first_K_rd": 13,
+    "first_DEF_rd": 12,
+    "reach_2025": null
+   },
+   {
+    "user_id": "1126312301520351232",
+    "display_name": "TirEoghainExtreme",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 8.5,
+    "first_TE_rd": 3.5,
+    "first_K_rd": 12,
+    "first_DEF_rd": 11,
+    "reach_2025": 6.4
+   },
+   {
+    "user_id": "474652482639753216",
+    "display_name": "ernie706",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2024",
+     "2025"
+    ],
+    "picks": 28,
+    "first_QB_rd": 8.5,
+    "first_TE_rd": 4.5,
+    "first_K_rd": 14,
+    "first_DEF_rd": 12.5,
+    "reach_2025": -5.2
+   },
+   {
+    "user_id": "871125202032033792",
+    "display_name": "IIIIllIIllI",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 56,
+    "first_QB_rd": 8.8,
+    "first_TE_rd": 3.5,
+    "first_K_rd": 12.8,
+    "first_DEF_rd": 13,
+    "reach_2025": 6.6
+   },
+   {
+    "user_id": "72927421099556864",
+    "display_name": "ELGSES",
+    "real_name": "",
+    "in_2026": true,
+    "owns_2026_roster": true,
+    "relationship_to_anthony": "opponent",
+    "seasons_with_attributed_picks": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "picks": 56,
+    "first_QB_rd": 9.2,
+    "first_TE_rd": 10,
+    "first_K_rd": null,
+    "first_DEF_rd": 10,
+    "reach_2025": -0.8
+   }
+  ]
+ }
+}

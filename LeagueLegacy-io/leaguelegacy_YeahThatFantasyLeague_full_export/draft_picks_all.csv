@@ -1,0 +1,2340 @@
+season,overall_pick,round,round_pick,team,player,position,nfl_team,is_keeper,from_trade,auction_bid,value,adp,adp_pick,adp_differential,adp_differential_pct,adp_consensus_score,comment,player_id
+2025,1,1,1,Richie,Ja'Marr Chase,WR,CIN,0,0,,12.46,,,-0.8,-0.5,0,,00-0036900
+2025,2,1,2,John Juliano,Bijan Robinson,RB,ATL,0,0,,24.65,,,-0.3,-0.2,0.57,,00-0038542
+2025,3,1,3,Ronnie,Jahmyr Gibbs,RB,DET,0,0,,23.47,,,-0.9,-0.5,0.31,,00-0039139
+2025,4,1,4,Cambrias,Saquon Barkley,RB,PHI,0,0,,9.2,,,1.8,1.1,0,,00-0034844
+2025,5,1,5,Nolan & Vinny,CeeDee Lamb,WR,DAL,0,0,,2.1,,,-1.8,-1.1,0,,00-0036358
+2025,6,1,6,Antdell & Ernie,Justin Jefferson,WR,MIN,0,0,,-0.13,,,0.1,0.1,0.94,,00-0036322
+2025,7,1,7,Mike Long,Christian McCaffrey,RB,SF,0,0,,35.04,,,0.1,0.1,0.94,,00-0033280
+2025,8,1,8,Frank & Julian,Amon-Ra St. Brown,WR,DET,0,0,,17.07,,,-8,-4.8,0,,00-0036963
+2025,9,1,9,Phil Baldino,Malik Nabers,WR,NYG,0,0,,-16.69,,,-2.2,-1.3,0,,00-0039337
+2025,10,1,10,Rob & GregBo,Derrick Henry,RB,BAL,0,0,,16.22,,,4.9,2.9,0,,00-0032764
+2025,11,1,11,Pung & Tralie,Nico Collins,WR,HOU,0,0,,6.69,,,1,0.6,0.33,,00-0036554
+2025,12,1,12,Chris & Dom,Ashton Jeanty,RB,LV,0,0,,11.36,,,,,,,espn-4890973
+2025,13,2,1,Chris & Dom,Puka Nacua,WR,LAR,0,0,,27.27,,,-0.5,-0.3,0.76,,00-0039075
+2025,14,2,2,Pung & Tralie,Drake London,WR,ATL,0,0,,0,,,-3.5,-2.1,0,,00-0037238
+2025,15,2,3,Rob & GregBo,A.J. Brown,WR,PHI,0,0,,6.2,,,-6.5,-3.9,0,,00-0035676
+2025,16,2,4,Phil Baldino,Josh Jacobs,RB,GB,0,0,,12.96,,,4.1,2.4,0,,00-0035700
+2025,17,2,5,Frank & Julian,Chase Brown,RB,CIN,0,0,,17.85,,,-3.4,-2,0.13,,00-0038597
+2025,18,2,6,Mike Long,Kyren Williams,RB,LAR,0,0,,16.08,,,0.1,0.1,0.94,,00-0037840
+2025,19,2,7,Antdell & Ernie,Jonathan Taylor,RB,IND,0,0,,35.3,,,5.3,3.2,0,,00-0036223
+2025,20,2,8,Nolan & Vinny,Brock Bowers,TE,LV,0,0,,5.97,,,-13.7,-8.2,0,,00-0039338
+2025,21,2,9,Cambrias,De'Von Achane,RB,MIA,0,0,,29.97,,,,,,,00-0039040
+2025,22,2,10,Ronnie,Brian Thomas Jr.,WR,JAX,0,0,,-6.76,,,6.2,3.7,0,,00-0039893
+2025,23,2,11,John Juliano,Ladd McConkey,WR,LAC,0,0,,-0.41,,,-2.6,-1.5,0.13,,00-0039915
+2025,24,2,12,Richie,Bucky Irving,RB,TB,0,0,,-4.42,,,5,3,0,,00-0039361
+2025,25,3,1,Richie,Omarion Hampton,RB,LAC,0,0,,-3.4,,,,,,,espn-4685382
+2025,26,3,2,John Juliano,Josh Allen,QB,BUF,0,0,,25.72,,,1.8,1.1,0.49,,00-0034857
+2025,27,3,3,Ronnie,James Cook,RB,BUF,0,0,,27.71,,,-2,-1.2,0.49,,00-0037248
+2025,28,3,4,Cambrias,Trey McBride,TE,ARI,0,0,,32.16,,,-13.7,-8.2,0,,00-0037744
+2025,29,3,5,Nolan & Vinny,Alvin Kamara,RB,NO,0,0,,-7.72,,,-7.9,-4.7,0,,00-0033906
+2025,30,3,6,Antdell & Ernie,Tee Higgins,WR,CIN,0,0,,1.82,,,4.9,2.9,0,,00-0036410
+2025,31,3,7,Mike Long,Mike Evans,WR,TB,0,0,,-12.97,,,3.2,1.9,0,,00-0031408
+2025,32,3,8,Frank & Julian,TreVeyon Henderson,RB,NE,0,0,,5.52,,,,,,,espn-4432710
+2025,33,3,9,Phil Baldino,Lamar Jackson,QB,BAL,0,0,,-5.01,,,14.3,8.5,0,,00-0034796
+2025,34,3,10,Rob & GregBo,Jaxon Smith-Njigba,WR,SEA,0,0,,34.62,,,-5.6,-3.3,0,,00-0038543
+2025,35,3,11,Pung & Tralie,Joe Burrow,QB,CIN,0,0,,-14.91,,,5.1,3,0,,00-0036442
+2025,36,3,12,Chris & Dom,Chuba Hubbard,RB,CAR,0,0,,-5,,,0.9,0.5,0.77,,00-0036555
+2025,37,4,1,Chris & Dom,Jalen Hurts,QB,PHI,0,0,,14.49,,,1.1,0.7,0.7,,00-0036389
+2025,38,4,2,Pung & Tralie,Breece Hall,RB,NYJ,0,0,,9.96,,,-10.6,-6.3,0,,00-0038120
+2025,39,4,3,Rob & GregBo,George Kittle,TE,SF,0,0,,2.17,,,-11.7,-7,0,,00-0033288
+2025,40,4,4,Phil Baldino,Kenneth Walker III,RB,SEA,0,0,,2.68,,,-3.6,-2.1,0.45,,00-0038134
+2025,41,4,5,Frank & Julian,Jayden Daniels,QB,WAS,0,0,,-14.52,,,12.4,7.4,0,,00-0039910
+2025,42,4,6,Mike Long,Terry McLaurin,WR,WAS,0,0,,-9.53,,,7.7,4.6,0,,00-0035659
+2025,43,4,7,Antdell & Ernie,Isiah Pacheco,RB,KC,0,0,,-9,,,-21,-12.5,0,,00-0037197
+2025,44,4,8,Nolan & Vinny,Davante Adams,WR,LV,0,0,,8.97,,,14.1,8.4,0,,00-0031381
+2025,45,4,9,Cambrias,James Conner,RB,ARI,0,0,,-15.34,,,9.8,5.8,0,,00-0033553
+2025,46,4,10,Ronnie,Xavier Worthy,WR,KC,0,0,,-8.77,,,-0.5,-0.3,0.91,,00-0039894
+2025,47,4,11,John Juliano,DK Metcalf,WR,SEA,0,0,,0.73,,,,,,,00-0035640
+2025,48,4,12,Richie,Marvin Harrison Jr.,WR,ARI,0,0,,-6.61,,,12.8,7.6,0,,00-0039849
+2025,49,5,1,Richie,Garrett Wilson,WR,NYJ,0,0,,-9.89,,,7.3,4.3,0,,00-0037740
+2025,50,5,2,John Juliano,Tony Pollard,RB,TEN,0,0,,3.27,,,-7.3,-4.3,0,,00-0035261
+2025,51,5,3,Ronnie,Courtland Sutton,WR,DEN,0,0,,8.23,,,1.3,0.8,0.77,,00-0034348
+2025,52,5,4,Cambrias,Tyreek Hill,WR,MIA,0,0,,-15.11,,,21.7,12.9,0,,00-0033040
+2025,53,5,5,Nolan & Vinny,Patrick Mahomes,QB,KC,0,0,,12.34,,,-1.7,-1,0.72,,00-0033873
+2025,54,5,6,Antdell & Ernie,DeVonta Smith,WR,PHI,0,0,,2.33,,,5.8,3.5,0,,00-0036912
+2025,55,5,7,Mike Long,Baker Mayfield,QB,TB,0,0,,5.82,,,3.9,2.3,0.65,,00-0034855
+2025,56,5,8,Frank & Julian,David Montgomery,RB,DET,0,0,,-0.26,,,-2.2,-1.3,0.65,,00-0035685
+2025,57,5,9,Phil Baldino,D'Andre Swift,RB,CHI,0,0,,14.99,,,-0.8,-0.5,0.81,,00-0036275
+2025,58,5,10,Rob & GregBo,RJ Harvey,RB,DEN,0,0,,9.93,,,,,,,espn-4568490
+2025,59,5,11,Pung & Tralie,Aaron Jones,RB,MIN,0,0,,-4.96,,,-7.3,-4.3,0,,00-0033293
+2025,60,5,12,Chris & Dom,D.J. Moore,WR,CHI,0,0,,-1.57,,,15.9,9.5,0,,00-0034827
+2025,61,6,1,Chris & Dom,George Pickens,WR,PIT,0,0,,26.95,,,-0.4,-0.2,0.91,,00-0037247
+2025,62,6,2,Pung & Tralie,Sam LaPorta,TE,DET,0,0,,-4.12,,,-6,-3.6,0.18,,00-0039065
+2025,63,6,3,Rob & GregBo,Tetairoa McMillan,WR,CAR,0,0,,4.32,,,,,,,espn-4685472
+2025,64,6,4,Phil Baldino,Calvin Ridley,WR,TEN,0,0,,-15.12,,,6.4,3.8,0,,00-0034837
+2025,65,6,5,Frank & Julian,Jaylen Waddle,WR,MIA,0,0,,2.6,,,-2,-1.2,0.67,,00-0036613
+2025,66,6,6,Mike Long,Khalil Shakir,WR,BUF,0,0,,-1.94,,,-24.5,-14.6,0,,00-0037261
+2025,67,6,7,Antdell & Ernie,Jameson Williams,WR,DET,0,0,,5.86,,,13.4,8,0,,00-0037240
+2025,68,6,8,Nolan & Vinny,Travis Kelce,TE,KC,0,0,,11.85,,,-5.1,-3,0.07,,00-0030506
+2025,69,6,9,Cambrias,Travis Hunter,WR,JAX,0,0,,-13.02,,,,,,,espn-4685415
+2025,70,6,10,Ronnie,Bo Nix,QB,DEN,0,0,,15.67,,,0.3,0.2,0.96,,00-0039732
+2025,71,6,11,John Juliano,T.J. Hockenson,TE,MIN,0,0,,-3.34,,,,,,,00-0035229
+2025,72,6,12,Richie,Kaleb Johnson,RB,PIT,0,0,,-16.43,,,,,,,espn-4819231
+2025,73,7,1,Richie,Emeka Egbuka,WR,TB,0,0,,2.63,,,,,,,espn-4567750
+2025,74,7,2,John Juliano,Jerry Jeudy,WR,CLE,0,0,,-7.15,,,12.4,7.4,0,,00-0036407
+2025,75,7,3,Ronnie,Mark Andrews,TE,BAL,0,0,,-1.72,,,-9.5,-5.7,0,,00-0034753
+2025,76,7,4,Cambrias,Matthew Golden,WR,GB,0,0,,-12.15,,,,,,,espn-4701936
+2025,77,7,5,Nolan & Vinny,Tyrone Tracy,RB,NYG,0,0,,-3.11,,,7.1,4.2,0,,00-0039384
+2025,78,7,6,Antdell & Ernie,Zay Flowers,WR,BAL,0,0,,8.04,,,14.4,8.6,0,,00-0039064
+2025,79,7,7,Mike Long,Tucker Kraft,TE,GB,0,0,,-2.76,,,-29.5,-17.6,0,,00-0038996
+2025,80,7,8,Frank & Julian,Evan Engram,TE,JAX,0,0,,-5,,,-30.1,-17.9,0,,00-0033881
+2025,81,7,9,Phil Baldino,David Njoku,TE,CLE,0,0,,-5.89,,,,,,,00-0033885
+2025,82,7,10,Rob & GregBo,Deebo Samuel,WR,SF,0,0,,0,,,14.1,8.4,0,,00-0035719
+2025,83,7,11,Pung & Tralie,Ricky Pearsall,WR,SF,0,0,,-9.67,,,8.7,5.2,0,,00-0039916
+2025,84,7,12,Chris & Dom,Tyler Warren,TE,IND,0,0,,10.33,,,,,,,espn-4431459
+2025,85,8,1,Chris & Dom,Nick Chubb,RB,CLE,0,0,,-7.45,,,-53.3,-31.7,0,,00-0034791
+2025,86,8,2,Pung & Tralie,Rome Odunze,WR,CHI,0,0,,-3.79,,,7.4,4.4,0,,00-0039919
+2025,87,8,3,Rob & GregBo,Jaylen Warren,RB,PIT,0,0,,11.14,,,9.4,5.6,0,,00-0037228
+2025,88,8,4,Phil Baldino,Rashee Rice,WR,KC,0,0,,-3.35,,,-8.2,-4.9,0.02,,00-0039067
+2025,89,8,5,Frank & Julian,Stefon Diggs,WR,HOU,0,0,,5.37,,,5.6,3.3,0,,00-0031588
+2025,90,8,6,Mike Long,Zach Charbonnet,RB,SEA,0,0,,0,,,-9.1,-5.4,0.04,,00-0039165
+2025,91,8,7,Antdell & Ernie,Chris Olave,WR,NO,0,0,,23.97,,,18.3,10.9,0,,00-0037239
+2025,92,8,8,Nolan & Vinny,Austin Ekeler,RB,WAS,0,0,,-14.4,,,7.3,4.3,0,,00-0033699
+2025,93,8,9,Cambrias,Quinshon Judkins,RB,CLE,0,0,,2.04,,,,,,,espn-4685702
+2025,94,8,10,Ronnie,Ollie Gordon,RB,MIA,0,0,,-15.47,,,,,,,espn-4711533
+2025,95,8,11,John Juliano,Travis Etienne,RB,JAX,0,0,,24.99,,,-15.5,-9.2,0,,00-0036973
+2025,96,8,12,Richie,Jordan Mason,RB,SF,0,0,,-4.06,,,3.5,2.1,0.61,,00-0037525
+2025,97,9,1,Richie,Jauan Jennings,WR,SF,0,0,,-1.71,,,14.5,8.6,0,,00-0036259
+2025,98,9,2,John Juliano,Cooper Kupp,WR,LAR,0,0,,-6.74,,,3.5,2.1,0.48,,00-0033908
+2025,99,9,3,Ronnie,Kyle Pitts,TE,ATL,0,0,,16.13,,,-51.1,-30.4,0,,00-0036970
+2025,100,9,4,Cambrias,Jacory Croskey-Merritt,RB,WAS,0,0,,-2.31,,,,,,,espn-4575131
+2025,101,9,5,Nolan & Vinny,Jakobi Meyers,WR,LV,0,0,,-1.61,,,24.2,14.4,0,,00-0034960
+2025,102,9,6,Antdell & Ernie,J.K. Dobbins,RB,LAC,0,0,,-4.22,,,13.2,7.9,0,,00-0036158
+2025,103,9,7,Mike Long,Brandon Aubrey,K,DAL,0,0,,13.61,,,-27.5,-16.4,0,,00-0037692
+2025,104,9,8,Frank & Julian,Denver Broncos,DEF,DEN,0,0,,3.86,,,-7.8,-4.6,0,,DEF-0010
+2025,105,9,9,Phil Baldino,Michael Pittman,WR,IND,0,0,,4.52,,,,,,,00-0036252
+2025,106,9,10,Rob & GregBo,Josh Downs,WR,IND,0,0,,-4.84,,,,,,,00-0038997
+2025,107,9,11,Pung & Tralie,Jordan Addison,WR,MIN,0,0,,-4.41,,,7.2,4.3,0.17,,00-0038994
+2025,108,9,12,Chris & Dom,Joe Mixon,RB,HOU,0,0,,-14.03,,,-32.2,-19.2,0.07,,00-0033897
+2025,109,10,1,Chris & Dom,Jake Bates,K,DET,0,0,,0.6,,,,,,,yahoo-40835
+2025,110,10,2,Pung & Tralie,Rhamondre Stevenson,RB,NE,0,0,,-1.63,,,-13.4,-8,0.01,,00-0036875
+2025,111,10,3,Rob & GregBo,Cam Skattebo,RB,NYG,0,0,,-2.94,,,,,,,espn-4696981
+2025,112,10,4,Phil Baldino,Javonte Williams,RB,DEN,0,0,,24.27,,,-0.8,-0.5,0.93,,00-0036997
+2025,113,10,5,Frank & Julian,Brian Robinson,RB,WAS,0,0,,-8.36,,,,,,,00-0037746
+2025,114,10,6,Mike Long,Tank Bigsby,RB,JAX,0,0,,-10.36,,,-13.4,-8,0.19,,00-0038555
+2025,115,10,7,Antdell & Ernie,Dak Prescott,QB,DAL,0,0,,23.8,,,29.7,17.7,0,,00-0033077
+2025,116,10,8,Nolan & Vinny,Cameron Dicker,K,LAC,0,0,,9.49,,,,,,,00-0037224
+2025,117,10,9,Cambrias,Kyler Murray,QB,ARI,0,0,,-12.53,,,29.2,17.4,0,,00-0035228
+2025,118,10,10,Ronnie,Ray Davis,RB,BUF,0,0,,-9.78,,,,,,,00-0039875
+2025,119,10,11,John Juliano,Brandon Aiyuk,WR,SF,0,0,,-14.37,,,-21.2,-12.6,0,,00-0036261
+2025,120,10,12,Richie,Justin Herbert,QB,LAC,0,0,,15.99,,,9.8,5.8,0.04,,00-0036355
+2025,121,11,1,Richie,Keenan Allen,WR,CHI,0,0,,-0.92,,,1.8,1.1,0.83,,00-0030279
+2025,122,11,2,John Juliano,Chris Boswell,K,PIT,0,0,,1.55,,,,,,,00-0031136
+2025,123,11,3,Ronnie,Keon Coleman,WR,BUF,0,0,,-6.78,,,28.9,17.2,0,,00-0039901
+2025,124,11,4,Cambrias,Philadelphia Eagles,DEF,PHI,0,0,,6.86,,,8.7,5.2,0,,DEF-0026
+2025,125,11,5,Nolan & Vinny,Rashid Shaheed,WR,NO,0,0,,-2.1,,,,,,,00-0037545
+2025,126,11,6,Antdell & Ernie,Jake Ferguson,TE,DAL,0,0,,13.37,,,5.9,3.5,0.7,,00-0038041
+2025,127,11,7,Mike Long,Adam Thielen,WR,CAR,0,0,,-10.82,,,-29.6,-17.6,0,,00-0030035
+2025,128,11,8,Frank & Julian,Najee Harris,RB,PIT,0,0,,-10.63,,,,,,,00-0036893
+2025,129,11,9,Phil Baldino,Baltimore Ravens,DEF,BAL,0,0,,-1.11,,,7.7,4.6,0.56,,DEF-0003
+2025,130,11,10,Rob & GregBo,Drake Maye,QB,NE,0,0,,31.93,,,13.9,8.3,0,,00-0039851
+2025,131,11,11,Pung & Tralie,Jayden Higgins,WR,HOU,0,0,,-4.38,,,,,,,espn-4877706
+2025,132,11,12,Chris & Dom,Pittsburgh Steelers,DEF,PIT,0,0,,5.08,,,5.9,3.5,0,,DEF-0027
+2025,133,12,1,Chris & Dom,Jerome Ford,RB,CLE,0,0,,-7.8,,,-1.6,-1,0.87,,00-0037267
+2025,134,12,2,Pung & Tralie,Dylan Sampson,RB,CLE,0,0,,-5.26,,,,,,,espn-5081397
+2025,135,12,3,Rob & GregBo,Dalton Kincaid,TE,BUF,0,0,,-1.62,,,-4.2,-2.5,0.85,,00-0038933
+2025,136,12,4,Phil Baldino,Trey Benson,RB,ARI,0,0,,-7.94,,,-6.2,-3.7,0.58,,00-0039921
+2025,137,12,5,Frank & Julian,Chris Godwin,WR,TB,0,0,,-6.31,,,33.5,19.9,0,,00-0033921
+2025,138,12,6,Mike Long,Kansas City Chiefs,DEF,KC,0,0,,-1.68,,,,,,,DEF-0016
+2025,139,12,7,Antdell & Ernie,Bhayshul Tuten,RB,JAX,0,0,,-4.86,,,,,,,espn-4882093
+2025,140,12,8,Nolan & Vinny,Buffalo Bills,DEF,BUF,0,0,,-0.23,,,,,,,DEF-0004
+2025,141,12,9,Cambrias,Jayden Reed,WR,GB,0,0,,-7.68,,,,,,,00-0039146
+2025,142,12,10,Ronnie,Kyle Williams,WR,NE,0,0,,-7.5,,,,,,,espn-4613202
+2025,143,12,11,John Juliano,Jaydon Blue,RB,DAL,0,0,,-8.38,,,,,,,espn-4685279
+2025,144,12,12,Richie,Minnesota Vikings,DEF,MIN,0,0,,5.2,,,,,,,DEF-0021
+2025,145,13,1,Richie,Jake Elliott,K,PHI,0,0,,-1.29,,,,,,,00-0033787
+2025,146,13,2,John Juliano,Braelon Allen,RB,NYJ,0,0,,-7.39,,,0.3,0.2,0.99,,00-0039794
+2025,147,13,3,Ronnie,Caleb Williams,QB,CHI,0,0,,21.72,,,45.2,26.9,0,,00-0039918
+2025,148,13,4,Cambrias,Marvin Mims,WR,DEN,0,0,,-4.36,,,33.1,19.7,0,,00-0038976
+2025,149,13,5,Nolan & Vinny,Isaac TeSlaa,WR,DET,0,0,,-5.08,,,,,,,espn-5123663
+2025,150,13,6,Antdell & Ernie,Houston Texans,DEF,HOU,0,0,,14.13,,,,,,,DEF-0013
+2025,151,13,7,Mike Long,DeAndre Hopkins,WR,TEN,0,0,,-4.99,,,,,,,00-0030564
+2025,152,13,8,Frank & Julian,Chase McLaughlin,K,TB,0,0,,2.97,,,11,6.5,0.37,,00-0035358
+2025,153,13,9,Phil Baldino,Brock Purdy,QB,SF,0,0,,-2.47,,,,,,,00-0037834
+2025,154,13,10,Rob & GregBo,Green Bay Packers,DEF,GB,0,0,,-1.31,,,24,14.3,0,,DEF-0012
+2025,155,13,11,Pung & Tralie,San Francisco 49ers,DEF,SF,0,0,,-1.31,,,-5.5,-3.3,0.72,,DEF-0028
+2025,156,13,12,Chris & Dom,Elic Ayomanor,WR,TEN,0,0,,-2.54,,,,,,,espn-4883647
+2025,157,14,1,Chris & Dom,Jared Goff,QB,DET,0,0,,15.53,,,61.6,36.7,0,,00-0033106
+2025,158,14,2,Pung & Tralie,Harrison Butker,K,KC,0,0,,-0.06,,,,,,,00-0033303
+2025,159,14,3,Rob & GregBo,Cam Little,K,JAX,0,0,,4.34,,,,,,,00-0039409
+2025,160,14,4,Phil Baldino,Younghoe Koo,K,ATL,0,0,,-2.54,,,,,,,00-0033702
+2025,161,14,5,Frank & Julian,Colston Loveland,TE,CHI,0,0,,-0.09,,,,,,,espn-4723086
+2025,162,14,6,Mike Long,Xavier Legette,WR,CAR,0,0,,-1.93,,,,,,,00-0039342
+2025,163,14,7,Antdell & Ernie,Will Reichard,K,MIN,0,0,,4.03,,,,,,,00-0039404
+2025,164,14,8,Nolan & Vinny,Tyler Allgeier,RB,ATL,0,0,,-0.56,,,,,,,00-0037263
+2025,165,14,9,Cambrias,Evan McPherson,K,CIN,0,0,,0,,,,,,,00-0036854
+2025,166,14,10,Ronnie,Detroit Lions,DEF,DET,0,0,,-0.1,,,,,,,DEF-0011
+2025,167,14,11,John Juliano,New England Patriots,DEF,NE,0,0,,2.03,,,,,,,DEF-0022
+2025,168,14,12,Richie,Dallas Goedert,TE,PHI,0,0,,13.96,,,34.4,20.5,0,,00-0034351
+2024,1,1,1,John Juliano,Christian McCaffrey,RB,SF,0,0,,-17.88,,,-0.3,-0.2,0.5,,00-0033280
+2024,2,1,2,Mike Long,Tyreek Hill,WR,MIA,0,0,,2.07,,,-1.9,-1.1,0,,00-0033040
+2024,3,1,3,Frank & Julian,CeeDee Lamb,WR,DAL,0,0,,8.56,,,0.4,0.2,0.5,,00-0036358
+2024,4,1,4,Pung & Tralie,Bijan Robinson,RB,ATL,0,0,,17.33,,,2,1.2,0,,00-0038542
+2024,5,1,5,Rob & GregBo,Amon-Ra St. Brown,WR,DET,0,0,,14.64,,,-1.9,-1.1,0,,00-0036963
+2024,6,1,6,Nolan & Vinny,Ja'Marr Chase,WR,CIN,0,0,,25.62,,,-0.3,-0.2,0.75,,00-0036900
+2024,7,1,7,Antdell & Ernie,Breece Hall,RB,NYJ,0,0,,6.13,,,2.6,1.5,0,,00-0038120
+2024,8,1,8,Ronnie,Jonathan Taylor,RB,IND,0,0,,6.15,,,-3.3,-2,0,,00-0036223
+2024,9,1,9,Richie,A.J. Brown,WR,PHI,0,0,,2.83,,,-2.2,-1.3,0,,00-0035676
+2024,10,1,10,Phil Baldino,Justin Jefferson,WR,MIN,0,0,,17.24,,,1.7,1,0,,00-0036322
+2024,11,1,11,Cambrias,Saquon Barkley,RB,PHI,0,0,,27.82,,,1.5,0.9,0.21,,00-0034844
+2024,12,1,12,Chris & Dom,Garrett Wilson,WR,NYJ,0,0,,7.22,,,-1.3,-0.8,0.41,,00-0037740
+2024,13,2,1,Chris & Dom,Davante Adams,WR,LV,0,0,,3.84,,,-8,-4.8,0,,00-0031381
+2024,14,2,2,Cambrias,Derrick Henry,RB,BAL,0,0,,21.05,,,0.9,0.5,0.61,,00-0032764
+2024,15,2,3,Phil Baldino,Jahmyr Gibbs,RB,DET,0,0,,22.03,,,6.4,3.8,0,,00-0039139
+2024,16,2,4,Richie,Kyren Williams,RB,LAR,0,0,,15.99,,,1.2,0.7,0.5,,00-0037840
+2024,17,2,5,Ronnie,Travis Etienne,RB,JAX,0,0,,-7.61,,,0.1,0.1,0.96,,00-0036973
+2024,18,2,6,Antdell & Ernie,Drake London,WR,ATL,0,0,,8.05,,,-7.1,-4.2,0,,00-0037238
+2024,19,2,7,Nolan & Vinny,Marvin Harrison Jr.,WR,ARI,0,0,,-2.45,,,2.9,1.7,0,,00-0039849
+2024,20,2,8,Rob & GregBo,Travis Kelce,TE,KC,0,0,,9.57,,,-12,-7.1,0,,00-0030506
+2024,21,2,9,Pung & Tralie,Puka Nacua,WR,LAR,0,0,,1.74,,,6.1,3.6,0,,00-0039075
+2024,22,2,10,Frank & Julian,Isiah Pacheco,RB,KC,0,0,,-15.81,,,1,0.6,0.7,,00-0037197
+2024,23,2,11,Mike Long,Nico Collins,WR,HOU,0,0,,-0.25,,,-8.3,-4.9,0,,00-0036554
+2024,24,2,12,John Juliano,Chris Olave,WR,NO,0,0,,-15.24,,,-1.3,-0.8,0.61,,00-0037239
+2024,25,3,1,John Juliano,De'Von Achane,RB,MIA,0,0,,19.94,,,,,,,00-0039040
+2024,26,3,2,Mike Long,Rachaad White,RB,TB,0,0,,3.73,,,-3.1,-1.8,0,,00-0037256
+2024,27,3,3,Frank & Julian,Mike Evans,WR,TB,0,0,,4.86,,,-2.1,-1.3,0.34,,00-0031408
+2024,28,3,4,Pung & Tralie,Josh Jacobs,RB,GB,0,0,,20.53,,,8.1,4.8,0,,00-0035700
+2024,29,3,5,Rob & GregBo,Alvin Kamara,RB,NO,0,0,,17.42,,,-18.4,-11,0,,00-0033906
+2024,30,3,6,Nolan & Vinny,Joe Mixon,RB,HOU,0,0,,11.67,,,1.6,1,0.57,,00-0033897
+2024,31,3,7,Antdell & Ernie,Cooper Kupp,WR,LAR,0,0,,-3.01,,,8.4,5,0,,00-0033908
+2024,32,3,8,Ronnie,James Cook,RB,BUF,0,0,,16.15,,,0,0,1,,00-0037248
+2024,33,3,9,Richie,Deebo Samuel,WR,SF,0,0,,-5.13,,,14.8,8.8,0,,00-0035719
+2024,34,3,10,Phil Baldino,Michael Pittman,WR,IND,0,0,,-5.49,,,-12.2,-7.3,0,,00-0036252
+2024,35,3,11,Cambrias,Kenneth Walker III,RB,SEA,0,0,,0.63,,,7.9,4.7,0,,00-0038134
+2024,36,3,12,Chris & Dom,Sam LaPorta,TE,DET,0,0,,4.08,,,2.6,1.5,0.38,,00-0039065
+2024,37,4,1,Chris & Dom,Aaron Jones,RB,MIN,0,0,,10.95,,,-5.7,-3.4,0,,00-0033293
+2024,38,4,2,Cambrias,Jaylen Waddle,WR,MIA,0,0,,-7.12,,,7.1,4.2,0,,00-0036613
+2024,39,4,3,Phil Baldino,Patrick Mahomes,QB,KC,0,0,,5.51,,,2.8,1.7,0.59,,00-0033873
+2024,40,4,4,Richie,Jalen Hurts,QB,PHI,0,0,,12.99,,,6.1,3.6,0.12,,00-0036389
+2024,41,4,5,Ronnie,Stefon Diggs,WR,HOU,0,0,,-9.17,,,-3.2,-1.9,0.26,,00-0031588
+2024,42,4,6,Antdell & Ernie,DeVonta Smith,WR,PHI,0,0,,0.25,,,1.8,1.1,0.54,,00-0036912
+2024,43,4,7,Nolan & Vinny,D'Andre Swift,RB,CHI,0,0,,4.76,,,-14.9,-8.9,0,,00-0036275
+2024,44,4,8,Rob & GregBo,Lamar Jackson,QB,BAL,0,0,,34.93,,,3.4,2,0.48,,00-0034796
+2024,45,4,9,Pung & Tralie,Brandon Aiyuk,WR,SF,0,0,,-16.23,,,4.5,2.7,0.08,,00-0036261
+2024,46,4,10,Frank & Julian,Trey McBride,TE,ARI,0,0,,18.67,,,-12.9,-7.7,0,,00-0037744
+2024,47,4,11,Mike Long,C.J. Stroud,QB,HOU,0,0,,-5.18,,,2.8,1.7,0.64,,00-0039163
+2024,48,4,12,John Juliano,Josh Allen,QB,BUF,0,0,,27.28,,,20.7,12.3,0,,00-0034857
+2024,49,5,1,John Juliano,Malik Nabers,WR,NYG,0,0,,13.58,,,-3.5,-2.1,0.48,,00-0039337
+2024,50,5,2,Mike Long,Jayden Reed,WR,GB,0,0,,-0.86,,,-13.1,-7.8,0,,00-0039146
+2024,51,5,3,Frank & Julian,D.J. Moore,WR,CHI,0,0,,4.27,,,13.1,7.8,0,,00-0034827
+2024,52,5,4,Pung & Tralie,Amari Cooper,WR,CLE,0,0,,-8.86,,,2.5,1.5,0.4,,00-0031544
+2024,53,5,5,Rob & GregBo,DK Metcalf,WR,SEA,0,0,,-2.58,,,17.5,10.4,0,,00-0035640
+2024,54,5,6,Nolan & Vinny,Tank Dell,WR,HOU,0,0,,-6.47,,,5.5,3.3,0,,00-0038977
+2024,55,5,7,Antdell & Ernie,Anthony Richardson,QB,IND,0,0,,-10.76,,,-9.4,-5.6,0,,00-0039164
+2024,56,5,8,Ronnie,Dalton Kincaid,TE,BUF,0,0,,-4.99,,,-11,-6.5,0,,00-0038933
+2024,57,5,9,Richie,Mark Andrews,TE,BAL,0,0,,7.19,,,7.3,4.3,0,,00-0034753
+2024,58,5,10,Phil Baldino,George Kittle,TE,SF,0,0,,22.64,,,-14.4,-8.6,0,,00-0033288
+2024,59,5,11,Cambrias,Tee Higgins,WR,CIN,0,0,,3.65,,,10.5,6.3,0,,00-0036410
+2024,60,5,12,Chris & Dom,James Conner,RB,ARI,0,0,,19.75,,,15,8.9,0,,00-0033553
+2024,61,6,1,Chris & Dom,George Pickens,WR,PIT,0,0,,-3.9,,,6.3,3.8,0,,00-0037247
+2024,62,6,2,Cambrias,Rashee Rice,WR,KC,0,0,,-14.42,,,-2.1,-1.3,0.74,,00-0039067
+2024,63,6,3,Phil Baldino,Rhamondre Stevenson,RB,NE,0,0,,-0.6,,,1.1,0.7,0.78,,00-0036875
+2024,64,6,4,Richie,David Montgomery,RB,DET,0,0,,10.43,,,12.9,7.7,0,,00-0035685
+2024,65,6,5,Ronnie,Terry McLaurin,WR,WAS,0,0,,12.78,,,-5.6,-3.3,0.11,,00-0035659
+2024,66,6,6,Antdell & Ernie,Najee Harris,RB,PIT,0,0,,2.01,,,10.1,6,0,,00-0036893
+2024,67,6,7,Nolan & Vinny,Kyle Pitts,TE,ATL,0,0,,-1.84,,,-16.3,-9.7,0,,00-0036970
+2024,68,6,8,Rob & GregBo,Zamir White,RB,LV,0,0,,-16.52,,,3.2,1.9,0.56,,00-0038040
+2024,69,6,9,Pung & Tralie,Keenan Allen,WR,CHI,0,0,,-1.99,,,7.1,4.2,0,,00-0030279
+2024,70,6,10,Frank & Julian,Christian Kirk,WR,JAX,0,0,,-13.62,,,15.8,9.4,0,,00-0034775
+2024,71,6,11,Mike Long,Javonte Williams,RB,DEN,0,0,,-3.56,,,-46.7,-27.8,0,,00-0036997
+2024,72,6,12,John Juliano,Evan Engram,TE,JAX,0,0,,-5.78,,,-17.3,-10.3,0,,00-0033881
+2024,73,7,1,John Juliano,Calvin Ridley,WR,TEN,0,0,,-0.89,,,-1.2,-0.7,0.78,,00-0034837
+2024,74,7,2,Mike Long,Tua Tagovailoa,QB,MIA,0,0,,-8.02,,,-15.6,-9.3,0,,00-0036212
+2024,75,7,3,Frank & Julian,Dak Prescott,QB,DAL,0,0,,-14.89,,,18.3,10.9,0,,00-0033077
+2024,76,7,4,Pung & Tralie,Xavier Worthy,WR,KC,0,0,,-1.16,,,-2.8,-1.7,0.59,,00-0039894
+2024,77,7,5,Rob & GregBo,Zay Flowers,WR,BAL,0,0,,2.21,,,20.1,12,0,,00-0039064
+2024,78,7,6,Nolan & Vinny,Kyler Murray,QB,ARI,0,0,,3.01,,,9.6,5.7,0,,00-0035228
+2024,79,7,7,Antdell & Ernie,Tony Pollard,RB,TEN,0,0,,3.9,,,3.1,1.8,0.61,,00-0035261
+2024,80,7,8,Ronnie,Rome Odunze,WR,CHI,0,0,,-5.88,,,-53.8,-32,0,,00-0039919
+2024,81,7,9,Richie,Chris Godwin,WR,TB,0,0,,-6.09,,,9.5,5.7,0,,00-0033921
+2024,82,7,10,Phil Baldino,Diontae Johnson,WR,CAR,0,0,,-11.44,,,-23.7,-14.1,0,,00-0035216
+2024,83,7,11,Cambrias,Brock Bowers,TE,LV,0,0,,29.52,,,-25.1,-14.9,0,,00-0039338
+2024,84,7,12,Chris & Dom,Joe Burrow,QB,CIN,0,0,,28.34,,,3,1.8,0.63,,00-0036442
+2024,85,8,1,Chris & Dom,Raheem Mostert,RB,MIA,0,0,,-11.06,,,17,10.1,0,,00-0031687
+2024,86,8,2,Cambrias,Nick Chubb,RB,CLE,0,0,,-11.46,,,28.2,16.8,0,,00-0034791
+2024,87,8,3,Phil Baldino,Devin Singletary,RB,NYG,0,0,,-8.56,,,-22.7,-13.5,0,,00-0035250
+2024,88,8,4,Richie,Tyjae Spears,RB,TEN,0,0,,-6.47,,,-1.9,-1.1,0.7,,00-0039032
+2024,89,8,5,Ronnie,Ladd McConkey,WR,LAC,0,0,,7.69,,,0.5,0.3,0.91,,00-0039915
+2024,90,8,6,Antdell & Ernie,Jake Ferguson,TE,DAL,0,0,,-4.03,,,-4.3,-2.6,0.44,,00-0038041
+2024,91,8,7,Nolan & Vinny,Marquise Brown,WR,KC,0,0,,-17.55,,,12.8,7.6,0,,00-0035662
+2024,92,8,8,Rob & GregBo,Keon Coleman,WR,BUF,0,0,,-8.93,,,10.5,6.3,0,,00-0039901
+2024,93,8,9,Pung & Tralie,Zack Moss,RB,CIN,0,0,,-9.46,,,17.7,10.5,0,,00-0036251
+2024,94,8,10,Frank & Julian,Jerome Ford,RB,CLE,0,0,,-4.5,,,-1.9,-1.1,0.79,,00-0037267
+2024,95,8,11,Mike Long,David Njoku,TE,CLE,0,0,,2.29,,,-7.9,-4.7,0.12,,00-0033885
+2024,96,8,12,John Juliano,Jonathon Brooks,RB,CAR,0,0,,-16.32,,,13.3,7.9,0,,00-0039344
+2024,97,9,1,John Juliano,Jaxon Smith-Njigba,WR,SEA,0,0,,15.25,,,2.3,1.4,0.7,,00-0038543
+2024,98,9,2,Mike Long,Jaylen Warren,RB,PIT,0,0,,-5.5,,,15.5,9.2,0,,00-0037228
+2024,99,9,3,Frank & Julian,Trey Benson,RB,ARI,0,0,,-12.18,,,-3.2,-1.9,0.55,,00-0039921
+2024,100,9,4,Pung & Tralie,Dallas Goedert,TE,PHI,0,0,,-4.53,,,-33.8,-20.1,0,,00-0034351
+2024,101,9,5,Rob & GregBo,Chase Brown,RB,CIN,0,0,,21.69,,,7.7,4.6,0,,00-0038597
+2024,102,9,6,Nolan & Vinny,Brian Robinson,RB,WAS,0,0,,-2.13,,,11.8,7,0,,00-0037746
+2024,103,9,7,Antdell & Ernie,Romeo Doubs,WR,GB,0,0,,-5.93,,,3,1.8,0.53,,00-0037816
+2024,104,9,8,Ronnie,Austin Ekeler,RB,WAS,0,0,,-4.82,,,15.3,9.1,0,,00-0033699
+2024,105,9,9,Richie,Christian Watson,WR,GB,0,0,,-8.03,,,22.2,13.2,0,,00-0038124
+2024,106,9,10,Phil Baldino,DeAndre Hopkins,WR,TEN,0,0,,-4.49,,,14.3,8.5,0,,00-0030564
+2024,107,9,11,Cambrias,Brian Thomas Jr.,WR,JAX,0,0,,20.46,,,-35.9,-21.4,0,,00-0039893
+2024,108,9,12,Chris & Dom,Rico Dowdle,RB,DAL,0,0,,0.33,,,-6,-3.6,0.23,,00-0036139
+2024,109,10,1,Chris & Dom,Jared Goff,QB,DET,0,0,,17.4,,,16.7,9.9,0,,00-0033106
+2024,110,10,2,Cambrias,Jordan Love,QB,GB,0,0,,-2.31,,,31.3,18.6,0,,00-0036264
+2024,111,10,3,Phil Baldino,Gus Edwards,RB,LAC,0,0,,-9.86,,,24.1,14.3,0,,00-0034184
+2024,112,10,4,Richie,Ezekiel Elliott,RB,DAL,0,0,,-10.28,,,-19.2,-11.4,0,,00-0033045
+2024,113,10,5,Ronnie,Joshua Palmer,WR,LAC,0,0,,-7.6,,,-9.5,-5.7,0.14,,00-0036988
+2024,114,10,6,Antdell & Ernie,Zach Charbonnet,RB,SEA,0,0,,-0.16,,,-0.6,-0.4,0.95,,00-0039165
+2024,115,10,7,Nolan & Vinny,Blake Corum,RB,LAR,0,0,,-12.26,,,9.8,5.8,0,,00-0039738
+2024,116,10,8,Rob & GregBo,Chuba Hubbard,RB,CAR,0,0,,18.45,,,-5.3,-3.2,0.48,,00-0036555
+2024,117,10,9,Pung & Tralie,New York Jets,DEF,NYJ,0,0,,-2.07,,,-24.9,-14.8,0,,DEF-0025
+2024,118,10,10,Frank & Julian,Jordan Addison,WR,MIN,0,0,,4.37,,,-9.3,-5.5,0.18,,00-0038994
+2024,119,10,11,Mike Long,Dallas Cowboys,DEF,DAL,0,0,,-0.39,,,-26.7,-15.9,0,,DEF-0009
+2024,120,10,12,John Juliano,Adonai Mitchell,WR,IND,0,0,,-11.25,,,-38.2,-22.7,0,,00-0039890
+2024,121,11,1,John Juliano,Courtland Sutton,WR,DEN,0,0,,6.87,,,20.1,12,0,,00-0034348
+2024,122,11,2,Mike Long,Jameson Williams,WR,DET,0,0,,1.71,,,22.1,13.2,0,,00-0037240
+2024,123,11,3,Frank & Julian,Caleb Williams,QB,CHI,0,0,,-1.1,,,10.1,6,0,,00-0039918
+2024,124,11,4,Pung & Tralie,J.K. Dobbins,RB,LAC,0,0,,0,,,3.7,2.2,0.61,,00-0036158
+2024,125,11,5,Rob & GregBo,Cole Kmet,TE,CHI,0,0,,-1.86,,,,,,,00-0036290
+2024,126,11,6,Nolan & Vinny,San Francisco 49ers,DEF,SF,0,0,,-1.44,,,-10.3,-6.1,0.41,,DEF-0028
+2024,127,11,7,Antdell & Ernie,Khalil Shakir,WR,BUF,0,0,,-1.2,,,22.3,13.3,0,,00-0037261
+2024,128,11,8,Ronnie,Baltimore Ravens,DEF,BAL,0,0,,-0.28,,,-6,-3.6,0.67,,DEF-0003
+2024,129,11,9,Richie,Tyler Allgeier,RB,ATL,0,0,,-5.62,,,15.7,9.3,0,,00-0037263
+2024,130,11,10,Phil Baldino,T.J. Hockenson,TE,MIN,0,0,,-4.18,,,21.4,12.7,0,,00-0035229
+2024,131,11,11,Cambrias,Justin Tucker,K,BAL,0,0,,1.9,,,-6.5,-3.9,0.67,,00-0029597
+2024,132,11,12,Chris & Dom,Cleveland Browns,DEF,CLE,0,0,,-1.73,,,-20.2,-12,0,,DEF-0008
+2024,133,12,1,Chris & Dom,Brandon Aubrey,K,DAL,0,0,,14.62,,,-3.5,-2.1,0.79,,00-0037692
+2024,134,12,2,Cambrias,Pittsburgh Steelers,DEF,PIT,0,0,,9.24,,,-27.8,-16.5,0,,DEF-0027
+2024,135,12,3,Phil Baldino,Brock Purdy,QB,SF,0,0,,3.03,,,73.3,43.6,0,,00-0037834
+2024,136,12,4,Richie,Curtis Samuel,WR,BUF,0,0,,-9.09,,,23.2,13.8,0,,00-0033282
+2024,137,12,5,Ronnie,Harrison Butker,K,KC,0,0,,-1.96,,,-4.1,-2.4,0.76,,00-0033303
+2024,138,12,6,Antdell & Ernie,Jaylen Wright,RB,MIA,0,0,,-9.28,,,-21.6,-12.9,0,,00-0039874
+2024,139,12,7,Nolan & Vinny,Jake Elliott,K,PHI,0,0,,0.32,,,-22.5,-13.4,0,,00-0033787
+2024,140,12,8,Rob & GregBo,Jake Moody,K,SF,0,0,,-1.27,,,-13.8,-8.2,0.19,,00-0038562
+2024,141,12,9,Pung & Tralie,Justin Herbert,QB,LAC,0,0,,0,,,37.4,22.3,0,,00-0036355
+2024,142,12,10,Frank & Julian,Evan McPherson,K,CIN,0,0,,-2.11,,,-11.7,-7,0.32,,00-0036854
+2024,143,12,11,Mike Long,Rashid Shaheed,WR,NO,0,0,,-6.2,,,14.2,8.5,0,,00-0037545
+2024,144,12,12,John Juliano,Younghoe Koo,K,ATL,0,0,,-0.63,,,-11.2,-6.7,0.24,,00-0033702
+2024,145,13,1,John Juliano,Chicago Bears,DEF,CHI,0,0,,0,,,-11.2,-6.7,0.43,,DEF-0006
+2024,146,13,2,Mike Long,Cameron Dicker,K,LAC,0,0,,10.44,,,,,,,00-0037224
+2024,147,13,3,Frank & Julian,Washington Commanders,DEF,WAS,0,0,,-1.02,,,,,,,DEF-0032
+2024,148,13,4,Pung & Tralie,Jayden Daniels,QB,WAS,0,0,,30.69,,,31.3,18.6,0,,00-0039910
+2024,149,13,5,Rob & GregBo,Philadelphia Eagles,DEF,PHI,0,0,,6.89,,,,,,,DEF-0026
+2024,150,13,6,Nolan & Vinny,Ty Chandler,RB,MIN,0,0,,-6.76,,,11.8,7,0.07,,00-0037276
+2024,151,13,7,Antdell & Ernie,Ja'Lynn Polk,WR,NE,0,0,,-7.1,,,,,,,00-0039907
+2024,152,13,8,Ronnie,Matthew Stafford,QB,LAR,0,0,,-1.79,,,32.9,19.6,0,,00-0026498
+2024,153,13,9,Richie,Seattle Seahawks,DEF,SEA,0,0,,7.6,,,,,,,DEF-0029
+2024,154,13,10,Phil Baldino,Kansas City Chiefs,DEF,KC,0,0,,0.66,,,-7.3,-4.3,0.6,,DEF-0016
+2024,155,13,11,Cambrias,Taysom Hill,QB,NO,0,0,,-5.4,,,,,,,00-0033357
+2024,156,13,12,Chris & Dom,Jakobi Meyers,WR,LV,0,0,,-0.2,,,-4.4,-2.6,0.76,,00-0034960
+2024,157,14,1,Chris & Dom,Dalton Schultz,TE,HOU,0,0,,-1.02,,,13.3,7.9,0.27,,00-0034383
+2024,158,14,2,Cambrias,Trevor Lawrence,QB,JAX,0,0,,-3.28,,,24.3,14.5,0,,00-0036971
+2024,159,14,3,Phil Baldino,Ka'imi Fairbairn,K,HOU,0,0,,11.68,,,19.8,11.8,0,,00-0032726
+2024,160,14,4,Richie,Darnell Mooney,WR,ATL,0,0,,-0.15,,,,,,,00-0036309
+2024,161,14,5,Ronnie,Aaron Rodgers,QB,NYJ,0,0,,-0.59,,,44.6,26.5,0,,00-0023459
+2024,162,14,6,Antdell & Ernie,Jaleel McLaughlin,RB,DEN,0,0,,-1.74,,,33.9,20.2,0,,00-0038794
+2024,163,14,7,Nolan & Vinny,Jerry Jeudy,WR,CLE,0,0,,10.18,,,35.3,21,0,,00-0036407
+2024,164,14,8,Rob & GregBo,Kirk Cousins,QB,ATL,0,0,,-1.08,,,34.6,20.6,0,,00-0029604
+2024,165,14,9,Pung & Tralie,Jason Sanders,K,MIA,0,0,,8.77,,,4.8,2.9,0.73,,00-0034794
+2024,166,14,10,Frank & Julian,Xavier Legette,WR,CAR,0,0,,-0.48,,,,,,,00-0039342
+2024,167,14,11,Mike Long,Gabriel Davis,WR,JAX,0,0,,-0.35,,,,,,,00-0036196
+2024,168,14,12,John Juliano,Elijah Mitchell,RB,SF,0,0,,-0,,,,,,,00-0036567
+2023,1,1,1,Chris & Dom,Justin Jefferson,WR,MIN,0,0,,-4.65,,,-0.4,-0.2,0.43,,00-0036322
+2023,2,1,2,Rob & GregBo,Ja'Marr Chase,WR,CIN,0,0,,5.51,,,-3.6,-2,0,,00-0036900
+2023,3,1,3,Ronnie,Christian McCaffrey,RB,SF,0,0,,25.18,,,0.7,0.4,0.3,,00-0033280
+2023,4,1,4,Pung & Tralie,Bijan Robinson,RB,ATL,0,0,,5.69,,,-3.4,-1.9,0.13,,00-0038542
+2023,5,1,5,Nolan & Vinny,Austin Ekeler,RB,LAC,0,0,,0,,,2.5,1.4,0,,00-0033699
+2023,6,1,6,Mike Long,Tyreek Hill,WR,MIA,0,0,,19.06,,,1.4,0.8,0.36,,00-0033040
+2023,7,1,7,Antdell & Ernie,Nick Chubb,RB,CLE,0,0,,-17.91,,,1,0.6,0.71,,00-0034791
+2023,8,1,8,Cambrias,Tony Pollard,RB,DAL,0,0,,4.22,,,-5.5,-3.1,0.1,,00-0035261
+2023,9,1,9,Richie,CeeDee Lamb,WR,DAL,0,0,,22.18,,,-6.4,-3.6,0.28,,00-0036358
+2023,10,1,10,John Juliano,Saquon Barkley,RB,NYG,0,0,,3.51,,,0.3,0.2,0.94,,00-0034844
+2023,11,1,11,Frank & Julian,Stefon Diggs,WR,BUF,0,0,,7.47,,,-0.1,-0.1,0.98,,00-0031588
+2023,12,1,12,Phil Baldino,Davante Adams,WR,LV,0,0,,6.11,,,-5.3,-2.9,0.49,,00-0031381
+2023,13,2,1,Phil Baldino,Josh Jacobs,RB,LV,0,0,,1.28,,,-6.1,-3.4,0.26,,00-0035700
+2023,14,2,2,Frank & Julian,Amon-Ra St. Brown,WR,DET,0,0,,15.26,,,-3.1,-1.7,0.62,,00-0036963
+2023,15,2,3,John Juliano,Derrick Henry,RB,TEN,0,0,,7.86,,,2.4,1.3,0.67,,00-0032764
+2023,16,2,4,Richie,A.J. Brown,WR,PHI,0,0,,12.83,,,2.4,1.3,0.61,,00-0035676
+2023,17,2,5,Cambrias,Travis Kelce,TE,KC,0,0,,13.64,,,11.7,6.5,0,,00-0030506
+2023,18,2,6,Antdell & Ernie,Garrett Wilson,WR,NYJ,0,0,,0.45,,,0.7,0.4,0.9,,00-0037740
+2023,19,2,7,Mike Long,Chris Olave,WR,NO,0,0,,1.43,,,-4.2,-2.3,0.53,,00-0037239
+2023,20,2,8,Nolan & Vinny,Jaylen Waddle,WR,MIA,0,0,,-0.85,,,-2.8,-1.6,0.77,,00-0036613
+2023,21,2,9,Pung & Tralie,Cooper Kupp,WR,LAR,0,0,,-4.93,,,12.1,6.7,0,,00-0033908
+2023,22,2,10,Ronnie,Travis Etienne,RB,JAX,0,0,,16.45,,,-6.4,-3.6,0.3,,00-0036973
+2023,23,2,11,Rob & GregBo,Najee Harris,RB,PIT,0,0,,-0.38,,,-4.1,-2.3,0.66,,00-0036893
+2023,24,2,12,Chris & Dom,Tee Higgins,WR,CIN,0,0,,-8.11,,,-4.5,-2.5,0.62,,00-0036410
+2023,25,3,1,Chris & Dom,DeVonta Smith,WR,PHI,0,0,,3.65,,,-5.1,-2.8,0.28,,00-0036912
+2023,26,3,2,Rob & GregBo,Jalen Hurts,QB,PHI,0,0,,19.19,,,0.3,0.2,0.97,,00-0036389
+2023,27,3,3,Ronnie,Deebo Samuel,WR,SF,0,0,,5.34,,,-6.5,-3.6,0.1,,00-0035719
+2023,28,3,4,Pung & Tralie,Patrick Mahomes,QB,KC,0,0,,5.69,,,9.6,5.3,0.13,,00-0033873
+2023,29,3,5,Nolan & Vinny,Josh Allen,QB,BUF,0,0,,22.81,,,3.9,2.2,0.63,,00-0034857
+2023,30,3,6,Mike Long,DK Metcalf,WR,SEA,0,0,,3.06,,,-5.1,-2.8,0.06,,00-0035640
+2023,31,3,7,Antdell & Ernie,Calvin Ridley,WR,JAX,0,0,,-0.08,,,-5.1,-2.8,0.51,,00-0034837
+2023,32,3,8,Cambrias,Joe Mixon,RB,CIN,0,0,,12.89,,,1,0.6,0.82,,00-0033897
+2023,33,3,9,Richie,Jahmyr Gibbs,RB,DET,0,0,,11.24,,,-3.1,-1.7,0.46,,00-0039139
+2023,34,3,10,John Juliano,Rhamondre Stevenson,RB,NE,0,0,,-3.19,,,8.5,4.7,0.38,,00-0036875
+2023,35,3,11,Frank & Julian,Aaron Jones,RB,GB,0,0,,-6.48,,,-0.8,-0.4,0.83,,00-0033293
+2023,36,3,12,Phil Baldino,Alvin Kamara,RB,NO,0,0,,11.6,,,-30.1,-16.7,0,,00-0033906
+2023,37,4,1,Phil Baldino,Kenneth Walker III,RB,SEA,0,0,,3.33,,,-2.5,-1.4,0.58,,00-0038134
+2023,38,4,2,Frank & Julian,Lamar Jackson,QB,BAL,0,0,,16.3,,,2.1,1.2,0.64,,00-0034796
+2023,39,4,3,John Juliano,Justin Fields,QB,CHI,0,0,,-3.12,,,-8.7,-4.8,0,,00-0036945
+2023,40,4,4,Richie,Keenan Allen,WR,LAC,0,0,,14.17,,,-2.7,-1.5,0.43,,00-0030279
+2023,41,4,5,Cambrias,DeAndre Hopkins,WR,TEN,0,0,,0,,,-11.7,-6.5,0,,00-0030564
+2023,42,4,6,Antdell & Ernie,Mark Andrews,TE,BAL,0,0,,0.1,,,9.7,5.4,0,,00-0034753
+2023,43,4,7,Mike Long,J.K. Dobbins,RB,BAL,0,0,,-17.57,,,-3,-1.7,0.35,,00-0036158
+2023,44,4,8,Nolan & Vinny,Amari Cooper,WR,CLE,0,0,,3.96,,,12.8,7.1,0,,00-0031544
+2023,45,4,9,Pung & Tralie,Dameon Pierce,RB,HOU,0,0,,-9.85,,,-5.7,-3.2,0,,00-0037258
+2023,46,4,10,Ronnie,Christian Watson,WR,GB,0,0,,-11.41,,,-3.1,-1.7,0.44,,00-0038124
+2023,47,4,11,Rob & GregBo,Alexander Mattison,RB,MIN,0,0,,-4.71,,,-3.2,-1.8,0.42,,00-0034972
+2023,48,4,12,Chris & Dom,Joe Burrow,QB,CIN,0,0,,-10.84,,,7.1,3.9,0,,00-0036442
+2023,49,5,1,Chris & Dom,T.J. Hockenson,TE,MIN,0,0,,18.31,,,-3.6,-2,0.46,,00-0035229
+2023,50,5,2,Rob & GregBo,Darren Waller,TE,NYG,0,0,,-3.19,,,-20.3,-11.3,0,,00-0031610
+2023,51,5,3,Ronnie,Justin Herbert,QB,LAC,0,0,,-1.68,,,6.1,3.4,0,,00-0036355
+2023,52,5,4,Pung & Tralie,Diontae Johnson,WR,PIT,0,0,,-7.79,,,-19.4,-10.8,0,,00-0035216
+2023,53,5,5,Nolan & Vinny,Dallas Goedert,TE,PHI,0,0,,0,,,-29.4,-16.3,0,,00-0034351
+2023,54,5,6,Mike Long,Trevor Lawrence,QB,JAX,0,0,,-0.29,,,-2.1,-1.2,0.61,,00-0036971
+2023,55,5,7,Antdell & Ernie,D.J. Moore,WR,CHI,0,0,,16.27,,,13.3,7.4,0,,00-0034827
+2023,56,5,8,Cambrias,Breece Hall,RB,NYJ,0,0,,19.92,,,24.9,13.8,0,,00-0038120
+2023,57,5,9,Richie,Miles Sanders,RB,CAR,0,0,,-9.16,,,11.1,6.2,0,,00-0035243
+2023,58,5,10,John Juliano,Drake London,WR,ATL,0,0,,-4.09,,,1.8,1,0.71,,00-0037238
+2023,59,5,11,Frank & Julian,Rachaad White,RB,TB,0,0,,18.43,,,-4.2,-2.3,0.25,,00-0037256
+2023,60,5,12,Phil Baldino,George Pickens,WR,PIT,0,0,,0,,,-16.5,-9.2,0,,00-0037247
+2023,61,6,1,Phil Baldino,George Kittle,TE,SF,0,0,,15.9,,,2,1.1,0.68,,00-0033288
+2023,62,6,2,Frank & Julian,James Cook,RB,BUF,0,0,,11.76,,,-9.6,-5.3,0,,00-0037248
+2023,63,6,3,John Juliano,James Conner,RB,ARI,0,0,,-0.34,,,5.8,3.2,0,,00-0033553
+2023,64,6,4,Richie,Tyler Lockett,WR,SEA,0,0,,-2.09,,,1.3,0.7,0.8,,00-0032211
+2023,65,6,5,Cambrias,Chris Godwin,WR,TB,0,0,,-0.98,,,-3.1,-1.7,0.62,,00-0033921
+2023,66,6,6,Antdell & Ernie,Cam Akers,RB,LAR,0,0,,-12.79,,,17.4,9.7,0,,00-0036414
+2023,67,6,7,Mike Long,Isiah Pacheco,RB,KC,0,0,,9.29,,,7.4,4.1,0,,00-0037197
+2023,68,6,8,Nolan & Vinny,Javonte Williams,RB,DEN,0,0,,-1.57,,,2.3,1.3,0.66,,00-0036997
+2023,69,6,9,Pung & Tralie,Jonathan Taylor,RB,IND,0,0,,-4.52,,,44.2,24.6,0,,00-0036223
+2023,70,6,10,Ronnie,D'Andre Swift,RB,PHI,0,0,,5.92,,,0.7,0.4,0.93,,00-0036275
+2023,71,6,11,Rob & GregBo,Christian Kirk,WR,JAX,0,0,,-5.67,,,7,3.9,0,,00-0034775
+2023,72,6,12,Chris & Dom,Dalvin Cook,RB,NYJ,0,0,,-13.14,,,,,,,00-0033893
+2023,73,7,1,Chris & Dom,David Montgomery,RB,DET,0,0,,5.73,,,10.6,5.9,0,,00-0035685
+2023,74,7,2,Rob & GregBo,,,NE,0,0,,,,,,,,,00-0021142
+2023,75,7,3,Ronnie,Jahan Dotson,WR,WAS,0,0,,-8.5,,,-3.8,-2.1,0.54,,00-0037741
+2023,76,7,4,Pung & Tralie,Courtland Sutton,WR,DEN,0,0,,-1.93,,,-16.9,-9.4,0,,00-0034348
+2023,77,7,5,Nolan & Vinny,Mike Evans,WR,TB,0,0,,17.02,,,10.8,6,0,,00-0031408
+2023,78,7,6,Mike Long,Brian Robinson,RB,WAS,0,0,,3.48,,,-1.5,-0.8,0.82,,00-0037746
+2023,79,7,7,Antdell & Ernie,Brandon Aiyuk,WR,SF,0,0,,8.83,,,20.1,11.2,0,,00-0036261
+2023,80,7,8,Cambrias,Khalil Herbert,RB,CHI,0,0,,-6.45,,,-18.1,-10.1,0,,00-0036906
+2023,81,7,9,Richie,Terry McLaurin,WR,WAS,0,0,,-1.26,,,29.4,16.3,0,,00-0035659
+2023,82,7,10,John Juliano,Michael Pittman,WR,IND,0,0,,8.7,,,6.3,3.5,0.45,,00-0036252
+2023,83,7,11,Frank & Julian,Jerry Jeudy,WR,CLE,0,0,,-7.76,,,37.6,20.9,0,,00-0036407
+2023,84,7,12,Phil Baldino,Tua Tagovailoa,QB,MIA,0,0,,4.18,,,2.8,1.6,0.72,,00-0036212
+2023,85,8,1,Phil Baldino,Jordan Addison,WR,MIN,0,0,,0.15,,,-0.4,-0.2,0.95,,00-0038994
+2023,86,8,2,Frank & Julian,Michael Thomas,WR,NO,0,0,,-10.89,,,-21,-11.7,0,,00-0032765
+2023,87,8,3,John Juliano,Marquise Brown,WR,ARI,0,0,,-6.63,,,16.2,9,0,,00-0035662
+2023,88,8,4,Richie,Antonio Gibson,RB,WAS,0,0,,-4.77,,,0.4,0.2,0.95,,00-0036328
+2023,89,8,5,Cambrias,Kyle Pitts,TE,ATL,0,0,,-0.03,,,15.5,8.6,0,,00-0036970
+2023,90,8,6,Antdell & Ernie,Raheem Mostert,RB,MIA,0,0,,23.94,,,-20.2,-11.2,0,,00-0031687
+2023,91,8,7,Mike Long,Pat Freiermuth,TE,PIT,0,0,,-5.1,,,-7.5,-4.2,0.27,,00-0036894
+2023,92,8,8,Nolan & Vinny,Kadarius Toney,WR,KC,0,0,,-13.97,,,-6.1,-3.4,0.36,,00-0036913
+2023,93,8,9,Pung & Tralie,Evan Engram,TE,JAX,0,0,,19.31,,,-15.9,-8.8,0,,00-0033881
+2023,94,8,10,Ronnie,David Njoku,TE,CLE,0,0,,17.76,,,-20.5,-11.4,0,,00-0033885
+2023,95,8,11,Rob & GregBo,Brandin Cooks,WR,DAL,0,0,,-4.59,,,3.5,1.9,0.51,,00-0031236
+2023,96,8,12,Chris & Dom,Jamaal Williams,RB,NO,0,0,,-11.06,,,7.4,4.1,0,,00-0033948
+2023,97,9,1,Chris & Dom,Justin Tucker,K,BAL,0,0,,6.03,,,-38.5,-21.4,0,,00-0029597
+2023,98,9,2,Rob & GregBo,De'Von Achane,RB,MIA,0,0,,0.82,,,,,,,00-0039040
+2023,99,9,3,Ronnie,Treylon Burks,WR,TEN,0,0,,-14.59,,,8.3,4.6,0.09,,00-0037742
+2023,100,9,4,Pung & Tralie,Jaxon Smith-Njigba,WR,SEA,0,0,,-5.29,,,10.5,5.8,0,,00-0038543
+2023,101,9,5,Nolan & Vinny,Zay Flowers,WR,BAL,0,0,,-0.14,,,-3.8,-2.1,0.56,,00-0039064
+2023,102,9,6,Mike Long,Younghoe Koo,K,ATL,0,0,,0,,,-44.3,-24.6,0,,00-0033702
+2023,103,9,7,Antdell & Ernie,Samaje Perine,RB,DEN,0,0,,-4.95,,,9.1,5.1,0,,00-0033526
+2023,104,9,8,Cambrias,Skyy Moore,WR,KC,0,0,,-12.86,,,-17.7,-9.8,0,,00-0038090
+2023,105,9,9,Richie,Gabriel Davis,WR,BUF,0,0,,-3.72,,,,,,,00-0036196
+2023,106,9,10,John Juliano,Zach Charbonnet,RB,SEA,0,0,,-6.33,,,8.8,4.9,0,,00-0039165
+2023,107,9,11,Frank & Julian,San Francisco 49ers,DEF,SF,0,0,,3.51,,,-16.3,-9.1,0,,DEF-0028
+2023,108,9,12,Phil Baldino,AJ Dillon,RB,GB,0,0,,-4.66,,,22.8,12.7,0,,00-0036265
+2023,109,10,1,Phil Baldino,JuJu Smith-Schuster,WR,NE,0,0,,-11.87,,,-1.7,-0.9,0.83,,00-0033857
+2023,110,10,2,Frank & Julian,Odell Beckham,WR,BAL,0,0,,-8.16,,,-4.5,-2.5,0.54,,00-0031235
+2023,111,10,3,John Juliano,Buffalo Bills,DEF,BUF,0,0,,6.27,,,-24.6,-13.7,0,,DEF-0004
+2023,112,10,4,Richie,Philadelphia Eagles,DEF,PHI,0,0,,-2.15,,,-27.3,-15.2,0,,DEF-0026
+2023,113,10,5,Cambrias,Deshaun Watson,QB,CLE,0,0,,-12.77,,,41.7,23.2,0,,00-0033537
+2023,114,10,6,Antdell & Ernie,Elijah Mitchell,RB,SF,0,0,,-11.13,,,13.4,7.4,0,,00-0036567
+2023,115,10,7,Mike Long,New York Jets,DEF,NYJ,0,0,,3.3,,,,,,,DEF-0025
+2023,116,10,8,Nolan & Vinny,Dallas Cowboys,DEF,DAL,0,0,,10.49,,,-16.3,-9.1,0.15,,DEF-0009
+2023,117,10,9,Pung & Tralie,Quentin Johnston,WR,LAC,0,0,,-9.09,,,21.2,11.8,0,,00-0038544
+2023,118,10,10,Ronnie,Tyler Bass,K,BUF,0,0,,-0.23,,,-23.6,-13.1,0,,00-0036162
+2023,119,10,11,Rob & GregBo,Nico Collins,WR,HOU,0,0,,5.81,,,-7.4,-4.1,0.24,,00-0036554
+2023,120,10,12,Chris & Dom,Baltimore Ravens,DEF,BAL,0,0,,11.7,,,-30.2,-16.8,0,,DEF-0003
+2023,121,11,1,Chris & Dom,Adam Thielen,WR,CAR,0,0,,5.25,,,-4.5,-2.5,0.54,,00-0030035
+2023,122,11,2,Rob & GregBo,Rashaad Penny,RB,CAR,0,0,,-12.66,,,38.9,21.6,0,,00-0034750
+2023,123,11,3,Ronnie,Hunter Renfrow,WR,FA,0,0,,-11.69,,,-20.1,-11.2,0,,00-0034983
+2023,124,11,4,Pung & Tralie,Tyler Allgeier,RB,ATL,0,0,,-3.11,,,14.8,8.2,0,,00-0037263
+2023,125,11,5,Nolan & Vinny,Daniel Carlson,K,LV,0,0,,-1.58,,,-14.9,-8.3,0.32,,00-0034161
+2023,126,11,6,Mike Long,Cole Kmet,TE,CHI,0,0,,11.75,,,-6.7,-3.7,0.55,,00-0036290
+2023,127,11,7,Antdell & Ernie,Elijah Moore,WR,CLE,0,0,,-5.3,,,25.6,14.2,0,,00-0036980
+2023,128,11,8,Cambrias,Jerick McKinnon,RB,KC,0,0,,-6.32,,,7.4,4.1,0.23,,00-0031376
+2023,129,11,9,Richie,Harrison Butker,K,KC,0,0,,3.7,,,-11.1,-6.2,0.5,,00-0033303
+2023,130,11,10,John Juliano,Jalin Hyatt,WR,NYG,0,0,,-10.25,,,-35.5,-19.7,0,,00-0038938
+2023,131,11,11,Frank & Julian,Evan McPherson,K,CIN,0,0,,-0.07,,,-18.7,-10.4,0.1,,00-0036854
+2023,132,11,12,Phil Baldino,New England Patriots,DEF,NE,0,0,,-1.28,,,-20.4,-11.3,0,,DEF-0022
+2023,133,12,1,Phil Baldino,Dalton Kincaid,TE,BUF,0,0,,0.57,,,-16.9,-9.4,0.16,,00-0038933
+2023,134,12,2,Frank & Julian,Jaylen Warren,RB,PIT,0,0,,3.99,,,5.2,2.9,0.55,,00-0037228
+2023,135,12,3,John Juliano,Tyler Higbee,TE,LAR,0,0,,-1.59,,,-17.7,-9.8,0.05,,00-0033110
+2023,136,12,4,Richie,Kendre Miller,RB,NO,0,0,,-9.41,,,,,,,00-0038551
+2023,137,12,5,Cambrias,Aaron Rodgers,QB,NYJ,0,0,,-15.92,,,36.1,20.1,0,,00-0023459
+2023,138,12,6,Antdell & Ernie,Jameson Williams,WR,DET,0,0,,-8.09,,,25.8,14.3,0,,00-0037240
+2023,139,12,7,Mike Long,K.J. Osborn,WR,MIN,0,0,,-5.46,,,-24,-13.3,0,,00-0036345
+2023,140,12,8,Nolan & Vinny,Tank Bigsby,RB,JAX,0,0,,-9.09,,,3,1.7,0.78,,00-0038555
+2023,141,12,9,Pung & Tralie,Jake Elliott,K,PHI,0,0,,5.53,,,-4.9,-2.7,0.79,,00-0033787
+2023,142,12,10,Ronnie,Allen Lazard,WR,NYJ,0,0,,-8.82,,,21.4,11.9,0,,00-0034521
+2023,143,12,11,Rob & GregBo,Juwan Johnson,TE,NO,0,0,,-2.53,,,,,,,00-0036040
+2023,144,12,12,Chris & Dom,Deon Jackson,RB,IND,0,0,,-9.88,,,,,,,00-0036493
+2023,145,13,1,Chris & Dom,Darnell Mooney,WR,CHI,0,0,,-7.28,,,22.5,12.5,0,,00-0036309
+2023,146,13,2,Rob & GregBo,Jakobi Meyers,WR,LV,0,0,,-0.62,,,13.1,7.3,0,,00-0034960
+2023,147,13,3,Ronnie,Pittsburgh Steelers,DEF,PIT,0,0,,2.06,,,-12.6,-7,0.34,,DEF-0027
+2023,148,13,4,Pung & Tralie,Ezekiel Elliott,RB,NE,0,0,,-0.66,,,,,,,00-0033045
+2023,149,13,5,Nolan & Vinny,Tyler Boyd,WR,CIN,0,0,,-3.45,,,14.4,8,0,,00-0033009
+2023,150,13,6,Mike Long,Deuce Vaughn,RB,DAL,0,0,,-8.36,,,,,,,00-0038622
+2023,151,13,7,Antdell & Ernie,Kirk Cousins,QB,MIN,0,0,,-5.16,,,60.4,33.6,0,,00-0029604
+2023,152,13,8,Cambrias,New Orleans Saints,DEF,NO,0,0,,3.27,,,6.2,3.4,0.7,,DEF-0023
+2023,153,13,9,Richie,Anthony Richardson,QB,IND,0,0,,-8.76,,,19.8,11,0,,00-0039164
+2023,154,13,10,John Juliano,Rashee Rice,WR,KC,0,0,,1.94,,,,,,,00-0039067
+2023,155,13,11,Frank & Julian,Damien Harris,RB,BUF,0,0,,-7.34,,,58.8,32.7,0,,00-0035657
+2023,156,13,12,Phil Baldino,Dak Prescott,QB,DAL,0,0,,20.53,,,79.4,44.1,0,,00-0033077
+2023,157,14,1,Phil Baldino,Zay Jones,WR,JAX,0,0,,-6.31,,,13.3,7.4,0,,00-0033891
+2023,158,14,2,Frank & Julian,Jeffery Wilson,RB,MIA,0,0,,-6.02,,,,,,,00-0034115
+2023,159,14,3,John Juliano,Jason Myers,K,SEA,0,0,,5.42,,,-11.9,-6.6,0.44,,00-0031492
+2023,160,14,4,Richie,Gerald Everett,TE,LAC,0,0,,-1.04,,,6.4,3.6,0.62,,00-0033895
+2023,161,14,5,Cambrias,Washington Commanders,DEF,WAS,0,0,,-2.39,,,-7.9,-4.4,0.65,,DEF-0032
+2023,162,14,6,Antdell & Ernie,Daniel Jones,QB,NYG,0,0,,-7.4,,,67.9,37.7,0,,00-0035710
+2023,163,14,7,Mike Long,Derek Carr,QB,NO,0,0,,-1.32,,,14.3,7.9,0.24,,00-0031280
+2023,164,14,8,Nolan & Vinny,Jared Goff,QB,DET,0,0,,5.82,,,43.3,24.1,0,,00-0033106
+2023,165,14,9,Pung & Tralie,Jacksonville Jaguars,DEF,JAX,0,0,,-0.24,,,,,,,DEF-0015
+2023,166,14,10,Ronnie,Clyde Edwards-Helaire,RB,KC,0,0,,-3.47,,,37.5,20.8,0,,00-0036360
+2023,167,14,11,Rob & GregBo,Miami Dolphins,DEF,MIA,0,0,,5.8,,,1.9,1.1,0.89,,DEF-0020
+2023,168,14,12,Chris & Dom,Gus Edwards,RB,BAL,0,0,,3.27,,,26.7,14.8,0,,00-0034184
+2023,169,15,1,Chris & Dom,Romeo Doubs,WR,GB,0,0,,-0.89,,,21,11.7,0,,00-0037816
+2023,170,15,2,Rob & GregBo,Graham Gano,K,NYG,0,0,,-2.12,,,6.9,3.8,0.73,,00-0026858
+2023,171,15,3,Ronnie,Michael Gallup,WR,DAL,0,0,,-2.81,,,16,8.9,0.02,,00-0034764
+2023,172,15,4,Pung & Tralie,Zack Moss,RB,CIN,0,0,,-0.17,,,1.5,0.8,0.92,,00-0036251
+2023,173,15,5,Nolan & Vinny,Devin Singletary,RB,HOU,0,0,,-0.37,,,51,28.3,0,,00-0035250
+2023,174,15,6,Mike Long,Kenneth Gainwell,RB,PHI,0,0,,-1.4,,,59.9,33.3,0,,00-0036919
+2023,175,15,7,Antdell & Ernie,Greg Joseph,K,MIN,0,0,,-0.33,,,,,,,00-0034450
+2023,176,15,8,Cambrias,Jason Sanders,K,MIA,0,0,,3.4,,,8.8,4.9,0.54,,00-0034794
+2023,177,15,9,Richie,Geno Smith,QB,SEA,0,0,,-0.37,,,72.9,40.5,0,,00-0030565
+2023,178,15,10,John Juliano,Sam LaPorta,TE,DET,0,0,,28.86,,,22.5,12.5,0,,00-0039065
+2023,179,15,11,Frank & Julian,Russell Wilson,QB,DEN,0,0,,2.42,,,50.9,28.3,0,,00-0029263
+2023,180,15,12,Phil Baldino,Cameron Dicker,K,LAC,0,0,,0.93,,,,,,,00-0037224
+2022,1,1,1,Rob & GregBo,Jonathan Taylor,RB,IND,0,0,,-2.52,,,-0.3,-0.2,0.5,,00-0036223
+2022,2,1,2,Cambrias,Christian McCaffrey,RB,CAR,0,0,,19.05,,,-0.5,-0.3,0.38,,00-0033280
+2022,3,1,3,Antdell & Ernie,Justin Jefferson,WR,MIN,0,0,,19.98,,,-1.8,-1,0,,00-0036322
+2022,4,1,4,Nolan & Vinny,Austin Ekeler,RB,LAC,0,0,,23.64,,,,,,,00-0033699
+2022,5,1,5,Ronnie,Dalvin Cook,RB,MIN,0,0,,8.58,,,-0.8,-0.4,0.5,,00-0033893
+2022,6,1,6,Frank & Julian,Cooper Kupp,WR,LAR,0,0,,1.8,,,-0.6,-0.3,0.67,,00-0033908
+2022,7,1,7,Richie,Derrick Henry,RB,TEN,0,0,,15.86,,,2.9,1.6,0,,00-0032764
+2022,8,1,8,John Juliano,Najee Harris,RB,PIT,0,0,,5.76,,,0.5,0.3,0.76,,00-0036893
+2022,9,1,9,Pung & Tralie,Ja'Marr Chase,WR,CIN,0,0,,4.75,,,0.1,0.1,0.94,,00-0036900
+2022,10,1,10,Chris & Dom,Stefon Diggs,WR,BUF,0,0,,14.59,,,-4.2,-2.3,0,,00-0031588
+2022,11,1,11,Phil Baldino,Joe Mixon,RB,CIN,0,0,,7.93,,,1.5,0.8,0.29,,00-0033897
+2022,12,1,12,Mike Long,Alvin Kamara,RB,NO,0,0,,4.72,,,0.9,0.5,0.57,,00-0033906
+2022,13,2,1,Mike Long,Davante Adams,WR,LV,0,0,,20.2,,,0.6,0.3,0.77,,00-0031381
+2022,14,2,2,Phil Baldino,Saquon Barkley,RB,NYG,0,0,,17.71,,,-1.4,-0.8,0.5,,00-0034844
+2022,15,2,3,Chris & Dom,D'Andre Swift,RB,DET,0,0,,1.25,,,4.2,2.3,0,,00-0036275
+2022,16,2,4,Pung & Tralie,CeeDee Lamb,WR,DAL,0,0,,15.42,,,-3.2,-1.8,0,,00-0036358
+2022,17,2,5,John Juliano,Aaron Jones,RB,GB,0,0,,11.71,,,0.6,0.3,0.78,,00-0033293
+2022,18,2,6,Richie,Leonard Fournette,RB,TB,0,0,,9.44,,,-3,-1.7,0,,00-0033856
+2022,19,2,7,Frank & Julian,Mike Evans,WR,TB,0,0,,6.61,,,-7.7,-4.3,0,,00-0031408
+2022,20,2,8,Ronnie,Javonte Williams,RB,DEN,0,0,,-14.39,,,1.9,1.1,0.34,,00-0036997
+2022,21,2,9,Nolan & Vinny,Nick Chubb,RB,CLE,0,0,,15.33,,,6.4,3.6,0,,00-0034791
+2022,22,2,10,Antdell & Ernie,Travis Kelce,TE,KC,0,0,,30.83,,,4.8,2.7,0,,00-0030506
+2022,23,2,11,Cambrias,James Conner,RB,ARI,0,0,,5.85,,,-2.1,-1.2,0.4,,00-0033553
+2022,24,2,12,Rob & GregBo,Mark Andrews,TE,BAL,0,0,,10.91,,,0.7,0.4,0.77,,00-0034753
+2022,25,3,1,Rob & GregBo,A.J. Brown,WR,PHI,0,0,,17.52,,,-3.4,-1.9,0,,00-0035676
+2022,26,3,2,Cambrias,Michael Pittman,WR,IND,0,0,,3.46,,,-2.9,-1.6,0.06,,00-0036252
+2022,27,3,3,Antdell & Ernie,Travis Etienne,RB,JAX,0,0,,5.49,,,-7.5,-4.2,0,,00-0036973
+2022,28,3,4,Nolan & Vinny,Tyreek Hill,WR,MIA,0,0,,27.75,,,4.4,2.4,0,,00-0033040
+2022,29,3,5,Ronnie,Deebo Samuel,WR,SF,0,0,,-2.71,,,7.7,4.3,0,,00-0035719
+2022,30,3,6,Frank & Julian,Ezekiel Elliott,RB,DAL,0,0,,3.43,,,2.3,1.3,0.43,,00-0033045
+2022,31,3,7,Richie,Kyle Pitts,TE,ATL,0,0,,-5.87,,,-0.8,-0.4,0.76,,00-0036970
+2022,32,3,8,John Juliano,Keenan Allen,WR,LAC,0,0,,-6.05,,,0.8,0.4,0.68,,00-0030279
+2022,33,3,9,Pung & Tralie,Dameon Pierce,RB,HOU,0,0,,0,,,-43.4,-24.1,0,,00-0037258
+2022,34,3,10,Chris & Dom,Josh Allen,QB,BUF,0,0,,26.82,,,12.3,6.8,0,,00-0034857
+2022,35,3,11,Phil Baldino,,,NE,0,0,,,,,,,,,00-0021142
+2022,36,3,12,Mike Long,Lamar Jackson,QB,BAL,0,0,,0,,,-11.3,-6.3,0,,00-0034796
+2022,37,4,1,Mike Long,George Kittle,TE,SF,0,0,,11.78,,,-7.5,-4.2,0,,00-0033288
+2022,38,4,2,Phil Baldino,Justin Herbert,QB,LAC,0,0,,5.27,,,4.1,2.3,0.21,,00-0036355
+2022,39,4,3,Chris & Dom,D.J. Moore,WR,CAR,0,0,,1.79,,,-1.8,-1,0.56,,00-0034827
+2022,40,4,4,Pung & Tralie,Courtland Sutton,WR,DEN,0,0,,-4.15,,,-7.3,-4.1,0,,00-0034348
+2022,41,4,5,John Juliano,Amon-Ra St. Brown,WR,DET,0,0,,13.79,,,-34.3,-19.1,0,,00-0036963
+2022,42,4,6,Richie,Tee Higgins,WR,CIN,0,0,,6.17,,,8.8,4.9,0,,00-0036410
+2022,43,4,7,Frank & Julian,Cam Akers,RB,LAR,0,0,,-4.52,,,11.6,6.4,0,,00-0036414
+2022,44,4,8,Ronnie,Darren Waller,TE,LV,0,0,,-5.26,,,-7.8,-4.3,0,,00-0031610
+2022,45,4,9,Nolan & Vinny,Terry McLaurin,WR,WAS,0,0,,5.54,,,2.7,1.5,0.27,,00-0035659
+2022,46,4,10,Antdell & Ernie,Allen Robinson,WR,LAR,0,0,,-11.15,,,-12.3,-6.8,0,,00-0031428
+2022,47,4,11,Cambrias,David Montgomery,RB,CHI,0,0,,1.74,,,8.9,4.9,0,,00-0035685
+2022,48,4,12,Rob & GregBo,Patrick Mahomes,QB,KC,0,0,,35.69,,,10,5.6,0,,00-0033873
+2022,49,5,1,Rob & GregBo,Breece Hall,RB,NYJ,0,0,,-5.44,,,5.4,3,0,,00-0038120
+2022,50,5,2,Cambrias,Josh Jacobs,RB,LV,0,0,,33.86,,,-78.7,-43.7,0,,00-0035700
+2022,51,5,3,Antdell & Ernie,Chase Edmonds,RB,MIA,0,0,,-10.18,,,-17.2,-9.6,0,,00-0034681
+2022,52,5,4,Nolan & Vinny,Joe Burrow,QB,CIN,0,0,,22.34,,,,,,,00-0036442
+2022,53,5,5,Ronnie,Rashod Bateman,WR,BAL,0,0,,-14.15,,,-32.4,-18,0,,00-0036550
+2022,54,5,6,Frank & Julian,Jaylen Waddle,WR,MIA,0,0,,13.44,,,15.2,8.4,0,,00-0036613
+2022,55,5,7,Richie,AJ Dillon,RB,GB,0,0,,-0.22,,,8.6,4.8,0,,00-0036265
+2022,56,5,8,John Juliano,Jalen Hurts,QB,PHI,0,0,,30.1,,,-1.6,-0.9,0.75,,00-0036389
+2022,57,5,9,Pung & Tralie,Elijah Mitchell,RB,SF,0,0,,-14.59,,,15.2,8.4,0,,00-0036567
+2022,58,5,10,Chris & Dom,J.K. Dobbins,RB,LAC,0,0,,-8.87,,,21.8,12.1,0,,00-0036158
+2022,59,5,11,Phil Baldino,Clyde Edwards-Helaire,RB,KC,0,0,,-7.09,,,6.6,3.7,0,,00-0036360
+2022,60,5,12,Mike Long,Damien Harris,RB,NE,0,0,,-8.45,,,6.5,3.6,0,,00-0035657
+2022,61,6,1,Mike Long,Antonio Gibson,RB,WAS,0,0,,-0.15,,,-41.2,-22.9,0,,00-0036328
+2022,62,6,2,Phil Baldino,Brandin Cooks,WR,HOU,0,0,,-6.62,,,4.5,2.5,0.1,,00-0031236
+2022,63,6,3,Chris & Dom,Dalton Schultz,TE,DAL,0,0,,1.9,,,1.2,0.7,0.85,,00-0034383
+2022,64,6,4,Pung & Tralie,Dallas Goedert,TE,PHI,0,0,,0.79,,,-13.8,-7.7,0,,00-0034351
+2022,65,6,5,John Juliano,Chris Godwin,WR,TB,0,0,,5.98,,,11.1,6.2,0,,00-0033921
+2022,66,6,6,Richie,Marquise Brown,WR,ARI,0,0,,-3.19,,,-0.4,-0.2,0.94,,00-0035662
+2022,67,6,7,Frank & Julian,Diontae Johnson,WR,PIT,0,0,,-1.43,,,16.1,8.9,0,,00-0035216
+2022,68,6,8,Ronnie,Rhamondre Stevenson,RB,NE,0,0,,16.93,,,-7.6,-4.2,0.08,,00-0036875
+2022,69,6,9,Nolan & Vinny,T.J. Hockenson,TE,DET,0,0,,20.12,,,-4.4,-2.4,0.49,,00-0035229
+2022,70,6,10,Antdell & Ernie,Darnell Mooney,WR,CHI,0,0,,-8.45,,,-3.8,-2.1,0.24,,00-0036309
+2022,71,6,11,Cambrias,Gabriel Davis,WR,BUF,0,0,,-2.21,,,,,,,00-0036196
+2022,72,6,12,Rob & GregBo,Jerry Jeudy,WR,DEN,0,0,,-0.81,,,8.4,4.7,0,,00-0036407
+2022,73,7,1,Rob & GregBo,JuJu Smith-Schuster,WR,KC,0,0,,-0.62,,,-7.5,-4.2,0.21,,00-0033857
+2022,74,7,2,Cambrias,Zach Ertz,TE,ARI,0,0,,-1.22,,,-20.7,-11.5,0,,00-0030061
+2022,75,7,3,Antdell & Ernie,Tony Pollard,RB,DAL,0,0,,19.37,,,5.7,3.2,0.07,,00-0035261
+2022,76,7,4,Nolan & Vinny,Michael Thomas,WR,NO,0,0,,-13.29,,,28.9,16.1,0,,00-0032765
+2022,77,7,5,Ronnie,DK Metcalf,WR,SEA,0,0,,7.51,,,30.3,16.8,0,,00-0035640
+2022,78,7,6,Frank & Julian,Russell Wilson,QB,DEN,0,0,,-3.29,,,9.7,5.4,0,,00-0029263
+2022,79,7,7,Richie,Hunter Renfrow,WR,LV,0,0,,-12.03,,,,,,,00-0034983
+2022,80,7,8,John Juliano,Dawson Knox,TE,BUF,0,0,,-0.03,,,-77.9,-43.3,0,,00-0035689
+2022,81,7,9,Pung & Tralie,Miles Sanders,RB,PHI,0,0,,11.46,,,18.8,10.4,0,,00-0035243
+2022,82,7,10,Chris & Dom,DeAndre Hopkins,WR,TEN,0,0,,-3.43,,,24.9,13.8,0,,00-0030564
+2022,83,7,11,Phil Baldino,Amari Cooper,WR,CLE,0,0,,12.72,,,,,,,00-0031544
+2022,84,7,12,Mike Long,Adam Thielen,WR,MIN,0,0,,-1.62,,,13.2,7.3,0,,00-0030035
+2022,85,8,1,Mike Long,Buffalo Bills,DEF,BUF,0,0,,7.58,,,-35.9,-19.9,0,,DEF-0004
+2022,86,8,2,Phil Baldino,Cole Kmet,TE,CHI,0,0,,1.88,,,-30.2,-16.8,0,,00-0036290
+2022,87,8,3,Chris & Dom,Elijah Moore,WR,NYJ,0,0,,-9.38,,,-4.8,-2.7,0.38,,00-0036980
+2022,88,8,4,Pung & Tralie,Robert Woods,WR,TEN,0,0,,-7.26,,,-13.5,-7.5,0,,00-0030431
+2022,89,8,5,John Juliano,Allen Lazard,WR,NYJ,0,0,,-2.5,,,-6.7,-3.7,0.07,,00-0034521
+2022,90,8,6,Richie,Kareem Hunt,RB,CLE,0,0,,-4.2,,,25.1,13.9,0,,00-0033923
+2022,91,8,7,Frank & Julian,Cordarrelle Patterson,RB,ATL,0,0,,-1.94,,,0.4,0.2,0.94,,00-0030578
+2022,92,8,8,Ronnie,Derek Carr,QB,LV,0,0,,-1.61,,,-10.8,-6,0,,00-0031280
+2022,93,8,9,Nolan & Vinny,DeVonta Smith,WR,PHI,0,0,,13.4,,,5.3,2.9,0.07,,00-0036912
+2022,94,8,10,Antdell & Ernie,Brandon Aiyuk,WR,SF,0,0,,8.24,,,-1.6,-0.9,0.76,,00-0036261
+2022,95,8,11,Cambrias,Christian Kirk,WR,JAX,0,0,,9.34,,,-6.3,-3.5,0.05,,00-0034775
+2022,96,8,12,Rob & GregBo,Melvin Gordon,RB,DEN,0,0,,-7.04,,,12.6,7,0,,00-0032144
+2022,97,9,1,Rob & GregBo,Drake London,WR,ATL,0,0,,-2.28,,,-18.7,-10.4,0,,00-0037238
+2022,98,9,2,Cambrias,Kyler Murray,QB,ARI,0,0,,-3.17,,,41.1,22.8,0,,00-0035228
+2022,99,9,3,Antdell & Ernie,Trey Lance,QB,SF,0,0,,-19.3,,,7.2,4,0.23,,00-0037012
+2022,100,9,4,Nolan & Vinny,Tyler Boyd,WR,CIN,0,0,,-2.76,,,,,,,00-0033009
+2022,101,9,5,Ronnie,Kadarius Toney,WR,NYG,0,0,,-12.14,,,-7.1,-3.9,0.1,,00-0036913
+2022,102,9,6,Frank & Julian,Devin Singletary,RB,BUF,0,0,,2.87,,,27.2,15.1,0,,00-0035250
+2022,103,9,7,Richie,Darrell Henderson,RB,LAR,0,0,,-7.84,,,-35.1,-19.5,0,,00-0035664
+2022,104,9,8,John Juliano,James Cook,RB,BUF,0,0,,-5.69,,,11.1,6.2,0,,00-0037248
+2022,105,9,9,Pung & Tralie,Rashaad Penny,RB,SEA,0,0,,-9.6,,,44.4,24.7,0,,00-0034750
+2022,106,9,10,Chris & Dom,Jamaal Williams,RB,DET,0,0,,10.57,,,,,,,00-0033948
+2022,107,9,11,Phil Baldino,Pat Freiermuth,TE,PIT,0,0,,5.66,,,-4.5,-2.5,0.59,,00-0036894
+2022,108,9,12,Mike Long,Tyler Lockett,WR,SEA,0,0,,9.93,,,1.5,0.8,0.82,,00-0032211
+2022,109,10,1,Mike Long,Tyler Higbee,TE,LAR,0,0,,5.02,,,,,,,00-0033110
+2022,110,10,2,Phil Baldino,Dak Prescott,QB,DAL,0,0,,-3.81,,,30.8,17.1,0,,00-0033077
+2022,111,10,3,Chris & Dom,Tampa Bay Buccaneers,DEF,TB,0,0,,-0.16,,,-7.5,-4.2,0.5,,DEF-0030
+2022,112,10,4,Pung & Tralie,Tom Brady,QB,TB,0,0,,7.71,,,30,16.7,0,,00-0019596
+2022,113,10,5,John Juliano,Alexander Mattison,RB,MIN,0,0,,-7.75,,,17.2,9.6,0,,00-0034972
+2022,114,10,6,Richie,Chris Olave,WR,NO,0,0,,0,,,-0.2,-0.1,0.97,,00-0037239
+2022,115,10,7,Frank & Julian,Justin Tucker,K,BAL,0,0,,6.33,,,-23.4,-13,0,,00-0029597
+2022,116,10,8,Ronnie,Treylon Burks,WR,TEN,0,0,,-8.29,,,,,,,00-0037742
+2022,117,10,9,Nolan & Vinny,Khalil Herbert,RB,CHI,0,0,,-4.19,,,,,,,00-0036906
+2022,118,10,10,Antdell & Ernie,Nyheim Hines,RB,IND,0,0,,-7.4,,,19,10.6,0,,00-0034367
+2022,119,10,11,Cambrias,Michael Carter,DB,NYJ,0,0,,,,,,,,,00-0036501
+2022,120,10,12,Rob & GregBo,Jakobi Meyers,WR,NE,0,0,,-1.21,,,,,,,00-0034960
+2022,121,11,1,Rob & GregBo,Hunter Henry,TE,NE,0,0,,-2.5,,,,,,,00-0033090
+2022,122,11,2,Cambrias,Julio Jones,WR,TB,0,0,,-8.7,,,-4.2,-2.3,0.7,,00-0027944
+2022,123,11,3,Antdell & Ernie,Kenneth Gainwell,RB,PHI,0,0,,-6.21,,,,,,,00-0036919
+2022,124,11,4,Nolan & Vinny,James Robinson,RB,JAX,0,0,,-5.72,,,,,,,00-0035831
+2022,125,11,5,Ronnie,San Francisco 49ers,DEF,SF,0,0,,12.68,,,,,,,DEF-0028
+2022,126,11,6,Frank & Julian,David Njoku,TE,CLE,0,0,,-0.03,,,,,,,00-0033885
+2022,127,11,7,Richie,J.D. McKissic,RB,WAS,0,0,,-7.82,,,,,,,00-0032602
+2022,128,11,8,John Juliano,George Pickens,WR,PIT,0,0,,-2.66,,,6.9,3.8,0.38,,00-0037247
+2022,129,11,9,Pung & Tralie,Skyy Moore,WR,KC,0,0,,-9.6,,,,,,,00-0038090
+2022,130,11,10,Chris & Dom,Evan McPherson,K,CIN,0,0,,-0.48,,,,,,,00-0036854
+2022,131,11,11,Phil Baldino,Michael Gallup,WR,LV,0,0,,-5.77,,,,,,,00-0034764
+2022,132,11,12,Mike Long,Kirk Cousins,QB,MIN,0,0,,12.01,,,24.6,13.7,0,,00-0029604
+2022,133,12,1,Mike Long,Daniel Carlson,K,LV,0,0,,6.88,,,,,,,00-0034161
+2022,134,12,2,Phil Baldino,Los Angeles Rams,DEF,LAR,0,0,,-0.46,,,,,,,DEF-0019
+2022,135,12,3,Chris & Dom,Aaron Rodgers,QB,GB,0,0,,-0.59,,,39.4,21.9,0,,00-0023459
+2022,136,12,4,Pung & Tralie,Matthew Stafford,QB,LAR,0,0,,-8.22,,,50.2,27.9,0,,00-0026498
+2022,137,12,5,John Juliano,Kenneth Walker III,RB,SEA,0,0,,6.27,,,,,,,00-0038134
+2022,138,12,6,Richie,Trevor Lawrence,QB,JAX,0,0,,14.58,,,,,,,00-0036971
+2022,139,12,7,Frank & Julian,Rachaad White,RB,TB,0,0,,-1.66,,,,,,,00-0037256
+2022,140,12,8,Ronnie,Tyler Bass,K,BUF,0,0,,2.62,,,,,,,00-0036162
+2022,141,12,9,Nolan & Vinny,Matt Gay,K,LAR,0,0,,-0.42,,,,,,,00-0035269
+2022,142,12,10,Antdell & Ernie,Isiah Pacheco,RB,KC,0,0,,-2.61,,,32.2,17.9,0,,00-0037197
+2022,143,12,11,Cambrias,Romeo Doubs,WR,GB,0,0,,-5.15,,,14.9,8.3,0,,00-0037816
+2022,144,12,12,Rob & GregBo,Chase Claypool,WR,PIT,0,0,,-5.05,,,,,,,00-0036326
+2022,145,13,1,Rob & GregBo,Tyler Allgeier,RB,ATL,0,0,,-1.17,,,45.8,25.4,0,,00-0037263
+2022,146,13,2,Cambrias,Harrison Butker,K,KC,0,0,,-1.97,,,-0.9,-0.5,0.95,,00-0033303
+2022,147,13,3,Antdell & Ernie,Albert Okwuegbunam,TE,DEN,0,0,,-5.68,,,,,,,00-0036423
+2022,148,13,4,Nolan & Vinny,Raheem Mostert,RB,MIA,0,0,,-0.34,,,-3.1,-1.7,0.82,,00-0031687
+2022,149,13,5,Ronnie,Mike Gesicki,TE,MIA,0,0,,-2.06,,,,,,,00-0034829
+2022,150,13,6,Frank & Julian,DeVante Parker,WR,NE,0,0,,-5.83,,,,,,,00-0031547
+2022,151,13,7,Richie,Jameson Williams,WR,DET,0,0,,-8.95,,,,,,,00-0037240
+2022,152,13,8,John Juliano,Jake Elliott,K,PHI,0,0,,-1.36,,,,,,,00-0033787
+2022,153,13,9,Pung & Tralie,Christian Watson,WR,GB,0,0,,-2.06,,,,,,,00-0038124
+2022,154,13,10,Chris & Dom,Mike Davis,RB,BAL,0,0,,-7.88,,,,,,,00-0032063
+2022,155,13,11,Phil Baldino,Brian Robinson,RB,WAS,0,0,,-2.53,,,,,,,00-0037746
+2022,156,13,12,Mike Long,Marquez Valdes-Scantling,WR,KC,0,0,,-3.25,,,,,,,00-0034272
+2022,157,14,1,Mike Long,Sammy Watkins,WR,GB,0,0,,-6.72,,,,,,,00-0031325
+2022,158,14,2,Phil Baldino,Denver Broncos,DEF,DEN,0,0,,-0.22,,,,,,,DEF-0010
+2022,159,14,3,Chris & Dom,Mark Ingram,RB,NO,0,0,,-4.98,,,,,,,00-0027966
+2022,160,14,4,Pung & Tralie,Tennessee Titans,DEF,TEN,0,0,,-0.12,,,,,,,DEF-0031
+2022,161,14,5,John Juliano,New Orleans Saints,DEF,NO,0,0,,-0.04,,,,,,,DEF-0023
+2022,162,14,6,Richie,New England Patriots,DEF,NE,0,0,,23.9,,,,,,,DEF-0022
+2022,163,14,7,Frank & Julian,Indianapolis Colts,DEF,IND,0,0,,0,,,12.3,6.8,0.35,,DEF-0014
+2022,164,14,8,Ronnie,Rondale Moore,WR,ATL,0,0,,-3.61,,,,,,,00-0036936
+2022,165,14,9,Nolan & Vinny,Nico Collins,WR,HOU,0,0,,-3.11,,,,,,,00-0036554
+2022,166,14,10,Antdell & Ernie,Baltimore Ravens,DEF,BAL,0,0,,8.22,,,,,,,DEF-0003
+2022,167,14,11,Cambrias,Los Angeles Chargers,DEF,LAC,0,0,,-0.06,,,,,,,DEF-0018
+2022,168,14,12,Rob & GregBo,Philadelphia Eagles,DEF,PHI,0,0,,13.75,,,,,,,DEF-0026
+2022,169,15,1,Rob & GregBo,Ryan Succop,K,TB,0,0,,-0.05,,,,,,,00-0026968
+2022,170,15,2,Cambrias,Green Bay Packers,DEF,GB,0,0,,3.68,,,,,,,DEF-0012
+2022,171,15,3,Antdell & Ernie,Rodrigo Blankenship,K,IND,0,0,,-2.59,,,,,,,00-0035849
+2022,172,15,4,Nolan & Vinny,Dallas Cowboys,DEF,DAL,0,0,,18.76,,,,,,,DEF-0009
+2022,173,15,5,Ronnie,Jameis Winston,QB,NO,0,0,,-3.71,,,,,,,00-0031503
+2022,174,15,6,Frank & Julian,Justin Fields,QB,CHI,0,0,,18.17,,,37.7,20.9,0,,00-0036945
+2022,175,15,7,Richie,Dustin Hopkins,K,LAC,0,0,,-1.27,,,,,,,00-0030098
+2022,176,15,8,John Juliano,Chuba Hubbard,RB,CAR,0,0,,-0.97,,,,,,,00-0036555
+2022,177,15,9,Pung & Tralie,Matt Prater,K,ARI,0,0,,-0.26,,,,,,,00-0023853
+2022,178,15,10,Chris & Dom,Isaiah McKenzie,WR,BUF,0,0,,-0.39,,,,,,,00-0033466
+2022,179,15,11,Phil Baldino,Brandon McManus,K,DEN,0,0,,-0,,,,,,,00-0029822
+2022,180,15,12,Mike Long,Jarvis Landry,WR,NO,0,0,,-0,,,,,,,00-0031382
+2021,1,1,1,Nolan & Vinny,Christian McCaffrey,RB,CAR,0,0,,-4.93,,,-0.3,-0.2,0.5,,00-0033280
+2021,2,1,2,Richie,Dalvin Cook,RB,MIN,0,0,,3.04,,,-0.5,-0.3,0.29,,00-0033893
+2021,3,1,3,Pung & Tralie,Alvin Kamara,RB,NO,0,0,,5.51,,,-0.6,-0.3,0.5,,00-0033906
+2021,4,1,4,John Juliano,Ezekiel Elliott,RB,DAL,0,0,,8.76,,,-1.2,-0.7,0,,00-0033045
+2021,5,1,5,Antdell & Ernie,Travis Kelce,TE,KC,0,0,,12.69,,,-3.7,-2.1,0,,00-0030506
+2021,6,1,6,Chris & Dom,Derrick Henry,RB,TEN,0,0,,3.01,,,2.3,1.3,0,,00-0032764
+2021,7,1,7,Team JoeBa,Davante Adams,WR,GB,0,0,,17.28,,,0,0,1,,00-0031381
+2021,8,1,8,Phil Baldino,Austin Ekeler,RB,LAC,0,0,,19.45,,,-2.7,-1.5,0,,00-0033699
+2021,9,1,9,Frank & Julian,Aaron Jones,RB,GB,0,0,,8.15,,,2.5,1.4,0,,00-0033293
+2021,10,1,10,Cambrias,Tyreek Hill,WR,KC,0,0,,13.47,,,-1.2,-0.7,0.43,,00-0033040
+2021,11,1,11,Ronnie,Jonathan Taylor,RB,IND,0,0,,27.38,,,-0.9,-0.5,0.63,,00-0036223
+2021,12,1,12,Rob & GregBo,Stefon Diggs,WR,BUF,0,0,,9.37,,,-3.6,-2,0,,00-0031588
+2021,13,2,1,Rob & GregBo,Nick Chubb,RB,CLE,0,0,,5.92,,,5.1,2.8,0,,00-0034791
+2021,14,2,2,Ronnie,Najee Harris,RB,PIT,0,0,,18.92,,,0.7,0.4,0.72,,00-0036893
+2021,15,2,3,Cambrias,Saquon Barkley,RB,NYG,0,0,,-3.36,,,4.8,2.7,0,,00-0034844
+2021,16,2,4,Frank & Julian,DeAndre Hopkins,WR,ARI,0,0,,-6.27,,,-2.1,-1.2,0.12,,00-0030564
+2021,17,2,5,Phil Baldino,Darren Waller,TE,LV,0,0,,-1.97,,,-5.6,-3.1,0,,00-0031610
+2021,18,2,6,Team JoeBa,DK Metcalf,WR,SEA,0,0,,5.37,,,-2.3,-1.3,0,,00-0035640
+2021,19,2,7,Chris & Dom,Calvin Ridley,WR,ATL,0,0,,-14.87,,,0,0,1,,00-0034837
+2021,20,2,8,Antdell & Ernie,A.J. Brown,WR,TEN,0,0,,-3.81,,,-5.2,-2.9,0,,00-0035676
+2021,21,2,9,John Juliano,Justin Jefferson,WR,MIN,0,0,,18.06,,,-2.2,-1.2,0.08,,00-0036322
+2021,22,2,10,Pung & Tralie,Antonio Gibson,RB,WAS,0,0,,6.57,,,7.6,4.2,0,,00-0036328
+2021,23,2,11,Richie,Joe Mixon,RB,CIN,0,0,,20.56,,,5.7,3.2,0,,00-0033897
+2021,24,2,12,Nolan & Vinny,Clyde Edwards-Helaire,RB,KC,0,0,,-5.91,,,5.7,3.2,0,,00-0036360
+2021,25,3,1,Nolan & Vinny,Keenan Allen,WR,LAC,0,0,,8.38,,,-2.7,-1.5,0,,00-0030279
+2021,26,3,2,Richie,Allen Robinson,WR,CHI,0,0,,-13.4,,,-7.7,-4.3,0,,00-0031428
+2021,27,3,3,Pung & Tralie,Patrick Mahomes,QB,KC,0,0,,16.21,,,5.8,3.2,0,,00-0033873
+2021,28,3,4,John Juliano,Terry McLaurin,WR,WAS,0,0,,0.53,,,-1.5,-0.8,0.44,,00-0035659
+2021,29,3,5,Antdell & Ernie,Tyler Lockett,WR,SEA,0,0,,2.6,,,-22.9,-12.7,0,,00-0032211
+2021,30,3,6,Chris & Dom,Chris Godwin,WR,TB,0,0,,7.85,,,-15.2,-8.4,0,,00-0033921
+2021,31,3,7,Team JoeBa,Miles Sanders,RB,PHI,0,0,,-5.85,,,-6.5,-3.6,0,,00-0035243
+2021,32,3,8,Phil Baldino,David Montgomery,RB,CHI,0,0,,3.04,,,6.3,3.5,0,,00-0035685
+2021,33,3,9,Frank & Julian,CeeDee Lamb,WR,DAL,0,0,,5.17,,,1.9,1.1,0.37,,00-0036358
+2021,34,3,10,Cambrias,George Kittle,TE,SF,0,0,,8.84,,,4.6,2.6,0,,00-0033288
+2021,35,3,11,Ronnie,Robert Woods,WR,LAR,0,0,,-6.97,,,-4.1,-2.3,0,,00-0030431
+2021,36,3,12,Rob & GregBo,Josh Allen,QB,BUF,0,0,,26.31,,,1.4,0.8,0.75,,00-0034857
+2021,37,4,1,Rob & GregBo,Cooper Kupp,WR,LAR,0,0,,42.14,,,-10.4,-5.8,0,,00-0033908
+2021,38,4,2,Ronnie,Mike Evans,WR,TB,0,0,,7.25,,,-0.6,-0.3,0.83,,00-0031408
+2021,39,4,3,Cambrias,Chris Carson,RB,SEA,0,0,,-13.26,,,14.8,8.2,0,,00-0033594
+2021,40,4,4,Frank & Julian,Gus Edwards,RB,LAC,0,0,,-18.46,,,-27.2,-15.1,0,,00-0034184
+2021,41,4,5,Phil Baldino,Amari Cooper,WR,DAL,0,0,,-1.27,,,-2.1,-1.2,0.5,,00-0031544
+2021,42,4,6,Team JoeBa,D'Andre Swift,RB,DET,0,0,,5.08,,,8.3,4.6,0,,00-0036275
+2021,43,4,7,Chris & Dom,James Robinson,RB,JAX,0,0,,1.41,,,12.7,7.1,0,,00-0035831
+2021,44,4,8,Antdell & Ernie,Chase Edmonds,RB,ARI,0,0,,-2.67,,,-14.1,-7.8,0,,00-0034681
+2021,45,4,9,John Juliano,Kyle Pitts,TE,ATL,0,0,,6.19,,,1,0.6,0.83,,00-0036970
+2021,46,4,10,Pung & Tralie,D.J. Moore,WR,CAR,0,0,,5.21,,,-13.9,-7.7,0,,00-0034827
+2021,47,4,11,Richie,Julio Jones,WR,TEN,0,0,,-14.47,,,2.7,1.5,0.51,,00-0027944
+2021,48,4,12,Nolan & Vinny,Mark Andrews,TE,BAL,0,0,,30.55,,,-5.1,-2.8,0.11,,00-0034753
+2021,49,5,1,Nolan & Vinny,Diontae Johnson,WR,PIT,0,0,,13.34,,,0.3,0.2,0.93,,00-0035216
+2021,50,5,2,Richie,Josh Jacobs,RB,LV,0,0,,7.58,,,22.6,12.6,0,,00-0035700
+2021,51,5,3,Pung & Tralie,Adam Thielen,WR,MIN,0,0,,-0.16,,,-1.9,-1.1,0.59,,00-0030035
+2021,52,5,4,John Juliano,Damien Harris,RB,NE,0,0,,5.08,,,-1.8,-1,0.7,,00-0035657
+2021,53,5,5,Antdell & Ernie,Russell Wilson,QB,SEA,0,0,,-2.94,,,-14.5,-8.1,0,,00-0029263
+2021,54,5,6,Chris & Dom,Kyler Murray,QB,ARI,0,0,,7.92,,,13.5,7.5,0,,00-0035228
+2021,55,5,7,Team JoeBa,Lamar Jackson,QB,BAL,0,0,,-0.62,,,6.5,3.6,0,,00-0034796
+2021,56,5,8,Phil Baldino,Darrell Henderson,RB,LAR,0,0,,-0.64,,,20.3,11.3,0,,00-0035664
+2021,57,5,9,Frank & Julian,Dak Prescott,QB,DAL,0,0,,9.64,,,-2.2,-1.2,0.64,,00-0033077
+2021,58,5,10,Cambrias,Chase Claypool,WR,PIT,0,0,,-5.43,,,-3.3,-1.8,0.47,,00-0036326
+2021,59,5,11,Ronnie,Brandon Aiyuk,WR,SF,0,0,,-4.89,,,3.2,1.8,0.29,,00-0036261
+2021,60,5,12,Rob & GregBo,Javonte Williams,RB,DEN,0,0,,6.37,,,2.6,1.4,0.62,,00-0036997
+2021,61,6,1,Rob & GregBo,JuJu Smith-Schuster,WR,PIT,0,0,,-16.96,,,-27,-15,0,,00-0033857
+2021,62,6,2,Ronnie,Aaron Rodgers,QB,GB,0,0,,16.64,,,-2.9,-1.6,0.56,,00-0023459
+2021,63,6,3,Cambrias,Raheem Mostert,RB,SF,0,0,,-16.95,,,11.7,6.5,0,,00-0031687
+2021,64,6,4,Frank & Julian,Mike Davis,RB,ATL,0,0,,-3.35,,,22.9,12.7,0,,00-0032063
+2021,65,6,5,Phil Baldino,Tom Brady,QB,TB,0,0,,24.03,,,-11.4,-6.3,0,,00-0019596
+2021,66,6,6,Team JoeBa,T.J. Hockenson,TE,DET,0,0,,0,,,11.9,6.6,0,,00-0035229
+2021,67,6,7,Chris & Dom,Odell Beckham,WR,MIA,0,0,,-7.38,,,-3.4,-1.9,0.4,,00-0031235
+2021,68,6,8,Antdell & Ernie,Myles Gaskin,RB,MIA,0,0,,0,,,25.9,14.4,0,,00-0035311
+2021,69,6,9,John Juliano,Justin Herbert,QB,LAC,0,0,,26.03,,,7.8,4.3,0,,00-0036355
+2021,70,6,10,Pung & Tralie,Kareem Hunt,RB,CLE,0,0,,-5.88,,,22.5,12.5,0,,00-0033923
+2021,71,6,11,Richie,Deebo Samuel,WR,SF,0,0,,26.31,,,-17.2,-9.6,0,,00-0035719
+2021,72,6,12,Nolan & Vinny,Jalen Hurts,QB,PHI,0,0,,15.71,,,-23.1,-12.8,0,,00-0036389
+2021,73,7,1,Nolan & Vinny,Jerry Jeudy,WR,DEN,0,0,,-11.82,,,4.9,2.7,0.06,,00-0036407
+2021,74,7,2,Richie,Robbie Chosen,WR,CAR,0,0,,-7.75,,,-10.1,-5.6,0,,00-0032688
+2021,75,7,3,Pung & Tralie,Tee Higgins,WR,CIN,0,0,,5.06,,,10.4,5.8,0,,00-0036410
+2021,76,7,4,John Juliano,Trey Sermon,RB,IND,0,0,,-13.6,,,9,5,0,,00-0036984
+2021,77,7,5,Antdell & Ernie,Sony Michel,RB,LAR,0,0,,-2.7,,,-37.1,-20.6,0,,00-0034845
+2021,78,7,6,Chris & Dom,Logan Thomas,TE,WAS,0,0,,-8.95,,,8.4,4.7,0,,00-0031260
+2021,79,7,7,Team JoeBa,Antonio Brown,WR,TB,0,0,,-7.63,,,-0.1,-0.1,0.99,,00-0027793
+2021,80,7,8,Phil Baldino,Michael Thomas,WR,FA,0,0,,-19.06,,,15.4,8.6,0,,00-0032765
+2021,81,7,9,Frank & Julian,Ronald Jones,RB,TB,0,0,,-8.52,,,6.5,3.6,0,,00-0034816
+2021,82,7,10,Cambrias,Ja'Marr Chase,WR,CIN,0,0,,25.3,,,4.7,2.6,0.25,,00-0036900
+2021,83,7,11,Ronnie,Robert Tonyan,TE,GB,0,0,,-9.05,,,-9,-5,0.2,,00-0033757
+2021,84,7,12,Rob & GregBo,Dallas Goedert,TE,PHI,0,0,,4.46,,,-4.1,-2.3,0.53,,00-0034351
+2021,85,8,1,Rob & GregBo,Tyler Boyd,WR,CIN,0,0,,-1.53,,,-9.3,-5.2,0,,00-0033009
+2021,86,8,2,Ronnie,Michael Pittman,WR,IND,0,0,,4.66,,,-11.7,-6.5,0,,00-0036252
+2021,87,8,3,Cambrias,Ryan Tannehill,QB,TEN,0,0,,0.17,,,-3.9,-2.2,0.52,,00-0029701
+2021,88,8,4,Frank & Julian,Noah Fant,TE,DEN,0,0,,2.83,,,9.8,5.4,0,,00-0035644
+2021,89,8,5,Phil Baldino,Corey Davis,WR,NYJ,0,0,,-8.73,,,-13.3,-7.4,0,,00-0033871
+2021,90,8,6,Team JoeBa,Los Angeles Rams,DEF,LAR,0,0,,0,,,,,,,DEF-0019
+2021,91,8,7,Chris & Dom,Jamaal Williams,RB,DET,0,0,,-5.04,,,-5.1,-2.8,0.33,,00-0033948
+2021,92,8,8,Antdell & Ernie,Brandin Cooks,WR,HOU,0,0,,6.69,,,-11.3,-6.3,0,,00-0031236
+2021,93,8,9,John Juliano,Kenny Golladay,WR,NYG,0,0,,-10.28,,,18.1,10.1,0,,00-0033932
+2021,94,8,10,Pung & Tralie,Tampa Bay Buccaneers,DEF,TB,0,0,,5.2,,,-26.3,-14.6,0,,DEF-0030
+2021,95,8,11,Richie,Trey Lance,QB,SF,0,0,,-16.05,,,-20.8,-11.6,0,,00-0037012
+2021,96,8,12,Nolan & Vinny,James Conner,RB,ARI,0,0,,16.17,,,8.5,4.7,0,,00-0033553
+2021,97,9,1,Nolan & Vinny,DeVonta Smith,WR,PHI,0,0,,-1.55,,,15.6,8.7,0,,00-0036912
+2021,98,9,2,Richie,Tyler Higbee,TE,LAR,0,0,,-2.07,,,-7.5,-4.2,0.39,,00-0033110
+2021,99,9,3,Pung & Tralie,Marquez Callaway,WR,NO,0,0,,-4.27,,,-14.2,-7.9,0,,00-0036219
+2021,100,9,4,John Juliano,Laviska Shenault,WR,JAX,0,0,,-7.17,,,7.9,4.4,0,,00-0036268
+2021,101,9,5,Antdell & Ernie,Zack Moss,RB,CIN,0,0,,-5.7,,,24.1,13.4,0,,00-0036251
+2021,102,9,6,Chris & Dom,Justin Tucker,K,BAL,0,0,,6.39,,,-39.4,-21.9,0,,00-0029597
+2021,103,9,7,Team JoeBa,D.J. Chark,WR,JAX,0,0,,-14.08,,,2.6,1.4,0.65,,00-0034777
+2021,104,9,8,Phil Baldino,Courtland Sutton,WR,DEN,0,0,,-4.53,,,22.2,12.3,0,,00-0034348
+2021,105,9,9,Frank & Julian,Will Fuller,WR,FA,0,0,,-16.06,,,-6.5,-3.6,0.25,,00-0033127
+2021,106,9,10,Cambrias,Melvin Gordon,RB,DEN,0,0,,2.39,,,33.9,18.8,0,,00-0032144
+2021,107,9,11,Ronnie,Leonard Fournette,RB,TB,0,0,,23.33,,,21.3,11.8,0,,00-0033856
+2021,108,9,12,Rob & GregBo,Michael Carter,DB,NYJ,0,0,,,,,,,,,00-0036501
+2021,109,10,1,Rob & GregBo,Gerald Everett,TE,SEA,0,0,,-2.64,,,-43.6,-24.2,0,,00-0033895
+2021,110,10,2,Ronnie,Jaylen Waddle,WR,MIA,0,0,,10,,,4.8,2.7,0.38,,00-0036613
+2021,111,10,3,Cambrias,Kenyan Drake,RB,LV,0,0,,-5.38,,,10.9,6.1,0,,00-0033118
+2021,112,10,4,Frank & Julian,,,NE,0,0,,,,,,,,,00-0021142
+2021,113,10,5,Phil Baldino,AJ Dillon,RB,GB,0,0,,2.27,,,34,18.9,0,,00-0036265
+2021,114,10,6,Team JoeBa,Devin Singletary,RB,BUF,0,0,,1.1,,,25.2,14,0,,00-0035250
+2021,115,10,7,Chris & Dom,Washington Commanders,DEF,WAS,0,0,,-3.2,,,-4.8,-2.7,0.52,,DEF-0032
+2021,116,10,8,Antdell & Ernie,Michael Gallup,WR,DAL,0,0,,-8.51,,,-19.8,-11,0,,00-0034764
+2021,117,10,9,John Juliano,Pittsburgh Steelers,DEF,PIT,0,0,,-1.23,,,10,5.6,0.1,,DEF-0027
+2021,118,10,10,Pung & Tralie,Jarvis Landry,WR,CLE,0,0,,-6.62,,,-2.6,-1.4,0.71,,00-0031382
+2021,119,10,11,Richie,Nyheim Hines,RB,IND,0,0,,-4.31,,,-1.2,-0.7,0.91,,00-0034367
+2021,120,10,12,Nolan & Vinny,Baltimore Ravens,DEF,BAL,0,0,,-2.48,,,-9.5,-5.3,0.14,,DEF-0003
+2021,121,11,1,Nolan & Vinny,Tony Pollard,RB,DAL,0,0,,-0.52,,,19.9,11.1,0,,00-0035261
+2021,122,11,2,Richie,Cole Beasley,WR,BUF,0,0,,-3.63,,,-34.8,-19.3,0,,00-0029000
+2021,123,11,3,Pung & Tralie,Mike Gesicki,TE,MIA,0,0,,4.35,,,20.6,11.4,0,,00-0034829
+2021,124,11,4,John Juliano,David Johnson,RB,HOU,0,0,,-6.82,,,25.8,14.3,0,,00-0032187
+2021,125,11,5,Antdell & Ernie,Jakobi Meyers,WR,NE,0,0,,-1.59,,,-10.2,-5.7,0.02,,00-0034960
+2021,126,11,6,Chris & Dom,Curtis Samuel,WR,BUF,0,0,,-13.6,,,-4.6,-2.6,0.5,,00-0033282
+2021,127,11,7,Team JoeBa,Justin Fields,QB,CHI,0,0,,-8.49,,,-5,-2.8,0.59,,00-0036945
+2021,128,11,8,Phil Baldino,San Francisco 49ers,DEF,SF,0,0,,-0.35,,,-9.8,-5.4,0.28,,DEF-0028
+2021,129,11,9,Frank & Julian,Harrison Butker,K,KC,0,0,,0,,,-4.6,-2.6,0.73,,00-0033303
+2021,130,11,10,Cambrias,Matthew Stafford,QB,LAR,0,0,,18.6,,,44.8,24.9,0,,00-0026498
+2021,131,11,11,Ronnie,Buffalo Bills,DEF,BUF,0,0,,6.28,,,-31.8,-17.7,0,,DEF-0004
+2021,132,11,12,Rob & GregBo,Henry Ruggs,WR,LV,0,0,,-7.86,,,9.5,5.3,0.14,,00-0036357
+2021,133,12,1,Rob & GregBo,James White,RB,NE,0,0,,-9.22,,,-19,-10.6,0,,00-0031062
+2021,134,12,2,Ronnie,Tyler Bass,K,BUF,0,0,,0.86,,,-11.7,-6.5,0.24,,00-0036162
+2021,135,12,3,Cambrias,New England Patriots,DEF,NE,0,0,,12.38,,,-2.5,-1.4,0.79,,DEF-0022
+2021,136,12,4,Frank & Julian,Cleveland Browns,DEF,CLE,0,0,,-1.16,,,-23.7,-13.2,0,,DEF-0008
+2021,137,12,5,Phil Baldino,Joe Burrow,QB,CIN,0,0,,20.03,,,26.8,14.9,0,,00-0036442
+2021,138,12,6,Team JoeBa,Marvin Jones,WR,JAX,0,0,,-2.64,,,7,3.9,0.26,,00-0029293
+2021,139,12,7,Chris & Dom,Alexander Mattison,RB,MIN,0,0,,-2.91,,,32.4,18,0,,00-0034972
+2021,140,12,8,Antdell & Ernie,Bryan Edwards,WR,LV,0,0,,-6.25,,,-11.6,-6.4,0.16,,00-0036365
+2021,141,12,9,John Juliano,Jonnu Smith,TE,NE,0,0,,-4.86,,,12.4,6.9,0.31,,00-0033858
+2021,142,12,10,Pung & Tralie,Marquise Brown,WR,BAL,0,0,,5.92,,,3.3,1.8,0.77,,00-0035662
+2021,143,12,11,Richie,Parris Campbell,WR,IND,0,0,,-9.95,,,,,,,00-0035639
+2021,144,12,12,Nolan & Vinny,Chuba Hubbard,RB,CAR,0,0,,-2.58,,,9.9,5.5,0.08,,00-0036555
+2021,145,13,1,Nolan & Vinny,Ryan Succop,K,TB,0,0,,-0.23,,,-3.1,-1.7,0.82,,00-0026968
+2021,146,13,2,Richie,Denver Broncos,DEF,DEN,0,0,,1.18,,,-2.6,-1.4,0.83,,DEF-0010
+2021,147,13,3,Pung & Tralie,J.D. McKissic,RB,WAS,0,0,,-2.25,,,23.1,12.8,0,,00-0032602
+2021,148,13,4,John Juliano,Ty Johnson,RB,NYJ,0,0,,-2.8,,,-0.6,-0.3,0.97,,00-0035537
+2021,149,13,5,Antdell & Ernie,Tevin Coleman,RB,NYJ,0,0,,-6.26,,,20.5,11.4,0,,00-0032058
+2021,150,13,6,Chris & Dom,Evan Engram,TE,JAX,0,0,,-2.37,,,-2.9,-1.6,0.86,,00-0033881
+2021,151,13,7,Team JoeBa,Darnell Mooney,WR,CHI,0,0,,-0.06,,,37.8,21,0,,00-0036309
+2021,152,13,8,Phil Baldino,Greg Zuerlein,K,DAL,0,0,,0,,,5.8,3.2,0.64,,00-0029621
+2021,153,13,9,Frank & Julian,Sterling Shepard,WR,NYG,0,0,,-5.95,,,,,,,00-0032385
+2021,154,13,10,Cambrias,Elijah Moore,WR,NYJ,0,0,,-2.81,,,20,11.1,0,,00-0036980
+2021,155,13,11,Ronnie,Kirk Cousins,QB,MIN,0,0,,9.72,,,0.9,0.5,0.94,,00-0029604
+2021,156,13,12,Rob & GregBo,Indianapolis Colts,DEF,IND,0,0,,6.89,,,7.4,4.1,0.39,,DEF-0014
+2021,157,14,1,Rob & GregBo,Trevor Lawrence,QB,JAX,0,0,,-2.9,,,30.3,16.8,0,,00-0036971
+2021,158,14,2,Ronnie,Terrace Marshall,WR,CAR,0,0,,-7.36,,,-4.2,-2.3,0.78,,00-0036955
+2021,159,14,3,Cambrias,Rashaad Penny,RB,SEA,0,0,,-3.1,,,31.6,17.6,0,,00-0034750
+2021,160,14,4,Frank & Julian,Kansas City Chiefs,DEF,KC,0,0,,2.41,,,-6.4,-3.6,0.79,,DEF-0016
+2021,161,14,5,Phil Baldino,Cole Kmet,TE,CHI,0,0,,-1.35,,,,,,,00-0036290
+2021,162,14,6,Team JoeBa,Younghoe Koo,K,ATL,0,0,,-0.62,,,18.9,10.5,0,,00-0033702
+2021,163,14,7,Chris & Dom,Ty'Son Williams,RB,BAL,0,0,,-4.76,,,,,,,00-0036457
+2021,164,14,8,Antdell & Ernie,Green Bay Packers,DEF,GB,0,0,,1.82,,,,,,,DEF-0012
+2021,165,14,9,John Juliano,Nelson Agholor,WR,NE,0,0,,-3.42,,,8.7,4.8,0.68,,00-0031549
+2021,166,14,10,Pung & Tralie,Jalen Reagor,WR,PHI,0,0,,-4.08,,,5,2.8,0.74,,00-0036387
+2021,167,14,11,Richie,Matt Gay,K,LAR,0,0,,6.71,,,5.1,2.8,0.64,,00-0035269
+2021,168,14,12,Nolan & Vinny,Tyrell Williams,WR,DET,0,0,,-5.79,,,12.3,6.8,0.6,,00-0032160
+2021,169,15,1,Nolan & Vinny,Devontae Booker,RB,NYG,0,0,,-0.77,,,12.2,6.8,0.09,,00-0032972
+2021,170,15,2,Richie,Matt Ryan,QB,ATL,0,0,,-0.89,,,46.2,25.7,0,,00-0026143
+2021,171,15,3,Pung & Tralie,Jason Sanders,K,MIA,0,0,,-0.59,,,22.5,12.5,0,,00-0034794
+2021,172,15,4,John Juliano,Robbie Gould,K,SF,0,0,,-0.6,,,17.6,9.8,0,,00-0023252
+2021,173,15,5,Antdell & Ernie,Rodrigo Blankenship,K,IND,0,0,,-1.63,,,25.6,14.2,0,,00-0035849
+2021,174,15,6,Chris & Dom,Carlos Hyde,RB,JAX,0,0,,-2.08,,,-7.2,-4,0.71,,00-0031045
+2021,175,15,7,Team JoeBa,Irv Smith,TE,KC,0,0,,-2.1,,,39.2,21.8,0,,00-0034970
+2021,176,15,8,Phil Baldino,Gabriel Davis,WR,BUF,0,0,,-0.94,,,,,,,00-0036196
+2021,177,15,9,Frank & Julian,Randall Cobb,WR,GB,0,0,,-0.9,,,16.2,9,0.41,,00-0028002
+2021,178,15,10,Cambrias,Daniel Carlson,K,LV,0,0,,7.14,,,2.1,1.2,0.89,,00-0034161
+2021,179,15,11,Ronnie,Jared Cook,TE,LAC,0,0,,-0.06,,,21.8,12.1,0.05,,00-0027061
+2021,180,15,12,Rob & GregBo,Jason Myers,K,SEA,0,0,,-0,,,7.7,4.3,0.47,,00-0031492
+2020,1,1,1,Team JoeBa,Christian McCaffrey,RB,CAR,0,0,,-8.01,,,-0.3,-0.2,0.4,,00-0033280
+2020,2,1,2,Rob & GregBo,Saquon Barkley,RB,NYG,0,0,,-17.14,,,-0.5,-0.3,0.29,,00-0034844
+2020,3,1,3,Phil Baldino,Ezekiel Elliott,RB,DAL,0,0,,5.86,,,-0.7,-0.4,0.5,,00-0033045
+2020,4,1,4,Antdell & Ernie,Derrick Henry,RB,TEN,0,0,,16.62,,,-2.6,-1.4,0,,00-0032764
+2020,5,1,5,Ronnie,Dalvin Cook,RB,MIN,0,0,,22.05,,,-1.1,-0.6,0.31,,00-0033893
+2020,6,1,6,Nolan & Vinny,Alvin Kamara,RB,NO,0,0,,28.05,,,1.5,0.8,0,,00-0033906
+2020,7,1,7,Richie,Clyde Edwards-Helaire,RB,KC,0,0,,2.32,,,1.4,0.8,0.07,,00-0036360
+2020,8,1,8,Chris & Dom,Michael Thomas,WR,NO,0,0,,-13.16,,,0.7,0.4,0.61,,00-0032765
+2020,9,1,9,LFTLR,Joe Mixon,RB,CIN,0,0,,-6.84,,,-2.4,-1.3,0,,00-0033897
+2020,10,1,10,Pung & Tralie,Davante Adams,WR,GB,0,0,,20.54,,,-0.3,-0.2,0.83,,00-0031381
+2020,11,1,11,Frank & Julian,Tyreek Hill,WR,KC,0,0,,19.71,,,-2.6,-1.4,0,,00-0033040
+2020,12,1,12,Cambrias,Josh Jacobs,RB,LV,0,0,,7.56,,,2.9,1.6,0,,00-0035700
+2020,13,2,1,Cambrias,Miles Sanders,RB,CAR,0,0,,2.04,,,-1.2,-0.7,0.54,,00-0035243
+2020,14,2,2,Frank & Julian,Julio Jones,WR,ATL,0,0,,-5.74,,,-2.4,-1.3,0.17,,00-0027944
+2020,15,2,3,Pung & Tralie,Patrick Mahomes,QB,KC,0,0,,18.1,,,-3.3,-1.8,0.47,,00-0033873
+2020,16,2,4,LFTLR,George Kittle,TE,SF,0,0,,-3.3,,,-8.7,-4.8,0,,00-0033288
+2020,17,2,5,Chris & Dom,Nick Chubb,RB,CLE,0,0,,5.14,,,4.7,2.6,0,,00-0034791
+2020,18,2,6,Richie,Kenyan Drake,RB,ARI,0,0,,4.28,,,4.8,2.7,0,,00-0033118
+2020,19,2,7,Nolan & Vinny,DeAndre Hopkins,WR,ARI,0,0,,14.44,,,0.1,0.1,0.97,,00-0030564
+2020,20,2,8,Ronnie,Aaron Jones,RB,GB,0,0,,13.61,,,2.6,1.4,0.07,,00-0033293
+2020,21,2,9,Antdell & Ernie,Austin Ekeler,RB,LAC,0,0,,-1.09,,,5.8,3.2,0,,00-0033699
+2020,22,2,10,Phil Baldino,Travis Kelce,TE,KC,0,0,,29.57,,,2.1,1.2,0.42,,00-0030506
+2020,23,2,11,Rob & GregBo,James Conner,RB,PIT,0,0,,-0.43,,,-0.5,-0.3,0.84,,00-0033553
+2020,24,2,12,Team JoeBa,Chris Godwin,WR,TB,0,0,,-3.72,,,2,1.1,0.31,,00-0033921
+2020,25,3,1,Team JoeBa,Odell Beckham,WR,CLE,0,0,,-12.19,,,-9.7,-5.4,0,,00-0031235
+2020,26,3,2,Rob & GregBo,Mike Evans,WR,TB,0,0,,8.17,,,-1.6,-0.9,0.52,,00-0031408
+2020,27,3,3,Phil Baldino,Chris Carson,RB,SEA,0,0,,3.4,,,2.7,1.5,0.23,,00-0033594
+2020,28,3,4,Antdell & Ernie,Allen Robinson,WR,CHI,0,0,,11.49,,,-5.3,-2.9,0,,00-0031428
+2020,29,3,5,Ronnie,Lamar Jackson,QB,BAL,0,0,,9.39,,,7.6,4.2,0,,00-0034796
+2020,30,3,6,Nolan & Vinny,David Johnson,RB,HOU,0,0,,0.06,,,0.7,0.4,0.8,,00-0032187
+2020,31,3,7,Richie,Kenny Golladay,WR,FA,0,0,,-14.46,,,4.8,2.7,0,,00-0033932
+2020,32,3,8,Chris & Dom,Adam Thielen,WR,MIN,0,0,,9.48,,,1.8,1,0.47,,00-0030035
+2020,33,3,9,LFTLR,Mark Ingram,RB,BAL,0,0,,-12.18,,,-7.9,-4.4,0,,00-0027966
+2020,34,3,10,Pung & Tralie,Todd Gurley,RB,ATL,0,0,,0,,,2.9,1.6,0.26,,00-0032241
+2020,35,3,11,Frank & Julian,Mark Andrews,TE,BAL,0,0,,4.8,,,-8.1,-4.5,0,,00-0034753
+2020,36,3,12,Cambrias,JuJu Smith-Schuster,WR,PIT,0,0,,3.97,,,-4.8,-2.7,0,,00-0033857
+2020,37,4,1,Cambrias,Zach Ertz,TE,PHI,0,0,,-7.01,,,-14.9,-8.3,0,,00-0030061
+2020,38,4,2,Frank & Julian,Le'Veon Bell,RB,NYJ,0,0,,-9.21,,,5,2.8,0,,00-0030496
+2020,39,4,3,Pung & Tralie,Melvin Gordon,RB,DEN,0,0,,4.17,,,0.3,0.2,0.94,,00-0032144
+2020,40,4,4,LFTLR,Cooper Kupp,WR,LAR,0,0,,3.71,,,1.2,0.7,0.74,,00-0033908
+2020,41,4,5,Chris & Dom,Jonathan Taylor,RB,IND,0,0,,11.58,,,7.7,4.3,0,,00-0036223
+2020,42,4,6,Richie,D.J. Moore,WR,CAR,0,0,,0.82,,,5.4,3,0,,00-0034827
+2020,43,4,7,Nolan & Vinny,Tyler Lockett,WR,SEA,0,0,,7.87,,,-8.6,-4.8,0,,00-0032211
+2020,44,4,8,Ronnie,DK Metcalf,WR,SEA,0,0,,15.81,,,-2.5,-1.4,0.32,,00-0035640
+2020,45,4,9,Antdell & Ernie,Amari Cooper,WR,DAL,0,0,,7.2,,,9.4,5.2,0,,00-0031544
+2020,46,4,10,Phil Baldino,Calvin Ridley,WR,ATL,0,0,,15.95,,,3.6,2,0.08,,00-0034837
+2020,47,4,11,Rob & GregBo,Terry McLaurin,WR,WAS,0,0,,3.06,,,-4.3,-2.4,0,,00-0035659
+2020,48,4,12,Team JoeBa,Raheem Mostert,RB,SF,0,0,,-6.27,,,-0.3,-0.2,0.95,,00-0031687
+2020,49,5,1,Team JoeBa,Darren Waller,TE,LV,0,0,,24.34,,,-15.4,-8.6,0,,00-0031610
+2020,50,5,2,Rob & GregBo,Evan Engram,TE,NYG,0,0,,0,,,-21.9,-12.2,0,,00-0033881
+2020,51,5,3,Phil Baldino,Cam Akers,RB,LAR,0,0,,-7.11,,,-1.2,-0.7,0.8,,00-0036414
+2020,52,5,4,Antdell & Ernie,D.J. Chark,WR,JAX,0,0,,-4.28,,,3.3,1.8,0.23,,00-0034777
+2020,53,5,5,Ronnie,Stefon Diggs,WR,BUF,0,0,,26.34,,,-9.7,-5.4,0,,00-0031588
+2020,54,5,6,Nolan & Vinny,Russell Wilson,QB,SEA,0,0,,18.36,,,-6.3,-3.5,0.26,,00-0029263
+2020,55,5,7,Richie,Robert Woods,WR,LAR,0,0,,9.59,,,11,6.1,0,,00-0030431
+2020,56,5,8,Chris & Dom,A.J. Brown,WR,TEN,0,0,,4.92,,,12.3,6.8,0,,00-0035676
+2020,57,5,9,LFTLR,Deshaun Watson,QB,HOU,0,0,,19.07,,,-9.9,-5.5,0,,00-0033537
+2020,58,5,10,Pung & Tralie,Keenan Allen,WR,LAC,0,0,,11.46,,,8.3,4.6,0,,00-0030279
+2020,59,5,11,Frank & Julian,Tarik Cohen,RB,CHI,0,0,,-14.48,,,-40.9,-22.7,0,,00-0033556
+2020,60,5,12,Cambrias,Kareem Hunt,RB,CLE,0,0,,12.72,,,3.3,1.8,0.46,,00-0033923
+2020,61,6,1,Cambrias,T.Y. Hilton,WR,IND,0,0,,-4.47,,,1.2,0.7,0.79,,00-0029608
+2020,62,6,2,Frank & Julian,Courtland Sutton,WR,DEN,0,0,,-18.76,,,4.4,2.4,0.12,,00-0034348
+2020,63,6,3,Pung & Tralie,Tyler Boyd,WR,CIN,0,0,,-0.3,,,-13.7,-7.6,0,,00-0033009
+2020,64,6,4,LFTLR,San Francisco 49ers,DEF,SF,0,0,,-1.01,,,-39.1,-21.7,0,,DEF-0028
+2020,65,6,5,Chris & Dom,Dak Prescott,QB,DAL,0,0,,-12.46,,,12,6.7,0,,00-0033077
+2020,66,6,6,Richie,A.J. Green,WR,CIN,0,0,,-8.42,,,-5.2,-2.9,0.21,,00-0027942
+2020,67,6,7,Nolan & Vinny,Michael Gallup,WR,DAL,0,0,,-3.09,,,-2.7,-1.5,0.52,,00-0034764
+2020,68,6,8,Ronnie,Marquise Brown,WR,BAL,0,0,,-3.23,,,8.1,4.5,0,,00-0035662
+2020,69,6,9,Antdell & Ernie,Leonard Fournette,RB,TB,0,0,,-3.11,,,41.1,22.8,0,,00-0033856
+2020,70,6,10,Phil Baldino,Kyler Murray,QB,ARI,0,0,,27.52,,,9.7,5.4,0,,00-0035228
+2020,71,6,11,Rob & GregBo,David Montgomery,RB,CHI,0,0,,18.92,,,17.8,9.9,0,,00-0035685
+2020,72,6,12,Team JoeBa,DeVante Parker,WR,MIA,0,0,,-4.67,,,4.5,2.5,0.13,,00-0031547
+2020,73,7,1,Team JoeBa,Carson Wentz,QB,PHI,0,0,,-5.98,,,-27.6,-15.3,0,,00-0032950
+2020,74,7,2,Rob & GregBo,Matt Ryan,QB,ATL,0,0,,0,,,-7.4,-4.1,0.01,,00-0026143
+2020,75,7,3,Phil Baldino,Jarvis Landry,WR,CLE,0,0,,-2.3,,,-10.6,-5.9,0,,00-0031382
+2020,76,7,4,Antdell & Ernie,Will Fuller,WR,HOU,0,0,,-0.53,,,2.1,1.2,0.71,,00-0033127
+2020,77,7,5,Ronnie,Julian Edelman,WR,NE,0,0,,-13.2,,,-4.6,-2.6,0.34,,00-0027150
+2020,78,7,6,Nolan & Vinny,Rob Gronkowski,TE,TB,0,0,,1.38,,,4.1,2.3,0.59,,00-0027656
+2020,79,7,7,Richie,Antonio Gibson,RB,WAS,0,0,,8.51,,,-2.6,-1.4,0.64,,00-0036328
+2020,80,7,8,Chris & Dom,Tyler Higbee,TE,LAR,0,0,,-1.77,,,-15.8,-8.8,0,,00-0033110
+2020,81,7,9,LFTLR,Marvin Jones,WR,DET,0,0,,-0.53,,,-10.8,-6,0,,00-0029293
+2020,82,7,10,Pung & Tralie,D'Andre Swift,RB,DET,0,0,,3.78,,,19.3,10.7,0,,00-0036275
+2020,83,7,11,Frank & Julian,Josh Allen,QB,BUF,0,0,,29.62,,,-9.7,-5.4,0,,00-0034857
+2020,84,7,12,Cambrias,Zack Moss,RB,BUF,0,0,,-5.6,,,-2.5,-1.4,0.64,,00-0036251
+2020,85,8,1,Cambrias,Deebo Samuel,WR,SF,0,0,,-10.53,,,-0.4,-0.2,0.95,,00-0035719
+2020,86,8,2,Frank & Julian,J.K. Dobbins,RB,BAL,0,0,,-1.68,,,16.4,9.1,0,,00-0036158
+2020,87,8,3,Pung & Tralie,Baltimore Ravens,DEF,BAL,0,0,,8.14,,,-36.1,-20.1,0,,DEF-0003
+2020,88,8,4,LFTLR,Justin Tucker,K,BAL,0,0,,2.81,,,-57.8,-32.1,0,,00-0029597
+2020,89,8,5,Chris & Dom,Ronald Jones,RB,TB,0,0,,3.53,,,31.9,17.7,0,,00-0034816
+2020,90,8,6,Richie,Jared Cook,TE,NO,0,0,,-2.19,,,-28.3,-15.7,0,,00-0027061
+2020,91,8,7,Nolan & Vinny,Sony Michel,RB,NE,0,0,,-9.54,,,-9.8,-5.4,0,,00-0034845
+2020,92,8,8,Ronnie,Phillip Lindsay,RB,DEN,0,0,,-8.21,,,15.9,8.8,0,,00-0034109
+2020,93,8,9,Antdell & Ernie,James White,RB,NE,0,0,,-4.83,,,8.7,4.8,0,,00-0031062
+2020,94,8,10,Phil Baldino,Devin Singletary,RB,BUF,0,0,,-1.45,,,51.5,28.6,0,,00-0035250
+2020,95,8,11,Rob & GregBo,Diontae Johnson,WR,PIT,0,0,,4.38,,,1,0.6,0.88,,00-0035216
+2020,96,8,12,Team JoeBa,John Brown,WR,BUF,0,0,,-10.16,,,-35.4,-19.7,0,,00-0031051
+2020,97,9,1,Team JoeBa,Jamison Crowder,WR,NYJ,0,0,,-2.57,,,-14,-7.8,0,,00-0031941
+2020,98,9,2,Rob & GregBo,Hunter Henry,TE,LAC,0,0,,1.71,,,2.4,1.3,0.78,,00-0033090
+2020,99,9,3,Phil Baldino,Brandin Cooks,WR,HOU,0,0,,0,,,19.2,10.7,0,,00-0031236
+2020,100,9,4,Antdell & Ernie,T.J. Hockenson,TE,DET,0,0,,8.2,,,-50.3,-27.9,0,,00-0035229
+2020,101,9,5,Ronnie,Henry Ruggs,WR,LV,0,0,,-9.91,,,-13.1,-7.3,0,,00-0036357
+2020,102,9,6,Nolan & Vinny,CeeDee Lamb,WR,DAL,0,0,,3.91,,,-0.6,-0.3,0.94,,00-0036358
+2020,103,9,7,Richie,Sterling Shepard,WR,NYG,0,0,,-5.53,,,-14.2,-7.9,0,,00-0032385
+2020,104,9,8,Chris & Dom,Pittsburgh Steelers,DEF,PIT,0,0,,12.31,,,-10.6,-5.9,0,,DEF-0027
+2020,105,9,9,LFTLR,Emmanuel Sanders,WR,NO,0,0,,-4.16,,,7,3.9,0.21,,00-0027685
+2020,106,9,10,Pung & Tralie,Tevin Coleman,RB,SF,0,0,,-12.1,,,15.6,8.7,0,,00-0032058
+2020,107,9,11,Frank & Julian,Chicago Bears,DEF,CHI,0,0,,-0.41,,,-28.7,-15.9,0,,DEF-0006
+2020,108,9,12,Cambrias,Tom Brady,QB,TB,0,0,,12.96,,,8.3,4.6,0.23,,00-0019596
+2020,109,10,1,Cambrias,Hayden Hurst,TE,ATL,0,0,,-0.2,,,27.3,15.2,0,,00-0034830
+2020,110,10,2,Frank & Julian,Harrison Butker,K,KC,0,0,,1.36,,,-37,-20.6,0,,00-0033303
+2020,111,10,3,Pung & Tralie,Mecole Hardman,WR,KC,0,0,,-5.56,,,13.6,7.6,0,,00-0035140
+2020,112,10,4,LFTLR,Dallas Goedert,TE,PHI,0,0,,-1.86,,,,,,,00-0034351
+2020,113,10,5,Chris & Dom,Darius Slayton,WR,NYG,0,0,,-4.64,,,9.4,5.2,0,,00-0035535
+2020,114,10,6,Richie,Jordan Howard,RB,MIA,0,0,,-10.06,,,37.9,21.1,0,,00-0032780
+2020,115,10,7,Nolan & Vinny,New Orleans Saints,DEF,NO,0,0,,3.03,,,-45.9,-25.5,0,,DEF-0023
+2020,116,10,8,Ronnie,Marlon Mack,RB,IND,0,0,,-11.62,,,46.3,25.7,0,,00-0033951
+2020,117,10,9,Antdell & Ernie,Mike Gesicki,TE,MIA,0,0,,2.71,,,-22.5,-12.5,0,,00-0034829
+2020,118,10,10,Phil Baldino,Joe Burrow,QB,CIN,0,0,,-6.56,,,-25.8,-14.3,0,,00-0036442
+2020,119,10,11,Rob & GregBo,Justin Jefferson,WR,MIN,0,0,,15.98,,,-16.4,-9.1,0,,00-0036322
+2020,120,10,12,Team JoeBa,Kerryon Johnson,RB,DET,0,0,,-6.53,,,38.8,21.6,0,,00-0034349
+2020,121,11,1,Team JoeBa,Matt Breida,RB,MIA,0,0,,-8.69,,,28.2,15.7,0,,00-0033308
+2020,122,11,2,Rob & GregBo,Bryce Love,RB,FA,0,0,,-11.73,,,-9.4,-5.2,0.02,,00-0035256
+2020,123,11,3,Phil Baldino,N'Keal Harry,WR,NE,0,0,,-8.95,,,-29.6,-16.4,0,,00-0035624
+2020,124,11,4,Antdell & Ernie,Matthew Stafford,QB,DET,0,0,,-1.58,,,12.2,6.8,0,,00-0026498
+2020,125,11,5,Ronnie,Noah Fant,TE,DEN,0,0,,0.2,,,10.2,5.7,0.31,,00-0035644
+2020,126,11,6,Nolan & Vinny,Wil Lutz,K,NO,0,0,,-0.07,,,-29,-16.1,0,,00-0032569
+2020,127,11,7,Richie,DeSean Jackson,WR,PHI,0,0,,-10.51,,,3.7,2.1,0.48,,00-0026189
+2020,128,11,8,Chris & Dom,Greg Zuerlein,K,DAL,0,0,,3.12,,,-26.9,-14.9,0,,00-0029621
+2020,129,11,9,LFTLR,Cam Newton,QB,NE,0,0,,-2.58,,,5.1,2.8,0.43,,00-0027939
+2020,130,11,10,Pung & Tralie,Larry Fitzgerald,WR,ARI,0,0,,-6.42,,,-29.9,-16.6,0,,00-0022921
+2020,131,11,11,Frank & Julian,Darrell Henderson,RB,LAR,0,0,,-1.96,,,16.7,9.3,0,,00-0035664
+2020,132,11,12,Cambrias,Christian Kirk,WR,ARI,0,0,,-3.3,,,34.9,19.4,0,,00-0034775
+2020,133,12,1,Cambrias,Buffalo Bills,DEF,BUF,0,0,,-0.07,,,5.5,3.1,0.08,,DEF-0004
+2020,134,12,2,Frank & Julian,Allen Lazard,WR,GB,0,0,,-6.67,,,7.3,4.1,0.12,,00-0034521
+2020,135,12,3,Pung & Tralie,Austin Hooper,TE,CLE,0,0,,-2.44,,,5.8,3.2,0.65,,00-0032392
+2020,136,12,4,LFTLR,Latavius Murray,RB,NO,0,0,,-1.45,,,37.6,20.9,0,,00-0030513
+2020,137,12,5,Chris & Dom,Drew Brees,QB,NO,0,0,,-4.47,,,48.2,26.8,0,,00-0020531
+2020,138,12,6,Richie,Anthony Miller,WR,CHI,0,0,,-5.6,,,3.6,2,0.64,,00-0034353
+2020,139,12,7,Nolan & Vinny,Jerry Jeudy,WR,DEN,0,0,,-3.78,,,27.4,15.2,0,,00-0036407
+2020,140,12,8,Ronnie,Kansas City Chiefs,DEF,KC,0,0,,3.2,,,-11.8,-6.6,0,,DEF-0016
+2020,141,12,9,Antdell & Ernie,Chase Edmonds,RB,ARI,0,0,,1.69,,,34.2,19,0,,00-0034681
+2020,142,12,10,Phil Baldino,Jalen Reagor,WR,PHI,0,0,,-6.54,,,29.6,16.4,0,,00-0036387
+2020,143,12,11,Rob & GregBo,Preston Williams,WR,MIA,0,0,,-6.97,,,15.6,8.7,0,,00-0035350
+2020,144,12,12,Team JoeBa,Duke Johnson,RB,HOU,0,0,,-4.31,,,4.9,2.7,0.61,,00-0032257
+2020,145,13,1,Team JoeBa,Minnesota Vikings,DEF,MIN,0,0,,-2.23,,,,,,,DEF-0021
+2020,146,13,2,Rob & GregBo,Nyheim Hines,RB,IND,0,0,,6.71,,,-1,-0.6,0.93,,00-0034367
+2020,147,13,3,Phil Baldino,Tony Pollard,RB,DAL,0,0,,-2.39,,,27.9,15.5,0,,00-0035261
+2020,148,13,4,Antdell & Ernie,Parris Campbell,WR,IND,0,0,,-9.76,,,-2,-1.1,0.84,,00-0035639
+2020,149,13,5,Ronnie,Rodrigo Blankenship,K,IND,0,0,,4.73,,,,,,,00-0035849
+2020,150,13,6,Nolan & Vinny,Chris Thompson,RB,JAX,0,0,,-6.08,,,1.8,1,0.92,,00-0030404
+2020,151,13,7,Richie,Ben Roethlisberger,QB,PIT,0,0,,2.52,,,23.2,12.9,0,,00-0022924
+2020,152,13,8,Chris & Dom,Blake Jarwin,TE,DAL,0,0,,-6.93,,,-5.5,-3.1,0.67,,00-0033658
+2020,153,13,9,LFTLR,LeSean McCoy,RB,TB,0,0,,-6.44,,,-2.6,-1.4,0.84,,00-0027029
+2020,154,13,10,Pung & Tralie,Robbie Chosen,WR,CAR,0,0,,6.48,,,-3.3,-1.8,0.86,,00-0032688
+2020,155,13,11,Frank & Julian,Daniel Jones,QB,NYG,0,0,,-4.44,,,34.1,18.9,0,,00-0035710
+2020,156,13,12,Cambrias,Boston Scott,RB,PHI,0,0,,-3.36,,,39.1,21.7,0,,00-0034414
+2020,157,14,1,Cambrias,Sammy Watkins,WR,KC,0,0,,-4.71,,,16.4,9.1,0,,00-0031325
+2020,158,14,2,Frank & Julian,,,NE,0,0,,,,,,,,,00-0021142
+2020,159,14,3,Pung & Tralie,Aaron Rodgers,QB,GB,0,0,,29.36,,,73.3,40.7,0,,00-0023459
+2020,160,14,4,LFTLR,Brandon Aiyuk,WR,SF,0,0,,-0.33,,,5.4,3,0.65,,00-0036261
+2020,161,14,5,Chris & Dom,Adrian Peterson,RB,DET,0,0,,-1.85,,,,,,,00-0025394
+2020,162,14,6,Richie,New England Patriots,DEF,NE,0,0,,0.61,,,26.7,14.8,0,,DEF-0022
+2020,163,14,7,Nolan & Vinny,Alshon Jeffery,WR,FA,0,0,,-6.38,,,-0.9,-0.5,0.94,,00-0029137
+2020,164,14,8,Ronnie,Michael Pittman,WR,IND,0,0,,-3.57,,,6,3.3,0.66,,00-0036252
+2020,165,14,9,Antdell & Ernie,Los Angeles Rams,DEF,LAR,0,0,,10.03,,,,,,,DEF-0019
+2020,166,14,10,Phil Baldino,Philadelphia Eagles,DEF,PHI,0,0,,-0.1,,,-3.2,-1.8,0.63,,DEF-0026
+2020,167,14,11,Rob & GregBo,Baker Mayfield,QB,CLE,0,0,,-0.85,,,26.2,14.6,0,,00-0034855
+2020,168,14,12,Team JoeBa,Jimmy Garoppolo,QB,SF,0,0,,-5.71,,,,,,,00-0031345
+2020,169,15,1,Team JoeBa,Matt Prater,K,DET,0,0,,-0.44,,,0.2,0.1,0.97,,00-0023853
+2020,170,15,2,Rob & GregBo,Tennessee Titans,DEF,TEN,0,0,,-0.87,,,,,,,DEF-0031
+2020,171,15,3,Phil Baldino,Robbie Gould,K,SF,0,0,,-0.47,,,6.6,3.7,0,,00-0023252
+2020,172,15,4,Antdell & Ernie,Zane Gonzalez,K,ARI,0,0,,-0.6,,,1.4,0.8,0.78,,00-0033862
+2020,173,15,5,Ronnie,Jared Goff,QB,LAR,0,0,,-0.36,,,26.7,14.8,0,,00-0033106
+2020,174,15,6,Nolan & Vinny,Jonnu Smith,TE,TEN,0,0,,-0.01,,,23.2,12.9,0,,00-0033858
+2020,175,15,7,Richie,Jake Elliott,K,PHI,0,0,,-0.76,,,3.3,1.8,0.62,,00-0033787
+2020,176,15,8,Chris & Dom,Denver Broncos,DEF,DEN,0,0,,-0.36,,,7.3,4.1,0.03,,DEF-0010
+2020,177,15,9,LFTLR,Dallas Cowboys,DEF,DAL,0,0,,-0.22,,,8.4,4.7,0,,DEF-0009
+2020,178,15,10,Pung & Tralie,Stephen Gostkowski,K,TEN,0,0,,-0.04,,,,,,,00-0024333
+2020,179,15,11,Frank & Julian,Chris Herndon,TE,NYJ,0,0,,-0.18,,,24,13.3,0,,00-0034766
+2020,180,15,12,Cambrias,Younghoe Koo,K,ATL,0,0,,10.27,,,12.1,6.7,0,,00-0033702
+2019,1,1,1,Ronnie,Alvin Kamara,RB,NO,0,0,,7.82,,,-1.7,-0.9,0,,00-0033906
+2019,2,1,2,Frank & Julian,Saquon Barkley,RB,NYG,0,0,,7.67,,,0.7,0.4,0,,00-0034844
+2019,3,1,3,Richie,Christian McCaffrey,RB,CAR,0,0,,33.86,,,-0.1,-0.1,0.91,,00-0033280
+2019,4,1,4,Team JoeBa,DeAndre Hopkins,WR,HOU,0,0,,9.14,,,-5.4,-3,0,,00-0030564
+2019,5,1,5,Cambrias,Ezekiel Elliott,RB,DAL,0,0,,16.16,,,1.2,0.7,0,,00-0033045
+2019,6,1,6,Phil Baldino,David Johnson,RB,ARI,0,0,,-1.49,,,-0.2,-0.1,0.88,,00-0032187
+2019,7,1,7,Chris & Dom,James Conner,RB,PIT,0,0,,-0.9,,,0.2,0.1,0.88,,00-0033553
+2019,8,1,8,Nolan & Vinny,Davante Adams,WR,GB,0,0,,-0.18,,,-1.1,-0.6,0.56,,00-0031381
+2019,9,1,9,Rob & GregBo,Julio Jones,WR,ATL,0,0,,9.52,,,-1.5,-0.8,0.21,,00-0027944
+2019,10,1,10,Antdell & Ernie,Nick Chubb,RB,CLE,0,0,,13.46,,,1.3,0.7,0.35,,00-0034791
+2019,11,1,11,LFTLR,Le'Veon Bell,RB,NYJ,0,0,,6.77,,,2.9,1.6,0,,00-0030496
+2019,12,1,12,Pung & Tralie,Todd Gurley,RB,LAR,0,0,,7.96,,,-3,-1.7,0,,00-0032241
+2019,13,2,1,Pung & Tralie,Travis Kelce,TE,KC,0,0,,19.3,,,-4.1,-2.3,0,,00-0030506
+2019,14,2,2,LFTLR,Michael Thomas,WR,NO,0,0,,26.42,,,2.2,1.2,0.08,,00-0032765
+2019,15,2,3,Antdell & Ernie,JuJu Smith-Schuster,WR,PIT,0,0,,-8.98,,,0.4,0.2,0.81,,00-0033857
+2019,16,2,4,Rob & GregBo,Dalvin Cook,RB,MIN,0,0,,21.56,,,3.3,1.8,0,,00-0033893
+2019,17,2,5,Nolan & Vinny,Odell Beckham,WR,CLE,0,0,,-0.54,,,2,1.1,0.17,,00-0031235
+2019,18,2,6,Chris & Dom,Tyreek Hill,WR,KC,0,0,,-1.58,,,1.3,0.7,0.5,,00-0033040
+2019,19,2,7,Phil Baldino,Patrick Mahomes,QB,KC,0,0,,5.19,,,0.5,0.3,0.92,,00-0033873
+2019,20,2,8,Cambrias,Antonio Brown,WR,FA,0,0,,-20.29,,,-3.3,-1.8,0,,00-0027793
+2019,21,2,9,Team JoeBa,Mike Evans,WR,TB,0,0,,7.39,,,0.5,0.3,0.76,,00-0031408
+2019,22,2,10,Richie,Keenan Allen,WR,LAC,0,0,,8.1,,,-3.4,-1.9,0,,00-0030279
+2019,23,2,11,Frank & Julian,Joe Mixon,RB,CIN,0,0,,6.87,,,5.4,3,0,,00-0033897
+2019,24,2,12,Ronnie,Adam Thielen,WR,MIN,0,0,,-8.81,,,0.2,0.1,0.92,,00-0030035
+2019,25,3,1,Ronnie,Damien Williams,RB,KC,0,0,,-5.15,,,-1.4,-0.8,0.67,,00-0030874
+2019,26,3,2,Frank & Julian,Zach Ertz,TE,PHI,0,0,,17.04,,,-9.7,-5.4,0,,00-0030061
+2019,27,3,3,Richie,George Kittle,TE,SF,0,0,,16.6,,,-4.1,-2.3,0.07,,00-0033288
+2019,28,3,4,Team JoeBa,Chris Carson,RB,SEA,0,0,,14.18,,,3.8,2.1,0.03,,00-0033594
+2019,29,3,5,Cambrias,Aaron Jones,RB,GB,0,0,,26.68,,,1.7,0.9,0.55,,00-0033293
+2019,30,3,6,Phil Baldino,Leonard Fournette,RB,JAX,0,0,,19.74,,,9.7,5.4,0,,00-0033856
+2019,31,3,7,Chris & Dom,Julian Edelman,WR,NE,0,0,,11.07,,,-8.7,-4.8,0,,00-0027150
+2019,32,3,8,Nolan & Vinny,Josh Jacobs,RB,LV,0,0,,7.13,,,-0.1,-0.1,0.97,,00-0035700
+2019,33,3,9,Rob & GregBo,Amari Cooper,WR,DAL,0,0,,7.82,,,-1.4,-0.8,0.65,,00-0031544
+2019,34,3,10,Antdell & Ernie,Stefon Diggs,WR,MIN,0,0,,4.1,,,1.1,0.6,0.73,,00-0031588
+2019,35,3,11,LFTLR,Robert Woods,WR,LAR,0,0,,4.27,,,-7.2,-4,0,,00-0030431
+2019,36,3,12,Pung & Tralie,James White,RB,NE,0,0,,7.16,,,-25.5,-14.2,0,,00-0031062
+2019,37,4,1,Pung & Tralie,Tyler Lockett,WR,SEA,0,0,,5,,,-6.8,-3.8,0,,00-0032211
+2019,38,4,2,LFTLR,Sony Michel,RB,NE,0,0,,-1.63,,,2.6,1.4,0.13,,00-0034845
+2019,39,4,3,Antdell & Ernie,Brandin Cooks,WR,LAR,0,0,,-8.89,,,0.4,0.2,0.89,,00-0031236
+2019,40,4,4,Rob & GregBo,Kerryon Johnson,RB,DET,0,0,,-8.86,,,10.4,5.8,0,,00-0034349
+2019,41,4,5,Nolan & Vinny,Melvin Gordon,RB,FA,0,0,,0.92,,,1,0.6,0.79,,00-0032144
+2019,42,4,6,Chris & Dom,Devonta Freeman,RB,ATL,0,0,,7.24,,,12.6,7,0,,00-0031285
+2019,43,4,7,Phil Baldino,Chris Godwin,WR,TB,0,0,,18.48,,,0.1,0.1,0.98,,00-0033921
+2019,44,4,8,Cambrias,Cooper Kupp,WR,LAR,0,0,,12.03,,,-2,-1.1,0.46,,00-0033908
+2019,45,4,9,Team JoeBa,Derrick Henry,RB,TEN,0,0,,21.28,,,4.5,2.5,0.04,,00-0032764
+2019,46,4,10,Richie,David Montgomery,RB,CHI,0,0,,0,,,15.5,8.6,0,,00-0035685
+2019,47,4,11,Frank & Julian,T.Y. Hilton,WR,IND,0,0,,-8.21,,,-6.6,-3.7,0,,00-0029608
+2019,48,4,12,Ronnie,Jarvis Landry,WR,CLE,0,0,,6.27,,,-21.1,-11.7,0,,00-0031382
+2019,49,5,1,Ronnie,Calvin Ridley,WR,ATL,0,0,,1.1,,,-8.2,-4.6,0,,00-0034837
+2019,50,5,2,Frank & Julian,Deshaun Watson,QB,HOU,0,0,,16.79,,,3.7,2.1,0.54,,00-0033537
+2019,51,5,3,Richie,Tyler Boyd,WR,CIN,0,0,,4.81,,,-3.2,-1.8,0.27,,00-0033009
+2019,52,5,4,Team JoeBa,Aaron Rodgers,QB,GB,0,0,,3.27,,,-4.3,-2.4,0.51,,00-0023459
+2019,53,5,5,Cambrias,Alshon Jeffery,WR,PHI,0,0,,-7.29,,,-18.1,-10.1,0,,00-0029137
+2019,54,5,6,Phil Baldino,Kenny Golladay,WR,DET,0,0,,11.05,,,5.7,3.2,0,,00-0033932
+2019,55,5,7,Chris & Dom,Duke Johnson,RB,HOU,0,0,,-1.54,,,4.7,2.6,0.15,,00-0032257
+2019,56,5,8,Nolan & Vinny,Josh Gordon,WR,NE,0,0,,-12.35,,,6.5,3.6,0,,00-0029664
+2019,57,5,9,Rob & GregBo,Phillip Lindsay,RB,DEN,0,0,,8.62,,,7.4,4.1,0,,00-0034109
+2019,58,5,10,Antdell & Ernie,Marlon Mack,RB,IND,0,0,,1.47,,,14.1,7.8,0,,00-0033951
+2019,59,5,11,LFTLR,O.J. Howard,TE,TB,0,0,,-3.24,,,4.5,2.5,0.3,,00-0033879
+2019,60,5,12,Pung & Tralie,Austin Ekeler,RB,LAC,0,0,,31.51,,,1.5,0.8,0.73,,00-0033699
+2019,61,6,1,Pung & Tralie,Dede Westbrook,WR,JAX,0,0,,-5.59,,,-2.9,-1.6,0.49,,00-0033839
+2019,62,6,2,LFTLR,Tarik Cohen,RB,CHI,0,0,,-0.67,,,-14.6,-8.1,0,,00-0033556
+2019,63,6,3,Antdell & Ernie,Evan Engram,TE,NYG,0,0,,-1.12,,,5,2.8,0.23,,00-0033881
+2019,64,6,4,Rob & GregBo,Carson Wentz,QB,PHI,0,0,,4.28,,,-10.4,-5.8,0,,00-0032950
+2019,65,6,5,Nolan & Vinny,Hunter Henry,TE,LAC,0,0,,3.62,,,1.8,1,0.68,,00-0033090
+2019,66,6,6,Chris & Dom,D.J. Moore,WR,CAR,0,0,,9.77,,,-0.7,-0.4,0.88,,00-0034827
+2019,67,6,7,Phil Baldino,Derrius Guice,RB,WAS,0,0,,-9.74,,,-1.7,-0.9,0.78,,00-0034358
+2019,68,6,8,Cambrias,Mark Ingram,RB,BAL,0,0,,20.94,,,30.4,16.9,0,,00-0027966
+2019,69,6,9,Team JoeBa,Jared Cook,TE,NO,0,0,,8.47,,,-4.3,-2.4,0.39,,00-0027061
+2019,70,6,10,Richie,Miles Sanders,RB,PHI,0,0,,13.26,,,16.9,9.4,0,,00-0035243
+2019,71,6,11,Frank & Julian,Robbie Chosen,WR,NYJ,0,0,,-3.18,,,-2.2,-1.2,0.66,,00-0032688
+2019,72,6,12,Ronnie,,,NE,0,0,,,,,,,,,00-0021142
+2019,73,7,1,Ronnie,Matt Ryan,QB,ATL,0,0,,2.27,,,2.2,1.2,0.66,,00-0026143
+2019,74,7,2,Frank & Julian,Allen Robinson,WR,CHI,0,0,,11.34,,,-2.1,-1.2,0.66,,00-0031428
+2019,75,7,3,Richie,Marvin Jones,WR,DET,0,0,,0.97,,,-19.2,-10.7,0,,00-0029293
+2019,76,7,4,Team JoeBa,A.J. Green,WR,FA,0,0,,-18.57,,,11.9,6.6,0,,00-0027942
+2019,77,7,5,Cambrias,Vance McDonald,TE,PIT,0,0,,-3.83,,,0.2,0.1,0.97,,00-0030470
+2019,78,7,6,Phil Baldino,Devin Singletary,RB,BUF,0,0,,-0.69,,,-6.1,-3.4,0.29,,00-0035250
+2019,79,7,7,Chris & Dom,Emmanuel Sanders,WR,DEN,0,0,,-0.67,,,-7.2,-4,0,,00-0027685
+2019,80,7,8,Nolan & Vinny,Jared Goff,QB,LAR,0,0,,-2.09,,,-3.5,-1.9,0.53,,00-0033106
+2019,81,7,9,Rob & GregBo,Christian Kirk,WR,ARI,0,0,,-3.52,,,-9.6,-5.3,0,,00-0034775
+2019,82,7,10,Antdell & Ernie,Latavius Murray,RB,NO,0,0,,-0.6,,,14.1,7.8,0,,00-0030513
+2019,83,7,11,LFTLR,Tevin Coleman,RB,SF,0,0,,-2.01,,,26.3,14.6,0,,00-0032058
+2019,84,7,12,Pung & Tralie,Sterling Shepard,WR,NYG,0,0,,-5.39,,,-9.6,-5.3,0,,00-0032385
+2019,85,8,1,Pung & Tralie,Baker Mayfield,QB,CLE,0,0,,-3.18,,,18.1,10.1,0,,00-0034855
+2019,86,8,2,LFTLR,Cam Newton,QB,CAR,0,0,,-20.9,,,-10.1,-5.6,0,,00-0027939
+2019,87,8,3,Antdell & Ernie,Matt Breida,RB,SF,0,0,,-4.9,,,7.6,4.2,0.16,,00-0033308
+2019,88,8,4,Rob & GregBo,David Njoku,TE,CLE,0,0,,-9.53,,,5.5,3.1,0.25,,00-0033885
+2019,89,8,5,Nolan & Vinny,Jordan Howard,RB,PHI,0,0,,-3.97,,,-12.9,-7.2,0,,00-0032780
+2019,90,8,6,Chris & Dom,Drew Brees,QB,NO,0,0,,-3.77,,,10.5,5.8,0,,00-0020531
+2019,91,8,7,Phil Baldino,Corey Davis,WR,TEN,0,0,,-7.67,,,-17.7,-9.8,0,,00-0033871
+2019,92,8,8,Cambrias,Justice Hill,RB,BAL,0,0,,-10.43,,,-20.8,-11.6,0,,00-0034975
+2019,93,8,9,Team JoeBa,Kenyan Drake,RB,MIA,0,0,,10.84,,,8.8,4.9,0,,00-0033118
+2019,94,8,10,Richie,Will Fuller,WR,HOU,0,0,,-5.22,,,9.9,5.5,0,,00-0033127
+2019,95,8,11,Frank & Julian,LeSean McCoy,RB,KC,0,0,,-3.22,,,-10,-5.6,0.25,,00-0027029
+2019,96,8,12,Ronnie,Jamison Crowder,WR,NYJ,0,0,,-1.04,,,-35.1,-19.5,0,,00-0031941
+2019,97,9,1,Ronnie,Royce Freeman,RB,DEN,0,0,,-1.16,,,-2.1,-1.2,0.74,,00-0034838
+2019,98,9,2,Frank & Julian,Sammy Watkins,WR,KC,0,0,,-4.79,,,0.3,0.2,0.97,,00-0031325
+2019,99,9,3,Richie,Kalen Ballage,RB,MIA,0,0,,-8.92,,,-29,-16.1,0,,00-0034799
+2019,100,9,4,Team JoeBa,Marquez Valdes-Scantling,WR,GB,0,0,,-9.59,,,-1.1,-0.6,0.82,,00-0034272
+2019,101,9,5,Cambrias,Lamar Jackson,QB,BAL,0,0,,45.72,,,4.5,2.5,0.58,,00-0034796
+2019,102,9,6,Phil Baldino,Curtis Samuel,WR,CAR,0,0,,-1.65,,,20.7,11.5,0,,00-0033282
+2019,103,9,7,Chris & Dom,Chicago Bears,DEF,CHI,0,0,,-2.28,,,12.3,6.8,0,,DEF-0006
+2019,104,9,8,Nolan & Vinny,Donte Moncrief,WR,PIT,0,0,,-15.69,,,-13.6,-7.6,0,,00-0031339
+2019,105,9,9,Rob & GregBo,Dante Pettis,WR,SF,0,0,,-13.2,,,0.3,0.2,0.96,,00-0034860
+2019,106,9,10,Antdell & Ernie,Geronimo Allison,WR,FA,0,0,,-10.12,,,7.3,4.1,0.08,,00-0032626
+2019,107,9,11,LFTLR,Delanie Walker,TE,TEN,0,0,,-5.43,,,2.4,1.3,0.86,,00-0024389
+2019,108,9,12,Pung & Tralie,Darrell Henderson,RB,LAR,0,0,,-10.77,,,9.6,5.3,0,,00-0035664
+2019,109,10,1,Pung & Tralie,Tyrell Williams,WR,LV,0,0,,-4.05,,,-24.6,-13.7,0,,00-0032160
+2019,110,10,2,LFTLR,Golden Tate,WR,FA,0,0,,-4.64,,,-18.4,-10.2,0,,00-0027891
+2019,111,10,3,Antdell & Ernie,Jameis Winston,QB,TB,0,0,,12.92,,,5.7,3.2,0.37,,00-0031503
+2019,112,10,4,Rob & GregBo,DeSean Jackson,WR,PHI,0,0,,-12.43,,,-10.4,-5.8,0,,00-0026189
+2019,113,10,5,Nolan & Vinny,Larry Fitzgerald,WR,ARI,0,0,,-1.9,,,0.8,0.4,0.89,,00-0022921
+2019,114,10,6,Chris & Dom,Trey Burton,TE,FA,0,0,,-7.63,,,-41,-22.8,0,,00-0030710
+2019,115,10,7,Phil Baldino,Austin Hooper,TE,ATL,0,0,,16.71,,,-4.1,-2.3,0.74,,00-0032392
+2019,116,10,8,Cambrias,Tony Pollard,RB,DAL,0,0,,-5.61,,,33.1,18.4,0,,00-0035261
+2019,117,10,9,Team JoeBa,Jacksonville Jaguars,DEF,JAX,0,0,,-2.38,,,1.2,0.7,0.84,,DEF-0015
+2019,118,10,10,Richie,Michael Gallup,WR,DAL,0,0,,-0.99,,,1.1,0.6,0.85,,00-0034764
+2019,119,10,11,Frank & Julian,Los Angeles Rams,DEF,LAR,0,0,,4.17,,,,,,,DEF-0019
+2019,120,10,12,Ronnie,Greg Olsen,TE,CAR,0,0,,0,,,-33.8,-18.8,0,,00-0025418
+2019,121,11,1,Ronnie,Jaylen Samuels,RB,PIT,0,0,,-3.97,,,-3.5,-1.9,0.69,,00-0034331
+2019,122,11,2,Frank & Julian,Kenny Stills,WR,HOU,0,0,,-5.31,,,,,,,00-0030085
+2019,123,11,3,Richie,Rashaad Penny,RB,SEA,0,0,,-5.85,,,29.3,16.3,0,,00-0034750
+2019,124,11,4,Team JoeBa,Dallas Goedert,TE,PHI,0,0,,4.41,,,,,,,00-0034351
+2019,125,11,5,Cambrias,Russell Wilson,QB,SEA,0,0,,18.3,,,32.3,17.9,0,,00-0029263
+2019,126,11,6,Phil Baldino,DK Metcalf,WR,SEA,0,0,,-1.78,,,-8.9,-4.9,0,,00-0035640
+2019,127,11,7,Chris & Dom,Ito Smith,RB,ATL,0,0,,-8.4,,,-26.5,-14.7,0,,00-0034378
+2019,128,11,8,Nolan & Vinny,Justin Tucker,K,BAL,0,0,,6.24,,,-16.8,-9.3,0,,00-0029597
+2019,129,11,9,Rob & GregBo,John Brown,WR,BUF,0,0,,7.65,,,-2.3,-1.3,0.67,,00-0031051
+2019,130,11,10,Antdell & Ernie,Anthony Miller,WR,CHI,0,0,,-4.32,,,4.3,2.4,0.43,,00-0034353
+2019,131,11,11,LFTLR,Carlos Hyde,RB,HOU,0,0,,-0.08,,,-20.6,-11.4,0,,00-0031045
+2019,132,11,12,Pung & Tralie,Adam Humphries,WR,TEN,0,0,,-7.16,,,,,,,00-0032009
+2019,133,12,1,Pung & Tralie,Chris Thompson,RB,WAS,0,0,,-4.24,,,,,,,00-0030404
+2019,134,12,2,LFTLR,Jake Elliott,K,PHI,0,0,,-1.19,,,-32.1,-17.8,0,,00-0033787
+2019,135,12,3,Antdell & Ernie,Justin Jackson,RB,LAC,0,0,,-8.14,,,30.3,16.8,0,,00-0034440
+2019,136,12,4,Rob & GregBo,Peyton Barber,RB,TB,0,0,,-2.78,,,2.5,1.4,0.79,,00-0032741
+2019,137,12,5,Nolan & Vinny,Minnesota Vikings,DEF,MIN,0,0,,5.2,,,,,,,DEF-0021
+2019,138,12,6,Chris & Dom,Greg Zuerlein,K,LAR,0,0,,2.03,,,-9.1,-5.1,0,,00-0029621
+2019,139,12,7,Phil Baldino,Stephen Gostkowski,K,NE,0,0,,-5.03,,,-21.4,-11.9,0,,00-0024333
+2019,140,12,8,Cambrias,Baltimore Ravens,DEF,BAL,0,0,,4.94,,,21,11.7,0,,DEF-0003
+2019,141,12,9,Team JoeBa,Wil Lutz,K,NO,0,0,,12.53,,,-18,-10,0,,00-0032569
+2019,142,12,10,Richie,Alexander Mattison,RB,MIN,0,0,,-5.17,,,12.7,7.1,0,,00-0034972
+2019,143,12,11,Frank & Julian,Dion Lewis,RB,TEN,0,0,,-5.26,,,3.5,1.9,0.77,,00-0028087
+2019,144,12,12,Ronnie,Denver Broncos,DEF,DEN,0,0,,-1.39,,,-1,-0.6,0.93,,DEF-0010
+2019,145,13,1,Ronnie,Harrison Butker,K,KC,0,0,,12.92,,,-10.8,-6,0,,00-0033303
+2019,146,13,2,Frank & Julian,Giovani Bernard,RB,CIN,0,0,,-4.84,,,-9.3,-5.2,0.43,,00-0030456
+2019,147,13,3,Richie,Dak Prescott,QB,DAL,0,0,,18.78,,,20.3,11.3,0,,00-0033077
+2019,148,13,4,Team JoeBa,Derek Carr,QB,LV,0,0,,-0.96,,,-14.1,-7.8,0.11,,00-0031280
+2019,149,13,5,Cambrias,James Washington,WR,PIT,0,0,,-3.06,,,35.6,19.8,0,,00-0034676
+2019,150,13,6,Phil Baldino,Philadelphia Eagles,DEF,PHI,0,0,,-0.84,,,-10.9,-6.1,0.19,,DEF-0026
+2019,151,13,7,Chris & Dom,Philip Rivers,QB,LAC,0,0,,-1.27,,,32.1,17.8,0,,00-0022942
+2019,152,13,8,Nolan & Vinny,Adrian Peterson,RB,FA,0,0,,-0.7,,,,,,,00-0025394
+2019,153,13,9,Rob & GregBo,Tom Brady,QB,NE,0,0,,1.61,,,41.9,23.3,0,,00-0019596
+2019,154,13,10,Antdell & Ernie,Darwin Thompson,RB,KC,0,0,,-6.05,,,70.8,39.3,0,,00-0035148
+2019,155,13,11,LFTLR,Kirk Cousins,QB,MIN,0,0,,0,,,21.6,12,0,,00-0029604
+2019,156,13,12,Pung & Tralie,Kyler Murray,QB,ARI,0,0,,8.94,,,45.6,25.3,0,,00-0035228
+2019,157,14,1,Pung & Tralie,Robbie Gould,K,SF,0,0,,-0.31,,,-11.7,-6.5,0,,00-0023252
+2019,158,14,2,LFTLR,Seattle Seahawks,DEF,SEA,0,0,,0.6,,,-4.4,-2.4,0.6,,DEF-0029
+2019,159,14,3,Antdell & Ernie,Dallas Cowboys,DEF,DAL,0,0,,-1.19,,,12.9,7.2,0,,DEF-0009
+2019,160,14,4,Rob & GregBo,Los Angeles Chargers,DEF,LAC,0,0,,-1.65,,,,,,,DEF-0018
+2019,161,14,5,Nolan & Vinny,Keke Coutee,WR,FA,0,0,,-5.58,,,12.3,6.8,0,,00-0034366
+2019,162,14,6,Chris & Dom,Mohamed Sanu,WR,ATL,0,0,,-2.82,,,-1.7,-0.9,0.86,,00-0029632
+2019,163,14,7,Phil Baldino,Ben Roethlisberger,QB,PIT,0,0,,-8.6,,,45,25,0,,00-0022924
+2019,164,14,8,Cambrias,New England Patriots,DEF,NE,0,0,,33.39,,,12.6,7,0.26,,DEF-0022
+2019,165,14,9,Team JoeBa,Damien Harris,RB,FA,0,0,,-5.26,,,18.6,10.3,0,,00-0035657
+2019,166,14,10,Richie,Ka'imi Fairbairn,K,HOU,0,0,,-0.2,,,2.5,1.4,0.39,,00-0032726
+2019,167,14,11,Frank & Julian,DeVante Parker,WR,MIA,0,0,,10.25,,,,,,,00-0031547
+2019,168,14,12,Ronnie,Kareem Hunt,RB,FA,0,0,,-1.73,,,63,35,0,,00-0033923
+2019,169,15,1,Ronnie,Mitchell Trubisky,QB,CHI,0,0,,-1.23,,,28.4,15.8,0,,00-0033869
+2019,170,15,2,Frank & Julian,Mason Crosby,K,GB,0,0,,-0.28,,,3.9,2.2,0.66,,00-0025580
+2019,171,15,3,Richie,Cleveland Browns,DEF,CLE,0,0,,-0.73,,,33.4,18.6,0,,DEF-0008
+2019,172,15,4,Team JoeBa,Demaryius Thomas,WR,FA,0,0,,-2.31,,,6.2,3.4,0.44,,00-0027874
+2019,173,15,5,Cambrias,Matt Bryant,K,FA,0,0,,-1.27,,,,,,,00-0020578
+2019,174,15,6,Phil Baldino,Ronald Jones,RB,TB,0,0,,0.19,,,19.3,10.7,0,,00-0034816
+2019,175,15,7,Chris & Dom,Mark Andrews,TE,BAL,0,0,,27.09,,,42.4,23.6,0,,00-0034753
+2019,176,15,8,Nolan & Vinny,Albert Wilson,WR,MIA,0,0,,-1.33,,,,,,,00-0030669
+2019,177,15,9,Rob & GregBo,Adam Vinatieri,K,IND,0,0,,-0.29,,,,,,,00-0016919
+2019,178,15,10,Antdell & Ernie,Brett Maher,K,DAL,0,0,,-0.05,,,10,5.6,0.54,,00-0030332
+2019,179,15,11,LFTLR,Eric Ebron,TE,IND,0,0,,-0.07,,,55,30.6,0,,00-0031387
+2019,180,15,12,Pung & Tralie,San Francisco 49ers,DEF,SF,0,0,,13.07,,,,,,,DEF-0028
+2018,1,1,1,Frank & Julian,Todd Gurley,RB,LAR,0,0,,23.01,,,-0.6,-0.3,0.25,,00-0032241
+2018,2,1,2,Team JoeBa,Le'Veon Bell,RB,FA,0,0,,-19.07,,,-0.3,-0.2,0.67,,00-0030496
+2018,3,1,3,Pung & Tralie,Ezekiel Elliott,RB,DAL,0,0,,20.08,,,-1,-0.6,0.17,,00-0033045
+2018,4,1,4,Nolan & Vinny,Antonio Brown,WR,PIT,0,0,,17.74,,,-1.2,-0.7,0.08,,00-0027793
+2018,5,1,5,Richie,David Johnson,RB,ARI,0,0,,9.78,,,1.2,0.7,0.14,,00-0032187
+2018,6,1,6,Rob & GregBo,Alvin Kamara,RB,NO,0,0,,25.1,,,-0.3,-0.2,0.79,,00-0033906
+2018,7,1,7,Cambrias,Saquon Barkley,RB,NYG,0,0,,26.91,,,0.2,0.1,0.89,,00-0034844
+2018,8,1,8,Chris & Dom,DeAndre Hopkins,WR,HOU,0,0,,17.64,,,-1.8,-1,0.1,,00-0030564
+2018,9,1,9,Ronnie,Kareem Hunt,RB,KC,0,0,,9.99,,,-2.3,-1.3,0,,00-0033923
+2018,10,1,10,Phil Baldino,Melvin Gordon,RB,LAC,0,0,,15.27,,,1.6,0.9,0,,00-0032144
+2018,11,1,11,LFTLR,Christian McCaffrey,RB,CAR,0,0,,32.45,,,-2,-1.1,0.05,,00-0033280
+2018,12,1,12,Antdell & Ernie,Odell Beckham,WR,NYG,0,0,,8.15,,,0.4,0.2,0.81,,00-0031235
+2018,13,2,1,Antdell & Ernie,Julio Jones,WR,ATL,0,0,,18.34,,,-1.4,-0.8,0.26,,00-0027944
+2018,14,2,2,LFTLR,Leonard Fournette,RB,JAX,0,0,,-4.42,,,5,2.8,0,,00-0033856
+2018,15,2,3,Phil Baldino,Davante Adams,WR,GB,0,0,,23.6,,,-4.1,-2.3,0,,00-0031381
+2018,16,2,4,Ronnie,Dalvin Cook,RB,MIN,0,0,,-1.87,,,1,0.6,0.57,,00-0033893
+2018,17,2,5,Chris & Dom,Keenan Allen,WR,LAC,0,0,,11.68,,,-0.8,-0.4,0.62,,00-0030279
+2018,18,2,6,Cambrias,Michael Thomas,WR,NO,0,0,,21.15,,,1.7,0.9,0.19,,00-0032765
+2018,19,2,7,Rob & GregBo,A.J. Green,WR,CIN,0,0,,-3.45,,,-2.8,-1.6,0,,00-0027942
+2018,20,2,8,Richie,Devonta Freeman,RB,ATL,0,0,,-16.66,,,0.8,0.4,0.69,,00-0031285
+2018,21,2,9,Nolan & Vinny,Jordan Howard,RB,CHI,0,0,,-0.28,,,2.4,1.3,0.04,,00-0032780
+2018,22,2,10,Pung & Tralie,Tyreek Hill,WR,KC,0,0,,21.78,,,-4.2,-2.3,0,,00-0033040
+2018,23,2,11,Team JoeBa,Mike Evans,WR,TB,0,0,,13.91,,,-1.7,-0.9,0.32,,00-0031408
+2018,24,2,12,Frank & Julian,Aaron Rodgers,QB,GB,0,0,,9.76,,,-9.8,-5.5,0,,00-0023459
+2018,25,3,1,Frank & Julian,Rob Gronkowski,TE,NE,0,0,,0.61,,,4.3,2.4,0,,00-0027656
+2018,26,3,2,Team JoeBa,T.Y. Hilton,WR,IND,0,0,,9.72,,,-2.1,-1.2,0.22,,00-0029608
+2018,27,3,3,Pung & Tralie,Amari Cooper,WR,LV,0,0,,5.71,,,-7.1,-4,0,,00-0031544
+2018,28,3,4,Nolan & Vinny,Zach Ertz,TE,PHI,0,0,,28.02,,,-13.8,-7.7,0,,00-0030061
+2018,29,3,5,Richie,Larry Fitzgerald,WR,ARI,0,0,,-0.45,,,-9,-5,0,,00-0022921
+2018,30,3,6,Rob & GregBo,Travis Kelce,TE,KC,0,0,,30.38,,,-1.2,-0.7,0.71,,00-0030506
+2018,31,3,7,Cambrias,Joe Mixon,RB,CIN,0,0,,14.19,,,8.3,4.6,0,,00-0033897
+2018,32,3,8,Chris & Dom,LeSean McCoy,RB,BUF,0,0,,-4.85,,,3.2,1.8,0.16,,00-0027029
+2018,33,3,9,Ronnie,Chris Hogan,WR,NE,0,0,,-9.44,,,-11.6,-6.5,0,,00-0028237
+2018,34,3,10,Phil Baldino,Kenyan Drake,RB,MIA,0,0,,6.77,,,-0.3,-0.2,0.94,,00-0033118
+2018,35,3,11,LFTLR,Adam Thielen,WR,MIN,0,0,,23.9,,,1.4,0.8,0.61,,00-0030035
+2018,36,3,12,Antdell & Ernie,Alex Collins,RB,BAL,0,0,,-5.37,,,5.9,3.3,0,,00-0032426
+2018,37,4,1,Antdell & Ernie,Royce Freeman,RB,DEN,0,0,,-8.3,,,6,3.4,0,,00-0034838
+2018,39,4,3,Phil Baldino,JuJu Smith-Schuster,WR,PIT,0,0,,21.54,,,-1.7,-0.9,0.6,,00-0033857
+2018,40,4,4,Ronnie,Deshaun Watson,QB,HOU,0,0,,11.13,,,-10.4,-5.8,0,,00-0033537
+2018,41,4,5,Chris & Dom,Greg Olsen,TE,CAR,0,0,,-4.79,,,-20.2,-11.3,0,,00-0025418
+2018,42,4,6,Cambrias,Stefon Diggs,WR,MIN,0,0,,14.42,,,15.9,8.9,0,,00-0031588
+2018,43,4,7,Rob & GregBo,Demaryius Thomas,WR,DEN,0,0,,-2.33,,,-4.5,-2.5,0,,00-0027874
+2018,44,4,8,Richie,Dion Lewis,RB,TEN,0,0,,-0.28,,,-12.2,-6.8,0,,00-0028087
+2018,45,4,9,Nolan & Vinny,Jarvis Landry,WR,CLE,0,0,,3.98,,,2.9,1.6,0.28,,00-0031382
+2018,46,4,10,Pung & Tralie,Golden Tate,WR,DET,0,0,,-0.16,,,-4,-2.2,0.09,,00-0027891
+2018,47,4,11,Team JoeBa,Lamar Miller,RB,HOU,0,0,,0.21,,,8.4,4.7,0,,00-0029615
+2018,48,4,12,Frank & Julian,Allen Robinson,WR,CHI,0,0,,-2.66,,,-4.1,-2.3,0.2,,00-0031428
+2018,49,5,1,Frank & Julian,Doug Baldwin,WR,SEA,0,0,,-4.49,,,17.1,9.6,0,,00-0028434
+2018,50,5,2,Team JoeBa,Jimmy Graham,TE,GB,0,0,,0.35,,,-2.7,-1.5,0.6,,00-0027696
+2018,51,5,3,Pung & Tralie,Tom Brady,QB,NE,0,0,,0,,,-4.5,-2.5,0.45,,00-0019596
+2018,52,5,4,Nolan & Vinny,Brandin Cooks,WR,LAR,0,0,,9.25,,,0.8,0.4,0.85,,00-0031236
+2018,53,5,5,Richie,Marvin Jones,WR,DET,0,0,,-6.57,,,-5.5,-3.1,0,,00-0029293
+2018,54,5,6,Rob & GregBo,Jay Ajayi,RB,PHI,0,0,,-11.84,,,10.8,6,0,,00-0031590
+2018,55,5,7,Cambrias,Josh Gordon,WR,CLE,0,0,,-4.13,,,10.6,5.9,0,,00-0029664
+2018,56,5,8,Chris & Dom,Russell Wilson,QB,SEA,0,0,,7.95,,,-5.5,-3.1,0.13,,00-0029263
+2018,57,5,9,Ronnie,Evan Engram,TE,NYG,0,0,,-1.95,,,-17.1,-9.6,0,,00-0033881
+2018,58,5,10,Phil Baldino,Derrick Henry,RB,TEN,0,0,,7.81,,,20.7,11.6,0,,00-0032764
+2018,59,5,11,LFTLR,Mark Ingram,RB,FA,0,0,,-2.25,,,12.3,6.9,0,,00-0027966
+2018,60,5,12,Antdell & Ernie,Cam Newton,QB,CAR,0,0,,6.06,,,-8.2,-4.6,0,,00-0027939
+2018,61,6,1,Antdell & Ernie,Delanie Walker,TE,TEN,0,0,,-11.77,,,-19.3,-10.8,0,,00-0024389
+2018,62,6,2,LFTLR,Emmanuel Sanders,WR,DEN,0,0,,4.45,,,-1.7,-0.9,0.71,,00-0027685
+2018,63,6,3,Phil Baldino,Trey Burton,TE,CHI,0,0,,3.71,,,-7,-3.9,0.14,,00-0030710
+2018,64,6,4,Ronnie,Cooper Kupp,WR,LAR,0,0,,-4.47,,,-19.6,-10.9,0,,00-0033908
+2018,65,6,5,Chris & Dom,Julian Edelman,WR,FA,0,0,,2.48,,,-2.4,-1.3,0.63,,00-0027150
+2018,66,6,6,Cambrias,Drew Brees,QB,NO,0,0,,11.53,,,-4.7,-2.6,0.3,,00-0020531
+2018,67,6,7,Rob & GregBo,Michael Crabtree,WR,BAL,0,0,,-4.96,,,-5.5,-3.1,0.21,,00-0026986
+2018,68,6,8,Richie,Rex Burkhead,RB,NE,0,0,,-11.76,,,8.5,4.7,0,,00-0030288
+2018,69,6,9,Nolan & Vinny,Marshawn Lynch,RB,LV,0,0,,-7.78,,,21.5,12,0,,00-0025399
+2018,70,6,10,Pung & Tralie,Peyton Barber,RB,TB,0,0,,-1.34,,,-6.5,-3.6,0.24,,00-0032741
+2018,71,6,11,Team JoeBa,Andrew Luck,QB,IND,0,0,,11.98,,,-16.8,-9.4,0,,00-0029668
+2018,72,6,12,Frank & Julian,Jamaal Williams,RB,GB,0,0,,-4.79,,,9.7,5.4,0,,00-0033948
+2018,73,7,1,Frank & Julian,Devin Funchess,TE,CAR,0,0,,0,,,,,,,00-0032055
+2018,74,7,2,Team JoeBa,Alshon Jeffery,WR,FA,0,0,,-1.05,,,3.6,2,0.52,,00-0029137
+2018,75,7,3,Pung & Tralie,Nelson Agholor,WR,PHI,0,0,,-3.18,,,-24.8,-13.9,0,,00-0031549
+2018,76,7,4,Nolan & Vinny,Matthew Stafford,QB,DET,0,0,,-6.06,,,-26.6,-14.9,0,,00-0026498
+2018,77,7,5,Richie,Marquise Goodwin,WR,SF,0,0,,-8.56,,,23.6,13.2,0,,00-0030068
+2018,78,7,6,Rob & GregBo,Chris Carson,RB,SEA,0,0,,5.84,,,10,5.6,0,,00-0033594
+2018,79,7,7,Cambrias,Corey Davis,WR,TEN,0,0,,-0.12,,,16.7,9.3,0,,00-0033871
+2018,80,7,8,Chris & Dom,Tevin Coleman,RB,ATL,0,0,,5.81,,,10.8,6,0,,00-0032058
+2018,81,7,9,Ronnie,Will Fuller,WR,FA,0,0,,-6.91,,,5.4,3,0.3,,00-0033127
+2018,82,7,10,Phil Baldino,John Brown,WR,BAL,0,0,,-3.39,,,-48,-26.8,0,,00-0031051
+2018,83,7,11,LFTLR,Sammy Watkins,WR,KC,0,0,,-5.93,,,2.2,1.2,0.71,,00-0031325
+2018,84,7,12,Antdell & Ernie,Jamison Crowder,WR,WAS,0,0,,-9.18,,,0.6,0.3,0.92,,00-0031941
+2018,85,8,1,Antdell & Ernie,Carlos Hyde,RB,CLE,0,0,,-5.83,,,28.5,15.9,0,,00-0031045
+2018,86,8,2,LFTLR,Kyle Rudolph,TE,MIN,0,0,,6.29,,,5.9,3.3,0.27,,00-0027981
+2018,87,8,3,Phil Baldino,Jacksonville Jaguars,DEF,JAX,0,0,,-0.28,,,-7.2,-4,0.31,,DEF-0015
+2018,88,8,4,Ronnie,Sony Michel,RB,FA,0,0,,-2.01,,,11.3,6.3,0,,00-0034845
+2018,89,8,5,Chris & Dom,Chris Thompson,RB,WAS,0,0,,-6.66,,,3.8,2.1,0.53,,00-0030404
+2018,90,8,6,Cambrias,Jordan Reed,TE,WAS,0,0,,-0.28,,,-1,-0.6,0.91,,00-0030472
+2018,91,8,7,Rob & GregBo,Philip Rivers,QB,LAC,0,0,,5.63,,,-17.4,-9.7,0,,00-0022942
+2018,92,8,8,Richie,Robert Woods,WR,LAR,0,0,,21.89,,,-10.3,-5.8,0,,00-0030431
+2018,93,8,9,Nolan & Vinny,Nick Chubb,RB,CLE,0,0,,8.76,,,-17,-9.5,0,,00-0034791
+2018,94,8,10,Pung & Tralie,Sterling Shepard,WR,NYG,0,0,,-0.55,,,-18.6,-10.4,0,,00-0032385
+2018,95,8,11,Team JoeBa,Isaiah Crowell,RB,NYJ,0,0,,-1.45,,,11.9,6.6,0,,00-0030656
+2018,96,8,12,Frank & Julian,Minnesota Vikings,DEF,MIN,0,0,,5.8,,,,,,,DEF-0021
+2018,97,9,1,Frank & Julian,Jordy Nelson,WR,LV,0,0,,-3.35,,,-1.1,-0.6,0.88,,00-0026176
+2018,98,9,2,Team JoeBa,Philadelphia Eagles,DEF,PHI,0,0,,-1.92,,,-22.8,-12.7,0,,DEF-0026
+2018,99,9,3,Pung & Tralie,Marlon Mack,RB,ARI,0,0,,0.88,,,9.5,5.3,0,,00-0033951
+2018,100,9,4,Nolan & Vinny,D.J. Moore,WR,CAR,0,0,,-2.43,,,-20.6,-11.5,0,,00-0034827
+2018,101,9,5,Richie,Kerryon Johnson,RB,DET,0,0,,-1.6,,,46.4,25.9,0,,00-0034349
+2018,102,9,6,Rob & GregBo,Robbie Chosen,WR,NYJ,0,0,,-2.06,,,16.7,9.3,0,,00-0032688
+2018,103,9,7,Cambrias,Carson Wentz,QB,KC,0,0,,-5.06,,,21,11.7,0,,00-0032950
+2018,104,9,8,Chris & Dom,Los Angeles Chargers,DEF,LAC,0,0,,-1.26,,,,,,,DEF-0018
+2018,105,9,9,Ronnie,Houston Texans,DEF,HOU,0,0,,8.12,,,,,,,DEF-0013
+2018,106,9,10,Phil Baldino,Matt Ryan,QB,ATL,0,0,,19.08,,,-7.5,-4.2,0.34,,00-0026143
+2018,107,9,11,LFTLR,Ben Roethlisberger,QB,PIT,0,0,,19.8,,,-8,-4.5,0.16,,00-0022924
+2018,108,9,12,Antdell & Ernie,James White,RB,NE,0,0,,28.01,,,-1.2,-0.7,0.88,,00-0031062
+2018,109,10,1,Antdell & Ernie,Tarik Cohen,RB,CHI,0,0,,17.7,,,21,11.7,0,,00-0033556
+2018,110,10,2,LFTLR,Pierre Garcon,WR,SF,0,0,,-9.53,,,5.2,2.9,0.43,,00-0026345
+2018,111,10,3,Phil Baldino,James Conner,RB,PIT,0,0,,30.95,,,-45.8,-25.6,0,,00-0033553
+2018,112,10,4,Ronnie,,,NE,0,0,,,,,,,,,00-0021142
+2018,113,10,5,Chris & Dom,Randall Cobb,WR,GB,0,0,,-7.59,,,19,10.6,0,,00-0028002
+2018,114,10,6,Cambrias,Adrian Peterson,RB,WAS,0,0,,8.86,,,,,,,00-0025394
+2018,115,10,7,Rob & GregBo,Jordan Wilkins,RB,IND,0,0,,-7.93,,,-26.5,-14.8,0,,00-0034400
+2018,116,10,8,Richie,Keelan Cole,WR,JAX,0,0,,-7.66,,,-8.8,-4.9,0.39,,00-0033681
+2018,117,10,9,Nolan & Vinny,Jack Doyle,TE,IND,0,0,,-4.74,,,-2.2,-1.2,0.87,,00-0030181
+2018,118,10,10,Pung & Tralie,David Njoku,TE,CLE,0,0,,3.3,,,15,8.4,0,,00-0033885
+2018,119,10,11,Team JoeBa,George Kittle,TE,SF,0,0,,29.68,,,-16.9,-9.4,0,,00-0033288
+2018,120,10,12,Frank & Julian,Stephen Gostkowski,K,NE,0,0,,3.65,,,-27.9,-15.6,0,,00-0024333
+2018,121,11,1,Frank & Julian,Alfred Morris,RB,SF,0,0,,-8.1,,,-6.3,-3.5,0.76,,00-0029141
+2018,122,11,2,Team JoeBa,Rishard Matthews,WR,FA,0,0,,-12.72,,,-40.7,-22.7,0,,00-0029580
+2018,123,11,3,Pung & Tralie,Baltimore Ravens,DEF,BAL,0,0,,4.81,,,-11.1,-6.2,0,,DEF-0003
+2018,124,11,4,Nolan & Vinny,Justin Tucker,K,BAL,0,0,,7.94,,,-27.5,-15.4,0,,00-0029597
+2018,125,11,5,Richie,Rashaad Penny,RB,SEA,0,0,,-6.37,,,50.7,28.3,0,,00-0034750
+2018,126,11,6,Rob & GregBo,Kenny Stills,WR,MIA,0,0,,-3.75,,,19.8,11.1,0,,00-0030085
+2018,127,11,7,Cambrias,Giovani Bernard,RB,CIN,0,0,,-4.58,,,-16.7,-9.3,0,,00-0030456
+2018,128,11,8,Chris & Dom,Greg Zuerlein,K,LAR,0,0,,-0.21,,,-17.5,-9.8,0,,00-0029621
+2018,129,11,9,Ronnie,Aaron Jones,RB,MIN,0,0,,3.84,,,38.5,21.5,0,,00-0033293
+2018,130,11,10,Phil Baldino,Mohamed Sanu,WR,ATL,0,0,,-1.11,,,-34,-19,0,,00-0029632
+2018,131,11,11,LFTLR,Kelvin Benjamin,TE,BUF,0,0,,-3.8,,,,,,,00-0031359
+2018,132,11,12,Antdell & Ernie,Duke Johnson,RB,CLE,0,0,,-1.85,,,34.4,19.2,0,,00-0032257
+2018,133,12,1,Antdell & Ernie,O.J. Howard,TE,TB,0,0,,-0.09,,,-21.7,-12.1,0,,00-0033879
+2018,134,12,2,LFTLR,Jared Cook,TE,LV,0,0,,19.09,,,,,,,00-0027061
+2018,135,12,3,Phil Baldino,Jared Goff,QB,LAR,0,0,,9.89,,,7,3.9,0.36,,00-0033106
+2018,136,12,4,Ronnie,Chris Boswell,K,PIT,0,0,,-1.54,,,-30,-16.8,0,,00-0031136
+2018,137,12,5,Chris & Dom,Cole Beasley,WR,DAL,0,0,,-3.2,,,,,,,00-0029000
+2018,138,12,6,Cambrias,New Orleans Saints,DEF,NO,0,0,,2.04,,,-8.7,-4.9,0.24,,DEF-0023
+2018,139,12,7,Rob & GregBo,Calvin Ridley,WR,ATL,0,0,,3.95,,,16,8.9,0,,00-0034837
+2018,140,12,8,Richie,Kirk Cousins,QB,MIN,0,0,,4.94,,,50.9,28.4,0,,00-0029604
+2018,141,12,9,Nolan & Vinny,Los Angeles Rams,DEF,LAR,0,0,,8.81,,,,,,,DEF-0019
+2018,142,12,10,Pung & Tralie,Matt Breida,RB,SF,0,0,,1.62,,,3.3,1.8,0.86,,00-0033308
+2018,143,12,11,Team JoeBa,Jake Elliott,K,PHI,0,0,,-0.06,,,-22.6,-12.6,0,,00-0033787
+2018,144,12,12,Frank & Julian,Devontae Booker,RB,DEN,0,0,,-4.48,,,-11.3,-6.3,0.37,,00-0032972
+2018,145,13,1,Frank & Julian,DeVante Parker,WR,FA,0,0,,-6.71,,,4.2,2.3,0.69,,00-0031547
+2018,146,13,2,Team JoeBa,Jimmy Garoppolo,QB,SF,0,0,,-11.64,,,43.4,24.2,0,,00-0031345
+2018,147,13,3,Pung & Tralie,Dez Bryant,WR,FA,0,0,,-9.84,,,,,,,00-0027902
+2018,148,13,4,Nolan & Vinny,Dante Pettis,WR,SF,0,0,,-4.08,,,,,,,00-0034860
+2018,149,13,5,Richie,Antonio Gates,TE,LAC,0,0,,-2.58,,,,,,,00-0021547
+2018,150,13,6,Rob & GregBo,Denver Broncos,DEF,DEN,0,0,,3.88,,,2.8,1.6,0.76,,DEF-0010
+2018,151,13,7,Cambrias,Ronald Jones,RB,FA,0,0,,-7,,,54.1,30.2,0,,00-0034816
+2018,152,13,8,Chris & Dom,Latavius Murray,RB,MIN,0,0,,-1.39,,,29.2,16.3,0,,00-0030513
+2018,153,13,9,Ronnie,Kenny Golladay,WR,DET,0,0,,9.91,,,27.8,15.5,0,,00-0033932
+2018,154,13,10,Phil Baldino,Austin Ekeler,RB,LAC,0,0,,0,,,-4.9,-2.7,0.67,,00-0033699
+2018,155,13,11,LFTLR,Corey Clement,RB,PHI,0,0,,-3.58,,,38.6,21.6,0,,00-0033725
+2018,156,13,12,Antdell & Ernie,Chicago Bears,DEF,CHI,0,0,,23.86,,,-6.9,-3.9,0.46,,DEF-0006
+2018,157,14,1,Antdell & Ernie,Matt Bryant,K,ATL,0,0,,-0.88,,,-11,-6.1,0,,00-0020578
+2018,158,14,2,LFTLR,Matt Prater,K,DET,0,0,,0,,,-12.2,-6.8,0,,00-0023853
+2018,159,14,3,Phil Baldino,Michael Gallup,WR,DAL,0,0,,-3.81,,,26.1,14.6,0,,00-0034764
+2018,160,14,4,Ronnie,Derek Carr,QB,LV,0,0,,-1.65,,,13.9,7.8,0.07,,00-0031280
+2018,161,14,5,Chris & Dom,Tyler Lockett,WR,SEA,0,0,,8.8,,,31.4,17.5,0,,00-0032211
+2018,162,14,6,Cambrias,Wil Lutz,K,NO,0,0,,9.76,,,1.1,0.6,0.73,,00-0032569
+2018,163,14,7,Rob & GregBo,Mason Crosby,K,GB,0,0,,8.56,,,-5.7,-3.2,0,,00-0025580
+2018,164,14,8,Richie,New England Patriots,DEF,NE,0,0,,1.53,,,-0.9,-0.5,0.92,,DEF-0022
+2018,165,14,9,Nolan & Vinny,LeGarrette Blount,RB,DET,0,0,,-2.41,,,29.3,16.4,0,,00-0027325
+2018,166,14,10,Pung & Tralie,Patrick Mahomes,QB,KC,0,0,,44.05,,,46.6,26,0,,00-0033873
+2018,167,14,11,Team JoeBa,Allen Hurns,WR,DAL,0,0,,-3.65,,,43.9,24.5,0,,00-0030821
+2018,168,14,12,Frank & Julian,Ricky Seals-Jones,TE,ARI,0,0,,-1.32,,,10.9,6.1,0.46,,00-0033611
+2018,169,15,1,Frank & Julian,Dede Westbrook,WR,JAX,0,0,,1.05,,,17.4,9.7,0,,00-0033839
+2018,170,15,2,Team JoeBa,Bilal Powell,RB,NYJ,0,0,,-2.28,,,41.7,23.3,0,,00-0028064
+2018,171,15,3,Pung & Tralie,Harrison Butker,K,KC,0,0,,7.74,,,1,0.6,0.85,,00-0033303
+2018,172,15,4,Nolan & Vinny,Dallas Goedert,TE,PHI,0,0,,-0.76,,,,,,,00-0034351
+2018,173,15,5,Richie,Robbie Gould,K,SF,0,0,,4.97,,,0.7,0.4,0.92,,00-0023252
+2018,174,15,6,Rob & GregBo,Eric Ebron,TE,IND,0,0,,25.91,,,20.9,11.7,0.15,,00-0031387
+2018,175,15,7,Cambrias,Mike Gesicki,TE,MIA,0,0,,-1,,,18.3,10.2,0.03,,00-0034829
+2018,176,15,8,Chris & Dom,Anthony Miller,WR,CHI,0,0,,-0.5,,,40.9,22.8,0,,00-0034353
+2018,177,15,9,Ronnie,John Ross,WR,CIN,0,0,,-0.5,,,22.2,12.4,0,,00-0033460
+2018,178,15,10,Phil Baldino,Josh Lambo,K,JAX,0,0,,-0.06,,,,,,,00-0032087
+2018,179,15,11,LFTLR,Pittsburgh Steelers,DEF,PIT,0,0,,0.63,,,15.1,8.4,0,,DEF-0027
+2018,180,15,12,Antdell & Ernie,Chris Godwin,WR,TB,0,0,,,,,37,20.7,0,,00-0033921
+2017,1,1,1,LFTLR,David Johnson,RB,ARI,0,0,,-16.52,,,-0.3,-0.2,0.5,,00-0032187
+2017,2,1,2,Cambrias,Le'Veon Bell,RB,PIT,0,0,,21.01,,,-0.3,-0.2,0.63,,00-0030496
+2017,3,1,3,Pung & Tralie,Antonio Brown,WR,PIT,0,0,,15.99,,,-0.7,-0.4,0.3,,00-0027793
+2017,4,1,4,Antdell & Ernie,Julio Jones,WR,ATL,0,0,,8.18,,,-1.7,-0.9,0.47,,00-0027944
+2017,5,1,5,Richie,Jordy Nelson,WR,GB,0,0,,-3.81,,,-6.4,-3.6,0,,00-0026176
+2017,6,1,6,Team JoeBa,Mike Evans,WR,TB,0,0,,2.7,,,-1.9,-1.1,0.14,,00-0031408
+2017,7,1,7,Phil Baldino,Odell Beckham,WR,MIA,0,0,,-11.51,,,0.6,0.3,0.63,,00-0031235
+2017,8,1,8,Chris & Dom,A.J. Green,WR,CIN,0,0,,7.14,,,-2,-1.1,0.09,,00-0027942
+2017,9,1,9,Ronnie,LeSean McCoy,RB,BUF,0,0,,14.76,,,1.2,0.7,0.4,,00-0027029
+2017,10,1,10,Nolan & Vinny,Devonta Freeman,RB,ATL,0,0,,3.45,,,3,1.7,0,,00-0031285
+2017,11,1,11,Frank & Julian,Dez Bryant,WR,DAL,0,0,,1.68,,,-9.5,-5.3,0,,00-0027902
+2017,12,1,12,Rob & GregBo,Michael Thomas,WR,NO,0,0,,11.09,,,-1.3,-0.7,0.41,,00-0032765
+2017,13,2,1,Rob & GregBo,Melvin Gordon,RB,LAC,0,0,,17.58,,,2.9,1.6,0,,00-0032144
+2017,14,2,2,Frank & Julian,Doug Baldwin,WR,SEA,0,0,,4.56,,,-8.4,-4.7,0,,00-0028434
+2017,15,2,3,Nolan & Vinny,Amari Cooper,WR,LV,0,0,,-3.53,,,-6.3,-3.5,0,,00-0031544
+2017,16,2,4,Ronnie,Brandin Cooks,WR,NE,0,0,,4.9,,,-1.1,-0.6,0.66,,00-0031236
+2017,17,2,5,Chris & Dom,Ezekiel Elliott,RB,DAL,0,0,,5.15,,,10.8,6,0,,00-0033045
+2017,18,2,6,Phil Baldino,Todd Gurley,RB,LAR,0,0,,37.82,,,-1.4,-0.8,0.52,,00-0032241
+2017,19,2,7,Team JoeBa,DeMarco Murray,RB,TEN,0,0,,3.4,,,3.8,2.1,0,,00-0028009
+2017,20,2,8,Richie,Jay Ajayi,RB,FA,0,0,,-1.8,,,6.2,3.4,0,,00-0031590
+2017,21,2,9,Antdell & Ernie,Jordan Howard,RB,CHI,0,0,,7.68,,,4.2,2.3,0,,00-0032780
+2017,22,2,10,Pung & Tralie,Aaron Rodgers,QB,GB,0,0,,-13,,,-1.4,-0.8,0.77,,00-0023459
+2017,23,2,11,Cambrias,Rob Gronkowski,TE,NE,0,0,,17.36,,,4.9,2.7,0,,00-0027656
+2017,24,2,12,LFTLR,DeAndre Hopkins,WR,HOU,0,0,,24.7,,,-7.7,-4.3,0,,00-0030564
+2017,25,3,1,LFTLR,Tom Brady,QB,NE,0,0,,6.53,,,-4.6,-2.6,0.21,,00-0019596
+2017,26,3,2,Cambrias,T.Y. Hilton,WR,IND,0,0,,0.16,,,-2.8,-1.6,0.22,,00-0029608
+2017,27,3,3,Pung & Tralie,Leonard Fournette,RB,JAX,0,0,,11.01,,,0,0,1,,00-0033856
+2017,28,3,4,Antdell & Ernie,Travis Kelce,TE,KC,0,0,,19.46,,,-10.9,-6.1,0,,00-0030506
+2017,29,3,5,Richie,Lamar Miller,RB,HOU,0,0,,7.02,,,-6.2,-3.4,0,,00-0029615
+2017,30,3,6,Team JoeBa,Matt Ryan,QB,ATL,0,0,,-3.74,,,-26.4,-14.7,0,,00-0026143
+2017,31,3,7,Phil Baldino,Demaryius Thomas,WR,DEN,0,0,,3.37,,,-3.5,-1.9,0.13,,00-0027874
+2017,32,3,8,Chris & Dom,Terrelle Pryor,WR,WAS,0,0,,-13.5,,,1.8,1,0.6,,00-0028825
+2017,33,3,9,Ronnie,Christian McCaffrey,RB,CAR,0,0,,13.31,,,10.1,5.6,0,,00-0033280
+2017,34,3,10,Nolan & Vinny,Alshon Jeffery,WR,PHI,0,0,,4.6,,,-5.1,-2.8,0,,00-0029137
+2017,35,3,11,Frank & Julian,Dalvin Cook,RB,MIN,0,0,,-9.43,,,7.5,4.2,0,,00-0033893
+2017,36,3,12,Rob & GregBo,Carlos Hyde,RB,SF,0,0,,12.23,,,0.8,0.4,0.82,,00-0031045
+2017,37,4,1,Rob & GregBo,Drew Brees,QB,NO,0,0,,1.22,,,-4.7,-2.6,0.46,,00-0020531
+2017,38,4,2,Frank & Julian,Kareem Hunt,RB,KC,0,0,,26.95,,,19.3,10.7,0,,00-0033923
+2017,39,4,3,Nolan & Vinny,Ty Montgomery,RB,GB,0,0,,-6.57,,,6.4,3.6,0,,00-0032200
+2017,40,4,4,Ronnie,Keenan Allen,WR,LAC,0,0,,16.95,,,14.2,7.9,0,,00-0030279
+2017,41,4,5,Chris & Dom,Isaiah Crowell,RB,CLE,0,0,,-0.69,,,11.2,6.2,0,,00-0030656
+2017,42,4,6,Phil Baldino,Marshawn Lynch,RB,LV,0,0,,-0.05,,,5.6,3.1,0.07,,00-0025399
+2017,43,4,7,Team JoeBa,Michael Crabtree,WR,LV,0,0,,-0.13,,,-0.7,-0.4,0.85,,00-0026986
+2017,44,4,8,Richie,Golden Tate,WR,DET,0,0,,6.21,,,-3.8,-2.1,0.31,,00-0027891
+2017,45,4,9,Antdell & Ernie,Russell Wilson,QB,SEA,0,0,,18.69,,,-19.3,-10.7,0,,00-0029263
+2017,46,4,10,Pung & Tralie,Ameer Abdullah,RB,DET,0,0,,-3.88,,,-7,-3.9,0,,00-0032104
+2017,47,4,11,Cambrias,Joe Mixon,RB,CIN,0,0,,-1.89,,,4.5,2.5,0.08,,00-0033897
+2017,48,4,12,LFTLR,Kelvin Benjamin,TE,CAR,0,0,,-0.07,,,,,,,00-0031359
+2017,49,5,1,LFTLR,Sammy Watkins,WR,LAR,0,0,,-2.65,,,-21,-11.7,0,,00-0031325
+2017,50,5,2,Cambrias,Larry Fitzgerald,WR,ARI,0,0,,16.59,,,1.6,0.9,0.69,,00-0022921
+2017,51,5,3,Pung & Tralie,Greg Olsen,TE,CAR,0,0,,-9.27,,,-0.5,-0.3,0.91,,00-0025418
+2017,52,5,4,Antdell & Ernie,Davante Adams,WR,GB,0,0,,11.21,,,7.1,3.9,0,,00-0031381
+2017,53,5,5,Richie,Stefon Diggs,WR,MIN,0,0,,2.47,,,-1.8,-1,0.69,,00-0031588
+2017,54,5,6,Team JoeBa,C.J. Anderson,RB,DEN,0,0,,3.81,,,2.6,1.4,0.57,,00-0029854
+2017,55,5,7,Phil Baldino,Jimmy Graham,TE,SEA,0,0,,8.1,,,-2.6,-1.4,0.49,,00-0027696
+2017,56,5,8,Chris & Dom,Allen Robinson,WR,JAX,0,0,,-17.47,,,-1,-0.6,0.84,,00-0031428
+2017,57,5,9,Ronnie,Jeremy Maclin,WR,BAL,0,0,,-7.16,,,-26.4,-14.7,0,,00-0026995
+2017,58,5,10,Nolan & Vinny,Jordan Reed,TE,WAS,0,0,,-6.79,,,3.9,2.2,0.33,,00-0030472
+2017,59,5,11,Frank & Julian,Martavis Bryant,WR,PIT,0,0,,-5.16,,,18.1,10.1,0,,00-0031373
+2017,60,5,12,Rob & GregBo,DeVante Parker,WR,FA,0,0,,-5.39,,,8.1,4.5,0,,00-0031547
+2017,61,6,1,Rob & GregBo,Jamison Crowder,WR,WAS,0,0,,-0.96,,,-0.2,-0.1,0.96,,00-0031941
+2017,62,6,2,Frank & Julian,Tyreek Hill,WR,KC,0,0,,17.27,,,16.5,9.2,0,,00-0033040
+2017,63,6,3,Nolan & Vinny,Jarvis Landry,WR,FA,0,0,,16.33,,,-1,-0.6,0.85,,00-0031382
+2017,64,6,4,Ronnie,Corey Coleman,WR,CLE,0,0,,-10.85,,,-32.4,-18,0,,00-0032966
+2017,65,6,5,Chris & Dom,Darren McFadden,RB,FA,0,0,,-15.27,,,-10.3,-5.7,0,,00-0026144
+2017,66,6,6,Phil Baldino,Paul Perkins,RB,NYG,0,0,,-13.31,,,-17.4,-9.7,0,,00-0032417
+2017,67,6,7,Team JoeBa,Tyler Eifert,TE,CIN,0,0,,-11.91,,,-3.4,-1.9,0.55,,00-0030549
+2017,68,6,8,Richie,Willie Snead,WR,MIA,0,0,,-15.21,,,-15.8,-8.8,0,,00-0030663
+2017,69,6,9,Antdell & Ernie,Mark Ingram,RB,NO,0,0,,27.78,,,11.4,6.3,0,,00-0027966
+2017,70,6,10,Pung & Tralie,Brandon Marshall,WR,NYG,0,0,,-13.5,,,4.8,2.7,0.19,,00-0024334
+2017,71,6,11,Cambrias,Pierre Garcon,WR,SF,0,0,,-7.98,,,4.6,2.6,0.25,,00-0026345
+2017,72,6,12,LFTLR,Mike Gillislee,RB,NE,0,0,,-8.12,,,6.7,3.7,0.07,,00-0030433
+2017,73,7,1,LFTLR,DeSean Jackson,WR,FA,0,0,,-3.19,,,-17.4,-9.7,0,,00-0026189
+2017,74,7,2,Cambrias,Doug Martin,RB,FA,0,0,,-7.33,,,25,13.9,0,,00-0029613
+2017,75,7,3,Pung & Tralie,Chris Hogan,WR,NE,0,0,,-5.87,,,-1.5,-0.8,0.8,,00-0028237
+2017,76,7,4,Antdell & Ernie,Bilal Powell,RB,NYJ,0,0,,-1.08,,,27.4,15.2,0,,00-0028064
+2017,77,7,5,Richie,Danny Woodhead,RB,BAL,0,0,,-9.31,,,15.3,8.5,0,,00-0026019
+2017,78,7,6,Team JoeBa,Marvin Jones,WR,DET,0,0,,8.8,,,-28.3,-15.7,0,,00-0029293
+2017,79,7,7,Phil Baldino,Donte Moncrief,WR,IND,0,0,,-8.77,,,-26.7,-14.8,0,,00-0031339
+2017,80,7,8,Chris & Dom,Kirk Cousins,QB,WAS,0,0,,6.87,,,-6.3,-3.5,0.28,,00-0029604
+2017,81,7,9,Ronnie,Jameis Winston,QB,CLE,0,0,,-5.98,,,-1.4,-0.8,0.82,,00-0031503
+2017,82,7,10,Nolan & Vinny,Marcus Mariota,QB,TEN,0,0,,-4.16,,,5.2,2.9,0.25,,00-0032268
+2017,83,7,11,Frank & Julian,Delanie Walker,TE,TEN,0,0,,11.42,,,3.1,1.7,0.68,,00-0024389
+2017,84,7,12,Rob & GregBo,Martellus Bennett,TE,GB,0,0,,-6.46,,,-3.6,-2,0.7,,00-0026201
+2017,85,8,1,Rob & GregBo,Darren Sproles,RB,PHI,0,0,,-12.12,,,-31.3,-17.4,0,,00-0023564
+2017,86,8,2,Frank & Julian,Ben Roethlisberger,QB,PIT,0,0,,4.39,,,-15,-8.3,0,,00-0022924
+2017,87,8,3,Nolan & Vinny,Emmanuel Sanders,WR,DEN,0,0,,-5.03,,,13.1,7.3,0,,00-0027685
+2017,88,8,4,Ronnie,Hunter Henry,TE,NE,0,0,,-0.11,,,-18.1,-10.1,0,,00-0033090
+2017,89,8,5,Chris & Dom,Adam Thielen,WR,MIN,0,0,,14.67,,,-9.6,-5.3,0,,00-0030035
+2017,90,8,6,Phil Baldino,Andrew Luck,QB,FA,0,0,,-22.01,,,-10.3,-5.7,0,,00-0029668
+2017,91,8,7,Team JoeBa,Tevin Coleman,RB,ATL,0,0,,2.89,,,17.8,9.9,0,,00-0032058
+2017,92,8,8,Richie,Frank Gore,RB,IND,0,0,,1.99,,,,,,,00-0023500
+2017,93,8,9,Antdell & Ernie,Theo Riddick,RB,DET,0,0,,0,,,10,5.6,0,,00-0030107
+2017,94,8,10,Pung & Tralie,Adrian Peterson,RB,NO,0,0,,-6.37,,,,,,,00-0025394
+2017,95,8,11,Cambrias,Rob Kelley,RB,WAS,0,0,,-9.58,,,28,15.6,0,,00-0032371
+2017,96,8,12,LFTLR,O.J. Howard,TE,FA,0,0,,-2.27,,,-56.7,-31.5,0,,00-0033879
+2017,97,9,1,LFTLR,Zach Ertz,TE,PHI,0,0,,18.86,,,24.2,13.4,0,,00-0030061
+2017,98,9,2,Cambrias,Philip Rivers,QB,LAC,0,0,,0,,,-10.7,-5.9,0,,00-0022942
+2017,99,9,3,Pung & Tralie,Randall Cobb,WR,GB,0,0,,-2.43,,,6.8,3.8,0.33,,00-0028002
+2017,100,9,4,Antdell & Ernie,Denver Broncos,DEF,DEN,0,0,,-1.2,,,-5.5,-3.1,0.44,,DEF-0010
+2017,101,9,5,Richie,Kyle Rudolph,TE,MIN,0,0,,8.44,,,17.4,9.7,0,,00-0027981
+2017,102,9,6,Team JoeBa,Rishard Matthews,WR,TEN,0,0,,-1.26,,,-14,-7.8,0,,00-0029580
+2017,103,9,7,Phil Baldino,Eric Decker,WR,TEN,0,0,,-5.04,,,14.3,7.9,0,,00-0027690
+2017,104,9,8,Chris & Dom,James White,RB,NE,0,0,,-1.41,,,1.3,0.7,0.84,,00-0031062
+2017,105,9,9,Ronnie,Derrick Henry,RB,TEN,0,0,,-2.96,,,27.1,15.1,0,,00-0032764
+2017,106,9,10,Nolan & Vinny,Kansas City Chiefs,DEF,KC,0,0,,-0.66,,,-17.9,-9.9,0,,DEF-0016
+2017,107,9,11,Frank & Julian,Eddie Lacy,RB,SEA,0,0,,-10.14,,,0.4,0.2,0.96,,00-0030485
+2017,108,9,12,Rob & GregBo,Tyrell Williams,WR,LAC,0,0,,-3.86,,,13,7.2,0,,00-0032160
+2017,109,10,1,Rob & GregBo,Jordan Matthews,TE,BUF,0,0,,-5.6,,,,,,,00-0031299
+2017,110,10,2,Frank & Julian,Houston Texans,DEF,HOU,0,0,,-2.18,,,,,,,DEF-0013
+2017,111,10,3,Nolan & Vinny,Duke Johnson,RB,CLE,0,0,,12.76,,,16.8,9.3,0,,00-0032257
+2017,112,10,4,Ronnie,Corey Davis,WR,TEN,0,0,,-7.87,,,1.1,0.6,0.88,,00-0033871
+2017,113,10,5,Chris & Dom,Jack Doyle,TE,IND,0,0,,7.97,,,-19.6,-10.9,0.01,,00-0030181
+2017,114,10,6,Phil Baldino,Terrance West,RB,BAL,0,0,,-9.64,,,27.2,15.1,0,,00-0031375
+2017,115,10,7,Team JoeBa,Seattle Seahawks,DEF,SEA,0,0,,5.51,,,4.7,2.6,0.45,,DEF-0029
+2017,116,10,8,Richie,Matthew Stafford,QB,DET,0,0,,1.13,,,-0.5,-0.3,0.95,,00-0026498
+2017,117,10,9,Antdell & Ernie,Kenny Britt,WR,CLE,0,0,,-8.66,,,-19.2,-10.7,0,,00-0027006
+2017,118,10,10,Pung & Tralie,Mohamed Sanu,WR,ATL,0,0,,-0.77,,,-44.9,-24.9,0,,00-0029632
+2017,119,10,11,Cambrias,Kevin White,WR,CHI,0,0,,-12.77,,,-8,-4.4,0.21,,00-0031545
+2017,120,10,12,LFTLR,Matt Forte,RB,NYJ,0,0,,-2.13,,,-12.6,-7,0.14,,00-0026184
+2017,121,11,1,LFTLR,John Brown,WR,ARI,0,0,,-7.55,,,12.4,6.9,0,,00-0031051
+2017,122,11,2,Cambrias,Zay Jones,WR,BUF,0,0,,-7.77,,,0,0,1,,00-0033891
+2017,123,11,3,Pung & Tralie,Minnesota Vikings,DEF,MIN,0,0,,0.56,,,,,,,DEF-0021
+2017,124,11,4,Antdell & Ernie,LeGarrette Blount,RB,PHI,0,0,,-3.63,,,32.1,17.8,0,,00-0027325
+2017,125,11,5,Richie,Robbie Chosen,WR,NYJ,0,0,,8.57,,,-18.4,-10.2,0,,00-0032688
+2017,126,11,6,Team JoeBa,Julius Thomas,TE,FA,0,0,,-2.02,,,,,,,00-0028067
+2017,127,11,7,Phil Baldino,Eli Manning,QB,NYG,0,0,,-4.45,,,-10.1,-5.6,0.03,,00-0022803
+2017,128,11,8,Chris & Dom,Stephen Gostkowski,K,NE,0,0,,11.35,,,-21.7,-12.1,0,,00-0024333
+2017,129,11,9,Ronnie,Curtis Samuel,WR,BUF,0,0,,-9.5,,,,,,,00-0033282
+2017,130,11,10,Nolan & Vinny,Cooper Kupp,WR,LAR,0,0,,2.73,,,8.7,4.8,0.14,,00-0033908
+2017,131,11,11,Frank & Julian,Justin Tucker,K,BAL,0,0,,7.42,,,-14,-7.8,0,,00-0029597
+2017,132,11,12,Rob & GregBo,New England Patriots,DEF,NE,0,0,,-0.34,,,4,2.2,0.3,,DEF-0022
+2017,133,12,1,Rob & GregBo,Kenny Golladay,WR,DET,0,0,,-6.11,,,-18.6,-10.3,0,,00-0033932
+2017,134,12,2,Frank & Julian,Cam Newton,QB,CAR,0,0,,13.35,,,44.1,24.5,0,,00-0027939
+2017,135,12,3,Nolan & Vinny,Will Fuller,WR,FA,0,0,,-3.96,,,,,,,00-0033127
+2017,136,12,4,Ronnie,Carolina Panthers,DEF,CAR,0,0,,4.61,,,-25.5,-14.2,0,,DEF-0005
+2017,137,12,5,Chris & Dom,Arizona Cardinals,DEF,ARI,0,0,,0,,,1.7,0.9,0.8,,DEF-0001
+2017,138,12,6,Phil Baldino,Jeremy Hill,RB,CIN,0,0,,-8.46,,,3.5,1.9,0.77,,00-0031301
+2017,139,12,7,Team JoeBa,Matt Bryant,K,ATL,0,0,,4.93,,,-16.7,-9.3,0,,00-0020578
+2017,140,12,8,Richie,C.J. Prosise,RB,SEA,0,0,,-8.26,,,10.6,5.9,0.11,,00-0032393
+2017,141,12,9,Antdell & Ernie,Ted Ginn Jr.,WR,NO,0,0,,-1.04,,,24.1,13.4,0,,00-0025396
+2017,142,12,10,Pung & Tralie,Jason Witten,TE,DAL,0,0,,4.44,,,-8.5,-4.7,0.6,,00-0022127
+2017,143,12,11,Cambrias,Derek Carr,QB,LV,0,0,,-2.63,,,68.8,38.2,0,,00-0031280
+2017,144,12,12,LFTLR,New York Giants,DEF,NYG,0,0,,-1.91,,,5.5,3.1,0.55,,DEF-0024
+2017,145,13,1,LFTLR,Adam Vinatieri,K,IND,0,0,,-0.63,,,-23.5,-13.1,0,,00-0016919
+2017,146,13,2,Cambrias,Jacquizz Rodgers,RB,FA,0,0,,-6.07,,,50.1,27.8,0,,00-0028083
+2017,147,13,3,Pung & Tralie,Dak Prescott,QB,DAL,0,0,,1.32,,,34.2,19,0,,00-0033077
+2017,148,13,4,Antdell & Ernie,Eric Ebron,TE,DET,0,0,,1.3,,,24,13.3,0,,00-0031387
+2017,149,13,5,Richie,Alvin Kamara,RB,NO,0,0,,40.75,,,9,5,0.34,,00-0033906
+2017,150,13,6,Team JoeBa,Carson Wentz,QB,PHI,0,0,,12.24,,,17.7,9.8,0,,00-0032950
+2017,151,13,7,Phil Baldino,Josh Doctson,WR,FA,0,0,,-3.04,,,,,,,00-0032760
+2017,152,13,8,Chris & Dom,Vernon Davis,TE,WAS,0,0,,-0.47,,,,,,,00-0024221
+2017,153,13,9,Ronnie,Dan Bailey,K,DAL,0,0,,-2.22,,,-15.2,-8.4,0,,00-0028660
+2017,154,13,10,Nolan & Vinny,Mason Crosby,K,GB,0,0,,-2.22,,,-8.6,-4.8,0,,00-0025580
+2017,155,13,11,Frank & Julian,Jamaal Charles,RB,DEN,0,0,,-3.93,,,31.7,17.6,0,,00-0026213
+2017,156,13,12,Rob & GregBo,Rex Burkhead,RB,NE,0,0,,-1.01,,,42.6,23.7,0,,00-0030288
+2017,157,14,1,Rob & GregBo,Andy Dalton,QB,CIN,0,0,,-2.31,,,30.5,16.9,0,,00-0027973
+2017,158,14,2,Frank & Julian,Latavius Murray,RB,MIN,0,0,,-0.82,,,3.6,2,0.79,,00-0030513
+2017,159,14,3,Nolan & Vinny,Wendell Smallwood,RB,PHI,0,0,,-4.68,,,12.9,7.2,0.1,,00-0032782
+2017,160,14,4,Ronnie,Cameron Brate,TE,FA,0,0,,3.11,,,,,,,00-0031273
+2017,161,14,5,Chris & Dom,Torrey Smith,WR,PHI,0,0,,-3.17,,,,,,,00-0027996
+2017,162,14,6,Phil Baldino,Pittsburgh Steelers,DEF,PIT,0,0,,3.93,,,11.2,6.2,0.09,,DEF-0027
+2017,163,14,7,Team JoeBa,Samaje Perine,RB,DEN,0,0,,-1.62,,,36.2,20.1,0,,00-0033526
+2017,164,14,8,Richie,Philadelphia Eagles,DEF,PHI,0,0,,14.57,,,2.4,1.3,0.78,,DEF-0026
+2017,165,14,9,Antdell & Ernie,Mike Wallace,WR,BAL,0,0,,-1.13,,,39.1,21.7,0,,00-0026901
+2017,166,14,10,Pung & Tralie,Caleb Sturgis,K,PHI,0,0,,-3.68,,,,,,,00-0030390
+2017,167,14,11,Cambrias,Las Vegas Raiders,DEF,LV,0,0,,-1.3,,,,,,,DEF-0017
+2017,168,14,12,LFTLR,Carson Palmer,QB,ARI,0,0,,-4.13,,,25.7,14.3,0,,00-0021429
+2017,169,15,1,LFTLR,Matt Prater,K,DET,0,0,,4.9,,,,,,,00-0023853
+2017,170,15,2,Cambrias,Sebastian Janikowski,K,FA,0,0,,-3.22,,,-2.7,-1.5,0.49,,00-0019646
+2017,171,15,3,Pung & Tralie,Jonathan Stewart,RB,CAR,0,0,,-0.77,,,69.6,38.7,0,,00-0026153
+2017,172,15,4,Antdell & Ernie,Cairo Santos,K,KC,0,0,,-2.15,,,,,,,00-0031203
+2017,173,15,5,Richie,Wil Lutz,K,NO,0,0,,8.62,,,12,6.7,0,,00-0032569
+2017,174,15,6,Team JoeBa,Sterling Shepard,WR,NYG,0,0,,-0.42,,,21.7,12.1,0,,00-0032385
+2017,175,15,7,Phil Baldino,Chris Boswell,K,PIT,0,0,,8.96,,,,,,,00-0031136
+2017,176,15,8,Chris & Dom,Dwayne Allen,TE,NE,0,0,,-1.19,,,,,,,00-0029689
+2017,177,15,9,Ronnie,Tyrod Taylor,QB,BUF,0,0,,-0.31,,,14.6,8.1,0,,00-0028118
+2017,178,15,10,Nolan & Vinny,,,NE,0,0,,,,,,,,,00-0021142
+2017,179,15,11,Frank & Julian,Jacksonville Jaguars,DEF,JAX,0,0,,24.24,,,,,,,DEF-0015
+2017,180,15,12,Rob & GregBo,Brandon McManus,K,DEN,0,0,,-0,,,,,,,00-0029822
+2016,1,1,1,Antdell & Ernie,Antonio Brown,WR,PIT,0,0,,12.13,,,-0.2,-0.1,0.6,,00-0027793
+2016,2,1,2,Chris & Dom,Odell Beckham,WR,NYG,0,0,,10.44,,,-1.4,-0.8,0,,00-0031235
+2016,3,1,3,Frank & Julian,David Johnson,RB,ARI,0,0,,28.36,,,-0.4,-0.2,0.73,,00-0032187
+2016,4,1,4,Cambrias,Adrian Peterson,RB,MIN,0,0,,-17.61,,,,,,,00-0025394
+2016,5,1,5,Ronnie,Julio Jones,WR,ATL,0,0,,5.47,,,2.2,1.2,0,,00-0027944
+2016,6,1,6,Rob & GregBo,Todd Gurley,RB,LAR,0,0,,3.76,,,-0.3,-0.2,0.83,,00-0032241
+2016,7,1,7,Nolan & Vinny,DeAndre Hopkins,WR,HOU,0,0,,-1.28,,,0.6,0.3,0.6,,00-0030564
+2016,8,1,8,GaTTa,Jamaal Charles,RB,FA,0,0,,-17.06,,,-11.4,-6.3,0,,00-0026213
+2016,9,1,9,Richie,Rob Gronkowski,TE,FA,0,0,,-4.88,,,-5.2,-2.9,0,,00-0027656
+2016,10,1,10,LFTLR,A.J. Green,WR,CIN,0,0,,-1,,,3.6,2,0,,00-0027942
+2016,11,1,11,Team JoeBa,Allen Robinson,WR,JAX,0,0,,-0.91,,,1.8,1,0.05,,00-0031428
+2016,12,1,12,Pung & Tralie,Dez Bryant,WR,DAL,0,0,,-1.63,,,-4.4,-2.4,0,,00-0027902
+2016,13,2,1,Pung & Tralie,Le'Veon Bell,RB,FA,0,0,,23.93,,,0.7,0.4,0.76,,00-0030496
+2016,14,2,2,Team JoeBa,Ezekiel Elliott,RB,DAL,0,0,,25.59,,,5.7,3.2,0,,00-0033045
+2016,15,2,3,LFTLR,Lamar Miller,RB,HOU,0,0,,5.61,,,5.2,2.9,0,,00-0029615
+2016,16,2,4,Richie,Brandon Marshall,WR,NYJ,0,0,,-3.72,,,3,1.7,0,,00-0024334
+2016,17,2,5,GaTTa,LeSean McCoy,RB,BUF,0,0,,21.98,,,-5,-2.8,0,,00-0027029
+2016,18,2,6,Nolan & Vinny,Mark Ingram,RB,NO,0,0,,9.73,,,-7.5,-4.2,0,,00-0027966
+2016,19,2,7,Rob & GregBo,Jordy Nelson,WR,GB,0,0,,15.97,,,1.7,0.9,0.41,,00-0026176
+2016,20,2,8,Ronnie,Devonta Freeman,RB,ATL,0,0,,16.24,,,0.8,0.4,0.76,,00-0031285
+2016,21,2,9,Cambrias,Mike Evans,WR,TB,0,0,,15.65,,,5.3,2.9,0,,00-0031408
+2016,22,2,10,Frank & Julian,Keenan Allen,WR,LAC,0,0,,-20.85,,,8.2,4.6,0,,00-0030279
+2016,23,2,11,Chris & Dom,Jarvis Landry,WR,MIA,0,0,,2.99,,,-3.9,-2.2,0,,00-0031382
+2016,24,2,12,Antdell & Ernie,Eddie Lacy,RB,GB,0,0,,-13.08,,,0,0,1,,00-0030485
+2016,25,3,1,Antdell & Ernie,Doug Martin,RB,TB,0,0,,-8.21,,,-5.8,-3.2,0,,00-0029613
+2016,26,3,2,Chris & Dom,Brandin Cooks,WR,NO,0,0,,8.33,,,2.7,1.5,0.23,,00-0031236
+2016,27,3,3,Frank & Julian,Amari Cooper,WR,LV,0,0,,4.44,,,6.9,3.8,0,,00-0031544
+2016,28,3,4,Cambrias,Jeremy Hill,RB,CIN,0,0,,3.37,,,-21.1,-11.7,0,,00-0031301
+2016,29,3,5,Ronnie,Cam Newton,QB,CAR,0,0,,-0.56,,,-5.5,-3.1,0.3,,00-0027939
+2016,30,3,6,Rob & GregBo,Alshon Jeffery,WR,CHI,0,0,,-5.57,,,7.9,4.4,0,,00-0029137
+2016,31,3,7,Nolan & Vinny,Latavius Murray,RB,LV,0,0,,8.81,,,-4.8,-2.7,0,,00-0030513
+2016,32,3,8,GaTTa,Aaron Rodgers,QB,GB,0,0,,17.8,,,-6.7,-3.7,0.09,,00-0023459
+2016,33,3,9,Richie,T.Y. Hilton,WR,IND,0,0,,12.54,,,3.6,2,0,,00-0029608
+2016,34,3,10,LFTLR,Sammy Watkins,WR,BUF,0,0,,-13.06,,,5.7,3.2,0,,00-0031325
+2016,35,3,11,Team JoeBa,Randall Cobb,WR,GB,0,0,,-4.7,,,3.5,1.9,0,,00-0028002
+2016,36,3,12,Pung & Tralie,Donte Moncrief,WR,IND,0,0,,-9.94,,,-2.4,-1.3,0.44,,00-0031339
+2016,37,4,1,Pung & Tralie,Matt Forte,RB,NYJ,0,0,,5.09,,,-6.1,-3.4,0,,00-0026184
+2016,38,4,2,Team JoeBa,Jordan Reed,TE,WAS,0,0,,3.44,,,2.9,1.6,0.46,,00-0030472
+2016,39,4,3,LFTLR,Doug Baldwin,WR,SEA,0,0,,10.53,,,-9.8,-5.4,0,,00-0028434
+2016,40,4,4,Richie,Demaryius Thomas,WR,DEN,0,0,,5.01,,,10.3,5.7,0,,00-0027874
+2016,41,4,5,GaTTa,Carlos Hyde,RB,SF,0,0,,7.19,,,-4.7,-2.6,0.13,,00-0031045
+2016,42,4,6,Nolan & Vinny,Greg Olsen,TE,CAR,0,0,,13.51,,,-6.4,-3.6,0.04,,00-0025418
+2016,43,4,7,Rob & GregBo,Julian Edelman,WR,NE,0,0,,1.18,,,7.9,4.4,0,,00-0027150
+2016,44,4,8,Ronnie,Golden Tate,WR,DET,0,0,,1.63,,,0.4,0.2,0.92,,00-0027891
+2016,45,4,9,Cambrias,Eric Decker,WR,NYJ,0,0,,-16.46,,,0.1,0.1,0.98,,00-0027690
+2016,46,4,10,Frank & Julian,Thomas Rawls,RB,SEA,0,0,,-9.44,,,5,2.8,0.02,,00-0031897
+2016,47,4,11,Chris & Dom,Giovani Bernard,RB,CIN,0,0,,-3.48,,,-10.7,-5.9,0,,00-0030456
+2016,48,4,12,Antdell & Ernie,Russell Wilson,QB,SEA,0,0,,0.89,,,-5.2,-2.9,0.19,,00-0029263
+2016,49,5,1,Antdell & Ernie,Travis Kelce,TE,KC,0,0,,17.82,,,-15.3,-8.5,0,,00-0030506
+2016,50,5,2,Chris & Dom,Delanie Walker,TE,TEN,0,0,,9.14,,,-14,-7.8,0,,00-0024389
+2016,51,5,3,Frank & Julian,Andrew Luck,QB,IND,0,0,,8.27,,,-7.3,-4.1,0.05,,00-0029668
+2016,52,5,4,Cambrias,C.J. Anderson,RB,DEN,0,0,,-5.82,,,18.8,10.4,0,,00-0029854
+2016,53,5,5,Ronnie,LeGarrette Blount,RB,NE,0,0,,14.07,,,-38.6,-21.4,0,,00-0027325
+2016,54,5,6,Rob & GregBo,Ryan Mathews,RB,PHI,0,0,,-1.28,,,-6.4,-3.6,0,,00-0027864
+2016,55,5,7,Nolan & Vinny,Jeremy Maclin,WR,KC,0,0,,-9.74,,,17.7,9.8,0,,00-0026995
+2016,56,5,8,GaTTa,Kelvin Benjamin,TE,CAR,0,0,,8.59,,,,,,,00-0031359
+2016,57,5,9,Richie,Jonathan Stewart,RB,CAR,0,0,,-2.65,,,-5.8,-3.2,0.12,,00-0026153
+2016,58,5,10,LFTLR,DeMarco Murray,RB,TEN,0,0,,30.07,,,17.7,9.8,0,,00-0028009
+2016,59,5,11,Team JoeBa,Danny Woodhead,RB,LAC,0,0,,-13.42,,,5.3,2.9,0.05,,00-0026019
+2016,60,5,12,Pung & Tralie,Matt Jones,RB,WAS,0,0,,-8.24,,,-18.4,-10.2,0,,00-0031939
+2016,61,6,1,Pung & Tralie,Jordan Matthews,TE,PHI,0,0,,7.8,,,,,,,00-0031299
+2016,62,6,2,Team JoeBa,Michael Floyd,WR,ARI,0,0,,-9.21,,,9.7,5.4,0,,00-0029638
+2016,63,6,3,LFTLR,Tom Brady,QB,FA,0,0,,-1.95,,,-5.5,-3.1,0.26,,00-0019596
+2016,64,6,4,Richie,Jeremy Langford,RB,CHI,0,0,,-9.11,,,16.9,9.4,0,,00-0031569
+2016,65,6,5,GaTTa,Josh Gordon,WR,FA,0,0,,-19.57,,,15.2,8.4,0,,00-0029664
+2016,66,6,6,Nolan & Vinny,Ben Roethlisberger,QB,PIT,0,0,,0,,,-6,-3.3,0.27,,00-0022924
+2016,67,6,7,Rob & GregBo,Arian Foster,RB,MIA,0,0,,-13.82,,,9.6,5.3,0,,00-0026796
+2016,68,6,8,Ronnie,Allen Hurns,WR,JAX,0,0,,-9.36,,,2.5,1.4,0.67,,00-0030821
+2016,69,6,9,Cambrias,Larry Fitzgerald,WR,ARI,0,0,,7.99,,,8.8,4.9,0,,00-0022921
+2016,70,6,10,Frank & Julian,Coby Fleener,TE,NO,0,0,,-0.58,,,-2.7,-1.5,0.61,,00-0029697
+2016,71,6,11,Chris & Dom,Melvin Gordon,RB,LAC,0,0,,22.23,,,17.3,9.6,0,,00-0032144
+2016,72,6,12,Antdell & Ernie,Duke Johnson,RB,CLE,0,0,,-1.18,,,5.1,2.8,0.15,,00-0032257
+2016,73,7,1,Antdell & Ernie,Marvin Jones,WR,DET,0,0,,-3.43,,,16.8,9.3,0,,00-0029293
+2016,74,7,2,Chris & Dom,Emmanuel Sanders,WR,DEN,0,0,,4.54,,,3.4,1.9,0.6,,00-0027685
+2016,75,7,3,Frank & Julian,DeSean Jackson,WR,WAS,0,0,,-1.82,,,-6.9,-3.8,0.21,,00-0026189
+2016,76,7,4,Cambrias,John Brown,WR,ARI,0,0,,-9.02,,,-2.3,-1.3,0.74,,00-0031051
+2016,77,7,5,Ronnie,Gary Barnidge,TE,CLE,0,0,,-2.22,,,-2.6,-1.4,0.69,,00-0026281
+2016,78,7,6,Rob & GregBo,Antonio Gates,TE,LAC,0,0,,-0.58,,,-23.7,-13.2,0,,00-0021547
+2016,79,7,7,Nolan & Vinny,Ameer Abdullah,RB,DET,0,0,,-12.46,,,-3.1,-1.7,0.6,,00-0032104
+2016,80,7,8,GaTTa,Tyler Eifert,TE,FA,0,0,,-3.69,,,-28.4,-15.8,0,,00-0030549
+2016,81,7,9,Richie,Tyler Lockett,WR,SEA,0,0,,-6.67,,,7.6,4.2,0.08,,00-0032211
+2016,82,7,10,LFTLR,Zach Ertz,TE,PHI,0,0,,1.83,,,-6.2,-3.4,0.46,,00-0030061
+2016,83,7,11,Team JoeBa,Travis Benjamin,WR,LAC,0,0,,-5.28,,,-21.2,-11.8,0,,00-0029269
+2016,84,7,12,Pung & Tralie,DeAngelo Williams,RB,PIT,0,0,,-7.55,,,14.9,8.3,0,,00-0024242
+2016,85,8,1,Pung & Tralie,Philip Rivers,QB,LAC,0,0,,-0.75,,,-11.8,-6.6,0,,00-0022942
+2016,86,8,2,Team JoeBa,Chris Ivory,RB,FA,0,0,,-5.84,,,1.9,1.1,0.76,,00-0027531
+2016,87,8,3,LFTLR,Drew Brees,QB,NO,0,0,,15.81,,,25.9,14.4,0,,00-0020531
+2016,88,8,4,Richie,Kirk Cousins,QB,WAS,0,0,,9.35,,,-21.6,-12,0,,00-0029604
+2016,89,8,5,GaTTa,Devin Funchess,TE,CAR,0,0,,-4.66,,,,,,,00-0032055
+2016,90,8,6,Nolan & Vinny,Tajae Sharpe,WR,TEN,0,0,,-8.1,,,-25.1,-13.9,0,,00-0032778
+2016,91,8,7,Rob & GregBo,DeVante Parker,WR,FA,0,0,,-4.32,,,-0.7,-0.4,0.92,,00-0031547
+2016,92,8,8,Ronnie,T.J. Yeldon,RB,JAX,0,0,,-1.72,,,-1.7,-0.9,0.8,,00-0032209
+2016,93,8,9,Cambrias,Eli Manning,QB,NYG,0,0,,-3.13,,,-0.3,-0.2,0.97,,00-0022803
+2016,94,8,10,Frank & Julian,Denver Broncos,DEF,DEN,0,0,,7.54,,,-9.5,-5.3,0.29,,DEF-0010
+2016,95,8,11,Chris & Dom,Carson Palmer,QB,ARI,0,0,,-2.58,,,11.2,6.2,0,,00-0021429
+2016,96,8,12,Antdell & Ernie,Michael Crabtree,WR,LV,0,0,,9.08,,,17.4,9.7,0,,00-0026986
+2016,97,9,1,Antdell & Ernie,Sterling Shepard,WR,NYG,0,0,,-1.33,,,12.3,6.8,0,,00-0032385
+2016,98,9,2,Chris & Dom,Seattle Seahawks,DEF,SEA,0,0,,-0.09,,,-16.1,-8.9,0,,DEF-0029
+2016,99,9,3,Frank & Julian,Kamar Aiken,WR,BAL,0,0,,-11.33,,,-6.8,-3.8,0.22,,00-0028497
+2016,100,9,4,Cambrias,Markus Wheaton,WR,FA,0,0,,-15.26,,,-22.3,-12.4,0,,00-0030460
+2016,101,9,5,Ronnie,Michael Thomas,WR,NO,0,0,,8.68,,,-17.7,-9.8,0,,00-0032765
+2016,102,9,6,Rob & GregBo,Tyrod Taylor,QB,BUF,0,0,,4.99,,,-12.3,-6.8,0,,00-0028118
+2016,103,9,7,Nolan & Vinny,Houston Texans,DEF,HOU,0,0,,-2.19,,,,,,,DEF-0013
+2016,104,9,8,GaTTa,Will Fuller,WR,HOU,0,0,,-5.75,,,-26.4,-14.7,0,,00-0033127
+2016,105,9,9,Richie,Mohamed Sanu,WR,ATL,0,0,,-4.86,,,-29.1,-16.2,0,,00-0029632
+2016,106,9,10,LFTLR,Darren Sproles,RB,PHI,0,0,,0,,,-10.8,-6,0.04,,00-0023564
+2016,107,9,11,Team JoeBa,Blake Bortles,QB,JAX,0,0,,1.56,,,20.9,11.6,0,,00-0031407
+2016,108,9,12,Pung & Tralie,Kevin White,WR,CHI,0,0,,-12.79,,,10.3,5.7,0,,00-0031545
+2016,109,10,1,Pung & Tralie,Dwayne Allen,TE,IND,0,0,,-3.02,,,-22.2,-12.3,0,,00-0029689
+2016,110,10,2,Team JoeBa,Carolina Panthers,DEF,CAR,0,0,,1.09,,,-13.6,-7.6,0,,DEF-0005
+2016,111,10,3,LFTLR,DeAndre Washington,RB,LV,0,0,,-6.37,,,-15.2,-8.4,0,,00-0032940
+2016,112,10,4,Richie,Christine Michael,RB,SEA,0,0,,-1.87,,,12.4,6.9,0,,00-0030432
+2016,113,10,5,GaTTa,Martellus Bennett,TE,NE,0,0,,4.77,,,-4.3,-2.4,0.72,,00-0026201
+2016,114,10,6,Nolan & Vinny,Derrick Henry,RB,TEN,0,0,,-5.19,,,35.5,19.7,0,,00-0032764
+2016,115,10,7,Rob & GregBo,Torrey Smith,WR,SF,0,0,,-10.08,,,-12.3,-6.8,0.08,,00-0027996
+2016,116,10,8,Ronnie,Tyler Boyd,WR,CIN,0,0,,-5.98,,,-21.6,-12,0,,00-0033009
+2016,117,10,9,Cambrias,Rashad Jennings,RB,NYG,0,0,,-2.4,,,42.1,23.4,0,,00-0027155
+2016,118,10,10,Frank & Julian,Justin Forsett,RB,BAL,0,0,,-8.03,,,27.3,15.2,0,,00-0026373
+2016,119,10,11,Chris & Dom,Frank Gore,RB,IND,0,0,,13.54,,,,,,,00-0023500
+2016,120,10,12,Antdell & Ernie,Julius Thomas,TE,JAX,0,0,,-3.93,,,22,12.2,0,,00-0028067
+2016,121,11,1,Antdell & Ernie,Arizona Cardinals,DEF,ARI,0,0,,3.35,,,11.1,6.2,0,,DEF-0001
+2016,122,11,2,Chris & Dom,Jay Ajayi,RB,FA,0,0,,13.43,,,10.7,5.9,0,,00-0031590
+2016,123,11,3,Frank & Julian,Jared Cook,TE,GB,0,0,,-5.52,,,-14,-7.8,0.26,,00-0027061
+2016,124,11,4,Cambrias,Andy Dalton,QB,CIN,0,0,,-0.29,,,-8.7,-4.8,0.22,,00-0027973
+2016,125,11,5,Ronnie,Cincinnati Bengals,DEF,CIN,0,0,,-1.94,,,-35.9,-19.9,0,,DEF-0007
+2016,126,11,6,Rob & GregBo,Philadelphia Eagles,DEF,PHI,0,0,,2.26,,,-39.4,-21.9,0,,DEF-0026
+2016,127,11,7,Nolan & Vinny,Steven Hauschka,K,SEA,0,0,,-0.11,,,-25.1,-13.9,0,,00-0025944
+2016,128,11,8,GaTTa,Steve Smith,WR,BAL,0,0,,-0.94,,,3.4,1.9,0.74,,00-0020337
+2016,129,11,9,Richie,Kansas City Chiefs,DEF,KC,0,0,,10.23,,,-4.4,-2.4,0.51,,DEF-0016
+2016,130,11,10,LFTLR,Willie Snead,WR,NO,0,0,,-0.83,,,37.9,21.1,0,,00-0030663
+2016,131,11,11,Team JoeBa,Jimmy Graham,TE,SEA,0,0,,11.85,,,-13.3,-7.4,0.25,,00-0027696
+2016,132,11,12,Pung & Tralie,Tavon Austin,WR,LAR,0,0,,-3.17,,,22.2,12.3,0,,00-0030525
+2016,133,12,1,Pung & Tralie,Derek Carr,QB,LV,0,0,,4.68,,,29.5,16.4,0,,00-0031280
+2016,134,12,2,Team JoeBa,Robert Griffin III,QB,CLE,0,0,,-13.32,,,,,,,00-0029665
+2016,135,12,3,LFTLR,Green Bay Packers,DEF,GB,0,0,,-0.78,,,-32.1,-17.8,0,,DEF-0012
+2016,136,12,4,Richie,Jerick McKinnon,RB,MIN,0,0,,-2.22,,,-12.8,-7.1,0.09,,00-0031376
+2016,137,12,5,GaTTa,Dorial Green-Beckham,WR,PHI,0,0,,-6.95,,,-22.3,-12.4,0,,00-0032218
+2016,138,12,6,Nolan & Vinny,Mike Wallace,WR,BAL,0,0,,0.75,,,-15.2,-8.4,0,,00-0026901
+2016,139,12,7,Rob & GregBo,Jason Witten,TE,DAL,0,0,,4.32,,,-12.2,-6.8,0.43,,00-0022127
+2016,140,12,8,Ronnie,Stephen Gostkowski,K,NE,0,0,,0.99,,,-2.6,-1.4,0.84,,00-0024333
+2016,141,12,9,Cambrias,Minnesota Vikings,DEF,MIN,0,0,,2.62,,,,,,,DEF-0021
+2016,142,12,10,Frank & Julian,Justin Tucker,K,BAL,0,0,,12.96,,,-16.8,-9.3,0,,00-0029597
+2016,143,12,11,Chris & Dom,Dan Bailey,K,DAL,0,0,,1.58,,,-19,-10.6,0,,00-0028660
+2016,144,12,12,Antdell & Ernie,Mason Crosby,K,GB,0,0,,-0.27,,,-25.9,-14.4,0,,00-0025580
+2016,145,13,1,Antdell & Ernie,Corey Coleman,WR,CLE,0,0,,-6.25,,,32.8,18.2,0,,00-0032966
+2016,146,13,2,Chris & Dom,Eric Ebron,TE,DET,0,0,,-0.3,,,,,,,00-0031387
+2016,147,13,3,Frank & Julian,Dak Prescott,QB,DAL,0,0,,9.82,,,2.2,1.2,0.88,,00-0033077
+2016,148,13,4,Cambrias,Zach Miller,TE,CHI,0,0,,-1.02,,,,,,,00-0027125
+2016,149,13,5,Ronnie,Matt Ryan,QB,ATL,0,0,,19.48,,,2.5,1.4,0.8,,00-0026143
+2016,150,13,6,Rob & GregBo,Chandler Catanzaro,K,ARI,0,0,,-1.24,,,-13.4,-7.4,0,,00-0030896
+2016,151,13,7,Nolan & Vinny,James Starks,RB,GB,0,0,,-5.09,,,-3.9,-2.2,0.74,,00-0027791
+2016,152,13,8,GaTTa,James White,RB,NE,0,0,,-0.16,,,61.1,33.9,0,,00-0031062
+2016,153,13,9,Richie,Adam Vinatieri,K,IND,0,0,,4.59,,,-17.5,-9.7,0,,00-0016919
+2016,154,13,10,LFTLR,Chris Hogan,WR,NE,0,0,,-3.41,,,11.4,6.3,0,,00-0028237
+2016,155,13,11,Team JoeBa,Devontae Booker,RB,DEN,0,0,,-1.84,,,14.1,7.8,0,,00-0032972
+2016,156,13,12,Pung & Tralie,Ladarius Green,TE,FA,0,0,,-3.87,,,,,,,00-0029275
+2016,157,14,1,Pung & Tralie,Cairo Santos,K,KC,0,0,,-0.03,,,-16.4,-9.1,0,,00-0031203
+2016,158,14,2,Team JoeBa,Graham Gano,K,CAR,0,0,,2.52,,,-2.6,-1.4,0.75,,00-0026858
+2016,159,14,3,LFTLR,Nick Novak,K,HOU,0,0,,2.83,,,,,,,00-0023096
+2016,160,14,4,Richie,Jameis Winston,QB,TB,0,0,,-0.2,,,36.6,20.3,0,,00-0031503
+2016,161,14,5,GaTTa,Vincent Jackson,WR,TB,0,0,,-6.49,,,41.1,22.8,0,,00-0023496
+2016,162,14,6,Nolan & Vinny,Charles Sims,RB,TB,0,0,,-3.28,,,74.8,41.6,0,,00-0031390
+2016,163,14,7,Rob & GregBo,Ryan Tannehill,QB,MIA,0,0,,-2.3,,,5.6,3.1,0.57,,00-0029701
+2016,164,14,8,Ronnie,Malcolm Mitchell,WR,NE,0,0,,-3.49,,,,,,,00-0032400
+2016,165,14,9,Cambrias,Clive Walford,TE,LV,0,0,,-1.85,,,,,,,00-0032256
+2016,166,14,10,Frank & Julian,Terrelle Pryor,WR,CLE,0,0,,1.26,,,8.3,4.6,0.56,,00-0028825
+2016,167,14,11,Chris & Dom,Sammie Coates,WR,PIT,0,0,,-3.59,,,10.9,6.1,0.19,,00-0032166
+2016,168,14,12,Antdell & Ernie,Matthew Stafford,QB,DET,0,0,,2.67,,,49.4,27.4,0,,00-0026498
+2016,169,15,1,Antdell & Ernie,Theo Riddick,RB,DET,0,0,,1.19,,,69.2,38.4,0,,00-0030107
+2016,170,15,2,Chris & Dom,Bilal Powell,RB,NYJ,0,0,,5.64,,,64.1,35.6,0,,00-0028064
+2016,171,15,3,Frank & Julian,New England Patriots,DEF,NE,0,0,,3.99,,,18.8,10.4,0,,DEF-0022
+2016,172,15,4,Cambrias,Josh Brown,K,LAR,0,0,,-1.73,,,,,,,00-0021940
+2016,173,15,5,Ronnie,Alfred Morris,RB,DAL,0,0,,-2.31,,,42.8,23.8,0,,00-0029141
+2016,174,15,6,Rob & GregBo,Tevin Coleman,RB,ATL,0,0,,5.64,,,54.5,30.3,0,,00-0032058
+2016,175,15,7,Nolan & Vinny,Davante Adams,WR,GB,0,0,,9.48,,,,,,,00-0031381
+2016,176,15,8,GaTTa,Las Vegas Raiders,DEF,LV,0,0,,-0.18,,,11.3,6.3,0,,DEF-0017
+2016,177,15,9,Richie,Pierre Garcon,WR,WAS,0,0,,-0.06,,,,,,,00-0026345
+2016,178,15,10,LFTLR,Jordan Cameron,TE,MIA,0,0,,-0.63,,,,,,,00-0028040
+2016,179,15,11,Team JoeBa,Phillip Dorsett,WR,IND,0,0,,-0.23,,,30.1,16.7,0,,00-0032208
+2016,180,15,12,Pung & Tralie,Buffalo Bills,DEF,BUF,0,0,,-0,,,,,,,DEF-0004
+2015,1,1,1,Frank & Julian,Le'Veon Bell,RB,FA,0,0,,-4.54,,,-2.1,-1.2,0,,00-0030496
+2015,2,1,2,Rob & GregBo,Jamaal Charles,RB,KC,0,0,,-5.74,,,-2.5,-1.4,0,,00-0026213
+2015,3,1,3,LFTLR,Antonio Brown,WR,PIT,0,0,,19.02,,,0.5,0.3,0.64,,00-0027793
+2015,4,1,4,Team JoeBa,Adrian Peterson,RB,MIN,0,0,,11.54,,,,,,,00-0025394
+2015,5,1,5,Pung & Tralie,Andrew Luck,QB,IND,0,0,,-15.15,,,-11.9,-6.6,0,,00-0029668
+2015,6,1,6,Richie,Julio Jones,WR,ATL,0,0,,19.32,,,-0.2,-0.1,0.89,,00-0027944
+2015,7,1,7,Nolan & Vinny,Eddie Lacy,RB,GB,0,0,,-1.73,,,3,1.7,0,,00-0030485
+2015,8,1,8,Antdell & Ernie,Matt Forte,RB,CHI,0,0,,5.97,,,-5.7,-3.2,0,,00-0026184
+2015,9,1,9,Ronnie,Aaron Rodgers,QB,GB,0,0,,3.85,,,-18.1,-10.1,0,,00-0023459
+2015,10,1,10,Cambrias,Odell Beckham,WR,NYG,0,0,,16.33,,,-1.4,-0.8,0.5,,00-0031235
+2015,11,1,11,GaTTa,Dez Bryant,WR,DAL,0,0,,-12.29,,,3.4,1.9,0,,00-0027902
+2015,12,1,12,Chris & Dom,Demaryius Thomas,WR,DEN,0,0,,7.72,,,2.9,1.6,0,,00-0027874
+2015,13,2,1,Chris & Dom,Rob Gronkowski,TE,NE,0,0,,17.33,,,2.7,1.5,0.18,,00-0027656
+2015,14,2,2,GaTTa,Russell Wilson,QB,SEA,0,0,,8.92,,,-54.7,-30.4,0,,00-0029263
+2015,15,2,3,Cambrias,DeMarco Murray,RB,PHI,0,0,,3.77,,,-2.6,-1.4,0.24,,00-0028009
+2015,16,2,4,Ronnie,Ameer Abdullah,RB,DET,0,0,,-4.08,,,-25.5,-14.2,0,,00-0032104
+2015,17,2,5,Antdell & Ernie,C.J. Anderson,RB,DEN,0,0,,-2.06,,,6.3,3.5,0,,00-0029854
+2015,18,2,6,Nolan & Vinny,Randall Cobb,WR,GB,0,0,,0,,,2.1,1.2,0.13,,00-0028002
+2015,19,2,7,Richie,Justin Forsett,RB,BAL,0,0,,-3.19,,,-0.3,-0.2,0.91,,00-0026373
+2015,20,2,8,Pung & Tralie,Calvin Johnson,WR,DET,0,0,,6.8,,,6.9,3.8,0,,00-0025389
+2015,21,2,9,Team JoeBa,Alshon Jeffery,WR,CHI,0,0,,-4.03,,,-5.1,-2.8,0,,00-0029137
+2015,22,2,10,LFTLR,A.J. Green,WR,CIN,0,0,,11.7,,,5.3,2.9,0,,00-0027942
+2015,23,2,11,Rob & GregBo,Ryan Tannehill,QB,MIA,0,0,,-2.59,,,-66.1,-36.7,0,,00-0029701
+2015,24,2,12,Frank & Julian,Matthew Stafford,QB,DET,0,0,,0.97,,,-70.6,-39.2,0,,00-0026498
+2015,25,3,1,Frank & Julian,Jeremy Hill,RB,CIN,0,0,,0.12,,,10.6,5.9,0,,00-0031301
+2015,26,3,2,Rob & GregBo,Jonathan Stewart,RB,CAR,0,0,,2.45,,,-27,-15,0,,00-0026153
+2015,27,3,3,LFTLR,Jimmy Graham,TE,SEA,0,0,,-1.7,,,-6.5,-3.6,0,,00-0027696
+2015,28,3,4,Team JoeBa,LeSean McCoy,RB,BUF,0,0,,5.23,,,3.6,2,0.14,,00-0027029
+2015,29,3,5,Pung & Tralie,Emmanuel Sanders,WR,DEN,0,0,,3.99,,,-2.9,-1.6,0.22,,00-0027685
+2015,30,3,6,Richie,DeAndre Hopkins,WR,HOU,0,0,,23.19,,,1.3,0.7,0.61,,00-0030564
+2015,31,3,7,Nolan & Vinny,Ben Roethlisberger,QB,PIT,0,0,,-6.32,,,-32.8,-18.2,0,,00-0022924
+2015,32,3,8,Antdell & Ernie,Jordan Matthews,TE,PHI,0,0,,13.44,,,,,,,00-0031299
+2015,33,3,9,Ronnie,Marshawn Lynch,RB,SEA,0,0,,-7.37,,,24.4,13.6,0,,00-0025399
+2015,34,3,10,Cambrias,Davante Adams,WR,GB,0,0,,-10.49,,,-0.6,-0.3,0.86,,00-0031381
+2015,35,3,11,GaTTa,Jeremy Maclin,WR,KC,0,0,,7.04,,,-3.8,-2.1,0.21,,00-0026995
+2015,36,3,12,Chris & Dom,Mark Ingram,RB,NO,0,0,,10.68,,,5,2.8,0,,00-0027966
+2015,37,4,1,Chris & Dom,Tom Brady,QB,NE,0,0,,15.88,,,-30,-16.7,0,,00-0019596
+2015,38,4,2,GaTTa,Frank Gore,RB,IND,0,0,,7.13,,,,,,,00-0023500
+2015,39,4,3,Cambrias,Greg Olsen,TE,CAR,0,0,,18.16,,,-6.1,-3.4,0.03,,00-0025418
+2015,40,4,4,Ronnie,Amari Cooper,WR,LV,0,0,,3.35,,,-0.8,-0.4,0.82,,00-0031544
+2015,41,4,5,Antdell & Ernie,Lamar Miller,RB,MIA,0,0,,15.22,,,18.7,10.4,0,,00-0029615
+2015,42,4,6,Nolan & Vinny,Latavius Murray,RB,LV,0,0,,9.59,,,8.8,4.9,0,,00-0030513
+2015,43,4,7,Richie,Drew Brees,QB,NO,0,0,,5.48,,,-13.8,-7.7,0,,00-0020531
+2015,44,4,8,Pung & Tralie,Melvin Gordon,RB,LAC,0,0,,-4.17,,,-7.8,-4.3,0,,00-0032144
+2015,45,4,9,Team JoeBa,Keenan Allen,WR,LAC,0,0,,-3.15,,,-3.7,-2.1,0.31,,00-0030279
+2015,46,4,10,LFTLR,Sam Bradford,QB,PHI,0,0,,-8.99,,,-36.1,-20.1,0,,00-0027854
+2015,47,4,11,Rob & GregBo,Brandin Cooks,WR,NO,0,0,,11.59,,,26.4,14.7,0,,00-0031236
+2015,48,4,12,Frank & Julian,T.Y. Hilton,WR,IND,0,0,,2.16,,,25.2,14,0,,00-0029608
+2015,49,5,1,Frank & Julian,Golden Tate,WR,DET,0,0,,1.74,,,5.5,3.1,0,,00-0027891
+2015,50,5,2,Rob & GregBo,Mike Evans,WR,TB,0,0,,1.69,,,20,11.1,0,,00-0031408
+2015,51,5,3,LFTLR,Doug Martin,RB,TB,0,0,,14.46,,,13,7.2,0,,00-0029613
+2015,52,5,4,Team JoeBa,Peyton Manning,QB,DEN,0,0,,-18.11,,,-2.9,-1.6,0.71,,00-0010346
+2015,53,5,5,Pung & Tralie,Alfred Morris,RB,WAS,0,0,,-6.54,,,4.8,2.7,0.3,,00-0029141
+2015,54,5,6,Richie,Giovani Bernard,RB,CIN,0,0,,5.6,,,-21.5,-11.9,0,,00-0030456
+2015,55,5,7,Nolan & Vinny,Travis Kelce,TE,KC,0,0,,11.33,,,4.4,2.4,0.2,,00-0030506
+2015,56,5,8,Antdell & Ernie,Andre Johnson,WR,IND,0,0,,-9.45,,,18.3,10.2,0,,00-0022044
+2015,57,5,9,Ronnie,Jarvis Landry,WR,MIA,0,0,,15.22,,,20.4,11.3,0,,00-0031382
+2015,58,5,10,Cambrias,Brandon Marshall,WR,NYJ,0,0,,27.74,,,7.5,4.2,0,,00-0024334
+2015,59,5,11,GaTTa,Nelson Agholor,WR,PHI,0,0,,-14.45,,,2.4,1.3,0.58,,00-0031549
+2015,60,5,12,Chris & Dom,Andre Ellington,RB,ARI,0,0,,-7.9,,,16.3,9.1,0,,00-0030287
+2015,61,6,1,Chris & Dom,Sammy Watkins,WR,BUF,0,0,,0.07,,,-1.5,-0.8,0.77,,00-0031325
+2015,62,6,2,GaTTa,Zach Ertz,TE,PHI,0,0,,3.57,,,-64.2,-35.7,0,,00-0030061
+2015,63,6,3,Cambrias,Chris Ivory,RB,NYJ,0,0,,10.54,,,15.4,8.6,0,,00-0027531
+2015,64,6,4,Ronnie,Delanie Walker,TE,TEN,0,0,,20.66,,,-34,-18.9,0,,00-0024389
+2015,65,6,5,Antdell & Ernie,Matt Ryan,QB,ATL,0,0,,-4.59,,,-13.2,-7.3,0,,00-0026143
+2015,66,6,6,Nolan & Vinny,Charles Johnson,WR,MIN,0,0,,-17.13,,,4.4,2.4,0.35,,00-0030113
+2015,67,6,7,Richie,Jason Witten,TE,DAL,0,0,,2.81,,,-16.7,-9.3,0,,00-0022127
+2015,68,6,8,Pung & Tralie,Martellus Bennett,TE,CHI,0,0,,-1.96,,,7.7,4.3,0,,00-0026201
+2015,69,6,9,Team JoeBa,Jordan Cameron,TE,MIA,0,0,,-5.3,,,-7.9,-4.4,0.02,,00-0028040
+2015,70,6,10,LFTLR,DeVante Parker,WR,FA,0,0,,-11.94,,,-39.5,-21.9,0,,00-0031547
+2015,71,6,11,Rob & GregBo,Julian Edelman,WR,NE,0,0,,-2,,,29.1,16.2,0,,00-0027150
+2015,72,6,12,Frank & Julian,DeSean Jackson,WR,WAS,0,0,,-8.52,,,-2,-1.1,0.76,,00-0026189
+2015,73,7,1,Frank & Julian,Owen Daniels,TE,DEN,0,0,,-2.09,,,-16.7,-9.3,0,,00-0024313
+2015,74,7,2,Rob & GregBo,Kyle Rudolph,TE,MIN,0,0,,-0.69,,,-36.5,-20.3,0,,00-0027981
+2015,75,7,3,LFTLR,Joseph Randle,RB,DAL,0,0,,-7.35,,,18.4,10.2,0,,00-0030388
+2015,76,7,4,Team JoeBa,Larry Fitzgerald,WR,ARI,0,0,,17.88,,,-8.1,-4.5,0,,00-0022921
+2015,77,7,5,Pung & Tralie,C.J. Spiller,RB,FA,0,0,,-6.61,,,19.1,10.6,0,,00-0027861
+2015,78,7,6,Richie,Steve Smith,WR,BAL,0,0,,-6.01,,,5.9,3.3,0.29,,00-0020337
+2015,79,7,7,Nolan & Vinny,John Brown,WR,ARI,0,0,,1.76,,,14.7,8.2,0,,00-0031051
+2015,80,7,8,Antdell & Ernie,Seattle Seahawks,DEF,SEA,0,0,,5.71,,,-21.3,-11.8,0,,DEF-0029
+2015,81,7,9,Ronnie,Tyler Eifert,TE,CIN,0,0,,10.29,,,-14.5,-8.1,0,,00-0030549
+2015,82,7,10,Cambrias,Todd Gurley,RB,FA,0,0,,14.58,,,21.8,12.1,0,,00-0032241
+2015,83,7,11,GaTTa,Ryan Mathews,RB,PHI,0,0,,-2.65,,,4.1,2.3,0.54,,00-0027864
+2015,84,7,12,Chris & Dom,LeGarrette Blount,RB,FA,0,0,,-2.56,,,15.5,8.6,0,,00-0027325
+2015,85,8,1,Chris & Dom,Allen Robinson,WR,JAX,0,0,,23.82,,,31.5,17.5,0,,00-0031428
+2015,86,8,2,GaTTa,Darren Sproles,RB,PHI,0,0,,0,,,-20.4,-11.3,0,,00-0023564
+2015,87,8,3,Cambrias,Tevin Coleman,RB,ATL,0,0,,-9.5,,,-1.9,-1.1,0.77,,00-0032058
+2015,88,8,4,Ronnie,Michael Floyd,WR,ARI,0,0,,-2.15,,,-38.2,-21.2,0,,00-0029638
+2015,89,8,5,Antdell & Ernie,T.J. Yeldon,RB,JAX,0,0,,2.25,,,25.9,14.4,0,,00-0032209
+2015,90,8,6,Nolan & Vinny,Isaiah Crowell,RB,CLE,0,0,,-1.59,,,-5.4,-3,0.43,,00-0030656
+2015,91,8,7,Richie,Shane Vereen,RB,NYG,0,0,,-0.46,,,13.1,7.3,0,,00-0027994
+2015,92,8,8,Pung & Tralie,Eric Decker,WR,NYJ,0,0,,11.32,,,-13.3,-7.4,0,,00-0027690
+2015,93,8,9,Team JoeBa,Darren McFadden,RB,DAL,0,0,,8.06,,,8.4,4.7,0.08,,00-0026144
+2015,94,8,10,LFTLR,Bishop Sankey,RB,TEN,0,0,,-8.11,,,-6.2,-3.4,0.37,,00-0031413
+2015,95,8,11,Rob & GregBo,Brandon McManus,K,DEN,0,0,,3.13,,,-73.1,-40.6,0,,00-0029822
+2015,96,8,12,Frank & Julian,Dan Bailey,K,DAL,0,0,,2.62,,,-65.2,-36.2,0,,00-0028660
+2015,97,9,1,Frank & Julian,Arizona Cardinals,DEF,ARI,0,0,,14.43,,,-55.7,-30.9,0,,DEF-0001
+2015,98,9,2,Rob & GregBo,Denver Broncos,DEF,DEN,0,0,,13.68,,,-42.7,-23.7,0,,DEF-0010
+2015,99,9,3,LFTLR,Dwayne Allen,TE,IND,0,0,,-8.86,,,-46.1,-25.6,0,,00-0029689
+2015,100,9,4,Team JoeBa,Jordan Reed,TE,WAS,0,0,,26.49,,,-58.4,-32.4,0,,00-0030472
+2015,101,9,5,Pung & Tralie,Martavis Bryant,WR,WAS,0,0,,-1.94,,,33.8,18.8,0,,00-0031373
+2015,102,9,6,Richie,Joique Bell,RB,DET,0,0,,-4.34,,,21.5,11.9,0,,00-0027218
+2015,103,9,7,Nolan & Vinny,Houston Texans,DEF,HOU,0,0,,2.94,,,,,,,DEF-0013
+2015,104,9,8,Antdell & Ernie,Coby Fleener,TE,IND,0,0,,-2.46,,,,,,,00-0029697
+2015,105,9,9,Ronnie,Alfred Blue,RB,HOU,0,0,,-4.15,,,18.6,10.3,0,,00-0031075
+2015,106,9,10,Cambrias,Philip Rivers,QB,LAC,0,0,,2.03,,,-7.3,-4.1,0.38,,00-0022942
+2015,107,9,11,GaTTa,Phillip Dorsett,WR,IND,0,0,,-12.56,,,-46.9,-26.1,0,,00-0032208
+2015,108,9,12,Chris & Dom,Philadelphia Eagles,DEF,PHI,0,0,,0,,,-30.9,-17.2,0,,DEF-0026
+2015,109,10,1,Chris & Dom,Marques Colston,WR,NO,0,0,,-5.84,,,-9.3,-5.2,0.06,,00-0024466
+2015,110,10,2,GaTTa,Eli Manning,QB,NYG,0,0,,2.17,,,4.1,2.3,0.56,,00-0022803
+2015,111,10,3,Cambrias,Julius Thomas,TE,FA,0,0,,-1.47,,,-19.5,-10.8,0,,00-0028067
+2015,112,10,4,Ronnie,Arian Foster,RB,FA,0,0,,-5.82,,,74.5,41.4,0,,00-0026796
+2015,113,10,5,Antdell & Ernie,Vincent Jackson,WR,TB,0,0,,-6.85,,,42.9,23.8,0,,00-0023496
+2015,114,10,6,Nolan & Vinny,Brian Quick,WR,FA,0,0,,-13.99,,,7.2,4,0.26,,00-0029640
+2015,115,10,7,Richie,Ronnie Hillman,RB,DEN,0,0,,-0.73,,,1,0.6,0.9,,00-0029683
+2015,116,10,8,Pung & Tralie,Charles Sims,RB,TB,0,0,,3.86,,,-34.3,-19.1,0,,00-0031390
+2015,117,10,9,Team JoeBa,Los Angeles Rams,DEF,LAR,0,0,,4.98,,,,,,,DEF-0019
+2015,118,10,10,LFTLR,Terrance Williams,WR,DAL,0,0,,-4.75,,,5.6,3.1,0.38,,00-0030542
+2015,119,10,11,Rob & GregBo,Teddy Bridgewater,QB,MIN,0,0,,-4.77,,,-3.5,-1.9,0.62,,00-0031237
+2015,120,10,12,Frank & Julian,Cam Newton,QB,CAR,0,0,,27.31,,,0.9,0.5,0.92,,00-0027939
+2015,121,11,1,Frank & Julian,Carlos Hyde,RB,SF,0,0,,-5.13,,,76.3,42.4,0,,00-0031045
+2015,122,11,2,Rob & GregBo,Danny Woodhead,RB,LAC,0,0,,22.61,,,53,29.4,0,,00-0026019
+2015,123,11,3,LFTLR,Victor Cruz,WR,FA,0,0,,-14.21,,,31.7,17.6,0,,00-0027265
+2015,124,11,4,Team JoeBa,Dwayne Bowe,WR,FA,0,0,,-13.27,,,,,,,00-0025410
+2015,125,11,5,Pung & Tralie,DeAngelo Williams,RB,PIT,0,0,,23.16,,,-4.1,-2.3,0.66,,00-0024242
+2015,126,11,6,Richie,Antonio Gates,TE,FA,0,0,,0,,,-14.4,-8,0.14,,00-0021547
+2015,127,11,7,Nolan & Vinny,Rashad Jennings,RB,NYG,0,0,,-0.76,,,45.3,25.2,0,,00-0027155
+2015,128,11,8,Antdell & Ernie,Anquan Boldin,WR,SF,0,0,,-2.81,,,30.7,17.1,0,,00-0022084
+2015,129,11,9,Ronnie,Buffalo Bills,DEF,BUF,0,0,,-1.39,,,17.7,9.8,0,,DEF-0004
+2015,130,11,10,Cambrias,Dan Carpenter,K,BUF,0,0,,-0.89,,,,,,,00-0026003
+2015,131,11,11,GaTTa,Stephen Gostkowski,K,NE,0,0,,13.99,,,-14.7,-8.2,0,,00-0024333
+2015,132,11,12,Chris & Dom,Justin Tucker,K,BAL,0,0,,4.29,,,-31.5,-17.5,0,,00-0029597
+2015,133,12,1,Chris & Dom,Tony Romo,QB,DAL,0,0,,-14.7,,,52.2,29,0,,00-0021678
+2015,134,12,2,GaTTa,Baltimore Ravens,DEF,BAL,0,0,,-1.38,,,-32.5,-18.1,0,,DEF-0003
+2015,135,12,3,Cambrias,Kansas City Chiefs,DEF,KC,0,0,,14.68,,,-24.7,-13.7,0,,DEF-0016
+2015,136,12,4,Ronnie,Adam Vinatieri,K,IND,0,0,,-0.64,,,-12.1,-6.7,0,,00-0016919
+2015,137,12,5,Antdell & Ernie,Cody Parkey,K,PHI,0,0,,-6.43,,,-21.2,-11.8,0,,00-0030850
+2015,138,12,6,Nolan & Vinny,Steven Hauschka,K,SEA,0,0,,3.48,,,-18.8,-10.4,0,,00-0025944
+2015,139,12,7,Richie,Miami Dolphins,DEF,MIA,0,0,,-1.86,,,18.6,10.3,0,,DEF-0020
+2015,140,12,8,Pung & Tralie,New England Patriots,DEF,NE,0,0,,6.11,,,-24,-13.3,0,,DEF-0022
+2015,141,12,9,Team JoeBa,Joe Flacco,QB,BAL,0,0,,-6.01,,,-5,-2.8,0.5,,00-0026158
+2015,142,12,10,LFTLR,Duke Johnson,RB,CLE,0,0,,1.96,,,40.2,22.3,0,,00-0032257
+2015,143,12,11,Rob & GregBo,Roddy White,WR,ATL,0,0,,-5.6,,,34,18.9,0,,00-0023462
+2015,144,12,12,Frank & Julian,David Cobb,RB,FA,0,0,,-8.17,,,13.6,7.6,0,,00-0032133
+2015,145,13,1,Frank & Julian,Mike Wallace,WR,MIN,0,0,,-5.43,,,55.1,30.6,0,,00-0026901
+2015,146,13,2,Rob & GregBo,Pierre Garcon,WR,WAS,0,0,,-1.19,,,26.7,14.8,0,,00-0026345
+2015,147,13,3,LFTLR,Devin Funchess,TE,CAR,0,0,,-2.95,,,,,,,00-0032055
+2015,148,13,4,Team JoeBa,Fred Jackson,RB,SEA,0,0,,-4.02,,,-1.9,-1.1,0.9,,00-0024204
+2015,149,13,5,Pung & Tralie,Michael Crabtree,WR,LV,0,0,,7.66,,,13.4,7.4,0,,00-0026986
+2015,150,13,6,Richie,Matt Prater,K,DET,0,0,,-0.42,,,-21.4,-11.9,0,,00-0023853
+2015,151,13,7,Nolan & Vinny,Cecil Shorts,WR,HOU,0,0,,-4.32,,,,,,,00-0028052
+2015,152,13,8,Antdell & Ernie,Eddie Royal,WR,CHI,0,0,,-6.41,,,67.4,37.4,0,,00-0026182
+2015,153,13,9,Ronnie,Derek Carr,QB,LV,0,0,,0,,,-10.2,-5.7,0.08,,00-0031280
+2015,154,13,10,Cambrias,New York Jets,DEF,NYJ,0,0,,0.6,,,19,10.6,0,,DEF-0025
+2015,155,13,11,GaTTa,Vernon Davis,TE,SF,0,0,,-2.79,,,4.7,2.6,0.77,,00-0024221
+2015,156,13,12,Chris & Dom,James Jones,WR,GB,0,0,,-0.74,,,2.1,1.2,0.89,,00-0025465
+2015,157,14,1,Chris & Dom,James Starks,RB,GB,0,0,,3,,,0.5,0.3,0.96,,00-0027791
+2015,158,14,2,GaTTa,Reggie Bush,RB,SF,0,0,,-6.18,,,28.5,15.8,0,,00-0024217
+2015,159,14,3,Cambrias,Brandon Coleman,WR,NO,0,0,,-5.08,,,35.4,19.7,0,,00-0030801
+2015,160,14,4,Ronnie,Ty Montgomery,RB,FA,0,0,,-4.45,,,,,,,00-0032200
+2015,161,14,5,Antdell & Ernie,Devonta Freeman,RB,ATL,0,0,,46.18,,,64.8,36,0,,00-0031285
+2015,162,14,6,Nolan & Vinny,Jerick McKinnon,RB,MIN,0,0,,-2.87,,,,,,,00-0031376
+2015,163,14,7,Richie,Carson Palmer,QB,ARI,0,0,,12.96,,,34.6,19.2,0,,00-0021429
+2015,164,14,8,Pung & Tralie,Mason Crosby,K,GB,0,0,,-0.07,,,0.4,0.2,0.94,,00-0025580
+2015,165,14,9,Team JoeBa,Matt Bryant,K,ATL,0,0,,-1.5,,,-5.5,-3.1,0.02,,00-0020578
+2015,166,14,10,LFTLR,Josh Brown,K,NYG,0,0,,5.18,,,,,,,00-0021940
+2015,167,14,11,Rob & GregBo,Larry Donnell,TE,NYG,0,0,,-2.24,,,,,,,00-0028838
+2015,168,14,12,Frank & Julian,Markus Wheaton,WR,PIT,0,0,,-1.66,,,73.9,41.1,0,,00-0030460
+2015,169,15,1,Frank & Julian,Mohamed Sanu,WR,CIN,0,0,,-2.86,,,,,,,00-0029632
+2015,170,15,2,Rob & GregBo,Torrey Smith,WR,SF,0,0,,-2.01,,,39.4,21.9,0,,00-0027996
+2015,171,15,3,LFTLR,Indianapolis Colts,DEF,IND,0,0,,-0.02,,,3.3,1.8,0.64,,DEF-0014
+2015,172,15,4,Team JoeBa,Percy Harvin,WR,BUF,0,0,,-3.07,,,11.4,6.3,0.14,,00-0026998
+2015,173,15,5,Pung & Tralie,Kendall Wright,WR,TEN,0,0,,-1.83,,,85,47.2,0,,00-0029708
+2015,174,15,6,Richie,Marvin Jones,WR,CIN,0,0,,-0.43,,,40.1,22.3,0,,00-0029293
+2015,175,15,7,Nolan & Vinny,Knile Davis,RB,KC,0,0,,-1.89,,,53.8,29.9,0,,00-0030280
+2015,176,15,8,Antdell & Ernie,Stevie Johnson,WR,LAC,0,0,,-0.93,,,74.7,41.5,0,,00-0026364
+2015,177,15,9,Ronnie,Josh Hill,TE,FA,0,0,,-0.83,,,20.5,11.4,0,,00-0030216
+2015,178,15,10,Cambrias,Breshad Perriman,WR,FA,0,0,,-1.04,,,32.6,18.1,0,,00-0032054
+2015,179,15,11,GaTTa,Eric Ebron,TE,DET,0,0,,-0.04,,,,,,,00-0031387
+2015,180,15,12,Chris & Dom,Richard Rodgers,TE,GB,0,0,,2.24,,,28.4,15.8,0,,00-0031384
+2014,1,1,1,Cambrias,LeSean McCoy,RB,PHI,0,0,,4.48,,,-1,-0.5,0,,00-0027029
+2014,2,1,2,Richie,Jamaal Charles,RB,KC,0,0,,10.22,,,-0.5,-0.3,0.67,,00-0026213
+2014,3,1,3,LFTLR,Matt Forte,RB,CHI,0,0,,20.13,,,-1.2,-0.6,0.2,,00-0026184
+2014,4,1,4,Ronnie,Peyton Manning,QB,DEN,0,0,,6.54,,,-6.4,-3.3,0,,00-0010346
+2014,5,1,5,Nolan & Vinny,Adrian Peterson,RB,MIN,0,0,,-13.95,,,,,,,00-0025394
+2014,6,1,6,Pung & Tralie,Drew Brees,QB,NO,0,0,,5.53,,,-13.1,-6.8,0,,00-0020531
+2014,7,1,7,Rob & GregBo,Aaron Rodgers,QB,GB,0,0,,10.05,,,-15.2,-7.9,0,,00-0023459
+2014,8,1,8,GaTTa,Jimmy Graham,TE,NO,0,0,,8.97,,,0.2,0.1,0.91,,00-0027696
+2014,9,1,9,Antdell & Ernie,Marshawn Lynch,RB,SEA,0,0,,17.95,,,-6.9,-3.6,0,,00-0025399
+2014,10,1,10,Chris & Dom,Eddie Lacy,RB,GB,0,0,,15.09,,,3.8,2,0,,00-0030485
+2014,11,1,11,Team JoeBa,Calvin Johnson,WR,DET,0,0,,2.21,,,6.9,3.6,0,,00-0025389
+2014,12,1,12,Frank & Julian,Demaryius Thomas,WR,DEN,0,0,,17.47,,,5.3,2.8,0,,00-0027874
+2014,13,2,1,Frank & Julian,Julio Jones,WR,ATL,0,0,,13.51,,,-0.3,-0.2,0.86,,00-0027944
+2014,14,2,2,Team JoeBa,A.J. Green,WR,CIN,0,0,,0.04,,,2.5,1.3,0,,00-0027942
+2014,15,2,3,Chris & Dom,Dez Bryant,WR,DAL,0,0,,13.93,,,5.9,3.1,0,,00-0027902
+2014,16,2,4,Antdell & Ernie,Arian Foster,RB,HOU,0,0,,17.49,,,-9.8,-5.1,0,,00-0026796
+2014,17,2,5,GaTTa,Brandon Marshall,WR,CHI,0,0,,-0.6,,,3.1,1.6,0,,00-0024334
+2014,18,2,6,Rob & GregBo,Montee Ball,RB,DEN,0,0,,-10.95,,,7.6,4,0,,00-0030522
+2014,19,2,7,Pung & Tralie,Randall Cobb,WR,GB,0,0,,11.78,,,-6,-3.1,0,,00-0028002
+2014,20,2,8,Nolan & Vinny,Jordy Nelson,WR,GB,0,0,,18.37,,,2.2,1.1,0.15,,00-0026176
+2014,21,2,9,Ronnie,Giovani Bernard,RB,CIN,0,0,,4.75,,,4.3,2.2,0,,00-0030456
+2014,22,2,10,LFTLR,Doug Martin,RB,TB,0,0,,-7.38,,,1.1,0.6,0.69,,00-0029613
+2014,23,2,11,Richie,Antonio Brown,WR,PIT,0,0,,25.97,,,4.6,2.4,0,,00-0027793
+2014,24,2,12,Cambrias,DeMarco Murray,RB,DAL,0,0,,30.29,,,9.8,5.1,0,,00-0028009
+2014,25,3,1,Cambrias,Julius Thomas,TE,DEN,0,0,,2.93,,,-1.2,-0.6,0.75,,00-0028067
+2014,26,3,2,Richie,Andrew Luck,QB,IND,0,0,,15.21,,,-29.2,-15.2,0,,00-0029668
+2014,27,3,3,LFTLR,Alshon Jeffery,WR,CHI,0,0,,10.75,,,5.1,2.7,0,,00-0029137
+2014,28,3,4,Ronnie,T.Y. Hilton,WR,IND,0,0,,11.74,,,-27.2,-14.2,0,,00-0029608
+2014,29,3,5,Nolan & Vinny,Matthew Stafford,QB,DET,0,0,,-1.3,,,-19.4,-10.1,0,,00-0026498
+2014,30,3,6,Pung & Tralie,Julian Edelman,WR,NE,0,0,,6.91,,,-18.3,-9.5,0,,00-0027150
+2014,31,3,7,Rob & GregBo,Keenan Allen,WR,LAC,0,0,,-1.06,,,3,1.6,0.19,,00-0030279
+2014,32,3,8,GaTTa,Rob Gronkowski,TE,NE,0,0,,20.31,,,2.3,1.2,0.5,,00-0027656
+2014,33,3,9,Antdell & Ernie,Roddy White,WR,ATL,0,0,,0.85,,,-0.1,-0.1,0.98,,00-0023462
+2014,34,3,10,Chris & Dom,Zac Stacy,RB,LAR,0,0,,-8.23,,,1.5,0.8,0.58,,00-0030536
+2014,35,3,11,Team JoeBa,Andre Ellington,RB,ARI,0,0,,6.55,,,12.5,6.5,0,,00-0030287
+2014,36,3,12,Frank & Julian,Reggie Bush,RB,DET,0,0,,-4.15,,,2.7,1.4,0.25,,00-0024217
+2014,37,4,1,Frank & Julian,Rashad Jennings,RB,NYG,0,0,,-1.09,,,-1.4,-0.7,0.62,,00-0027155
+2014,38,4,2,Team JoeBa,Alfred Morris,RB,WAS,0,0,,7.29,,,3.8,2,0.16,,00-0029141
+2014,39,4,3,Chris & Dom,Andre Johnson,WR,HOU,0,0,,-2.64,,,2.6,1.4,0.42,,00-0022044
+2014,40,4,4,Antdell & Ernie,Nick Foles,QB,PHI,0,0,,-12.4,,,-33.9,-17.7,0,,00-0029567
+2014,41,4,5,GaTTa,Percy Harvin,WR,SEA,0,0,,-5.75,,,-3.2,-1.7,0.38,,00-0026998
+2014,42,4,6,Rob & GregBo,Larry Fitzgerald,WR,ARI,0,0,,-4.45,,,0,0,1,,00-0022921
+2014,43,4,7,Pung & Tralie,Vincent Jackson,WR,TB,0,0,,-0.95,,,8.3,4.3,0,,00-0023496
+2014,44,4,8,Nolan & Vinny,Cordarrelle Patterson,RB,MIN,0,0,,-4.54,,,,,,,00-0030578
+2014,45,4,9,Ronnie,Le'Veon Bell,RB,PIT,0,0,,41.16,,,14.6,7.6,0,,00-0030496
+2014,46,4,10,LFTLR,Vernon Davis,TE,SF,0,0,,-8.34,,,-16.8,-8.8,0,,00-0024221
+2014,47,4,11,Richie,Joique Bell,RB,DET,0,0,,10.17,,,1.1,0.6,0.82,,00-0027218
+2014,48,4,12,Cambrias,Pierre Garcon,WR,WAS,0,0,,-3.57,,,7.6,4,0,,00-0026345
+2014,49,5,1,Cambrias,Victor Cruz,WR,NYG,0,0,,-12.46,,,5.2,2.7,0,,00-0027265
+2014,50,5,2,Richie,Marques Colston,WR,NO,0,0,,-2.57,,,-15.4,-8,0,,00-0024466
+2014,51,5,3,LFTLR,Tom Brady,QB,NE,0,0,,5.76,,,-10.4,-5.4,0,,00-0019596
+2014,52,5,4,Ronnie,Trent Richardson,RB,IND,0,0,,-2.46,,,-21.2,-11,0,,00-0029675
+2014,53,5,5,Nolan & Vinny,C.J. Spiller,RB,BUF,0,0,,-6.95,,,10.9,5.7,0,,00-0027861
+2014,54,5,6,Pung & Tralie,Shane Vereen,RB,NE,0,0,,4.18,,,25.5,13.3,0,,00-0027994
+2014,55,5,7,Rob & GregBo,Frank Gore,RB,SF,0,0,,0.06,,,,,,,00-0023500
+2014,56,5,8,GaTTa,Danny Woodhead,RB,LAC,0,0,,-12.13,,,-14,-7.3,0,,00-0026019
+2014,57,5,9,Antdell & Ernie,Jason Witten,TE,DAL,0,0,,1.78,,,-9.6,-5,0,,00-0022127
+2014,58,5,10,Chris & Dom,Ben Tate,RB,CLE,0,0,,-6.15,,,-0.3,-0.2,0.95,,00-0027890
+2014,59,5,11,Team JoeBa,Matt Ryan,QB,ATL,0,0,,6.49,,,-8.6,-4.5,0,,00-0026143
+2014,60,5,12,Frank & Julian,Seattle Seahawks,DEF,SEA,0,0,,0.62,,,-30.5,-15.9,0,,DEF-0029
+2014,61,6,1,Frank & Julian,Jordan Cameron,TE,CLE,0,0,,-7.21,,,10,5.2,0,,00-0028040
+2014,62,6,2,Team JoeBa,Jordan Reed,TE,WAS,0,0,,-6.05,,,-19.4,-10.1,0,,00-0030472
+2014,63,6,3,Chris & Dom,Greg Olsen,TE,CAR,0,0,,14.38,,,-25.2,-13.1,0,,00-0025418
+2014,64,6,4,Antdell & Ernie,Los Angeles Rams,DEF,LAR,0,0,,2.32,,,,,,,DEF-0019
+2014,65,6,5,GaTTa,Darren Sproles,RB,PHI,0,0,,2.4,,,-12.6,-6.6,0,,00-0023564
+2014,66,6,6,Rob & GregBo,Dennis Pitta,TE,BAL,0,0,,-11.02,,,-25.4,-13.2,0,,00-0027714
+2014,67,6,7,Pung & Tralie,Chris Johnson,RB,NYJ,0,0,,-2.54,,,7,3.6,0,,00-0026164
+2014,68,6,8,Nolan & Vinny,Kyle Rudolph,TE,MIN,0,0,,-8.16,,,-5.2,-2.7,0.42,,00-0027981
+2014,69,6,9,Ronnie,Emmanuel Sanders,WR,DEN,0,0,,21.09,,,28.5,14.8,0,,00-0027685
+2014,70,6,10,LFTLR,DeSean Jackson,WR,WAS,0,0,,0.69,,,8.3,4.3,0,,00-0026189
+2014,71,6,11,Richie,Michael Crabtree,WR,SF,0,0,,-3.4,,,21.2,11,0,,00-0026986
+2014,72,6,12,Cambrias,Ray Rice,RB,FA,0,0,,-12.71,,,19.4,10.1,0,,00-0026195
+2014,73,7,1,Cambrias,Jeremy Maclin,WR,PHI,0,0,,19.34,,,8.7,4.5,0,,00-0026995
+2014,74,7,2,Richie,Martellus Bennett,TE,CHI,0,0,,13.22,,,-43.4,-22.6,0,,00-0026201
+2014,75,7,3,LFTLR,Toby Gerhart,RB,JAX,0,0,,-5.34,,,32.2,16.8,0,,00-0027888
+2014,76,7,4,Ronnie,Levine Toilolo,TE,ATL,0,0,,-7.65,,,,,,,00-0030443
+2014,77,7,5,Nolan & Vinny,Mike Wallace,WR,MIA,0,0,,4.9,,,0.9,0.5,0.89,,00-0026901
+2014,78,7,6,Pung & Tralie,Michael Floyd,WR,ARI,0,0,,-5.35,,,31.7,16.5,0,,00-0029638
+2014,79,7,7,Rob & GregBo,Kendall Wright,WR,TEN,0,0,,-2.74,,,17.2,9,0,,00-0029708
+2014,80,7,8,GaTTa,Jay Cutler,QB,CHI,0,0,,0,,,-1.8,-0.9,0.8,,00-0024226
+2014,81,7,9,Antdell & Ernie,Golden Tate,WR,DET,0,0,,13.98,,,7.6,4,0.12,,00-0027891
+2014,82,7,10,Chris & Dom,Torrey Smith,WR,BAL,0,0,,-1.51,,,25.6,13.3,0,,00-0027996
+2014,83,7,11,Team JoeBa,Terrance Williams,WR,DAL,0,0,,-4.44,,,-3.4,-1.8,0.6,,00-0030542
+2014,84,7,12,Frank & Julian,Ryan Mathews,RB,LAC,0,0,,-6.41,,,33.2,17.3,0,,00-0027864
+2014,85,8,1,Frank & Julian,Kelvin Benjamin,TE,CAR,0,0,,17.7,,,,,,,00-0031359
+2014,86,8,2,Team JoeBa,Carolina Panthers,DEF,CAR,0,0,,-3.24,,,-23.7,-12.3,0,,DEF-0005
+2014,87,8,3,Chris & Dom,Colin Kaepernick,QB,SF,0,0,,-1.5,,,-16.6,-8.6,0,,00-0027974
+2014,88,8,4,Antdell & Ernie,Zach Ertz,TE,PHI,0,0,,-0.81,,,-9.5,-4.9,0.27,,00-0030061
+2014,89,8,5,GaTTa,Philip Rivers,QB,LAC,0,0,,3.25,,,-13.3,-6.9,0,,00-0022942
+2014,90,8,6,Rob & GregBo,Steven Jackson,RB,ATL,0,0,,0,,,3.1,1.6,0.62,,00-0022736
+2014,91,8,7,Pung & Tralie,Brandin Cooks,WR,NO,0,0,,-4.22,,,18.2,9.5,0,,00-0031236
+2014,92,8,8,Nolan & Vinny,Mike Evans,WR,TB,0,0,,9.59,,,-7.4,-3.9,0.24,,00-0031408
+2014,93,8,9,Ronnie,Eric Decker,WR,NYJ,0,0,,-2.38,,,9.7,5.1,0,,00-0027690
+2014,94,8,10,LFTLR,Hakeem Nicks,WR,IND,0,0,,-7.99,,,-21,-10.9,0,,00-0027005
+2014,95,8,11,Richie,Denver Broncos,DEF,DEN,0,0,,-1.48,,,-34.5,-18,0,,DEF-0010
+2014,96,8,12,Cambrias,Cam Newton,QB,FA,0,0,,-1.18,,,1.5,0.8,0.85,,00-0027939
+2014,97,9,1,Cambrias,Wes Welker,WR,FA,0,0,,-7.29,,,27.9,14.5,0,,00-0022427
+2014,98,9,2,Richie,Riley Cooper,WR,PHI,0,0,,-5.25,,,-2.9,-1.5,0.67,,00-0027758
+2014,99,9,3,LFTLR,Coby Fleener,TE,IND,0,0,,1.82,,,,,,,00-0029697
+2014,100,9,4,Ronnie,Sammy Watkins,WR,BUF,0,0,,0,,,-4.9,-2.6,0.53,,00-0031325
+2014,101,9,5,Nolan & Vinny,Knowshon Moreno,RB,MIA,0,0,,-9.5,,,15.3,8,0,,00-0026988
+2014,102,9,6,Pung & Tralie,Maurice Jones-Drew,RB,LV,0,0,,-8.89,,,29,15.1,0,,00-0024275
+2014,103,9,7,Rob & GregBo,Dwayne Bowe,WR,FA,0,0,,-4.94,,,-5.2,-2.7,0.38,,00-0025410
+2014,104,9,8,GaTTa,Danny Amendola,WR,NE,0,0,,-11.43,,,-9,-4.7,0.07,,00-0026035
+2014,105,9,9,Antdell & Ernie,Reggie Wayne,WR,IND,0,0,,-3.76,,,25.1,13.1,0,,00-0020498
+2014,106,9,10,Chris & Dom,Cincinnati Bengals,DEF,CIN,0,0,,-1.71,,,-22.4,-11.7,0,,DEF-0007
+2014,107,9,11,Team JoeBa,Pierre Thomas,RB,NO,0,0,,-1.36,,,52,27.1,0,,00-0024813
+2014,108,9,12,Frank & Julian,Tony Romo,QB,DAL,0,0,,0.87,,,22.5,11.7,0,,00-0021678
+2014,109,10,1,Frank & Julian,DeAndre Hopkins,WR,HOU,0,0,,9.28,,,0,0,1,,00-0030564
+2014,110,10,2,Team JoeBa,Charles Clay,TE,MIA,0,0,,-2.11,,,-20.1,-10.5,0,,00-0028112
+2014,111,10,3,Chris & Dom,Anquan Boldin,WR,SF,0,0,,3.14,,,-4.3,-2.2,0.59,,00-0022084
+2014,112,10,4,Antdell & Ernie,Andy Dalton,QB,CIN,0,0,,-2.47,,,-10.6,-5.5,0.21,,00-0027973
+2014,113,10,5,GaTTa,Stevan Ridley,RB,NE,0,0,,-6.71,,,11.4,5.9,0,,00-0028011
+2014,114,10,6,Rob & GregBo,San Francisco 49ers,DEF,SF,0,0,,0,,,-4.3,-2.2,0.31,,DEF-0028
+2014,115,10,7,Pung & Tralie,Eric Ebron,TE,DET,0,0,,-7.32,,,-41,-21.4,0,,00-0031387
+2014,116,10,8,Nolan & Vinny,Jordan Matthews,TE,PHI,0,0,,7.26,,,,,,,00-0031299
+2014,117,10,9,Ronnie,Chicago Bears,DEF,CHI,0,0,,-2.42,,,,,,,DEF-0006
+2014,118,10,10,LFTLR,Mason Crosby,K,GB,0,0,,5.03,,,-42.8,-22.3,0,,00-0025580
+2014,119,10,11,Richie,Travis Kelce,TE,KC,0,0,,3.3,,,-27.2,-14.2,0,,00-0030506
+2014,120,10,12,Cambrias,Russell Wilson,QB,SEA,0,0,,19.1,,,13.9,7.2,0,,00-0029263
+2014,121,11,1,Cambrias,New England Patriots,DEF,NE,0,0,,3.3,,,-0.5,-0.3,0.95,,DEF-0022
+2014,122,11,2,Richie,DeAngelo Williams,RB,CAR,0,0,,-7.96,,,5.6,2.9,0.45,,00-0024242
+2014,123,11,3,LFTLR,Arizona Cardinals,DEF,ARI,0,0,,3.06,,,-20.1,-10.5,0,,DEF-0001
+2014,124,11,4,Ronnie,Justin Hunter,WR,TEN,0,0,,-6.58,,,29,15.1,0,,00-0030521
+2014,125,11,5,Nolan & Vinny,Steven Hauschka,K,SEA,0,0,,3.58,,,-25.9,-13.5,0,,00-0025944
+2014,126,11,6,Pung & Tralie,Bishop Sankey,RB,TEN,0,0,,-3.05,,,59.9,31.2,0,,00-0031413
+2014,127,11,7,Rob & GregBo,Jeremy Hill,RB,CIN,0,0,,15.77,,,30.8,16,0,,00-0031301
+2014,128,11,8,GaTTa,Fred Jackson,RB,BUF,0,0,,10.27,,,47.1,24.5,0,,00-0024204
+2014,129,11,9,Antdell & Ernie,Lamar Miller,RB,MIA,0,0,,15.51,,,41.3,21.5,0,,00-0029615
+2014,130,11,10,Chris & Dom,Justin Tucker,K,BAL,0,0,,2.59,,,-26,-13.5,0,,00-0029597
+2014,131,11,11,Team JoeBa,Robert Griffin III,QB,WAS,0,0,,-11.7,,,,,,,00-0029665
+2014,132,11,12,Frank & Julian,Kansas City Chiefs,DEF,KC,0,0,,-2.24,,,-12.7,-6.6,0,,DEF-0016
+2014,133,12,1,Frank & Julian,Phil Dawson,K,SF,0,0,,-0.52,,,-31.8,-16.6,0,,00-0004091
+2014,134,12,2,Team JoeBa,Cecil Shorts,WR,FA,0,0,,-5.48,,,9.8,5.1,0,,00-0028052
+2014,135,12,3,Chris & Dom,Andre Williams,RB,NYG,0,0,,-0.68,,,21.6,11.3,0,,00-0031055
+2014,136,12,4,Antdell & Ernie,Adam Vinatieri,K,IND,0,0,,5.5,,,-32.7,-17,0,,00-0016919
+2014,137,12,5,GaTTa,Matt Bryant,K,ATL,0,0,,6.03,,,-30.9,-16.1,0,,00-0020578
+2014,138,12,6,Rob & GregBo,Steve Smith,WR,BAL,0,0,,3.6,,,17,8.9,0,,00-0020337
+2014,139,12,7,Pung & Tralie,Carson Palmer,QB,ARI,0,0,,-8.72,,,5.3,2.8,0.35,,00-0021429
+2014,140,12,8,Nolan & Vinny,Houston Texans,DEF,HOU,0,0,,10.56,,,,,,,DEF-0013
+2014,141,12,9,Ronnie,Ladarius Green,TE,LAC,0,0,,-6.53,,,3.9,2,0.77,,00-0029275
+2014,142,12,10,LFTLR,Matt Prater,K,ARI,0,0,,-1.75,,,-28.4,-14.8,0,,00-0023853
+2014,143,12,11,Richie,Jerricho Cotchery,WR,CAR,0,0,,-4.86,,,,,,,00-0022811
+2014,144,12,12,Cambrias,Tim Wright,TE,NE,0,0,,-3.76,,,-10.7,-5.6,0.39,,00-0029910
+2014,145,13,1,Cambrias,Kenny Britt,WR,LAR,0,0,,-3.3,,,12.3,6.4,0,,00-0027006
+2014,146,13,2,Richie,Nick Folk,K,NYJ,0,0,,-0.12,,,,,,,00-0025565
+2014,147,13,3,LFTLR,Philadelphia Eagles,DEF,PHI,0,0,,8.02,,,,,,,DEF-0026
+2014,148,13,4,Ronnie,Devonta Freeman,RB,ATL,0,0,,-3.27,,,45.1,23.5,0,,00-0031285
+2014,149,13,5,Nolan & Vinny,Bernard Pierce,RB,BAL,0,0,,-5.11,,,54.5,28.4,0,,00-0029264
+2014,150,13,6,Pung & Tralie,Miles Austin,WR,CLE,0,0,,-4.14,,,-11.5,-6,0.18,,00-0023921
+2014,151,13,7,Rob & GregBo,Cody Parkey,K,PHI,0,0,,7.81,,,,,,,00-0030850
+2014,152,13,8,GaTTa,New York Jets,DEF,NYJ,0,0,,-2.8,,,-12.6,-6.6,0.09,,DEF-0025
+2014,153,13,9,Antdell & Ernie,Shonn Greene,RB,TEN,0,0,,-5.28,,,13.9,7.2,0.13,,00-0026899
+2014,154,13,10,Chris & Dom,Kenny Stills,WR,FA,0,0,,-1.63,,,16.5,8.6,0,,00-0030085
+2014,155,13,11,Team JoeBa,Blair Walsh,K,MIN,0,0,,-0.36,,,-14.9,-7.8,0,,00-0029576
+2014,156,13,12,Frank & Julian,Carlos Hyde,RB,SF,0,0,,-3.43,,,64.5,33.6,0,,00-0031045
+2014,157,14,1,Frank & Julian,Markus Wheaton,WR,PIT,0,0,,-3.12,,,38,19.8,0,,00-0030460
+2014,158,14,2,Team JoeBa,New Orleans Saints,DEF,NO,0,0,,-2.91,,,-3,-1.6,0.73,,DEF-0023
+2014,159,14,3,Chris & Dom,Alex Smith,QB,KC,0,0,,-1.16,,,,,,,00-0023436
+2014,160,14,4,Antdell & Ernie,Aaron Dobson,WR,FA,0,0,,-8.83,,,8.3,4.3,0.62,,00-0030540
+2014,161,14,5,GaTTa,Jarrett Boykin,WR,GB,0,0,,-8.56,,,34,17.7,0,,00-0029051
+2014,162,14,6,Rob & GregBo,Joe Flacco,QB,BAL,0,0,,-0.14,,,0.5,0.3,0.96,,00-0026158
+2014,163,14,7,Pung & Tralie,Baltimore Ravens,DEF,BAL,0,0,,1.65,,,,,,,DEF-0003
+2014,164,14,8,Nolan & Vinny,Chris Ivory,RB,NYJ,0,0,,0.06,,,21.6,11.3,0,,00-0027531
+2014,165,14,9,Ronnie,Kenbrell Thompkins,WR,NE,0,0,,-6.3,,,6.4,3.3,0.5,,00-0030000
+2014,166,14,10,LFTLR,Harry Douglas,WR,ATL,0,0,,-3.35,,,,,,,00-0026224
+2014,167,14,11,Richie,Donald Brown,RB,LAC,0,0,,-3.06,,,,,,,00-0027003
+2014,168,14,12,Cambrias,James Jones,WR,LV,0,0,,-0.72,,,9.6,5,0.25,,00-0025465
+2014,169,15,1,Cambrias,Mark Ingram,RB,NO,0,0,,10.36,,,69.5,36.2,0,,00-0027966
+2014,170,15,2,Richie,Johnny Manziel,QB,FA,0,0,,-8.98,,,,,,,00-0031409
+2014,171,15,3,LFTLR,Jermaine Kearse,WR,SEA,0,0,,-3.43,,,,,,,00-0029159
+2014,172,15,4,Ronnie,Eli Manning,QB,NYG,0,0,,1.27,,,,,,,00-0022803
+2014,173,15,5,Nolan & Vinny,Cole Beasley,WR,DAL,0,0,,-3.66,,,,,,,00-0029000
+2014,174,15,6,Pung & Tralie,Heath Miller,TE,PIT,0,0,,2.04,,,35.9,18.7,0,,00-0023465
+2014,175,15,7,Rob & GregBo,Rueben Randle,WR,NYG,0,0,,-0.94,,,74.1,38.6,0,,00-0029262
+2014,176,15,8,GaTTa,Marqise Lee,WR,JAX,0,0,,-3.34,,,32.4,16.9,0,,00-0031431
+2014,177,15,9,Antdell & Ernie,Tampa Bay Buccaneers,DEF,TB,0,0,,-0.69,,,10.4,5.4,0,,DEF-0030
+2014,178,15,10,Chris & Dom,Antonio Gates,TE,LAC,0,0,,17.94,,,23.9,12.4,0,,00-0021547
+2014,179,15,11,Team JoeBa,Malcom Floyd,WR,LAC,0,0,,-0.63,,,,,,,00-0022414
+2014,180,15,12,Frank & Julian,Blake Bortles,QB,FA,0,0,,-2.22,,,,,,,00-0031407
+2014,181,16,1,Frank & Julian,Dwayne Allen,TE,IND,0,0,,-0.75,,,,,,,00-0029689
+2014,182,16,2,Team JoeBa,Jacquizz Rodgers,RB,ATL,0,0,,-1.48,,,,,,,00-0028083
+2014,183,16,3,Chris & Dom,Cleveland Browns,DEF,CLE,0,0,,1.7,,,18.3,9.5,0,,DEF-0008
+2014,184,16,4,Antdell & Ernie,Greg Jennings,WR,MIN,0,0,,-0.51,,,50.8,26.5,0,,00-0024267
+2014,185,16,5,GaTTa,Odell Beckham,WR,MIA,0,0,,20.12,,,,,,,00-0031235
+2014,186,16,6,Rob & GregBo,Brent Celek,TE,PHI,0,0,,-1.24,,,,,,,00-0025549
+2014,187,16,7,Pung & Tralie,Mike Nugent,K,CIN,0,0,,-0.01,,,,,,,00-0023482
+2014,188,16,8,Nolan & Vinny,Josh McCown,QB,TB,0,0,,-1.27,,,34.6,18,0,,00-0021206
+2014,189,16,9,Ronnie,Stephen Gostkowski,K,NE,0,0,,10.59,,,44.2,23,0,,00-0024333
+2014,190,16,10,LFTLR,Ben Roethlisberger,QB,PIT,0,0,,12.61,,,61.6,32.1,0,,00-0022924
+2014,191,16,11,Richie,Brian Hartline,WR,MIA,0,0,,-0.2,,,54.6,28.4,0,,00-0027077
+2014,192,16,12,Cambrias,Dan Bailey,K,DAL,0,0,,3.45,,,31.1,16.2,0,,00-0028660
+2013,1,1,1,GaTTa,Adrian Peterson,RB,MIN,0,0,,7.33,,,,,,,00-0025394
+2013,2,1,2,Nolan & Vinny,Marshawn Lynch,RB,SEA,0,0,,10.61,,,-5.6,-2.9,0,,00-0025399
+2013,3,1,3,Frank & Julian,Doug Martin,RB,TB,0,0,,-9.4,,,-0.6,-0.3,0.57,,00-0029613
+2013,4,1,4,Team JoeBa,Jamaal Charles,RB,KC,0,0,,24.17,,,0.8,0.4,0.38,,00-0026213
+2013,5,1,5,Chris & Dom,Calvin Johnson,WR,DET,0,0,,12.22,,,-0.6,-0.3,0.73,,00-0025389
+2013,6,1,6,Pung & Tralie,LeSean McCoy,RB,PHI,0,0,,17.58,,,-2.2,-1.1,0.04,,00-0027029
+2013,7,1,7,Rob & GregBo,Ray Rice,RB,BAL,0,0,,0.65,,,-0.4,-0.2,0.82,,00-0026195
+2013,8,1,8,Cambrias,C.J. Spiller,RB,BUF,0,0,,-2.35,,,1.7,0.9,0.15,,00-0027861
+2013,9,1,9,LFTLR,Drew Brees,QB,NO,0,0,,9.55,,,-21.7,-11.3,0,,00-0020531
+2013,10,1,10,Antdell & Ernie,Aaron Rodgers,QB,GB,0,0,,-9.62,,,-21.8,-11.4,0,,00-0023459
+2013,11,1,11,Ronnie,Peyton Manning,QB,DEN,0,0,,18.53,,,-31.2,-16.3,0,,00-0010346
+2013,12,1,12,Richie,Arian Foster,RB,HOU,0,0,,-5.29,,,8.2,4.3,0,,00-0026796
+2013,13,2,1,Richie,Trent Richardson,RB,CLE,0,0,,-2.73,,,4.7,2.4,0,,00-0029675
+2013,14,2,2,Ronnie,Demaryius Thomas,WR,DEN,0,0,,13.34,,,-11.5,-6,0,,00-0027874
+2013,15,2,3,Antdell & Ernie,A.J. Green,WR,CIN,0,0,,13.83,,,-2.2,-1.1,0.29,,00-0027942
+2013,16,2,4,LFTLR,Matt Forte,RB,CHI,0,0,,20.53,,,3.3,1.7,0,,00-0026184
+2013,17,2,5,Cambrias,Brandon Marshall,WR,CHI,0,0,,13.21,,,-2.3,-1.2,0.32,,00-0024334
+2013,18,2,6,Rob & GregBo,Dez Bryant,WR,DAL,0,0,,11.19,,,4.3,2.2,0,,00-0027902
+2013,19,2,7,Pung & Tralie,Julio Jones,WR,ATL,0,0,,-8.75,,,-3,-1.6,0.03,,00-0027944
+2013,20,2,8,Chris & Dom,Reggie Bush,RB,DET,0,0,,9.69,,,2.5,1.3,0.17,,00-0024217
+2013,21,2,9,Team JoeBa,Andre Johnson,WR,HOU,0,0,,12.24,,,-13.2,-6.9,0,,00-0022044
+2013,22,2,10,Frank & Julian,Maurice Jones-Drew,RB,JAX,0,0,,2.7,,,2.3,1.2,0.23,,00-0024275
+2013,23,2,11,Nolan & Vinny,Matt Ryan,QB,ATL,0,0,,-1.23,,,-38.1,-19.8,0,,00-0026143
+2013,24,2,12,GaTTa,Larry Fitzgerald,WR,ARI,0,0,,4.45,,,-3.9,-2,0,,00-0022921
+2013,25,3,1,GaTTa,Roddy White,WR,ATL,0,0,,-6.96,,,-9.4,-4.9,0,,00-0023462
+2013,26,3,2,Nolan & Vinny,Vincent Jackson,WR,TB,0,0,,7.32,,,-15,-7.8,0,,00-0023496
+2013,27,3,3,Frank & Julian,Tom Brady,QB,NE,0,0,,0,,,-30.4,-15.8,0,,00-0019596
+2013,28,3,4,Team JoeBa,Alfred Morris,RB,WAS,0,0,,2.06,,,15.5,8.1,0,,00-0029141
+2013,29,3,5,Chris & Dom,Jimmy Graham,TE,NO,0,0,,26.05,,,14.7,7.7,0,,00-0027696
+2013,30,3,6,Pung & Tralie,Chris Johnson,RB,TEN,0,0,,10.08,,,14.5,7.6,0,,00-0026164
+2013,31,3,7,Rob & GregBo,Cam Newton,QB,CAR,0,0,,6.42,,,-27.3,-14.2,0,,00-0027939
+2013,32,3,8,Cambrias,Randall Cobb,WR,GB,0,0,,-10.42,,,1.5,0.8,0.62,,00-0028002
+2013,33,3,9,LFTLR,Stevan Ridley,RB,NE,0,0,,-3.87,,,13.6,7.1,0,,00-0028011
+2013,34,3,10,Antdell & Ernie,Steven Jackson,RB,ATL,0,0,,-2.37,,,18,9.4,0,,00-0022736
+2013,35,3,11,Ronnie,Darren Sproles,RB,NO,0,0,,2.11,,,7,3.6,0,,00-0023564
+2013,36,3,12,Richie,Reggie Wayne,WR,IND,0,0,,-9.2,,,-14.5,-7.6,0,,00-0020498
+2013,37,4,1,Richie,Wes Welker,WR,DEN,0,0,,3.04,,,-10.4,-5.4,0,,00-0022427
+2013,38,4,2,Ronnie,Eddie Lacy,RB,GB,0,0,,12.66,,,0.7,0.4,0.87,,00-0030485
+2013,39,4,3,Antdell & Ernie,Frank Gore,RB,SF,0,0,,5.65,,,,,,,00-0023500
+2013,40,4,4,LFTLR,DeMarco Murray,RB,DAL,0,0,,16.35,,,13.4,7,0,,00-0028009
+2013,41,4,5,Cambrias,Rob Gronkowski,TE,FA,0,0,,-0.98,,,7.3,3.8,0,,00-0027656
+2013,42,4,6,Rob & GregBo,David Wilson,RB,NYG,0,0,,-13.59,,,16.9,8.8,0,,00-0029251
+2013,43,4,7,Pung & Tralie,Dwayne Bowe,WR,KC,0,0,,-3.88,,,-0.4,-0.2,0.91,,00-0025410
+2013,44,4,8,Chris & Dom,Darren McFadden,RB,LV,0,0,,-6.39,,,11.4,5.9,0,,00-0026144
+2013,45,4,9,Team JoeBa,Marques Colston,WR,NO,0,0,,-0.61,,,-2.2,-1.1,0.56,,00-0024466
+2013,46,4,10,Frank & Julian,Victor Cruz,WR,NYG,0,0,,0.75,,,7.2,3.8,0,,00-0027265
+2013,47,4,11,Nolan & Vinny,Danny Amendola,WR,NE,0,0,,-6.54,,,1.3,0.7,0.78,,00-0026035
+2013,48,4,12,GaTTa,Eric Decker,WR,DEN,0,0,,14.8,,,-18.6,-9.7,0,,00-0027690
+2013,49,5,1,GaTTa,Colin Kaepernick,QB,SF,0,0,,-0.04,,,-23.1,-12,0,,00-0027974
+2013,50,5,2,Nolan & Vinny,Jason Witten,TE,DAL,0,0,,9.53,,,5.2,2.7,0.24,,00-0022127
+2013,51,5,3,Frank & Julian,DeSean Jackson,WR,PHI,0,0,,13.78,,,-20.7,-10.8,0,,00-0026189
+2013,52,5,4,Team JoeBa,Hakeem Nicks,WR,NYG,0,0,,-5.19,,,-5.3,-2.8,0.12,,00-0027005
+2013,53,5,5,Chris & Dom,James Jones,WR,GB,0,0,,-4.37,,,-25.5,-13.3,0,,00-0025465
+2013,54,5,6,Pung & Tralie,Montee Ball,RB,DEN,0,0,,-5.95,,,10.1,5.3,0,,00-0030522
+2013,55,5,7,Rob & GregBo,Mike Wallace,WR,MIA,0,0,,-0.48,,,-18,-9.4,0,,00-0026901
+2013,56,5,8,Cambrias,Lamar Miller,RB,MIA,0,0,,-3.91,,,27.1,14.1,0,,00-0029615
+2013,57,5,9,LFTLR,Vernon Davis,TE,SF,0,0,,13.56,,,11.7,6.1,0,,00-0024221
+2013,58,5,10,Antdell & Ernie,Tony Gonzalez,TE,ATL,0,0,,15.84,,,2,1,0.79,,00-0006101
+2013,59,5,11,Ronnie,Tavon Austin,WR,LAR,0,0,,-5.9,,,-21.6,-11.3,0,,00-0030525
+2013,60,5,12,Richie,Pierre Garcon,WR,WAS,0,0,,16.17,,,3.9,2,0.4,,00-0026345
+2013,61,6,1,Richie,Giovani Bernard,RB,CIN,0,0,,11.04,,,12.9,6.7,0,,00-0030456
+2013,62,6,2,Ronnie,Steve Smith,WR,CAR,0,0,,-3.01,,,-13.6,-7.1,0,,00-0020337
+2013,63,6,3,Antdell & Ernie,Torrey Smith,WR,BAL,0,0,,0.88,,,-0.7,-0.4,0.89,,00-0027996
+2013,64,6,4,LFTLR,Jordy Nelson,WR,GB,0,0,,9.17,,,4.1,2.1,0.35,,00-0026176
+2013,65,6,5,Cambrias,Antonio Brown,WR,PIT,0,0,,22.13,,,2.2,1.1,0.68,,00-0027793
+2013,66,6,6,Rob & GregBo,Jermichael Finley,TE,GB,0,0,,-5.42,,,-12.1,-6.3,0,,00-0026231
+2013,67,6,7,Pung & Tralie,Cecil Shorts,WR,JAX,0,0,,-3.03,,,-16.9,-8.8,0,,00-0028052
+2013,68,6,8,Chris & Dom,Anquan Boldin,WR,SF,0,0,,4.75,,,-17.7,-9.2,0,,00-0022084
+2013,69,6,9,Team JoeBa,Rashard Mendenhall,RB,ARI,0,0,,-1.86,,,4.5,2.3,0.42,,00-0026163
+2013,70,6,10,Frank & Julian,Seattle Seahawks,DEF,SEA,0,0,,13.88,,,-26.1,-13.6,0,,DEF-0029
+2013,71,6,11,Nolan & Vinny,Russell Wilson,QB,SEA,0,0,,4.02,,,-18.9,-9.8,0,,00-0029263
+2013,72,6,12,GaTTa,Ahmad Bradshaw,RB,IND,0,0,,-10.49,,,19.4,10.1,0,,00-0025637
+2013,73,7,1,GaTTa,Owen Daniels,TE,HOU,0,0,,-5.81,,,-43,-22.4,0,,00-0024313
+2013,74,7,2,Nolan & Vinny,San Francisco 49ers,DEF,SF,0,0,,9.03,,,-31.3,-16.3,0,,DEF-0028
+2013,75,7,3,Frank & Julian,T.Y. Hilton,WR,IND,0,0,,0.33,,,-8.3,-4.3,0.06,,00-0029608
+2013,76,7,4,Team JoeBa,Jared Cook,TE,LAR,0,0,,0,,,-16.8,-8.8,0,,00-0027061
+2013,77,7,5,Chris & Dom,Matthew Stafford,QB,DET,0,0,,5.86,,,6.6,3.4,0.04,,00-0026498
+2013,78,7,6,Pung & Tralie,Stevie Johnson,WR,BUF,0,0,,-5.47,,,-17.3,-9,0,,00-0026364
+2013,79,7,7,Rob & GregBo,Greg Jennings,WR,MIN,0,0,,-2.62,,,-12.8,-6.7,0,,00-0024267
+2013,80,7,8,Cambrias,Andrew Luck,QB,IND,0,0,,7.92,,,1.2,0.6,0.87,,00-0029668
+2013,81,7,9,LFTLR,Mike Williams,WR,TB,0,0,,-12.11,,,-18.5,-9.6,0,,00-0027702
+2013,82,7,10,Antdell & Ernie,Houston Texans,DEF,HOU,0,0,,-4.85,,,,,,,DEF-0013
+2013,83,7,11,Ronnie,Le'Veon Bell,RB,FA,0,0,,9.7,,,,,,,00-0030496
+2013,84,7,12,Richie,Robert Griffin III,QB,WAS,0,0,,-2.49,,,,,,,00-0029665
+2013,85,8,1,Richie,Cincinnati Bengals,DEF,CIN,0,0,,8.26,,,-32.6,-17,0,,DEF-0007
+2013,86,8,2,Ronnie,Chicago Bears,DEF,CHI,0,0,,-0.94,,,-27.6,-14.4,0,,DEF-0006
+2013,87,8,3,Antdell & Ernie,Ryan Mathews,RB,LAC,0,0,,8.15,,,41.3,21.5,0,,00-0027864
+2013,88,8,4,LFTLR,Miles Austin,WR,DAL,0,0,,-12.67,,,-2.6,-1.4,0.69,,00-0023921
+2013,89,8,5,Cambrias,Chris Ivory,RB,NYJ,0,0,,-4.74,,,36.5,19,0,,00-0027531
+2013,90,8,6,Rob & GregBo,DeAngelo Williams,RB,CAR,0,0,,-0.4,,,24.1,12.6,0,,00-0024242
+2013,91,8,7,Pung & Tralie,Josh Gordon,WR,FA,0,0,,24.62,,,-7.1,-3.7,0.4,,00-0029664
+2013,92,8,8,Chris & Dom,Justin Blackmon,WR,FA,0,0,,-9.78,,,-46.7,-24.3,0,,00-0029707
+2013,93,8,9,Team JoeBa,Tony Romo,QB,DAL,0,0,,4.23,,,11.1,5.8,0,,00-0021678
+2013,94,8,10,Frank & Julian,Isaac Redman,RB,PIT,0,0,,-12.54,,,-44.5,-23.2,0,,00-0026566
+2013,95,8,11,Nolan & Vinny,Golden Tate,WR,SEA,0,0,,-2.88,,,-11.3,-5.9,0,,00-0027891
+2013,96,8,12,GaTTa,Baltimore Ravens,DEF,BAL,0,0,,-0.98,,,-42.9,-22.3,0,,DEF-0003
+2013,97,9,1,GaTTa,Stephen Gostkowski,K,NE,0,0,,7.86,,,-40.9,-21.3,0,,00-0024333
+2013,98,9,2,Nolan & Vinny,Matt Bryant,K,ATL,0,0,,-1.46,,,-54.1,-28.2,0,,00-0020578
+2013,99,9,3,Frank & Julian,Kyle Rudolph,TE,MIN,0,0,,-4.22,,,25.8,13.4,0,,00-0027981
+2013,100,9,4,Team JoeBa,Denver Broncos,DEF,DEN,0,0,,-0.48,,,-16.7,-8.7,0,,DEF-0010
+2013,101,9,5,Chris & Dom,Kenbrell Thompkins,WR,NE,0,0,,-7.37,,,-21.5,-11.2,0.08,,00-0030000
+2013,102,9,6,Pung & Tralie,Antonio Gates,TE,LAC,0,0,,9.66,,,21.8,11.4,0,,00-0021547
+2013,103,9,7,Rob & GregBo,Sidney Rice,WR,SEA,0,0,,-11.14,,,-32,-16.7,0,,00-0025431
+2013,104,9,8,Cambrias,Shane Vereen,RB,NE,0,0,,-2.96,,,49.6,25.8,0,,00-0027994
+2013,105,9,9,LFTLR,Percy Harvin,WR,FA,0,0,,-15.05,,,-51.5,-26.8,0,,00-0026998
+2013,106,9,10,Antdell & Ernie,Lance Moore,WR,NO,0,0,,-9.08,,,-6.3,-3.3,0.42,,00-0023310
+2013,107,9,11,Ronnie,Matt Prater,K,DEN,0,0,,6.61,,,-48,-25,0,,00-0023853
+2013,108,9,12,Richie,Daryl Richardson,RB,LAR,0,0,,-8.56,,,53.8,28,0,,00-0029612
+2013,109,10,1,Richie,Zach Sudfeld,TE,NE,0,0,,-9.39,,,-35.8,-18.6,0,,00-0029999
+2013,110,10,2,Ronnie,Greg Olsen,TE,CAR,0,0,,10.19,,,15,7.8,0,,00-0025418
+2013,111,10,3,Antdell & Ernie,Eli Manning,QB,NYG,0,0,,-6.12,,,7.3,3.8,0.3,,00-0022803
+2013,112,10,4,LFTLR,Coby Fleener,TE,IND,0,0,,1.54,,,-43.2,-22.5,0,,00-0029697
+2013,113,10,5,Cambrias,Emmanuel Sanders,WR,PIT,0,0,,-1.13,,,-10.5,-5.5,0.17,,00-0027685
+2013,114,10,6,Rob & GregBo,Mark Ingram,RB,NO,0,0,,-7.72,,,38.5,20.1,0,,00-0027966
+2013,115,10,7,Pung & Tralie,Andy Dalton,QB,CIN,0,0,,6.76,,,-1.6,-0.8,0.8,,00-0027973
+2013,116,10,8,Chris & Dom,Chris Givens,WR,LAR,0,0,,-7.72,,,-9.7,-5.1,0.47,,00-0029614
+2013,117,10,9,Team JoeBa,Matt Schaub,QB,HOU,0,0,,-10.4,,,-19.4,-10.1,0,,00-0022787
+2013,118,10,10,Frank & Julian,Kenny Britt,WR,TEN,0,0,,-12.62,,,14.9,7.8,0,,00-0027006
+2013,119,10,11,Nolan & Vinny,New England Patriots,DEF,NE,0,0,,6.05,,,-8.6,-4.5,0.19,,DEF-0022
+2013,120,10,12,GaTTa,Delanie Walker,TE,TEN,0,0,,4.07,,,,,,,00-0024389
+2013,121,11,1,GaTTa,LaMichael James,RB,FA,0,0,,-10.81,,,-2.7,-1.4,0.86,,00-0029260
+2013,122,11,2,Nolan & Vinny,Bernard Pierce,RB,BAL,0,0,,-5.69,,,30.4,15.8,0,,00-0029264
+2013,123,11,3,Frank & Julian,Blair Walsh,K,MIN,0,0,,-0.21,,,-20.1,-10.5,0,,00-0029576
+2013,124,11,4,Team JoeBa,Vick Ballard,RB,IND,0,0,,-10.63,,,27.6,14.4,0,,00-0029547
+2013,125,11,5,Chris & Dom,Los Angeles Rams,DEF,LAR,0,0,,8.7,,,,,,,DEF-0019
+2013,126,11,6,Pung & Tralie,Ben Tate,RB,HOU,0,0,,-0.79,,,47.4,24.7,0,,00-0027890
+2013,127,11,7,Rob & GregBo,Vincent Brown,WR,LAC,0,0,,-6.84,,,3.5,1.8,0.76,,00-0028020
+2013,128,11,8,Cambrias,Fred Jackson,RB,BUF,0,0,,14.88,,,39.2,20.4,0,,00-0024204
+2013,129,11,9,LFTLR,Jay Cutler,QB,CHI,0,0,,-6.04,,,2.6,1.4,0.71,,00-0024226
+2013,130,11,10,Antdell & Ernie,Brent Celek,TE,PHI,0,0,,-2.15,,,,,,,00-0025549
+2013,131,11,11,Ronnie,BenJarvus Green-Ellis,RB,CIN,0,0,,-2.89,,,55.1,28.7,0,,00-0025860
+2013,132,11,12,Richie,Alshon Jeffery,WR,CHI,0,0,,21.73,,,-6.7,-3.5,0.62,,00-0029137
+2013,133,12,1,Richie,Michael Vick,QB,PHI,0,0,,-9.22,,,27,14.1,0,,00-0020245
+2013,134,12,2,Ronnie,Jacoby Jones,WR,BAL,0,0,,-6.14,,,,,,,00-0025460
+2013,135,12,3,Antdell & Ernie,Denarius Moore,WR,LV,0,0,,-3.78,,,-14.1,-7.3,0.19,,00-0028086
+2013,136,12,4,LFTLR,Arizona Cardinals,DEF,ARI,0,0,,13.09,,,-21.9,-11.4,0,,DEF-0001
+2013,137,12,5,Cambrias,Jordan Cameron,TE,CLE,0,0,,18.29,,,12.5,6.5,0.38,,00-0028040
+2013,138,12,6,Rob & GregBo,Green Bay Packers,DEF,GB,0,0,,-1.25,,,-21.2,-11,0,,DEF-0012
+2013,139,12,7,Pung & Tralie,Kendall Wright,WR,TEN,0,0,,2.63,,,,,,,00-0029708
+2013,140,12,8,Chris & Dom,Justin Tucker,K,BAL,0,0,,5.81,,,-29.6,-15.4,0,,00-0029597
+2013,141,12,9,Team JoeBa,Cordarrelle Patterson,RB,MIN,0,0,,-1.18,,,,,,,00-0030578
+2013,142,12,10,Frank & Julian,DeAndre Hopkins,WR,HOU,0,0,,-3.27,,,27,14.1,0,,00-0030564
+2013,143,12,11,Nolan & Vinny,Brandon Myers,TE,NYG,0,0,,-0.65,,,31.6,16.5,0,,00-0027135
+2013,144,12,12,GaTTa,Ryan Broyles,WR,FA,0,0,,-10.56,,,-3.5,-1.8,0.79,,00-0029209
+2013,145,13,1,GaTTa,Ben Roethlisberger,QB,PIT,0,0,,1.96,,,20.3,10.6,0,,00-0022924
+2013,146,13,2,Nolan & Vinny,Andre Roberts,WR,ARI,0,0,,-6.32,,,,,,,00-0027691
+2013,147,13,3,Frank & Julian,Ronnie Hillman,RB,DEN,0,0,,-6.41,,,68.2,35.5,0,,00-0029683
+2013,148,13,4,Team JoeBa,Martellus Bennett,TE,CHI,0,0,,9.19,,,21.8,11.4,0,,00-0026201
+2013,149,13,5,Chris & Dom,Mike Tolbert,RB,CAR,0,0,,-2.24,,,,,,,00-0026069
+2013,150,13,6,Pung & Tralie,Cleveland Browns,DEF,CLE,0,0,,-0.61,,,-13.7,-7.1,0,,DEF-0008
+2013,151,13,7,Rob & GregBo,Aaron Dobson,WR,FA,0,0,,-4.51,,,17.7,9.2,0,,00-0030540
+2013,152,13,8,Cambrias,Tampa Bay Buccaneers,DEF,TB,0,0,,3.51,,,4.5,2.3,0.74,,DEF-0030
+2013,153,13,9,LFTLR,David Akers,K,DET,0,0,,-1.65,,,-18.6,-9.7,0,,00-0000108
+2013,154,13,10,Antdell & Ernie,Phil Dawson,K,SF,0,0,,3.52,,,-8,-4.2,0,,00-0004091
+2013,155,13,11,Ronnie,Shonn Greene,RB,TEN,0,0,,-4.97,,,20.7,10.8,0,,00-0026899
+2013,156,13,12,Richie,Bryce Brown,RB,PHI,0,0,,-5.29,,,67.1,34.9,0,,00-0029429
+2013,157,14,1,Richie,Randy Bullock,K,HOU,0,0,,-0.85,,,-14.3,-7.4,0,,00-0029421
+2013,158,14,2,Ronnie,Sam Bradford,QB,LAR,0,0,,-6.14,,,15.3,8,0,,00-0027854
+2013,159,14,3,Antdell & Ernie,Pittsburgh Steelers,DEF,PIT,0,0,,-0.83,,,1.3,0.7,0.91,,DEF-0027
+2013,160,14,4,LFTLR,Garrett Hartley,K,NO,0,0,,-0.62,,,-8.8,-4.6,0,,00-0025824
+2013,161,14,5,Cambrias,Greg Zuerlein,K,LAR,0,0,,-0.56,,,-1.2,-0.6,0.86,,00-0029621
+2013,162,14,6,Rob & GregBo,Darrius Heyward-Bey,WR,IND,0,0,,-5.73,,,10.9,5.7,0.47,,00-0026983
+2013,163,14,7,Pung & Tralie,Mason Crosby,K,GB,0,0,,4.68,,,-9.2,-4.8,0,,00-0025580
+2013,164,14,8,Chris & Dom,Danny Woodhead,RB,LAC,0,0,,14.82,,,72.4,37.7,0,,00-0026019
+2013,165,14,9,Team JoeBa,Sebastian Janikowski,K,LV,0,0,,-0.82,,,4.4,2.3,0.48,,00-0019646
+2013,166,14,10,Frank & Julian,Josh Freeman,QB,TB,0,0,,-9.02,,,18.1,9.4,0,,00-0026993
+2013,167,14,11,Nolan & Vinny,Brandon Pettigrew,TE,DET,0,0,,-1.64,,,18.1,9.4,0.13,,00-0026996
+2013,168,14,12,GaTTa,Roy Helu,RB,WAS,0,0,,-2.3,,,19,9.9,0.02,,00-0028043
+2013,169,15,1,GaTTa,New York Giants,DEF,NYG,0,0,,-0.55,,,,,,,DEF-0024
+2013,170,15,2,Nolan & Vinny,Donnie Avery,WR,KC,0,0,,-3.25,,,,,,,00-0026173
+2013,171,15,3,Frank & Julian,Rueben Randle,WR,NYG,0,0,,-2.08,,,21,10.9,0,,00-0029262
+2013,172,15,4,Team JoeBa,Dallas Cowboys,DEF,DAL,0,0,,-0.25,,,6.3,3.3,0.39,,DEF-0009
+2013,173,15,5,Chris & Dom,Michael Floyd,WR,ARI,0,0,,-0.35,,,42.2,22,0,,00-0029638
+2013,174,15,6,Pung & Tralie,Tyler Eifert,TE,CIN,0,0,,-1.1,,,32,16.7,0,,00-0030549
+2013,175,15,7,Rob & GregBo,Alex Henery,K,PHI,0,0,,-0.49,,,,,,,00-0028058
+2013,176,15,8,Cambrias,Fred Davis,TE,WAS,0,0,,-3.55,,,43.6,22.7,0,,00-0026188
+2013,177,15,9,LFTLR,Minnesota Vikings,DEF,MIN,0,0,,-1.59,,,,,,,DEF-0021
+2013,178,15,10,Antdell & Ernie,Dallas Clark,TE,BAL,0,0,,-1.37,,,,,,,00-0022165
+2013,179,15,11,Ronnie,Jacob Tamme,TE,FA,0,0,,-2.56,,,,,,,00-0026267
+2013,180,15,12,Richie,Jermaine Gresham,TE,CIN,0,0,,-0.57,,,,,,,00-0027873
+2013,181,16,1,Richie,Daniel Thomas,RB,MIA,0,0,,-1.46,,,30,15.6,0,,00-0028000
+2013,182,16,2,Ronnie,Isaiah Pead,RB,FA,0,0,,-3.05,,,67,34.9,0,,00-0029626
+2013,183,16,3,Antdell & Ernie,Josh Brown,K,NYG,0,0,,-0.62,,,,,,,00-0021940
+2013,184,16,4,LFTLR,Andre Brown,RB,FA,0,0,,-1.19,,,,,,,00-0027094
+2013,185,16,5,Cambrias,Joe Flacco,QB,BAL,0,0,,-0.68,,,47.6,24.8,0,,00-0026158
+2013,186,16,6,Rob & GregBo,Philip Rivers,QB,LAC,0,0,,7.99,,,28.4,14.8,0,,00-0022942
+2013,187,16,7,Pung & Tralie,Alex Smith,QB,KC,0,0,,3.51,,,34,17.7,0,,00-0023436
+2013,188,16,8,Chris & Dom,Malcom Floyd,WR,LAC,0,0,,-1.76,,,,,,,00-0022414
+2013,189,16,9,Team JoeBa,Dan Bailey,K,DAL,0,0,,2.86,,,18.5,9.6,0,,00-0028660
+2013,190,16,10,Frank & Julian,Justin Forsett,RB,JAX,0,0,,-0.62,,,,,,,00-0026373
+2013,191,16,11,Nolan & Vinny,Christian Ponder,QB,MIN,0,0,,-0.25,,,,,,,00-0027950
+2013,192,16,12,GaTTa,Andrew Hawkins,WR,CIN,0,0,,-0,,,,,,,00-0027918

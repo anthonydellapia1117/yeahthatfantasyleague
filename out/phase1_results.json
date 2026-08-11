@@ -1,0 +1,545 @@
+{
+ "assertions": [
+  {
+   "season": "2013",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "192 of 12x16=192",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2013",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 192 n 192",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2013",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2013",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2014",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "192 of 12x16=192",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2014",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 192 n 192",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2014",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2014",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 16
+  },
+  {
+   "season": "2015",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2015",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2015",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2015",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2016",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2016",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2016",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2016",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2017",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2017",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2017",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2017",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2018",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "179 of 12x15=180, 1 forfeit(s)",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2018",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 179",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2018",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2018",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2019",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2019",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2019",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2019",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2020",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2020",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2020",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2020",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2021",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2021",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2021",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2021",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2022",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2022",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2022",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2022",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2023",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "180 of 12x15=180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2023",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 180 n 180",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2023",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2023",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 15
+  },
+  {
+   "season": "2024",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "168 of 12x14=168",
+   "teams": 12,
+   "rounds": 14
+  },
+  {
+   "season": "2024",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 168 n 168",
+   "teams": 12,
+   "rounds": 14
+  },
+  {
+   "season": "2024",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 14
+  },
+  {
+   "season": "2024",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 14
+  },
+  {
+   "season": "2025",
+   "check": "picks <= teams x rounds",
+   "result": "PASS",
+   "detail": "168 of 12x14=168",
+   "teams": 12,
+   "rounds": 14
+  },
+  {
+   "season": "2025",
+   "check": "overall picks contiguous, forfeits allowed",
+   "result": "PASS",
+   "detail": "min 1 max 168 n 168",
+   "teams": 12,
+   "rounds": 14
+  },
+  {
+   "season": "2025",
+   "check": "one roster per round",
+   "result": "PASS",
+   "detail": "duplicate team within a round",
+   "teams": 12,
+   "rounds": 14
+  },
+  {
+   "season": "2025",
+   "check": "no duplicate player",
+   "result": "PASS",
+   "detail": "repeated player_id",
+   "teams": 12,
+   "rounds": 14
+  }
+ ],
+ "cross_validation": {
+  "agree": 164,
+  "disagree": 4,
+  "missing": 0,
+  "examples": [
+   "overall 22 (r2): sleeper 'Brian Thomas' vs archive 'Brian Thomas Jr.'",
+   "overall 40 (r4): sleeper 'Kenneth Walker' vs archive 'Kenneth Walker III'",
+   "overall 48 (r4): sleeper 'Marvin Harrison' vs archive 'Marvin Harrison Jr.'",
+   "overall 60 (r5): sleeper 'DJ Moore' vs archive 'D.J. Moore'"
+  ]
+ },
+ "identity": [
+  {
+   "archive_member_name": "Richie",
+   "sleeper_display_name": "lefty3",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "John Juliano",
+   "sleeper_display_name": "juliano89",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Ronnie",
+   "sleeper_display_name": "rondro9",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Cambrias",
+   "sleeper_display_name": "dcambs",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Nolan & Vinny",
+   "sleeper_display_name": "ENolan90",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Antdell & Ernie",
+   "sleeper_display_name": "antdell",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Mike Long",
+   "sleeper_display_name": "Rocksolid1018",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Frank & Julian",
+   "sleeper_display_name": "FrankieSponge",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Phil Baldino",
+   "sleeper_display_name": "pbaldino",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Rob & GregBo",
+   "sleeper_display_name": "RobFlacc",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Pung & Tralie",
+   "sleeper_display_name": "ForthepeopleEsq",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  },
+  {
+   "archive_member_name": "Chris & Dom",
+   "sleeper_display_name": "chrisanddom",
+   "evidence": "14/14 of 2025 picks at identical (round, slot) attributed to this handle",
+   "confidence": "verified",
+   "source": "join",
+   "source_ref": "archive 2025 draft x sleeper 2025 picks",
+   "fetched_at": "2026-08-11T08:00:41"
+  }
+ ],
+ "excluded": {
+  "1092592577628426240": "empty trial shell, 0 picks, 0 transactions"
+ },
+ "fetched_at": "2026-08-11T08:00:41"
+}

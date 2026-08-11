@@ -1,0 +1,86 @@
+{
+ "scheduled_events": {
+  "event-67138": {
+   "event_id": "event-67138",
+   "event_type": "event",
+   "event_at": "2026-09-06T05:00:00.000000Z",
+   "event_week": 1,
+   "event_name": "Fantasy Season Starts",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  },
+  "event-67139": {
+   "event_id": "event-67139",
+   "event_type": "event",
+   "event_at": "2026-11-17T05:00:00.000000Z",
+   "event_week": 11,
+   "event_name": "Trade Deadline",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  },
+  "event-67140": {
+   "event_id": "event-67140",
+   "event_type": "event",
+   "event_at": "2026-12-15T05:00:00.000000Z",
+   "event_week": 15,
+   "event_name": "Fantasy Playoffs Start",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  },
+  "event-67141": {
+   "event_id": "event-67141",
+   "event_type": "event",
+   "event_at": "2027-01-05T05:00:00.000000Z",
+   "event_week": 18,
+   "event_name": "Championship Week",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  }
+ },
+ "completed_events": {
+  "event-30271": {
+   "event_id": "event-30271",
+   "event_type": "event",
+   "event_at": "2025-09-02T05:00:00.000000Z",
+   "event_week": 1,
+   "event_name": "Fantasy Season Starts",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  },
+  "event-30272": {
+   "event_id": "event-30272",
+   "event_type": "event",
+   "event_at": "2025-11-11T05:00:00.000000Z",
+   "event_week": 11,
+   "event_name": "Trade Deadline",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  },
+  "event-30273": {
+   "event_id": "event-30273",
+   "event_type": "event",
+   "event_at": "2025-12-09T05:00:00.000000Z",
+   "event_week": 15,
+   "event_name": "Fantasy Playoffs Start",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  },
+  "event-30274": {
+   "event_id": "event-30274",
+   "event_type": "event",
+   "event_at": "2025-12-30T05:00:00.000000Z",
+   "event_week": 18,
+   "event_name": "Championship Week",
+   "color": "green",
+   "event_display_time": 0,
+   "event_description": null
+  }
+ }
+}

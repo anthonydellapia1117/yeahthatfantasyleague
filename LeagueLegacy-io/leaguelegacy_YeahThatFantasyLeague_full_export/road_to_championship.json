@@ -1,0 +1,463 @@
+{
+ "seasons": [
+  {
+   "season": 2025,
+   "season_name": "2025",
+   "season_id": 29821,
+   "champion_member_id": 54774,
+   "champion_member_ids": [
+    54774
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54762,
+   "games": [
+    {
+     "week": "16",
+     "round": "Semifinal",
+     "opponent_member_id": 54776,
+     "score": 111.68,
+     "opp_score": 99.7,
+     "margin": 11.98,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "17",
+     "round": "Championship",
+     "opponent_member_id": 54762,
+     "score": 164.92,
+     "opp_score": 152.48,
+     "margin": 12.44,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2024,
+   "season_name": "2024",
+   "season_id": 29820,
+   "champion_member_id": 108589,
+   "champion_member_ids": [
+    108589
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54774,
+   "games": [
+    {
+     "week": "16",
+     "round": "Semifinal",
+     "opponent_member_id": 108582,
+     "score": 167.82,
+     "opp_score": 141.36,
+     "margin": 26.46,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "17",
+     "round": "Championship",
+     "opponent_member_id": 54774,
+     "score": 173.88,
+     "opp_score": 146.36,
+     "margin": 27.52,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2023,
+   "season_name": "2023",
+   "season_id": 16792,
+   "champion_member_id": 108589,
+   "champion_member_ids": [
+    108589
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54773,
+   "games": [
+    {
+     "week": "16",
+     "round": "Semifinal",
+     "opponent_member_id": 54762,
+     "score": 151.02,
+     "opp_score": 124.9,
+     "margin": 26.12,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "17",
+     "round": "Championship",
+     "opponent_member_id": 54773,
+     "score": 159.1,
+     "opp_score": 108.08,
+     "margin": 51.02,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2022,
+   "season_name": "2022",
+   "season_id": 16793,
+   "champion_member_id": 54774,
+   "champion_member_ids": [
+    54774
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 108581,
+   "games": [
+    {
+     "week": "16",
+     "round": "Semifinal",
+     "opponent_member_id": 54776,
+     "score": 147.48,
+     "opp_score": 112.06,
+     "margin": 35.42,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "17",
+     "round": "Championship",
+     "opponent_member_id": 108581,
+     "score": 133.08,
+     "opp_score": 96.46,
+     "margin": 36.62,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2021,
+   "season_name": "2021",
+   "season_id": 16816,
+   "champion_member_id": 108590,
+   "champion_member_ids": [
+    108590
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54773,
+   "games": [
+    {
+     "week": "16",
+     "round": "Semifinal",
+     "opponent_member_id": 108587,
+     "score": 145.36,
+     "opp_score": 92.32,
+     "margin": 53.04,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "17",
+     "round": "Championship",
+     "opponent_member_id": 54773,
+     "score": 132.5,
+     "opp_score": 113.12,
+     "margin": 19.38,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2020,
+   "season_name": "2020",
+   "season_id": 16817,
+   "champion_member_id": 54773,
+   "champion_member_ids": [
+    54773
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 108587,
+   "games": [
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 54762,
+     "score": 161.42,
+     "opp_score": 112.62,
+     "margin": 48.8,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 108587,
+     "score": 149.02,
+     "opp_score": 128.02,
+     "margin": 21,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2019,
+   "season_name": "2019",
+   "season_id": 16818,
+   "champion_member_id": 54774,
+   "champion_member_ids": [
+    54774
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 108581,
+   "games": [
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 108592,
+     "score": 191.38,
+     "opp_score": 126.88,
+     "margin": 64.5,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 108581,
+     "score": 156.72,
+     "opp_score": 139.7,
+     "margin": 17.02,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2018,
+   "season_name": "2018",
+   "season_id": 16819,
+   "champion_member_id": 108589,
+   "champion_member_ids": [
+    108589
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 108588,
+   "games": [
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 108584,
+     "score": 149.34,
+     "opp_score": 116.46,
+     "margin": 32.88,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 108588,
+     "score": 140.26,
+     "opp_score": 138.08,
+     "margin": 2.18,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2017,
+   "season_name": "2017",
+   "season_id": 16820,
+   "champion_member_id": 108581,
+   "champion_member_ids": [
+    108581
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 108592,
+   "games": [
+    {
+     "week": "14",
+     "round": "Quarterfinal",
+     "opponent_member_id": 54762,
+     "score": 156.44,
+     "opp_score": 133.24,
+     "margin": 23.2,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 54774,
+     "score": 155.18,
+     "opp_score": 136.68,
+     "margin": 18.5,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 108592,
+     "score": 139.22,
+     "opp_score": 125.08,
+     "margin": 14.14,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2016,
+   "season_name": "2016",
+   "season_id": 16821,
+   "champion_member_id": 108592,
+   "champion_member_ids": [
+    108592
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54846,
+   "games": [
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 108587,
+     "score": 119.62,
+     "opp_score": 96.32,
+     "margin": 23.3,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 54846,
+     "score": 120.24,
+     "opp_score": 117.36,
+     "margin": 2.88,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2015,
+   "season_name": "2015",
+   "season_id": 16822,
+   "champion_member_id": 108592,
+   "champion_member_ids": [
+    108592
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54774,
+   "games": [
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 54846,
+     "score": 198.48,
+     "opp_score": 131.06,
+     "margin": 67.42,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 54774,
+     "score": 147.14,
+     "opp_score": 146.64,
+     "margin": 0.5,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2014,
+   "season_name": "2014",
+   "season_id": 16823,
+   "champion_member_id": 54855,
+   "champion_member_ids": [
+    54855
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54774,
+   "games": [
+    {
+     "week": "14",
+     "round": "Quarterfinal",
+     "opponent_member_id": 108587,
+     "score": 143.76,
+     "opp_score": 100.5,
+     "margin": 43.26,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 108584,
+     "score": 163.56,
+     "opp_score": 67.72,
+     "margin": 95.84,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 54774,
+     "score": 158.14,
+     "opp_score": 153.06,
+     "margin": 5.08,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  },
+  {
+   "season": 2013,
+   "season_name": "2013",
+   "season_id": 16824,
+   "champion_member_id": 54773,
+   "champion_member_ids": [
+    54773
+   ],
+   "is_co_champion": false,
+   "runner_up_member_id": 54850,
+   "games": [
+    {
+     "week": "14",
+     "round": "Quarterfinal",
+     "opponent_member_id": 54774,
+     "score": 162.68,
+     "opp_score": 111.5,
+     "margin": 51.18,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "15",
+     "round": "Semifinal",
+     "opponent_member_id": 54855,
+     "score": 153.26,
+     "opp_score": 133.72,
+     "margin": 19.54,
+     "result": "win",
+     "is_championship": false
+    },
+    {
+     "week": "16",
+     "round": "Championship",
+     "opponent_member_id": 54850,
+     "score": 129.5,
+     "opp_score": 80.24,
+     "margin": 49.26,
+     "result": "win",
+     "is_championship": true
+    }
+   ]
+  }
+ ]
+}

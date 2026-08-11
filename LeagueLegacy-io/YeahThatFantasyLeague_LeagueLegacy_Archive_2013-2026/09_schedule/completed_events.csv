@@ -1,0 +1,5 @@
+kind,event_id,event_type,event_at,event_week,event_name,color,event_display_time,event_description
+completed,event-30271,event,2025-09-02T05:00:00.000000Z,1,Fantasy Season Starts,green,0,
+completed,event-30272,event,2025-11-11T05:00:00.000000Z,11,Trade Deadline,green,0,
+completed,event-30273,event,2025-12-09T05:00:00.000000Z,15,Fantasy Playoffs Start,green,0,
+completed,event-30274,event,2025-12-30T05:00:00.000000Z,18,Championship Week,green,0,
