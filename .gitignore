@@ -29,3 +29,9 @@ out/**/*.tmp
 
 # Contains the league owner email address - excluded from the public repo
 made-resources/YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026/16_franchise/franchise_dashboard.json
+
+# secret literal list for the transcript redactor - never commit
+.redact-literals
+
+# third-party clone, has its own git repo
+sleeper-mcp-server/
