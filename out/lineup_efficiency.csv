@@ -1,0 +1,157 @@
+season,member_name,started_points,optimal_points,efficiency,points_left,is_champion,source,source_ref,basis,confidence
+2013,Antdell & Ernie,1686.2,1871.78,0.900854,185.58,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Cambrias,1841.2,2078.48,0.88584,237.28,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Chris & Dom,1914.02,2246.28,0.852084,332.26,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Frank & Julian,1705.46,1939.48,0.879339,234.02,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,GaTTa,1853.14,2100.86,0.882086,247.72,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,LFTLR,1918.36,2150.28,0.892144,231.92,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Nolan & Vinny,1702.46,1908.34,0.892116,205.88,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Pung & Tralie,1790.76,2143.48,0.835445,352.72,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Richie,1869.86,2173.5,0.860299,303.64,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Rob & GregBo,1619.72,2010.88,0.805478,391.16,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Ronnie,2006.94,2252.12,0.891134,245.18,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2013,Team JoeBa,1881.12,2211.24,0.850708,330.12,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Antdell & Ernie,1891.0,2229.06,0.84834,338.06,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Cambrias,2057.14,2342.5,0.878181,285.36,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Chris & Dom,1751.88,2068.46,0.846949,316.58,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Frank & Julian,1595.84,1884.64,0.846761,288.8,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,GaTTa,2048.0,2351.36,0.870985,303.36,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,LFTLR,1371.98,1663.72,0.824646,291.74,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Nolan & Vinny,1640.68,1903.5,0.861928,262.82,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Pung & Tralie,1718.06,1996.2,0.860665,278.14,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Richie,1838.44,2188.54,0.84003,350.1,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Rob & GregBo,1553.84,1909.08,0.813921,355.24,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Ronnie,1920.44,2193.76,0.87541,273.32,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2014,Team JoeBa,1632.8,1932.4,0.84496,299.6,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Antdell & Ernie,1787.12,1976.2,0.904321,189.08,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Cambrias,2270.1,2413.08,0.940748,142.98,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Chris & Dom,2063.12,2324.64,0.887501,261.52,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Frank & Julian,1618.96,1794.74,0.902058,175.78,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,GaTTa,1528.48,1950.72,0.783547,422.24,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,LFTLR,1531.72,1759.72,0.870434,228.0,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Nolan & Vinny,1579.76,1913.48,0.825595,333.72,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Pung & Tralie,1558.22,1848.06,0.843165,289.84,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Richie,1866.02,2252.98,0.828245,386.96,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Rob & GregBo,1786.88,2074.26,0.861454,287.38,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Ronnie,1713.64,1991.74,0.860373,278.1,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2015,Team JoeBa,2001.66,2273.78,0.880323,272.12,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Antdell & Ernie,1736.06,2032.86,0.853999,296.8,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Cambrias,1573.38,1847.28,0.851728,273.9,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Chris & Dom,1945.1,2311.56,0.841466,366.46,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Frank & Julian,1765.66,2047.42,0.862383,281.76,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,GaTTa,1729.84,1987.74,0.870255,257.9,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,LFTLR,1764.58,1981.08,0.890716,216.5,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Nolan & Vinny,1656.14,1870.56,0.885371,214.42,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Pung & Tralie,1882.0,2108.72,0.892485,226.72,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Richie,1671.36,1858.7,0.899209,187.34,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Rob & GregBo,1548.98,1844.58,0.839747,295.6,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Ronnie,1868.22,2098.76,0.890154,230.54,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2016,Team JoeBa,1938.18,2166.1,0.894779,227.92,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Antdell & Ernie,1772.26,2065.18,0.858162,292.92,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Cambrias,1839.2,1977.52,0.930054,138.32,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Chris & Dom,1830.46,2110.88,0.867155,280.42,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Frank & Julian,1690.9,2014.44,0.83939,323.54,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,LFTLR,1638.02,1842.64,0.888953,204.62,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Nolan & Vinny,1600.68,1879.14,0.851815,278.46,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Phil Baldino,1538.56,1789.26,0.859886,250.7,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Pung & Tralie,1663.42,1902.1,0.874518,238.68,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Richie,1987.16,2176.24,0.913116,189.08,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Rob & GregBo,1769.04,1928.64,0.917247,159.6,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Ronnie,1690.3,1948.7,0.867399,258.4,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2017,Team JoeBa,1595.72,1859.74,0.858034,264.02,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Antdell & Ernie,1659.96,1824.66,0.909737,164.7,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Cambrias,2138.1,2378.24,0.899026,240.14,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Chris & Dom,1746.44,2009.3,0.869178,262.86,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Frank & Julian,1956.26,2159.16,0.906028,202.9,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,LFTLR,1931.44,2096.94,0.921075,165.5,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Nolan & Vinny,2221.08,2427.7,0.914891,206.62,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Phil Baldino,2045.02,2257.0,0.906079,211.98,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Pung & Tralie,1944.44,2219.16,0.876205,274.72,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Richie,1616.12,1865.72,0.866218,249.6,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Rob & GregBo,1828.3,2071.16,0.882742,242.86,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Ronnie,1572.4,1798.36,0.874352,225.96,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2018,Team JoeBa,1750.82,1943.2,0.900998,192.38,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Antdell & Ernie,1780.22,1979.6,0.899283,199.38,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Cambrias,2050.92,2356.6,0.870288,305.68,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Chris & Dom,1950.88,2196.02,0.888371,245.14,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Frank & Julian,1888.88,2106.28,0.896785,217.4,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,LFTLR,1622.94,1893.98,0.856894,271.04,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Nolan & Vinny,1598.68,1888.56,0.846507,289.88,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Phil Baldino,1835.8,2051.02,0.895067,215.22,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Pung & Tralie,1802.64,2056.28,0.876651,253.64,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Richie,1985.72,2208.66,0.899061,222.94,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Rob & GregBo,1774.82,2032.3,0.873306,257.48,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Ronnie,1908.44,2120.16,0.90014,211.72,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2019,Team JoeBa,1811.1,2009.18,0.901413,198.08,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Antdell & Ernie,1979.32,2218.54,0.892172,239.22,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Cambrias,1555.38,1789.9,0.868976,234.52,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Chris & Dom,1799.08,2050.74,0.877283,251.66,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Frank & Julian,1990.2,2251.68,0.883873,261.48,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,LFTLR,1624.1,1893.68,0.857642,269.58,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Nolan & Vinny,1872.68,2156.48,0.868397,283.8,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Phil Baldino,2040.68,2211.28,0.92285,170.6,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Pung & Tralie,2135.56,2299.24,0.928811,163.68,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Richie,1668.82,1932.86,0.863394,264.04,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Rob & GregBo,1575.58,1944.28,0.810367,368.7,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Ronnie,2030.96,2206.48,0.920452,175.52,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2020,Team JoeBa,1385.98,1517.98,0.913042,132.0,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Antdell & Ernie,1828.86,2091.86,0.874275,263.0,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Cambrias,1903.82,2175.08,0.875287,271.26,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Chris & Dom,1863.76,2039.96,0.913626,176.2,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Frank & Julian,1810.42,1872.62,0.966785,62.2,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,John Juliano,1870.64,2120.54,0.882153,249.9,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Nolan & Vinny,1975.62,2268.18,0.871016,292.56,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Phil Baldino,2031.88,2336.24,0.869722,304.36,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Pung & Tralie,2037.46,2342.2,0.869892,304.74,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Richie,1797.46,1971.26,0.911833,173.8,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Rob & GregBo,2080.66,2259.52,0.920842,178.86,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Ronnie,2140.74,2377.74,0.900326,237.0,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2021,Team JoeBa,1817.78,1964.32,0.925399,146.54,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Antdell & Ernie,2011.88,2277.66,0.88331,265.78,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Cambrias,2017.04,2263.06,0.891289,246.02,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Chris & Dom,1758.62,1977.32,0.889396,218.7,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Frank & Julian,1672.36,1966.9,0.850252,294.54,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,John Juliano,1927.16,2079.36,0.926804,152.2,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Mike Long,1972.2,2278.52,0.865562,306.32,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Nolan & Vinny,2121.28,2313.62,0.916866,192.34,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Phil Baldino,1789.14,1945.38,0.919687,156.24,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Pung & Tralie,1658.0,1823.72,0.909131,165.72,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Richie,1991.24,2151.72,0.925418,160.48,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Rob & GregBo,1921.74,2159.74,0.889802,238.0,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2022,Ronnie,1842.52,2107.1,0.874434,264.58,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Antdell & Ernie,1958.36,2137.42,0.916226,179.06,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Cambrias,1877.1,2087.96,0.899011,210.86,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Chris & Dom,1924.18,2219.72,0.866857,295.54,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Frank & Julian,2038.06,2231.0,0.913519,192.94,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,John Juliano,1836.16,2105.64,0.87202,269.48,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Mike Long,1777.4,2048.0,0.867871,270.6,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Nolan & Vinny,1904.24,2082.88,0.914234,178.64,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Phil Baldino,2117.18,2381.32,0.889078,264.14,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Pung & Tralie,1758.98,1954.18,0.900112,195.2,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Richie,1943.86,2240.3,0.867678,296.44,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Rob & GregBo,1738.36,2001.1,0.868702,262.74,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2023,Ronnie,2054.46,2233.36,0.919896,178.9,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Antdell & Ernie,1828.74,2088.82,0.87549,260.08,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Cambrias,2256.62,2423.96,0.930964,167.34,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Chris & Dom,2007.68,2159.06,0.929886,151.38,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Frank & Julian,1825.54,1947.82,0.937222,122.28,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,John Juliano,2183.72,2354.92,0.927301,171.2,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Mike Long,1586.0,1764.82,0.898675,178.82,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Nolan & Vinny,1854.7,1974.26,0.939441,119.56,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Phil Baldino,1992.46,2109.76,0.944401,117.3,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Pung & Tralie,1867.72,1984.66,0.941078,116.94,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Richie,1857.0,2006.9,0.925308,149.9,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Rob & GregBo,2196.56,2255.3,0.973955,58.74,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2024,Ronnie,1773.86,1903.32,0.931982,129.46,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive,verified
+2025,Antdell & Ernie,2204.66,2450.66,0.899619,246.0,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Cambrias,1989.94,2160.2,0.921183,170.26,1,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Chris & Dom,2097.06,2256.9,0.929177,159.84,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Frank & Julian,1895.9,2064.82,0.918191,168.92,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,John Juliano,1819.56,1999.16,0.910162,179.6,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Mike Long,2072.2,2248.56,0.921568,176.36,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Nolan & Vinny,1898.64,2099.9,0.904157,201.26,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Phil Baldino,1996.94,2244.7,0.889624,247.76,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Pung & Tralie,1673.76,1873.28,0.893492,199.52,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Richie,1898.18,2103.64,0.902331,205.46,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Rob & GregBo,2088.46,2370.32,0.881088,281.86,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
+2025,Ronnie,1842.92,2218.12,0.830848,375.2,0,leaguelegacy,02_gamecenter/matchup_rosters.csv,full,verified
