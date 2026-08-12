@@ -12,8 +12,8 @@ const path = require("path");
 
 const FILE = "file://" + path.resolve(process.argv[2] || "out/draft_room.html");
 let failures = 0;
-const ok = (cond, name) => {
-  console.log((cond ? "PASS" : "FAIL") + "  " + name);
+const ok = (cond, name, detail) => {
+  console.log((cond ? "PASS" : "FAIL") + "  " + name + (cond || !detail ? "" : "  -> " + detail));
   if (!cond) failures++;
 };
 
@@ -125,6 +125,38 @@ const ok = (cond, name) => {
     const mode = await page.textContent("#mode");
     // roster 7 sits at slot 3 in this permutation
     ok(/seat 3/.test(mode), "seat resolved from slot_to_roster_id when draft_order is null: " + mode.trim());
+    await page.close();
+  }
+
+  // ---- scenario 5: PARITY. The JS mirror must reproduce Python's survival
+  // numbers exactly (within float tolerance). This is the test whose absence
+  // let the 1-erf tail bug ship: the two surfaces disagreed past z~6 and
+  // nothing compared them.
+  {
+    const page = await browser.newPage();
+    await page.route("**/api.sleeper.app/**", r => r.abort());
+    await page.goto(FILE);
+    await page.waitForTimeout(1500);
+    const res = await page.evaluate(() => {
+      const E = JSON.parse(document.getElementById("engine-data").textContent);
+      let worst = { d: 0 }, deepTailZero = false;
+      for (const r of (E.survival_reference || [])) {
+        const js = window.__survival(r.adp, r.pick);
+        const d = r.s > 1e-12 ? Math.abs(js - r.s) / r.s : Math.abs(js - r.s);
+        if (d > worst.d) worst = { d, adp: r.adp, pick: r.pick, py: r.s, js };
+        if (r.s > 0 && js === 0) deepTailZero = true;
+      }
+      return { n: (E.survival_reference || []).length, worst, deepTailZero };
+    });
+    ok(res.n >= 30, "survival_reference anchors embedded: " + res.n);
+    // A-S erfc approximation differs from Python's exact erfc by up to ~1e-7
+    // absolute, which is large RELATIVE error deep in the tail. What matters
+    // decisionally: near-agreement where probabilities are readable, and no
+    // hard zero anywhere Python keeps mass.
+    ok(res.worst.d < 0.02 || res.worst.py < 1e-4,
+       "JS matches Python within tolerance",
+       "worst rel diff " + res.worst.d + " at adp " + res.worst.adp + " pick " + res.worst.pick);
+    ok(!res.deepTailZero, "JS deep tail never collapses to 0 where Python keeps mass");
     await page.close();
   }
 

@@ -4,7 +4,7 @@
 
 ## The answer
 
-**All three bug fixes are real and correctly diagnosed, and the claimed numbers reproduce exactly. But the headline question - is the power-law sd better out of sample - comes back NO. On the decision quantity the cards run on, the power law is modestly WORSE than the step function it replaced (10 of 13 seasons, sign p = 0.046). A third model neither commit considered - piecewise-linear interpolation of the same 12 empirical bins - beats BOTH (12 of 13 seasons vs step, p = 0.002; 10 of 13 vs power), is exactly as smooth as the power law where it matters, and expresses the non-monotone tail the power law cannot.** Recommendation at the end; per the revert-criterion stated in the request, the choice is the verifier's.
+**All three bug fixes are real and correctly diagnosed, and the claimed numbers reproduce exactly. But the headline question - is the power-law sd better out of sample - comes back NO. On the decision quantity the cards run on, the power law was NOT better than the step function it replaced - a wash on pooled Brier, with the step ahead in 10 of 13 seasons (two-sided sign p = 0.092, not significant; the direction was discovered in this backtest, not declared in advance, so the one-sided test originally quoted here overstated it). A third model neither commit considered - piecewise-linear interpolation of the same 12 empirical bins - beats BOTH, and the INTERP-vs-STEP comparison is the only one that reaches significance (12 of 13 seasons, two-sided p = 0.0034; vs power 10 of 13, two-sided p = 0.092), is exactly as smooth as the power law where it matters, and expresses the non-monotone tail the power law cannot.** Recommendation at the end; per the revert-criterion stated in the request, the choice is the verifier's.
 
 ## Claims verified before anything was attacked
 
@@ -27,9 +27,9 @@ Leave-one-season-out over the same 2,039 picks, every model refit per fold by it
 | POWER (the refit) | 0.07775 | 0.24631 | 0.06098 | 0.20580 |
 | **INTERP (12-bin piecewise linear)** | **0.07642** | **0.24516** | 0.06116 | **0.20380** |
 
-n = 42,982 conditional and 57,092 unconditional predictions. Per-season COND winners: INTERP 10, POWER 2, STEP 1. Head to head on COND: STEP beats POWER 10 of 13 (p = 0.046); INTERP beats STEP 12 of 13 (p = 0.002); INTERP beats POWER 10 of 13 (p = 0.046).
+n = 42,982 conditional and 57,092 unconditional predictions. Per-season COND winners: INTERP 10, POWER 2, STEP 1. Head to head on COND, two-sided sign tests (the honest form - every direction here was discovered, not pre-declared): INTERP beats STEP 12 of 13 (p = 0.0034, significant); STEP beats POWER 10 of 13 (p = 0.092, NOT significant); INTERP beats POWER 10 of 13 (p = 0.092, NOT significant). An independent re-count by the desktop session put STEP over POWER at 9 of 13 (p = 0.27), sensitive to tie handling - further reason not to lean on that comparison.
 
-The magnitudes are small - 1.7 percent relative Brier between best and worst - but the direction is consistent, and the request's own criterion was "if the step function predicts better, say so." It does, on the quantity that sets WAIT versus TAKE NOW. **The power law bought smoothness at a small accuracy cost. It did not buy accuracy.**
+The magnitudes are small - 1.7 percent relative Brier between best and worst. The accurate summary: the power law was a wash against the step on predictive accuracy, and INTERP is the only model with a significant edge over anything. **The power law bought smoothness without buying accuracy; INTERP buys both.**
 
 Why: see C. The power law's monotone-plus-cap shape overstates sd everywhere past ADP 115, where the empirical curve has already turned down.
 
@@ -76,8 +76,8 @@ Not re-litigated. The design - real effect, kept out of the arithmetic, shipped 
 ## Recommendation, in order of preference
 
 1. **Replace the power-law sd with the 12-bin piecewise-linear empirical curve** (refit by the same recipe, embedded as 12 (adp, sd) pairs in the JSON for the JS mirror). It is continuous, beats both predecessors out of sample on the decision quantity, needs no floor or cap, and honestly expresses the non-monotone tail. Add the calibration fixture test at the same time.
-2. If keeping a closed form matters more than the last 1.7 percent of Brier: keep the power law - the cliff it removed was worse than the accuracy it costs - but document that it lost the backtest to both alternatives past ADP 115.
-3. Reverting to the step function is NOT recommended despite its backtest edge over the power law: the cliff is a decision-driving defect at exactly the ADP boundaries where wait-or-reach verdicts flip, and INTERP strictly dominates it anyway.
+2. If keeping a closed form matters more than the last 1.7 percent of Brier: keep the power law - the cliff it removed was worse than the accuracy question, which is a statistical wash against the step - but document that its capped tail misfits the observed decline past ADP 115.
+3. Reverting to the step function is NOT recommended - its apparent edge over the power law is not significant, and the cliff is a decision-driving defect at exactly the ADP boundaries where wait-or-reach verdicts flip, and INTERP strictly dominates it anyway.
 
 Either way, fix the JS 1-erf residue - that one is not a judgement call.
 

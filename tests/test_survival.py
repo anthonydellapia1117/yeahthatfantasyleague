@@ -60,10 +60,17 @@ ok(all(abs(eng.survival(a, 1) - 1.0) < 1e-9 for a in (1, 2, 5, 30, 150)),
    "survival at pick 1 is 1.0 for every player",
    f"ADP 1 gives {eng.survival(1, 1):.3f}")
 
-# 2. sd is continuous and monotone up to the empirical cap.
+# 2. sd is continuous and stays inside the observed range. It is NOT monotone -
+#    that is INTERP's entire point: the empirical curve peaks near ADP 100 and
+#    declines toward the end of the draft, which the audit showed a monotone
+#    power law cannot express (docs/AUDIT_SURVIVAL_2026-08-12.md item C).
 sds = [eng.sd_for(a) for a in range(1, 200)]
-ok(all(b >= a - 1e-9 for a, b in zip(sds, sds[1:])), "sd monotone non-decreasing")
 ok(max(abs(b - a) for a, b in zip(sds, sds[1:])) < 0.5, "sd has no jump")
+lo = min(s for _, s in eng.ADP_SD_CURVE)
+hi = max(s for _, s in eng.ADP_SD_CURVE)
+ok(all(lo - 1e-9 <= s <= hi + 1e-9 for s in sds),
+   "sd stays inside the observed bin range", f"range {min(sds):.2f}-{max(sds):.2f}")
+ok(len(eng.ADP_SD_CURVE) == 12, "sd curve is the 12 audited bins")
 
 # 3. MONOTONE + BOUNDED in the pick number.
 ok(all(eng.survival(30, k) >= eng.survival(30, k + 1) - 1e-12 for k in range(1, 168)),
@@ -82,6 +89,52 @@ ok(all(eng.cond_survival(a, k, 1) <= 1.0 + 1e-9 for a in (5, 30, 90) for k in (1
    "cond_survival never exceeds 1")
 ok(eng.cond_survival(30, 40, 35) > eng.survival(30, 40) - 1e-9,
    "conditioning on availability raises survival, never lowers it")
+ok(all(eng.cond_survival(30, k, 20) >= eng.cond_survival(30, k + 1, 20) - 1e-12
+       for k in range(20, 168)),
+   "cond_survival non-increasing in the target pick")
+# Normalization invariance: the pick-1 normalization must cancel in every
+# conditional ratio (it is a single S(1) factor on both sides).
+ok(all(abs(eng.cond_survival(a, 60, 30)
+           - (eng._raw_survival(a, 60) / eng._raw_survival(a, 30))) < 1e-9
+       for a in (10, 25, 40) if eng._raw_survival(a, 30) > 1e-12),
+   "conditional ratios are invariant to the pick-1 normalization")
+
+# 5b. CALIBRATION BENCHMARK - the guard the power law showed was missing. The
+#     shipped sd must beat the frozen step-function baseline on the conditional
+#     decision quantity over the full historical pick table, evaluated
+#     identically and deterministically. A future sd change that predicts worse
+#     than the ORIGINAL model cannot ship. (In-sample eval; the leave-one-out
+#     ordering that motivated INTERP is in docs/AUDIT_SURVIVAL_2026-08-12.md.)
+def cond_brier(sdf):
+    tot = n = 0.0
+    for p in csv.DictReader(open(os.path.join(ROOT, "out", "picks.csv"))):
+        d = p.get("adp_differential")
+        if not d:
+            continue
+        try:
+            d = float(d)
+        except ValueError:
+            continue
+        y = float(p["overall"])
+        adp = y - d
+        c0 = 1
+        while c0 <= min(y, 156):
+            k = c0 + 12
+            z1 = (c0 - adp) / (sdf(adp) * math.sqrt(2))
+            zk = (k - adp) / (sdf(adp) * math.sqrt(2))
+            s_from, s_to = 0.5 * math.erfc(z1), 0.5 * math.erfc(zk)
+            pr = 0.0 if s_from <= 1e-12 else min(1.0, s_to / s_from)
+            o = 1.0 if y >= k else 0.0
+            tot += (pr - o) ** 2
+            n += 1
+            c0 += 4
+    return tot / n
+
+STEP_SD = lambda a: next(s for hi, s in OLD if a <= hi)
+b_ship, b_step = cond_brier(eng.sd_for), cond_brier(STEP_SD)
+ok(b_ship < b_step,
+   "shipped sd beats the frozen step baseline on the decision quantity",
+   f"shipped {b_ship:.5f} vs step {b_step:.5f}")
 
 # 6. THE HARD GUARDRAIL. Franchise lift is display only and must reach no arithmetic
 #    that touches a probability. Tested and rejected: pooled Brier got worse

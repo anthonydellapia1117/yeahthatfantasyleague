@@ -56,18 +56,23 @@ ROUNDS = 14
 SKILL = ("QB", "RB", "WR", "TE")
 COMPARABLE_VOR = 8.0        # within one tier for wait-or-reach and coin flips
 
-# Pick-error sd as a SMOOTH function of ADP, fitted to 2,039 league picks 2013-2025
-# by log-log OLS over 12 equal-count bins (R^2 = 0.917), capped at the observed max.
+# Pick-error sd as a piecewise-linear interpolation of 12 equal-count empirical
+# bins over the 2,039 league picks 2013-2025 with recoverable ADP. Adopted after
+# the survival audit (docs/AUDIT_SURVIVAL_2026-08-12.md): leave-one-season-out,
+# INTERP beat the step function 12 of 13 seasons (two-sided p=0.0034) and the
+# power-law refit 10 of 13; it is the only comparison that reached significance.
+# It is continuous (no ADP cliff), needs no floor or cap (the ends are the
+# observed end bins), and expresses what a monotone power law cannot: the
+# empirical sd peaks near ADP 100 and DECLINES toward the end of the draft.
 #
-# This replaced a 4-band step function whose edges were catastrophic: sd jumped 5.46
-# to 13.63 across ADP 24/25, so two players one slot apart got survival odds at pick
-# 48 differing by 8,284x, and at pick 60 by 2.4e8. Those numbers drove live WAIT and
-# TAKE NOW verdicts. A smooth sd removes the cliff entirely.
-# FLOOR matters: the lowest observed bin is ADP 7 at sd 3.73. Extrapolating the
-# power law below that gives sd 1.30 at ADP 1, which asserts a precision the data
-# never showed and reintroduces a cliff at the very top of round 1.
-ADP_SD_C, ADP_SD_B = 1.3035, 0.6127
-ADP_SD_CAP, ADP_SD_FLOOR = 26.87, 3.73
+# History, because each shape encoded a live bug or a lost backtest:
+# - 4-band step: sd jumped 5.46 to 13.63 across ADP 24/25, survival odds for
+#   adjacent ADP slots differed by 8,284x at pick 48. Cliff drove verdicts.
+# - power law min(max(1.3035*adp^0.6127, 3.73), 26.87): removed the cliff but
+#   held sd at the cap across ADP 115-200 where the truth falls to 20, and was
+#   a statistical wash against the step out of sample.
+PICKS_PATH = "out/picks.csv"
+ADP_SD_BINS = 12
 
 MD_PATH = "out/decision_cards_2026.md"
 JSON_PATH = "out/engine_2026.json"
@@ -76,8 +81,49 @@ SENTINEL_OPEN = "<script id=\"engine-data\" type=\"application/json\">"
 SENTINEL_CLOSE = "</script><!--engine-data-end-->"
 
 
+def fit_sd_curve(picks_path=PICKS_PATH, nbins=ADP_SD_BINS):
+    """(mean_adp, sd) per equal-count ADP bin - the whole model, no functional form.
+
+    Deterministic from the committed picks table; the same 12 pairs are embedded
+    in engine_2026.json so the JS mirror interpolates identical numbers instead
+    of re-deriving anything. The two surfaces must never diverge again.
+    """
+    data = []
+    for p in csv.DictReader(open(picks_path)):
+        d = p.get("adp_differential")
+        if not d:
+            continue
+        try:
+            d = float(d)
+        except ValueError:
+            continue
+        y = float(p["overall"])
+        data.append((y - d, y))
+    data.sort()
+    n = len(data)
+    curve = []
+    for i in range(nbins):
+        chunk = data[i * n // nbins:(i + 1) * n // nbins]
+        diffs = [y - adp for adp, y in chunk]
+        mu = sum(diffs) / len(diffs)
+        sd = math.sqrt(sum((x - mu) ** 2 for x in diffs) / (len(diffs) - 1))
+        curve.append((sum(a for a, _ in chunk) / len(chunk), sd))
+    return curve
+
+
+ADP_SD_CURVE = fit_sd_curve()
+
+
 def sd_for(adp):
-    return min(max(ADP_SD_C * max(adp, 1.0) ** ADP_SD_B, ADP_SD_FLOOR), ADP_SD_CAP)
+    c = ADP_SD_CURVE
+    if adp <= c[0][0]:
+        return c[0][1]
+    if adp >= c[-1][0]:
+        return c[-1][1]
+    for (a0, s0), (a1, s1) in zip(c, c[1:]):
+        if a0 <= adp <= a1:
+            return s0 + (adp - a0) / (a1 - a0) * (s1 - s0)
+    return c[-1][1]
 
 
 def _raw_survival(adp, pick):
@@ -321,11 +367,19 @@ def build_model():
                    "starters": " ".join(lg["slots"])},
         "baselines": {p: baseline[p] for p in baseline},
         "replacement_ranks": dict(repl),
-        "adp_sd_fit": {"c": ADP_SD_C, "b": ADP_SD_B, "cap": ADP_SD_CAP, "floor": ADP_SD_FLOOR,
-                       "form": "sd(adp) = min(max(c * adp**b, floor), cap)"},
+        "adp_sd_curve": [[round(a, 2), round(s, 4)] for a, s in ADP_SD_CURVE],
+        "survival_reference": [
+            # Python-computed anchors the JS mirror must reproduce (parity test).
+            # Includes a deep-tail case that the old 1-erf JS collapsed to 0.
+            {"adp": adp, "pick": k, "s": survival(adp, k)}
+            for adp in (1, 5, 24, 25, 60, 100, 150)
+            for k in (1, 7, 30, 60, 120, 168)
+        ],
         "tendency_note": ("gap_lift is CONTEXT, not a probability input. Folding it into survival made the model worse out-of-sample: Brier 0.23030 to 0.23050, 3 of 10 seasons, paired permutation p=0.9932. See out/tendency_backtest.json."),
-        "adp_sd_note": ("normal pick-error model, sd a smooth power law fitted to "
-                        "2,039 of this league's own picks 2013-2025"),
+        "adp_sd_note": ("normal pick-error model, sd piecewise-linear over 12 "
+                        "empirical ADP bins from 2,039 of this league's own picks "
+                        "2013-2025; adopted over the power law per "
+                        "docs/AUDIT_SURVIVAL_2026-08-12.md"),
         "kdef_note": ("K and DEF projections are FLOORS - the Sleeper feed "
                       "omits 21 scoring keys this league pays, including all "
                       "sub-40 FG brackets and pts_allow brackets"),
