@@ -39,14 +39,14 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 | Manager tendencies | `out/picks.csv` grouped by franchise-era, never by franchise alone |
 | Who is likely to take my target | Build survival odds from `out/picks.csv` positional timing by franchise |
 | Start-sit | `out/lineup_efficiency.csv`. This is Anthony's measurable leak |
-| Rebuild everything | `python3 src/ingest.py && python3 src/phase2_value.py && python3 src/build_app_data.py` |
+| Rebuild everything | `python3 src/ingest.py && python3 src/phase2_value.py && python3 src/phase3_lineup.py && python3 src/build_app_data.py` |
 | Open the dashboard | `open out/ff-hub.html` |
 
 ## Anthony's position, stated once
 
 13 seasons, **0 titles**, runner-up 2025 by 12.44 points. Not unlucky: all-play gap -0.005. Drafted share 65.4 percent, statistically identical to Cambria's 65.2 percent with three titles. Transaction volume 36.2 per season against Cambria's 35.0.
 
-**Every input measured so far is average or better. The gap is not draft position, drafted share, activity, or variance.** Lineup efficiency is 88.55 percent, seventh of fifteen, leaving 15.14 points per week and 212 per season. The gap to Phil Baldino is 1.42 points per week, 21 per season. The 2025 title was lost by 12.44.
+**Every input measured so far is average or better. The gap is not draft position, drafted share, activity, or variance.** Lineup efficiency is 88.55 percent, seventh of fifteen, leaving 15.14 points per week and 212 per season. The gap to Phil Baldino is 1.49 points per week, 21 per season, and RB start-sit is 80 percent of it (`src/phase3_lineup.py`). The 2025 title was lost by 12.44.
 
 That is the only lever found that is measurable, controllable, and larger than the margin that actually beat him.
 

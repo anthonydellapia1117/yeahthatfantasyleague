@@ -66,10 +66,9 @@ def main():
             "weeks": d["w"],
             "champion": 1 if champs.get(season) == fr else 0,
         })
-    with open(os.path.join(OUT, "lineup_efficiency.csv"), "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
-        w.writeheader()
-        w.writerows(rows)
+    # out/lineup_efficiency.csv is owned by src/phase3_lineup.py, which writes the same
+    # 156 rows with started/optimal and provenance columns. Writing it here too would
+    # silently downgrade that file every time the app is rebuilt.
 
     # permutation test, champions vs pool
     ch = [r["efficiency"] for r in rows if r["champion"]]
@@ -151,7 +150,7 @@ def main():
     with open(os.path.join(OUT, "app_data.json"), "w") as f:
         json.dump(data, f)
 
-    print(f"lineup_efficiency.csv: {len(rows)} franchise-seasons")
+    print(f"efficiency: {len(rows)} franchise-seasons")
     print(f"  champions {obs:.2f}%  field {data['efficiency_test']['field_mean']:.2f}%  "
           f"p={p_eff:.4f}  n={len(ch)}/{len(rows)}")
     print(f"app_data.json: {os.path.getsize(os.path.join(OUT,'app_data.json'))//1024} KB")
