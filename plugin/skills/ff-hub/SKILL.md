@@ -34,11 +34,12 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 
 | Ask | Do this |
 |---|---|
-| Draft board, tiers, wait-or-reach for 2026 | Call the `ff-hub` MCP tools if present, else `python3 draft_board.py <league_id>` |
+| **2026 draft, any pick-level question** | `python3 src/engine_2026.py --slot N`. Opponent-aware decision cards, survival odds fitted to 2,039 of this league's picks. **Regenerate the same day** - projections, ADP, and injury statuses churn daily |
+| Raw board, tiers, wait-or-reach | `python3 draft_board.py <league_id>`, or the `ff-hub` MCP tools. Superseded by the engine for 2026 |
 | "What do champions do?" | `out/HANDOFF.md` headline plus `out/lineup_efficiency.csv`. Lead with the null result |
 | Manager tendencies | `out/picks.csv` grouped by franchise-era, never by franchise alone |
 | Who is likely to take my target | Build survival odds from `out/picks.csv` positional timing by franchise |
-| Start-sit | `out/lineup_efficiency.csv`. This is Anthony's measurable leak |
+| Start-sit | `out/rb_startsit_decisions.csv` (176 named swaps, knowable-vs-hindsight verdicts) plus `out/lineup_efficiency.csv`. Read the 3E caveat below before advising |
 | Rebuild everything | `python3 src/ingest.py && python3 src/phase2_value.py && python3 src/phase3_lineup.py && python3 src/build_app_data.py` |
 | Open the dashboard | `open out/ff-hub.html` |
 
@@ -49,6 +50,10 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 **Every input measured so far is average or better. The gap is not draft position, drafted share, activity, or variance.** Lineup efficiency is 88.55 percent, seventh of fifteen, leaving 15.14 points per week and 212 per season. The gap to Phil Baldino is 1.49 points per week, 21 per season, and RB start-sit is 80 percent of it (`src/phase3_lineup.py`). The 2025 title was lost by 12.44.
 
 That is the only lever found that is measurable, controllable, and larger than the margin that actually beat him.
+
+**But phase 3E bounds how much of it is actually recoverable, and this caveat is mandatory.** Only 14 percent of the 2022-2025 lost RB points were knowable at lineup lock from season-to-date PPG; 65 percent were hindsight spikes no average could have predicted. Baldino's knowable share is no better - his edge is **fewer, cheaper misses (69 career swaps to Anthony's 107), not sharper reads**. Pure discipline recovers roughly 10 points per season. The rest needs live weekly projections at lock time, which is a tool that does not exist yet.
+
+Never tell Anthony to "read the matchup better." The evidence says swap less, not swap smarter.
 
 ## Guardrails
 
