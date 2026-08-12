@@ -63,7 +63,11 @@ COMPARABLE_VOR = 8.0        # within one tier for wait-or-reach and coin flips
 # to 13.63 across ADP 24/25, so two players one slot apart got survival odds at pick
 # 48 differing by 8,284x, and at pick 60 by 2.4e8. Those numbers drove live WAIT and
 # TAKE NOW verdicts. A smooth sd removes the cliff entirely.
-ADP_SD_C, ADP_SD_B, ADP_SD_CAP = 1.3035, 0.6127, 26.87
+# FLOOR matters: the lowest observed bin is ADP 7 at sd 3.73. Extrapolating the
+# power law below that gives sd 1.30 at ADP 1, which asserts a precision the data
+# never showed and reintroduces a cliff at the very top of round 1.
+ADP_SD_C, ADP_SD_B = 1.3035, 0.6127
+ADP_SD_CAP, ADP_SD_FLOOR = 26.87, 3.73
 
 MD_PATH = "out/decision_cards_2026.md"
 JSON_PATH = "out/engine_2026.json"
@@ -73,15 +77,35 @@ SENTINEL_CLOSE = "</script><!--engine-data-end-->"
 
 
 def sd_for(adp):
-    return min(ADP_SD_C * max(adp, 1.0) ** ADP_SD_B, ADP_SD_CAP)
+    return min(max(ADP_SD_C * max(adp, 1.0) ** ADP_SD_B, ADP_SD_FLOOR), ADP_SD_CAP)
+
+
+def _raw_survival(adp, pick):
+    if adp >= 900:
+        return 1.0
+    # erfc, not 1-erf: the latter loses the whole value to cancellation past z~5 and
+    # returns exactly 0.0, which then trips cond_survival's zero guard and reports a
+    # certain 0 percent where the truth is small but real.
+    z = (pick - adp) / (sd_for(adp) * math.sqrt(2))
+    return max(0.0, min(1.0, 0.5 * math.erfc(z)))
 
 
 def survival(adp, pick):
-    """P(player still on the board at overall pick `pick`)."""
+    """P(player still on the board at overall pick `pick`).
+
+    Normalized so survival(adp, 1) == 1 for every player. The bare normal model puts
+    real probability mass BELOW pick 1 - an ADP-5 player loses 14 percent of his mass
+    to picks that do not exist - which showed up as the consensus number-one player
+    being only 50 percent likely to be available at pick 1, before anyone had drafted
+    anything. Dividing by the mass at pick 1 renormalizes that impossible tail away.
+    Ratios between two picks are unchanged, so cond_survival is unaffected.
+    """
     if adp >= 900:
         return 1.0
-    z = (pick - adp) / (sd_for(adp) * math.sqrt(2))
-    return max(0.0, min(1.0, 0.5 * (1 - math.erf(z))))
+    base = _raw_survival(adp, 1)
+    if base <= 1e-12:
+        return 0.0
+    return max(0.0, min(1.0, _raw_survival(adp, pick) / base))
 
 
 def cond_survival(adp, to_pick, from_pick):
@@ -297,8 +321,8 @@ def build_model():
                    "starters": " ".join(lg["slots"])},
         "baselines": {p: baseline[p] for p in baseline},
         "replacement_ranks": dict(repl),
-        "adp_sd_fit": {"c": ADP_SD_C, "b": ADP_SD_B, "cap": ADP_SD_CAP,
-                       "form": "sd(adp) = min(c * adp**b, cap)"},
+        "adp_sd_fit": {"c": ADP_SD_C, "b": ADP_SD_B, "cap": ADP_SD_CAP, "floor": ADP_SD_FLOOR,
+                       "form": "sd(adp) = min(max(c * adp**b, floor), cap)"},
         "tendency_note": ("gap_lift is CONTEXT, not a probability input. Folding it into survival made the model worse out-of-sample: Brier 0.23030 to 0.23050, 3 of 10 seasons, paired permutation p=0.9932. See out/tendency_backtest.json."),
         "adp_sd_note": ("normal pick-error model, sd a smooth power law fitted to "
                         "2,039 of this league's own picks 2013-2025"),

@@ -165,7 +165,10 @@ def main():
                     continue
                 q_obs = fr[(f, b, p)] / fr_tot[(f, b)] if fr_tot[(f, b)] else league_p
                 q = (n * q_obs + k * league_p) / (n + k)
-                lift = q / league_p if league_p > 1e-6 else 1.0
+                # A lift against a base rate this small is a ratio of noise -
+                # DEF in rounds 4-6 has league share 0.005 and produced 4.30x.
+                # Suppress rather than display a number that cannot mean anything.
+                lift = q / league_p if league_p >= 0.02 else 1.0
                 out.append({
                     "franchise": f, "band": b, "pos": p,
                     "q_observed": round(q_obs, 4),

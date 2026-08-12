@@ -25,9 +25,9 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 1 | Jahmyr Gibbs RB 170 (64%) | Christian McCaffrey RB 130 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Bijan Robinson - break toward ceiling; Jahmyr Gibbs is Questionable - re-check draft morning |
+| 1 | 1 | Jahmyr Gibbs RB 170 (100%) | Christian McCaffrey RB 130 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Bijan Robinson - break toward ceiling; Jahmyr Gibbs is Questionable - re-check draft morning |
 | 2 | 24 | Derrick Henry RB 86 (53%) | Josh Allen QB 68 | RB tier empties before your next turn - take now, do not wait |
-| 3 | 25 | Josh Allen QB 68 (62%) | Nico Collins WR 56 | QB tier empties before your next turn - take now, do not wait |
+| 3 | 25 | Josh Allen QB 68 (63%) | Nico Collins WR 56 | QB tier empties before your next turn - take now, do not wait |
 | 4 | 48 | Cam Skattebo RB 48 (52%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
 | 5 | 49 | D'Andre Swift RB 45 (83%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
 | 6 | 72 | Sam LaPorta TE 34 (59%) | Dak Prescott QB 18 | TE tier empties before your next turn - take now, do not wait; TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
@@ -44,7 +44,7 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 2 | Christian McCaffrey RB 130 (80%) | Puka Nacua WR 117 | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
+| 1 | 2 | Jahmyr Gibbs RB 170 (81%) | Christian McCaffrey RB 130 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Bijan Robinson - break toward ceiling; Jahmyr Gibbs is Questionable - re-check draft morning |
 | 2 | 23 | Derrick Henry RB 86 (57%) | Josh Allen QB 68 | RB tier empties before your next turn - take now, do not wait |
 | 3 | 26 | Josh Allen QB 68 (59%) | Breece Hall RB 54 | QB tier empties before your next turn - take now, do not wait |
 | 4 | 47 | Cam Skattebo RB 48 (55%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
@@ -63,7 +63,7 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 3 | Christian McCaffrey RB 130 (72%) | Puka Nacua WR 117 | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
+| 1 | 3 | Jahmyr Gibbs RB 170 (63%) | Christian McCaffrey RB 130 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Bijan Robinson - break toward ceiling; Jahmyr Gibbs is Questionable - re-check draft morning |
 | 2 | 22 | Derrick Henry RB 86 (61%) | Josh Allen QB 68 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Kenneth Walker - break toward ceiling |
 | 3 | 27 | Josh Allen QB 68 (55%) | Breece Hall RB 54 | QB tier empties before your next turn - take now, do not wait |
 | 4 | 46 | Cam Skattebo RB 48 (58%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
@@ -82,8 +82,8 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 4 | Christian McCaffrey RB 130 (61%) | Puka Nacua WR 117 | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
-| 2 | 21 | Derrick Henry RB 86 (65%) | Josh Allen QB 68 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Kenneth Walker - break toward ceiling |
+| 1 | 4 | Christian McCaffrey RB 130 (71%) | Puka Nacua WR 117 | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
+| 2 | 21 | Derrick Henry RB 86 (66%) | Josh Allen QB 68 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Kenneth Walker - break toward ceiling |
 | 3 | 28 | Josh Allen QB 68 (51%) | Breece Hall RB 54 | QB tier empties before your next turn - take now, do not wait |
 | 4 | 45 | Cam Skattebo RB 48 (60%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
 | 5 | 52 | D'Andre Swift RB 45 (78%) | Quinshon Judkins RB 35 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
@@ -101,8 +101,8 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 5 | Christian McCaffrey RB 130 (50%) | Jonathan Taylor RB 111 | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
-| 2 | 20 | Brock Bowers TE 91 (51%) | Derrick Henry RB 86 | TE tier empties before your next turn - take now, do not wait |
+| 1 | 5 | Christian McCaffrey RB 130 (58%) | Puka Nacua WR 117 | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
+| 2 | 20 | Brock Bowers TE 91 (52%) | Derrick Henry RB 86 | TE tier empties before your next turn - take now, do not wait |
 | 3 | 29 | Breece Hall RB 54 (62%) | Colston Loveland TE 53 | COIN FLIP with Cam Skattebo, Kyren Williams - break toward ceiling |
 | 4 | 44 | Cam Skattebo RB 48 (63%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
 | 5 | 53 | D'Andre Swift RB 45 (76%) | Quinshon Judkins RB 35 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
@@ -120,8 +120,8 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 6 | Jonathan Taylor RB 111 (65%) | James Cook RB 100 | RB tier empties before your next turn - take now, do not wait |
-| 2 | 19 | Chase Brown RB 94 (50%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
+| 1 | 6 | Jonathan Taylor RB 111 (70%) | James Cook RB 100 | RB tier empties before your next turn - take now, do not wait |
+| 2 | 19 | Chase Brown RB 94 (51%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
 | 3 | 30 | Breece Hall RB 54 (58%) | Colston Loveland TE 53 | COIN FLIP with Cam Skattebo, Kyren Williams - break toward ceiling |
 | 4 | 43 | Cam Skattebo RB 48 (66%) | Tyler Warren TE 39 | COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
 | 5 | 54 | D'Andre Swift RB 45 (74%) | Quinshon Judkins RB 35 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
@@ -139,8 +139,8 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 7 | Jonathan Taylor RB 111 (56%) | James Cook RB 100 | RB tier empties before your next turn - take now, do not wait |
-| 2 | 18 | Chase Brown RB 94 (55%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
+| 1 | 7 | Jonathan Taylor RB 111 (60%) | James Cook RB 100 | RB tier empties before your next turn - take now, do not wait |
+| 2 | 18 | Chase Brown RB 94 (56%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
 | 3 | 31 | Breece Hall RB 54 (55%) | Colston Loveland TE 53 | COIN FLIP with Cam Skattebo, Kyren Williams - break toward ceiling |
 | 4 | 42 | Cam Skattebo RB 48 (68%) | Tyler Warren TE 39 | COIN FLIP with Travis Etienne, D'Andre Swift - break toward ceiling |
 | 5 | 55 | D'Andre Swift RB 45 (73%) | Quinshon Judkins RB 35 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
@@ -158,8 +158,8 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 8 | James Cook RB 100 (78%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
-| 2 | 17 | Chase Brown RB 94 (60%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
+| 1 | 8 | Jonathan Taylor RB 111 (51%) | James Cook RB 100 | RB tier empties before your next turn - take now, do not wait |
+| 2 | 17 | Chase Brown RB 94 (61%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
 | 3 | 32 | Breece Hall RB 54 (51%) | Colston Loveland TE 53 | COIN FLIP with Cam Skattebo, Kyren Williams - break toward ceiling |
 | 4 | 41 | Cam Skattebo RB 48 (71%) | Tyler Warren TE 39 | COIN FLIP with Travis Etienne, D'Andre Swift - break toward ceiling |
 | 5 | 56 | D'Andre Swift RB 45 (71%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
@@ -177,8 +177,8 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 9 | James Cook RB 100 (72%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
-| 2 | 16 | Chase Brown RB 94 (65%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
+| 1 | 9 | James Cook RB 100 (75%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
+| 2 | 16 | Chase Brown RB 94 (66%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
 | 3 | 33 | Colston Loveland TE 53 (67%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
 | 4 | 40 | Cam Skattebo RB 48 (73%) | Tyler Warren TE 39 | COIN FLIP with Travis Etienne, D'Andre Swift - break toward ceiling |
 | 5 | 57 | D'Andre Swift RB 45 (68%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
@@ -196,10 +196,10 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 10 | James Cook RB 100 (67%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
-| 2 | 15 | Ashton Jeanty RB 98 (52%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Chase Brown - break toward ceiling |
+| 1 | 10 | James Cook RB 100 (69%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
+| 2 | 15 | Ashton Jeanty RB 98 (53%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Chase Brown - break toward ceiling |
 | 3 | 34 | Colston Loveland TE 53 (64%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
-| 4 | 39 | Cam Skattebo RB 48 (75%) | Tyler Warren TE 39 | COIN FLIP with Travis Etienne, D'Andre Swift - break toward ceiling |
+| 4 | 39 | Cam Skattebo RB 48 (76%) | Tyler Warren TE 39 | COIN FLIP with Travis Etienne, D'Andre Swift - break toward ceiling |
 | 5 | 58 | D'Andre Swift RB 45 (66%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
 | 6 | 63 | D'Andre Swift RB 45 (55%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
 | 7 | 82 | Dak Prescott QB 18 (66%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
@@ -215,8 +215,8 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 11 | James Cook RB 100 (61%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
-| 2 | 14 | Ashton Jeanty RB 98 (58%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Chase Brown - break toward ceiling |
+| 1 | 11 | James Cook RB 100 (63%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
+| 2 | 14 | Ashton Jeanty RB 98 (59%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Chase Brown - break toward ceiling |
 | 3 | 35 | Colston Loveland TE 53 (61%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
 | 4 | 38 | Colston Loveland TE 53 (51%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
 | 5 | 59 | D'Andre Swift RB 45 (64%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
@@ -234,9 +234,9 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 12 | James Cook RB 100 (55%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
-| 2 | 13 | Ashton Jeanty RB 98 (64%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Chase Brown - break toward ceiling |
-| 3 | 36 | Colston Loveland TE 53 (57%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
+| 1 | 12 | James Cook RB 100 (56%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
+| 2 | 13 | Ashton Jeanty RB 98 (65%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Chase Brown - break toward ceiling |
+| 3 | 36 | Colston Loveland TE 53 (58%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
 | 4 | 37 | Colston Loveland TE 53 (54%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
 | 5 | 60 | D'Andre Swift RB 45 (62%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
 | 6 | 61 | D'Andre Swift RB 45 (60%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |

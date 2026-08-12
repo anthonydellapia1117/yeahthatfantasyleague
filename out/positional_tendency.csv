@@ -164,21 +164,21 @@ Richie,rd4-6,K,0.0,0.0,0.0,1.0,39,50.0,out/picks.csv,"recency half-life 6 season
 Rob & GregBo,rd4-6,K,0.0,0.0,0.0,1.0,39,50.0,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
 Ronnie,rd4-6,K,0.0,0.0,0.0,1.0,38,50.0,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
 Team JoeBa,rd4-6,K,0.0,0.0,0.0,1.0,27,50.0,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Antdell & Ernie,rd4-6,DEF,0.0131,0.0054,0.0087,1.6178,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Cambrias,rd4-6,DEF,0.0,0.0054,0.0031,0.5723,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Chris & Dom,rd4-6,DEF,0.0,0.0054,0.0031,0.5723,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Frank & Julian,rd4-6,DEF,0.0248,0.0054,0.0137,2.5493,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-GaTTa,rd4-6,DEF,0.0,0.0054,0.0044,0.813,12,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",thin
-John Juliano,rd4-6,DEF,0.0,0.0054,0.0042,0.7767,15,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",thin
-LFTLR,rd4-6,DEF,0.0633,0.0054,0.0231,4.301,23,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Mike Long,rd4-6,DEF,0.0,0.0054,0.0044,0.813,12,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",thin
-Nolan & Vinny,rd4-6,DEF,0.0,0.0054,0.0031,0.5723,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Phil Baldino,rd4-6,DEF,0.0,0.0054,0.0035,0.659,27,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Pung & Tralie,rd4-6,DEF,0.0,0.0054,0.0031,0.5723,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Richie,rd4-6,DEF,0.0,0.0054,0.0031,0.5723,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Rob & GregBo,rd4-6,DEF,0.0,0.0054,0.0031,0.5723,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Ronnie,rd4-6,DEF,0.0,0.0054,0.0031,0.5786,38,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
-Team JoeBa,rd4-6,DEF,0.0,0.0054,0.0035,0.659,27,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Antdell & Ernie,rd4-6,DEF,0.0131,0.0054,0.0087,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Cambrias,rd4-6,DEF,0.0,0.0054,0.0031,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Chris & Dom,rd4-6,DEF,0.0,0.0054,0.0031,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Frank & Julian,rd4-6,DEF,0.0248,0.0054,0.0137,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+GaTTa,rd4-6,DEF,0.0,0.0054,0.0044,1.0,12,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",thin
+John Juliano,rd4-6,DEF,0.0,0.0054,0.0042,1.0,15,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",thin
+LFTLR,rd4-6,DEF,0.0633,0.0054,0.0231,1.0,23,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Mike Long,rd4-6,DEF,0.0,0.0054,0.0044,1.0,12,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",thin
+Nolan & Vinny,rd4-6,DEF,0.0,0.0054,0.0031,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Phil Baldino,rd4-6,DEF,0.0,0.0054,0.0035,1.0,27,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Pung & Tralie,rd4-6,DEF,0.0,0.0054,0.0031,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Richie,rd4-6,DEF,0.0,0.0054,0.0031,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Rob & GregBo,rd4-6,DEF,0.0,0.0054,0.0031,1.0,39,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Ronnie,rd4-6,DEF,0.0,0.0054,0.0031,1.0,38,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
+Team JoeBa,rd4-6,DEF,0.0,0.0054,0.0035,1.0,27,52.2,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
 Antdell & Ernie,rd7-10,QB,0.0961,0.1009,0.0989,0.9796,52,70.9,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
 Cambrias,rd7-10,QB,0.2665,0.1009,0.1702,1.6862,51,70.9,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
 Chris & Dom,rd7-10,QB,0.125,0.1009,0.1111,1.101,52,70.9,out/picks.csv,"recency half-life 6 seasons, empirical-Bayes shrunk",verified
