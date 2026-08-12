@@ -165,6 +165,25 @@ if os.path.exists(tp):
     ok(0.25 < min(allv) and max(allv) < 3.0, "no runaway lift anywhere",
        f"range {min(allv):.2f}-{max(allv):.2f}")
 
+# 8. SIM QUARANTINE. Simulator output must never reach verdict logic. The sim
+#    lives between SIM-QUARANTINE markers in the app; outside those markers the
+#    app may not reference SimState/runSims/renderSimResults except in the
+#    one-time button wiring, and the sim block may not call the verdict path.
+app = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+b0, b1 = app.index("SIM-QUARANTINE-BEGIN"), app.index("SIM-QUARANTINE-END")
+sim_block = app[b0:b1]
+outside = app[:b0] + app[b1:]
+leaks = [tok for tok in ("SimState.results", "runSims(", "renderSimResults(")
+         if tok in outside.replace('$(id).addEventListener("click"', "WIRING")
+         and outside.count(tok) > (2 if tok != "SimState.results" else 1)]
+ok(all(tok not in sim_block for tok in
+       ("verdictChip(", "wait_or_reach", "p_gone", 'class="verdict', ".verdict")),
+   "sim block never touches verdict logic")
+ok("condSurvival(" not in sim_block,
+   "sim never rewrites displayed survival numbers")
+ok('class="sim"' in app and "simbadge" in app and "scenario, not a forecast" in app,
+   "sim quarantine styling present (dashed border, SIM badge, caption)")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
