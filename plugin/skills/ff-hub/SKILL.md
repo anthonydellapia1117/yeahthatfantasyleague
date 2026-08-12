@@ -42,6 +42,7 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 | Start-sit | `out/rb_startsit_decisions.csv` (176 named swaps, knowable-vs-hindsight verdicts) plus `out/lineup_efficiency.csv`. Read the 3E caveat below before advising |
 | Rebuild everything | `python3 src/ingest.py && python3 src/phase2_value.py && python3 src/phase3_lineup.py && python3 src/build_app_data.py` |
 | Open the dashboard | `open out/ff-hub.html` |
+| Draft-day app | https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html - or `open out/draft_room.html` offline. Regenerate draft morning: `python3 src/engine_2026.py`, commit, push |
 
 ## Anthony's position, stated once
 

@@ -280,13 +280,12 @@ function injBadge(p){ return p.injury ? ` <span class="inj">${esc(p.injury)}</sp
 
 // ---- Mode 1: verdict-first round cards for the twelve pre-draft scenarios
 function verdictChip(r){
-  const w = r.wait_or_reach;
-  if (r.coin_flips && r.coin_flips.length && w.verdict === "TAKE NOW" && w.comparable)
-    return `<span class="verdict take">TAKE NOW</span>`;
-  if (w.verdict === "WAIT") return `<span class="verdict wait">WAIT</span>`;
-  return `<span class="verdict take">TAKE NOW</span>`;
+  return r.wait_or_reach.verdict === "WAIT"
+    ? `<span class="verdict wait">WAIT</span>`
+    : `<span class="verdict take">TAKE NOW</span>`;
 }
 function renderPre(activeSlot){
+  LiveState.els = null;   // pre-draft view owns #app now (review finding 1)
   const rounds = E.slots[activeSlot];
   let h = `<div class="card"><h2>Slot ${activeSlot} - your picks ${
     rounds.slice(0, 6).map(r => r.pick).join(", ")} ...</h2>`;
@@ -485,7 +484,14 @@ function buildLiveDom(){
       SimState.running = true;
       $("f-sim-out").innerHTML = '<p class="small">simulating...</p>';
       setTimeout(() => {
-        const r = runSims(n, LiveState.mySlot, LiveState.lastSlotMap || {});
+        const goneNow = new Set(LiveState.picks.map(p => {
+          const md = p.metadata || {};
+          return norm((md.first_name || "") + " " + (md.last_name || "")) + "|" + (md.position || "");
+        }));
+        for (const o of overrides) goneNow.add(o);
+        const seedR = myRoster();
+        const r = runSims(n, LiveState.mySlot, LiveState.lastSlotMap || {},
+                          goneNow, LiveState.picks.length + 1, seedR.count);
         SimState.results = r;
         $("f-sim-out").innerHTML = renderSimResults(r, LiveState.mySlot);
         SimState.running = false;
@@ -550,9 +556,8 @@ function renderLive(draft, newPick){
   const alive = E.players.filter(p => !gone.has(norm(p.name) + "|" + p.pos));
   const cur = LiveState.picks.length + 1;
   const rd = Math.ceil(cur / E.league.teams);
-  const inRd = cur - (rd - 1) * E.league.teams;
-  const slotOnClock = rd % 2 === 1 ? inRd : E.league.teams + 1 - inRd;
-  const rosterOnClock = (draft.slot_to_roster_id || {})[slotOnClock];
+  const slotOnClock = slotOfOverall(cur);
+  const rosterOnClock = Number((draft.slot_to_roster_id || {})[slotOnClock] || slotOnClock);
   const seat = E.rosters.find(r => r.roster_id === rosterOnClock);
   const my = LiveState.mySlot;
   const mine = my ? myPicks(my) : [];
@@ -642,7 +647,7 @@ function tickClock(){
   el.classList.toggle("amber", left < 60 && left >= 30);
   el.classList.toggle("red", left < 30);
   el.classList.toggle("blink", left < 10 && left > 0);
-  if (LiveState.wasMe && left === 30 && !LiveState.warned30){
+  if (LiveState.wasMe && left <= 30 && left > 0 && !LiveState.warned30){
     LiveState.warned30 = true; beep(1200);
   }
   // freshness dot - under a two-minute clock the user must know the number is current
@@ -701,12 +706,6 @@ function trendBadge(p){
   if (!trendMap || !p.sleeper_id || !trendMap[p.sleeper_id]) return "";
   return `<span class="tag">market heat +${trendMap[p.sleeper_id].toLocaleString()} adds/24h</span>`;
 }
-function valueTag(md){
-  const pl = playerByKey(pickKey(md));
-  if (!pl || pl.adp >= 900) return "";
-  return null;   // computed by caller with the overall number
-}
-
 // feature 3: tier cliff per position among alive players
 function tierCliff(alive, myNext, cur){
   return POS_LIST.map(pos => {
@@ -815,15 +814,23 @@ function renderFeatures(draft, alive, cur, myNextList){
   });
   const slotMap = draft.slot_to_roster_id || {};
   const curRd = Math.ceil(cur / E.league.teams);
+  const openDoss = new Set([...L["f-opps"].querySelectorAll(".dossier:not([hidden])")]
+    .map(d => d.id));
   L["f-opps"].innerHTML = Array.from({length: E.league.teams}, (_, i) => {
     const slot = i + 1;
-    const seat = E.rosters.find(r => r.roster_id === (slotMap[slot] || slot));
+    const seat = E.rosters.find(r => Number(r.roster_id) === Number(slotMap[slot] || slot));
     if (!seat) return "";
     const have = bySlot[slot] || [];
     const cnt = {}; have.forEach(q => cnt[q] = (cnt[q] || 0) + 1);
     const cs = ["QB","RB","WR","TE","K","DEF"].map(q => `${q} ${cnt[q] || 0}`).join(" - ");
     let alert = "";
-    const picksBeforeMine = myNextList.length && slot !== LiveState.mySlot;
+    const nextMine = myNextList[0];
+    let picksBeforeMine = slot !== LiveState.mySlot;
+    if (nextMine && picksBeforeMine){
+      picksBeforeMine = false;
+      for (let o = cur; o < nextMine; o++)
+        if (slotOfOverall(o) === slot){ picksBeforeMine = true; break; }
+    }
     if (picksBeforeMine && seat.priors){
       for (const q of ["qb", "te"]){
         const pr = seat.priors[q];
@@ -839,6 +846,7 @@ function renderFeatures(draft, alive, cur, myNextList){
       ${LiveState.mySlot === slot ? '<span class="tag">you</span>' : ""}${alert}
       <div class="small num">${cs}</div>${doss}</div>`;
   }).join("");
+  for (const id of openDoss){ const d = $(id); if (d) d.hidden = false; }
   L["f-opps"].querySelectorAll(".who").forEach(el => el.addEventListener("click", () => {
     const d = $("doss-" + el.dataset.doss);
     if (d) d.hidden = !d.hidden;
@@ -992,11 +1000,12 @@ function simLift(franchise, band, pos){
 }
 function simBand(rd){ return rd <= 3 ? "rd1-3" : rd <= 6 ? "rd4-6" : rd <= 10 ? "rd7-10" : "rd11-14"; }
 
-function runSims(n, mySlot, slotMap){
+function runSims(n, mySlot, slotMap, goneKeys, startOverall, seedCounts){
   const t0 = performance.now();
   const players = E.players.filter(p => p.adp < 900)
+    .filter(p => !goneKeys || !goneKeys.has(norm(p.name) + "|" + p.pos))
     .slice().sort((a, b) => a.adp - b.adp);
-  const myPickSet = new Set(myPicks(mySlot));
+  const myPickSet = new Set(myPicks(mySlot).filter(k => k >= (startOverall || 1)));
   const targetAlive = {};       // name -> {pick -> aliveCount}
   const myRosterCounts = [];    // per sim: {QB: n, ...}
   const tierBreak = { QB: [], RB: [], WR: [], TE: [] };
@@ -1004,9 +1013,9 @@ function runSims(n, mySlot, slotMap){
 
   for (let s = 0; s < n; s++){
     const alive = players.slice();
-    const counts = { QB: 0, RB: 0, WR: 0, TE: 0, K: 0, DEF: 0 };
+    const counts = Object.assign({ QB: 0, RB: 0, WR: 0, TE: 0, K: 0, DEF: 0 }, seedCounts || {});
     const tierGone = {};
-    for (let overall = 1; overall <= E.league.teams * E.league.rounds; overall++){
+    for (let overall = (startOverall || 1); overall <= E.league.teams * E.league.rounds; overall++){
       const rd = Math.ceil(overall / E.league.teams);
       const slot = slotOfOverall(overall);
       const band = simBand(rd);
@@ -1024,7 +1033,7 @@ function runSims(n, mySlot, slotMap){
         pickIdx = best >= 0 ? best : 0;
         counts[alive[pickIdx].pos]++;
       } else {
-        const seat = E.rosters.find(r => r.roster_id === ((slotMap || {})[slot] || slot));
+        const seat = E.rosters.find(r => Number(r.roster_id) === Number((slotMap || {})[slot] || slot));
         const fr = seat ? seat.franchise : null;
         const base = (E.pos_base_rates || {})[band] || {};
         // position weights = base rate x lift, over positions with anyone left
@@ -1060,6 +1069,13 @@ function runSims(n, mySlot, slotMap){
         if (!left){ tierGone[taken.pos] = true; tierBreak[taken.pos].push(overall); }
       }
     }
+    // review finding 3: a watched player who goes UNDRAFTED survived to every
+    // one of my picks - credit him, or late sleepers read as near-0%
+    for (const p of alive) if (watch.has(p.name))
+      for (const k of myPickSet){
+        const ta = targetAlive[p.name] = targetAlive[p.name] || {};
+        ta[k] = (ta[k] || 0) + 1;
+      }
     myRosterCounts.push(counts);
   }
   const ms = performance.now() - t0;
@@ -1133,9 +1149,12 @@ async function refresh(){
     $("banner").className = "banner err";
     $("banner").textContent = "Sleeper unreachable - showing embedded pre-draft model, generated " +
       E.generated + ". Numbers may be stale.";
-    $("mode").textContent = "OFFLINE - PRE-DRAFT MODEL";
-    if (!document.querySelector(".rowcard")) renderPre(E.league.anthony_roster_id || 7);
-    schedule(60);
+    $("mode").textContent = LiveState.els ? "OFFLINE - LAST LIVE STATE" : "OFFLINE - PRE-DRAFT MODEL";
+    // never replace a live DOM because one poll failed - the freshness dot
+    // already says the numbers are stale (review finding 1)
+    if (!LiveState.els && !document.querySelector(".rowcard"))
+      renderPre(E.league.anthony_roster_id || 7);
+    schedule(LiveState.els ? 10 : 60);
     return;
   }
   const live = draft.status === "drafting" || draft.status === "complete" ||

@@ -206,3 +206,16 @@ Sources: `made-resources/YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026/` 
 Never backfill a pick, roster, transaction, or result. Never merge manager identities on name similarity. Every derived table carries source, source_ref, fetched_at, confidence. Every 2013-2024 figure carries the bonus-exclusive basis note. Hyphens only, no em dashes, no emojis. Tables over bullets. Lead with the answer. Report confidence and sample size beside every claim.
 
 **With 13 champions, most comparisons will not reach significance. That has already proven true for every draft-day hypothesis. Do not manufacture a clean recipe to satisfy the framing of a question.**
+
+
+## Draft Room v2 - shipped 2026-08-12
+
+Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html
+(local `out/draft_room.html` is the offline fallback; same embedded model).
+Six gated phases per docs/DRAFT_ROOM_BUILD_ORDER.md: broadcast-grade design
+system, two-minute-clock live mode, sixteen features (roster-need-aware
+recommendation first), the quarantined league-mate simulator, GitHub Pages
+deployment via the gh-pages workflow, and this review. Draft-morning flow:
+`python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push`.
+The survival math is frozen: 21 Python guards + the smoke suite with 42 JS
+parity anchors + the calibration benchmark gate every merge.
