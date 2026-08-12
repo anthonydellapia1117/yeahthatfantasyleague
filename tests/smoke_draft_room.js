@@ -268,6 +268,51 @@ const ok = (cond, name, detail) => {
     await page.close();
   }
 
+  // ---- scenario 6: SIMULATOR (Phase 4) - quarantine + speed gate
+  {
+    const page = await browser.newPage();
+    const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
+    await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    // quarantine styling before anything runs
+    const simCard = page.locator("#f-sim");
+    ok(await simCard.count() === 1, "sim card exists");
+    ok(/scenario, not a forecast/.test(await simCard.textContent()), "sim caption present");
+    ok(await page.locator("#f-sim .simbadge").count() === 1, "amber SIM badge");
+    const border = await simCard.evaluate(el => getComputedStyle(el).borderTopStyle);
+    ok(border === "dashed", "dashed quarantine border: " + border);
+    // capture the verdict surfaces BEFORE the sim runs
+    const before = await page.evaluate(() =>
+      document.getElementById("lv-why").innerHTML + "|" + document.getElementById("lv-name").textContent);
+    // run 500 in-page and time it - the gate says under 2s
+    await page.evaluate(() => document.querySelectorAll("details").forEach(d => d.open = true));
+    const t0 = Date.now();
+    await page.click("#f-sim-500");
+    await page.waitForFunction(() =>
+      /simulated drafts/.test(document.getElementById("f-sim-out").textContent), { timeout: 15000 });
+    const elapsed = Date.now() - t0;
+    ok(elapsed < 2000, "500 sims complete in under 2s: " + elapsed + "ms");
+    ok(/targets surviving to my picks/.test(await page.textContent("#f-sim-out")),
+       "sim outputs target survival distribution");
+    ok(/typical roster shape/.test(await page.textContent("#f-sim-out")), "sim outputs roster shape");
+    // the verdict surfaces must be BYTE-IDENTICAL after the sim - quarantine proof
+    const after = await page.evaluate(() =>
+      document.getElementById("lv-why").innerHTML + "|" + document.getElementById("lv-name").textContent);
+    ok(before === after, "verdict surfaces byte-identical after sim run (quarantine holds)");
+    await page.close();
+  }
+
   // ---- scenario 5: PARITY. The JS mirror must reproduce Python's survival
   // numbers exactly (within float tolerance). This is the test whose absence
   // let the 1-erf tail bug ship: the two surfaces disagreed past z~6 and

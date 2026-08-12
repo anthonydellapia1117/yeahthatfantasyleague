@@ -278,6 +278,29 @@ def pick_history():
     return out
 
 
+def pos_base_rates():
+    """League position share per round band, from the 2,339 archive picks.
+    The simulator's sampling base - lifts multiply these, display/sim only."""
+    from collections import Counter
+    bands = {"rd1-3": (1, 3), "rd4-6": (4, 6), "rd7-10": (7, 10), "rd11-14": (11, 14)}
+    agg = {b: Counter() for b in bands}
+    for p in csv.DictReader(open(PICKS_PATH)):
+        try:
+            rnd = int(p["round"])
+        except (ValueError, KeyError):
+            continue
+        for b, (lo, hi) in bands.items():
+            if lo <= rnd <= hi:
+                agg[b][p["pos"]] += 1
+                break
+    out = {}
+    for b, c in agg.items():
+        total = sum(c.values()) or 1
+        out[b] = {pos: round(n / total, 4) for pos, n in c.items()
+                  if pos in ("QB", "RB", "WR", "TE", "K", "DEF")}
+    return out
+
+
 def build_model():
     """Everything the renderers and the app need, as plain data."""
     lg, rows, baseline, repl = db.build(LEAGUE)
@@ -423,6 +446,7 @@ def build_model():
         # feature 15: what this pick slot has historically been, 13 seasons of
         # out/picks.csv aggregated at build time. Descriptive colour only.
         "pick_history": pick_history(),
+        "pos_base_rates": pos_base_rates(),
         "players": players,
         "slots": slots,
     }
