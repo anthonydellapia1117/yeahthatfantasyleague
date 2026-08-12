@@ -77,6 +77,7 @@ def projections(lg):
             # injury_status is the only availability signal Sleeper actually supplies.
             rows.append({
                 "name": f"{pl.get('first_name','')} {pl.get('last_name','')}".strip(),
+                "sleeper_id": str(r.get("player_id") or ""),
                 "pos": pos, "team": r.get("team") or "FA",
                 "pts": pts,
                 "injury": pl.get("injury_status") or "",

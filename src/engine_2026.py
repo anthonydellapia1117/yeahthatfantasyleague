@@ -261,6 +261,23 @@ def urgency_list(rosters, pos, rnd):
     return sorted(out, key=lambda t: t["round"])
 
 
+def pick_history():
+    """overall pick -> dominant position and share, from 2,339 archive picks."""
+    from collections import Counter
+    agg = defaultdict(Counter)
+    for p in csv.DictReader(open(PICKS_PATH)):
+        try:
+            agg[int(p["overall"])][p["pos"]] += 1
+        except (ValueError, KeyError):
+            continue
+    out = {}
+    for overall, c in agg.items():
+        pos, n = c.most_common(1)[0]
+        total = sum(c.values())
+        out[str(overall)] = {"pos": pos, "share": round(n / total, 2), "n": total}
+    return out
+
+
 def build_model():
     """Everything the renderers and the app need, as plain data."""
     lg, rows, baseline, repl = db.build(LEAGUE)
@@ -349,7 +366,8 @@ def build_model():
             })
         slots[slot] = rounds
 
-    players = [{"name": r["name"], "pos": r["pos"], "team": r["team"],
+    players = [{"name": r["name"], "sleeper_id": r.get("sleeper_id", ""),
+                "pos": r["pos"], "team": r["team"],
                 "pts": r["pts"], "vor": r["vor"], "adp": r["adp"],
                 "injury": r["injury"], "tier": tier_no.get(r["name"]),
                 "vor_rank": r["vor_rank"],
@@ -390,8 +408,21 @@ def build_model():
                      "first_te": (float(r["prior"]["first_te_shrunk"])
                                   if r["prior"] else None),
                      "n_eff": (float(r["prior"]["first_qb_neff"])
-                               if r["prior"] else None)}
+                               if r["prior"] else None),
+                     # full dossier: every position's shrunk first-round prior
+                     # and n_eff (feature 14 - the payload used to drop these)
+                     "priors": ({p: {"round": float(r["prior"][f"first_{p}_shrunk"]),
+                                     "n_eff": float(r["prior"][f"first_{p}_neff"])}
+                                 for p in ("qb", "rb", "wr", "te", "k", "def")}
+                                if r["prior"] else None),
+                     "lifts": ([{"band": band, "pos": pos, "lift": v["lift"],
+                                 "n": v["n"], "thin": v["thin"]}
+                                for (fr, band, pos), v in tend.items()
+                                if fr == r["franchise"]] or None)}
                     for r in rosters],
+        # feature 15: what this pick slot has historically been, 13 seasons of
+        # out/picks.csv aggregated at build time. Descriptive colour only.
+        "pick_history": pick_history(),
         "players": players,
         "slots": slots,
     }
