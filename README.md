@@ -32,7 +32,8 @@ Thirteen seasons of **YeahThatFantasyLeague** turned into evidence: 2,339 draft 
 ```bash
 python3 src/ingest.py          # Phase 1: ingest and reconcile, 52 assertions
 python3 src/phase2_value.py    # Phase 2: pick value and drafted-vs-acquired
-python3 src/build_app_data.py  # lineup efficiency and dashboard data
+python3 src/phase3_lineup.py   # Phase 3A: lineup efficiency + positional gap
+python3 src/build_app_data.py  # dashboard data (app_data.json)
 open out/ff-hub.html
 ```
 

@@ -37,7 +37,12 @@ def score(stats, scoring):
     """
     total = 0.0
     for stat, value in stats.items():
-        if stat.startswith(("pts_", "adp_", "rank_")):
+        # Exclude exactly Sleeper's precomputed fantasy points, not the pts_
+        # prefix: pts_allow_* are REAL defensive scoring stats (pts_allow_0
+        # pays 10.0 in this league) and a prefix filter silently dropped them,
+        # under-scoring every DEF by the shutout bonus.
+        if stat in ("pts_ppr", "pts_half_ppr", "pts_std") \
+                or stat.startswith(("adp_", "rank_")):
             continue
         mult = scoring.get(stat)
         if mult is None:

@@ -166,6 +166,36 @@ def main():
     for fr, v in sorted(byfr.items(), key=lambda x: -statistics.mean(x[1])):
         print(f"{fr[:20]:20} {statistics.mean(v):13.1f}% {len(v):8d}")
 
+    # ---- does drafted share predict winning? The handoff quotes
+    # corr(champion)=+0.055 and corr(rank)=-0.124; those reproduce only on
+    # the all-156 basis that INCLUDES the twelve 2013 rows flagged
+    # acquired_valid=no (G-003 says exclude them). Both bases are printed
+    # so the figure has a committed generator either way. Dead either way.
+    champs = {r["season"]: r["champion"]
+              for r in csv.DictReader(open(os.path.join(OUT, "champions.csv")))}
+    ranks = {(r["season"], r["member_name"]): float(r["rank"])
+             for r in csv.DictReader(open(os.path.join(
+                 A, "01_history/season_results.csv"))) if r.get("rank")}
+
+    def corr(xs, ys):
+        mx, my = statistics.mean(xs), statistics.mean(ys)
+        sx = sum((x - mx) ** 2 for x in xs) ** 0.5
+        sy = sum((y - my) ** 2 for y in ys) ** 0.5
+        return sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / (sx * sy)
+
+    print(f"\n{'BASIS':28} {'corr(champion)':>15} {'corr(rank)':>11} {'n':>5}")
+    for label, rows_ in (("2014-2025, acquired valid",
+                          [s for s in split if s["season"] not in NO_TX]),
+                         ("all 156 incl 2013 (handoff)", split)):
+        xs = [s["drafted_share"] for s in rows_]
+        ych = [1.0 if champs.get(s["season"]) == s["franchise"] else 0.0
+               for s in rows_]
+        yrk = [ranks.get((s["season"], s["franchise"])) for s in rows_]
+        keep = [(x, y) for x, y in zip(xs, yrk) if y is not None]
+        print(f"{label:28} {corr(xs, ych):>+15.3f} "
+              f"{corr([x for x, _ in keep], [y for _, y in keep]):>+11.3f} "
+              f"{len(rows_):>5}")
+
 
 if __name__ == "__main__":
     main()

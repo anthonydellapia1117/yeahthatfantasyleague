@@ -179,6 +179,22 @@ def assertions(picks):
     return results
 
 
+_SUFFIXES = {"jr", "sr", "ii", "iii", "iv", "v"}
+
+
+def _norm_player(name):
+    """Lowercase, strip periods and generational suffixes for comparison only.
+
+    Stored names are never rewritten; this exists solely so the 2025
+    archive-vs-Sleeper reconciliation compares the same player spelled two
+    ways as equal.
+    """
+    parts = name.replace(".", "").lower().split()
+    while parts and parts[-1] in _SUFFIXES:
+        parts.pop()
+    return " ".join(parts)
+
+
 def cross_validate(sleeper, picks):
     """Archive 2025 draft must reconcile to Sleeper 2025 pick-for-pick."""
     arch = {int(r["overall"]): r for r in picks if r["season"] == "2025"}
@@ -191,7 +207,10 @@ def cross_validate(sleeper, picks):
             continue
         s_name = f"{(p.get('metadata') or {}).get('first_name','')} " \
                  f"{(p.get('metadata') or {}).get('last_name','')}".strip()
-        if s_name.lower() == a["player_name"].strip().lower():
+        # Suffixes and punctuation differ between Sleeper and the archive
+        # (Brian Thomas vs Brian Thomas Jr., DJ vs D.J.); the documented
+        # 168/168 reconciliation is on this normalized form.
+        if _norm_player(s_name) == _norm_player(a["player_name"]):
             agree += 1
         else:
             disagree += 1
