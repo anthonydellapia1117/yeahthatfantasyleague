@@ -105,6 +105,29 @@ const ok = (cond, name) => {
     await page.close();
   }
 
+  // ---- scenario 4: order drawn but draft_order null - seat must still resolve
+  {
+    const page = await browser.newPage();
+    const drawn = {1:5,2:9,3:7,4:1,5:12,6:3,7:2,8:11,9:4,10:8,11:6,12:10};
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: null,
+                               slot_to_roster_id: drawn }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    const mode = await page.textContent("#mode");
+    // roster 7 sits at slot 3 in this permutation
+    ok(/seat 3/.test(mode), "seat resolved from slot_to_roster_id when draft_order is null: " + mode.trim());
+    await page.close();
+  }
+
   await browser.close();
   console.log(failures === 0 ? "\nALL PASS" : `\n${failures} FAILURES`);
   process.exit(failures === 0 ? 0 : 1);
