@@ -1,0 +1,9 @@
+{
+  "name": "ff-hub",
+  "displayName": "ff-hub - YeahThatFantasyLeague",
+  "version": "1.0.0",
+  "description": "Carries the full verified history and analysis of YeahThatFantasyLeague so any Claude session can answer draft and season questions without re-deriving 13 seasons of evidence.",
+  "author": { "name": "Anthony DellaPia" },
+  "keywords": ["fantasy-football", "sleeper", "draft", "analytics"],
+  "skills": "./skills/"
+}
