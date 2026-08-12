@@ -68,7 +68,7 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 | 3 | 27 | Josh Allen QB 68 (54%) | Breece Hall RB 54 | QB tier empties before your next turn - take now, do not wait |
 | 4 | 46 | Cam Skattebo RB 48 (58%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
 | 5 | 51 | D'Andre Swift RB 45 (72%) | Quinshon Judkins RB 35 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
-| 6 | 70 | Sam LaPorta TE 34 (61%) | Dak Prescott QB 18 | TE tier empties before your next turn - take now, do not wait; TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
+| 6 | 70 | Sam LaPorta TE 34 (60%) | Dak Prescott QB 18 | TE tier empties before your next turn - take now, do not wait; TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
 | 7 | 75 | Sam LaPorta TE 34 (52%) | Dak Prescott QB 18 | TE tier empties before your next turn - take now, do not wait; TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
 | 8 | 94 | Brock Purdy QB 16 (65%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0) |
 | 9 | 99 | Brock Purdy QB 16 (57%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0) |
@@ -102,9 +102,9 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
 | 1 | 5 | Christian McCaffrey RB 130 (50%) | Jonathan Taylor RB 111 | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
-| 2 | 20 | Brock Bowers TE 91 (51%) | Derrick Henry RB 86 | TE tier empties before your next turn - take now, do not wait |
+| 2 | 20 | Brock Bowers TE 91 (52%) | Derrick Henry RB 86 | TE tier empties before your next turn - take now, do not wait |
 | 3 | 29 | Breece Hall RB 54 (60%) | Colston Loveland TE 53 | COIN FLIP with Cam Skattebo, Kyren Williams - break toward ceiling |
-| 4 | 44 | Cam Skattebo RB 48 (63%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
+| 4 | 44 | Cam Skattebo RB 48 (64%) | Tyler Warren TE 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with D'Andre Swift, David Montgomery - break toward ceiling |
 | 5 | 53 | D'Andre Swift RB 45 (69%) | Quinshon Judkins RB 35 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with David Montgomery - break toward ceiling |
 | 6 | 68 | Sam LaPorta TE 34 (64%) | Dak Prescott QB 18 | TE tier empties before your next turn - take now, do not wait; TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
 | 7 | 77 | Dak Prescott QB 18 (71%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
@@ -158,7 +158,7 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 
 | Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |
 |---|---|---|---|---|
-| 1 | 8 | James Cook RB 100 (81%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
+| 1 | 8 | James Cook RB 100 (80%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Ashton Jeanty, Chase Brown - break toward ceiling |
 | 2 | 17 | Chase Brown RB 94 (64%) | Brock Bowers TE 91 | RB tier empties before your next turn - take now, do not wait |
 | 3 | 32 | Breece Hall RB 54 (51%) | Colston Loveland TE 53 | COIN FLIP with Cam Skattebo, Kyren Williams - break toward ceiling |
 | 4 | 41 | Cam Skattebo RB 48 (71%) | Tyler Warren TE 39 | COIN FLIP with Travis Etienne, D'Andre Swift - break toward ceiling |
@@ -185,7 +185,7 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 | 6 | 64 | D'Andre Swift RB 45 (52%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
 | 7 | 81 | Dak Prescott QB 18 (65%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
 | 8 | 88 | Dak Prescott QB 18 (54%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
-| 9 | 105 | Travis Kelce TE 9 (53%) | Jayden Reed WR 2 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
+| 9 | 105 | Travis Kelce TE 9 (54%) | Jayden Reed WR 2 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
 | 10 | 112 | Jayden Reed WR 2 (57%) | Bo Nix QB 0 | WR tier empties before your next turn - take now, do not wait |
 | 11 | 129 | T.J. Hockenson TE -8 (70%) | Chig Okonkwo TE -18 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
 | 12 | 136 | T.J. Hockenson TE -8 (59%) | Chig Okonkwo TE -18 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
@@ -201,9 +201,9 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 | 3 | 34 | Colston Loveland TE 53 (62%) | Cam Skattebo RB 48 | TE tier empties before your next turn - take now, do not wait |
 | 4 | 39 | Cam Skattebo RB 48 (76%) | Tyler Warren TE 39 | COIN FLIP with Travis Etienne, D'Andre Swift - break toward ceiling |
 | 5 | 58 | D'Andre Swift RB 45 (62%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
-| 6 | 63 | D'Andre Swift RB 45 (53%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
+| 6 | 63 | D'Andre Swift RB 45 (54%) | Sam LaPorta TE 34 | RB tier empties before your next turn - take now, do not wait |
 | 7 | 82 | Dak Prescott QB 18 (64%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
-| 8 | 87 | Dak Prescott QB 18 (55%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
+| 8 | 87 | Dak Prescott QB 18 (56%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
 | 9 | 106 | Travis Kelce TE 9 (52%) | Jayden Reed WR 2 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
 | 10 | 111 | Jayden Reed WR 2 (58%) | Bo Nix QB 0 | WR tier empties before your next turn - take now, do not wait |
 | 11 | 130 | T.J. Hockenson TE -8 (68%) | Chig Okonkwo TE -18 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
@@ -243,9 +243,9 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 | 7 | 84 | Dak Prescott QB 18 (60%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
 | 8 | 85 | Dak Prescott QB 18 (59%) | Travis Kelce TE 9 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0); COIN FLIP with Brock Purdy - break toward ceiling |
 | 9 | 108 | Jayden Reed WR 2 (63%) | Bo Nix QB 0 | WR tier empties before your next turn - take now, do not wait |
-| 10 | 109 | Jayden Reed WR 2 (61%) | Bo Nix QB 0 | WR tier empties before your next turn - take now, do not wait |
+| 10 | 109 | Jayden Reed WR 2 (62%) | Bo Nix QB 0 | WR tier empties before your next turn - take now, do not wait |
 | 11 | 132 | T.J. Hockenson TE -8 (65%) | Chig Okonkwo TE -18 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
-| 12 | 133 | T.J. Hockenson TE -8 (63%) | Chig Okonkwo TE -18 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
+| 12 | 133 | T.J. Hockenson TE -8 (64%) | Chig Okonkwo TE -18 | TE-urgent seats: Rob & GregBo (rd 4.9, n 5.3), Nolan & Vinny (rd 5.1, n 5.0), Cambrias (rd 5.2, n 5.6) |
 | 13 | 156 | K or DEF, best available | - | none worth modelling |
 | 14 | 157 | K or DEF, best available | - | none worth modelling |
 
