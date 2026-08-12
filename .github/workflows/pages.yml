@@ -1,37 +1,38 @@
-# Deploys the draft room to GitHub Pages on every push to main.
+# Deploys the draft room to GitHub Pages on every push to main, via the
+# legacy gh-pages branch: pushing that branch auto-creates the Pages site,
+# which needs no admin API call - the artifact-based configure-pages
+# enablement failed with "Resource not accessible by integration" because
+# the Actions token cannot CREATE a Pages site, only push branches.
 # Draft-morning flow: python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push
-# - the site redeploys in about a minute. configure-pages enablement:true
-# performs the enable-Pages API call on first run, so no manual setup exists.
 name: pages
 on:
   push:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: Assemble site (app + icon only, not the 66MB archives)
+      - name: Assemble site (app + icon + dashboard only, not the 66MB archives)
         run: |
           mkdir -p _site/out
           cp index.html _site/
           cp out/draft_room.html out/icon-180.png out/ff-hub.html _site/out/
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          touch _site/.nojekyll
+      - name: Push to gh-pages
+        run: |
+          cd _site
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "deploy ${GITHUB_SHA::7}"
+          git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
