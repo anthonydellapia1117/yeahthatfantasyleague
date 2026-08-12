@@ -13,10 +13,10 @@ Thirteen seasons of **YeahThatFantasyLeague** turned into evidence: 2,339 draft 
 | Champions load RB early | 2.15 vs 2.01 | - | noise |
 | Champions load WR early | 2.00 vs 2.03 | - | noise |
 | Draft slot matters | mean 7.5 vs 6.5 expected | - | no pattern |
-| Drafted share predicts winning | corr +0.055 | - | dead |
+| Drafted share predicts winning | corr +0.043 | - | dead |
 | FAAB aggression | 46.8 vs 35.7 | 0.197 | dead |
 | Champions draft the #1 board player | 0 of 13 | 0.323 | striking, not significant |
-| **Lineup efficiency** | **89.75% vs 88.44%** | **0.0772** | **strongest lead** |
+| **Lineup efficiency** | **89.75% vs 88.44%** | **0.078** | **strongest lead** |
 
 ## Start here
 

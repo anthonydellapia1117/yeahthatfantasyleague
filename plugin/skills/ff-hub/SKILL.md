@@ -20,7 +20,7 @@ The analysis desk for YeahThatFantasyLeague. Everything below was computed and v
 
 If a question assumes champions share a draft pattern, say so plainly and give the numbers rather than inventing one. The list of dead hypotheses is in `REFERENCE.md` and must not be re-run without new data.
 
-**The only surviving lead is lineup efficiency**, and it is a start-sit problem, not a draft problem. Champions 89.75 percent versus field 88.44 percent, permutation p = 0.0772, n = 13 of 156. Above 0.05. Treat it as the strongest lead found, never as proven cause.
+**The only surviving lead is lineup efficiency**, and it is a start-sit problem, not a draft problem. Champions 89.75 percent versus field 88.44 percent, permutation p = 0.078, n = 13 of 156. Above 0.05. Treat it as the strongest lead found, never as proven cause.
 
 ## How to answer
 
@@ -44,7 +44,7 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 
 ## Anthony's position, stated once
 
-13 seasons, **0 titles**, runner-up 2025 by 12.44 points. Not unlucky: all-play gap -0.005. Drafted share 65.4 percent, statistically identical to Cambria's 65.2 percent with three titles. Transaction volume 36.2 per season against Cambria's 35.0.
+13 seasons, **0 titles**, runner-up 2025 by 12.44 points. Not unlucky: all-play gap -0.005. Drafted share 64.5 percent, statistically identical to Cambria's 64.9 percent with three titles. Transaction volume 36.2 per season against Cambria's 35.0.
 
 **Every input measured so far is average or better. The gap is not draft position, drafted share, activity, or variance.** Lineup efficiency is 88.55 percent, seventh of fifteen, leaving 15.14 points per week and 212 per season. The gap to Phil Baldino is 1.49 points per week, 21 per season, and RB start-sit is 80 percent of it (`src/phase3_lineup.py`). The 2025 title was lost by 12.44.
 

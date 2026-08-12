@@ -1,0 +1,11 @@
+{
+ "champions_mean": 89.75,
+ "field_mean": 88.44,
+ "difference_pp": 1.31,
+ "p_value": 0.078,
+ "n_champions": 13,
+ "n_total": 156,
+ "shuffles": 50000,
+ "seed": 20260811,
+ "test": "one-sided permutation, champions-vs-field difference of mean season efficiency"
+}

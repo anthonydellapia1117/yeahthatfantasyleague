@@ -9,14 +9,13 @@ team-week). Efficiency is a RATIO of two bonus-exclusive sums, so it is unaffect
 
 Run:  python3 src/build_app_data.py
 """
-import csv, json, os, statistics, random
+import csv, json, os
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 A = os.path.join(ROOT, "made-resources",
                  "YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026")
 OUT = os.path.join(ROOT, "out")
-random.seed(42)
 
 
 def num(x):
@@ -58,27 +57,28 @@ def main():
     for (season, fr), d in sorted(fs.items()):
         if d["o"] <= 0:
             continue
+        is_champ = 1 if champs.get(season) == fr else 0
         rows.append({
             "season": season, "franchise": fr,
             "efficiency": round(100 * d["s"] / d["o"], 2),
             "points_left_per_week": round((d["o"] - d["s"]) / max(d["w"], 1), 2),
             "points_left_season": round(d["o"] - d["s"], 1),
             "weeks": d["w"],
-            "champion": 1 if champs.get(season) == fr else 0,
+            "champion": is_champ,
         })
     # out/lineup_efficiency.csv is owned by src/phase3_lineup.py, which writes the same
     # 156 rows with started/optimal and provenance columns. Writing it here too would
     # silently downgrade that file every time the app is rebuilt.
 
-    # permutation test, champions vs pool
-    ch = [r["efficiency"] for r in rows if r["champion"]]
-    pool = [r["efficiency"] for r in rows]
-    obs = statistics.mean(ch)
-    N, hits = 50000, 0
-    for _ in range(N):
-        if statistics.mean(random.sample(pool, len(ch))) >= obs:
-            hits += 1
-    p_eff = hits / N
+    # The permutation test runs ONCE, in src/phase3_lineup.py, which writes
+    # the canonical result. Reading it here makes dashboard-vs-docs drift
+    # structurally impossible. Run phase3_lineup.py first (see README).
+    test_path = os.path.join(OUT, "efficiency_test.json")
+    if not os.path.exists(test_path):
+        raise SystemExit("out/efficiency_test.json missing - run "
+                         "python3 src/phase3_lineup.py first (README rebuild order)")
+    with open(test_path) as f:
+        eff_test = json.load(f)
 
     # per franchise, career
     byfr = defaultdict(lambda: {"s": 0.0, "o": 0.0, "w": 0, "t": 0})
@@ -124,13 +124,7 @@ def main():
         "league": {"teams": 12, "seasons": 13, "span": "2013-2025",
                    "draft_date": "2026-09-08", "scoring": "full PPR, 6-pt passing TD",
                    "starters": "QB RB RB WR WR TE FLEX K DEF + 5 bench"},
-        "efficiency_test": {
-            "champions_mean": round(obs, 2),
-            "field_mean": round(statistics.mean(
-                [r["efficiency"] for r in rows if not r["champion"]]), 2),
-            "p_value": round(p_eff, 4),
-            "n_champions": len(ch), "n_total": len(rows), "shuffles": N,
-        },
+        "efficiency_test": eff_test,
         "franchise_efficiency": fr_rows,
         "season_efficiency": rows,
         "champions": [{"season": s, "franchise": champs[s]} for s in sorted(champs)],
@@ -141,7 +135,7 @@ def main():
             {"h": "Champions load RB early", "stat": "2.15 vs 2.01", "p": None},
             {"h": "Champions load WR early", "stat": "2.00 vs 2.03", "p": None},
             {"h": "Draft slot matters", "stat": "mean 7.5 vs 6.5 expected", "p": None},
-            {"h": "Drafted share predicts winning", "stat": "corr +0.055", "p": None},
+            {"h": "Drafted share predicts winning", "stat": "corr +0.043", "p": None},
             {"h": "FAAB aggression", "stat": "46.8 vs 35.7", "p": 0.197},
             {"h": "Champions draft the #1 board player", "stat": "0 of 13", "p": 0.323},
         ],
@@ -151,8 +145,10 @@ def main():
         json.dump(data, f)
 
     print(f"efficiency: {len(rows)} franchise-seasons")
-    print(f"  champions {obs:.2f}%  field {data['efficiency_test']['field_mean']:.2f}%  "
-          f"p={p_eff:.4f}  n={len(ch)}/{len(rows)}")
+    print(f"  champions {eff_test['champions_mean']:.2f}%  "
+          f"field {eff_test['field_mean']:.2f}%  "
+          f"p={eff_test['p_value']:.3f}  "
+          f"n={eff_test['n_champions']}/{eff_test['n_total']}  (canonical)")
     print(f"app_data.json: {os.path.getsize(os.path.join(OUT,'app_data.json'))//1024} KB")
     print(f"\n{'FRANCHISE':20} {'EFF':>7} {'LEFT/WK':>8} {'/SEASON':>8} {'TITLES':>7}")
     for r in fr_rows:

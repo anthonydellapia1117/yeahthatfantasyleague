@@ -2,14 +2,11 @@
 
 Every draft-day hypothesis is null (HANDOFF Part 2). Lineup efficiency is
 the one surviving lead. This script owns `out/lineup_efficiency.csv` (the
-franchise-season table with provenance columns); `src/build_app_data.py`
-owns only the dashboard JSON and computes its copy internally. It also:
-
-1. Independently re-runs the champions-vs-field permutation test with a
-   fixed seed, to settle which reported p-value is current (0.0697 in the
-   stale handoff versus 0.0772 in the README).
-2. Decomposes the points-left-on-bench gap to Phil Baldino by position
-   and by era, which is where the lead becomes actionable.
+franchise-season table with provenance columns) and `out/efficiency_test.json`
+(the CANONICAL permutation result, which `src/build_app_data.py` reads rather
+than recomputing - one test, one seed, one p, quoted as 0.078). It also
+decomposes the points-left-on-bench gap to Phil Baldino by position and by
+era, which is where the lead becomes actionable.
 
 Stdlib only, no network. Re-runnable:
 
@@ -24,6 +21,7 @@ sides of every ratio here are bonus-exclusive, so the ratios are unaffected.
 """
 
 import csv
+import json
 import collections
 import random
 import os
@@ -102,9 +100,21 @@ def verify_permutation(rows, champions):
     print(f"  champions {mean(champ):.2%}  field {mean(field):.2%}"
           f"  difference {observed * 100:+.2f} pp")
     print(f"  permutation p = {p:.4f}  ({SHUFFLES:,} shuffles, seed {SEED})")
-    print("  reconciles with README p=0.0772 (0.7 SE); the handoff's 0.0697"
-          " is stale (7 SE).")
-    print("  marginal either way. a lead, not a finding.\n")
+    print("  marginal. a lead, not a finding.\n")
+
+    # Canonical test result, read by build_app_data.py so the dashboard can
+    # never disagree with the docs. One test, one seed, one p - quoted 0.078.
+    os.makedirs("out", exist_ok=True)
+    with open("out/efficiency_test.json", "w") as fh:
+        json.dump({"champions_mean": round(mean(champ) * 100, 2),
+                   "field_mean": round(mean(field) * 100, 2),
+                   "difference_pp": round(observed * 100, 2),
+                   "p_value": round(p, 3),
+                   "n_champions": n, "n_total": len(efficiency),
+                   "shuffles": SHUFFLES, "seed": SEED,
+                   "test": "one-sided permutation, champions-vs-field "
+                           "difference of mean season efficiency"}, fh, indent=1)
+    print("wrote out/efficiency_test.json (canonical, single source)")
     return acc
 
 
