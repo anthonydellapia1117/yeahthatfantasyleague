@@ -66,9 +66,12 @@ def main():
             "weeks": d["w"],
             "champion": 1 if champs.get(season) == fr else 0,
         })
-    # out/lineup_efficiency.csv is owned by src/phase3_lineup.py, which writes the same
-    # 156 rows with started/optimal and provenance columns. Writing it here too would
-    # silently downgrade that file every time the app is rebuilt.
+    # Canonical owner of out/lineup_efficiency.csv. phase3_lineup.py verifies the same
+    # numbers independently but writes only out/lineup_positional_gap.csv.
+    with open(os.path.join(OUT, "lineup_efficiency.csv"), "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        w.writeheader()
+        w.writerows(rows)
 
     # permutation test, champions vs pool
     ch = [r["efficiency"] for r in rows if r["champion"]]
