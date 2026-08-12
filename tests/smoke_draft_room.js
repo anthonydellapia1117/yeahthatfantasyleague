@@ -37,8 +37,8 @@ const ok = (cond, name, detail) => {
     await page.waitForTimeout(4000);
     const mode = await page.textContent("#mode");
     ok(/PRE-DRAFT/.test(mode), "mode 1 detected: " + mode.trim());
-    ok(await page.locator(".tabs button").count() === 12, "12 slot tabs");
-    ok(await page.locator(".wr").count() > 5, "wait-or-reach centrepiece rows");
+    ok(await page.locator(".chips button").count() === 12, "12 seat chips in the thumb bar");
+    ok(await page.locator(".rowcard").count() > 8, "verdict-first round cards");
     const body = await page.textContent("body");
     ok(/WAIT|TAKE NOW/.test(body), "verdicts rendered");
     ok(/to last to your next pick/.test(body), "explicit wait comparison text");
@@ -47,9 +47,9 @@ const ok = (cond, name, detail) => {
     ok(/n_eff/.test(body), "opponent priors table");
     ok(!/champion/i.test(body.replace(/no champion mimicry[^.]*/gi, "")), "no champion panel");
     // click another slot tab
-    await page.click('.tabs button[data-slot="3"]');
+    await page.click('.chips button[data-slot="3"]');
     await page.waitForTimeout(300);
-    ok(/Slot 3 - picks/.test(await page.textContent("body")), "slot tab switch");
+    ok(/Slot 3 - your picks/.test(await page.textContent("body")), "slot tab switch");
     ok(errors.length === 0, "zero console errors" + (errors.length ? ": " + errors[0] : ""));
     await page.close();
   }
@@ -62,7 +62,7 @@ const ok = (cond, name, detail) => {
     await page.waitForTimeout(2500);
     const banner = await page.textContent("#banner");
     ok(/unreachable/.test(banner), "offline banner with staleness warning");
-    ok(await page.locator(".tabs button").count() === 12, "offline still renders scenarios");
+    ok(await page.locator(".chips button").count() === 12, "offline still renders scenarios");
     await page.close();
   }
 
