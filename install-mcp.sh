@@ -5,12 +5,12 @@
 # rewrites it, discarding any mcpServers key added underneath it.
 #
 #   1. Quit Claude Desktop completely (Cmd-Q, not just close the window)
-#   2. bash ~/Claude/Projects/ff-hub/install-mcp.sh
+#   2. bash ~/ff-hub/install-mcp.sh
 #   3. Launch Claude Desktop
 set -euo pipefail
 
 CFG="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
-PY="$HOME/Claude/Projects/sleeper-mcp-server/.venv/bin/python"
+PY="$HOME/ff-hub/sleeper-mcp-server/.venv/bin/python"
 
 # pgrep -x "Claude" does not match on macOS; the bundle path is the reliable signal
 if pgrep -f 'Claude\.app' >/dev/null 2>&1; then
@@ -35,7 +35,7 @@ d["mcpServers"]["sleeper"] = {
 }
 d["mcpServers"]["ff-hub"] = {
     "command": py,
-    "args": [f"{__import__('os').path.expanduser('~')}/Claude/Projects/ff-hub/server.py"],
+    "args": [f"{__import__('os').path.expanduser('~')}/ff-hub/server.py"],
 }
 json.dump(d, open(cfg, "w"), indent=2)
 print("mcpServers now:", list(d["mcpServers"]))
