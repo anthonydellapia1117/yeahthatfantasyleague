@@ -27,6 +27,21 @@ Thirteen seasons of **YeahThatFantasyLeague** turned into evidence: 2,339 draft 
 | `docs/CHAT_HISTORY_*.md` | Full redacted build transcript |
 | `plugin/skills/ff-hub/` | Claude Code skill carrying the verified history |
 
+## The draft room
+
+Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html
+(add it to the phone home screen - it installs like an app). The local file
+`out/draft_room.html` is the offline fallback; both carry the same embedded model.
+
+Draft-morning flow:
+
+```bash
+python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push
+```
+
+GitHub Pages redeploys in about a minute. Projections, ADP, and injury
+statuses move daily - regenerate the morning of 2026-09-08.
+
 ## Rebuild
 
 ```bash
