@@ -1,0 +1,10 @@
+era,position,anthony_lost_per_week,baldino_lost_per_week,field_lost_per_week,gap_per_week,anthony_capture,baldino_capture,source,source_ref,basis,confidence
+2013-2025,WR,6.203,5.766,5.547,0.437,0.8632,0.8615,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2013-2025,RB,4.939,3.748,5.065,1.191,0.8692,0.9072,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2013-2025,TE,1.253,0.959,1.889,0.294,0.8997,0.9306,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2013-2025,QB,1.263,2.325,1.641,-1.062,0.9345,0.896,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2013-2025,DEF,1.306,0.852,0.827,0.454,0.8557,0.9071,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2013-2025,K,0.18,0.0,0.111,0.18,0.9784,1.0,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2013-2017,RB,3.618,4.633,,-1.015,,,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2018-2021,RB,6.044,4.874,,1.17,,,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
+2022-2025,RB,5.425,2.469,,2.956,,,leaguelegacy,02_gamecenter/matchup_rosters.csv,bonus-exclusive 2013-2024,verified
