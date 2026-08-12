@@ -1,0 +1,157 @@
+season,franchise,first_qb,first_rb,first_wr,first_te,first_k,first_def,is_champion,source,confidence
+2013,Antdell & Ernie,1,3,2,5,13,7,0,out/picks.csv,verified
+2013,Cambrias,7,1,2,4,14,13,0,out/picks.csv,verified
+2013,Chris & Dom,7,2,1,3,12,11,0,out/picks.csv,verified
+2013,Frank & Julian,3,1,4,9,11,6,0,out/picks.csv,verified
+2013,GaTTa,5,1,2,7,9,8,0,out/picks.csv,verified
+2013,LFTLR,1,2,6,5,13,12,0,out/picks.csv,verified
+2013,Nolan & Vinny,2,1,3,5,9,7,0,out/picks.csv,verified
+2013,Pung & Tralie,10,1,2,9,14,13,0,out/picks.csv,verified
+2013,Richie,7,1,3,10,14,8,0,out/picks.csv,verified
+2013,Rob & GregBo,3,1,2,6,15,12,0,out/picks.csv,verified
+2013,Ronnie,1,3,2,10,9,8,1,out/picks.csv,verified
+2013,Team JoeBa,8,1,2,7,14,9,0,out/picks.csv,verified
+2014,Antdell & Ernie,4,1,3,5,12,6,0,out/picks.csv,verified
+2014,Cambrias,8,1,4,3,16,11,0,out/picks.csv,verified
+2014,Chris & Dom,8,1,2,6,11,9,0,out/picks.csv,verified
+2014,Frank & Julian,9,3,1,6,12,5,0,out/picks.csv,verified
+2014,GaTTa,7,5,2,1,12,13,1,out/picks.csv,verified
+2014,LFTLR,5,1,3,4,10,11,0,out/picks.csv,verified
+2014,Nolan & Vinny,3,1,2,6,11,12,0,out/picks.csv,verified
+2014,Pung & Tralie,1,5,2,10,16,14,0,out/picks.csv,verified
+2014,Richie,3,1,2,7,13,8,0,out/picks.csv,verified
+2014,Rob & GregBo,1,2,3,6,13,10,0,out/picks.csv,verified
+2014,Ronnie,1,2,3,7,16,10,0,out/picks.csv,verified
+2014,Team JoeBa,5,3,1,6,13,8,0,out/picks.csv,verified
+2015,Antdell & Ernie,6,1,5,3,12,7,0,out/picks.csv,verified
+2015,Cambrias,9,2,1,4,11,12,0,out/picks.csv,verified
+2015,Chris & Dom,4,3,1,2,11,9,1,out/picks.csv,verified
+2015,Frank & Julian,2,1,4,7,8,9,0,out/picks.csv,verified
+2015,GaTTa,2,4,1,6,11,12,0,out/picks.csv,verified
+2015,LFTLR,4,5,1,3,14,15,0,out/picks.csv,verified
+2015,Nolan & Vinny,3,1,2,5,12,9,0,out/picks.csv,verified
+2015,Pung & Tralie,1,4,2,6,14,12,0,out/picks.csv,verified
+2015,Richie,4,2,1,6,13,12,0,out/picks.csv,verified
+2015,Rob & GregBo,2,1,4,7,8,9,0,out/picks.csv,verified
+2015,Ronnie,1,2,4,6,12,11,0,out/picks.csv,verified
+2015,Team JoeBa,5,1,2,6,14,10,0,out/picks.csv,verified
+2016,Antdell & Ernie,4,2,1,5,12,11,0,out/picks.csv,verified
+2016,Cambrias,8,1,2,13,15,12,0,out/picks.csv,verified
+2016,Chris & Dom,8,4,1,5,12,9,1,out/picks.csv,verified
+2016,Frank & Julian,5,1,2,6,12,8,0,out/picks.csv,verified
+2016,GaTTa,3,1,6,5,,15,0,out/picks.csv,verified
+2016,LFTLR,6,2,1,7,14,12,0,out/picks.csv,verified
+2016,Nolan & Vinny,6,2,1,4,11,9,0,out/picks.csv,verified
+2016,Pung & Tralie,8,2,1,6,14,15,0,out/picks.csv,verified
+2016,Richie,8,5,2,1,13,11,0,out/picks.csv,verified
+2016,Rob & GregBo,9,1,2,7,13,11,0,out/picks.csv,verified
+2016,Ronnie,3,2,1,7,12,11,0,out/picks.csv,verified
+2016,Team JoeBa,9,2,1,4,14,10,0,out/picks.csv,verified
+2017,Antdell & Ernie,4,2,1,3,15,9,0,out/picks.csv,verified
+2017,Cambrias,9,1,3,2,15,14,0,out/picks.csv,verified
+2017,Chris & Dom,7,2,1,10,11,12,0,out/picks.csv,verified
+2017,Frank & Julian,8,3,1,7,11,10,0,out/picks.csv,verified
+2017,LFTLR,3,1,2,4,13,12,0,out/picks.csv,verified
+2017,Nolan & Vinny,7,1,2,5,13,9,0,out/picks.csv,verified
+2017,Phil Baldino,8,2,1,5,15,14,0,out/picks.csv,verified
+2017,Pung & Tralie,2,3,1,5,14,11,0,out/picks.csv,verified
+2017,Richie,10,2,1,9,15,14,1,out/picks.csv,verified
+2017,Rob & GregBo,4,2,1,7,15,11,0,out/picks.csv,verified
+2017,Ronnie,7,1,2,8,13,12,0,out/picks.csv,verified
+2017,Team JoeBa,3,2,1,6,12,10,0,out/picks.csv,verified
+2018,Antdell & Ernie,5,3,1,6,14,13,0,out/picks.csv,verified
+2018,Cambrias,6,1,2,8,14,12,0,out/picks.csv,verified
+2018,Chris & Dom,5,3,1,4,11,9,0,out/picks.csv,verified
+2018,Frank & Julian,2,1,4,3,10,8,0,out/picks.csv,verified
+2018,LFTLR,9,1,3,8,14,15,0,out/picks.csv,verified
+2018,Nolan & Vinny,7,2,1,3,11,12,0,out/picks.csv,verified
+2018,Phil Baldino,9,1,2,6,15,8,1,out/picks.csv,verified
+2018,Pung & Tralie,5,1,2,10,15,11,0,out/picks.csv,verified
+2018,Richie,12,1,3,13,15,14,0,out/picks.csv,verified
+2018,Rob & GregBo,8,1,2,3,14,13,0,out/picks.csv,verified
+2018,Ronnie,4,1,3,5,12,9,0,out/picks.csv,verified
+2018,Team JoeBa,6,1,2,5,12,9,0,out/picks.csv,verified
+2019,Antdell & Ernie,10,1,2,6,15,14,0,out/picks.csv,verified
+2019,Cambrias,9,1,2,7,15,12,1,out/picks.csv,verified
+2019,Chris & Dom,8,1,2,10,12,9,0,out/picks.csv,verified
+2019,Frank & Julian,5,1,4,3,15,10,0,out/picks.csv,verified
+2019,LFTLR,8,1,2,5,12,14,0,out/picks.csv,verified
+2019,Nolan & Vinny,7,3,1,6,11,12,0,out/picks.csv,verified
+2019,Phil Baldino,2,1,4,10,12,13,0,out/picks.csv,verified
+2019,Pung & Tralie,8,1,4,2,14,15,0,out/picks.csv,verified
+2019,Richie,13,1,2,3,14,15,0,out/picks.csv,verified
+2019,Rob & GregBo,6,2,1,8,15,14,0,out/picks.csv,verified
+2019,Ronnie,7,1,2,10,13,12,0,out/picks.csv,verified
+2019,Team JoeBa,5,3,1,6,12,10,0,out/picks.csv,verified
+2020,Antdell & Ernie,11,1,3,9,15,14,0,out/picks.csv,verified
+2020,Cambrias,9,1,3,4,15,12,0,out/picks.csv,verified
+2020,Chris & Dom,6,2,1,7,11,9,0,out/picks.csv,verified
+2020,Frank & Julian,7,4,1,3,10,9,0,out/picks.csv,verified
+2020,LFTLR,5,1,4,2,8,6,0,out/picks.csv,verified
+2020,Nolan & Vinny,5,1,2,7,11,10,0,out/picks.csv,verified
+2020,Phil Baldino,6,1,4,2,15,14,0,out/picks.csv,verified
+2020,Pung & Tralie,2,3,1,12,15,8,0,out/picks.csv,verified
+2020,Richie,13,1,3,8,15,14,0,out/picks.csv,verified
+2020,Rob & GregBo,7,1,3,5,,15,0,out/picks.csv,verified
+2020,Ronnie,3,1,4,11,13,12,1,out/picks.csv,verified
+2020,Team JoeBa,7,1,2,5,15,13,0,out/picks.csv,verified
+2021,Antdell & Ernie,5,4,2,1,15,14,0,out/picks.csv,verified
+2021,Cambrias,8,2,1,3,15,12,0,out/picks.csv,verified
+2021,Chris & Dom,5,1,2,7,9,10,0,out/picks.csv,verified
+2021,Frank & Julian,5,1,2,8,11,12,0,out/picks.csv,verified
+2021,John Juliano,6,1,2,4,15,10,0,out/picks.csv,verified
+2021,Nolan & Vinny,6,1,3,4,13,10,0,out/picks.csv,verified
+2021,Phil Baldino,6,1,4,2,13,11,0,out/picks.csv,verified
+2021,Pung & Tralie,3,1,4,11,15,8,0,out/picks.csv,verified
+2021,Richie,8,1,3,9,14,13,0,out/picks.csv,verified
+2021,Rob & GregBo,3,2,1,7,15,13,1,out/picks.csv,verified
+2021,Ronnie,6,1,3,7,12,11,0,out/picks.csv,verified
+2021,Team JoeBa,5,3,1,6,14,8,0,out/picks.csv,verified
+2022,Antdell & Ernie,9,3,1,2,15,14,0,out/picks.csv,verified
+2022,Cambrias,9,1,3,7,13,14,1,out/picks.csv,verified
+2022,Chris & Dom,3,2,1,6,11,10,0,out/picks.csv,verified
+2022,Frank & Julian,7,3,1,11,10,14,0,out/picks.csv,verified
+2022,John Juliano,5,1,3,7,13,14,0,out/picks.csv,verified
+2022,Mike Long,3,1,2,4,12,8,0,out/picks.csv,verified
+2022,Nolan & Vinny,5,1,3,6,12,15,0,out/picks.csv,verified
+2022,Phil Baldino,4,1,6,8,15,12,0,out/picks.csv,verified
+2022,Pung & Tralie,10,3,1,6,15,14,0,out/picks.csv,verified
+2022,Richie,12,1,4,3,15,14,0,out/picks.csv,verified
+2022,Rob & GregBo,4,1,3,2,15,14,0,out/picks.csv,verified
+2022,Ronnie,8,1,3,4,12,11,0,out/picks.csv,verified
+2023,Antdell & Ernie,13,1,2,4,15,,0,out/picks.csv,verified
+2023,Cambrias,10,1,4,2,15,13,0,out/picks.csv,verified
+2023,Chris & Dom,4,6,1,5,9,10,0,out/picks.csv,verified
+2023,Frank & Julian,4,3,1,,11,9,0,out/picks.csv,verified
+2023,John Juliano,4,1,5,12,14,10,0,out/picks.csv,verified
+2023,Mike Long,5,4,1,8,9,10,0,out/picks.csv,verified
+2023,Nolan & Vinny,3,1,2,5,11,10,0,out/picks.csv,verified
+2023,Phil Baldino,7,2,1,6,15,11,1,out/picks.csv,verified
+2023,Pung & Tralie,3,1,2,8,12,14,0,out/picks.csv,verified
+2023,Richie,13,3,1,14,11,10,0,out/picks.csv,verified
+2023,Rob & GregBo,3,2,1,5,15,14,0,out/picks.csv,verified
+2023,Ronnie,5,1,3,8,10,13,0,out/picks.csv,verified
+2024,Antdell & Ernie,5,1,2,8,,,0,out/picks.csv,verified
+2024,Cambrias,10,1,4,7,11,12,0,out/picks.csv,verified
+2024,Chris & Dom,7,4,1,3,12,11,0,out/picks.csv,verified
+2024,Frank & Julian,7,2,1,4,12,13,0,out/picks.csv,verified
+2024,John Juliano,4,1,2,6,12,13,0,out/picks.csv,verified
+2024,Mike Long,4,3,1,8,13,10,0,out/picks.csv,verified
+2024,Nolan & Vinny,7,3,1,6,12,11,0,out/picks.csv,verified
+2024,Phil Baldino,4,2,1,5,14,13,1,out/picks.csv,verified
+2024,Pung & Tralie,12,1,2,9,14,10,0,out/picks.csv,verified
+2024,Richie,4,2,1,5,,13,0,out/picks.csv,verified
+2024,Rob & GregBo,4,3,1,2,12,13,0,out/picks.csv,verified
+2024,Ronnie,13,1,4,5,12,11,0,out/picks.csv,verified
+2025,Antdell & Ernie,10,2,1,11,14,13,0,out/picks.csv,verified
+2025,Cambrias,10,1,5,3,14,11,1,out/picks.csv,verified
+2025,Chris & Dom,4,1,2,7,10,11,0,out/picks.csv,verified
+2025,Frank & Julian,4,2,1,7,13,9,0,out/picks.csv,verified
+2025,John Juliano,3,1,2,6,11,14,0,out/picks.csv,verified
+2025,Mike Long,5,1,3,7,9,12,0,out/picks.csv,verified
+2025,Nolan & Vinny,5,3,1,2,10,12,0,out/picks.csv,verified
+2025,Phil Baldino,3,2,1,7,14,11,0,out/picks.csv,verified
+2025,Pung & Tralie,3,4,1,6,14,13,0,out/picks.csv,verified
+2025,Richie,10,2,1,14,13,12,0,out/picks.csv,verified
+2025,Rob & GregBo,11,1,2,4,14,13,0,out/picks.csv,verified
+2025,Ronnie,6,1,2,7,,14,0,out/picks.csv,verified
