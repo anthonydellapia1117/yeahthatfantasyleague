@@ -56,9 +56,14 @@ ROUNDS = 14
 SKILL = ("QB", "RB", "WR", "TE")
 COMPARABLE_VOR = 8.0        # within one tier for wait-or-reach and coin flips
 
-# Empirical pick-error sd by ADP band, fitted to 2,039 league picks
-# 2013-2025 (see commit for the fit). (band_hi, sd)
-ADP_SD = [(24, 5.46), (60, 13.63), (120, 24.01), (10 ** 9, 23.81)]
+# Pick-error sd as a SMOOTH function of ADP, fitted to 2,039 league picks 2013-2025
+# by log-log OLS over 12 equal-count bins (R^2 = 0.917), capped at the observed max.
+#
+# This replaced a 4-band step function whose edges were catastrophic: sd jumped 5.46
+# to 13.63 across ADP 24/25, so two players one slot apart got survival odds at pick
+# 48 differing by 8,284x, and at pick 60 by 2.4e8. Those numbers drove live WAIT and
+# TAKE NOW verdicts. A smooth sd removes the cliff entirely.
+ADP_SD_C, ADP_SD_B, ADP_SD_CAP = 1.3035, 0.6127, 26.87
 
 MD_PATH = "out/decision_cards_2026.md"
 JSON_PATH = "out/engine_2026.json"
@@ -68,10 +73,7 @@ SENTINEL_CLOSE = "</script><!--engine-data-end-->"
 
 
 def sd_for(adp):
-    for hi, sd in ADP_SD:
-        if adp <= hi:
-            return sd
-    return ADP_SD[-1][1]
+    return min(ADP_SD_C * max(adp, 1.0) ** ADP_SD_B, ADP_SD_CAP)
 
 
 def survival(adp, pick):
@@ -80,6 +82,19 @@ def survival(adp, pick):
         return 1.0
     z = (pick - adp) / (sd_for(adp) * math.sqrt(2))
     return max(0.0, min(1.0, 0.5 * (1 - math.erf(z))))
+
+
+def cond_survival(adp, to_pick, from_pick):
+    """P(survives to to_pick GIVEN still available at from_pick).
+
+    The unconditional form charges hazard the player has already survived, and the
+    normal model puts real mass before pick 1 for early-ADP players. The ratio
+    renormalizes both away. Every wait-or-reach comparison must use this.
+    """
+    s_from = survival(adp, from_pick)
+    if s_from <= 1e-9:
+        return 0.0
+    return max(0.0, min(1.0, survival(adp, to_pick) / s_from))
 
 
 def snake_picks(slot):
@@ -226,18 +241,18 @@ def build_model():
                     continue
                 if prim["vor"] - r["vor"] > COMPARABLE_VOR:
                     break
-                s_next = survival(r["adp"], nxt)
+                s_next = cond_survival(r["adp"], nxt, pick)
                 if comp is None or s_next > comp["p_survives_next"]:
                     comp = {"name": r["name"], "vor": r["vor"],
                             "pts_gap": round(prim["pts"] - r["pts"], 1),
                             "p_survives_next": round(s_next, 3)}
-            p_prim_next = survival(prim["adp"], nxt)
+            p_prim_next = cond_survival(prim["adp"], nxt, pick)
             verdict = ("WAIT" if comp and comp["p_survives_next"] >= 0.6
                        else "TAKE NOW")
             tier_of = next((t for t in tiers[prim["pos"]]
                             if any(x["name"] == prim["name"] for x in t)), [])
             cliff = sum(1 for x in tier_of
-                        if survival(x["adp"], pick + 2 * TEAMS) >= 0.5)
+                        if cond_survival(x["adp"], pick + 2 * TEAMS, pick) >= 0.5)
             coin = [r["name"] for r, s in likely[1:4]
                     if r["pos"] == prim["pos"]
                     and prim["vor"] - r["vor"] <= COMPARABLE_VOR]
@@ -282,10 +297,10 @@ def build_model():
                    "starters": " ".join(lg["slots"])},
         "baselines": {p: baseline[p] for p in baseline},
         "replacement_ranks": dict(repl),
-        "adp_sd_bands": [[hi if hi < 10 ** 9 else None, sd]
-                         for hi, sd in ADP_SD],
+        "adp_sd_fit": {"c": ADP_SD_C, "b": ADP_SD_B, "cap": ADP_SD_CAP,
+                       "form": "sd(adp) = min(c * adp**b, cap)"},
         "tendency_note": ("gap_lift is CONTEXT, not a probability input. Folding it into survival made the model worse out-of-sample: Brier 0.23030 to 0.23050, 3 of 10 seasons, paired permutation p=0.9932. See out/tendency_backtest.json."),
-        "adp_sd_note": ("normal pick-error model, sd fitted per ADP band to "
+        "adp_sd_note": ("normal pick-error model, sd a smooth power law fitted to "
                         "2,039 of this league's own picks 2013-2025"),
         "kdef_note": ("K and DEF projections are FLOORS - the Sleeper feed "
                       "omits 21 scoring keys this league pays, including all "
