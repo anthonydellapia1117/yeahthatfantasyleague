@@ -101,7 +101,9 @@ const ok = (cond, name, detail) => {
     ok(/\d:\d\d/.test(await page.textContent("#clock")), "pick clock running");
     ok(/Survival to your pick/.test(body), "conditional survival table");
     ok(/actually gone/.test(body), "live recompute labelled");
-    ok(/Pick 4/.test(body), "current pick derived from picks gone (3+1)");
+    ok(/PICK 4/i.test(body), "current pick derived from picks gone (3+1)");
+    ok(await page.locator("#lv-dot").count() === 1, "freshness dot present");
+    ok(/ON THE CLOCK/.test(body), "on-the-clock lower third");
     await page.close();
   }
 
@@ -125,6 +127,30 @@ const ok = (cond, name, detail) => {
     const mode = await page.textContent("#mode");
     // roster 7 sits at slot 3 in this permutation
     ok(/seat 3/.test(mode), "seat resolved from slot_to_roster_id when draft_order is null: " + mode.trim());
+    await page.close();
+  }
+
+  // ---- scenario 4b: SPECTATOR fallback - live draft, seat unknown, never blank
+  {
+    const page = await browser.newPage();
+    const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: null,
+                               slot_to_roster_id: idSlots }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    ok(!(await page.locator("#lv-spectator").isHidden()), "spectator seat picker shown when seat unknown");
+    ok(await page.locator("#lv-seatpick button").count() === 12, "12 manual seat buttons");
+    await page.click('#lv-seatpick button[data-slot="5"]');
+    await page.waitForTimeout(1200);
+    ok(/seat 5/.test(await page.textContent("#mode")), "manual seat selection takes effect");
     await page.close();
   }
 

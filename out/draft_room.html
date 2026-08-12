@@ -95,14 +95,35 @@ tr:last-child td{border-bottom:0}
   background:var(--s2);border:1px solid var(--line);color:var(--ink2);
   font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;cursor:pointer}
 .chips button.on{background:var(--info);border-color:var(--info);color:#fff}
-/* live mode */
-.bignm{font-size:clamp(40px,11vw,64px);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:8px 0 2px;min-height:1.1em}
+/* live mode - one answer per screen, fixed stack, text-node patching only */
+.lvstrip{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);
+  padding-bottom:10px;margin-bottom:10px;flex-wrap:wrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--go);
+  margin-right:6px;vertical-align:1px}
+.dot.ok{animation:pulse 2s ease-out}
+.dot.warn{background:var(--warn);animation:none}
+.dot.bad{background:var(--stop);animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}100%{box-shadow:0 0 0 8px rgba(52,211,153,0)}}
+.clock{font-size:56px;font-weight:700;font-family:ui-monospace,Menlo,monospace;
+  font-variant-numeric:tabular-nums;line-height:1;color:var(--ink)}
+.clock.amber{color:var(--warn)}
+.clock.red{color:var(--stop)}
+.clock.blink{animation:blink 1s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){.clock.blink{animation:none}.dot.ok{animation:none}}
+.kicker{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3)}
+.franch{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.franch .me{color:var(--stop)}
+.bignm{font-size:clamp(40px,11vw,64px);font-weight:800;letter-spacing:-.03em;line-height:1.02;
+  margin:8px 0 2px;min-height:1.1em;transition:opacity 150ms ease}
+.bignm.fade{opacity:0}
 .bigpos{font-size:18px;color:var(--ink2)}
-.clockrow{display:flex;gap:20px;flex-wrap:wrap;margin:4px 0}
-.clock{font-size:44px;font-weight:700;font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
-.clock.low{color:var(--stop)}
-.onclock{font-size:14px;color:var(--ink2)}
+.whyline{font-size:14px;color:var(--ink2);margin:6px 0}
+.whyline b{color:var(--ink)}
 .runner{font-size:15px;margin:3px 0}
+#lv.flash{animation:flash 300ms ease-out}
+@keyframes flash{0%{background:var(--s2)}100%{background:var(--s1)}}
+@media (prefers-reduced-motion: reduce){#lv.flash{animation:none}}
 .prov{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);
   margin-top:16px;padding-top:10px;line-height:1.6}
 @media (min-width:640px){h1{font-size:22px}.wrap{padding-top:20px}}
@@ -292,7 +313,9 @@ function renderPre(activeSlot){
 }
 
 // ---- Mode 2: live draft
-const LiveState = { picks: [], mySlot: null, timer: null, lastPickCount: -1, clockStart: null };
+const LiveState = { picks: [], mySlot: null, timer: null, lastPickCount: -1,
+                    clockStart: null, lastPollOk: 0, wasMe: false, warned30: false,
+                    els: null, lastName: "" };
 
 function myPicks(slot){
   const out = [];
@@ -300,7 +323,94 @@ function myPicks(slot){
     out.push((r - 1) * E.league.teams + (r % 2 === 1 ? slot : E.league.teams + 1 - slot));
   return out;
 }
-function renderLive(draft){
+
+// One-time DOM build for the fixed answer stack. Every poll after this patches
+// text nodes and classes only - a name change must not reflow the page.
+function buildLiveDom(){
+  $("app").innerHTML = `
+  <div class="card" id="lv">
+    <div class="lvstrip">
+      <div><span id="lv-dot" class="dot"></span><span class="kicker">LIVE</span>
+        <span class="kicker" id="lv-fresh" style="margin-left:6px">now</span></div>
+      <div class="clock" id="clock">2:00</div>
+    </div>
+    <div class="kicker" id="lv-kick">ON THE CLOCK - PICK - - ROUND -</div>
+    <div class="franch" id="lv-franch">-</div>
+    <div class="bignm" id="lv-name">-</div>
+    <div class="bigpos" id="lv-pos">-</div>
+    <div class="whyline" id="lv-why"></div>
+    <div class="runner" id="lv-r1"></div>
+    <div class="runner" id="lv-r2"></div>
+    <div class="small" id="lv-rule">rule 3.2 - two minutes, forfeit on expiry. Clock resets when a pick is detected (10s poll).</div>
+  </div>
+  <div class="card" id="lv-spectator" hidden>
+    <h2>Watching - pick your seat</h2>
+    <p class="small">Seat unknown from the feed. Choose yours to unlock survival and wait-or-reach.</p>
+    <div class="chips" id="lv-seatpick"></div>
+  </div>
+  <div class="card"><details open id="lv-surv-wrap"><summary>survival to your next pick</summary>
+    <div id="lv-surv"></div></details></div>
+  <div class="card"><details id="lv-ticker-wrap"><summary>pick ticker</summary>
+    <div id="lv-ticker" class="small"></div></details></div>`;
+  const ids = ["lv","lv-dot","lv-fresh","lv-kick","lv-franch","lv-name","lv-pos",
+               "lv-why","lv-r1","lv-r2","lv-spectator","lv-seatpick","lv-surv","lv-ticker","clock"];
+  LiveState.els = Object.fromEntries(ids.map(i => [i, $(i)]));
+  const sp = LiveState.els["lv-seatpick"];
+  sp.innerHTML = Array.from({length: E.league.teams}, (_, i) =>
+    `<button data-slot="${i + 1}">${i + 1}</button>`).join("");
+  sp.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    LiveState.mySlot = Number(b.dataset.slot);
+    refresh();
+  }));
+  $("seatbar").hidden = true;
+}
+
+function setName(el, text){
+  if (el.textContent === text) return;
+  el.classList.add("fade");
+  setTimeout(() => { el.textContent = text; el.classList.remove("fade"); }, 150);
+}
+
+// Short beep, generated - no audio assets. Fires when Anthony goes on the clock
+// and again at 30 seconds. Requires a prior user gesture on iOS; degrade silently.
+let audioCtx = null;
+function beep(freq){
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.frequency.value = freq || 880;
+    g.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + 0.2);
+  } catch (e) { /* no audio - the title flash still fires */ }
+}
+let titleFlash = null;
+function flashTitle(on){
+  if (on && !titleFlash){
+    let flip = false;
+    titleFlash = setInterval(() => {
+      document.title = (flip = !flip) ? "YOUR PICK - Draft Room" : "YTFL Draft Room 2026";
+    }, 900);
+  } else if (!on && titleFlash){
+    clearInterval(titleFlash); titleFlash = null;
+    document.title = "YTFL Draft Room 2026";
+  }
+}
+// Keep the screen awake through a two-minute clock; re-acquire on return.
+let wakeLock = null;
+async function keepAwake(){
+  try { wakeLock = await navigator.wakeLock.request("screen"); } catch (e) { /* unsupported */ }
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible"){
+    if (LiveState.els) keepAwake();
+    refresh();          // repaint fresh NOW, not at the next scheduled poll
+  }
+});
+function renderLive(draft, newPick){
+  if (!LiveState.els) buildLiveDom();
+  const L = LiveState.els;
   const gone = new Set(LiveState.picks.map(p => {
     const md = p.metadata || {};
     return norm((md.first_name || "") + " " + (md.last_name || "")) + "|" + (md.position || "");
@@ -318,71 +428,96 @@ function renderLive(draft){
   const isMe = my !== null && slotOnClock === my;
   const lastTwoRounds = rd >= E.league.rounds - 1;
 
+  // fixed stack - text patches only
+  L["lv-kick"].textContent = `ON THE CLOCK - PICK ${cur} - ROUND ${rd}`;
+  L["lv-franch"].innerHTML = (seat ? esc(seat.franchise) + ' <span class="muted">(' + esc(seat.handle) + ")</span>"
+                                   : "seat " + slotOnClock) +
+                             (isMe ? ' <span class="me">- YOU</span>' : "");
+  if (newPick){
+    L["lv"].classList.remove("flash"); void L["lv"].offsetWidth; L["lv"].classList.add("flash");
+  }
+  if (isMe && !LiveState.wasMe){ beep(880); LiveState.warned30 = false; }
+  LiveState.wasMe = isMe;
+  flashTitle(isMe);
+
   let pool = alive.filter(p => lastTwoRounds ? (p.pos === "K" || p.pos === "DEF")
                                              : (p.pos !== "K" && p.pos !== "DEF"));
   pool.sort((a, b) => b.vor - a.vor);
   const top = pool[0];
   const runners = pool.slice(1, 3);
 
-  let h = `<div class="card">
-    <div class="clockrow">
-      <div><div class="onclock">Pick <b class="num">${cur}</b> - round ${rd} -
-        on the clock: <b>${seat ? esc(seat.franchise) + " (" + esc(seat.handle) + ")" : "seat " + slotOnClock}</b>
-        ${isMe ? '<span class="verdict take"> - YOU</span>' : ""}</div>
-        <div id="clock" class="clock">2:00</div>
-        <div class="small">rule 3.2 - two minutes, forfeit on expiry. Clock resets when a pick is detected (10s poll).</div>
-      </div>
-    </div>`;
   if (top){
-    h += `<div class="bignm">${esc(top.name)}</div>
-      <div class="bigpos">${top.pos} ${esc(top.team)} - VOR <span class="num">${top.vor.toFixed(0)}</span> - tier ${top.tier ?? "-"}
-      ${top.floor ? '<span class="floor">projection = floor</span>' : ""}${injBadge(top)}</div>`;
-    for (const r of runners){
-      const why = top.vor - r.vor <= 8 && r.pos === top.pos
-        ? '<span class="verdict coin" style="font-size:12px">COIN FLIP - break toward ceiling</span>'
-        : `<span class="num">${(top.vor - r.vor).toFixed(0)}</span> VOR behind`;
-      h += `<div class="runner">${esc(r.name)} ${r.pos} VOR <span class="num">${r.vor.toFixed(0)}</span> - ${why}${injBadge(r)}</div>`;
-    }
+    setName(L["lv-name"], top.name);
+    L["lv-pos"].innerHTML = `${top.pos} ${esc(top.team)} - VOR <span class="num">${top.vor.toFixed(0)}</span> - tier ${top.tier ?? "-"}` +
+      (top.floor ? '<span class="floor">projection = floor</span>' : "") + injBadge(top);
+    let why = "";
     if (myNextTwo.length >= 2 && !lastTwoRounds){
       const nxt = myNextTwo[isMe ? 1 : 0] || myNextTwo[0];
       const comp = pool.find(p => p !== top && p.pos === top.pos && top.vor - p.vor <= 8);
       if (comp){
         const s = condSurvival(comp.adp, nxt, cur);
-        h += `<div class="rc-body">Wait or reach: <b>${esc(comp.name)}</b> projects within
-          <span class="num">${Math.abs(top.pts - comp.pts).toFixed(0)}</span> pts and is <span class="num">${pct(s)}</span> to last to your pick ${nxt}
-          - ${s >= 0.6 ? '<span class="verdict wait">you can WAIT</span>' : '<span class="verdict take">take now</span>'}</div>`;
+        why = `Wait or reach: <b>${esc(comp.name)}</b> within <span class="num">${Math.abs(top.pts - comp.pts).toFixed(0)}</span> pts,
+          <span class="num">${pct(s)}</span> to last to your pick ${nxt} -
+          ${s >= 0.6 ? '<span class="verdict wait">you can WAIT</span>' : '<span class="verdict take">take now</span>'}`;
       }
     }
+    L["lv-why"].innerHTML = why;
+    [L["lv-r1"], L["lv-r2"]].forEach((el, i) => {
+      const r = runners[i];
+      if (!r){ el.textContent = ""; return; }
+      const tag = top.vor - r.vor <= 8 && r.pos === top.pos
+        ? '<span class="verdict coin" style="font-size:12px">COIN FLIP - break toward ceiling</span>'
+        : `<span class="num">${(top.vor - r.vor).toFixed(0)}</span> VOR behind`;
+      el.innerHTML = `${esc(r.name)} ${r.pos} VOR <span class="num">${r.vor.toFixed(0)}</span> - ${tag}${injBadge(r)}`;
+    });
   } else {
-    h += `<div class="bignm muted">board clear</div>`;
+    setName(L["lv-name"], "board clear");
   }
-  h += `</div>`;
 
+  // spectator fallback: never a blank panel
+  L["lv-spectator"].hidden = !!my;
+
+  // below the fold - accordions may rebuild
   if (my && myNextTwo.length){
-    h += `<div class="card"><h2>Survival to your pick ${myNextTwo[0]}</h2>
-      <table><tr><th>Player</th><th>Pos</th><th>VOR</th><th>ADP</th><th>P survives</th><th></th></tr>`;
     const board = alive.filter(p => p.pos !== "K" && p.pos !== "DEF").sort((a, b) => b.vor - a.vor).slice(0, 14);
+    let t = `<table><tr><th>Player</th><th>Pos</th><th>VOR</th><th>ADP</th><th>P survives</th><th></th></tr>`;
     for (const p of board){
       const s = condSurvival(p.adp, myNextTwo[0], cur);
-      h += `<tr><td>${esc(p.name)}${injBadge(p)}</td><td>${p.pos}</td>
+      t += `<tr><td>${esc(p.name)}${injBadge(p)}</td><td>${p.pos}</td>
         <td class="num">${p.vor.toFixed(0)}</td><td class="num">${p.adp.toFixed(1)}</td>
         <td class="num">${pct(s)}</td>
         <td>${s < 0.4 ? '<span class="verdict take" style="font-size:11px">going, going</span>' : ""}</td></tr>`;
     }
-    h += `</table><p class="small">Conditional on being undrafted now - recomputed against the
-      ${LiveState.picks.length} players actually gone, not the pre-draft model.</p></div>`;
+    L["lv-surv"].innerHTML = t + `</table><p class="small">Survival to your pick ${myNextTwo[0]} -
+      conditional on being undrafted now, recomputed against the ${LiveState.picks.length} players actually gone.</p>`;
+  } else {
+    L["lv-surv"].innerHTML = `<p class="small">pick a seat to see survival to your next turn</p>`;
   }
-  $("app").innerHTML = h;
-  $("seatbar").hidden = true;
+  const tick = LiveState.picks.slice(-12).reverse().map((p, i) => {
+    const md = p.metadata || {};
+    const n = LiveState.picks.length - i;
+    return `<div>#<span class="num">${n}</span> ${esc((md.first_name || "") + " " + (md.last_name || ""))} ${esc(md.position || "")}</div>`;
+  }).join("");
+  L["lv-ticker"].innerHTML = tick || '<p class="small">no picks yet</p>';
 }
 
 function tickClock(){
-  if (!LiveState.clockStart) return;
+  const el = LiveState.els && LiveState.els["clock"];
+  if (!el || !LiveState.clockStart) return;
   const left = Math.max(0, 120 - Math.floor((Date.now() - LiveState.clockStart) / 1000));
-  const el = $("clock");
-  if (el){
-    el.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
-    el.classList.toggle("low", left <= 30);
+  el.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+  el.classList.toggle("amber", left < 60 && left >= 30);
+  el.classList.toggle("red", left < 30);
+  el.classList.toggle("blink", left < 10 && left > 0);
+  if (LiveState.wasMe && left === 30 && !LiveState.warned30){
+    LiveState.warned30 = true; beep(1200);
+  }
+  // freshness dot - under a two-minute clock the user must know the number is current
+  const age = (Date.now() - LiveState.lastPollOk) / 1000;
+  const dot = LiveState.els["lv-dot"], fresh = LiveState.els["lv-fresh"];
+  if (dot){
+    dot.className = "dot " + (age < 25 ? "ok" : age < 60 ? "warn" : "bad");
+    fresh.textContent = age < 25 ? "current" : age < 60 ? "reconnecting" : "stale " + Math.round(age) + "s";
   }
 }
 
@@ -450,15 +585,18 @@ async function refresh(){
   // LIVE
   $("mode").textContent = "MODE 2 - LIVE" + (LiveState.mySlot ? " - you are seat " + LiveState.mySlot : "");
   $("mode").classList.add("live");
+  if (!LiveState.els) keepAwake();
   try {
     const picks = await (await fetch(API + "/picks")).json();
+    LiveState.lastPollOk = Date.now();
+    const newPick = picks.length !== LiveState.lastPickCount && LiveState.lastPickCount >= 0;
     if (picks.length !== LiveState.lastPickCount){
       LiveState.lastPickCount = picks.length;
       LiveState.clockStart = Date.now();
     }
     LiveState.picks = picks;
-    renderLive(draft);
-  } catch (e){ /* keep last render */ }
+    renderLive(draft, newPick);
+  } catch (e){ /* keep last render; the freshness dot goes amber then red */ }
   schedule(draft.status === "drafting" ? 10 : 60);
 }
 function schedule(sec){
