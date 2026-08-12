@@ -1,9 +1,9 @@
 """Phase 3 - lineup efficiency: verify the lead, then decompose it.
 
 Every draft-day hypothesis is null (HANDOFF Part 2). Lineup efficiency is
-the one surviving lead. `src/build_app_data.py` owns the franchise-season
-efficiency table (`out/lineup_efficiency.csv`) and the dashboard JSON.
-This script does the two things it does not:
+the one surviving lead. This script owns `out/lineup_efficiency.csv` (the
+franchise-season table with provenance columns); `src/build_app_data.py`
+owns only the dashboard JSON and computes its copy internally. It also:
 
 1. Independently re-runs the champions-vs-field permutation test with a
    fixed seed, to settle which reported p-value is current (0.0697 in the
@@ -32,6 +32,7 @@ ROSTERS = ("LeagueLegacy-io/YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026
            "/02_gamecenter/matchup_rosters.csv")
 CHAMPIONS = "out/champions.csv"
 OUT = "out/lineup_positional_gap.csv"
+OUT_EFF = "out/lineup_efficiency.csv"
 
 SEED = 20260811          # fixed so the permutation p is reproducible
 SHUFFLES = 50_000
@@ -67,7 +68,10 @@ def load():
 
 
 def verify_permutation(rows, champions):
-    """Champions-vs-field difference in season efficiency, one-sided."""
+    """Champions-vs-field difference in season efficiency, one-sided.
+
+    Returns the franchise-season accumulator so main() can persist it.
+    """
     acc = collections.defaultdict(lambda: [0.0, 0.0])
     for r in rows:
         key = (r["season"], r["member_name"])
@@ -101,6 +105,30 @@ def verify_permutation(rows, champions):
     print("  reconciles with README p=0.0772 (0.7 SE); the handoff's 0.0697"
           " is stale (7 SE).")
     print("  marginal either way. a lead, not a finding.\n")
+    return acc
+
+
+def write_efficiency(acc, champions):
+    """Persist the franchise-season table. This script is its only writer;
+    build_app_data.py computes its dashboard copy internally and must not
+    write this file (it would silently drop the provenance columns)."""
+    with open(OUT_EFF, "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["season", "member_name", "started_points", "optimal_points",
+                    "efficiency", "points_left", "is_champion", "source",
+                    "source_ref", "basis", "confidence"])
+        n = 0
+        for (season, member), (started, optimal) in sorted(acc.items()):
+            if optimal <= 0:
+                continue
+            w.writerow([season, member, round(started, 2), round(optimal, 2),
+                        round(started / optimal, 6), round(optimal - started, 2),
+                        int(champions.get(season) == member), "leaguelegacy",
+                        "02_gamecenter/matchup_rosters.csv",
+                        "bonus-exclusive" if season <= "2024" else "full",
+                        "verified"])
+            n += 1
+    print(f"wrote {OUT_EFF} ({n} franchise-seasons)")
 
 
 def positional_loss(rows, who=None, seasons=None):
@@ -132,7 +160,8 @@ def positional_loss(rows, who=None, seasons=None):
 def main():
     rows, champions = load()
 
-    verify_permutation(rows, champions)
+    acc = verify_permutation(rows, champions)
+    write_efficiency(acc, champions)
 
     # positional decomposition, all seasons
     ml, mo, mw = positional_loss(rows, ME)
