@@ -21,7 +21,7 @@ That is not a failure to find one. It is a finding, on 156 franchise-seasons and
 | Champions load WR early | 2.00 vs 2.03 WR | **Noise** |
 | Draft slot matters | Champions spread 2,2,4,5,5,5,8,10,10,11,12,12,12. Mean 7.5 vs 6.5 expected | **No pattern** |
 | Draft-day composition predicts finish | corr RB -0.013, WR -0.049, QB +0.110 | **All ~zero** |
-| Drafted-vs-acquired share predicts winning | corr champion +0.055, rank -0.124 | **Dead** |
+| Drafted-vs-acquired share predicts winning | corr champion +0.043, rank -0.101 | **Dead** |
 | Champions draft the consensus #1 player | **0 of 13.** But p=0.323 under random | **Striking, not significant** |
 
 ## THE FAAB SIGNAL IS ALSO DEAD
@@ -36,11 +36,11 @@ Tested 2026-08-11. **Permutation p = 0.197**, n=118 franchise-seasons 2016-2025,
 
 | | Champions | Field | p |
 |---|---|---|---|
-| Lineup efficiency | **89.75%** | 88.44% | **0.0780** |
+| Lineup efficiency | **89.75%** | 88.44% | **0.078** |
 
-Recomputed from source by `src/phase3_lineup.py`, 50,000 shuffles, seed 20260811, n=156 franchise-seasons and 13 champions. `src/build_app_data.py` independently gives p=0.0772 on the same statistic under a different seed - 0.67 standard errors apart, ie the same test.
+One canonical test: `src/phase3_lineup.py`, 50,000 shuffles, seed 20260811, n=156 franchise-seasons and 13 champions, written to `out/efficiency_test.json` and read by the dashboard rather than recomputed. Quote it as 0.078 - a fourth digit implies precision a 50,000-shuffle test does not have.
 
-**An earlier draft of this document reported 89.96 / 88.68 / p=0.0697. That p-value is stale**: it is roughly 7 standard errors from both recomputations and does not reproduce. The percentage difference is smaller and is a method difference, not an error - the tables below mean the weekly ratios, while `phase3_lineup.py` takes the ratio of sums. Points left per week are identical either way.
+**An earlier draft reported 89.96 / 88.68 / p=0.0697; that figure is stale and does not reproduce.** All efficiency percentages in this document are ratio-of-sums, the standardized basis per the accepted 3B audit.
 
 Closest to significance of anything tested and still above 0.05 at n=13. Direction is consistent and the mechanism is plausible, which is more than any draft-day hypothesis managed. Treat as a lead, not a finding.
 
@@ -140,15 +140,15 @@ Three champions invisible at franchise level: **Vincent Gatta** won 2014, now dr
 2,339 picks 2013-2025, 12 franchises every season, no survivorship gaps. 37,106 weekly roster rows with `started`/`points`. 3,938 transactions 2014-2025; 2013 has none. **52 assertions pass, 0 fail.** 2025 archive draft reconciles to Sleeper **168 of 168**. Identity map **12 of 12** verified by overall-pick join, zero name similarity used. 2018 overall pick 38 is a **forfeit** under rule 3.2's 2-minute clock, not a gap.
 
 ### Phase 2 result
-**League-wide DRAFTED share of starter points: 68.9%.** Range 60.2 to 76.2. All 13 seasons valid.
-**It does not predict winning.** Cambrias 65.2% with 3 titles. Antdell & Ernie 65.4% with **0**. Rob & GregBo 81.2%, highest in league, 1 title.
+**League-wide DRAFTED share of starter points: 68.9%.** Range 60.2 to 76.2. Basis: 2014-2025, the twelve seasons with transaction data (G-003 excludes 2013 from the acquisition split).
+**It does not predict winning.** Cambrias 64.9% with 3 titles. Antdell & Ernie 64.5% with **0**. Rob & GregBo 82.4%, highest in league, 1 title.
 
 ### Two champions, two mechanisms
 | | Actual W% | All-play W% | Gap | Drafted share | Titles |
 |---|---|---|---|---|---|
-| Cambrias | .606 | .606 | **0.000** | 65.2 | 3 |
+| Cambrias | .606 | .606 | **0.000** | 64.9 | 3 |
 | Phil Baldino | .596 | .563 | **+.033** | 72.3 | 3 |
-| Antdell & Ernie | .484 | .489 | -.005 | 65.4 | **0** |
+| Antdell & Ernie | .484 | .489 | -.005 | 64.5 | **0** |
 
 Cambria wins on raw strength. Baldino outperforms his all-play. **Anthony has not been unlucky.** Baldino also has the better rate: 3 in 9 seasons vs 3 in 13.
 

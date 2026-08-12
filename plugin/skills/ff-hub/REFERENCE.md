@@ -21,7 +21,7 @@ That is not a failure to find one. It is a finding, on 156 franchise-seasons and
 | Champions load WR early | 2.00 vs 2.03 WR | **Noise** |
 | Draft slot matters | Champions spread 2,2,4,5,5,5,8,10,10,11,12,12,12. Mean 7.5 vs 6.5 expected | **No pattern** |
 | Draft-day composition predicts finish | corr RB -0.013, WR -0.049, QB +0.110 | **All ~zero** |
-| Drafted-vs-acquired share predicts winning | corr champion +0.055, rank -0.124 | **Dead** |
+| Drafted-vs-acquired share predicts winning | corr champion +0.043, rank -0.101 | **Dead** |
 | Champions draft the consensus #1 player | **0 of 13.** But p=0.323 under random | **Striking, not significant** |
 
 ## THE FAAB SIGNAL IS ALSO DEAD
@@ -36,7 +36,11 @@ Tested 2026-08-11. **Permutation p = 0.197**, n=118 franchise-seasons 2016-2025,
 
 | | Champions | Field | p |
 |---|---|---|---|
-| Lineup efficiency | **89.96%** | 88.68% | **0.0697** |
+| Lineup efficiency | **89.75%** | 88.44% | **0.078** |
+
+One canonical test: `src/phase3_lineup.py`, 50,000 shuffles, seed 20260811, n=156 franchise-seasons and 13 champions, written to `out/efficiency_test.json` and read by the dashboard rather than recomputed. Quote it as 0.078 - a fourth digit implies precision a 50,000-shuffle test does not have.
+
+**An earlier draft reported 89.96 / 88.68 / p=0.0697; that figure is stale and does not reproduce.** All efficiency percentages in this document are ratio-of-sums, the standardized basis per the accepted 3B audit.
 
 Closest to significance of anything tested and still above 0.05 at n=13. Direction is consistent and the mechanism is plausible, which is more than any draft-day hypothesis managed. Treat as a lead, not a finding.
 
@@ -44,16 +48,25 @@ Closest to significance of anything tested and still above 0.05 at n=13. Directi
 
 | Franchise | Efficiency | Pts left/wk | Per season | Titles |
 |---|---|---|---|---|
-| John Juliano | 90.77% | 12.47 | 175 | 0 |
-| **Phil Baldino** | **90.13%** | **13.65** | **191** | **3** |
-| Frank & Julian | 89.71% | 13.72 | 192 | 0 |
-| **Cambrias** | **89.55%** | **14.40** | **202** | **3** |
-| Ronnie | 88.98% | 14.90 | 209 | 2 |
-| **Antdell & Ernie** | **88.57%** | **15.14** | **212** | **0** |
-| Chris & Dom | 88.21% | 16.35 | 229 | 2 |
-| Rob & GregBo | 87.34% | 16.72 | 234 | 1 |
+| John Juliano | 90.41% | 12.47 | 175 | 0 |
+| **Phil Baldino** | **89.97%** | **13.65** | **191** | **3** |
+| **Cambrias** | **89.67%** | **14.40** | **202** | **3** |
+| Frank & Julian | 89.24% | 13.72 | 192 | 0 |
+| Mike Long | 88.82% | 14.12 | 198 | 0 |
+| Ronnie | 88.77% | 14.90 | 209 | 2 |
+| **Antdell & Ernie** | **88.55%** | **15.14** | **212** | **0** |
+| Nolan & Vinny | 88.53% | 15.22 | 213 | 0 |
+| Pung & Tralie | 88.47% | 15.08 | 211 | 0 |
+| Team JoeBa | 88.46% | 14.73 | 206 | 0 |
+| Richie | 88.43% | 15.24 | 213 | 1 |
+| Chris & Dom | 88.14% | 16.35 | 229 | 2 |
+| LFTLR | 87.71% | 15.40 | 216 | 0 |
+| Rob & GregBo | 87.42% | 16.72 | 234 | 1 |
+| GaTTa | 85.33% | 19.54 | 274 | 1 |
 
-Anthony ranks **11th of 15**. Both three-time champions sit above him.
+Ratio-of-sums per `src/phase3_lineup.py`. Anthony ranks **7th of 15 by efficiency, 9th of 15 by points left per week**. An earlier draft said 11th of 15; that does not reproduce under either ranking. Both three-time champions sit above him either way.
+
+**Positional decomposition of the gap to Baldino (phase 3A): RB is 80 percent of it.** RB capture 86.9 percent versus his 90.7. QB is a strength, not a leak: 93.5 percent capture versus his 89.6, worth 1.06 pts/wk in Anthony's favour. The raw "WR is the biggest leak" reading is an artifact of WR carrying the most starter slots.
 
 **Gap to Baldino: 1.49 points per week, 21 points per season. The 2025 championship was lost by 12.44.**
 
@@ -127,15 +140,15 @@ Three champions invisible at franchise level: **Vincent Gatta** won 2014, now dr
 2,339 picks 2013-2025, 12 franchises every season, no survivorship gaps. 37,106 weekly roster rows with `started`/`points`. 3,938 transactions 2014-2025; 2013 has none. **52 assertions pass, 0 fail.** 2025 archive draft reconciles to Sleeper **168 of 168**. Identity map **12 of 12** verified by overall-pick join, zero name similarity used. 2018 overall pick 38 is a **forfeit** under rule 3.2's 2-minute clock, not a gap.
 
 ### Phase 2 result
-**League-wide DRAFTED share of starter points: 68.9%.** Range 60.2 to 76.2. All 13 seasons valid.
-**It does not predict winning.** Cambrias 65.2% with 3 titles. Antdell & Ernie 65.4% with **0**. Rob & GregBo 81.2%, highest in league, 1 title.
+**League-wide DRAFTED share of starter points: 68.9%.** Range 60.2 to 76.2. Basis: 2014-2025, the twelve seasons with transaction data (G-003 excludes 2013 from the acquisition split).
+**It does not predict winning.** Cambrias 64.9% with 3 titles. Antdell & Ernie 64.5% with **0**. Rob & GregBo 82.4%, highest in league, 1 title.
 
 ### Two champions, two mechanisms
 | | Actual W% | All-play W% | Gap | Drafted share | Titles |
 |---|---|---|---|---|---|
-| Cambrias | .606 | .606 | **0.000** | 65.2 | 3 |
+| Cambrias | .606 | .606 | **0.000** | 64.9 | 3 |
 | Phil Baldino | .596 | .563 | **+.033** | 72.3 | 3 |
-| Antdell & Ernie | .484 | .489 | -.005 | 65.4 | **0** |
+| Antdell & Ernie | .484 | .489 | -.005 | 64.5 | **0** |
 
 Cambria wins on raw strength. Baldino outperforms his all-play. **Anthony has not been unlucky.** Baldino also has the better rate: 3 in 9 seasons vs 3 in 13.
 
@@ -193,40 +206,3 @@ Sources: `made-resources/YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026/` 
 Never backfill a pick, roster, transaction, or result. Never merge manager identities on name similarity. Every derived table carries source, source_ref, fetched_at, confidence. Every 2013-2024 figure carries the bonus-exclusive basis note. Hyphens only, no em dashes, no emojis. Tables over bullets. Lead with the answer. Report confidence and sample size beside every claim.
 
 **With 13 champions, most comparisons will not reach significance. That has already proven true for every draft-day hypothesis. Do not manufacture a clean recipe to satisfy the framing of a question.**
-
----
-
-## FRESH COMPUTATION 2026-08-11, supersedes the efficiency figures above
-
-Recomputed from `is_optimal` in the weekly roster table, 156 franchise-seasons,
-50,000-shuffle permutation test.
-
-| | Champions | Field | p |
-|---|---|---|---|
-| Lineup efficiency | **89.75%** | 88.44% | **0.0772** |
-
-| Franchise | Efficiency | Left/wk | Left/season | Titles |
-|---|---|---|---|---|
-| John Juliano | 90.41% | 12.47 | 175 | 0 |
-| **Phil Baldino** | **89.97%** | 13.65 | 191 | **3** |
-| **Cambrias** | **89.67%** | 14.40 | 202 | **3** |
-| Frank & Julian | 89.24% | 13.72 | 192 | 0 |
-| Mike Long | 88.82% | 14.12 | 198 | 0 |
-| Ronnie | 88.77% | 14.90 | 209 | 2 |
-| **Antdell & Ernie** | **88.55%** | **15.14** | **212** | **0** |
-| Nolan & Vinny | 88.53% | 15.22 | 213 | 0 |
-| Pung & Tralie | 88.47% | 15.08 | 211 | 0 |
-| Team JoeBa | 88.46% | 14.73 | 206 | 0 |
-| Richie | 88.43% | 15.24 | 213 | 1 |
-| Chris & Dom | 88.14% | 16.35 | 229 | 2 |
-| LFTLR | 87.71% | 15.40 | 216 | 0 |
-| Rob & GregBo | 87.42% | 16.72 | 234 | 1 |
-| GaTTa | 85.33% | 19.54 | 274 | 1 |
-
-Anthony ranks **7th of 15**, not 11th as an earlier pass reported. Gap to Baldino:
-**1.42 points per week, 21 per season.** The 2025 championship was lost by 12.44.
-
-Caveat that cuts against it: John Juliano leads the league with zero titles, and
-Chris & Dom won twice at 88.14 percent. Efficiency is a lead, not a law.
-
-Regenerate with: `python3 src/build_app_data.py`
