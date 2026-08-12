@@ -1,0 +1,9 @@
+{
+ "r": 0.8127,
+ "p_value": 0.0,
+ "n_pairs": 168,
+ "shuffles": 50000,
+ "seed": 20260812,
+ "eras": "2013-2019 vs 2020-2025",
+ "verdict": "persists"
+}

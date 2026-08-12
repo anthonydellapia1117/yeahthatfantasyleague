@@ -111,6 +111,58 @@ def live_rosters(priors, handle_to_fr):
     return out
 
 
+def load_tendency():
+    """franchise x round-band x pos -> lift, 1.00 being league average.
+
+    DISPLAY ONLY. This is deliberately NOT folded into survival(). Tested
+    2026-08-12: franchise identity does carry positional information (log loss
+    1.4590 -> 1.4483, 9 of 10 seasons out-of-sample), but folding it into survival
+    probability made the numbers WORSE, not better - pooled Brier 0.23030 -> 0.23050,
+    3 of 10 seasons, paired permutation p = 0.9932. See out/tendency_backtest.json.
+    The effect is real and about 0.7 percent; spread across 5-12 intervening picks it
+    is smaller than the ADP noise it rides on. So the seats and their tendencies are
+    shown as context for the owner's judgement, and the probabilities stay honest.
+    """
+    path = os.path.join("out", "positional_tendency.csv")
+    if not os.path.exists(path):
+        return {}
+    return {(r["franchise"], r["band"], r["pos"]):
+            {"lift": float(r["lift"]), "n": int(r["n_picks"]),
+             "thin": r["confidence"] == "thin"}
+            for r in csv.DictReader(open(path))}
+
+
+def band_of(rnd):
+    for lo, hi, name in ((1, 3, "rd1-3"), (4, 6, "rd4-6"),
+                         (7, 10, "rd7-10"), (11, 14, "rd11-14")):
+        if lo <= rnd <= hi:
+            return name
+    return "rd11-14"
+
+
+def gap_seats(rosters, slot_map, pick, nxt, pos, tend):
+    """Who picks between your turn and your next one, and how they lean.
+
+    Returns the seats in pick order with each one's lift at `pos`, plus the mean.
+    Context, not a probability input - see load_tendency().
+    """
+    out = []
+    for overall in range(pick + 1, nxt):
+        rnd = (overall - 1) // TEAMS + 1
+        idx = overall - (rnd - 1) * TEAMS
+        slot = idx if rnd % 2 == 1 else TEAMS + 1 - idx
+        seat = slot_map.get(slot)
+        if not seat:
+            continue
+        t = tend.get((seat["franchise"], band_of(rnd), pos))
+        out.append({"pick": overall, "slot": slot, "handle": seat["handle"],
+                    "franchise": seat["franchise"],
+                    "lift": round(t["lift"], 2) if t else None,
+                    "thin": bool(t and t["thin"])})
+    lifts = [s["lift"] for s in out if s["lift"] is not None]
+    return out, (round(sum(lifts) / len(lifts), 3) if lifts else None)
+
+
 def urgency_list(rosters, pos, rnd):
     key = f"first_{pos.lower()}_shrunk"
     out = []
@@ -133,6 +185,9 @@ def build_model():
 
     priors, handle_to_fr = load_opponents()
     rosters = live_rosters(priors, handle_to_fr)
+    tend = load_tendency()
+    # 2026 order is not drawn yet, so seat N is roster N until Sleeper says otherwise.
+    slot_map = {r["roster_id"]: r for r in rosters}
     tiers = {p: db.tiers(by_pos[p]) for p in SKILL}
     tier_no = {}
     for p in SKILL:
@@ -188,6 +243,8 @@ def build_model():
                     and prim["vor"] - r["vor"] <= COMPARABLE_VOR]
             urgent = (urgency_list(rosters, prim["pos"], rnd)
                       if prim["pos"] in ("QB", "TE") else [])
+            seats, gap_lift = gap_seats(rosters, slot_map, pick, nxt,
+                                        prim["pos"], tend)
             rounds.append({
                 "round": rnd, "pick": pick, "next_pick": nxt, "kdef": False,
                 "primary": {"name": prim["name"], "pos": prim["pos"],
@@ -202,6 +259,8 @@ def build_model():
                 "tier_cliff": cliff == 0 and bool(tier_of),
                 "coin_flips": coin[:2],
                 "urgent": urgent[:3],
+                "gap_seats": seats,
+                "gap_lift": gap_lift,
             })
         slots[slot] = rounds
 
@@ -225,6 +284,7 @@ def build_model():
         "replacement_ranks": dict(repl),
         "adp_sd_bands": [[hi if hi < 10 ** 9 else None, sd]
                          for hi, sd in ADP_SD],
+        "tendency_note": ("gap_lift is CONTEXT, not a probability input. Folding it into survival made the model worse out-of-sample: Brier 0.23030 to 0.23050, 3 of 10 seasons, paired permutation p=0.9932. See out/tendency_backtest.json."),
         "adp_sd_note": ("normal pick-error model, sd fitted per ADP band to "
                         "2,039 of this league's own picks 2013-2025"),
         "kdef_note": ("K and DEF projections are FLOORS - the Sleeper feed "
