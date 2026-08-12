@@ -173,9 +173,15 @@ app = open(os.path.join(ROOT, "out", "draft_room.html")).read()
 b0, b1 = app.index("SIM-QUARANTINE-BEGIN"), app.index("SIM-QUARANTINE-END")
 sim_block = app[b0:b1]
 outside = app[:b0] + app[b1:]
-leaks = [tok for tok in ("SimState.results", "runSims(", "renderSimResults(")
-         if tok in outside.replace('$(id).addEventListener("click"', "WIRING")
-         and outside.count(tok) > (2 if tok != "SimState.results" else 1)]
+# sim symbols may appear outside the markers ONLY in the one-time button
+# wiring block. Count occurrences outside markers; the wiring accounts for
+# a known number of each - anything beyond that is a leak into app logic.
+wiring_allow = {"SimState.results": 1, "SimState.running": 3,
+                "runSims(": 1, "renderSimResults(": 1}
+leaks = [f"{tok} x{outside.count(tok)}" for tok, allowed in wiring_allow.items()
+         if outside.count(tok) > allowed]
+ok(not leaks, "sim symbols never leak beyond the quarantine and its wiring",
+   "; ".join(leaks))
 ok(all(tok not in sim_block for tok in
        ("verdictChip(", "wait_or_reach", "p_gone", 'class="verdict', ".verdict")),
    "sim block never touches verdict logic")
