@@ -130,6 +130,120 @@ const ok = (cond, name, detail) => {
     await page.close();
   }
 
+  // ---- scenario 3c: PHASE 3 FEATURES - every feature demonstrated live
+  {
+    const fs = require("fs");
+    const engine = JSON.parse(fs.readFileSync(
+      require("path").resolve("out/engine_2026.json"), "utf8"));
+    const topId = engine.players.find(p => p.sleeper_id && p.vor > 50).sleeper_id;
+    const page = await browser.newPage({ acceptDownloads: true });
+    await page.addInitScript(() => {
+      localStorage.setItem("ytfl_queue", JSON.stringify(["Breece Hall"]));
+      localStorage.setItem("ytfl_overrides", "[]");
+    });
+    const mk = (f, l, pos) => ({ metadata: { first_name: f, last_name: l, position: pos } });
+    const picks = [
+      mk("Ja'Marr", "Chase", "WR"), mk("Bijan", "Robinson", "RB"), mk("Justin", "Jefferson", "WR"),
+      mk("Jahmyr", "Gibbs", "RB"), mk("Saquon", "Barkley", "RB"), mk("CeeDee", "Lamb", "WR"),
+      mk("Jonathan", "Taylor", "RB"), mk("Puka", "Nacua", "WR"), mk("Amon-Ra", "St. Brown", "WR"),
+      mk("Christian", "McCaffrey", "RB"), mk("Malik", "Nabers", "WR"), mk("Brock", "Bowers", "TE"),
+      mk("Bucky", "Irving", "RB"), mk("Kyren", "Williams", "RB"), mk("Ashton", "Jeanty", "RB"),
+      mk("James", "Cook", "RB"), mk("De'Von", "Achane", "RB"), mk("Chase", "Brown", "RB"),
+      mk("Trey", "McBride", "TE"), mk("Tyreek", "Hill", "WR"),
+    ];
+    const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
+    await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([{ player_id: topId, count: 9876 }]) }));
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(picks) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    await page.evaluate(() => document.querySelectorAll("details").forEach(d => d.open = true));
+    await page.waitForTimeout(200);
+    const body = await page.textContent("body");
+    // f1: roster tracker - seat 7 owns picks 7 and 18
+    const roster = await page.textContent("#f-myroster");
+    ok(/pick 7.*Taylor/s.test(roster) && /pick 18.*Brown/s.test(roster), "f1 roster tracker lists my picks");
+    ok(/needs:/.test(roster), "f1 roster needs surfaced");
+    // f2: best available by position - 4 minis
+    ok(await page.locator("#f-bypos .mini").count() === 4, "f2 best-by-position strip");
+    // f3: tier cliffs with honest approximation label
+    ok(await page.locator("#f-cliff .mini").count() === 4, "f3 tier cliff minis");
+    ok(/independence approximation/.test(body), "f3 approximation labelled");
+    // f4: board wall filled from the feed
+    ok(await page.locator("#f-wall .cell").count() >= 24, "f4 board wall cells");
+    ok(await page.locator("#f-wall .cell.pRB").count() >= 8, "f4 wall position-coded");
+    // f5: opponent panels with dossier drilldown (f14)
+    ok(await page.locator("#f-opps .opp").count() === 12, "f5 twelve opponent panels");
+    await page.click('#f-opps .who[data-doss="1"]');
+    ok(!(await page.locator("#doss-1").isHidden()), "f14 dossier expands on tap");
+    ok(/tendency \(display only\)/.test(await page.textContent("#doss-1")), "f14 lifts labelled display only");
+    // f6: position run - 6 RBs in the last 8 picks
+    ok(/POSITION RUN/.test(body), "f6 run banner fires");
+    // f7: ticker with value tags
+    ok(/vs ADP|VALUE \+|REACH -/.test(await page.textContent("#lv-ticker")), "f7 ticker value tags");
+    // f8: survival horizon toggle
+    const cap1 = await page.textContent("#lv-surv");
+    await page.click('#f-horizon button[data-h="1"]');
+    await page.waitForTimeout(400);
+    const cap2 = await page.textContent("#lv-surv");
+    ok(/your pick 31/.test(cap1) && /your pick 42/.test(cap2), "f8 horizon toggle moves the target pick");
+    // f9: queue preloaded with a target, shows survival
+    ok(/Breece Hall/.test(await page.textContent("#f-queue")), "f9 queue shows target");
+    // f10: manual override marks a player drafted
+    await page.fill("#f-ovr-in", "Breece Hall");
+    await page.click("#f-ovr-go");
+    await page.waitForTimeout(400);
+    ok(await page.locator("#f-queue .queue-gone").count() >= 1, "f10 override crosses off the queued target");
+    // f13: trending badge from the mocked feed (board re-rendered post-interaction)
+    ok(/market heat \+9,?876/.test(await page.textContent("#f-board")), "f13 trending badge labelled market heat");
+    // f11: sortable board with search
+    await page.fill("#f-q", "kelce");
+    await page.waitForTimeout(300);
+    ok(/Kelce/.test(await page.textContent("#f-board")), "f11 board search filters");
+    // f12: sleepers list
+    ok(/market is/.test(await page.textContent("#f-sleepers")), "f12 value-vs-ADP sleepers");
+    // f15: pick-slot history flavor
+    ok(/historically/.test(await page.textContent("#f-hist")), "f15 league-history flavor line");
+    await page.close();
+  }
+
+  // ---- scenario 3d: RECAP EXPORT on a complete draft (f16)
+  {
+    const page = await browser.newPage({ acceptDownloads: true });
+    const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
+    await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([{ metadata: { first_name: "Jonathan", last_name: "Taylor", position: "RB" } }]) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "complete", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    ok(!(await page.locator("#f-recap").isHidden()), "f16 recap card visible on complete draft");
+    const [dl] = await Promise.all([
+      page.waitForEvent("download", { timeout: 5000 }).catch(() => null),
+      page.click("#f-recap-go"),
+    ]);
+    ok(dl !== null && /recap/.test(dl.suggestedFilename()), "f16 recap downloads as a file");
+    await page.close();
+  }
+
   // ---- scenario 4b: SPECTATOR fallback - live draft, seat unknown, never blank
   {
     const page = await browser.newPage();
