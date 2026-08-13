@@ -190,6 +190,34 @@ ok("condSurvival(" not in sim_block,
 ok('class="sim"' in app and "simbadge" in app and "scenario, not a forecast" in app,
    "sim quarantine styling present (dashed border, SIM badge, caption)")
 
+# 9. GRADE ISOLATION. The pick grade is presentation, not decision. The
+#    function between GRADE markers may read only the five sanctioned input
+#    families; forbidden fields are structurally absent. And the grade never
+#    feeds a verdict: verdict logic and the engine contain no grade tokens.
+g0, g1 = app.index("GRADE-BEGIN"), app.index("GRADE-END")
+# scan CODE only - the block's documentation legitimately NAMES the banned
+# inputs; what must never appear is a code reference to them
+grade_code = "\n".join(ln for ln in app[g0:g1].splitlines()
+                        if not ln.strip().startswith(("//", "*", "/*")))
+ok(all(tok not in grade_code for tok in
+       ("lift", "playcaller", "proe", "vacated", "trending", "tendency",
+        "Intel.", "SimState")),
+   "grade code reads none of the banned fields (lifts, team intel, trending, sim)",
+   "; ".join(tok for tok in ("lift", "playcaller", "proe", "vacated",
+                             "trending", "tendency", "Intel.", "SimState")
+             if tok in grade_code))
+ok(all(tok not in grade_code for tok in
+       ("verdictChip", "wait_or_reach", 'liveVerdict')),
+   "grade block contains no verdict logic")
+vc0 = app.index("function verdictChip")
+vc_block = app[vc0:app.index("}", vc0)]
+ok("pickGrade" not in vc_block and "gradeBand" not in vc_block,
+   "verdictChip never reads the grade")
+ok("pickGrade" not in src and "gradeBand" not in src,
+   "the engine (verdict source of truth) contains no grade code")
+ok('"gnum"' in app and "GRADE_RED_MAX = 39" in app and "GRADE_AMBER_MAX = 69" in app,
+   "band thresholds are the named constants the anchors pin")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
