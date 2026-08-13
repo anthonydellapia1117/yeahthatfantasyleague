@@ -452,6 +452,90 @@ def build_model():
     }
 
 
+# ======== OVERLAY-BEGIN (Phase B) ========
+# Conviction overlay: data/my_board.csv, applied AFTER build_model as a pure
+# transform. Structurally outside the model - the guard test proves the board
+# reaches no survival or wait-or-reach arithmetic. Its one decision role is
+# the coin-flip tie-break toward bulls; everything else is display. With an
+# empty board apply_overlay returns the model untouched, byte for byte.
+MY_BOARD_PATH = "data/my_board.csv"
+
+
+def _norm_name(s):
+    # mirrors the JS norm() so both surfaces match calls the same way
+    s = re.sub(r"[.']", "", str(s).lower())
+    return re.sub(r"\s+(jr|sr|ii|iii|iv|v)$", "", s).strip()
+
+
+def load_my_board(path=MY_BOARD_PATH):
+    if not os.path.exists(path):
+        return []
+    rows = [ln for ln in open(path) if not ln.lstrip().startswith("#")]
+    calls = []
+    for row in csv.DictReader(rows):
+        player = (row.get("player") or "").strip()
+        call = (row.get("call") or "").strip().upper()
+        if not player or call not in ("BULL", "BEAR"):
+            continue
+        calls.append({"player": player, "call": call,
+                      "move": (row.get("move") or "").strip(),
+                      "reason": (row.get("reason") or "").strip(),
+                      "source": (row.get("source") or "").strip(),
+                      "confidence": (row.get("confidence") or "").strip(),
+                      "date": (row.get("date") or "").strip()})
+    return calls
+
+
+def apply_overlay(m, calls):
+    """Pure transform. Empty board -> m returned untouched (guarded byte-identity).
+
+    Populated board -> adds m["my_board"] (display data + survival of each bull
+    to each slot-7 pick, computed WITH the frozen survival(), never into it)
+    and stamps coin_break on rounds where a bull sits in an existing coin flip.
+    Verdicts, primaries, and every survival number are never rewritten.
+    """
+    if not calls:
+        return m
+    by_norm = {_norm_name(p["name"]): p for p in m["players"]}
+    my_picks = [r["pick"] for r in
+                (m["slots"].get(7) or m["slots"].get("7") or [])][:4]
+    board = []
+    bulls = set()
+    for c in calls:
+        p = by_norm.get(_norm_name(c["player"]))
+        entry = dict(c)
+        entry["matched"] = bool(p)
+        if p:
+            entry.update({"pos": p["pos"], "adp": p["adp"], "vor": p["vor"],
+                          "tier": p["tier"]})
+            if c["call"] == "BULL":
+                bulls.add(p["name"])
+                entry["survival_to_my_picks"] = [
+                    [k, round(survival(p["adp"], k), 3)] for k in my_picks]
+        board.append(entry)
+    m["my_board"] = board
+    date_of = {c["player"]: c["date"] for c in calls if c["call"] == "BULL"}
+    for rounds in m["slots"].values():
+        for r in rounds:
+            if r.get("kdef") or not r.get("primary"):
+                continue
+            flip_names = list(r.get("coin_flips") or [])
+            if not flip_names:
+                continue
+            # tie-break toward bulls - the overlay's ONE decision role.
+            # The primary (the wait-or-reach subject) is never replaced.
+            toward = next((n for n in [r["primary"]["name"]] + flip_names
+                           if n in bulls), None)
+            if toward:
+                r["coin_break"] = {"toward": toward,
+                                   "call_date": next(
+                                       (d for pl, d in date_of.items()
+                                        if _norm_name(pl) == _norm_name(toward)),
+                                       "")}
+    return m
+# ======== OVERLAY-END ========
+
+
 def render_markdown(m):
     lines = []
     say = lines.append
@@ -482,7 +566,7 @@ def render_markdown(m):
                 f"| - | - | - |")
     say("")
     for slot in range(1, TEAMS + 1):
-        rounds = m["slots"][slot]
+        rounds = m["slots"].get(slot) or m["slots"][str(slot)]
         first8 = ", ".join(str(r["pick"]) for r in rounds[:8])
         say(f"## Slot {slot} - picks {first8} ...")
         say("")
@@ -507,9 +591,11 @@ def render_markdown(m):
                                   f"n {u['n_eff']:.1f})" for u in r["urgent"])
                 triggers.append(f"{p['pos']}-urgent seats: {names}")
             if r["coin_flips"]:
+                cb = r.get("coin_break")
                 triggers.append(f"COIN FLIP with "
                                 f"{', '.join(r['coin_flips'])} - "
-                                f"break toward ceiling")
+                                + (f"break toward your call - {cb['toward']}"
+                                   if cb else "break toward ceiling"))
             if p["injury"]:
                 triggers.append(f"{p['name']} is {p['injury']} - "
                                 f"re-check draft morning")
@@ -518,6 +604,27 @@ def render_markdown(m):
             say(f"| {r['round']} | {r['pick']} | {p['name']} {p['pos']} "
                 f"{p['vor']:.0f} ({p['p_available_now']:.0%}) | {fb} | "
                 f"{'; '.join(triggers) if triggers else 'none'} |")
+        say("")
+    if m.get("my_board"):
+        say("## MY BOARD - conviction overlay (display; one decision role)")
+        say("")
+        say("Calls from data/my_board.csv, scored by the pre-registered rule "
+            "in its header. The model's primary stays the wait-or-reach "
+            "subject; the only decision the overlay touches is the coin-flip "
+            "tie-break toward bulls.")
+        say("")
+        say("| Player | Call | Move | Survival to picks (slot 7) | Reason (source, date) |")
+        say("|---|---|---|---|---|")
+        for c in m["my_board"]:
+            if not c["matched"]:
+                say(f"| {c['player']} | {c['call']} | {c['move'] or '-'} | "
+                    f"UNMATCHED - not in the projection feed | "
+                    f"{c['reason']} ({c['source']}, {c['date']}) |")
+                continue
+            sv = (", ".join(f"{k}: {s:.0%}" for k, s in c["survival_to_my_picks"])
+                  if c.get("survival_to_my_picks") else "-")
+            say(f"| {c['player']} | {c['call']} | {c['move'] or '-'} | {sv} | "
+                f"{c['reason']} ({c['source']}, {c['date']}) |")
         say("")
     say("---")
     say("")
@@ -556,7 +663,7 @@ def main():
     ap.add_argument("--slot", type=int)
     a = ap.parse_args()
 
-    m = build_model()
+    m = apply_overlay(build_model(), load_my_board())
     md = render_markdown(m)
     os.makedirs("out", exist_ok=True)
     open(MD_PATH, "w").write(md)

@@ -219,3 +219,33 @@ deployment via the gh-pages workflow, and this review. Draft-morning flow:
 `python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push`.
 The survival math is frozen: 21 Python guards + the smoke suite with 42 JS
 parity anchors + the calibration benchmark gate every merge.
+
+## Draft-day features + conviction overlay - shipped 2026-08-13
+
+Four draft-day surfaces on top of v2, math untouched (the five survival
+functions are byte-identical to the pre-feature main; the diff proof runs at
+every merge):
+
+- Pick grade: 0-100 gear beside the live answer. Presentation, not decision -
+  named weights in code (GRADE_W), three bands carry the message (red 0-39
+  not at this price, amber 40-69 defensible, green 70-100 take him). Guard 9
+  proves the grade reads no banned field and no verdict reads the grade;
+  six pinned anchors including the monotone Dak curve gate every merge.
+  Evidence chips (play-caller REPORTED + date, team PROE, FFC band) sit
+  beside the gear and never enter the number.
+- Recommendations panel: on WAIT or COIN FLIP, 2 alternatives by default
+  (toggle 3/4/5, search appends one, max 6), each with its own gear.
+- Draft grid: 12 team columns x 14 rounds, position-coded, live feed.
+- Value board: overall top 50/100 + positional top 5/10/20 with FLEX and
+  DST, drafted auto-remove/grey-out toggle, K/DST floor labels.
+
+Conviction overlay (Expansion Phase B): `data/my_board.csv` - schema and the
+pre-registered scoring rule live in the file header. The engine applies it
+AFTER build_model as a pure transform (apply_overlay): YOUR CALL chips beside
+model VOR on every surface, survival of each bull to the slot-7 picks in the
+MY BOARD markdown section, within-tier resort on positional panels (display),
+and its ONE decision role - the coin-flip tie-break toward bulls. The model
+primary is always the wait-or-reach subject; guard 10 (10 checks) proves the
+overlay reaches no other arithmetic and that an empty board is byte-identical
+to no overlay. The shipped board is empty - populate it with your calls and
+regenerate.

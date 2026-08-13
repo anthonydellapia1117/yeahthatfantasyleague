@@ -1,0 +1,26 @@
+# YTFL conviction overlay - Anthony's calls, structurally outside the model.
+#
+# Schema: player,call,move,reason,source,confidence,date
+#   call: BULL or BEAR
+#   move: +1 tier or -1 tier (display intent only)
+#   reason: one sentence, required
+#   source: where the take comes from, required
+#   confidence: optional 0-1; leave blank if you will not stand behind a number
+#   date: YYYY-MM-DD the call was made
+#
+# PRE-REGISTERED SCORING RULE - fixed 2026-08-13, before any call is graded:
+#   Primary: signed margin = ADP-implied positional finish minus actual
+#     positional finish (positive = the bull was right), reported per call
+#     and averaged. The points version converts finish slots to points via
+#     the rolling 3-year average production of the slot (the FantasyPros
+#     conversion), so a +3-slot call on a WR1 counts more than on a WR5.
+#   Secondary: binary hit rate (did the bull beat ADP), always reported
+#     with its n - statistically toothless below n=10 and labelled so.
+#   Optional: Brier score against the base rate (a skill score), only for
+#     calls that carry a stated confidence.
+#   Accumulation is mandatory: grades accumulate across seasons. A grade
+#     means nothing before roughly 25 graded calls (2-3 seasons).
+#
+# The overlay's ONE decision role: coin-flip tie-break toward bulls.
+# The model's primary remains the wait-or-reach subject, always.
+player,call,move,reason,source,confidence,date
