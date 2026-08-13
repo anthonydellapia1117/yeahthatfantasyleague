@@ -313,6 +313,146 @@ const ok = (cond, name, detail) => {
     await page.close();
   }
 
+  // ---- scenario 7: PICK GRADE - frozen anchors + isolation.
+  // These integers are PINNED. Any change to the formula or weights breaks
+  // them loudly - what 80 means can never drift silently.
+  {
+    const page = await browser.newPage();
+    await page.route("**/api.sleeper.app/**", r => r.abort());
+    await page.goto(FILE);
+    await page.waitForTimeout(1500);
+    const r = await page.evaluate(() => {
+      const G = window.__pickGrade;
+      const dak = { vor: 18, adp: 90.3, pos: "QB", tier: 2 };
+      const dakCtx = [
+        [7,   { curPick: 7,   myNext: 18,  bestVor: 130, tierLeft: 5, fillsNeed: false, isSurplus: false }],
+        [55,  { curPick: 55,  myNext: 66,  bestVor: 45,  tierLeft: 4, fillsNeed: true,  isSurplus: false }],
+        [79,  { curPick: 79,  myNext: 90,  bestVor: 30,  tierLeft: 3, fillsNeed: true,  isSurplus: false }],
+        [90,  { curPick: 90,  myNext: 103, bestVor: 22,  tierLeft: 2, fillsNeed: true,  isSurplus: false }],
+        [103, { curPick: 103, myNext: 114, bestVor: 18,  tierLeft: 2, fillsNeed: true,  isSurplus: false }],
+        [115, { curPick: 115, myNext: 127, bestVor: 18,  tierLeft: 1, fillsNeed: true,  isSurplus: false }],
+      ];
+      return {
+        curve: dakCtx.map(([k, c]) => G(dak, c)),
+        amber: G({ vor: 40, adp: 50, pos: "RB" },
+                 { curPick: 48, myNext: 60, bestVor: 55, tierLeft: 4, fillsNeed: false, isSurplus: false }),
+        needPair: [
+          G({ vor: 44, adp: 65, pos: "RB" },
+            { curPick: 62, myNext: 74, bestVor: 46, tierLeft: 2, fillsNeed: true, isSurplus: false }),
+          G({ vor: 44, adp: 65, pos: "RB" },
+            { curPick: 62, myNext: 74, bestVor: 46, tierLeft: 2, fillsNeed: false, isSurplus: true }),
+        ],
+      };
+    });
+    ok(JSON.stringify(r.curve) === "[10,33,51,65,75,83]",
+       "grade anchors: the Dak curve is pinned at [10,33,51,65,75,83]", JSON.stringify(r.curve));
+    ok(r.curve.every((g, i) => i === 0 || g > r.curve[i - 1]),
+       "grade: monotonically improves as the pick passes his ADP");
+    ok(r.curve[0] <= 39 && r.amber === 55 && r.curve[4] >= 70,
+       "one pinned anchor per band: red 10, amber 55, green 75");
+    ok(r.needPair[0] === 69 && r.needPair[1] === 57,
+       "roster need moves the grade: fills-need 69 vs surplus 57, pinned");
+    await page.close();
+  }
+
+  // ---- scenario 8: DRAFT-DAY FEATURES 1-4 (gear on answer, recs panel,
+  // grid screen, value board)
+  {
+    const page = await browser.newPage();
+    const mk = (f, l, pos) => ({ metadata: { first_name: f, last_name: l, position: pos } });
+    const picks = [
+      mk("Ja'Marr", "Chase", "WR"), mk("Bijan", "Robinson", "RB"), mk("Justin", "Jefferson", "WR"),
+      mk("Jahmyr", "Gibbs", "RB"), mk("Saquon", "Barkley", "RB"), mk("CeeDee", "Lamb", "WR"),
+      mk("Jonathan", "Taylor", "RB"), mk("Puka", "Nacua", "WR"), mk("Amon-Ra", "St. Brown", "WR"),
+      mk("Christian", "McCaffrey", "RB"), mk("Malik", "Nabers", "WR"), mk("Brock", "Bowers", "TE"),
+      mk("Bucky", "Irving", "RB"), mk("Kyren", "Williams", "RB"), mk("Ashton", "Jeanty", "RB"),
+      mk("James", "Cook", "RB"), mk("De'Von", "Achane", "RB"), mk("Chase", "Brown", "RB"),
+      mk("Trey", "McBride", "TE"), mk("Tyreek", "Hill", "WR")];
+    const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
+    await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(picks) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    // F1: gear on the answer - band + integer number, no decimals
+    ok(await page.locator("#lv-gear .gear svg").count() === 1, "F1 gear dial on the answer");
+    const gnum = (await page.textContent("#lv-gear .gnum")).trim();
+    ok(/^\d{1,3}$/.test(gnum), "F1 grade is an integer, no false precision: " + gnum);
+    ok(/not at this price|defensible|take him/.test(await page.textContent("#lv-gear")),
+       "F1 band word carries the meaning beside the color");
+    // F2 correctness in the OTHER direction: at this board state the verdict
+    // is TAKE NOW with no coin flip, so the panel must stay hidden
+    ok(await page.locator("#f-recs").isHidden(), "F2 panel hidden on a clean TAKE NOW");
+    // F3: grid screen - 12 team columns x rounds, position-coded
+    await page.click('#nav button[data-scr="grid"]');
+    await page.waitForTimeout(400);
+    ok(!(await page.locator("#scr-grid").isHidden()), "F3 grid is a first-class screen");
+    ok(await page.locator("#g-grid .dg-h").count() === 12, "F3 twelve team columns");
+    ok(await page.locator("#g-grid .cell.pRB").count() >= 8, "F3 cells position-coded from the feed");
+    // F4: value board - two panels, toggles, drafted behavior
+    await page.click('#nav button[data-scr="board"]');
+    await page.waitForTimeout(400);
+    ok(await page.locator("#vb-left .vrow").count() === 50, "F4 overall top 50 default");
+    await page.click('#vb-topn button[data-n="100"]');
+    await page.waitForTimeout(400);
+    ok(await page.locator("#vb-left .vrow").count() === 100, "F4 toggle to top 100");
+    ok(await page.locator("#vb-left .vrow.gone").count() === 0, "F4 auto-remove ON: no drafted rows");
+    await page.click("#vb-keep");
+    await page.waitForTimeout(400);
+    ok(await page.locator("#vb-left .vrow.gone").count() > 0, "F4 grey-out OFF-mode shows drafted struck through");
+    ok(/FLEX \(RB\+WR\+TE\)/.test(await page.textContent("#vb-right")), "F4 FLEX group present");
+    ok(/DST/.test(await page.textContent("#vb-right")), "F4 DST group present");
+    ok((await page.textContent("#vb-right")).includes("floor"), "F4 K/DST rows carry the floor label");
+    await page.close();
+  }
+
+  // ---- scenario 8b: F2 RECS PANEL on a coin-flip board state
+  {
+    const page = await browser.newPage();
+    const mk = (f, l, pos) => ({ metadata: { first_name: f, last_name: l, position: pos } });
+    const picks = [mk("Ja'Marr","Chase","WR"), mk("Bijan","Robinson","RB"), mk("Jahmyr","Gibbs","RB"),
+      mk("Jonathan","Taylor","RB"), mk("Puka","Nacua","WR"), mk("Christian","McCaffrey","RB")];
+    const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
+    await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(picks) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    // this board state provably carries a COIN FLIP runner (Jeanty within 8 VOR)
+    ok(!(await page.locator("#f-recs").isHidden()), "F2 recs panel shows on WAIT/COIN FLIP");
+    ok(await page.locator("#recs-cards .rec").count() === 2, "F2 default is 2 alternatives");
+    await page.click('#recs-n button[data-n="5"]');
+    await page.waitForTimeout(400);
+    ok(await page.locator("#recs-cards .rec").count() === 5, "F2 toggle to 5");
+    await page.fill("#recs-q", "Travis Kelce");
+    await page.waitForTimeout(500);
+    ok(await page.locator("#recs-cards .rec").count() === 6, "F2 search appends a sixth card");
+    ok(/Kelce/.test(await page.textContent("#recs-cards")), "F2 searched player rendered");
+    ok(await page.locator("#recs-cards .gear").count() === 6, "F2 every card carries its own gear");
+    await page.click("#recs-clear");
+    await page.waitForTimeout(400);
+    ok(await page.locator("#recs-cards .rec").count() === 5, "F2 clear removes only the appended card");
+    await page.close();
+  }
+
   // ---- scenario 5: PARITY. The JS mirror must reproduce Python's survival
   // numbers exactly (within float tolerance). This is the test whose absence
   // let the 1-erf tail bug ship: the two surfaces disagreed past z~6 and
