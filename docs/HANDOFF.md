@@ -249,3 +249,27 @@ primary is always the wait-or-reach subject; guard 10 (10 checks) proves the
 overlay reaches no other arithmetic and that an empty board is byte-identical
 to no overlay. The shipped board is empty - populate it with your calls and
 regenerate.
+
+## Expansion Phases C-E - shipped 2026-08-13
+
+Three shard-fed pages beside the draft room, all on the same design system,
+all with tap-any-number provenance (tap a number, see its shard, field,
+source, and fetch time):
+
+- out/players.html - hash-routed player pages: value vs market with the FFC
+  band and attribution, literal 2025 nflverse usage columns, draft capital,
+  YOUR CALL block, K/DST floor labels. Absent blocks (combine, snap share,
+  EPA, xFP, routes) are declared absent, never estimated.
+- out/teams.html - all 32 teams: curated play-caller card (19 confirmed
+  rows; uncurated teams say so), PROE with its measurement basis, vacated
+  opportunity (departed vs arrivals with the computation note), depth chart
+  ranked by value with the official slot as metadata.
+- out/home.html - the action board: draft countdown from the payload, data
+  staleness board, overlay completeness, attributed trending adds, the one
+  history fact (consensus #1, 0-for-13, p=0.323 - colour, not strategy),
+  links to every surface.
+
+Guards: test_pages_data.py sections 10-12 resolve every on-page number
+reference against the committed shard fields and assert every honesty label.
+Smoke scenarios 10-12 run the pages on a hermetic local server. N1 stands:
+the engine reads nothing from this layer.

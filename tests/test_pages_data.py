@@ -195,6 +195,31 @@ if os.path.exists(tp_page):
     ok("not zero" in tpage and "Nothing on this page is estimated" in tpage,
        "team page declares absent data absent")
 
+# 12. PHASE E HOME PAGE. The action board: countdown from the payload (not a
+#     second hardcode), staleness thresholds stated, overlay completeness from
+#     the engine payload, trending attributed, all four surfaces linked, and
+#     the history fact carried WITH its p-value caveat.
+hp = os.path.join(ROOT, "out", "home.html")
+ok(os.path.exists(hp), "home.html exists")
+if os.path.exists(hp):
+    hpage = open(hp).read()
+    ok("E.league.draft_date" in hpage,
+       "countdown reads the draft date from the engine payload")
+    ok("Fresh under 36h" in hpage and "aging under 7 days" in hpage,
+       "staleness thresholds stated on the board")
+    ok(all(f'href="{s}"' in hpage for s in
+           ("draft_room.html", "players.html", "teams.html", "ff-hub.html")),
+       "home links every surface")
+    ok("0 times in 13 seasons" in hpage and "p=0.323" in hpage
+       and "not significant" in hpage,
+       "history fact carries its p-value and the honesty caveat")
+    ok("trending" in hpage and "never a projection" in hpage,
+       "trending adds attributed and labelled non-projection")
+    ok("25-call grading floor" in hpage or "25 calls" in hpage,
+       "overlay completeness states the grading floor")
+    ok("my_board" in hpage and "byte-identical" in hpage,
+       "overlay card explains the empty-board guarantee")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

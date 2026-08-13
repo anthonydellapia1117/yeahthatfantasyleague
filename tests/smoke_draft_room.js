@@ -646,6 +646,36 @@ const ok = (cond, name, detail) => {
        "team page: uncurated team declares absence instead of asserting continuity");
     ok(terr.length === 0, "team page: zero console errors", terr[0] || "");
     await tpg.close();
+
+    // ---- scenario 12: PHASE E HOME. Countdown from the payload, staleness
+    // board, overlay completeness on the empty board, mocked trending with
+    // names resolved through the payload, all surfaces linked.
+    const hpg = await browser.newPage();
+    const herr = [];
+    hpg.on("pageerror", e => herr.push(String(e)));
+    hpg.on("console", m => { if (m.type() === "error") herr.push(m.text()); });
+    await hpg.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([{ player_id: "9221", count: 12345 },
+                            { player_id: "0000-nobody", count: 999 }]) }));
+    await hpg.goto(base + "/out/home.html");
+    await hpg.waitForTimeout(1500);
+    const htxt = await hpg.textContent("body");
+    ok(/\d+ days/.test(await hpg.textContent("#countdown")) || /DRAFT DAY/.test(htxt),
+       "home: countdown renders from the payload date");
+    ok(await hpg.locator("#stale table tr").count() >= 7,
+       "home: staleness board lists the engine plus every shard");
+    ok(/0 calls recorded/.test(htxt), "home: overlay completeness on the empty board");
+    ok(/Jahmyr Gibbs/.test(await hpg.textContent("#trend")),
+       "home: trending resolves names through the engine payload");
+    ok(/counted, not invented/.test(await hpg.textContent("#trend")),
+       "home: unknown trending players counted, not invented");
+    ok(/0 times in 13 seasons/.test(htxt) && /p=0\.323/.test(htxt),
+       "home: history fact carries its caveat");
+    for (const s of ["draft_room.html", "players.html", "teams.html", "ff-hub.html"])
+      ok(await hpg.locator(`.surfaces a[href="${s}"]`).count() === 1, "home links " + s);
+    ok(herr.length === 0, "home: zero console errors", herr[0] || "");
+    await hpg.close();
     srv.close();
   }
 
