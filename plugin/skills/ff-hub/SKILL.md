@@ -44,6 +44,9 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 | Open the dashboard | `open out/ff-hub.html` |
 | Draft-day app | https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html - or `open out/draft_room.html` offline. Regenerate draft morning: `python3 src/engine_2026.py`, commit, push. Live mode carries the pick grade gear (presentation only, guarded), the ALSO CONSIDER panel on WAIT/COIN FLIP, the Grid screen (12x14 live board), and the Board screen (best-available overall + by position, drafted toggle) |
 | Record a conviction call (bull/bear) | Add a row to `data/my_board.csv` (schema + pre-registered scoring rule in its header), then `python3 src/engine_2026.py`. YOUR CALL chips appear beside model VOR; the ONLY decision it moves is a coin-flip tie-break toward bulls. Empty board = byte-identical output (guard 10) |
+| Look up one player (value, usage, market band) | `out/players.html#p=<name>` on Pages - every number tappable to its shard and source. K/DST carry the floor label |
+| Team context (caller, vacated usage, depth) | `out/teams.html#t=<abbr>` - curated play-caller rows only (19 teams; others say so), PROE display-only per N1, vacated = size of the hole, not a landing spot |
+| The action board (staleness, countdown, trending) | `out/home.html` - shard ages, overlay completeness, attributed trending adds. If a shard shows stale, check the pages-data cron before trusting a page |
 
 ## Anthony's position, stated once
 
