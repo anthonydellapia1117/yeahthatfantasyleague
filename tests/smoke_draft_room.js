@@ -556,6 +556,71 @@ const ok = (cond, name, detail) => {
     fs.unlinkSync(tmp);
   }
 
+  // ---- scenario 10: PHASE C PLAYER PAGES. Served over a local hermetic
+  // server (the page fetches its shards); every block renders from real
+  // shard fields and the tap-provenance popover names its source.
+  {
+    const http = require("http");
+    const fs = require("fs");
+    const root = path.resolve(".");
+    const srv = http.createServer((req, res) => {
+      if (req.url === "/favicon.ico"){ res.writeHead(204); return res.end(); }
+      const f = path.join(root, decodeURIComponent(req.url.split("?")[0].replace(/^\//, "")));
+      try {
+        const body = fs.readFileSync(f);
+        res.writeHead(200, { "content-type": f.endsWith(".json") ? "application/json"
+          : f.endsWith(".html") ? "text/html" : "text/plain" });
+        res.end(body);
+      } catch { res.writeHead(404); res.end("nope"); }
+    });
+    await new Promise(r => srv.listen(0, "127.0.0.1", r));
+    const base = "http://127.0.0.1:" + srv.address().port;
+    const page = await browser.newPage();
+    const errors = [];
+    page.on("pageerror", e => errors.push(String(e)));
+    page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
+    await page.goto(base + "/out/players.html");
+    await page.waitForTimeout(1500);
+    ok(await page.locator("input[type=search]").count() === 1, "players index renders with search");
+    ok(await page.locator(".idxrow").count() > 100, "players index lists the positional boards");
+    ok((await page.textContent("#foot")).includes("Provenance"), "players provenance footer renders");
+    ok((await page.textContent("#foot")).includes("FantasyFootballCalculator"),
+       "players FFC attribution rendered");
+    ok(await page.locator(".yc").count() === 0, "players: empty board, zero YOUR CALL chips");
+    // a skill player with usage + band
+    await page.goto(base + "/out/players.html#p=" + encodeURIComponent("Jahmyr Gibbs"));
+    await page.waitForTimeout(800);
+    const ptxt = await page.textContent("#content");
+    ok(/Jahmyr Gibbs/.test(ptxt), "player page renders the header");
+    ok(/Value vs the market/.test(ptxt), "value block renders");
+    ok(/market's range on him/.test(ptxt) && /mocks/.test(ptxt), "FFC market band renders with mock count");
+    ok(/2025 usage - literal nflverse columns/.test(ptxt), "usage block renders literal columns");
+    ok(/Prospect profile/.test(ptxt), "prospect block renders");
+    ok(/Not wired, on purpose/.test(ptxt), "absent blocks declared absent");
+    // tap-any-number provenance - pattern 1
+    await page.click('#content .pv[data-shard="usage_2025.json"]');
+    await page.waitForTimeout(300);
+    const pop = await page.textContent("#pvpop");
+    ok(/usage_2025\.json/.test(pop) && /nflverse/.test(pop) && /fetched/.test(pop),
+       "tap a number: popover names shard, source, fetch time");
+    // K/DST carries the floor
+    await page.goto(base + "/out/players.html");
+    await page.waitForTimeout(500);
+    const kName = await page.evaluate(() => {
+      const E = null; // page has no engine sentinel; read from the app state
+      return fetch("engine_2026.json").then(r => r.json())
+        .then(e => e.players.filter(p => p.pos === "K").sort((a, b) => b.vor - a.vor)[0].name);
+    });
+    await page.goto(base + "/out/players.html#p=" + encodeURIComponent(kName));
+    await page.waitForTimeout(800);
+    ok((await page.textContent("#content")).includes("projection = floor"),
+       "K page carries the floor label");
+    ok(errors.length === 0, "players page: zero console errors",
+       errors[0] || "");
+    await page.close();
+    srv.close();
+  }
+
   // ---- scenario 5: PARITY. The JS mirror must reproduce Python's survival
   // numbers exactly (within float tolerance). This is the test whose absence
   // let the 1-erf tail bug ship: the two surfaces disagreed past z~6 and
