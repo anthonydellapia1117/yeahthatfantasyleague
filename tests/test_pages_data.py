@@ -130,7 +130,9 @@ pp = os.path.join(ROOT, "out", "players.html")
 ok(os.path.exists(pp), "players.html exists")
 if os.path.exists(pp):
     page = open(pp).read()
-    refs = set(re.findall(r'pv\([^)]*?,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)', page))
+    # anchored on the trailing (shard, field) string args so pv() calls whose
+    # value argument itself contains parentheses are still captured
+    refs = set(re.findall(r',\s*"([A-Za-z0-9_]+\.json)"\s*,\s*"([A-Za-z0-9_]+)"\s*\)', page))
     ok(len(refs) >= 15, "page carries tappable provenance references",
        f"only {len(refs)}")
     # field universe per shard, from the committed files themselves
@@ -159,6 +161,39 @@ if os.path.exists(pp):
        "route/usage metrics carry the prior-season honesty label")
     ok("Nothing on this page is estimated" in page,
        "absent blocks declared absent, not estimated")
+
+# 11. PHASE D TEAM PAGES. Same acceptance as the player pages: every number
+#     traces to a shard field, and every instrument shows its computation note.
+tp_page = os.path.join(ROOT, "out", "teams.html")
+ok(os.path.exists(tp_page), "teams.html exists")
+if os.path.exists(tp_page):
+    tpage = open(tp_page).read()
+    trefs = set(re.findall(r',\s*"([A-Za-z0-9_]+\.json)"\s*,\s*"([A-Za-z0-9_]+)"\s*\)', tpage))
+    ok(len(trefs) >= 8, "team page carries tappable provenance references",
+       f"only {len(trefs)}")
+    tfields = {}
+    if pc:
+        tfields["playcallers.json"] = set().union(*(set(r) for r in pc["callers"]))
+    if pr:
+        tfields["team_proe_2025.json"] = set().union(*(set(t) for t in pr["teams"]))
+    if dc:
+        tfields["depth_charts.json"] = set().union(*(set(e) for e in dc["entries"][:300]))
+    if us:
+        tfields["usage_2025.json"] = set().union(*(set(p) for p in us["players"][:300]))
+    epath = os.path.join(ROOT, "out", "engine_2026.json")
+    em2 = json.load(open(epath))
+    tfields["engine_2026.json"] = set().union(*(set(p) for p in em2["players"][:300]))
+    tbad = [f"{s}:{f}" for s, f in trefs if s not in tfields or f not in tfields[s]]
+    ok(not tbad, "every team-page reference resolves to a shard field",
+       "; ".join(tbad[:5]))
+    ok(tpage.count("computation:") >= 4,
+       "every instrument shows its computation note",
+       f"only {tpage.count('computation:')}")
+    ok("N1" in tpage and "p=0.99" in tpage,
+       "team page states the N1 display-only rule with the backtest number")
+    ok("Provenance (guard N2)" in tpage, "team page provenance footer present")
+    ok("not zero" in tpage and "Nothing on this page is estimated" in tpage,
+       "team page declares absent data absent")
 
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")

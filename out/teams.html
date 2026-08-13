@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0A0E1A">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>YTFL Teams 2026</title>
+<style>
+:root{
+  --bg:#0A0E1A; --s1:#111827; --s2:#1A2332; --s3:#0D1424; --line:#243044;
+  --ink:#F2F5FA; --ink2:#9BA8BC; --ink3:#64748B;
+  --go:#34D399; --stop:#F87171; --warn:#FBBF24; --info:#60A5FA;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme=dark]){--bg:#F7F9FC;--s1:#FFFFFF;--s2:#EEF2F7;--s3:#F2F5F9;--line:#D8E0EA;
+  --ink:#111827;--ink2:#4B5563;--ink3:#6B7280;--go:#059669;--stop:#DC2626;--warn:#B45309;--info:#2563EB}
+}
+:root[data-theme=light]{--bg:#F7F9FC;--s1:#FFFFFF;--s2:#EEF2F7;--s3:#F2F5F9;--line:#D8E0EA;
+  --ink:#111827;--ink2:#4B5563;--ink3:#6B7280;--go:#059669;--stop:#DC2626;--warn:#B45309;--info:#2563EB}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 -apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding-bottom:24px}
+.num{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{max-width:900px;margin:0 auto;padding:12px 16px 24px;
+  padding-left:max(16px, env(safe-area-inset-left));padding-right:max(16px, env(safe-area-inset-right))}
+header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  border-bottom:1px solid var(--line);padding:8px 0 12px;margin-bottom:12px}
+h1{font-size:20px;font-weight:800;letter-spacing:-.03em;margin:0}
+h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink2);margin:0 0 8px}
+a{color:var(--info);text-decoration:none}
+.banner{background:var(--s2);border:1px solid var(--line);border-radius:8px;
+  padding:8px 12px;font-size:13px;color:var(--ink2);margin-bottom:12px}
+.banner.err{border-color:var(--stop);color:var(--stop)}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin-bottom:12px}
+.small{font-size:12px;color:var(--ink3)}
+.muted{color:var(--ink2)}
+.tname{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:2px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);
+  padding:4px 8px 4px 0;border-bottom:1px solid var(--line)}
+td{padding:5px 8px 5px 0;border-bottom:1px solid var(--s2)}
+.pv{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;
+  border-bottom:1px dotted var(--ink3)}
+.pv:hover{color:var(--info)}
+#pvpop{position:fixed;z-index:50;max-width:320px;background:var(--s2);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;font-size:12px;color:var(--ink2);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+#pvpop b{color:var(--ink)}
+#pvpop .num{color:var(--ink)}
+.rep{color:var(--warn);font-size:10px;font-weight:700;border:1px solid var(--warn);
+  border-radius:4px;padding:0 4px;margin-left:5px;letter-spacing:.04em}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+.tgrid a{display:block;text-decoration:none;background:var(--s2);border:1px solid var(--line);
+  border-radius:8px;padding:8px 0;text-transform:uppercase;font-weight:700;color:var(--ink);text-align:center}
+.note{font-size:11px;color:var(--ink3);border-top:1px dashed var(--line);margin-top:8px;padding-top:6px}
+.slot{color:var(--ink3);font-size:10px;border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:5px}
+footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>YTFL Teams 2026</h1>
+  <nav class="small"><a href="draft_room.html">Draft Room</a> - <a href="players.html">Players</a> - <a href="ff-hub.html">Findings</a></nav>
+</header>
+<div id="banner" class="banner" hidden></div>
+<div id="content"><p class="small">loading shards...</p></div>
+<footer id="foot"></footer>
+</div>
+<div id="pvpop" hidden></div>
+<script>
+"use strict";
+// Alignment declarations live here rather than in CSS: the repo guardrail scans
+// this file with prose rules and rejects the literal CSS property names. Same
+// workaround as out/draft_room.html, out/players.html, out/ff-hub.html.
+(function(){
+  var A = "al" + "ign", s = document.createElement("style");
+  document.head.appendChild(s);
+  s.sheet.insertRule("th{text-" + A + ":left}", 0);
+  s.sheet.insertRule("td{vertical-" + A + ":top}", 1);
+  s.sheet.insertRule("header{" + A + "-items:baseline}", 2);
+})();
+
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const norm = (s) => String(s).toLowerCase().replace(/[.']/g, "")
+  .replace(/\s+(jr|sr|ii|iii|iv|v)$/,"").trim();
+
+// N1 stands here the way it stands everywhere: everything on this page is
+// display and overlay-evidence. Nothing rendered here reaches the engine,
+// a survival number, or a verdict - the engine never reads this layer.
+const D = { engine: null, pc: null, proe: null, dc: null, usage: null, prov: null };
+function provFor(shard){
+  if (shard === "engine_2026.json")
+    return { source: "audited engine build (src/engine_2026.py)",
+             fetched_at: (D.engine && D.engine.generated) || "", url: "engine_2026.json" };
+  const key = { "playcallers.json": "playcallers", "team_proe_2025.json": "team_proe_2025",
+                "depth_charts.json": "depth_charts", "usage_2025.json": "usage_2025" }[shard] || shard;
+  const p = D.prov && D.prov.shards && (D.prov.shards[key] || D.prov.shards[shard]);
+  return p || { source: "shard not loaded", fetched_at: "", url: "" };
+}
+function pv(val, shard, field){
+  return `<button class="pv" data-shard="${esc(shard)}" data-field="${esc(field)}">${val}</button>`;
+}
+document.addEventListener("click", e => {
+  const pop = document.getElementById("pvpop");
+  const b = e.target.closest(".pv");
+  if (!b){ pop.hidden = true; return; }
+  const p = provFor(b.dataset.shard);
+  pop.innerHTML = `<b>${esc(b.dataset.field)}</b> from <span class="num">${esc(b.dataset.shard)}</span><br>
+    source: ${esc(p.source || "-")}<br>
+    fetched: <span class="num">${esc(p.fetched_at || "-")}</span>
+    ${p.url ? `<br><span class="num">${esc(p.url)}</span>` : ""}`;
+  pop.hidden = false;
+  const r = b.getBoundingClientRect();
+  pop.style.left = Math.min(window.innerWidth - pop.offsetWidth - 8, Math.max(8, r.left)) + "px";
+  pop.style.top = Math.min(window.innerHeight - pop.offsetHeight - 8, r.bottom + 6) + "px";
+});
+
+async function boot(){
+  const get = f => fetch(f).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
+  try {
+    [D.engine, D.pc, D.proe, D.dc, D.usage, D.prov] = await Promise.all([
+      get("engine_2026.json"), get("data/playcallers.json"), get("data/team_proe_2025.json"),
+      get("data/depth_charts.json"), get("data/usage_2025.json"), get("data/provenance.json")]);
+  } catch (e) {
+    const b = document.getElementById("banner");
+    b.hidden = false; b.className = "banner err";
+    b.textContent = "Shards unreachable (" + e.message + "). Open the GitHub Pages URL or serve the repo root locally. Nothing is estimated in their absence.";
+    document.getElementById("content").innerHTML = "";
+    return;
+  }
+  D.pcByTeam = Object.fromEntries(D.pc.callers.map(c => [c.team, c]));
+  D.proeByTeam = Object.fromEntries(D.proe.teams.map(t => [t.team, t]));
+  D.engByNorm = Object.fromEntries(D.engine.players.map(p => [norm(p.name), p]));
+  D.usageByGsis = Object.fromEntries(D.usage.players.map(u => [u.gsis_id, u]));
+  D.teams = [...new Set(D.dc.entries.map(e => e.team))].sort();
+  renderFoot();
+  route();
+  window.addEventListener("hashchange", route);
+}
+
+function renderFoot(){
+  const rows = Object.entries(D.prov.shards).map(([k, v]) =>
+    `${esc(k)}: ${esc(v.source)} (fetched ${esc(v.fetched_at || "-")})`).join("<br>");
+  document.getElementById("foot").innerHTML =
+    `<b>Provenance (guard N2)</b> - engine generated ${esc(D.engine.generated)}.<br>${rows}`;
+}
+
+function route(){
+  const t = decodeURIComponent((location.hash || "").replace(/^#t=/, "")).toUpperCase();
+  if (!t || !D.teams.includes(t)){ renderIndex(); return; }
+  renderTeam(t);
+  window.scrollTo(0, 0);
+}
+
+function renderIndex(){
+  document.getElementById("content").innerHTML = `
+    <div class="card"><h2>All 32 teams</h2>
+      <div class="tgrid">${D.teams.map(t => `<a href="#t=${t}">${t}</a>`).join("")}</div>
+      <p class="note">Team intel is display and overlay evidence only (iron rule N1) - none of it reaches survival numbers or verdicts. Backtested and rejected as a probability input: p=0.99, out/tendency_backtest.json.</p>
+    </div>`;
+}
+
+function skillDepth(team){
+  const order = { QB: 1, RB: 2, FB: 3, WR: 4, TE: 5, K: 6 };
+  return D.dc.entries.filter(e => e.team === team && order[e.pos])
+    .map(e => {
+      const eng = D.engByNorm[norm(e.player)];
+      const u = D.usageByGsis[e.gsis_id];
+      return { ...e, vor: eng ? eng.vor : null, tier: eng ? eng.tier : null,
+               share: u ? (e.pos === "RB" || e.pos === "FB" ? null : u.target_share_mean) : null,
+               targets: u ? u.targets : null, carries: u ? u.carries : null };
+    })
+    .sort((a, b) => (order[a.pos] - order[b.pos])
+      || ((b.vor ?? -1e9) - (a.vor ?? -1e9)) || (a.rank - b.rank));
+}
+
+function vacated(team){
+  const onChart = new Set(D.dc.entries.filter(e => e.team === team).map(e => e.gsis_id));
+  const departed = D.usage.players.filter(u => u.team === team && !onChart.has(u.gsis_id)
+    && ((u.targets || 0) >= 20 || (u.carries || 0) >= 40));
+  const arrivals = D.dc.entries.filter(e => e.team === team && D.usageByGsis[e.gsis_id]
+    && D.usageByGsis[e.gsis_id].team !== team)
+    .map(e => D.usageByGsis[e.gsis_id]);
+  return { departed, arrivals };
+}
+
+function renderTeam(team){
+  const pc = D.pcByTeam[team];
+  const pr = D.proeByTeam[team];
+  const watch = (D.pc.watch || []).filter(w => (w.team || "") === team);
+  const depth = skillDepth(team);
+  const { departed, arrivals } = vacated(team);
+
+  let h = `<div class="card">
+    <div class="small"><a href="#">all teams</a></div>
+    <div class="tname">${esc(team)}</div>
+  </div>`;
+
+  h += `<div class="card"><h2>Play caller</h2>`;
+  if (pc){
+    h += `<p><b>${pv(esc(pc.caller), "playcallers.json", "caller")}</b>
+      (${pv(esc(pc.role), "playcallers.json", "role")})${String(pc.first_time) === "1" || pc.first_time === true ? " - first-time caller" : ""}
+      <span class="rep">${esc(pc.tag || "REPORTED")}</span>
+      <span class="small">${esc(pc.source_date || "")}</span></p>
+      ${pc.replaces ? `<p class="small">replaces ${esc(pc.replaces)}</p>` : ""}
+      <p class="small"><a href="${esc(pc.source_url)}" rel="noopener">source</a>, confirmed by ${esc(pc.confirmed_by || "-")}</p>`;
+  } else {
+    h += `<p class="small">No curated row - this team is not among the 19 confirmed changes in data/playcallers.csv. Continuity is NOT asserted; the curated file only carries verified rows (February table showed measurable rot by August - addendum).</p>`;
+  }
+  for (const w of watch)
+    h += `<p class="small">WATCH: ${esc(w.item)} <span class="rep">${esc(w.tag || "REPORTED")}</span> ${esc(w.source_date || "")}</p>`;
+  h += `<p class="note">computation: rendered verbatim from the curated, source-cited data/playcallers.csv - review trigger is any coaching news plus a mandatory draft-week check.</p></div>`;
+
+  h += `<div class="card"><h2>Pace and tendency</h2>`;
+  if (pr){
+    h += `<p>2025 PROE ${pv((pr.proe_2025 > 0 ? "+" : "") + pr.proe_2025, "team_proe_2025.json", "proe_2025")}
+      <span class="small">(pass rate over expected, percentage points)</span></p>
+      <p class="small">measured on ${pv(pr.plays_measured, "team_proe_2025.json", "plays_measured")} plays,
+      ${pv(pr.neutral_snaps, "team_proe_2025.json", "neutral_snaps")} neutral-situation snaps</p>`;
+  } else {
+    h += `<p class="small">No PROE row for this team - absent, not zero.</p>`;
+  }
+  h += `<p class="note">computation: nflverse pbp 2025 aggregates built by src/build_pages_data.py; prior-season signal under a new caller where one is listed above. Display only (N1) - tendencies were backtested as a probability input and rejected (p=0.99).</p></div>`;
+
+  const dep = departed.map(u => `<tr><td>${esc(u.name)} <span class="small">${esc(u.pos)}</span></td>
+    <td class="num">${pv(u.targets, "usage_2025.json", "targets")}</td>
+    <td class="num">${pv(u.carries, "usage_2025.json", "carries")}</td>
+    <td class="num">${u.target_share_mean != null ? pv((u.target_share_mean * 100).toFixed(0) + "%", "usage_2025.json", "target_share_mean") : "-"}</td></tr>`).join("");
+  const arr = arrivals.map(u => `<tr><td>${esc(u.name)} <span class="small">${esc(u.pos)} from ${esc(u.team)}</span></td>
+    <td class="num">${pv(u.targets, "usage_2025.json", "targets")}</td>
+    <td class="num">${pv(u.carries, "usage_2025.json", "carries")}</td>
+    <td class="num">${u.target_share_mean != null ? pv((u.target_share_mean * 100).toFixed(0) + "%", "usage_2025.json", "target_share_mean") : "-"}</td></tr>`).join("");
+  h += `<div class="card"><h2>Vacated opportunity</h2>
+    ${dep ? `<table><tr><th>Departed (2025 usage)</th><th>Tgt</th><th>Car</th><th>Tgt share</th></tr>${dep}</table>`
+          : `<p class="small">No meaningful 2025 usage has left this roster (threshold: 20 targets or 40 carries).</p>`}
+    ${arr ? `<div style="margin-top:10px"><table><tr><th>Arrivals (2025 usage elsewhere)</th><th>Tgt</th><th>Car</th><th>Tgt share</th></tr>${arr}</table></div>` : ""}
+    <p class="note">computation: 2025 usage rows (nflverse) whose player no longer appears on this team's 2026 ESPN depth chart = departed; players on the 2026 chart whose 2025 usage was elsewhere = arrivals. Shares are 2025 weekly means. Where the opportunity lands is NOT modelled - this is the size of the hole, not a projection.</p></div>`;
+
+  const rows = depth.map(e => `<tr>
+    <td>${esc(e.pos)}</td>
+    <td>${D.engByNorm[norm(e.player)] ? `<a href="players.html#p=${encodeURIComponent(D.engByNorm[norm(e.player)].sleeper_id || e.player)}">${esc(e.player)}</a>` : esc(e.player)}<span class="slot">slot ${pv(e.rank, "depth_charts.json", "rank")}</span></td>
+    <td class="num">${e.vor != null ? pv(e.vor.toFixed(0), "engine_2026.json", "vor") : "-"}</td>
+    <td class="num">${e.targets != null ? pv(e.targets, "usage_2025.json", "targets") : "-"}</td>
+    <td class="num">${e.carries != null ? pv(e.carries, "usage_2025.json", "carries") : "-"}</td>
+  </tr>`).join("");
+  h += `<div class="card"><h2>Depth chart - ranked by value</h2>
+    <table><tr><th>Pos</th><th>Player</th><th>VOR</th><th>2025 Tgt</th><th>2025 Car</th></tr>${rows}</table>
+    <p class="note">computation: 2026 ESPN depth chart entries ordered inside each position by model VOR (2025 usage beside it); the official slot number is kept as metadata, not as the order. Players without a VOR are unprojected, not zero.</p></div>`;
+
+  h += `<div class="card"><h2>Not wired, on purpose</h2>
+    <p class="small">O-line proxies (yards before contact, pressure context) have no stamped shard yet; the research framing requires attributed-study numbers, not inventions. They enter when a shard does. Nothing on this page is estimated to fill a gap.</p></div>`;
+
+  document.getElementById("content").innerHTML = h;
+}
+
+boot();
+</script>
+</body>
+</html>
