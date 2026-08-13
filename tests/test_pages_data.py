@@ -220,6 +220,42 @@ if os.path.exists(hp):
     ok("my_board" in hpage and "byte-identical" in hpage,
        "overlay card explains the empty-board guarantee")
 
+# 13. APP SHELL (Phase 1). One nav, five pages: nav.js is the single source
+#     of truth, every link target exists, every page includes it exactly once
+#     with a distinct active key, and on the draft room the include lives
+#     OUTSIDE the engine sentinels so regeneration can never touch it.
+navp = os.path.join(ROOT, "out", "nav.js")
+ok(os.path.exists(navp), "nav.js exists (single source of truth)")
+if os.path.exists(navp):
+    navsrc = open(navp).read()
+    nav_items = re.findall(r'\["(\w+)",\s*"[^"]+",\s*"([^"]+)"\]', navsrc)
+    ok(len(nav_items) == 5, "nav defines exactly five items", f"{len(nav_items)}")
+    missing = [href for _, href in nav_items
+               if not os.path.exists(os.path.join(ROOT, "out", href))]
+    ok(not missing, "every nav link target resolves to a real file",
+       "; ".join(missing))
+    PAGES = {"draft_room.html": "draft", "players.html": "players",
+             "teams.html": "teams", "ff-hub.html": "findings",
+             "home.html": "hub"}
+    seen_keys = []
+    for fname, want in PAGES.items():
+        psrc = open(os.path.join(ROOT, "out", fname)).read()
+        tags = re.findall(r'<script src="nav\.js" data-active="(\w+)" defer></script>', psrc)
+        ok(tags == [want], f"{fname} includes the shared nav once, active={want}",
+           str(tags))
+        seen_keys += tags
+        # the old ad-hoc navs must be gone - one navigation system per page
+        ok('<nav class="small">' not in psrc,
+           f"{fname} carries no second navigation system")
+    ok(sorted(seen_keys) == sorted(k for k, _ in nav_items),
+       "each active key is used exactly once across the five pages")
+    dr = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+    tag_at = dr.index('src="nav.js"')
+    ok(tag_at < dr.index('<script id="engine-data"'),
+       "draft room nav include sits OUTSIDE (before) the engine sentinels")
+    ok("nav.js" in open(os.path.join(ROOT, ".github", "workflows", "pages.yml")).read(),
+       "pages workflow deploys nav.js")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

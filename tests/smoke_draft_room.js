@@ -679,6 +679,103 @@ const ok = (cond, name, detail) => {
     srv.close();
   }
 
+  // ---- scenario 13: APP SHELL. The shared nav renders on all five pages
+  // with exactly one active item; the drawer works at 390px; the draft room
+  // collapses to the slim bar in live mode and the answer stack stays above
+  // the fold; the pill counts down pre-draft and goes LIVE with the dot.
+  {
+    const http = require("http");
+    const fs = require("fs");
+    const root = path.resolve(".");
+    const srv = http.createServer((req, res) => {
+      if (req.url === "/favicon.ico"){ res.writeHead(204); return res.end(); }
+      const f = path.join(root, decodeURIComponent(req.url.split("?")[0].replace(/^\//, "")));
+      try {
+        const body = fs.readFileSync(f);
+        res.writeHead(200, { "content-type": f.endsWith(".json") ? "application/json"
+          : f.endsWith(".html") ? "text/html"
+          : f.endsWith(".js") ? "text/javascript" : "text/plain" });
+        res.end(body);
+      } catch { res.writeHead(404); res.end("nope"); }
+    });
+    await new Promise(r => srv.listen(0, "127.0.0.1", r));
+    const base = "http://127.0.0.1:" + srv.address().port;
+    const ACTIVE = { "players.html": "PLAYERS", "teams.html": "TEAMS",
+                     "home.html": "HUB", "ff-hub.html": "FINDINGS" };
+    for (const [file, label] of Object.entries(ACTIVE)){
+      const pg = await browser.newPage();
+      await pg.route("**/api.sleeper.app/**", r => r.abort());
+      await pg.goto(base + "/out/" + file);
+      await pg.waitForTimeout(800);
+      ok(await pg.locator(".ynav").count() === 1, `nav renders on ${file}`);
+      ok(await pg.locator(".ynav-items a").count() === 5, `nav carries five items on ${file}`);
+      const on = pg.locator(".ynav-items a.on");
+      ok(await on.count() === 1 && (await on.textContent()).trim() === label
+         && await on.getAttribute("aria-current") === "page",
+         `exactly one active item on ${file}: ${label}`);
+      await pg.close();
+    }
+    // drawer behavior at 390px
+    const dw = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await dw.route("**/api.sleeper.app/**", r => r.abort());
+    await dw.goto(base + "/out/players.html");
+    await dw.waitForTimeout(800);
+    ok(await dw.locator(".ynav-burger").isVisible(), "hamburger shows at 390px");
+    ok(!(await dw.locator(".ynav-items").isVisible()), "inline items hide at 390px");
+    await dw.click(".ynav-burger");
+    ok(await dw.locator(".ynav-drawer").isVisible(), "drawer opens over the scrim");
+    await dw.keyboard.press("Escape");
+    ok(!(await dw.locator(".ynav-drawer").isVisible()), "Escape closes the drawer");
+    await dw.close();
+    // draft room pre-draft: full bar with the countdown pill
+    const pd = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    const idSlots13 = {}; for (let i = 1; i <= 12; i++) idSlots13[i] = i;
+    await pd.route("**/v1/draft/*", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify({ status: "pre_draft", draft_order: null,
+                             slot_to_roster_id: idSlots13 }) }));
+    await pd.goto(base + "/out/draft_room.html");
+    await pd.waitForTimeout(3000);
+    ok(/\d+ DAYS|DRAFT DAY/.test(await pd.textContent("#ynav-pill")),
+       "pre-draft pill counts down from the payload date");
+    ok(!(await pd.evaluate(() => document.documentElement.classList.contains("ynav-slim"))),
+       "pre-draft keeps the full 52px bar");
+    await pd.close();
+    // draft room LIVE at 390px: slim bar, answer stack above the fold
+    const lv = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    const mk13 = (f, l, pos) => ({ metadata: { first_name: f, last_name: l, position: pos } });
+    await lv.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await lv.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([mk13("Ja'Marr","Chase","WR"), mk13("Bijan","Robinson","RB"),
+                            mk13("Jahmyr","Gibbs","RB")]) }));
+    await lv.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots13 }) });
+    });
+    await lv.goto(base + "/out/draft_room.html");
+    await lv.waitForTimeout(3500);
+    ok(await lv.evaluate(() => document.documentElement.classList.contains("ynav-slim")),
+       "live mode collapses the bar to the slim strip");
+    const navH = await lv.evaluate(() => document.querySelector(".ynav").offsetHeight);
+    ok(navH === 36, "slim bar is 36px", String(navH));
+    ok(/LIVE/.test(await lv.textContent("#ynav-pill"))
+       && await lv.locator("#ynav-pill .dot").count() === 1,
+       "live pill carries the label and the freshness dot");
+    for (const [sel, name13] of [[".bignm", "answer name"], ["#lv-gear", "gear"], ["#lv-why", "verdict line"]]){
+      const box = await lv.locator(sel).boundingBox();
+      ok(box && box.y >= 0 && box.y + box.height <= 844,
+         `live first paint keeps the ${name13} above the fold at 390px`,
+         box ? `bottom ${Math.round(box.y + box.height)}` : "missing");
+    }
+    await lv.close();
+    srv.close();
+  }
+
   // ---- scenario 5: PARITY. The JS mirror must reproduce Python's survival
   // numbers exactly (within float tolerance). This is the test whose absence
   // let the 1-erf tail bug ship: the two surfaces disagreed past z~6 and
