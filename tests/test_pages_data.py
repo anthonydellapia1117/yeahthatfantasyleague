@@ -380,6 +380,48 @@ fdbad = [f"--{t} {_contrast(_ffpage[t], _ffpage['bg']):.2f}" for t in
 ok(not fdbad, "ff-hub: dark-context accents clear 4.5:1 on the page",
    "; ".join(fdbad))
 
+# 18. TEASER LEAK GUARD. The shared build must give nothing away: redaction
+#     happens at build time, so these are assertions about what the committed
+#     teaser files CONTAIN, not about what CSS hides.
+TEASER = os.path.join(ROOT, "out", "teaser")
+_tfiles = ["index.html", "draft_room.html", "players.html", "teams.html",
+           "ff-hub.html"]
+ok(all(os.path.exists(os.path.join(TEASER, f)) for f in _tfiles),
+   "teaser: all five pages built")
+if all(os.path.exists(os.path.join(TEASER, f)) for f in _tfiles):
+    em3 = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    _pl = sorted(em3["players"], key=lambda p: -p["vor"])
+    _top = lambda pos, n: [p["name"] for p in _pl if p["pos"] == pos][:n]
+    allowed = set(_top("QB", 3) + _top("RB", 3) + _top("WR", 3)
+                  + _top("TE", 1) + _top("K", 1) + _top("DEF", 1))
+    handles = {r["handle"] for r in em3["rosters"] if r.get("handle")}
+    franchises = {r["franchise"] for r in em3["rosters"] if r.get("franchise")}
+    top150 = [p["name"] for p in _pl[:150]]
+    for f in _tfiles:
+        src_t = open(os.path.join(TEASER, f)).read()
+        leaks = [t for t in ("engine_2026", "data/", "nav.js", "../",
+                             "my_board", "n_eff", "prior", "survival(",
+                             "0.0772", "88.55", "p=0.323", "2,039")
+                 if t in src_t]
+        ok(not leaks, f"teaser {f}: reaches no data, no shard, no real page",
+           "; ".join(leaks))
+        oleaks = [h for h in (handles | franchises) if h and h in src_t]
+        ok(not oleaks,
+           f"teaser {f}: nothing about how this league's teams draft",
+           "; ".join(oleaks[:3]))
+        nleaks = [n for n in top150 if n in src_t and n not in allowed]
+        ok(not nleaks, f"teaser {f}: no player beyond the allowed subset",
+           "; ".join(nleaks[:3]))
+        ok("YTFL PRIVATE BUILD" in src_t and "blur(" in src_t,
+           f"teaser {f}: watermark and blur present")
+    psrc_t = open(os.path.join(TEASER, "players.html")).read()
+    ok(sum(1 for n in allowed if n in psrc_t) == len(allowed) == 12,
+       "teaser players: exactly the 12 allowed names, all present",
+       f"{sum(1 for n in allowed if n in psrc_t)}/{len(allowed)}")
+    ok("teaser" in open(os.path.join(ROOT, ".github", "workflows",
+                                     "pages.yml")).read(),
+       "pages workflow deploys the teaser")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
