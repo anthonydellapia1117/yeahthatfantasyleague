@@ -791,6 +791,58 @@ const ok = (cond, name, detail) => {
     srv.close();
   }
 
+  // ---- scenario 14: TEASER. The shared build renders its countdown and
+  // locked cards, fetches NOTHING beyond its own page, and every link stays
+  // inside out/teaser/.
+  {
+    const http = require("http");
+    const fs = require("fs");
+    const root = path.resolve(".");
+    const srv = http.createServer((req, res) => {
+      if (req.url === "/favicon.ico"){ res.writeHead(204); return res.end(); }
+      const f = path.join(root, decodeURIComponent(req.url.split("?")[0].replace(/^\//, "")));
+      try {
+        res.writeHead(200, { "content-type": f.endsWith(".html") ? "text/html" : "text/plain" });
+        res.end(fs.readFileSync(f));
+      } catch { res.writeHead(404); res.end(); }
+    });
+    await new Promise(r => srv.listen(0, "127.0.0.1", r));
+    const base = "http://127.0.0.1:" + srv.address().port;
+    const pg = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    const fetched = [];
+    pg.on("request", r => fetched.push(r.url()));
+    const errs14 = [];
+    pg.on("pageerror", e => errs14.push(String(e)));
+    await pg.goto(base + "/out/teaser/index.html");
+    await pg.waitForTimeout(800);
+    ok(/\d+ days|DRAFT DAY/.test(await pg.textContent("#cd")),
+       "teaser hub: countdown renders");
+    ok(await pg.locator(".card.lock").count() >= 4,
+       "teaser hub: every other card locked");
+    const external = fetched.filter(u => !u.includes("/out/teaser/") && !u.endsWith("/favicon.ico"));
+    ok(external.length === 0, "teaser fetches nothing beyond its own pages",
+       external[0] || "");
+    for (const f of ["players.html", "draft_room.html", "teams.html", "ff-hub.html"]){
+      await pg.goto(base + "/out/teaser/" + f);
+      await pg.waitForTimeout(400);
+      const hrefs = await pg.evaluate(() =>
+        [...document.querySelectorAll("a[href]")].map(a => a.getAttribute("href")));
+      ok(hrefs.every(h => !h.includes("..") && !h.includes("://")),
+         `teaser ${f}: every link stays inside the teaser`);
+      ok(await pg.locator(".card.lock").count() >= 1
+         && (await pg.textContent("body")).length > 0,
+         `teaser ${f}: locked cards render`);
+    }
+    await pg.goto(base + "/out/teaser/players.html");
+    await pg.waitForTimeout(400);
+    ok(await pg.locator(".row .nm").count() === 12,
+       "teaser players: exactly 12 named rows");
+    ok(await pg.locator("input").count() === 0, "teaser players: no search, no routing");
+    ok(errs14.length === 0, "teaser: zero console errors", errs14[0] || "");
+    await pg.close();
+    srv.close();
+  }
+
   // ---- scenario 5: PARITY. The JS mirror must reproduce Python's survival
   // numbers exactly (within float tolerance). This is the test whose absence
   // let the 1-erf tail bug ship: the two surfaces disagreed past z~6 and
