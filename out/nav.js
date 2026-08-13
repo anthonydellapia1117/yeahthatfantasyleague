@@ -75,6 +75,8 @@
       "padding:13px 10px;min-height:44px;border-bottom:1px solid " + LINE + "}" +
     ".ynav-drawer a:last-child{border-bottom:0}" +
     ".ynav-drawer a.on{color:" + INK + ";border-left:2px solid " + TEAL + ";padding-left:12px}" +
+    ".kick{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;" +
+      "color:" + INK2 + ";margin:0 0 2px}" +
     ".ynav-drawer[hidden],.ynav-scrim[hidden]{display:none!important}" +
     "@media(max-width:640px){.ynav-items{display:none}.ynav-burger{display:block}}" +
     "@media(min-width:641px){.ynav-scrim,.ynav-drawer{display:none!important}}";

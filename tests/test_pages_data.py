@@ -256,6 +256,27 @@ if os.path.exists(navp):
     ok("nav.js" in open(os.path.join(ROOT, ".github", "workflows", "pages.yml")).read(),
        "pages workflow deploys nav.js")
 
+# 14. APP SHELL (Phase 2). Token, layout, and header consistency: one dark
+#     family (#0b1120, ff-hub's), one container width, one kicker treatment -
+#     and the semantic verdict colors did not move.
+ALL_PAGES = ["draft_room.html", "players.html", "teams.html", "home.html",
+             "ff-hub.html"]
+_tokened = ["draft_room.html", "players.html", "teams.html", "home.html"]
+for fname in ALL_PAGES:
+    psrc = open(os.path.join(ROOT, "out", fname)).read()
+    ok("#0A0E1A" not in psrc and "0a0e1a" not in psrc.lower()
+       or fname not in _tokened,
+       f"{fname}: old dark background family fully retired")
+    ok("max-width:1100px" in psrc, f"{fname}: shared 1100px container")
+    ok('class="kick"' in psrc, f"{fname}: kicker header treatment present")
+for fname in _tokened:
+    psrc = open(os.path.join(ROOT, "out", fname)).read()
+    ok("--bg:#0b1120" in psrc, f"{fname}: dark bg aligned to #0b1120")
+    ok("--go:#34D399" in psrc and "--stop:#F87171" in psrc
+       and "--warn:#FBBF24" in psrc,
+       f"{fname}: semantic verdict colors did not move")
+ok(".kick{" in open(navp).read(), "kicker style lives in nav.js (single source)")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
