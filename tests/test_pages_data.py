@@ -121,6 +121,45 @@ ok("build_pages_data" not in src and "team_proe" not in src and "playcallers" no
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")
 
+# 10. PHASE C PLAYER PAGES. Acceptance: every number the page renders traces
+#     to a real shard field. The page marks each one pv(value, shard, field);
+#     this guard resolves every reference against the committed shards.
+import re
+
+pp = os.path.join(ROOT, "out", "players.html")
+ok(os.path.exists(pp), "players.html exists")
+if os.path.exists(pp):
+    page = open(pp).read()
+    refs = set(re.findall(r'pv\([^)]*?,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)', page))
+    ok(len(refs) >= 15, "page carries tappable provenance references",
+       f"only {len(refs)}")
+    # field universe per shard, from the committed files themselves
+    fields = {}
+    if adp:
+        fields["adp.json"] = set().union(*(set(p) for p in adp["players"][:300]))
+    if us:
+        fields["usage_2025.json"] = set().union(*(set(p) for p in us["players"][:300]))
+    if xw:
+        fields["crosswalk.json"] = set().union(
+            *(set(v) for v in list(xw["prospect"].values())[:300]))
+    epath = os.path.join(ROOT, "out", "engine_2026.json")
+    em = json.load(open(epath))
+    fields["engine_2026.json"] = set().union(
+        *(set(p) for p in em["players"][:300])) | {"vor_rank"}
+    bad = [f"{s}:{f}" for s, f in refs
+           if s not in fields or f not in fields[s]]
+    ok(not bad, "every page-data reference resolves to a shard field",
+       "; ".join(bad[:5]))
+    ok("Provenance (guard N2)" in page, "provenance footer present")
+    ok("ffc_attribution" in page, "FFC attribution rendered from the shard")
+    ok("projection = floor" in page and "kdef_note" in page,
+       "K/DST floor label and note wired")
+    ok("no free in-season source" in page.lower()
+       or "prior season - no free in-season source" in page,
+       "route/usage metrics carry the prior-season honesty label")
+    ok("Nothing on this page is estimated" in page,
+       "absent blocks declared absent, not estimated")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
