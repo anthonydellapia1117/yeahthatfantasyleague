@@ -1,0 +1,37 @@
+name: pages-data
+# Daily page-data refresh (docs/EXPANSION_BUILD_ORDER_DRAFT.md, Phase A3).
+# 12:00 UTC = after nflverse's 7AM UTC depth-chart update.
+# The daily commit doubles as the 60-day scheduled-workflow keepalive; the
+# heartbeat file guarantees a diff even when upstream data is unchanged.
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pyarrow
+      - name: Build page-data shards
+        run: python3 src/build_pages_data.py
+      - name: Guard tests
+        run: python3 tests/test_pages_data.py
+      - name: Commit and push
+        run: |
+          git config user.name "pages-data-cron"
+          git config user.email "actions@users.noreply.github.com"
+          git add out/data/
+          git commit -m "pages-data: daily refresh $(date -u +%F)" || echo "no changes beyond heartbeat"
+          git push
+      - name: Summary
+        run: |
+          echo "## Shard sizes" >> "$GITHUB_STEP_SUMMARY"
+          ls -la out/data/ | awk '{print "-", $NF, $5}' >> "$GITHUB_STEP_SUMMARY"
