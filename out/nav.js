@@ -205,6 +205,49 @@
     }
   }
 
+  // Phase 3 polish, opt-in per page via data-reveal on the include tag.
+  // The draft room never carries the attribute, so a live-polling screen
+  // under a forfeit clock structurally cannot receive entrance animations.
+  // Depth comes from surface layering: hover is a border-color lift only -
+  // no transforms, no shadows - and prefers-reduced-motion turns off every
+  // animation this block adds.
+  if (script && script.hasAttribute("data-reveal")){
+    var pcss = "" +
+      "@media(prefers-reduced-motion:no-preference){" +
+        ".yrv{opacity:0;transform:translateY(8px);" +
+          "transition:opacity .4s ease,transform .4s ease}" +
+        ".yrv.in{opacity:1;transform:none}" +
+        ".card,.stat,.idxrow,.tgrid a,.surfaces a{transition:border-color .15s ease}}" +
+      ".card:hover,.stat:hover,.tgrid a:hover,.surfaces a:hover{" +
+        "border-color:" + INK2 + "}";
+    var pstyle = document.createElement("style");
+    pstyle.textContent = pcss;
+    document.head.appendChild(pstyle);
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced && "IntersectionObserver" in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+        });
+      }, { rootMargin: "0px 0px -5% 0px" });
+      var seen = new WeakSet();
+      var arm = function(){
+        document.querySelectorAll(".card, .stat").forEach(function(el){
+          if (seen.has(el)) return;
+          seen.add(el);
+          el.classList.add("yrv");
+          io.observe(el);
+        });
+      };
+      var armAll = function(){
+        arm();
+        new MutationObserver(arm).observe(document.body, { childList: true, subtree: true });
+      };
+      if (document.body) armAll();
+      else document.addEventListener("DOMContentLoaded", armAll);
+    }
+  }
+
   if (document.body) mount();
   else document.addEventListener("DOMContentLoaded", mount);
 })();

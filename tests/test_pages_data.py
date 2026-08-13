@@ -240,7 +240,7 @@ if os.path.exists(navp):
     seen_keys = []
     for fname, want in PAGES.items():
         psrc = open(os.path.join(ROOT, "out", fname)).read()
-        tags = re.findall(r'<script src="nav\.js" data-active="(\w+)" defer></script>', psrc)
+        tags = re.findall(r'<script src="nav\.js" data-active="(\w+)"[^>]*\bdefer\b[^>]*></script>', psrc)
         ok(tags == [want], f"{fname} includes the shared nav once, active={want}",
            str(tags))
         seen_keys += tags
@@ -276,6 +276,23 @@ for fname in _tokened:
        and "--warn:#FBBF24" in psrc,
        f"{fname}: semantic verdict colors did not move")
 ok(".kick{" in open(navp).read(), "kicker style lives in nav.js (single source)")
+
+# 15. APP SHELL (Phase 3). Polish stays inside its fence: reveals are opt-in
+#     per page and the draft room never opts in; hover is a border-color lift
+#     only; reduced-motion turns everything off.
+navsrc2 = open(navp).read()
+ok("data-reveal" not in open(os.path.join(ROOT, "out", "draft_room.html")).read(),
+   "draft room NEVER carries the reveal attribute")
+for fname in ("players.html", "teams.html", "home.html", "ff-hub.html"):
+    ok("data-reveal" in open(os.path.join(ROOT, "out", fname)).read(),
+       f"{fname} opts into the phase 3 polish")
+ok("prefers-reduced-motion:no-preference" in navsrc2
+   and "prefers-reduced-motion: reduce" in navsrc2,
+   "every phase 3 animation is fenced behind motion preference")
+ok("translateY(8px)" in navsrc2 and ".4s" in navsrc2,
+   "reveal is the specified 8px rise at 400ms")
+ok("box-shadow" not in navsrc2 and "scale(" not in navsrc2,
+   "hover lift is border-color only - no shadows, no transforms")
 
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")

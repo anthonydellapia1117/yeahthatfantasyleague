@@ -273,3 +273,16 @@ Guards: test_pages_data.py sections 10-12 resolve every on-page number
 reference against the committed shard fields and assert every honesty label.
 Smoke scenarios 10-12 run the pages on a hermetic local server. N1 stands:
 the engine reads nothing from this layer.
+
+## App shell - shipped 2026-08-13
+
+out/nav.js is the single chrome source: the fixed bar (gold hairline, YTFL
+HUB wordmark, countdown/LIVE pill reusing the draft room's own state, mobile
+drawer), the kicker header style, and the phase 3 polish (opt-in reveals and
+border-lift hovers, reduced-motion aware). All five pages share the #0b1120
+dark family, an 1100px container, and the same header treatment; semantic
+verdict colors are guard-asserted unmoved. The draft room include sits
+outside the ENGINE-DATA sentinels (regeneration verified byte-identical), the
+bar collapses to 36px in live mode, and a smoke guard keeps the answer, gear,
+and verdict above the fold at 390px. Guards: test_pages_data sections 13-15;
+smoke scenario 13.

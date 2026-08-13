@@ -713,6 +713,14 @@ const ok = (cond, name, detail) => {
       ok(await on.count() === 1 && (await on.textContent()).trim() === label
          && await on.getAttribute("aria-current") === "page",
          `exactly one active item on ${file}: ${label}`);
+      if (file === "home.html"){
+        // phase 3: reveal arms on opted-in pages and completes in-viewport
+        const rv = await pg.evaluate(() => ({
+          armed: document.querySelectorAll(".card.yrv").length,
+          shown: document.querySelectorAll(".card.yrv.in").length }));
+        ok(rv.armed > 0 && rv.shown > 0,
+           "reveals arm and complete on the home page", JSON.stringify(rv));
+      }
       await pg.close();
     }
     // drawer behavior at 390px
@@ -772,6 +780,8 @@ const ok = (cond, name, detail) => {
          `live first paint keeps the ${name13} above the fold at 390px`,
          box ? `bottom ${Math.round(box.y + box.height)}` : "missing");
     }
+    ok(await lv.evaluate(() => document.querySelectorAll(".yrv").length) === 0,
+       "the draft room receives zero entrance animations");
     await lv.close();
     srv.close();
   }
