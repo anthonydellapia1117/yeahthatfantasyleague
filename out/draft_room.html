@@ -60,7 +60,7 @@ h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
 .verdict{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
 .verdict.wait{color:var(--go)}
 .verdict.take{color:var(--stop)}
-.verdict.coin{color:var(--warn)}
+.verdict.coin{color:var(--warn);white-space:normal}
 .sbar{height:4px;border-radius:2px;background:var(--s3);margin:8px 0 2px;overflow:hidden}
 .sbar i{display:block;height:100%;border-radius:2px;background:var(--info)}
 .rc-body{font-size:13px;color:var(--ink2);margin-top:6px}
@@ -193,6 +193,9 @@ tr:last-child td{border-bottom:0}
 .vrow:first-of-type{border-top:0}
 .vrow.gone{color:var(--ink3);text-decoration:line-through}
 .vrow .vr-n{font-weight:600}
+.yc{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.4px;padding:1px 6px;border-radius:8px;border:1px solid;margin-left:5px;vertical-align:1px}
+.yc.bull{color:#0a7d33;border-color:#9ed9b2;background:#eafaf0}
+.yc.bear{color:#a83232;border-color:#e2b3b3;background:#faeeee}
 .opp{border-top:1px solid var(--line);padding:8px 0;font-size:13px}
 .opp .who{font-weight:700;cursor:pointer}
 .opp .alert{color:var(--warn);font-weight:600;font-size:12px}
@@ -349,13 +352,13 @@ function renderPre(activeSlot){
     const watch = [];
     if (r.tier_cliff) watch.push(`<span class="verdict take" style="font-size:11px">${p.pos} tier empties before your next turn</span>`);
     for (const u of r.urgent) watch.push(`${esc(u.franchise)} takes ${p.pos} by rd ${u.round.toFixed(1)} <span class="thin">(n ${u.n_eff.toFixed(1)})</span>`);
-    if (r.coin_flips.length) watch.push(`<span class="verdict coin" style="font-size:11px">COIN FLIP</span> with ${r.coin_flips.map(esc).join(", ")} - break toward ceiling`);
+    if (r.coin_flips.length) watch.push(`<span class="verdict coin" style="font-size:11px">COIN FLIP</span> with ${r.coin_flips.map(esc).join(", ")} - ${r.coin_break ? "break toward your call - " + esc(r.coin_break.toward) : "break toward ceiling"}`);
     h += `<div class="rowcard">
       <div class="rc-top">
         <div>
           <div class="rc-pick">Rd ${r.round} - pick ${r.pick}</div>
           <div class="rc-name">${esc(p.name)}${injBadge(p)}</div>
-          <div class="rc-meta">${p.pos} - VOR <span class="num">${p.vor.toFixed(0)}</span> - tier ${p.tier ?? "-"} - ADP <span class="num">${p.adp.toFixed(1)}</span> - <span class="num">${pct(surv)}</span> available${r.fallback ? " - fallback " + esc(r.fallback.name) + " " + r.fallback.pos : ""}</div>
+          <div class="rc-meta">${p.pos} - VOR <span class="num">${p.vor.toFixed(0)}</span> - tier ${p.tier ?? "-"} - ADP <span class="num">${p.adp.toFixed(1)}</span> - <span class="num">${pct(surv)}</span> available${r.fallback ? " - fallback " + esc(r.fallback.name) + " " + r.fallback.pos : ""}${yourCallChip(p)}</div>
         </div>
         ${verdictChip(r)}
       </div>
@@ -707,7 +710,7 @@ function renderLive(draft, newPick){
       const isFlip = top.vor - r.vor <= 8 && r.pos === top.pos;
       if (isFlip) hasCoin = true;
       const tag = isFlip
-        ? '<span class="verdict coin" style="font-size:12px">COIN FLIP - break toward ceiling</span>'
+        ? `<span class="verdict coin" style="font-size:12px">COIN FLIP - ${flipBreakText([top, r])}</span>`
         : `<span class="num">${(top.vor - r.vor).toFixed(0)}</span> VOR behind`;
       el.innerHTML = `${esc(r.name)} ${r.pos} VOR <span class="num">${r.vor.toFixed(0)}</span> - ${tag}${injBadge(r)}`;
     });
@@ -748,7 +751,7 @@ function renderLive(draft, newPick){
   if (top){
     const g = pickGrade(top, gradeCtx(top, alive, cur, myNextG, LiveState.mySlot ? R2 : null));
     L["lv-gear"].innerHTML = gearSvg(g);
-    L["lv-chips"].innerHTML = evidenceChips(top);
+    L["lv-chips"].innerHTML = yourCallChip(top) + evidenceChips(top);
   } else {
     L["lv-gear"].innerHTML = ""; L["lv-chips"].innerHTML = "";
   }
@@ -1213,6 +1216,55 @@ function evidenceChips(p){
   return out.length ? `<div class="chips-ev">${out.join("")}</div>` : "";
 }
 
+// ======== OVERLAY-BEGIN (Phase B) ========
+// Conviction overlay: E.my_board, applied by the engine from data/my_board.csv.
+// Display everywhere; its ONE decision role is the coin-flip tie-break toward
+// bulls. The wait-or-reach subject and every survival number stay the model's -
+// the guard tests scan this block's symbols at every merge. Empty board:
+// E.my_board is absent and every function here is a no-op.
+const Overlay = { map: null };
+function overlayInit(){
+  if (!E.my_board) return;
+  Overlay.map = {};
+  for (const c of E.my_board) if (c.matched) Overlay.map[norm(c.player)] = c;
+}
+function yourCallChip(p){
+  const c = Overlay.map && Overlay.map[norm(p.name)];
+  if (!c) return "";
+  return `<span class="yc ${c.call === "BULL" ? "bull" : "bear"}" title="${esc(c.reason)} (${esc(c.source)}${c.date ? ", " + esc(c.date) : ""})">YOUR CALL - ${c.call}${c.move ? " " + esc(c.move) : ""}</span>`;
+}
+function flipBreakText(cands){
+  // tie-break toward bulls. cands[0] is the model primary and REMAINS the
+  // subject - this returns advice text only, it can never swap the subject.
+  const bull = Overlay.map && cands.find(p => {
+    const c = Overlay.map[norm(p.name)]; return c && c.call === "BULL"; });
+  return bull ? `break toward your call - ${esc(bull.name)}` : "break toward ceiling";
+}
+function tierResort(list){
+  // within-tier resort, display only: inside a contiguous same-position,
+  // same-tier run, bulls rise to the top of the tier and bears sink to the
+  // bottom. VOR order is untouched everywhere else.
+  if (!Overlay.map) return list;
+  const bias = p => { const c = Overlay.map[norm(p.name)];
+                      return c ? (c.call === "BULL" ? -1 : 1) : 0; };
+  const out = [];
+  let i = 0;
+  while (i < list.length){
+    let j = i + 1;
+    while (j < list.length && list[j].pos === list[i].pos &&
+           list[i].tier != null && list[j].tier === list[i].tier) j++;
+    const grp = list.slice(i, j);
+    grp.sort((a, b) => bias(a) - bias(b));
+    out.push(...grp);
+    i = j;
+  }
+  return out;
+}
+overlayInit();
+window.__overlay = { chip: yourCallChip, flip: flipBreakText,
+                     resort: tierResort, init: overlayInit, state: Overlay };
+// ======== OVERLAY-END ========
+
 const RecState = { count: 2, searched: null };   // feature 2
 const BoardV = { remove: true, topN: 50, posN: 5 };   // feature 4
 
@@ -1239,7 +1291,7 @@ function renderRecs(alive, cur, myNext, R, primary, verdict, hasCoin){
       <div class="rname">${esc(c.p.name)}${c.searched ? ' <span class="tag">searched</span>' : ""}${injBadge(c.p)}</div>
       <div class="rmeta">${c.p.pos} ${esc(c.p.team)} - VOR <span class="num">${c.p.vor.toFixed(0)}</span>
         - ADP <span class="num">${c.p.adp < 900 ? c.p.adp.toFixed(1) : "-"}</span>
-        - <span class="num">${pct(condSurvival(c.p.adp, myNext, cur))}</span> lasts to ${myNext}</div>
+        - <span class="num">${pct(condSurvival(c.p.adp, myNext, cur))}</span> lasts to ${myNext}${yourCallChip(c.p)}</div>
       ${evidenceChips(c.p)}</div>
       ${gearSvg(c.g)}</div>`).join("");
 }
@@ -1274,7 +1326,7 @@ function renderValueBoard(aliveSet){
     const gone = !aliveSet.has(p.name);
     if (gone && BoardV.remove) return "";
     return `<div class="vrow${gone ? " gone" : ""}"><span class="vr-n">${esc(p.name)}
-      ${p.floor ? '<span class="floor">floor</span>' : ""}${injBadge(p)}</span>
+      ${p.floor ? '<span class="floor">floor</span>' : ""}${injBadge(p)}${yourCallChip(p)}</span>
       <span class="num">${p.pos} - VOR ${p.vor.toFixed(0)} - ADP ${p.adp < 900 ? p.adp.toFixed(1) : "-"}</span></div>`;
   }).join("");
   const sorted = E.players.slice().sort((a, b) => b.vor - a.vor);
@@ -1289,7 +1341,7 @@ function renderValueBoard(aliveSet){
   L["vb-right"].innerHTML = groups.map(g => {
     const label = g[0] === "FLEX" ? "FLEX (RB+WR+TE)" : (g[0] === "DEF" ? "DST" : g[0]);
     const members = g[0] === "FLEX" ? g.slice(1) : g;
-    const pool = sorted.filter(p => members.includes(p.pos));
+    const pool = tierResort(sorted.filter(p => members.includes(p.pos)));
     const take = [];
     for (const p of pool){
       if (BoardV.remove && !aliveSet.has(p.name)) continue;

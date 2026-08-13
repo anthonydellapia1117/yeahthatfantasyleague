@@ -218,6 +218,99 @@ ok("pickGrade" not in src and "gradeBand" not in src,
 ok('"gnum"' in app and "GRADE_RED_MAX = 39" in app and "GRADE_AMBER_MAX = 69" in app,
    "band thresholds are the named constants the anchors pin")
 
+# 10. OVERLAY ISOLATION (Phase B). The conviction overlay is display plus ONE
+#     sanctioned decision role - the coin-flip tie-break toward bulls. It must
+#     reach no survival or wait-or-reach arithmetic; with an empty board the
+#     model and both renderings are byte-identical to a build with no overlay.
+import copy
+import inspect
+import json
+
+# 10a. the frozen math and build_model never see the overlay - it is applied
+#      AFTER build_model as a pure transform, so the tokens are structurally
+#      absent from everything that computes a probability or a verdict.
+_overlay_tokens = ("my_board", "coin_break", "apply_overlay", "BULL", "BEAR")
+_hits = []
+for _f in ("fit_sd_curve", "sd_for", "_raw_survival", "survival",
+           "cond_survival", "build_model"):
+    _src = inspect.getsource(getattr(eng, _f))
+    _hits += [f"{_f}:{t}" for t in _overlay_tokens if t in _src]
+ok(not _hits, "overlay reaches no survival or verdict arithmetic (engine)",
+   "; ".join(_hits))
+
+# 10b. app-side quarantine: overlay symbols live only in the OVERLAY block
+#      plus counted display wiring, mirroring the sim-quarantine pattern.
+o0, o1 = app.index("OVERLAY-BEGIN"), app.index("OVERLAY-END")
+overlay_block = app[o0:o1]
+out_app = app[:o0] + app[o1:]
+_allow = {"yourCallChip(": 4, "flipBreakText(": 1, "tierResort(": 1,
+          "coin_break": 2, "my_board": 0, "Overlay.": 0}
+_leaks = [f"{tok} x{out_app.count(tok)} (allowed {n})"
+          for tok, n in _allow.items() if out_app.count(tok) > n]
+ok(not _leaks, "overlay symbols never leak beyond the block and its wiring",
+   "; ".join(_leaks))
+ok(all(t not in overlay_block for t in
+       ("verdictChip", "wait_or_reach", "liveVerdict", "setName(", "bignm",
+        "condSurvival(", "survival(")),
+   "overlay block computes no verdict and no probability - text only")
+
+# 10c. byte-identity: an empty board changes nothing. The shipped board is
+#      empty, so today's committed JSON and markdown are the baseline.
+ok(eng.load_my_board() == [], "shipped data/my_board.csv carries zero calls")
+m0 = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+md_shipped = open(os.path.join(ROOT, "out", "decision_cards_2026.md")).read()
+m1 = eng.apply_overlay(copy.deepcopy(m0), [])
+ok(json.dumps(m1, sort_keys=True) == json.dumps(m0, sort_keys=True),
+   "empty board: apply_overlay returns the model byte-identical")
+ok(eng.render_markdown(m1) == md_shipped,
+   "empty board: rendered markdown byte-identical to the shipped cards")
+
+# 10d. populated board: the verdict-subject rule holds. A bull in a coin flip
+#      earns the tie-break; nothing else in the model moves.
+_flip_round = next(r for rounds in m0["slots"].values() for r in rounds
+                   if r.get("coin_flips"))
+_bull = _flip_round["coin_flips"][0]
+_bear = next(p["name"] for p in m0["players"] if p["name"] != _bull)
+_calls = [{"player": _bull, "call": "BULL", "move": "+1 tier",
+           "reason": "guard fixture", "source": "test", "confidence": "",
+           "date": "2026-08-13"},
+          {"player": _bear, "call": "BEAR", "move": "-1 tier",
+           "reason": "guard fixture", "source": "test", "confidence": "",
+           "date": "2026-08-13"}]
+m2 = eng.apply_overlay(copy.deepcopy(m0), _calls)
+_subject_moved = [
+    f"slot {s} rd {r2['round']}"
+    for s in m0["slots"]
+    for r0, r2 in zip(m0["slots"][s], m2["slots"][s])
+    if (r0.get("primary") or {}).get("name") != (r2.get("primary") or {}).get("name")
+    or r0.get("wait_or_reach") != r2.get("wait_or_reach")]
+ok(not _subject_moved,
+   "populated board: every primary and every wait-or-reach verdict unchanged",
+   "; ".join(_subject_moved[:3]))
+_r2 = next(r for rounds in m2["slots"].values() for r in rounds
+           if r.get("coin_flips") and _bull in
+           [r["primary"]["name"]] + r["coin_flips"])
+ok(_r2.get("coin_break", {}).get("toward") == _bull
+   if _r2["primary"]["name"] != _bull else "coin_break" in _r2,
+   "bull in a coin flip earns the tie-break toward the call")
+_brow = next(c for c in m2["my_board"] if c["call"] == "BULL")
+ok(_brow["matched"] and all(
+    0.0 <= s <= 1.0 and abs(s - round(eng.survival(_brow["adp"], k), 3)) < 1e-9
+    for k, s in _brow["survival_to_my_picks"]),
+   "bull survival-to-my-picks recomputes exactly from the frozen survival()")
+m3 = copy.deepcopy(m2)
+m3.pop("my_board")
+for rounds in m3["slots"].values():
+    for r in rounds:
+        r.pop("coin_break", None)
+ok(json.dumps(m3, sort_keys=True) == json.dumps(m0, sort_keys=True),
+   "overlay adds ONLY my_board and coin_break - nothing else in the model moves")
+_md2 = eng.render_markdown(m2)
+ok("MY BOARD" in _md2 and f"break toward your call - {_bull}" in _md2,
+   "populated board renders the MY BOARD section and the tie-break line")
+ok(eng.render_markdown(m3) == md_shipped,
+   "strip the overlay fields and the markdown is the shipped cards again")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

@@ -453,6 +453,109 @@ const ok = (cond, name, detail) => {
     await page.close();
   }
 
+  // ---- scenario 9: PHASE B OVERLAY. Empty board renders nothing; the
+  // helpers behave; a patched payload proves chips, the bull tie-break,
+  // and the verdict-subject rule end to end.
+  {
+    const fs = require("fs");
+    const os = require("os");
+    // 9a: the shipped (empty-board) file shows zero overlay surfaces
+    const page = await browser.newPage();
+    await page.route("**/api.sleeper.app/**", r => r.abort());
+    await page.goto(FILE);
+    await page.waitForTimeout(1500);
+    ok(await page.evaluate(() => {
+      const E = JSON.parse(document.getElementById("engine-data").textContent);
+      return E.my_board === undefined;
+    }), "overlay: shipped payload carries no my_board key");
+    ok(await page.locator(".yc").count() === 0,
+       "overlay: empty board renders zero YOUR CALL chips");
+    // 9b: helper contracts, on synthetic state, restored afterwards
+    const unit = await page.evaluate(() => {
+      const O = window.__overlay;
+      const saved = O.state.map;
+      O.state.map = { "aaa bbb": { player: "Aaa Bbb", call: "BULL",
+                                   move: "+1 tier", reason: "r", source: "s",
+                                   date: "2026-08-13", matched: true },
+                      "ccc ddd": { player: "Ccc Ddd", call: "BEAR",
+                                   move: "", reason: "r", source: "s",
+                                   date: "2026-08-13", matched: true } };
+      const res = {
+        chip: O.chip({ name: "Aaa Bbb" }),
+        chipNone: O.chip({ name: "Zzz Qqq" }),
+        flipBull: O.flip([{ name: "Zzz Qqq" }, { name: "Aaa Bbb" }]),
+        flipNone: O.flip([{ name: "Zzz Qqq" }, { name: "Yyy Www" }]),
+        resorted: O.resort([
+          { name: "P One", pos: "RB", tier: 2, vor: 90 },
+          { name: "Ccc Ddd", pos: "RB", tier: 2, vor: 88 },
+          { name: "Aaa Bbb", pos: "RB", tier: 2, vor: 85 },
+          { name: "P Four", pos: "RB", tier: 3, vor: 80 },
+        ]).map(p => p.name).join(","),
+      };
+      O.state.map = saved;
+      return res;
+    });
+    ok(/YOUR CALL - BULL \+1 tier/.test(unit.chip), "overlay: bull chip carries call and move");
+    ok(unit.chipNone === "", "overlay: no call, no chip");
+    ok(unit.flipBull.includes("break toward your call - Aaa Bbb"),
+       "overlay: tie-break points at the bull in the flip");
+    ok(unit.flipNone === "break toward ceiling",
+       "overlay: no bull in the flip, advice unchanged");
+    ok(unit.resorted === "Aaa Bbb,P One,Ccc Ddd,P Four",
+       "overlay: within-tier resort - bull up, bear down, next tier untouched",
+       unit.resorted);
+    await page.close();
+    // 9c: end to end on a patched payload - bull on the known coin-flip
+    // runner. The subject must stay the model's; only the advice text moves.
+    const raw = fs.readFileSync(path.resolve(process.argv[2] || "out/draft_room.html"), "utf8");
+    const OPEN = '<script id="engine-data" type="application/json">';
+    const CLOSE = "</scr" + "ipt><!--engine-data-end-->";
+    const a = raw.indexOf(OPEN) + OPEN.length, b = raw.indexOf(CLOSE);
+    const payload = JSON.parse(raw.slice(a, b));
+    const mkCall = (name, call, move) => {
+      const p = payload.players.find(x => x.name === name);
+      return { player: p.name, call, move, reason: "smoke fixture",
+               source: "test", confidence: "", date: "2026-08-13",
+               matched: true, pos: p.pos, adp: p.adp, vor: p.vor, tier: p.tier };
+    };
+    payload.my_board = [mkCall("Ashton Jeanty", "BULL", "+1 tier"),
+                        mkCall("Nico Collins", "BEAR", "-1 tier")];
+    const tmp = path.join(os.tmpdir(), "ytfl_overlay_smoke.html");
+    fs.writeFileSync(tmp, raw.slice(0, a) + JSON.stringify(payload) + raw.slice(b));
+    const p9 = await browser.newPage();
+    const mk9 = (f, l, pos) => ({ metadata: { first_name: f, last_name: l, position: pos } });
+    const picks9 = [mk9("Ja'Marr","Chase","WR"), mk9("Bijan","Robinson","RB"),
+      mk9("Jahmyr","Gibbs","RB"), mk9("Jonathan","Taylor","RB"),
+      mk9("Puka","Nacua","WR"), mk9("Christian","McCaffrey","RB")];
+    const idSlots9 = {}; for (let i = 1; i <= 12; i++) idSlots9[i] = i;
+    await p9.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await p9.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(picks9) }));
+    await p9.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots9 }) });
+    });
+    await p9.goto("file://" + tmp);
+    await p9.waitForTimeout(3000);
+    const big9 = await p9.textContent(".bignm");
+    ok(/James Cook/.test(big9),
+       "overlay e2e: the model primary is still the subject: " + big9.trim());
+    const body9 = await p9.textContent("body");
+    ok(body9.includes("break toward your call - Ashton Jeanty"),
+       "overlay e2e: live coin flip breaks toward the bull call");
+    await p9.click('#nav button[data-scr="board"]');
+    await p9.waitForTimeout(400);
+    ok(await p9.locator(".yc.bull").count() >= 1 && await p9.locator(".yc.bear").count() >= 1,
+       "overlay e2e: YOUR CALL chips render on the value board");
+    await p9.close();
+    fs.unlinkSync(tmp);
+  }
+
   // ---- scenario 5: PARITY. The JS mirror must reproduce Python's survival
   // numbers exactly (within float tolerance). This is the test whose absence
   // let the 1-erf tail bug ship: the two surfaces disagreed past z~6 and
