@@ -618,6 +618,34 @@ const ok = (cond, name, detail) => {
     ok(errors.length === 0, "players page: zero console errors",
        errors[0] || "");
     await page.close();
+
+    // ---- scenario 11: PHASE D TEAM PAGES on the same hermetic server
+    const tpg = await browser.newPage();
+    const terr = [];
+    tpg.on("pageerror", e => terr.push(String(e)));
+    tpg.on("console", m => { if (m.type() === "error") terr.push(m.text()); });
+    await tpg.goto(base + "/out/teams.html");
+    await tpg.waitForTimeout(1200);
+    ok(await tpg.locator(".tgrid a").count() === 32, "teams index lists all 32 teams");
+    await tpg.goto(base + "/out/teams.html#t=BUF");
+    await tpg.waitForTimeout(800);
+    const ttxt = await tpg.textContent("#content");
+    ok(/Joe Brady/.test(ttxt) && /REPORTED/.test(ttxt),
+       "team page: curated play-caller card with its tag");
+    ok(/2025 PROE/.test(ttxt) && /neutral-situation snaps/.test(ttxt),
+       "team page: PROE card with its measurement basis");
+    ok(/Vacated opportunity/.test(ttxt), "team page: vacated block renders");
+    ok(/Depth chart - ranked by value/.test(ttxt) && /slot /.test(ttxt),
+       "team page: value-ordered depth grid keeps official slot as metadata");
+    ok((ttxt.match(/computation:/g) || []).length >= 4,
+       "team page: every instrument carries its computation note");
+    // a team OUTSIDE the curated 19 must say so, not assert continuity
+    await tpg.goto(base + "/out/teams.html#t=KC");
+    await tpg.waitForTimeout(600);
+    ok(/not among the 19 confirmed changes/.test(await tpg.textContent("#content")),
+       "team page: uncurated team declares absence instead of asserting continuity");
+    ok(terr.length === 0, "team page: zero console errors", terr[0] || "");
+    await tpg.close();
     srv.close();
   }
 
