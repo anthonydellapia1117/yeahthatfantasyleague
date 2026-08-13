@@ -19,11 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble site (app + icon + dashboard only, not the 66MB archives)
+      - name: Assemble site (apps + shards, not the 66MB archives)
         run: |
-          mkdir -p _site/out
+          mkdir -p _site/out/data
           cp index.html _site/
-          cp out/draft_room.html out/icon-180.png out/ff-hub.html _site/out/
+          cp out/draft_room.html out/players.html out/teams.html out/home.html \
+             out/icon-180.png out/ff-hub.html out/engine_2026.json _site/out/
+          cp out/data/*.json out/data/heartbeat.txt _site/out/data/
           touch _site/.nojekyll
       - name: Push to gh-pages
         run: |
