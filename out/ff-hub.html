@@ -23,6 +23,13 @@ h3{font-size:15px;margin:22px 0 8px;color:var(--t2);text-transform:uppercase;let
 .rule{height:1px;background:var(--bd);margin:26px 0}
 .gold{color:var(--gold)}.teal{color:var(--teal)}.red{color:var(--red)}
 .card{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:20px;margin:14px 0}
+/* CARD SCOPE - white interiors (Anthony's contrast fix); ff-hub vocabulary.
+   Gold is darkened to stay AA on the light card; page scope keeps #C7A26B. */
+.card,.stat{
+  --s1:#f4f6fa; --s2:#dde4ee; --s3:#e8edf5; --bd:#cbd5e1;
+  --t1:#0b1120; --t2:#475569; --t3:#52607a; --white:#0b1120;
+  --teal:#0f766e; --red:#b91c1c; --gold:#7a5c1f;
+  color:var(--t1)}
 .hero{background:var(--s2);border-left:3px solid var(--teal)}
 .dead{border-left:3px solid var(--red)}
 .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
