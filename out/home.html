@@ -32,6 +32,15 @@ a{color:var(--info);text-decoration:none}
   padding:8px 12px;font-size:13px;color:var(--ink2);margin-bottom:12px}
 .card{background:var(--s1);border:1px solid var(--line);border-radius:12px;
   padding:16px;margin-bottom:12px}
+/* CARD SCOPE - white interiors (Anthony's contrast fix). A color is picked by
+   the surface it sits on, not the file it is in: custom-property overrides
+   re-resolve every var() inside a card to the light palette; everything
+   outside a card keeps the dark page palette. Semantic mapping unchanged. */
+.card,.banner,#pvpop{
+  --s1:#f4f6fa; --s2:#e8edf5; --s3:#e8edf5; --line:#cbd5e1;
+  --ink:#0b1120; --ink2:#475569; --ink3:#52607a;
+  --go:#047857; --stop:#b91c1c; --warn:#b45309; --info:#0f766e;
+  color:var(--ink)}
 .small{font-size:12px;color:var(--ink3)}
 .count{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
 .count .small{font-size:14px;font-weight:600}

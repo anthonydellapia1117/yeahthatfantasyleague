@@ -309,6 +309,77 @@ for fname in ALL_PAGES:
 ok("prefers-color-scheme" not in navsrc2,
    "nav.js carries no color-scheme preference rule")
 
+# 17. CONTRAST GUARD (the white-card fix). WCAG ratios are COMPUTED here from
+#     the committed token values, never hardcoded as expected numbers - if a
+#     future token change breaks legibility this section fails loudly.
+def _srgb_lum(hexcolor):
+    h = hexcolor.lstrip("#")
+    chans = []
+    for i in (0, 2, 4):
+        c = int(h[i:i + 2], 16) / 255.0
+        chans.append(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * chans[0] + 0.7152 * chans[1] + 0.0722 * chans[2]
+
+def _contrast(a, b):
+    la, lb = _srgb_lum(a), _srgb_lum(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+def _scope_tokens(src, marker="CARD SCOPE"):
+    i = src.index(marker)
+    block = src[src.index("{", i):src.index("}", i)]
+    return dict(re.findall(r'--([\w-]+):\s*(#[0-9a-fA-F]{6})', block))
+
+def _root_tokens(src):
+    i = src.index(":root{")
+    block = src[i:src.index("}", i)]
+    return dict(re.findall(r'--([\w-]+):\s*(#[0-9a-fA-F]{6})', block))
+
+for fname in ("draft_room.html", "players.html", "teams.html", "home.html"):
+    psrc = open(os.path.join(ROOT, "out", fname)).read()
+    card = _scope_tokens(psrc)
+    page = _root_tokens(psrc)
+    cs = card["s1"]
+    bad = [f"--{t} {_contrast(card[t], cs):.2f}" for t in
+           ("ink", "ink2", "ink3", "go", "stop", "warn", "info")
+           if _contrast(card[t], cs) < 4.5]
+    ok(not bad, f"{fname}: every card text and verdict token clears 4.5:1",
+       "; ".join(bad))
+    ok(_contrast(cs, page["bg"]) >= 3.0,
+       f"{fname}: card surface vs page clears 3:1",
+       f"{_contrast(cs, page['bg']):.2f}")
+    dbad = [f"--{t} {_contrast(page[t], page['bg']):.2f}" for t in
+            ("go", "stop", "warn")
+            if _contrast(page[t], page["bg"]) < 4.5]
+    ok(not dbad, f"{fname}: dark-context verdict colors clear 4.5:1 on the page",
+       "; ".join(dbad))
+
+_drsrc = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+_drcard = _scope_tokens(_drsrc)["s1"]
+_pos = dict(re.findall(r'\.p(QB|RB|WR|TE|K|DEF)\{border-left-color:(#[0-9a-fA-F]{6})\}', _drsrc))
+pbad = [f"{k} {_contrast(v, _drcard):.2f}" for k, v in _pos.items()
+        if _contrast(v, _drcard) < 4.5]
+ok(len(_pos) == 6 and not pbad,
+   "draft grid position colors clear 4.5:1 on the card", "; ".join(pbad))
+
+_ffsrc = open(os.path.join(ROOT, "out", "ff-hub.html")).read()
+_ffcard = _scope_tokens(_ffsrc)
+_ffpage = _root_tokens(_ffsrc)
+_fcs = _ffcard["s1"]
+fbad = [f"--{t} {_contrast(_ffcard[t], _fcs):.2f}" for t in
+        ("t1", "t2", "t3", "teal", "red", "gold")
+        if _contrast(_ffcard[t], _fcs) < 4.5]
+ok(not fbad, "ff-hub: card text, accents, and darkened gold clear 4.5:1",
+   "; ".join(fbad))
+ok(_contrast(_fcs, _ffpage["bg"]) >= 3.0,
+   "ff-hub: card surface vs page clears 3:1",
+   f"{_contrast(_fcs, _ffpage['bg']):.2f}")
+fdbad = [f"--{t} {_contrast(_ffpage[t], _ffpage['bg']):.2f}" for t in
+         ("teal", "red")
+         if _contrast(_ffpage[t], _ffpage["bg"]) < 4.5]
+ok(not fdbad, "ff-hub: dark-context accents clear 4.5:1 on the page",
+   "; ".join(fdbad))
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

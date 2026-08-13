@@ -33,6 +33,15 @@ a{color:var(--info);text-decoration:none}
 .banner.err{border-color:var(--stop);color:var(--stop)}
 .card{background:var(--s1);border:1px solid var(--line);border-radius:12px;
   padding:16px;margin-bottom:12px}
+/* CARD SCOPE - white interiors (Anthony's contrast fix). A color is picked by
+   the surface it sits on, not the file it is in: custom-property overrides
+   re-resolve every var() inside a card to the light palette; everything
+   outside a card keeps the dark page palette. Semantic mapping unchanged. */
+.card,.banner,#pvpop{
+  --s1:#f4f6fa; --s2:#e8edf5; --s3:#e8edf5; --line:#cbd5e1;
+  --ink:#0b1120; --ink2:#475569; --ink3:#52607a;
+  --go:#047857; --stop:#b91c1c; --warn:#b45309; --info:#0f766e;
+  color:var(--ink)}
 .small{font-size:12px;color:var(--ink3)}
 .muted{color:var(--ink2)}
 .inj{color:var(--stop);font-size:11px;font-weight:700;text-transform:uppercase;margin-left:6px}
@@ -52,8 +61,8 @@ td{padding:5px 8px 5px 0;border-bottom:1px solid var(--s2)}
 #pvpop b{color:var(--ink)}
 #pvpop .num{color:var(--ink)}
 .yc{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.4px;padding:1px 6px;border-radius:8px;border:1px solid;margin-left:5px;vertical-align:1px}
-.yc.bull{color:#34D399;border-color:#1d6b47;background:rgba(52,211,153,.08)}
-.yc.bear{color:#F87171;border-color:#7a3535;background:rgba(248,113,113,.08)}
+.yc.bull{color:#0a7d33;border-color:#9ed9b2;background:#eafaf0}
+.yc.bear{color:#a83232;border-color:#e2b3b3;background:#faeeee}
 .idxrow{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid var(--s2);font-size:14px}
 .idxrow:first-of-type{border-top:0}
 input[type=search]{width:100%;font:inherit;color:var(--ink);background:var(--s2);
@@ -179,9 +188,11 @@ function renderIndex(msg){
     return `<div><h2>${pos === "DEF" ? "DST" : pos}</h2>${rows}</div>`;
   }).join("");
   c.innerHTML = `${msg ? `<div class="banner">${msg}</div>` : ""}
+    <div class="card">
     <input type="search" id="q" placeholder="search any player" autocomplete="off">
     <div id="qout"></div>
-    <div class="cols">${lists}</div>`;
+    <div class="cols">${lists}</div>
+    </div>`;
   document.getElementById("q").addEventListener("input", e => {
     const q = norm(e.target.value);
     const out = document.getElementById("qout");
