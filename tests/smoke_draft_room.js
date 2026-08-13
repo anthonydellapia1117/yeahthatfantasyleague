@@ -721,6 +721,11 @@ const ok = (cond, name, detail) => {
         ok(rv.armed > 0 && rv.shown > 0,
            "reveals arm and complete on the home page", JSON.stringify(rv));
       }
+      // dark lock: these pages load under the default (light) OS preference
+      // in this suite, and must render the dark family anyway
+      ok(await pg.evaluate(() => getComputedStyle(document.body).backgroundColor)
+         === "rgb(11, 17, 32)",
+         `${file} renders dark under a light OS preference`);
       await pg.close();
     }
     // drawer behavior at 390px

@@ -294,6 +294,21 @@ ok("translateY(8px)" in navsrc2 and ".4s" in navsrc2,
 ok("box-shadow" not in navsrc2 and "scale(" not in navsrc2,
    "hover lift is border-color only - no shadows, no transforms")
 
+# 16. DARK LOCK. The hub matches a dark-only design target and must never
+#     repaint on an OS theme flip - least of all mid-draft at sunset. No page
+#     may carry a color-scheme preference rule; every page declares dark to
+#     the browser so form controls and chrome match.
+for fname in ALL_PAGES:
+    psrc = open(os.path.join(ROOT, "out", fname)).read()
+    ok("prefers-color-scheme" not in psrc,
+       f"{fname}: no color-scheme preference rule - dark always")
+    ok("data-theme" not in psrc,
+       f"{fname}: no theme-attribute escape hatch either")
+    ok('<meta name="color-scheme" content="dark">' in psrc,
+       f"{fname}: declares color-scheme dark to the browser")
+ok("prefers-color-scheme" not in navsrc2,
+   "nav.js carries no color-scheme preference rule")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
