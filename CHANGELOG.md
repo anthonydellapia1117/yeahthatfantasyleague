@@ -1,5 +1,41 @@
 # Changelog
 
+## Increment 2 - CVS wired, signal encoding, pick engine (2026-08-18)
+
+Classification approved by Anthony (stop condition 1 cleared); the guide
+layer is live, capped, and kill-switchable.
+
+- New input shards (`src/build_cvs_inputs.py`, literal nflverse columns
+  only): `volatility_2025.json` (511 players - weekly PPR mean/sd, boom/bust,
+  p90/p25), `td_rates_2025.json` (193 players - TD per opportunity with
+  positional outlier deciles), `sos_2026.json` (2026 schedule x 2025 points
+  allowed by position, season + weeks 15-17 slices).
+- `src/build_cvs.py` + `data/cvs_weights.json`: the CVS anchor law
+  (cvs_base = VOR + weighted within-position z of five wired factors;
+  Walter judgment as a capped percent multiplier, 10%, never raised without
+  approval). 190 players; nulls redistribute and confidence reports the
+  covered share; K/DST excluded as floors. Every applied Walter delta
+  carries its verbatim quote and line reference into the Explain view.
+- Big board rewritten as the CVS board: seven signal states, three channels
+  each (container treatment + icon + text label, WCAG-verified colors),
+  precedence personal > consensus > single with conflicts kept visible;
+  views BOARD / CVS vs WALTER (sparse figure deltas + regression cross-map)
+  / CONFLICTS (model conflict queue - live: Jayden Daniels); filters with
+  localStorage persistence; live drafted-removal poll.
+- Pick engine card in the draft room (additive, PICKENGINE-quarantined):
+  the pick + two alternates with conditions, three-line why, cost of
+  waiting from the frozen survival model, confidence band, weeks 15-17
+  tilt labelled "a schedule proxy for title odds, not a title-odds
+  simulation". The wait-or-reach verdict stays the audited VOR model.
+- Verification: `tests/test_cvs.py` (12 guards), pages guard suite extended
+  (CVS board section, signal-color contrast, cvs teaser leak tokens), smoke
+  scenarios 15 (CVS board) and 16 (pick engine) - all suites ALL PASS;
+  five frozen survival functions byte-identical to main; engine regen
+  touches only its sentinel payload (proven).
+- HONESTY: the with/without-guide backtest cannot run - no historical guide
+  files exist. The cap and the walter_enabled kill-switch are the risk
+  bounds, stated in MODEL.md and on the board.
+
 ## Increment 2 - guide integration groundwork (2026-08-18)
 
 - Ingested `data/Walter Ai-2026_Advanced_Fantasy_Guide.md` (sha-stamped) and

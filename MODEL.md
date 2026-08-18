@@ -1,8 +1,12 @@
 # MODEL.md - The Big Board valuation system
 
-Status: increment 2. The Walter guide is parsed and audited; nothing from it
-moves any rank until Anthony approves the Evidence/Judgment classification
-(stop condition 1). The CVS scoring function builds after that approval.
+Status: increment 2, wired. Anthony approved the Evidence/Judgment
+classification on 2026-08-18 (stop condition 1 cleared); CVS is live on the
+big board and the pick engine card is live in the draft room. The
+with/without-guide backtest cannot run - no historical guide files exist -
+so the guide layer is prospectively unvalidated: the 10% cap and the
+`walter_enabled` kill-switch in `data/cvs_weights.json` are the risk bounds,
+stated on the board itself.
 
 ## The routing rule (core principle, applies everywhere)
 
@@ -64,20 +68,49 @@ overwrite. Name resolution: exact norm match, then a common-nickname pass,
 then fuzzy at a 0.90 threshold; below threshold goes to
 `data/walter/unresolved.json` for Anthony. Never guessed, never dropped.
 
-## CVS (builds after classification approval - design of record)
+## CVS (live - the anchor law)
 
-Composite Value Score per player: factor groups z-scored within position,
-weighted from a single config (`data/cvs_weights.json`), tunable live in the
-UI. Three outputs per player, never one: CVS (risk-neutral, 1-100 rank),
-Confidence (share of factor weight backed by real data), Volatility
-(floor-to-ceiling spread; feeds archetype labels and tier widening). Missing
-data stays null; its weight redistributes across present factors; nothing is
-imputed to look like a measurement. Provenance per factor per player: source,
-retrieval timestamp, staleness.
+Built by `src/build_cvs.py` from the engine payload, the committed shards,
+three new input shards (`src/build_cvs_inputs.py`: volatility, TD rates, 2026
+SOS - literal nflverse columns only), and the Walter layer. The anchor law:
 
-Factor groups: baseline projection (VOR vs 12-team replacement), opportunity,
-team context, coaching and scheme, surrounding talent, schedule (season SOS
-plus separately weighted weeks 15-17), historical priors, volatility.
+    cvs_base = VOR + z_point_scale * sum(w_i / w_present) * z_i
+    cvs      = cvs_base * (1 + capped_walter_pct / 100)
+
+VOR stays the anchor because points over replacement is the only scale
+comparable across positions. Non-projection factors (opportunity, team
+context, coaching, surrounding talent, schedule) are z-scored within position
+over the draftable pool (QB30/RB60/WR70/TE30) and weighted from
+`data/cvs_weights.json` - the single config. Three outputs per player, never
+one: CVS, Confidence (covered weight share), Volatility (2025 weekly sd,
+boom/bust, p90/p25). Nulls stay null, weight redistributes, confidence
+reports it; `historical_priors` is null for every player today and says so.
+K and DST are excluded: their projections are floors, not comparable values.
+Guarded by `tests/test_cvs.py` (anchor decomposition, cap truthfulness,
+null handling, signal precedence, isolation, determinism) at every merge.
+
+## ADR: the pick engine objective (increment 2)
+
+Decision: the pick engine card ranks by `CVS + need + tier-scarcity +
+playoff-SOS tilt` - an explicit championship-lens proxy - rather than by a
+title-odds simulation, and rather than replacing the VOR verdict.
+
+- Championship probability is the mandated objective, but honest title odds
+  require a validated season simulator that does not exist yet. Per stop
+  condition 5 the card states on its face: "a schedule proxy for title odds,
+  not a title-odds simulation".
+- Weeks 15-17 SOS enters as its own tilt (PE.PLAYOFF x within-position z)
+  above the season SOS already inside CVS - the mandated playoff weighting.
+- The wait-or-reach verdict subject stays the audited VOR model. The card is
+  additive and quarantined (PICKENGINE markers, reads cvs.json plus the
+  read-only condSurvival, writes only its own card). If cvs.json is
+  unreachable the card says so and the room runs exactly as before.
+- Cost of waiting = P(gone by my next pick) x margin over the best
+  alternate, from the frozen conditional survival model. Alternate
+  conditions name the largest component where the alternate beats the pick.
+- Constants (need 12, flex 6, scarcity 8, playoff 3/z, confidence bands
+  10/4) print on the card. Ceiling/floor by slot from league history is NOT
+  wired yet - deferred with the simulator, not silently approximated.
 
 ## Championship objective (pick engine - design of record)
 
