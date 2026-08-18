@@ -75,13 +75,45 @@ three new input shards (`src/build_cvs_inputs.py`: volatility, TD rates, 2026
 SOS - literal nflverse columns only), and the Walter layer. The anchor law:
 
     cvs_base = VOR + z_point_scale * sum(w_i / w_present) * z_i
-    cvs      = cvs_base + |cvs_base| * capped_walter_pct / 100
+    cvs      = cvs_base + ref_pos * capped_walter_pct / 100
+    ref_pos  = within-position SD of cvs_base over the draftable pool
 
-The percentage applies to the magnitude of cvs_base (sign-safe): an
-endorsement always raises CVS and a fade always lowers it, including for
-the 29 deep-board players whose cvs_base is negative. The naive multiplier
-form inverted the judgment for those players; a red-team review caught it
-and a dedicated guard in tests/test_cvs.py now pins the direction.
+The percentage applies to a position-level reference magnitude, never the
+player's own value (approved 2026-08-18, second revision of the walter
+scale). History of the form, because each step was a real defect:
+
+1. `cvs_base * (1 + pct/100)` inverted the judgment for negative-CVS
+   players - a red-team review caught it (an endorsement pushed 29
+   deep-board players further down).
+2. `|cvs_base| * pct/100` fixed the sign but made Walter's authority
+   proportional to each player's distance from zero - near-replacement
+   players got nothing, and sleepers are by definition near replacement.
+   Walter's strongest call (Davante Adams, -9%) moved him -0.01 points.
+   Anthony caught it.
+3. The reference form gives even authority across the range: at the 10%
+   cap no player moves more than 0.1 positional SD (QB 5.8, RB 7.7,
+   WR 5.3, TE 4.1 points today) - less authority at the top than the
+   original form, real authority at replacement level where tail rank
+   gaps are 1.5-2 points. Sign-safe by construction. The references are
+   echoed in the payload and re-derived independently by the guard.
+
+Two operational controls on the layer (approved 2026-08-18):
+
+- Live kill-switch: both boards ship server-ranked in cvs.json
+  (`players[].no_walter` carries rank, pos rank, signal, and conflict with
+  every walter source off, model flags recomputed from base ranks by the
+  same precedence function). The WALTER LAYER toggle on the big board -
+  localStorage key `ytfl_walter_live`, read by the pick engine too - swaps
+  which variant renders, mid-draft, no rebuild. The page never re-derives
+  a rank or a signal.
+- Tier-boundary flags: a delta that leaves a player inside his engine
+  tier band changes nothing Anthony would act on; one that crosses a
+  boundary is a real decision change. Crossings (own-delta, direction-
+  consistent; shuffles caused by other players' deltas do not count) are
+  flagged on the row and named in the CVS vs WALTER view - including
+  "none at the current cap", stated rather than hidden. Well-defined
+  because engine tiers are monotone in pure cvs_base order (verified,
+  zero inversions).
 
 VOR stays the anchor because points over replacement is the only scale
 comparable across positions. Non-projection factors (opportunity, team

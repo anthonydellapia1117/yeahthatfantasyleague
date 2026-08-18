@@ -1,5 +1,32 @@
 # Changelog
 
+## Walter layer: reference scale, live kill-switch, tier flags (2026-08-18)
+
+Anthony approved the shipped increment and directed three changes:
+
+- WALTER SCALE, second revision: Anthony caught that the sign-safe
+  `|cvs_base| * pct` form made the layer's authority proportional to each
+  player's own magnitude - structurally weakest on sleepers (near
+  replacement, near zero), strongest on elites. Davante Adams' -9%, the
+  strongest call in the guide, moved him -0.01 points. The law now scales
+  against the within-position SD of cvs_base: even authority across the
+  range, at most 0.1 positional SD of movement at the 10% cap (less than
+  the original form allowed at the top). References echoed in the payload,
+  re-derived independently by the guard.
+- LIVE KILL-SWITCH: both boards ship server-ranked in cvs.json
+  (players[].no_walter - ranks, signals, conflicts with every walter
+  source off, one shared precedence implementation). The WALTER LAYER
+  toggle on the big board flips mid-draft with no rebuild; the pick
+  engine reads the same localStorage key and says so on its card.
+- TIER-BOUNDARY FLAGS: walter deltas that cross an engine tier band are
+  flagged on the row and named in the CVS vs WALTER view (own-delta,
+  direction-consistent crossings only). Currently: none at the current
+  cap - stated on the page, not hidden.
+- walter_enabled stays true by Anthony's decision: the impossible
+  backtest is absence of evidence, not evidence against; the cap, the
+  two kill-switches, full attribution, and the conflict views are the
+  bounds for an unvalidated but fully inspectable layer.
+
 ## Red-team pass on the pick engine and CVS (2026-08-18, after merge of #28)
 
 Adversarial review (general-purpose agent standing in for the named

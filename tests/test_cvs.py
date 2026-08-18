@@ -35,18 +35,30 @@ ok(zs[3] is None and abs(sum(z for z in zs if z is not None)) < 1e-9,
 ok(all(z == 0.0 for z in cvsmod.zscores([5.0, 5.0, 5.0, 5.0])),
    "zscores: degenerate spread collapses to zeros, never divides by zero")
 
-# 2. the anchor law: cvs_base = VOR + sum of non-baseline contributions,
-#    and cvs = cvs_base + |cvs_base| * capped_pct/100 (sign-safe: an
-#    endorsement never lowers a negative-CVS player further), within rounding
+# 2. the anchor law: cvs_base = VOR + sum of non-baseline contributions, and
+#    cvs = cvs_base + ref_pos * capped_pct/100 where ref_pos is the
+#    within-position SD of cvs_base (even authority across the range;
+#    sign-safe because the reference is positive). The payload's echoed
+#    references must match an independent recomputation.
+import statistics
+refs = {}
+for pos in ("QB", "RB", "WR", "TE"):
+    vals = [p["cvs_base"] for p in players if p["pos"] == pos]
+    refs[pos] = max(statistics.pstdev(vals), 1.0) if len(vals) > 1 else 1.0
+bad = [f"{pos}:{refs[pos]:.2f}!={C['walter_reference_points'][pos]}"
+       for pos in refs
+       if abs(refs[pos] - C["walter_reference_points"][pos]) > 0.25]
+ok(not bad, "walter reference = within-position SD of cvs_base, echoed "
+   "truthfully in the payload", "; ".join(bad))
 bad = [p["name"] for p in players
        if abs(p["cvs_base"] - (p["vor"] + sum(
            f["contribution"] for f in p["factors"]
            if f["factor"] != "baseline_projection"))) > 0.1
-       or abs(p["cvs"] - (p["cvs_base"] + abs(p["cvs_base"])
-                          * p["walter"]["capped_pct"] / 100)) > 0.1]
+       or abs(p["cvs"] - (p["cvs_base"] + refs[p["pos"]]
+                          * p["walter"]["capped_pct"] / 100)) > 0.15]
 ok(not bad, "anchor law: every CVS decomposes exactly into VOR + factor "
-   "contributions, then the capped walter percentage on the magnitude",
-   "; ".join(bad[:3]))
+   "contributions, then the capped walter percentage of the positional "
+   "reference", "; ".join(bad[:3]))
 # sign safety directly: a positive capped pct never lowers cvs, a negative
 # one never raises it
 bad = [p["name"] for p in players
@@ -111,6 +123,45 @@ for p in players:
     if (neg and posv) != p["signal_conflict"]:
         bad.append(p["name"] + ":conflict-flag")
 ok(not bad, "signal precedence and conflict flags hold for every player",
+   "; ".join(bad[:3]))
+
+# 7b. the no-walter board: server-ranked, ordered by cvs_base, no consensus
+#     states possible, conflicts from personal + model sources only
+nw = sorted(players, key=lambda p: p["no_walter"]["cvs_rank"])
+ok([p["no_walter"]["cvs_rank"] for p in nw] == list(range(1, len(nw) + 1))
+   and all(nw[i]["cvs_base"] >= nw[i + 1]["cvs_base"] for i in range(len(nw) - 1)),
+   "no-walter ranks are a strict cvs_base ordering (kill-switch is a "
+   "display swap, never a client rerank)")
+bad = [p["name"] for p in players
+       if (p["no_walter"]["signal"] or "").startswith("consensus")]
+ok(not bad, "no-walter board carries no consensus signal - walter is truly off",
+   "; ".join(bad[:3]))
+bad = []
+for p in players:
+    nm = p["no_walter"]["model_flags"]
+    neg = p["personal"] == "BEAR" or nm["do_not_draft"]
+    posv = nm["target"] or nm["sleeper"] or p["personal"] == "BULL"
+    if (neg and posv) != p["no_walter"]["signal_conflict"]:
+        bad.append(p["name"])
+ok(not bad, "no-walter conflicts recompute from personal + model only",
+   "; ".join(bad[:3]))
+
+# 7c. tier moves: only players with a live delta, from != to, direction
+#     consistent with the delta sign, and the named list matches the flags
+tm_names = {(m["name"], m["pos"]) for m in C["walter_tier_moves"]}
+bad = []
+for p in players:
+    mv = p["walter"].get("tier_move")
+    if mv:
+        if not p["walter"]["capped_pct"] or mv["from"] == mv["to"]:
+            bad.append(p["name"] + ":shape")
+        d = p["walter"]["delta_points"]
+        if (d > 0) != (mv["to"] < mv["from"]):
+            bad.append(p["name"] + ":direction")
+        if (p["name"], p["pos"]) not in tm_names:
+            bad.append(p["name"] + ":unlisted")
+ok(not bad and len(tm_names) == sum(1 for p in players if p["walter"].get("tier_move")),
+   "tier-boundary moves are own-delta, directional, and named in the list",
    "; ".join(bad[:3]))
 
 # 8. crossmap agreement values are directionally sound

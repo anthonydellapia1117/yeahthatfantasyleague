@@ -1,5 +1,6 @@
 {
-  "_doc": "CVS configuration - single source of truth. Weights are relative; null factors redistribute among present ones and confidence reports the covered share. z_point_scale converts one weighted z-unit of non-projection factors into VOR points so every Explain row reads in points. Walter judgment deltas are percentages of CVS, clamped to walter_cap_pct total; inferred tags count at inferred_multiplier. Changing any value recomputes the board - nothing else in the app reads these numbers.",
+  "_doc": "CVS configuration - single source of truth. Weights are relative; null factors redistribute among present ones and confidence reports the covered share. z_point_scale converts one weighted z-unit of non-projection factors into VOR points so every Explain row reads in points. Walter judgment deltas are percentages of the WITHIN-POSITION SD of cvs_base (walter_reference, approved 2026-08-18) clamped to walter_cap_pct total - even authority across the range, max movement 0.1 positional SD at the 10% cap; inferred tags count at inferred_multiplier. Changing any value recomputes the board - nothing else in the app reads these numbers.",
+  "walter_reference": "pool_sd_cvs_base",
   "factor_weights": {
     "baseline_projection": 40,
     "opportunity": 20,
