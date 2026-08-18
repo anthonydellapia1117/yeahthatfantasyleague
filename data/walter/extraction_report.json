@@ -1,0 +1,37 @@
+{
+ "source": "data/Walter Ai-2026_Advanced_Fantasy_Guide.md",
+ "source_sha256": "ed59c2b37b43897241bd3d659bb8c737d4e6bae4b60a47fb2469bdea5bdbb07f",
+ "previous_sha256": "ed59c2b37b43897241bd3d659bb8c737d4e6bae4b60a47fb2469bdea5bdbb07f",
+ "changed_since_last_parse": false,
+ "tag_total": 167,
+ "tags_by_type": {
+  "regression_mechanism": 16,
+  "regression_candidate": 16,
+  "recency_bias_target": 7,
+  "strategy_pick": 4,
+  "situation_change": 15,
+  "rookie_note": 19,
+  "target": 54,
+  "do_not_draft": 17,
+  "sleeper": 19
+ },
+ "tags_by_pos": {
+  "WR": 58,
+  "TE": 32,
+  "RB": 44,
+  "QB": 27,
+  "DEF": 3,
+  "K": 3
+ },
+ "evidence_count": 50,
+ "judgment_count": 117,
+ "figures_count": 19,
+ "structural_count": 2,
+ "top200_coverage_pct": 51.0,
+ "top200_covered": 102,
+ "unresolved_count": 0,
+ "resolved_tag_count": 167,
+ "conflict_count": 0,
+ "changelog_entries": 12,
+ "changelog_players": 14
+}
