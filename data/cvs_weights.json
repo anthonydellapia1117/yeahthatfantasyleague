@@ -1,0 +1,34 @@
+{
+  "_doc": "CVS configuration - single source of truth. Weights are relative; null factors redistribute among present ones and confidence reports the covered share. z_point_scale converts one weighted z-unit of non-projection factors into VOR points so every Explain row reads in points. Walter judgment deltas are percentages of CVS, clamped to walter_cap_pct total; inferred tags count at inferred_multiplier. Changing any value recomputes the board - nothing else in the app reads these numbers.",
+  "factor_weights": {
+    "baseline_projection": 40,
+    "opportunity": 20,
+    "historical_priors": 12,
+    "surrounding_talent": 10,
+    "team_context": 8,
+    "coaching_scheme": 5,
+    "schedule": 5
+  },
+  "z_point_scale": 8.0,
+  "walter_enabled": true,
+  "walter_cap_pct": 10,
+  "inferred_multiplier": 0.5,
+  "walter_tag_deltas_pct": {
+    "target": 4,
+    "sleeper": 3,
+    "do_not_draft": -6,
+    "recency_bias_target": 3,
+    "strategy_pick": 2,
+    "regression_candidate_negative": -3,
+    "regression_candidate_positive": 3
+  },
+  "model_flag_thresholds": {
+    "target_rank_gap": 8,
+    "dnd_rank_gap": 8,
+    "dnd_adp_universe": 100,
+    "sleeper_min_adp": 100,
+    "sleeper_p90_pos_rank": 12
+  },
+  "pool_sizes": { "QB": 30, "RB": 60, "WR": 70, "TE": 30 },
+  "_null_notes": "historical_priors is null for every player today (no age or draft-capital factor is wired at player level); its weight redistributes and confidence reflects it. schedule uses prior-season defense, a weak predictor, priced by its low weight."
+}

@@ -1,0 +1,2858 @@
+{
+ "teams": [
+  {
+   "team": "ARI",
+   "opponents": [
+    [
+     1,
+     "LAC"
+    ],
+    [
+     2,
+     "SEA"
+    ],
+    [
+     3,
+     "SF"
+    ],
+    [
+     4,
+     "NYG"
+    ],
+    [
+     5,
+     "DET"
+    ],
+    [
+     6,
+     "LAR"
+    ],
+    [
+     7,
+     "DEN"
+    ],
+    [
+     8,
+     "DAL"
+    ],
+    [
+     9,
+     "SEA"
+    ],
+    [
+     10,
+     "LAR"
+    ],
+    [
+     11,
+     "KC"
+    ],
+    [
+     12,
+     "WAS"
+    ],
+    [
+     13,
+     "PHI"
+    ],
+    [
+     15,
+     "NYJ"
+    ],
+    [
+     16,
+     "NO"
+    ],
+    [
+     17,
+     "LV"
+    ],
+    [
+     18,
+     "SF"
+    ]
+   ],
+   "sos_qb": 16.37,
+   "sos_qb_wk15_17": 16.68,
+   "sos_rb": 21.94,
+   "sos_rb_wk15_17": 24.07,
+   "sos_wr": 30.83,
+   "sos_wr_wk15_17": 30.54,
+   "sos_te": 12.93,
+   "sos_te_wk15_17": 12.59,
+   "sos_qb_rank": 14,
+   "sos_qb_wk15_17_rank": 16,
+   "sos_rb_rank": 24,
+   "sos_rb_wk15_17_rank": 3,
+   "sos_wr_rank": 15,
+   "sos_wr_wk15_17_rank": 18,
+   "sos_te_rank": 24,
+   "sos_te_wk15_17_rank": 22
+  },
+  {
+   "team": "ATL",
+   "opponents": [
+    [
+     1,
+     "PIT"
+    ],
+    [
+     2,
+     "CAR"
+    ],
+    [
+     3,
+     "GB"
+    ],
+    [
+     4,
+     "NO"
+    ],
+    [
+     5,
+     "BAL"
+    ],
+    [
+     6,
+     "CHI"
+    ],
+    [
+     7,
+     "SF"
+    ],
+    [
+     8,
+     "TB"
+    ],
+    [
+     9,
+     "CIN"
+    ],
+    [
+     10,
+     "KC"
+    ],
+    [
+     12,
+     "MIN"
+    ],
+    [
+     13,
+     "DET"
+    ],
+    [
+     14,
+     "CLE"
+    ],
+    [
+     15,
+     "WAS"
+    ],
+    [
+     16,
+     "TB"
+    ],
+    [
+     17,
+     "NO"
+    ],
+    [
+     18,
+     "CAR"
+    ]
+   ],
+   "sos_qb": 16.29,
+   "sos_qb_wk15_17": 17.67,
+   "sos_rb": 22.35,
+   "sos_rb_wk15_17": 22.86,
+   "sos_wr": 30.37,
+   "sos_wr_wk15_17": 31.38,
+   "sos_te": 13.87,
+   "sos_te_wk15_17": 14.72,
+   "sos_qb_rank": 17,
+   "sos_qb_wk15_17_rank": 5,
+   "sos_rb_rank": 13,
+   "sos_rb_wk15_17_rank": 9,
+   "sos_wr_rank": 20,
+   "sos_wr_wk15_17_rank": 11,
+   "sos_te_rank": 4,
+   "sos_te_wk15_17_rank": 6
+  },
+  {
+   "team": "BAL",
+   "opponents": [
+    [
+     1,
+     "IND"
+    ],
+    [
+     2,
+     "NO"
+    ],
+    [
+     3,
+     "DAL"
+    ],
+    [
+     4,
+     "TEN"
+    ],
+    [
+     5,
+     "ATL"
+    ],
+    [
+     6,
+     "CLE"
+    ],
+    [
+     7,
+     "CIN"
+    ],
+    [
+     8,
+     "BUF"
+    ],
+    [
+     9,
+     "JAX"
+    ],
+    [
+     10,
+     "LAC"
+    ],
+    [
+     11,
+     "CAR"
+    ],
+    [
+     12,
+     "HOU"
+    ],
+    [
+     14,
+     "TB"
+    ],
+    [
+     15,
+     "PIT"
+    ],
+    [
+     16,
+     "CLE"
+    ],
+    [
+     17,
+     "CIN"
+    ],
+    [
+     18,
+     "PIT"
+    ]
+   ],
+   "sos_qb": 16.37,
+   "sos_qb_wk15_17": 16.84,
+   "sos_rb": 22.34,
+   "sos_rb_wk15_17": 23.62,
+   "sos_wr": 30.38,
+   "sos_wr_wk15_17": 29.14,
+   "sos_te": 14.01,
+   "sos_te_wk15_17": 16.53,
+   "sos_qb_rank": 14,
+   "sos_qb_wk15_17_rank": 12,
+   "sos_rb_rank": 14,
+   "sos_rb_wk15_17_rank": 5,
+   "sos_wr_rank": 18,
+   "sos_wr_wk15_17_rank": 25,
+   "sos_te_rank": 3,
+   "sos_te_wk15_17_rank": 2
+  },
+  {
+   "team": "BUF",
+   "opponents": [
+    [
+     1,
+     "HOU"
+    ],
+    [
+     2,
+     "DET"
+    ],
+    [
+     3,
+     "LAC"
+    ],
+    [
+     4,
+     "NE"
+    ],
+    [
+     5,
+     "LAR"
+    ],
+    [
+     6,
+     "LV"
+    ],
+    [
+     8,
+     "BAL"
+    ],
+    [
+     9,
+     "MIN"
+    ],
+    [
+     10,
+     "NYJ"
+    ],
+    [
+     11,
+     "MIA"
+    ],
+    [
+     12,
+     "KC"
+    ],
+    [
+     13,
+     "NE"
+    ],
+    [
+     14,
+     "GB"
+    ],
+    [
+     15,
+     "CHI"
+    ],
+    [
+     16,
+     "DEN"
+    ],
+    [
+     17,
+     "MIA"
+    ],
+    [
+     18,
+     "NYJ"
+    ]
+   ],
+   "sos_qb": 15.98,
+   "sos_qb_wk15_17": 16.83,
+   "sos_rb": 21.78,
+   "sos_rb_wk15_17": 21.38,
+   "sos_wr": 30.27,
+   "sos_wr_wk15_17": 31.04,
+   "sos_te": 13.04,
+   "sos_te_wk15_17": 14.33,
+   "sos_qb_rank": 21,
+   "sos_qb_wk15_17_rank": 13,
+   "sos_rb_rank": 28,
+   "sos_rb_wk15_17_rank": 25,
+   "sos_wr_rank": 22,
+   "sos_wr_wk15_17_rank": 14,
+   "sos_te_rank": 19,
+   "sos_te_wk15_17_rank": 7
+  },
+  {
+   "team": "CAR",
+   "opponents": [
+    [
+     1,
+     "CHI"
+    ],
+    [
+     2,
+     "ATL"
+    ],
+    [
+     3,
+     "CLE"
+    ],
+    [
+     4,
+     "DET"
+    ],
+    [
+     6,
+     "PHI"
+    ],
+    [
+     7,
+     "TB"
+    ],
+    [
+     8,
+     "GB"
+    ],
+    [
+     9,
+     "DEN"
+    ],
+    [
+     10,
+     "NO"
+    ],
+    [
+     11,
+     "BAL"
+    ],
+    [
+     12,
+     "TB"
+    ],
+    [
+     13,
+     "MIN"
+    ],
+    [
+     14,
+     "NO"
+    ],
+    [
+     15,
+     "CIN"
+    ],
+    [
+     16,
+     "PIT"
+    ],
+    [
+     17,
+     "SEA"
+    ],
+    [
+     18,
+     "ATL"
+    ]
+   ],
+   "sos_qb": 16.06,
+   "sos_qb_wk15_17": 17.07,
+   "sos_rb": 21.49,
+   "sos_rb_wk15_17": 22.36,
+   "sos_wr": 30.36,
+   "sos_wr_wk15_17": 28.93,
+   "sos_te": 13.15,
+   "sos_te_wk15_17": 17.38,
+   "sos_qb_rank": 19,
+   "sos_qb_wk15_17_rank": 9,
+   "sos_rb_rank": 31,
+   "sos_rb_wk15_17_rank": 16,
+   "sos_wr_rank": 21,
+   "sos_wr_wk15_17_rank": 26,
+   "sos_te_rank": 16,
+   "sos_te_wk15_17_rank": 1
+  },
+  {
+   "team": "CHI",
+   "opponents": [
+    [
+     1,
+     "CAR"
+    ],
+    [
+     2,
+     "MIN"
+    ],
+    [
+     3,
+     "PHI"
+    ],
+    [
+     4,
+     "NYJ"
+    ],
+    [
+     5,
+     "GB"
+    ],
+    [
+     6,
+     "ATL"
+    ],
+    [
+     7,
+     "NE"
+    ],
+    [
+     8,
+     "SEA"
+    ],
+    [
+     9,
+     "TB"
+    ],
+    [
+     11,
+     "NO"
+    ],
+    [
+     12,
+     "DET"
+    ],
+    [
+     13,
+     "JAX"
+    ],
+    [
+     14,
+     "MIA"
+    ],
+    [
+     15,
+     "BUF"
+    ],
+    [
+     16,
+     "GB"
+    ],
+    [
+     17,
+     "DET"
+    ],
+    [
+     18,
+     "MIN"
+    ]
+   ],
+   "sos_qb": 15.45,
+   "sos_qb_wk15_17": 15.44,
+   "sos_rb": 21.64,
+   "sos_rb_wk15_17": 21.89,
+   "sos_wr": 29.47,
+   "sos_wr_wk15_17": 31.14,
+   "sos_te": 12.69,
+   "sos_te_wk15_17": 11.12,
+   "sos_qb_rank": 30,
+   "sos_qb_wk15_17_rank": 22,
+   "sos_rb_rank": 30,
+   "sos_rb_wk15_17_rank": 19,
+   "sos_wr_rank": 31,
+   "sos_wr_wk15_17_rank": 13,
+   "sos_te_rank": 31,
+   "sos_te_wk15_17_rank": 29
+  },
+  {
+   "team": "CIN",
+   "opponents": [
+    [
+     1,
+     "TB"
+    ],
+    [
+     2,
+     "HOU"
+    ],
+    [
+     3,
+     "PIT"
+    ],
+    [
+     4,
+     "JAX"
+    ],
+    [
+     5,
+     "MIA"
+    ],
+    [
+     7,
+     "BAL"
+    ],
+    [
+     8,
+     "TEN"
+    ],
+    [
+     9,
+     "ATL"
+    ],
+    [
+     10,
+     "PIT"
+    ],
+    [
+     11,
+     "WAS"
+    ],
+    [
+     12,
+     "NO"
+    ],
+    [
+     13,
+     "CLE"
+    ],
+    [
+     14,
+     "KC"
+    ],
+    [
+     15,
+     "CAR"
+    ],
+    [
+     16,
+     "IND"
+    ],
+    [
+     17,
+     "BAL"
+    ],
+    [
+     18,
+     "CLE"
+    ]
+   ],
+   "sos_qb": 16.51,
+   "sos_qb_wk15_17": 16.14,
+   "sos_rb": 21.86,
+   "sos_rb_wk15_17": 22.62,
+   "sos_wr": 31.57,
+   "sos_wr_wk15_17": 32.89,
+   "sos_te": 13.59,
+   "sos_te_wk15_17": 13.29,
+   "sos_qb_rank": 12,
+   "sos_qb_wk15_17_rank": 20,
+   "sos_rb_rank": 27,
+   "sos_rb_wk15_17_rank": 11,
+   "sos_wr_rank": 9,
+   "sos_wr_wk15_17_rank": 6,
+   "sos_te_rank": 8,
+   "sos_te_wk15_17_rank": 17
+  },
+  {
+   "team": "CLE",
+   "opponents": [
+    [
+     1,
+     "JAX"
+    ],
+    [
+     2,
+     "TB"
+    ],
+    [
+     3,
+     "CAR"
+    ],
+    [
+     4,
+     "PIT"
+    ],
+    [
+     5,
+     "NYJ"
+    ],
+    [
+     6,
+     "BAL"
+    ],
+    [
+     7,
+     "TEN"
+    ],
+    [
+     8,
+     "PIT"
+    ],
+    [
+     9,
+     "NO"
+    ],
+    [
+     10,
+     "HOU"
+    ],
+    [
+     12,
+     "LV"
+    ],
+    [
+     13,
+     "CIN"
+    ],
+    [
+     14,
+     "ATL"
+    ],
+    [
+     15,
+     "NYG"
+    ],
+    [
+     16,
+     "BAL"
+    ],
+    [
+     17,
+     "IND"
+    ],
+    [
+     18,
+     "CIN"
+    ]
+   ],
+   "sos_qb": 17.2,
+   "sos_qb_wk15_17": 17.62,
+   "sos_rb": 22.94,
+   "sos_rb_wk15_17": 23.19,
+   "sos_wr": 31.7,
+   "sos_wr_wk15_17": 35.29,
+   "sos_te": 14.24,
+   "sos_te_wk15_17": 12.5,
+   "sos_qb_rank": 2,
+   "sos_qb_wk15_17_rank": 6,
+   "sos_rb_rank": 2,
+   "sos_rb_wk15_17_rank": 7,
+   "sos_wr_rank": 7,
+   "sos_wr_wk15_17_rank": 1,
+   "sos_te_rank": 1,
+   "sos_te_wk15_17_rank": 23
+  },
+  {
+   "team": "DAL",
+   "opponents": [
+    [
+     1,
+     "NYG"
+    ],
+    [
+     2,
+     "WAS"
+    ],
+    [
+     3,
+     "BAL"
+    ],
+    [
+     4,
+     "HOU"
+    ],
+    [
+     5,
+     "TB"
+    ],
+    [
+     6,
+     "GB"
+    ],
+    [
+     7,
+     "PHI"
+    ],
+    [
+     8,
+     "ARI"
+    ],
+    [
+     9,
+     "IND"
+    ],
+    [
+     10,
+     "SF"
+    ],
+    [
+     11,
+     "TEN"
+    ],
+    [
+     12,
+     "PHI"
+    ],
+    [
+     13,
+     "SEA"
+    ],
+    [
+     15,
+     "LAR"
+    ],
+    [
+     16,
+     "JAX"
+    ],
+    [
+     17,
+     "NYG"
+    ],
+    [
+     18,
+     "WAS"
+    ]
+   ],
+   "sos_qb": 16.75,
+   "sos_qb_wk15_17": 16.43,
+   "sos_rb": 22.76,
+   "sos_rb_wk15_17": 21.73,
+   "sos_wr": 31.69,
+   "sos_wr_wk15_17": 32.24,
+   "sos_te": 13.3,
+   "sos_te_wk15_17": 13.09,
+   "sos_qb_rank": 9,
+   "sos_qb_wk15_17_rank": 17,
+   "sos_rb_rank": 5,
+   "sos_rb_wk15_17_rank": 22,
+   "sos_wr_rank": 8,
+   "sos_wr_wk15_17_rank": 9,
+   "sos_te_rank": 15,
+   "sos_te_wk15_17_rank": 18
+  },
+  {
+   "team": "DEN",
+   "opponents": [
+    [
+     1,
+     "KC"
+    ],
+    [
+     2,
+     "JAX"
+    ],
+    [
+     3,
+     "LAR"
+    ],
+    [
+     4,
+     "SF"
+    ],
+    [
+     5,
+     "LAC"
+    ],
+    [
+     6,
+     "SEA"
+    ],
+    [
+     7,
+     "ARI"
+    ],
+    [
+     8,
+     "KC"
+    ],
+    [
+     9,
+     "CAR"
+    ],
+    [
+     11,
+     "LV"
+    ],
+    [
+     12,
+     "PIT"
+    ],
+    [
+     13,
+     "MIA"
+    ],
+    [
+     14,
+     "NYJ"
+    ],
+    [
+     15,
+     "LV"
+    ],
+    [
+     16,
+     "BUF"
+    ],
+    [
+     17,
+     "NE"
+    ],
+    [
+     18,
+     "LAC"
+    ]
+   ],
+   "sos_qb": 15.59,
+   "sos_qb_wk15_17": 14.63,
+   "sos_rb": 21.9,
+   "sos_rb_wk15_17": 22.27,
+   "sos_wr": 29.75,
+   "sos_wr_wk15_17": 29.72,
+   "sos_te": 12.98,
+   "sos_te_wk15_17": 10.48,
+   "sos_qb_rank": 29,
+   "sos_qb_wk15_17_rank": 27,
+   "sos_rb_rank": 26,
+   "sos_rb_wk15_17_rank": 17,
+   "sos_wr_rank": 29,
+   "sos_wr_wk15_17_rank": 21,
+   "sos_te_rank": 23,
+   "sos_te_wk15_17_rank": 30
+  },
+  {
+   "team": "DET",
+   "opponents": [
+    [
+     1,
+     "NO"
+    ],
+    [
+     2,
+     "BUF"
+    ],
+    [
+     3,
+     "NYJ"
+    ],
+    [
+     4,
+     "CAR"
+    ],
+    [
+     5,
+     "ARI"
+    ],
+    [
+     7,
+     "GB"
+    ],
+    [
+     8,
+     "MIN"
+    ],
+    [
+     9,
+     "MIA"
+    ],
+    [
+     10,
+     "NE"
+    ],
+    [
+     11,
+     "TB"
+    ],
+    [
+     12,
+     "CHI"
+    ],
+    [
+     13,
+     "ATL"
+    ],
+    [
+     14,
+     "TEN"
+    ],
+    [
+     15,
+     "MIN"
+    ],
+    [
+     16,
+     "NYG"
+    ],
+    [
+     17,
+     "CHI"
+    ],
+    [
+     18,
+     "GB"
+    ]
+   ],
+   "sos_qb": 16.02,
+   "sos_qb_wk15_17": 15.83,
+   "sos_rb": 22.73,
+   "sos_rb_wk15_17": 22.38,
+   "sos_wr": 30.42,
+   "sos_wr_wk15_17": 31.24,
+   "sos_te": 12.89,
+   "sos_te_wk15_17": 11.69,
+   "sos_qb_rank": 20,
+   "sos_qb_wk15_17_rank": 21,
+   "sos_rb_rank": 6,
+   "sos_rb_wk15_17_rank": 15,
+   "sos_wr_rank": 17,
+   "sos_wr_wk15_17_rank": 12,
+   "sos_te_rank": 26,
+   "sos_te_wk15_17_rank": 28
+  },
+  {
+   "team": "GB",
+   "opponents": [
+    [
+     1,
+     "MIN"
+    ],
+    [
+     2,
+     "NYJ"
+    ],
+    [
+     3,
+     "ATL"
+    ],
+    [
+     4,
+     "TB"
+    ],
+    [
+     5,
+     "CHI"
+    ],
+    [
+     6,
+     "DAL"
+    ],
+    [
+     7,
+     "DET"
+    ],
+    [
+     8,
+     "CAR"
+    ],
+    [
+     9,
+     "NE"
+    ],
+    [
+     10,
+     "MIN"
+    ],
+    [
+     12,
+     "LAR"
+    ],
+    [
+     13,
+     "NO"
+    ],
+    [
+     14,
+     "BUF"
+    ],
+    [
+     15,
+     "MIA"
+    ],
+    [
+     16,
+     "CHI"
+    ],
+    [
+     17,
+     "HOU"
+    ],
+    [
+     18,
+     "DET"
+    ]
+   ],
+   "sos_qb": 16.22,
+   "sos_qb_wk15_17": 16.37,
+   "sos_rb": 21.96,
+   "sos_rb_wk15_17": 22.39,
+   "sos_wr": 30.8,
+   "sos_wr_wk15_17": 30.67,
+   "sos_te": 12.8,
+   "sos_te_wk15_17": 13.87,
+   "sos_qb_rank": 18,
+   "sos_qb_wk15_17_rank": 19,
+   "sos_rb_rank": 23,
+   "sos_rb_wk15_17_rank": 14,
+   "sos_wr_rank": 16,
+   "sos_wr_wk15_17_rank": 17,
+   "sos_te_rank": 30,
+   "sos_te_wk15_17_rank": 13
+  },
+  {
+   "team": "HOU",
+   "opponents": [
+    [
+     1,
+     "BUF"
+    ],
+    [
+     2,
+     "CIN"
+    ],
+    [
+     3,
+     "IND"
+    ],
+    [
+     4,
+     "DAL"
+    ],
+    [
+     5,
+     "TEN"
+    ],
+    [
+     6,
+     "JAX"
+    ],
+    [
+     7,
+     "NYG"
+    ],
+    [
+     9,
+     "LAC"
+    ],
+    [
+     10,
+     "CLE"
+    ],
+    [
+     11,
+     "IND"
+    ],
+    [
+     12,
+     "BAL"
+    ],
+    [
+     13,
+     "PIT"
+    ],
+    [
+     14,
+     "WAS"
+    ],
+    [
+     15,
+     "JAX"
+    ],
+    [
+     16,
+     "PHI"
+    ],
+    [
+     17,
+     "GB"
+    ],
+    [
+     18,
+     "TEN"
+    ]
+   ],
+   "sos_qb": 16.95,
+   "sos_qb_wk15_17": 15.14,
+   "sos_rb": 22.37,
+   "sos_rb_wk15_17": 21.17,
+   "sos_wr": 32.31,
+   "sos_wr_wk15_17": 29.76,
+   "sos_te": 13.35,
+   "sos_te_wk15_17": 11.74,
+   "sos_qb_rank": 5,
+   "sos_qb_wk15_17_rank": 24,
+   "sos_rb_rank": 12,
+   "sos_rb_wk15_17_rank": 26,
+   "sos_wr_rank": 2,
+   "sos_wr_wk15_17_rank": 20,
+   "sos_te_rank": 14,
+   "sos_te_wk15_17_rank": 26
+  },
+  {
+   "team": "IND",
+   "opponents": [
+    [
+     1,
+     "BAL"
+    ],
+    [
+     2,
+     "KC"
+    ],
+    [
+     3,
+     "HOU"
+    ],
+    [
+     4,
+     "WAS"
+    ],
+    [
+     5,
+     "PIT"
+    ],
+    [
+     6,
+     "TEN"
+    ],
+    [
+     7,
+     "MIN"
+    ],
+    [
+     8,
+     "JAX"
+    ],
+    [
+     9,
+     "DAL"
+    ],
+    [
+     10,
+     "MIA"
+    ],
+    [
+     11,
+     "HOU"
+    ],
+    [
+     12,
+     "NYG"
+    ],
+    [
+     14,
+     "PHI"
+    ],
+    [
+     15,
+     "TEN"
+    ],
+    [
+     16,
+     "CIN"
+    ],
+    [
+     17,
+     "CLE"
+    ],
+    [
+     18,
+     "JAX"
+    ]
+   ],
+   "sos_qb": 16.69,
+   "sos_qb_wk15_17": 16.93,
+   "sos_rb": 22.33,
+   "sos_rb_wk15_17": 24.31,
+   "sos_wr": 30.86,
+   "sos_wr_wk15_17": 29.26,
+   "sos_te": 13.46,
+   "sos_te_wk15_17": 15.71,
+   "sos_qb_rank": 10,
+   "sos_qb_wk15_17_rank": 10,
+   "sos_rb_rank": 15,
+   "sos_rb_wk15_17_rank": 2,
+   "sos_wr_rank": 13,
+   "sos_wr_wk15_17_rank": 24,
+   "sos_te_rank": 9,
+   "sos_te_wk15_17_rank": 3
+  },
+  {
+   "team": "JAX",
+   "opponents": [
+    [
+     1,
+     "CLE"
+    ],
+    [
+     2,
+     "DEN"
+    ],
+    [
+     3,
+     "NE"
+    ],
+    [
+     4,
+     "CIN"
+    ],
+    [
+     5,
+     "PHI"
+    ],
+    [
+     6,
+     "HOU"
+    ],
+    [
+     8,
+     "IND"
+    ],
+    [
+     9,
+     "BAL"
+    ],
+    [
+     10,
+     "TEN"
+    ],
+    [
+     11,
+     "NYG"
+    ],
+    [
+     12,
+     "TEN"
+    ],
+    [
+     13,
+     "CHI"
+    ],
+    [
+     14,
+     "PIT"
+    ],
+    [
+     15,
+     "HOU"
+    ],
+    [
+     16,
+     "DAL"
+    ],
+    [
+     17,
+     "WAS"
+    ],
+    [
+     18,
+     "IND"
+    ]
+   ],
+   "sos_qb": 16.97,
+   "sos_qb_wk15_17": 18.57,
+   "sos_rb": 22.1,
+   "sos_rb_wk15_17": 23.78,
+   "sos_wr": 32.11,
+   "sos_wr_wk15_17": 33.38,
+   "sos_te": 13.66,
+   "sos_te_wk15_17": 13.5,
+   "sos_qb_rank": 4,
+   "sos_qb_wk15_17_rank": 3,
+   "sos_rb_rank": 19,
+   "sos_rb_wk15_17_rank": 4,
+   "sos_wr_rank": 3,
+   "sos_wr_wk15_17_rank": 5,
+   "sos_te_rank": 5,
+   "sos_te_wk15_17_rank": 15
+  },
+  {
+   "team": "KC",
+   "opponents": [
+    [
+     1,
+     "DEN"
+    ],
+    [
+     2,
+     "IND"
+    ],
+    [
+     3,
+     "MIA"
+    ],
+    [
+     4,
+     "LV"
+    ],
+    [
+     6,
+     "LAC"
+    ],
+    [
+     7,
+     "SEA"
+    ],
+    [
+     8,
+     "DEN"
+    ],
+    [
+     9,
+     "NYJ"
+    ],
+    [
+     10,
+     "ATL"
+    ],
+    [
+     11,
+     "ARI"
+    ],
+    [
+     12,
+     "BUF"
+    ],
+    [
+     13,
+     "LAR"
+    ],
+    [
+     14,
+     "CIN"
+    ],
+    [
+     15,
+     "NE"
+    ],
+    [
+     16,
+     "SF"
+    ],
+    [
+     17,
+     "LAC"
+    ],
+    [
+     18,
+     "LV"
+    ]
+   ],
+   "sos_qb": 15.68,
+   "sos_qb_wk15_17": 14.8,
+   "sos_rb": 22.09,
+   "sos_rb_wk15_17": 20.45,
+   "sos_wr": 29.83,
+   "sos_wr_wk15_17": 29.59,
+   "sos_te": 13.36,
+   "sos_te_wk15_17": 13.03,
+   "sos_qb_rank": 28,
+   "sos_qb_wk15_17_rank": 25,
+   "sos_rb_rank": 20,
+   "sos_rb_wk15_17_rank": 30,
+   "sos_wr_rank": 27,
+   "sos_wr_wk15_17_rank": 22,
+   "sos_te_rank": 13,
+   "sos_te_wk15_17_rank": 19
+  },
+  {
+   "team": "LAC",
+   "opponents": [
+    [
+     1,
+     "ARI"
+    ],
+    [
+     2,
+     "LV"
+    ],
+    [
+     3,
+     "BUF"
+    ],
+    [
+     4,
+     "SEA"
+    ],
+    [
+     5,
+     "DEN"
+    ],
+    [
+     6,
+     "KC"
+    ],
+    [
+     8,
+     "LAR"
+    ],
+    [
+     9,
+     "HOU"
+    ],
+    [
+     10,
+     "BAL"
+    ],
+    [
+     11,
+     "NYJ"
+    ],
+    [
+     12,
+     "NE"
+    ],
+    [
+     13,
+     "TB"
+    ],
+    [
+     14,
+     "LV"
+    ],
+    [
+     15,
+     "SF"
+    ],
+    [
+     16,
+     "MIA"
+    ],
+    [
+     17,
+     "KC"
+    ],
+    [
+     18,
+     "DEN"
+    ]
+   ],
+   "sos_qb": 15.87,
+   "sos_qb_wk15_17": 16.78,
+   "sos_rb": 21.91,
+   "sos_rb_wk15_17": 22.78,
+   "sos_wr": 29.72,
+   "sos_wr_wk15_17": 29.79,
+   "sos_te": 12.99,
+   "sos_te_wk15_17": 14.04,
+   "sos_qb_rank": 26,
+   "sos_qb_wk15_17_rank": 14,
+   "sos_rb_rank": 25,
+   "sos_rb_wk15_17_rank": 10,
+   "sos_wr_rank": 30,
+   "sos_wr_wk15_17_rank": 19,
+   "sos_te_rank": 22,
+   "sos_te_wk15_17_rank": 10
+  },
+  {
+   "team": "LAR",
+   "opponents": [
+    [
+     1,
+     "SF"
+    ],
+    [
+     2,
+     "NYG"
+    ],
+    [
+     3,
+     "DEN"
+    ],
+    [
+     4,
+     "PHI"
+    ],
+    [
+     5,
+     "BUF"
+    ],
+    [
+     6,
+     "ARI"
+    ],
+    [
+     7,
+     "LV"
+    ],
+    [
+     8,
+     "LAC"
+    ],
+    [
+     9,
+     "WAS"
+    ],
+    [
+     10,
+     "ARI"
+    ],
+    [
+     12,
+     "GB"
+    ],
+    [
+     13,
+     "KC"
+    ],
+    [
+     14,
+     "SF"
+    ],
+    [
+     15,
+     "DAL"
+    ],
+    [
+     16,
+     "SEA"
+    ],
+    [
+     17,
+     "TB"
+    ],
+    [
+     18,
+     "SEA"
+    ]
+   ],
+   "sos_qb": 16.31,
+   "sos_qb_wk15_17": 18.93,
+   "sos_rb": 22.7,
+   "sos_rb_wk15_17": 22.27,
+   "sos_wr": 30.38,
+   "sos_wr_wk15_17": 32.35,
+   "sos_te": 13.03,
+   "sos_te_wk15_17": 14.28,
+   "sos_qb_rank": 16,
+   "sos_qb_wk15_17_rank": 2,
+   "sos_rb_rank": 7,
+   "sos_rb_wk15_17_rank": 17,
+   "sos_wr_rank": 18,
+   "sos_wr_wk15_17_rank": 8,
+   "sos_te_rank": 20,
+   "sos_te_wk15_17_rank": 9
+  },
+  {
+   "team": "LV",
+   "opponents": [
+    [
+     1,
+     "MIA"
+    ],
+    [
+     2,
+     "LAC"
+    ],
+    [
+     3,
+     "NO"
+    ],
+    [
+     4,
+     "KC"
+    ],
+    [
+     5,
+     "NE"
+    ],
+    [
+     6,
+     "BUF"
+    ],
+    [
+     7,
+     "LAR"
+    ],
+    [
+     8,
+     "NYJ"
+    ],
+    [
+     9,
+     "SF"
+    ],
+    [
+     10,
+     "SEA"
+    ],
+    [
+     11,
+     "DEN"
+    ],
+    [
+     12,
+     "CLE"
+    ],
+    [
+     14,
+     "LAC"
+    ],
+    [
+     15,
+     "DEN"
+    ],
+    [
+     16,
+     "TEN"
+    ],
+    [
+     17,
+     "ARI"
+    ],
+    [
+     18,
+     "KC"
+    ]
+   ],
+   "sos_qb": 15.25,
+   "sos_qb_wk15_17": 16.73,
+   "sos_rb": 21.31,
+   "sos_rb_wk15_17": 21.85,
+   "sos_wr": 28.82,
+   "sos_wr_wk15_17": 30.93,
+   "sos_te": 13.02,
+   "sos_te_wk15_17": 14.92,
+   "sos_qb_rank": 32,
+   "sos_qb_wk15_17_rank": 15,
+   "sos_rb_rank": 32,
+   "sos_rb_wk15_17_rank": 20,
+   "sos_wr_rank": 32,
+   "sos_wr_wk15_17_rank": 16,
+   "sos_te_rank": 21,
+   "sos_te_wk15_17_rank": 5
+  },
+  {
+   "team": "MIA",
+   "opponents": [
+    [
+     1,
+     "LV"
+    ],
+    [
+     2,
+     "SF"
+    ],
+    [
+     3,
+     "KC"
+    ],
+    [
+     4,
+     "MIN"
+    ],
+    [
+     5,
+     "CIN"
+    ],
+    [
+     7,
+     "NYJ"
+    ],
+    [
+     8,
+     "NE"
+    ],
+    [
+     9,
+     "DET"
+    ],
+    [
+     10,
+     "IND"
+    ],
+    [
+     11,
+     "BUF"
+    ],
+    [
+     12,
+     "NYJ"
+    ],
+    [
+     13,
+     "DEN"
+    ],
+    [
+     14,
+     "CHI"
+    ],
+    [
+     15,
+     "GB"
+    ],
+    [
+     16,
+     "LAC"
+    ],
+    [
+     17,
+     "BUF"
+    ],
+    [
+     18,
+     "NE"
+    ]
+   ],
+   "sos_qb": 15.79,
+   "sos_qb_wk15_17": 13.56,
+   "sos_rb": 22.12,
+   "sos_rb_wk15_17": 21.67,
+   "sos_wr": 29.87,
+   "sos_wr_wk15_17": 28.38,
+   "sos_te": 12.87,
+   "sos_te_wk15_17": 10.05,
+   "sos_qb_rank": 27,
+   "sos_qb_wk15_17_rank": 32,
+   "sos_rb_rank": 18,
+   "sos_rb_wk15_17_rank": 23,
+   "sos_wr_rank": 25,
+   "sos_wr_wk15_17_rank": 27,
+   "sos_te_rank": 28,
+   "sos_te_wk15_17_rank": 31
+  },
+  {
+   "team": "MIN",
+   "opponents": [
+    [
+     1,
+     "GB"
+    ],
+    [
+     2,
+     "CHI"
+    ],
+    [
+     3,
+     "TB"
+    ],
+    [
+     4,
+     "MIA"
+    ],
+    [
+     5,
+     "NO"
+    ],
+    [
+     7,
+     "IND"
+    ],
+    [
+     8,
+     "DET"
+    ],
+    [
+     9,
+     "BUF"
+    ],
+    [
+     10,
+     "GB"
+    ],
+    [
+     11,
+     "SF"
+    ],
+    [
+     12,
+     "ATL"
+    ],
+    [
+     13,
+     "CAR"
+    ],
+    [
+     14,
+     "NE"
+    ],
+    [
+     15,
+     "DET"
+    ],
+    [
+     16,
+     "WAS"
+    ],
+    [
+     17,
+     "NYJ"
+    ],
+    [
+     18,
+     "CHI"
+    ]
+   ],
+   "sos_qb": 16.81,
+   "sos_qb_wk15_17": 19.24,
+   "sos_rb": 22.4,
+   "sos_rb_wk15_17": 24.32,
+   "sos_wr": 32.05,
+   "sos_wr_wk15_17": 33.65,
+   "sos_te": 13.45,
+   "sos_te_wk15_17": 14.93,
+   "sos_qb_rank": 8,
+   "sos_qb_wk15_17_rank": 1,
+   "sos_rb_rank": 11,
+   "sos_rb_wk15_17_rank": 1,
+   "sos_wr_rank": 4,
+   "sos_wr_wk15_17_rank": 4,
+   "sos_te_rank": 10,
+   "sos_te_wk15_17_rank": 4
+  },
+  {
+   "team": "NE",
+   "opponents": [
+    [
+     1,
+     "SEA"
+    ],
+    [
+     2,
+     "PIT"
+    ],
+    [
+     3,
+     "JAX"
+    ],
+    [
+     4,
+     "BUF"
+    ],
+    [
+     5,
+     "LV"
+    ],
+    [
+     6,
+     "NYJ"
+    ],
+    [
+     7,
+     "CHI"
+    ],
+    [
+     8,
+     "MIA"
+    ],
+    [
+     9,
+     "GB"
+    ],
+    [
+     10,
+     "DET"
+    ],
+    [
+     12,
+     "LAC"
+    ],
+    [
+     13,
+     "BUF"
+    ],
+    [
+     14,
+     "MIN"
+    ],
+    [
+     15,
+     "KC"
+    ],
+    [
+     16,
+     "NYJ"
+    ],
+    [
+     17,
+     "DEN"
+    ],
+    [
+     18,
+     "MIA"
+    ]
+   ],
+   "sos_qb": 15.97,
+   "sos_qb_wk15_17": 16.41,
+   "sos_rb": 21.99,
+   "sos_rb_wk15_17": 21.47,
+   "sos_wr": 29.9,
+   "sos_wr_wk15_17": 28.24,
+   "sos_te": 12.88,
+   "sos_te_wk15_17": 13.3,
+   "sos_qb_rank": 22,
+   "sos_qb_wk15_17_rank": 18,
+   "sos_rb_rank": 22,
+   "sos_rb_wk15_17_rank": 24,
+   "sos_wr_rank": 24,
+   "sos_wr_wk15_17_rank": 29,
+   "sos_te_rank": 27,
+   "sos_te_wk15_17_rank": 16
+  },
+  {
+   "team": "NO",
+   "opponents": [
+    [
+     1,
+     "DET"
+    ],
+    [
+     2,
+     "BAL"
+    ],
+    [
+     3,
+     "LV"
+    ],
+    [
+     4,
+     "ATL"
+    ],
+    [
+     5,
+     "MIN"
+    ],
+    [
+     6,
+     "NYG"
+    ],
+    [
+     7,
+     "PIT"
+    ],
+    [
+     9,
+     "CLE"
+    ],
+    [
+     10,
+     "CAR"
+    ],
+    [
+     11,
+     "CHI"
+    ],
+    [
+     12,
+     "CIN"
+    ],
+    [
+     13,
+     "GB"
+    ],
+    [
+     14,
+     "CAR"
+    ],
+    [
+     15,
+     "TB"
+    ],
+    [
+     16,
+     "ARI"
+    ],
+    [
+     17,
+     "ATL"
+    ],
+    [
+     18,
+     "TB"
+    ]
+   ],
+   "sos_qb": 16.54,
+   "sos_qb_wk15_17": 17.57,
+   "sos_rb": 22.9,
+   "sos_rb_wk15_17": 23.59,
+   "sos_wr": 31.24,
+   "sos_wr_wk15_17": 31.75,
+   "sos_te": 13.4,
+   "sos_te_wk15_17": 14.31,
+   "sos_qb_rank": 11,
+   "sos_qb_wk15_17_rank": 7,
+   "sos_rb_rank": 3,
+   "sos_rb_wk15_17_rank": 6,
+   "sos_wr_rank": 11,
+   "sos_wr_wk15_17_rank": 10,
+   "sos_te_rank": 11,
+   "sos_te_wk15_17_rank": 8
+  },
+  {
+   "team": "NYG",
+   "opponents": [
+    [
+     1,
+     "DAL"
+    ],
+    [
+     2,
+     "LAR"
+    ],
+    [
+     3,
+     "TEN"
+    ],
+    [
+     4,
+     "ARI"
+    ],
+    [
+     5,
+     "WAS"
+    ],
+    [
+     6,
+     "NO"
+    ],
+    [
+     7,
+     "HOU"
+    ],
+    [
+     9,
+     "PHI"
+    ],
+    [
+     10,
+     "WAS"
+    ],
+    [
+     11,
+     "JAX"
+    ],
+    [
+     12,
+     "IND"
+    ],
+    [
+     13,
+     "SF"
+    ],
+    [
+     14,
+     "SEA"
+    ],
+    [
+     15,
+     "CLE"
+    ],
+    [
+     16,
+     "DET"
+    ],
+    [
+     17,
+     "DAL"
+    ],
+    [
+     18,
+     "PHI"
+    ]
+   ],
+   "sos_qb": 16.95,
+   "sos_qb_wk15_17": 18.29,
+   "sos_rb": 22.45,
+   "sos_rb_wk15_17": 22.6,
+   "sos_wr": 31.86,
+   "sos_wr_wk15_17": 33.97,
+   "sos_te": 13.38,
+   "sos_te_wk15_17": 12.71,
+   "sos_qb_rank": 5,
+   "sos_qb_wk15_17_rank": 4,
+   "sos_rb_rank": 10,
+   "sos_rb_wk15_17_rank": 12,
+   "sos_wr_rank": 6,
+   "sos_wr_wk15_17_rank": 3,
+   "sos_te_rank": 12,
+   "sos_te_wk15_17_rank": 21
+  },
+  {
+   "team": "NYJ",
+   "opponents": [
+    [
+     1,
+     "TEN"
+    ],
+    [
+     2,
+     "GB"
+    ],
+    [
+     3,
+     "DET"
+    ],
+    [
+     4,
+     "CHI"
+    ],
+    [
+     5,
+     "CLE"
+    ],
+    [
+     6,
+     "NE"
+    ],
+    [
+     7,
+     "MIA"
+    ],
+    [
+     8,
+     "LV"
+    ],
+    [
+     9,
+     "KC"
+    ],
+    [
+     10,
+     "BUF"
+    ],
+    [
+     11,
+     "LAC"
+    ],
+    [
+     12,
+     "MIA"
+    ],
+    [
+     14,
+     "DEN"
+    ],
+    [
+     15,
+     "ARI"
+    ],
+    [
+     16,
+     "NE"
+    ],
+    [
+     17,
+     "MIN"
+    ],
+    [
+     18,
+     "BUF"
+    ]
+   ],
+   "sos_qb": 15.39,
+   "sos_qb_wk15_17": 14.26,
+   "sos_rb": 21.76,
+   "sos_rb_wk15_17": 21.84,
+   "sos_wr": 29.76,
+   "sos_wr_wk15_17": 27.69,
+   "sos_te": 12.54,
+   "sos_te_wk15_17": 13.8,
+   "sos_qb_rank": 31,
+   "sos_qb_wk15_17_rank": 30,
+   "sos_rb_rank": 29,
+   "sos_rb_wk15_17_rank": 21,
+   "sos_wr_rank": 28,
+   "sos_wr_wk15_17_rank": 31,
+   "sos_te_rank": 32,
+   "sos_te_wk15_17_rank": 14
+  },
+  {
+   "team": "PHI",
+   "opponents": [
+    [
+     1,
+     "WAS"
+    ],
+    [
+     2,
+     "TEN"
+    ],
+    [
+     3,
+     "CHI"
+    ],
+    [
+     4,
+     "LAR"
+    ],
+    [
+     5,
+     "JAX"
+    ],
+    [
+     6,
+     "CAR"
+    ],
+    [
+     7,
+     "DAL"
+    ],
+    [
+     8,
+     "WAS"
+    ],
+    [
+     9,
+     "NYG"
+    ],
+    [
+     11,
+     "PIT"
+    ],
+    [
+     12,
+     "DAL"
+    ],
+    [
+     13,
+     "ARI"
+    ],
+    [
+     14,
+     "IND"
+    ],
+    [
+     15,
+     "SEA"
+    ],
+    [
+     16,
+     "HOU"
+    ],
+    [
+     17,
+     "SF"
+    ],
+    [
+     18,
+     "NYG"
+    ]
+   ],
+   "sos_qb": 17.7,
+   "sos_qb_wk15_17": 14.64,
+   "sos_rb": 22.95,
+   "sos_rb_wk15_17": 20.87,
+   "sos_wr": 33.13,
+   "sos_wr_wk15_17": 28.12,
+   "sos_te": 14.03,
+   "sos_te_wk15_17": 13.93,
+   "sos_qb_rank": 1,
+   "sos_qb_wk15_17_rank": 26,
+   "sos_rb_rank": 1,
+   "sos_rb_wk15_17_rank": 29,
+   "sos_wr_rank": 1,
+   "sos_wr_wk15_17_rank": 30,
+   "sos_te_rank": 2,
+   "sos_te_wk15_17_rank": 12
+  },
+  {
+   "team": "PIT",
+   "opponents": [
+    [
+     1,
+     "ATL"
+    ],
+    [
+     2,
+     "NE"
+    ],
+    [
+     3,
+     "CIN"
+    ],
+    [
+     4,
+     "CLE"
+    ],
+    [
+     5,
+     "IND"
+    ],
+    [
+     6,
+     "TB"
+    ],
+    [
+     7,
+     "NO"
+    ],
+    [
+     8,
+     "CLE"
+    ],
+    [
+     10,
+     "CIN"
+    ],
+    [
+     11,
+     "PHI"
+    ],
+    [
+     12,
+     "DEN"
+    ],
+    [
+     13,
+     "HOU"
+    ],
+    [
+     14,
+     "JAX"
+    ],
+    [
+     15,
+     "BAL"
+    ],
+    [
+     16,
+     "CAR"
+    ],
+    [
+     17,
+     "TEN"
+    ],
+    [
+     18,
+     "BAL"
+    ]
+   ],
+   "sos_qb": 15.91,
+   "sos_qb_wk15_17": 16.86,
+   "sos_rb": 22.25,
+   "sos_rb_wk15_17": 23.15,
+   "sos_wr": 29.86,
+   "sos_wr_wk15_17": 32.71,
+   "sos_te": 13.66,
+   "sos_te_wk15_17": 12.93,
+   "sos_qb_rank": 24,
+   "sos_qb_wk15_17_rank": 11,
+   "sos_rb_rank": 16,
+   "sos_rb_wk15_17_rank": 8,
+   "sos_wr_rank": 26,
+   "sos_wr_wk15_17_rank": 7,
+   "sos_te_rank": 5,
+   "sos_te_wk15_17_rank": 20
+  },
+  {
+   "team": "SEA",
+   "opponents": [
+    [
+     1,
+     "NE"
+    ],
+    [
+     2,
+     "ARI"
+    ],
+    [
+     3,
+     "WAS"
+    ],
+    [
+     4,
+     "LAC"
+    ],
+    [
+     5,
+     "SF"
+    ],
+    [
+     6,
+     "DEN"
+    ],
+    [
+     7,
+     "KC"
+    ],
+    [
+     8,
+     "CHI"
+    ],
+    [
+     9,
+     "ARI"
+    ],
+    [
+     10,
+     "LV"
+    ],
+    [
+     12,
+     "SF"
+    ],
+    [
+     13,
+     "DAL"
+    ],
+    [
+     14,
+     "NYG"
+    ],
+    [
+     15,
+     "PHI"
+    ],
+    [
+     16,
+     "LAR"
+    ],
+    [
+     17,
+     "CAR"
+    ],
+    [
+     18,
+     "LAR"
+    ]
+   ],
+   "sos_qb": 16.39,
+   "sos_qb_wk15_17": 14.5,
+   "sos_rb": 22.68,
+   "sos_rb_wk15_17": 22.55,
+   "sos_wr": 31.18,
+   "sos_wr_wk15_17": 28.35,
+   "sos_te": 13.14,
+   "sos_te_wk15_17": 11.73,
+   "sos_qb_rank": 13,
+   "sos_qb_wk15_17_rank": 28,
+   "sos_rb_rank": 8,
+   "sos_rb_wk15_17_rank": 13,
+   "sos_wr_rank": 12,
+   "sos_wr_wk15_17_rank": 28,
+   "sos_te_rank": 17,
+   "sos_te_wk15_17_rank": 27
+  },
+  {
+   "team": "SF",
+   "opponents": [
+    [
+     1,
+     "LAR"
+    ],
+    [
+     2,
+     "MIA"
+    ],
+    [
+     3,
+     "ARI"
+    ],
+    [
+     4,
+     "DEN"
+    ],
+    [
+     5,
+     "SEA"
+    ],
+    [
+     6,
+     "WAS"
+    ],
+    [
+     7,
+     "ATL"
+    ],
+    [
+     9,
+     "LV"
+    ],
+    [
+     10,
+     "DAL"
+    ],
+    [
+     11,
+     "MIN"
+    ],
+    [
+     12,
+     "SEA"
+    ],
+    [
+     13,
+     "NYG"
+    ],
+    [
+     14,
+     "LAR"
+    ],
+    [
+     15,
+     "LAC"
+    ],
+    [
+     16,
+     "KC"
+    ],
+    [
+     17,
+     "PHI"
+    ],
+    [
+     18,
+     "ARI"
+    ]
+   ],
+   "sos_qb": 15.97,
+   "sos_qb_wk15_17": 14.06,
+   "sos_rb": 22.25,
+   "sos_rb_wk15_17": 20.33,
+   "sos_wr": 30.21,
+   "sos_wr_wk15_17": 27.18,
+   "sos_te": 12.92,
+   "sos_te_wk15_17": 9.93,
+   "sos_qb_rank": 22,
+   "sos_qb_wk15_17_rank": 31,
+   "sos_rb_rank": 16,
+   "sos_rb_wk15_17_rank": 31,
+   "sos_wr_rank": 23,
+   "sos_wr_wk15_17_rank": 32,
+   "sos_te_rank": 25,
+   "sos_te_wk15_17_rank": 32
+  },
+  {
+   "team": "TB",
+   "opponents": [
+    [
+     1,
+     "CIN"
+    ],
+    [
+     2,
+     "CLE"
+    ],
+    [
+     3,
+     "MIN"
+    ],
+    [
+     4,
+     "GB"
+    ],
+    [
+     5,
+     "DAL"
+    ],
+    [
+     6,
+     "PIT"
+    ],
+    [
+     7,
+     "CAR"
+    ],
+    [
+     8,
+     "ATL"
+    ],
+    [
+     9,
+     "CHI"
+    ],
+    [
+     11,
+     "DET"
+    ],
+    [
+     12,
+     "CAR"
+    ],
+    [
+     13,
+     "LAC"
+    ],
+    [
+     14,
+     "BAL"
+    ],
+    [
+     15,
+     "NO"
+    ],
+    [
+     16,
+     "ATL"
+    ],
+    [
+     17,
+     "LAR"
+    ],
+    [
+     18,
+     "NO"
+    ]
+   ],
+   "sos_qb": 15.89,
+   "sos_qb_wk15_17": 15.16,
+   "sos_rb": 22.08,
+   "sos_rb_wk15_17": 21.03,
+   "sos_wr": 30.86,
+   "sos_wr_wk15_17": 31.04,
+   "sos_te": 12.86,
+   "sos_te_wk15_17": 11.93,
+   "sos_qb_rank": 25,
+   "sos_qb_wk15_17_rank": 23,
+   "sos_rb_rank": 21,
+   "sos_rb_wk15_17_rank": 27,
+   "sos_wr_rank": 13,
+   "sos_wr_wk15_17_rank": 14,
+   "sos_te_rank": 29,
+   "sos_te_wk15_17_rank": 24
+  },
+  {
+   "team": "TEN",
+   "opponents": [
+    [
+     1,
+     "NYJ"
+    ],
+    [
+     2,
+     "PHI"
+    ],
+    [
+     3,
+     "NYG"
+    ],
+    [
+     4,
+     "BAL"
+    ],
+    [
+     5,
+     "HOU"
+    ],
+    [
+     6,
+     "IND"
+    ],
+    [
+     7,
+     "CLE"
+    ],
+    [
+     8,
+     "CIN"
+    ],
+    [
+     10,
+     "JAX"
+    ],
+    [
+     11,
+     "DAL"
+    ],
+    [
+     12,
+     "JAX"
+    ],
+    [
+     13,
+     "WAS"
+    ],
+    [
+     14,
+     "DET"
+    ],
+    [
+     15,
+     "IND"
+    ],
+    [
+     16,
+     "LV"
+    ],
+    [
+     17,
+     "PIT"
+    ],
+    [
+     18,
+     "HOU"
+    ]
+   ],
+   "sos_qb": 17.02,
+   "sos_qb_wk15_17": 17.26,
+   "sos_rb": 22.53,
+   "sos_rb_wk15_17": 20.99,
+   "sos_wr": 32.02,
+   "sos_wr_wk15_17": 34.96,
+   "sos_te": 13.65,
+   "sos_te_wk15_17": 13.97,
+   "sos_qb_rank": 3,
+   "sos_qb_wk15_17_rank": 8,
+   "sos_rb_rank": 9,
+   "sos_rb_wk15_17_rank": 28,
+   "sos_wr_rank": 5,
+   "sos_wr_wk15_17_rank": 2,
+   "sos_te_rank": 7,
+   "sos_te_wk15_17_rank": 11
+  },
+  {
+   "team": "WAS",
+   "opponents": [
+    [
+     1,
+     "PHI"
+    ],
+    [
+     2,
+     "DAL"
+    ],
+    [
+     3,
+     "SEA"
+    ],
+    [
+     4,
+     "IND"
+    ],
+    [
+     5,
+     "NYG"
+    ],
+    [
+     6,
+     "SF"
+    ],
+    [
+     8,
+     "PHI"
+    ],
+    [
+     9,
+     "LAR"
+    ],
+    [
+     10,
+     "NYG"
+    ],
+    [
+     11,
+     "CIN"
+    ],
+    [
+     12,
+     "ARI"
+    ],
+    [
+     13,
+     "TEN"
+    ],
+    [
+     14,
+     "HOU"
+    ],
+    [
+     15,
+     "ATL"
+    ],
+    [
+     16,
+     "MIN"
+    ],
+    [
+     17,
+     "JAX"
+    ],
+    [
+     18,
+     "DAL"
+    ]
+   ],
+   "sos_qb": 16.82,
+   "sos_qb_wk15_17": 14.43,
+   "sos_rb": 22.89,
+   "sos_rb_wk15_17": 19.99,
+   "sos_wr": 31.27,
+   "sos_wr_wk15_17": 29.53,
+   "sos_te": 13.05,
+   "sos_te_wk15_17": 11.87,
+   "sos_qb_rank": 7,
+   "sos_qb_wk15_17_rank": 29,
+   "sos_rb_rank": 4,
+   "sos_rb_wk15_17_rank": 32,
+   "sos_wr_rank": 10,
+   "sos_wr_wk15_17_rank": 23,
+   "sos_te_rank": 18,
+   "sos_te_wk15_17_rank": 25
+  }
+ ],
+ "provenance": {
+  "source": "nflverse schedules (2026) x nflverse stats_player_week 2025 (CC-BY-4.0)",
+  "url": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+  "fetched_at": "2026-08-18T22:25:32Z",
+  "basis": "2025 REG PPR points allowed per game by each defense to each position, averaged over each team's 2026 opponents; weeks 15-17 slice separate; rank 1 = most points allowed = easiest. Prior-season defense predicts weakly - this factor carries a low default weight and says so"
+ }
+}
