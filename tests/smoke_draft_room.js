@@ -931,8 +931,44 @@ const ok = (cond, name, detail) => {
     ok(!/CVS|championship/.test(lvtxt), "verdict card untouched by the pick engine");
     ok(/Survival to your pick/.test(await pe.textContent("body")),
        "audited survival table still renders");
+    ok(!/NaN/.test(petxt), "pick engine renders no NaN");
     ok(errs16.length === 0, "pick engine: zero console errors", errs16[0] || "");
     await pe.close();
+
+    // on the clock (6 picks gone, seat 7 up at pick 7): the card must look
+    // to my NEXT turn (pick 18) - never the degenerate survival-to-now
+    const oc = await browser.newPage();
+    const errsOc = [];
+    oc.on("pageerror", e => errsOc.push(String(e)));
+    const ocPicks = ["Jahmyr Gibbs RB", "Bijan Robinson RB", "Ja'Marr Chase WR",
+      "Saquon Barkley RB", "Justin Jefferson WR", "CeeDee Lamb WR"].map(s => {
+        const parts = s.split(" ");
+        return { metadata: { first_name: parts[0], last_name: parts.slice(1, -1).join(" "),
+                             position: parts[parts.length - 1] } };
+      });
+    await oc.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(ocPicks) }));
+    await oc.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: order16,
+                               slot_to_roster_id: s2r16 }) });
+    });
+    await oc.goto(base + "/out/draft_room.html");
+    await oc.waitForTimeout(3500);
+    ok(/ON THE CLOCK - PICK 7/.test(await oc.textContent("body")),
+       "on-the-clock fixture: seat 7 is up at pick 7");
+    const octxt = await oc.textContent("#pe-body");
+    ok(/your pick 18/.test(octxt),
+       "on my clock the card targets my NEXT turn, not the current pick");
+    ok(!/: 0% gone by your pick/.test(octxt),
+       "survival on my clock is not the degenerate 100%-safe");
+    ok(!/NaN/.test(octxt), "on-the-clock card renders no NaN");
+    ok(errsOc.length === 0, "on-the-clock: zero console errors", errsOc[0] || "");
+    await oc.close();
     srv.close();
   }
 

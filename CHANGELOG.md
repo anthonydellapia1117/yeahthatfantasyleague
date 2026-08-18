@@ -1,5 +1,32 @@
 # Changelog
 
+## Red-team pass on the pick engine and CVS (2026-08-18, after merge of #28)
+
+Adversarial review (general-purpose agent standing in for the named
+red-team subagent, which does not exist in this environment). Two HIGH
+findings, both real, both fixed same-day:
+
+- SIGN INVERSION (HIGH): the walter multiplier `cvs_base * (1 + pct/100)`
+  inverted the judgment for the 29 players with negative cvs_base - an
+  endorsement pushed them further down. Now sign-safe:
+  `cvs = cvs_base + |cvs_base| * pct/100`; a dedicated direction guard
+  pins it (test_cvs "walter sign safety").
+- ON-THE-CLOCK DEGENERATE (HIGH): on your own pick the card computed
+  survival to the current pick (trivially 100%), zeroing scarcity and the
+  cost of waiting exactly at decision time. The card now targets your NEXT
+  turn (mirrors the verdict card's isMe index); a new on-the-clock smoke
+  fixture pins it.
+- MED fixes: cost-of-waiting relabelled "score margin at risk (composite
+  scale, not projected points)" and suppressed when degenerate; the
+  single-candidate case no longer invents a 99-point margin; the card
+  warns when cvs.json and the engine payload carry different generated
+  dates; determinism guard no longer rewrites cvs.json or fails across
+  midnight; adp_pos_rank keyed by (name, pos).
+- Accepted (LOW, noted not fixed): numeric payload fields interpolated
+  unescaped (builder-controlled, guarded); drafted-player joins by
+  normalized name rather than sleeper_id (page-wide pre-existing
+  convention, follow-up candidate).
+
 ## Increment 2 - CVS wired, signal encoding, pick engine (2026-08-18)
 
 Classification approved by Anthony (stop condition 1 cleared); the guide

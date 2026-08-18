@@ -75,7 +75,13 @@ three new input shards (`src/build_cvs_inputs.py`: volatility, TD rates, 2026
 SOS - literal nflverse columns only), and the Walter layer. The anchor law:
 
     cvs_base = VOR + z_point_scale * sum(w_i / w_present) * z_i
-    cvs      = cvs_base * (1 + capped_walter_pct / 100)
+    cvs      = cvs_base + |cvs_base| * capped_walter_pct / 100
+
+The percentage applies to the magnitude of cvs_base (sign-safe): an
+endorsement always raises CVS and a fade always lowers it, including for
+the 29 deep-board players whose cvs_base is negative. The naive multiplier
+form inverted the judgment for those players; a red-team review caught it
+and a dedicated guard in tests/test_cvs.py now pins the direction.
 
 VOR stays the anchor because points over replacement is the only scale
 comparable across positions. Non-projection factors (opportunity, team
