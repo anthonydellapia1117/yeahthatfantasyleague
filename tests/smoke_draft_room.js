@@ -45,7 +45,10 @@ const ok = (cond, name, detail) => {
     ok(/COIN FLIP/.test(body), "coin flips surfaced");
     ok(/FLOOR/.test(body), "K/DEF floor label");
     ok(/n_eff/.test(body), "opponent priors table");
-    ok(!/champion/i.test(body.replace(/no champion mimicry[^.]*/gi, "")), "no champion panel");
+    // visible text, not script source - the pick engine's honest
+    // "championship lens" label lives in the live-mode template string
+    const vis1 = await page.evaluate(() => document.body.innerText);
+    ok(!/champion/i.test(vis1.replace(/no champion mimicry[^.]*/gi, "")), "no champion panel");
     // click another slot tab
     await page.click('.chips button[data-slot="3"]');
     await page.waitForTimeout(300);
@@ -792,8 +795,10 @@ const ok = (cond, name, detail) => {
     srv.close();
   }
 
-  // ---- scenario 15: BIG BOARD. VOR order, evidence chips from the shards,
-  // tier-cliff breaks under a position filter, links into the dossiers.
+  // ---- scenario 15: BIG BOARD (CVS). The on-screen order is the payload's
+  // CVS rank; all signal channels render with the legend; Explain opens with
+  // the full factor decomposition and walter quotes; the delta and conflicts
+  // views render from the payload; filters persist across a reload.
   {
     const http = require("http");
     const fs = require("fs");
@@ -816,31 +821,118 @@ const ok = (cond, name, detail) => {
     pg.on("console", m => { if (m.type() === "error") errs15.push(m.text()); });
     await pg.goto(base + "/out/big_board.html");
     await pg.waitForTimeout(1500);
-    ok(await pg.locator(".brow").count() >= 100, "big board renders the top 150");
-    // the order on screen must be the payload's VOR order - recompute and compare
+    ok(await pg.locator("#board .brow").count() >= 150, "big board renders the CVS pool");
+    // the order on screen must be the payload's CVS order - fetch and compare
     const orderOk = await pg.evaluate(async () => {
-      const E = await fetch("engine_2026.json").then(r => r.json());
-      const want = E.players.slice().sort((a, b) => b.vor - a.vor).slice(0, 10).map(p => p.name);
-      const got = [...document.querySelectorAll(".brow .nm a")].slice(0, 10).map(a => a.textContent.trim());
+      const C = await fetch("cvs.json").then(r => r.json());
+      const want = C.players.slice(0, 10).map(p => p.name);
+      const got = [...document.querySelectorAll("#board .brow .nm a")].slice(0, 10).map(a => a.textContent.trim());
       return JSON.stringify(want) === JSON.stringify(got);
     });
-    ok(orderOk, "on-screen order IS the payload VOR order, top 10 exact");
-    const btxt = await pg.textContent("#board");
-    ok(/2025:/.test(btxt) && /tgt/.test(btxt), "historical workload chips render");
-    ok(/REPORTED|SOURCED|VERIFIED/.test(btxt), "coaching chips render with their tag");
-    ok(/PROE/.test(btxt) && /bye/.test(btxt), "team tendency and bye chips render");
-    ok(/market \d/.test(btxt), "FFC market band chips render");
+    ok(orderOk, "on-screen order IS the payload CVS order, top 10 exact");
+    // signal encoding: legend always visible with every label + conflict marker
+    const leg = await pg.textContent("#legend");
+    for (const lbl of ["MY DND", "DND x2", "TARGET x2", "SLEEPER x2", "CONFLICT"])
+      ok(leg.includes(lbl), "legend carries " + lbl);
+    ok(await pg.locator('#board .brow[data-sig]:not([data-sig=""])').count() >= 5,
+       "signal container treatments render on the board");
+    ok(await pg.locator("#board .brow .sig svg").count() >= 5,
+       "signal icons render (third channel)");
+    // Explain: full factor decomposition + walter layer
+    const explOk = await pg.evaluate(() => {
+      const row = [...document.querySelectorAll("#board .brow")]
+        .find(r => r.querySelector(".wq"));
+      const d = (row || document.querySelector("#board .brow")).querySelector("details");
+      d.open = true;
+      return { rows: d.querySelectorAll(".xtable tr").length,
+               walter: /Walter layer:/.test(d.textContent),
+               quote: !!d.querySelector(".wq") };
+    });
+    ok(explOk.rows === 8, "Explain opens with all 7 factor rows", String(explOk.rows));
+    ok(explOk.walter && explOk.quote, "Explain shows the walter layer with its quote");
     const ftxt = await pg.textContent(".factors");
+    ok(/CVS = VOR \+ z_point_scale x weighted-z/.test(ftxt),
+       "the ledger states the anchor law");
     ok(/NOT WIRED, ON PURPOSE/.test(ftxt) && /p=0\.99/.test(ftxt),
-       "the factor ledger names the rejected folds and the missing sources");
+       "the factor ledger keeps the rejected folds and the missing sources");
+    // CVS vs WALTER view: delta table + regression cross-map
+    await pg.click('#views button[data-v="delta"]');
+    await pg.waitForTimeout(300);
+    ok(await pg.locator("#delta-t tr").count() >= 5, "walter delta table renders");
+    const cross = await pg.textContent("#cross-t");
+    ok(/agree/.test(cross) && /disagree/.test(cross),
+       "regression cross-map renders both agreement kinds");
+    // CONFLICTS view: the Jayden Daniels queue entry
+    await pg.click('#views button[data-v="conflicts"]');
+    await pg.waitForTimeout(300);
+    const conf = await pg.textContent("#v-conflicts");
+    ok(/Jayden Daniels/.test(conf), "model conflict queue names the live conflict");
+    ok(/disagreement preserved/.test(conf), "signal conflicts keep both sides visible");
+    // filter persistence: set RB + a signal filter, reload, both survive
+    await pg.click('#views button[data-v="board"]');
     await pg.click('#posf button[data-pos="RB"]');
-    await pg.waitForTimeout(400);
-    ok(await pg.locator(".tierbreak").count() >= 2,
-       "position filter shows the tier cliffs");
+    await pg.waitForTimeout(300);
     ok((await pg.textContent("#board")).indexOf("QB - ") === -1,
        "position filter actually filters");
+    await pg.reload();
+    await pg.waitForTimeout(1200);
+    ok(await pg.locator('#posf button[data-pos="RB"].on').count() === 1,
+       "position filter persists across reload");
+    ok((await pg.textContent("#board")).indexOf("QB - ") === -1,
+       "reloaded board still filtered");
+    ok(/floors/.test(await pg.textContent("#kdef-card")),
+       "K/DST floor card renders off the CVS board");
+    ok(/walter cap 10%/.test(await pg.textContent("#foot")),
+       "provenance footer echoes the cap from config");
     ok(errs15.length === 0, "big board: zero console errors", errs15[0] || "");
     await pg.close();
+
+    // ---- scenario 16: PICK ENGINE. Served over the same hermetic server so
+    // cvs.json resolves; a mocked live draft with Anthony's seat. The card is
+    // additive: it names an available player, states its proxy honestly, and
+    // the audited verdict card above it never mentions the lens.
+    const pe = await browser.newPage();
+    const errs16 = [];
+    pe.on("pageerror", e => errs16.push(String(e)));
+    pe.on("console", m => { if (m.type() === "error") errs16.push(m.text()); });
+    const order16 = {}; order16["345197760305307648"] = 7;
+    const s2r16 = {}; for (let i = 1; i <= 12; i++) s2r16[i] = i;
+    await pe.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([
+        { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
+        { metadata: { first_name: "Bijan", last_name: "Robinson", position: "RB" } },
+        { metadata: { first_name: "Ja'Marr", last_name: "Chase", position: "WR" } },
+      ]) }));
+    await pe.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: order16,
+                               slot_to_roster_id: s2r16 }) });
+    });
+    await pe.goto(base + "/out/draft_room.html");
+    await pe.waitForTimeout(3500);
+    ok(await pe.locator("#pe-card:visible").count() === 1, "pick engine card renders live");
+    const petxt = await pe.textContent("#pe-body");
+    ok(/CVS/.test(petxt) && !/unreachable/.test(petxt), "pick engine loaded cvs.json");
+    const peName = await pe.textContent("#pe-body .rname");
+    ok(!/Gibbs|Bijan|Chase/.test(peName), "the pick is an available player: " + peName.trim().split("\n")[0]);
+    ok((petxt.match(/alt \d:/g) || []).length === 2, "two alternates with conditions");
+    ok(/take him if|take him /.test(petxt), "each alternate carries its condition");
+    ok(/Cost of waiting/.test(petxt), "cost of waiting from the survival model");
+    ok(/confidence (HIGH|MEDIUM|LOW)/.test(await pe.textContent("#pe-card")),
+       "confidence band stated");
+    ok(/not a title-odds simulation/.test(petxt), "the proxy is labelled honestly");
+    ok(/wk15-17/.test(petxt), "weeks 15-17 lens on the card");
+    // isolation: the audited verdict card never mentions the lens
+    const lvtxt = await pe.textContent("#lv");
+    ok(!/CVS|championship/.test(lvtxt), "verdict card untouched by the pick engine");
+    ok(/Survival to your pick/.test(await pe.textContent("body")),
+       "audited survival table still renders");
+    ok(errs16.length === 0, "pick engine: zero console errors", errs16[0] || "");
+    await pe.close();
     srv.close();
   }
 
