@@ -207,7 +207,8 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     bpage = open(bb_page).read()
     ok("CVS = VOR + z_point_scale x weighted-z" in bpage,
        "big board declares the anchor law on its face")
-    ok("walter_enabled kill-switch" in bpage and "capped" in bpage,
+    ok("walter_enabled" in bpage and "kill-switch" in bpage
+       and "capped" in bpage,
        "big board states the cap and the kill-switch as the risk bounds")
     ok("REJECTED" in bpage and "p=0.99" in bpage,
        "big board states the rejected tendency fold with its number")
@@ -234,8 +235,17 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "conflicts stay visible with their own marker and view")
     ok("ytfl_bb2" in bpage and "localStorage" in bpage,
        "filter and view state persists across refresh")
-    ok("${p.cvs_rank}" in bpage,
-       "rows render the payload's cvs_rank - no page-side re-rank")
+    ok("ytfl_walter_live" in bpage and "WALTER LAYER" in bpage,
+       "live kill-switch toggle present, shared-key persisted")
+    ok("no_walter" in bpage and "cvs_base" in bpage,
+       "kill-switch renders the server-ranked pure-model variant")
+    ok("tier_move" in bpage and "tiermoves" in bpage,
+       "tier-boundary crossings flagged on rows and named in the delta view")
+    drp = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+    ok("ytfl_walter_live" in drp and "cvs_base" in drp,
+       "pick engine reads the same kill-switch and pure-model variant")
+    ok("${S(p).cvs_rank}" in bpage,
+       "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending
     cvsp = json.load(open(cvs_path))["players"]
     ok([p["cvs_rank"] for p in cvsp] == list(range(1, len(cvsp) + 1)),

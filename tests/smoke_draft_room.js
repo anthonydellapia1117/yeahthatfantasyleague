@@ -862,6 +862,9 @@ const ok = (cond, name, detail) => {
     const cross = await pg.textContent("#cross-t");
     ok(/agree/.test(cross) && /disagree/.test(cross),
        "regression cross-map renders both agreement kinds");
+    const tmv = await pg.textContent("#tiermoves");
+    ok(tmv.length > 10 && (/tier \d to \d/.test(tmv) || /none at the current cap/.test(tmv)),
+       "tier-move list renders names or says none, never hides");
     // CONFLICTS view: the Jayden Daniels queue entry
     await pg.click('#views button[data-v="conflicts"]');
     await pg.waitForTimeout(300);
@@ -880,6 +883,31 @@ const ok = (cond, name, detail) => {
        "position filter persists across reload");
     ok((await pg.textContent("#board")).indexOf("QB - ") === -1,
        "reloaded board still filtered");
+    // the live kill-switch: order becomes the server-ranked pure-model
+    // board, the note renders, and the state survives a reload
+    await pg.click('#posf button[data-pos="ALL"]');
+    await pg.click("#wl-toggle");
+    await pg.waitForTimeout(300);
+    ok(/WALTER LAYER OFF/.test(await pg.textContent("#togf")),
+       "kill-switch toggle flips to OFF");
+    ok(/pure model board/.test(await pg.textContent("#board")),
+       "off-mode note renders on the board");
+    const nwOrderOk = await pg.evaluate(async () => {
+      const C = await fetch("cvs.json").then(r => r.json());
+      const want = C.players.slice().sort((a, b) => a.no_walter.cvs_rank - b.no_walter.cvs_rank)
+        .slice(0, 10).map(p => p.name);
+      const got = [...document.querySelectorAll("#board .brow .nm a")].slice(0, 10).map(a => a.textContent.trim());
+      return JSON.stringify(want) === JSON.stringify(got);
+    });
+    ok(nwOrderOk, "off-mode order IS the server-ranked no-walter order, top 10 exact");
+    await pg.reload();
+    await pg.waitForTimeout(1200);
+    ok(/WALTER LAYER OFF/.test(await pg.textContent("#togf")),
+       "kill-switch state survives a reload");
+    await pg.click("#wl-toggle");
+    await pg.waitForTimeout(300);
+    ok(!/pure model board/.test(await pg.textContent("#board")),
+       "toggling back restores the walter board");
     ok(/floors/.test(await pg.textContent("#kdef-card")),
        "K/DST floor card renders off the CVS board");
     ok(/walter cap 10%/.test(await pg.textContent("#foot")),
@@ -932,6 +960,16 @@ const ok = (cond, name, detail) => {
     ok(/Survival to your pick/.test(await pe.textContent("body")),
        "audited survival table still renders");
     ok(!/NaN/.test(petxt), "pick engine renders no NaN");
+    // the shared kill-switch: with the layer off, the card says so and
+    // scores from the pure-model variant with no walter percentages
+    await pe.evaluate(() => localStorage.setItem("ytfl_walter_live", "off"));
+    await pe.reload();
+    await pe.waitForTimeout(3500);
+    const offtxt = await pe.textContent("#pe-body");
+    ok(/WALTER LAYER OFF/.test(offtxt), "pick engine honors the live kill-switch");
+    ok(!/walter [+-]/.test(offtxt), "off-mode card carries no walter percentages");
+    ok(!/NaN/.test(offtxt), "off-mode card renders no NaN");
+    await pe.evaluate(() => localStorage.removeItem("ytfl_walter_live"));
     ok(errs16.length === 0, "pick engine: zero console errors", errs16[0] || "");
     await pe.close();
 

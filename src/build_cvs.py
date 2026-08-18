@@ -103,6 +103,7 @@ def main():
     # ---- pool per position, factor raws, z within position
     players_out = []
     adp_pos_rank = {}
+    walter_refs = {}
     for pos in SKILL:
         pool = sorted([p for p in eng["players"] if p["pos"] == pos],
                       key=lambda p: -p["vor"])[:cfg["pool_sizes"][pos]]
@@ -143,6 +144,24 @@ def main():
             if f == "baseline_projection":
                 continue
             zcols[f] = zscores([r[f] for r in raw_rows])
+
+        # pass 1: cvs_base for the whole pool, so the walter reference can be
+        # computed BEFORE any judgment applies
+        base_vals = []
+        for idx, p in enumerate(pool):
+            contribs = 0.0
+            present_f = [f for f in W if f != "baseline_projection"
+                         and zcols[f][idx] is not None]
+            wp = sum(W[f] for f in present_f)
+            for f in present_f:
+                contribs += round((W[f] / wp) * zcols[f][idx] * scale, 2)
+            base_vals.append(p["vor"] + contribs)
+        # walter reference: one position-level magnitude, so the cap carries
+        # even authority across the whole range - a sleeper call near
+        # replacement moves as many points as a fade at the top. 10% cap =
+        # at most 0.1 positional SD of movement for any player.
+        walter_ref = max(statistics.pstdev(base_vals), 1.0) if len(base_vals) > 1 else 1.0
+        walter_refs[pos] = round(walter_ref, 2)
 
         for idx, p in enumerate(pool):
             n = norm(p["name"])
@@ -197,9 +216,12 @@ def main():
             cap = cfg["walter_cap_pct"]
             capped_pct = max(-cap, min(cap, proposed_pct))
             was_capped = abs(proposed_pct) > cap + 1e-9
-            # sign-safe scale: the percentage applies to the magnitude, so an
-            # endorsement never pushes a negative-CVS player further down
-            walter_delta = abs(cvs_base) * capped_pct / 100.0
+            # position-reference scale (approved 2026-08-18): the percentage
+            # applies to the positional SD of cvs_base, never the player's own
+            # magnitude - so authority is even across the range and a sleeper
+            # call near replacement is not structurally muted. Sign-safe by
+            # construction (the reference is positive).
+            walter_delta = walter_ref * capped_pct / 100.0
             cvs = cvs_base + walter_delta
 
             evid = [t for t in wt if t["class"] == "evidence"]
@@ -233,7 +255,9 @@ def main():
                 "personal": board.get(n),
             })
 
-    # ---- ranks (cross-position: VOR-anchored CVS is points-comparable)
+    # ---- ranks (cross-position: VOR-anchored CVS is points-comparable).
+    # Both boards are ranked server-side - with walter and without - so the
+    # live kill-switch toggle is a display swap, never a client-side rerank.
     players_out.sort(key=lambda x: -x["cvs"])
     for i, p in enumerate(players_out):
         p["cvs_rank"] = i + 1
@@ -241,8 +265,42 @@ def main():
         grp = [p for p in players_out if p["pos"] == pos]
         for i, p in enumerate(grp):
             p["cvs_pos_rank"] = i + 1
+    by_base = sorted(players_out, key=lambda x: -x["cvs_base"])
+    for i, p in enumerate(by_base):
+        p["no_walter"] = {"cvs_rank": i + 1}
+    for pos in SKILL:
+        grp = [p for p in by_base if p["pos"] == pos]
+        for i, p in enumerate(grp):
+            p["no_walter"]["cvs_pos_rank"] = i + 1
     for p in players_out:
         p["adp_pos_rank"] = adp_pos_rank.get((p["name"], p["pos"]))
+
+    # ---- tier-boundary crossings: the engine's VOR tiers are monotone in
+    # pure cvs_base order (verified - zero inversions), so rank r sits in a
+    # well-defined tier band. A player crosses when his OWN walter delta puts
+    # him in a different band than the pure model does; shuffles caused by
+    # other players' deltas do not count.
+    walter_tier_moves = []
+    for pos in SKILL:
+        pure = [p for p in by_base if p["pos"] == pos]
+        band = [p["tier"] for p in pure]
+        for p in pure:
+            p["walter"]["tier_move"] = None
+            if not p["walter"]["capped_pct"]:
+                continue
+            i0 = p["no_walter"]["cvs_pos_rank"] - 1
+            i1 = p["cvs_pos_rank"] - 1
+            t_from, t_to = band[i0], band[i1]
+            if t_from is None or t_to is None or t_from == t_to:
+                continue
+            d = p["walter"]["delta_points"]
+            if (d > 0 and t_to < t_from) or (d < 0 and t_to > t_from):
+                p["walter"]["tier_move"] = {"from": t_from, "to": t_to}
+                walter_tier_moves.append({
+                    "name": p["name"], "pos": pos,
+                    "from": t_from, "to": t_to,
+                    "capped_pct": p["walter"]["capped_pct"],
+                    "delta_points": d})
     for pos in SKILL:
         grp = [p for p in players_out if p["pos"] == pos]
         zs = zscores([p["playoff_sos"] for p in grp])
@@ -257,9 +315,9 @@ def main():
                        if p["pos"] == pos and p["volatility"]], reverse=True)
         thr_idx = min(th["sleeper_p90_pos_rank"], len(p90s)) - 1
         p90_rank[pos] = p90s[thr_idx] if p90s else None
-    for p in players_out:
-        gap = (p["adp_pos_rank"] - p["cvs_pos_rank"]) if p["adp_pos_rank"] else None
-        p["model_flags"] = {
+    def mk_flags(p, pos_rank):
+        gap = (p["adp_pos_rank"] - pos_rank) if p["adp_pos_rank"] else None
+        return {
             "target": bool(gap is not None and gap >= th["target_rank_gap"]),
             "do_not_draft": bool(gap is not None and -gap >= th["dnd_rank_gap"]
                                  and p["adp"] <= th["dnd_adp_universe"]),
@@ -267,20 +325,20 @@ def main():
                             and p["volatility"] and p90_rank[p["pos"]] is not None
                             and p["volatility"]["p90"] >= p90_rank[p["pos"]]),
         }
+    for p in players_out:
+        p["model_flags"] = mk_flags(p, p["cvs_pos_rank"])
+        p["no_walter"]["model_flags"] = mk_flags(p, p["no_walter"]["cvs_pos_rank"])
 
     # ---- consensus signals + precedence + conflicts (encoded server-side so
-    # the UI renders one field; the UI adds treatment, icon, and label)
+    # the UI renders one field; the UI adds treatment, icon, and label). ONE
+    # precedence implementation serves both boards - the no-walter variant
+    # simply has every walter source false, so consensus states cannot occur.
     def walter_has(p, tag):
         return any(a["tag"] == tag for a in p["walter"]["applied"])
-    signal_conflicts = []
-    for p in players_out:
-        w_dnd = walter_has(p, "do_not_draft")
-        w_tgt = walter_has(p, "target") or walter_has(p, "recency_bias_target") \
-            or walter_has(p, "strategy_pick")
-        w_slp = walter_has(p, "sleeper")
-        m = p["model_flags"]
+
+    def precedence(personal, w_dnd, w_tgt, w_slp, m):
         sig = None
-        if p["personal"] == "BEAR":
+        if personal == "BEAR":
             sig = "personal_dnd"
         elif w_dnd and m["do_not_draft"]:
             sig = "consensus_dnd"
@@ -294,10 +352,22 @@ def main():
             sig = "consensus_sleeper"
         elif w_slp or m["sleeper"]:
             sig = "single_sleeper"
-        p["signal"] = sig
-        neg = (p["personal"] == "BEAR") or w_dnd or m["do_not_draft"]
-        posv = w_tgt or w_slp or m["target"] or m["sleeper"] or p["personal"] == "BULL"
-        p["signal_conflict"] = bool(neg and posv)
+        neg = (personal == "BEAR") or w_dnd or m["do_not_draft"]
+        posv = w_tgt or w_slp or m["target"] or m["sleeper"] or personal == "BULL"
+        return sig, bool(neg and posv)
+
+    signal_conflicts = []
+    for p in players_out:
+        w_dnd = walter_has(p, "do_not_draft")
+        w_tgt = walter_has(p, "target") or walter_has(p, "recency_bias_target") \
+            or walter_has(p, "strategy_pick")
+        w_slp = walter_has(p, "sleeper")
+        m = p["model_flags"]
+        sig, conf = precedence(p["personal"], w_dnd, w_tgt, w_slp, m)
+        p["signal"], p["signal_conflict"] = sig, conf
+        nsig, nconf = precedence(p["personal"], False, False, False,
+                                 p["no_walter"]["model_flags"])
+        p["no_walter"]["signal"], p["no_walter"]["signal_conflict"] = nsig, nconf
         if p["signal_conflict"]:
             signal_conflicts.append({
                 "name": p["name"], "pos": p["pos"], "signal": sig,
@@ -360,15 +430,19 @@ def main():
     payload = {
         "generated": datetime.date.today().isoformat(),
         "config": cfg,
+        "walter_reference_points": walter_refs,
         "walter_source_sha256": wsha,
         "players": players_out,
         "model_conflicts": model_conflicts,
         "signal_conflicts": signal_conflicts,
+        "walter_tier_moves": walter_tier_moves,
         "regression_crossmap": crossmap,
         "notes": {
             "anchor": "CVS = VOR + z_point_scale x weighted-z of non-projection "
                       "factors (within position, draftable pool); Walter "
-                      "judgment applied as a capped percentage on top",
+                      "judgment = capped percent x the positional SD of "
+                      "cvs_base (even authority across the range; max movement "
+                      "0.1 positional SD at the 10% cap)",
             "kdef": "K and DST are excluded from CVS - their projections are "
                     "floors (missing scoring keys); the VOR board covers them",
             "priors_null": "historical_priors is null for every player; weight "
@@ -384,6 +458,7 @@ def main():
     print(f"cvs.json: {len(players_out)} players | "
           f"{len(model_conflicts)} model conflicts | "
           f"{len(signal_conflicts)} signal conflicts | "
+          f"{len(walter_tier_moves)} tier moves | "
           f"crossmap {sum(1 for c in crossmap if c['agreement']=='agree')} agree / "
           f"{sum(1 for c in crossmap if c['agreement']=='disagree')} disagree")
 

@@ -121,12 +121,16 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
       data/cvs_weights.json - tunable, visible, never silent.</dd>
     <dt><span class="in">DECISION INPUT, CAPPED</span> - the Walter guide layer</dt>
     <dd>Judgment calls (target, sleeper, do-not-draft, regression, recency)
-      apply as percentage deltas, total clamped to the configured cap; every
-      applied delta shows its verbatim quote and line reference below.
-      Evidence from the guide (figures, mechanisms, situations) displays
-      beside the number. Prospectively unvalidated - no historical guides
-      exist to backtest - so the cap and the walter_enabled kill-switch are
-      the risk bounds, stated plainly.</dd>
+      apply as percentage deltas against the position's reference magnitude
+      (the within-position SD of the pure model score - even authority across
+      the range, at most 0.1 positional SD of movement at the cap), total
+      clamped to the configured cap; every applied delta shows its verbatim
+      quote and line reference below. Deltas that cross a tier boundary are
+      flagged by name. Evidence from the guide (figures, mechanisms,
+      situations) displays beside the number. Prospectively unvalidated - no
+      historical guides exist to backtest - so the cap and the kill-switch
+      (config walter_enabled, plus the live WALTER LAYER toggle on this
+      board) are the risk bounds, stated plainly.</dd>
     <dt><span class="ev">DISPLAYED EVIDENCE</span> - never inside the number</dt>
     <dd>Tendencies were backtested as a probability input and REJECTED
       (p=0.99); coaching prose, market bands, and vacated context render
@@ -160,6 +164,8 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
   </div>
 
   <div id="v-delta" hidden>
+    <h2>Walter tier moves - the deltas that change a decision</h2>
+    <div id="tiermoves"></div>
     <p class="small">Walter's stated figures beside this model - a comparison
     column, never blended. Sparse by construction: the guide carries ~19
     figures; the full series waits on the pending per-player export. Sorted
@@ -233,6 +239,12 @@ const store = {
   get(){ try { return JSON.parse(localStorage.getItem("ytfl_bb2") || "{}"); } catch { return {}; } },
   set(v){ try { localStorage.setItem("ytfl_bb2", JSON.stringify(v)); } catch {} },
 };
+// the live kill-switch. Its own key so the draft room's pick engine reads
+// the same state. Both boards ship ranked in cvs.json - flipping this swaps
+// which server-ranked fields render; the page never re-derives a rank.
+const WL_KEY = "ytfl_walter_live";
+function walterOn(){ try { return localStorage.getItem(WL_KEY) !== "off"; } catch { return true; } }
+function setWalter(on){ try { localStorage.setItem(WL_KEY, on ? "on" : "off"); } catch {} }
 const saved = store.get();
 const View = Object.assign({ v: "board", pos: "ALL", sig: "ALL",
                              avail: false, rookies: false, walter: false },
@@ -304,8 +316,15 @@ function renderFilters(){
   togf.innerHTML = `
     <button data-t="avail"${View.avail ? ' class="on"' : ""}>available only</button>
     <button data-t="rookies"${View.rookies ? ' class="on"' : ""}>rookies only</button>
-    <button data-t="walter"${View.walter ? ' class="on"' : ""}>walter-tagged only</button>`;
+    <button data-t="walter"${View.walter ? ' class="on"' : ""}>walter-tagged only</button>
+    <button data-t="wl" id="wl-toggle"${walterOn() ? ' class="on"' : ""}
+      style="margin-left:auto${walterOn() ? "" : ";border-color:#b91c1c;color:#b91c1c"}">WALTER LAYER ${walterOn() ? "ON" : "OFF"}</button>`;
   togf.querySelectorAll("button").forEach(b => b.onclick = () => {
+    if (b.dataset.t === "wl"){
+      setWalter(!walterOn());
+      renderFilters(); renderBoard();
+      return;
+    }
     View[b.dataset.t] = !View[b.dataset.t]; persist(); renderFilters(); renderBoard(); });
 }
 
@@ -343,30 +362,46 @@ function factorTable(p){
 }
 
 function renderBoard(){
+  // the live kill-switch swaps which server-ranked variant renders - the
+  // page never re-derives a rank or a signal
+  const wl = walterOn();
+  const S = p => wl ? p : p.no_walter;
+  const val = p => wl ? p.cvs : p.cvs_base;
   let list = D.cvs.players.slice();
+  if (!wl) list.sort((a, b) => a.no_walter.cvs_rank - b.no_walter.cvs_rank);
   if (View.pos !== "ALL") list = list.filter(p => p.pos === View.pos);
   if (View.sig !== "ALL")
-    list = View.sig === "conflicts" ? list.filter(p => p.signal_conflict)
-      : list.filter(p => p.signal === View.sig);
+    list = View.sig === "conflicts" ? list.filter(p => S(p).signal_conflict)
+      : list.filter(p => S(p).signal === View.sig);
   if (View.avail && D.drafted.size) list = list.filter(p => !D.drafted.has(norm(p.name)));
   if (View.rookies) list = list.filter(isRookie);
   if (View.walter) list = list.filter(p => p.walter.applied.length || p.walter.evidence.length);
-  document.getElementById("board").innerHTML = list.map(p => `
-    <div class="brow" data-sig="${p.signal || ""}">
-      <div class="rk num">${p.cvs_rank}</div>
-      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? `<span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(p.signal)}${p.signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
-      <div class="trio"><span class="c num">${p.cvs}</span><br>
+  document.getElementById("board").innerHTML =
+    (wl ? "" : '<p class="small" id="wl-note">WALTER LAYER OFF (live toggle) - pure model board, ranks and signals recomputed server-side without the guide.</p>') +
+    (list.map(p => `
+    <div class="brow" data-sig="${S(p).signal || ""}">
+      <div class="rk num">${S(p).cvs_rank}</div>
+      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? `<span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
+      <div class="trio"><span class="c num">${val(p)}</span><br>
         <span class="sub num">conf ${pct(p.confidence)} - vol ${p.volatility ? p.volatility.sd : "-"}</span></div>
       <div class="meta">${p.pos} - <a href="teams.html#t=${encodeURIComponent(p.team || "")}">${esc(p.team || "-")}</a>
         - tier ${p.tier ?? "-"} - VOR <span class="num">${p.vor}</span>
         - ADP <span class="num">${p.adp < 900 ? p.adp.toFixed(1) : "-"}</span>
-        - pos rank CVS <span class="num">${p.cvs_pos_rank}</span> / ADP <span class="num">${p.adp_pos_rank ?? "-"}</span>
+        - pos rank CVS <span class="num">${S(p).cvs_pos_rank}</span> / ADP <span class="num">${p.adp_pos_rank ?? "-"}</span>
         ${p.playoff_sos_rank ? ` - wk15-17 SOS rank <span class="num">${p.playoff_sos_rank}</span>` : ""}</div>
       <details><summary></summary>${factorTable(p)}</details>
-    </div>`).join("") || '<p class="small">nothing matches these filters</p>';
+    </div>`).join("") || '<p class="small">nothing matches these filters</p>');
 }
 
 function renderDelta(){
+  // tier moves first: a nudge inside a tier changes nothing you would act
+  // on; a boundary crossing is a real decision change, named here
+  const tm = D.cvs.walter_tier_moves || [];
+  document.getElementById("tiermoves").innerHTML = tm.length
+    ? tm.map(m => `<div class="wq" style="border-left-color:#b45309"><b>${esc(m.name)}</b> (${esc(m.pos)}) -
+        tier ${m.from} to ${m.to} on walter ${m.capped_pct > 0 ? "+" : ""}${m.capped_pct}%
+        (${m.delta_points > 0 ? "+" : ""}${m.delta_points} pts)</div>`).join("")
+    : '<p class="small">none at the current cap - every walter delta leaves its player inside the model\'s tier band</p>';
   const rows = [];
   for (const p of D.cvs.players){
     for (const f of p.walter.figures){

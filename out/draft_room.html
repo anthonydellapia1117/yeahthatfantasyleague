@@ -1143,8 +1143,14 @@ function peTierRisk(p, alive, myNext, cur){
     pAllGone *= (1 - condSurvival(x.adp, myNext, cur));
   return pAllGone;
 }
-function peScore(p, c, R, alive, myNext, cur){
-  const parts = { cvs: c.cvs, need: 0, scarcity: 0, playoff: 0 };
+// the live kill-switch (set on the big board) - shared localStorage key.
+// When off, the engine scores from the server-ranked pure-model variant.
+function peWalterOn(){
+  try { return localStorage.getItem("ytfl_walter_live") !== "off"; }
+  catch { return true; }
+}
+function peScore(p, c, R, alive, myNext, cur, wl){
+  const parts = { cvs: wl ? c.cvs : c.cvs_base, need: 0, scarcity: 0, playoff: 0 };
   if (R){
     if (R.needs.includes(p.pos)) parts.need = PE.NEED;
     else if (R.flexOpen && p.pos !== "QB") parts.need = PE.FLEX;
@@ -1189,10 +1195,13 @@ function renderPickEngine(alive, cur, myNext, R){
       'engine is offline. The audited verdict above is unaffected.</p>';
     return;
   }
+  const wl = peWalterOn();
   const cands = alive.filter(p => p.pos !== "K" && p.pos !== "DEF")
     .map(p => ({ p, c: cvsFor(p) })).filter(x => x.c)
     .map(x => Object.assign(x, {
-      s: peScore(x.p, x.c, R, alive, myNext, cur),
+      s: peScore(x.p, x.c, R, alive, myNext, cur, wl),
+      v: wl ? x.c : Object.assign({ cvs: x.c.cvs_base, adp_pos_rank: x.c.adp_pos_rank,
+        playoff_sos_rank: x.c.playoff_sos_rank }, x.c.no_walter),
       surv: condSurvival(x.p.adp, myNext, cur),
       risk: peTierRisk(x.p, alive, myNext, cur),
     }))
@@ -1212,14 +1221,15 @@ function renderPickEngine(alive, cur, myNext, R){
     : "depth - no open slot filled";
   body.innerHTML = `
     ${stale ? `<p class="small">cvs.json generated ${esc(CVS.generated)} but the engine is ${esc(E.generated)} - mismatched boards. Rebuild both before trusting this card.</p>` : ""}
+    ${wl ? "" : '<p class="small">WALTER LAYER OFF (live toggle, set on the big board) - pure model scores.</p>'}
     <div class="rname">${esc(pick.p.name)} <span class="num">${pick.s.total.toFixed(1)}</span>
       <span class="tag">${band ? "confidence " + band : "no alternate on the CVS board"}</span>
-      ${pick.c.signal ? `<span class="tag">${PE_SIG[pick.c.signal] || esc(pick.c.signal)}</span>` : ""}
-      ${pick.c.signal_conflict ? '<span class="tag">SIGNAL CONFLICT - see the big board</span>' : ""}</div>
-    <div class="small">1. Value: CVS <span class="num">${pick.c.cvs}</span>
-      (${pick.p.pos}<span class="num">${pick.c.cvs_pos_rank}</span> vs ADP
-      ${pick.p.pos}<span class="num">${pick.c.adp_pos_rank ?? "-"}</span>) on VOR
-      <span class="num">${pick.p.vor.toFixed(0)}</span>, tier ${pick.p.tier ?? "-"}${w && w.capped_pct ? `, walter ${w.capped_pct > 0 ? "+" : ""}${w.capped_pct}%${w.was_capped ? " (capped)" : ""}` : ""}.</div>
+      ${pick.v.signal ? `<span class="tag">${PE_SIG[pick.v.signal] || esc(pick.v.signal)}</span>` : ""}
+      ${pick.v.signal_conflict ? '<span class="tag">SIGNAL CONFLICT - see the big board</span>' : ""}</div>
+    <div class="small">1. Value: CVS <span class="num">${pick.v.cvs}</span>
+      (${pick.p.pos}<span class="num">${pick.v.cvs_pos_rank}</span> vs ADP
+      ${pick.p.pos}<span class="num">${pick.v.adp_pos_rank ?? "-"}</span>) on VOR
+      <span class="num">${pick.p.vor.toFixed(0)}</span>, tier ${pick.p.tier ?? "-"}${wl && w && w.capped_pct ? `, walter ${w.capped_pct > 0 ? "+" : ""}${w.capped_pct}%${w.was_capped ? " (capped)" : ""}` : ""}.</div>
     <div class="small">2. Fit: ${fitLine}; need <span class="num">+${pick.s.need.toFixed(0)}</span>,
       tier cliff <span class="num">${pct(pick.risk)}</span> gone by pick ${myNext}
       (independence approximation) <span class="num">+${pick.s.scarcity.toFixed(1)}</span>.</div>
@@ -1230,7 +1240,7 @@ function renderPickEngine(alive, cur, myNext, R){
       score margin at risk vs the alternate <span class="num">${costWait.toFixed(1)}</span> (composite scale, not projected points).</div>`}
     ${alts.map((a, i) => `<div class="rec"><div>
       <div class="rname">alt ${i + 1}: ${esc(a.p.name)} <span class="num">${a.s.total.toFixed(1)}</span></div>
-      <div class="rmeta">${a.p.pos} ${esc(a.p.team)} - CVS <span class="num">${a.c.cvs}</span>
+      <div class="rmeta">${a.p.pos} ${esc(a.p.team)} - CVS <span class="num">${a.v.cvs}</span>
         - <span class="num">${pct(a.surv)}</span> lasts to ${myNext}
         - take him ${peCondition(a, pick, myNext)}</div></div></div>`).join("")}
     <p class="small">${margin === null ? "Only one CVS-covered player remains - nothing to rank against."
