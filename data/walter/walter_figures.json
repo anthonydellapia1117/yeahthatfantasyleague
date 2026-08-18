@@ -1,0 +1,214 @@
+{
+ "source_sha256": "ed59c2b37b43897241bd3d659bb8c737d4e6bae4b60a47fb2469bdea5bdbb07f",
+ "data": [
+  {
+   "player_raw": "Kenyon Sadiq",
+   "player": "Kenyon Sadiq",
+   "player_id": "13330",
+   "kind": "ceiling",
+   "value": "TE4",
+   "line": 621,
+   "section": "Rookies",
+   "quote": "t round capital in him and Walter has him ranked inside the top-10 at the position with a ceiling of TE4. He ran the fastest 40-yard dash of any",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Terry McLaurin",
+   "player": "Terry McLaurin",
+   "player_id": "5927",
+   "kind": "floor",
+   "value": "WR32",
+   "line": 744,
+   "section": "My Targets",
+   "quote": "ects to frequently play from behind. Our projections have McLaurin with an extremely safe floor (WR32) and an underrated ceiling (WR7), making",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Brock Bowers",
+   "player": "Brock Bowers",
+   "player_id": "11604",
+   "kind": "rank",
+   "value": "TE1",
+   "line": 801,
+   "section": "My Targets",
+   "quote": "iver with Kirk Cousins and Fernando Mendoza being a clear upgrade over Geno Smith. Bowers projects as the overall TE1 in our projections and his ceiling is b",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Los Angeles Chargers",
+   "player": "Los Angeles Chargers",
+   "player_id": "LAC",
+   "kind": "ceiling",
+   "value": "DEF1",
+   "line": 898,
+   "section": "My Targets",
+   "quote": "ne of the most underrated units in the NFL, and Walter has them ranked as the DEF7 with a ceiling of DEF1. After those matchups, the Chargers fac",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Los Angeles Chargers",
+   "player": "Los Angeles Chargers",
+   "player_id": "LAC",
+   "kind": "rank",
+   "value": "DEF7",
+   "line": 898,
+   "section": "My Targets",
+   "quote": "league. Their defense is one of the most underrated units in the NFL, and Walter has them ranked as the DEF7 with a ceiling of DEF1. After those mat",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Will Reichard",
+   "player": "Will Reichard",
+   "player_id": "11792",
+   "kind": "ceiling",
+   "value": "K1",
+   "line": 919,
+   "section": "My Targets",
+   "quote": "me to kick in, and you\u2019ve got a guy with top three upside. Reichard is Walter\u2019s K6 with a ceiling of K1.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Will Reichard",
+   "player": "Will Reichard",
+   "player_id": "11792",
+   "kind": "rank",
+   "value": "K6",
+   "line": 919,
+   "section": "My Targets",
+   "quote": "t accuracy and a dome to kick in, and you\u2019ve got a guy with top three upside. Reichard is Walter\u2019s K6 with a ceiling of K1.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Charlie Smyth",
+   "player": "Charlie Smyth",
+   "player_id": "11653",
+   "kind": "ceiling",
+   "value": "K1",
+   "line": 924,
+   "section": "My Targets",
+   "quote": "an ascending offense that should keep creating opportunities. Smyth is Walter\u2019s K4 with a ceiling of K1.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Charlie Smyth",
+   "player": "Charlie Smyth",
+   "player_id": "11653",
+   "kind": "rank",
+   "value": "K4",
+   "line": 924,
+   "section": "My Targets",
+   "quote": "dome. He\u2019s tied to an ascending offense that should keep creating opportunities. Smyth is Walter\u2019s K4 with a ceiling of K1.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Eddy Pineiro",
+   "player": "Eddy Pineiro",
+   "player_id": "5189",
+   "kind": "ceiling",
+   "value": "K1",
+   "line": 929,
+   "section": "My Targets",
+   "quote": "eam of high-leverage field goals. \u201cSteady\u201d Eddy makes them. Pineiro is Walter\u2019s K7 with a ceiling of K1. ---",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Eddy Pineiro",
+   "player": "Eddy Pineiro",
+   "player_id": "5189",
+   "kind": "rank",
+   "value": "K7",
+   "line": 929,
+   "section": "My Targets",
+   "quote": "to be a steady stream of high-leverage field goals. \u201cSteady\u201d Eddy makes them. Pineiro is Walter\u2019s K7 with a ceiling of K1. ---",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Parker Washington",
+   "player": "Parker Washington",
+   "player_id": "9487",
+   "kind": "ceiling",
+   "value": "WR9",
+   "line": 106,
+   "section": "document-wide pass",
+   "quote": "Sleeper ADP: WR38 \u00b7 Walter Ceiling: WR9",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Courtland Sutton",
+   "player": "Courtland Sutton",
+   "player_id": "5045",
+   "kind": "ceiling",
+   "value": "WR20",
+   "line": 110,
+   "section": "document-wide pass",
+   "quote": "Sleeper ADP: WR37 \u00b7 Walter Ceiling: WR20",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Kyler Murray",
+   "player": "Kyler Murray",
+   "player_id": "5849",
+   "kind": "ceiling",
+   "value": "QB2",
+   "line": 423,
+   "section": "document-wide pass",
+   "quote": "We currently project him as the QB14 with a QB2 overall ceiling this season.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Kyler Murray",
+   "player": "Kyler Murray",
+   "player_id": "5849",
+   "kind": "rank",
+   "value": "QB14",
+   "line": 423,
+   "section": "document-wide pass",
+   "quote": "We currently project him as the QB14 with a QB2 overall ceiling this season.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Ladd McConkey",
+   "player": "Ladd McConkey",
+   "player_id": "11635",
+   "kind": "ceiling",
+   "value": "WR5",
+   "line": 453,
+   "section": "document-wide pass",
+   "quote": "**Ladd McConkey** is also ranked ahead of his current ADP, and he has a ceiling of WR5.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Omarion Hampton",
+   "player": "Omarion Hampton",
+   "player_id": "12507",
+   "kind": "ceiling",
+   "value": "RB4",
+   "line": 453,
+   "section": "document-wide pass",
+   "quote": "Omarion Hampton is ranked as a top-12 RB with a ceiling of RB4.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Ashton Jeanty",
+   "player": "Ashton Jeanty",
+   "player_id": "12527",
+   "kind": "ceiling",
+   "value": "RB3",
+   "line": 467,
+   "section": "document-wide pass",
+   "quote": "We have **Ashton Jeanty** projected to have a ceiling of RB3 after garnering the 2nd highest rush share among eligible RBs as a rookie.",
+   "class": "evidence"
+  },
+  {
+   "player_raw": "Jacksonville Jaguars",
+   "player": "Jacksonville Jaguars",
+   "player_id": "JAX",
+   "kind": "rank",
+   "value": "DEF12",
+   "line": 906,
+   "section": "document-wide pass",
+   "quote": "Walter projects Jacksonville as the DEF12 in the Rest-of-Season Rankings, despite a difficult season-long schedule.",
+   "class": "evidence"
+  }
+ ]
+}

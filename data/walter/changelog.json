@@ -1,0 +1,337 @@
+{
+ "source_sha256": "ed59c2b37b43897241bd3d659bb8c737d4e6bae4b60a47fb2469bdea5bdbb07f",
+ "data": {
+  "entries": [
+   {
+    "date": "2026-08-17",
+    "direction": "down",
+    "players": [
+     "Quinshon Judkins",
+     "Romeo Doubs",
+     "Travis Hunter"
+    ],
+    "player_directions": {
+     "Quinshon Judkins": "down",
+     "Travis Hunter": "down",
+     "Romeo Doubs": "down"
+    },
+    "entry": "Added Quinshon Judkins, Travis Hunter, and Romeo Doubs to the do NOT draft list.",
+    "line": 1192
+   },
+   {
+    "date": "2026-08-17",
+    "direction": "up",
+    "players": [
+     "Jordan Mason"
+    ],
+    "player_directions": {
+     "Jordan Mason": "up"
+    },
+    "entry": "Removed Jordan Mason from the Do NOT Draft list. Still not a target but his ADP has come down and he\u2019s fine to draft in 0 RB builds.",
+    "line": 1194
+   },
+   {
+    "date": "2026-08-17",
+    "direction": "neutral",
+    "players": [
+     "Luther Burden"
+    ],
+    "player_directions": {
+     "Luther Burden": "neutral"
+    },
+    "entry": "Updated Luther Burden writeup in the \u201cMy Targets\u201d chapter with context about his groin injury. He is still a player I am targeting as he slides down draft boards.",
+    "line": 1196
+   },
+   {
+    "date": "2026-08-17",
+    "direction": "neutral",
+    "players": [],
+    "player_directions": {},
+    "entry": "Re-ordered do NOT Draft list to be in positional order and sorted by ADP.",
+    "line": 1198
+   },
+   {
+    "date": "2026-08-06",
+    "direction": "neutral",
+    "players": [
+     "Terry McLaurin"
+    ],
+    "player_directions": {
+     "Terry McLaurin": "neutral"
+    },
+    "entry": "Updated the Terry McLaurin writeup in the My Targets chapter following the Stefon Diggs signing. He remains a strong wide receiver target in the back half of Round 4 and the beginning of Round 5.",
+    "line": 1200
+   },
+   {
+    "date": "2026-08-06",
+    "direction": "neutral",
+    "players": [
+     "Chris Brazzell",
+     "Ja'Kobi Lane"
+    ],
+    "player_directions": {
+     "Ja'Kobi Lane": "up",
+     "Chris Brazzell": "down"
+    },
+    "entry": "Updated tier 3 of the wide receivers in the Rookies chapter. Chris Brazzell II was removed and there is now a callout for Ja\u2019Kobi Lane\u2019s path to a significant role early in the season.",
+    "line": 1202
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "up",
+    "players": [
+     "Michael Pittman"
+    ],
+    "player_directions": {
+     "Michael Pittman": "up"
+    },
+    "entry": "Added Michael Pittman Jr. to the My Targets chapter.",
+    "line": 1204
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "up",
+    "players": [
+     "Dallas Goedert"
+    ],
+    "player_directions": {
+     "Dallas Goedert": "up"
+    },
+    "entry": "Removed Dallas Goedert from the Do NOT Draft chapter. His splits without A.J. Brown on the field have been strong and his price has come down a bit (TE15 on Sleeper, TE14 on Yahoo). I drafted him as the TE15 in round 11 of my first high-stakes draft as the last of 14 teams to take a tight end. He is a good pick in that range and therefore does not belong on the Do NOT Draft list.",
+    "line": 1206
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "down",
+    "players": [
+     "Brian Thomas"
+    ],
+    "player_directions": {
+     "Brian Thomas": "down"
+    },
+    "entry": "Removed Brian Thomas Jr. from the My Targets chapter. Still a player I feel good drafting in the middle rounds, but Parker Washington is the better pick at cost right now in the vast majority of drafts, especially in PPR leagues.",
+    "line": 1208
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "up",
+    "players": [
+     "Tahj Brooks"
+    ],
+    "player_directions": {
+     "Tahj Brooks": "up"
+    },
+    "entry": "Added Tahj Brooks as a super super deep sleeper in the Sleepers chapter.",
+    "line": 1210
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "up",
+    "players": [
+     "MarShawn Lloyd"
+    ],
+    "player_directions": {
+     "MarShawn Lloyd": "up"
+    },
+    "entry": "Added Marshawn Lloyd as a sleeper in the Sleepers chapter.",
+    "line": 1212
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "down",
+    "players": [
+     "Josh Jacobs"
+    ],
+    "player_directions": {
+     "Josh Jacobs": "down"
+    },
+    "entry": "Added Josh Jacobs to the Do NOT Draft chapter.",
+    "line": 1214
+   }
+  ],
+  "by_player": {
+   "Quinshon Judkins": {
+    "revision_count": 1,
+    "last_revised": "2026-08-17",
+    "revision_direction": "down",
+    "entries": [
+     {
+      "date": "2026-08-17",
+      "direction": "down",
+      "entry": "Added Quinshon Judkins, Travis Hunter, and Romeo Doubs to the do NOT draft list.",
+      "line": 1192
+     }
+    ]
+   },
+   "Romeo Doubs": {
+    "revision_count": 1,
+    "last_revised": "2026-08-17",
+    "revision_direction": "down",
+    "entries": [
+     {
+      "date": "2026-08-17",
+      "direction": "down",
+      "entry": "Added Quinshon Judkins, Travis Hunter, and Romeo Doubs to the do NOT draft list.",
+      "line": 1192
+     }
+    ]
+   },
+   "Travis Hunter": {
+    "revision_count": 1,
+    "last_revised": "2026-08-17",
+    "revision_direction": "down",
+    "entries": [
+     {
+      "date": "2026-08-17",
+      "direction": "down",
+      "entry": "Added Quinshon Judkins, Travis Hunter, and Romeo Doubs to the do NOT draft list.",
+      "line": 1192
+     }
+    ]
+   },
+   "Jordan Mason": {
+    "revision_count": 1,
+    "last_revised": "2026-08-17",
+    "revision_direction": "up",
+    "entries": [
+     {
+      "date": "2026-08-17",
+      "direction": "up",
+      "entry": "Removed Jordan Mason from the Do NOT Draft list. Still not a target but his ADP has come down and he\u2019s fine to draft in 0 RB builds.",
+      "line": 1194
+     }
+    ]
+   },
+   "Luther Burden": {
+    "revision_count": 1,
+    "last_revised": "2026-08-17",
+    "revision_direction": "neutral",
+    "entries": [
+     {
+      "date": "2026-08-17",
+      "direction": "neutral",
+      "entry": "Updated Luther Burden writeup in the \u201cMy Targets\u201d chapter with context about his groin injury. He is still a player I am targeting as he slides down draft boards.",
+      "line": 1196
+     }
+    ]
+   },
+   "Terry McLaurin": {
+    "revision_count": 1,
+    "last_revised": "2026-08-06",
+    "revision_direction": "neutral",
+    "entries": [
+     {
+      "date": "2026-08-06",
+      "direction": "neutral",
+      "entry": "Updated the Terry McLaurin writeup in the My Targets chapter following the Stefon Diggs signing. He remains a strong wide receiver target in the back half of Round 4 and the beginning of Round 5.",
+      "line": 1200
+     }
+    ]
+   },
+   "Chris Brazzell": {
+    "revision_count": 1,
+    "last_revised": "2026-08-06",
+    "revision_direction": "down",
+    "entries": [
+     {
+      "date": "2026-08-06",
+      "direction": "down",
+      "entry": "Updated tier 3 of the wide receivers in the Rookies chapter. Chris Brazzell II was removed and there is now a callout for Ja\u2019Kobi Lane\u2019s path to a significant role early in the season.",
+      "line": 1202
+     }
+    ]
+   },
+   "Ja'Kobi Lane": {
+    "revision_count": 1,
+    "last_revised": "2026-08-06",
+    "revision_direction": "up",
+    "entries": [
+     {
+      "date": "2026-08-06",
+      "direction": "up",
+      "entry": "Updated tier 3 of the wide receivers in the Rookies chapter. Chris Brazzell II was removed and there is now a callout for Ja\u2019Kobi Lane\u2019s path to a significant role early in the season.",
+      "line": 1202
+     }
+    ]
+   },
+   "Michael Pittman": {
+    "revision_count": 1,
+    "last_revised": "2026-08-04",
+    "revision_direction": "up",
+    "entries": [
+     {
+      "date": "2026-08-04",
+      "direction": "up",
+      "entry": "Added Michael Pittman Jr. to the My Targets chapter.",
+      "line": 1204
+     }
+    ]
+   },
+   "Dallas Goedert": {
+    "revision_count": 1,
+    "last_revised": "2026-08-04",
+    "revision_direction": "up",
+    "entries": [
+     {
+      "date": "2026-08-04",
+      "direction": "up",
+      "entry": "Removed Dallas Goedert from the Do NOT Draft chapter. His splits without A.J. Brown on the field have been strong and his price has come down a bit (TE15 on Sleeper, TE14 on Yahoo). I drafted him as the TE15 in round 11 of my first high-stakes draft as the last of 14 teams to take a tight end. He is a good pick in that range and therefore does not belong on the Do NOT Draft list.",
+      "line": 1206
+     }
+    ]
+   },
+   "Brian Thomas": {
+    "revision_count": 1,
+    "last_revised": "2026-08-04",
+    "revision_direction": "down",
+    "entries": [
+     {
+      "date": "2026-08-04",
+      "direction": "down",
+      "entry": "Removed Brian Thomas Jr. from the My Targets chapter. Still a player I feel good drafting in the middle rounds, but Parker Washington is the better pick at cost right now in the vast majority of drafts, especially in PPR leagues.",
+      "line": 1208
+     }
+    ]
+   },
+   "Tahj Brooks": {
+    "revision_count": 1,
+    "last_revised": "2026-08-04",
+    "revision_direction": "up",
+    "entries": [
+     {
+      "date": "2026-08-04",
+      "direction": "up",
+      "entry": "Added Tahj Brooks as a super super deep sleeper in the Sleepers chapter.",
+      "line": 1210
+     }
+    ]
+   },
+   "MarShawn Lloyd": {
+    "revision_count": 1,
+    "last_revised": "2026-08-04",
+    "revision_direction": "up",
+    "entries": [
+     {
+      "date": "2026-08-04",
+      "direction": "up",
+      "entry": "Added Marshawn Lloyd as a sleeper in the Sleepers chapter.",
+      "line": 1212
+     }
+    ]
+   },
+   "Josh Jacobs": {
+    "revision_count": 1,
+    "last_revised": "2026-08-04",
+    "revision_direction": "down",
+    "entries": [
+     {
+      "date": "2026-08-04",
+      "direction": "down",
+      "entry": "Added Josh Jacobs to the Do NOT Draft chapter.",
+      "line": 1214
+     }
+    ]
+   }
+  }
+ }
+}

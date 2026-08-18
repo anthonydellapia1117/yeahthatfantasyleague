@@ -1,0 +1,52 @@
+{
+ "source_sha256": "ed59c2b37b43897241bd3d659bb8c737d4e6bae4b60a47fb2469bdea5bdbb07f",
+ "data": [
+  {
+   "kind": "injury_base_rates",
+   "class": "evidence",
+   "routes_to_factor": "historical_priors",
+   "data": {
+    "RB": {
+     "rate_per_game": 0.052,
+     "pct_miss_one": 0.62,
+     "games_per_injury": 3.9
+    },
+    "WR": {
+     "rate_per_game": 0.045,
+     "pct_miss_one": 0.5,
+     "games_per_injury": 3.2
+    },
+    "TE": {
+     "rate_per_game": 0.049,
+     "pct_miss_one": 0.49,
+     "games_per_injury": 2.6
+    },
+    "QB": {
+     "rate_per_game": 0.025,
+     "pct_miss_one": 0.31,
+     "games_per_injury": 3.1
+    }
+   },
+   "quote": "NFL Position Injury Rates table - 15 years of data per the guide",
+   "section": "Injuries + Recency Bias",
+   "attribution": "Walter guide section 4"
+  },
+  {
+   "kind": "draft_strategies",
+   "class": "evidence",
+   "routes_to_factor": "pick_engine_conditioning",
+   "data": [
+    "Robust RB Strategy",
+    "Hero RB Strategy",
+    "Zero RB Strategy",
+    "Elite Tight End or PUNT",
+    "The Patient QB Approach",
+    "The Josh Allen Strategy",
+    "Ignore Bye Weeks Strategy"
+   ],
+   "quote": "strategy definitions incl. Robust/Hero/Zero RB, Elite TE or PUNT, Patient QB, Josh Allen strategy, Ignore Bye Weeks",
+   "section": "Draft Strategies",
+   "attribution": "Walter guide section 5"
+  }
+ ]
+}
