@@ -48,6 +48,7 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 | Team context (caller, vacated usage, depth) | `out/teams.html#t=<abbr>` - curated play-caller rows only (19 teams; others say so), PROE display-only per N1, vacated = size of the hole, not a landing spot |
 | The action board (staleness, countdown, trending) | `out/home.html` - shard ages, overlay completeness, attributed trending adds. If a shard shows stale, check the pages-data cron before trusting a page |
 | Share a link that gives nothing away | `out/teaser/` - the watermarked build: countdown, 12 player names, the hook line, everything else redacted AT BUILD TIME (view-source clean, leak guard in tests). Regenerate with `python3 src/build_teaser.py` after the engine |
+| The big board (pre-draft master list) | `out/big_board.html` - VOR order with tier cliffs; every factor (market band, bye, 2025 workload, depth slot, play-caller, PROE) is a labelled evidence chip beside the number, never inside it. The ledger on the page states what is not wired (SOS/competition) and why. Never add a hidden composite - the folds were tested and failed |
 
 ## Anthony's position, stated once
 

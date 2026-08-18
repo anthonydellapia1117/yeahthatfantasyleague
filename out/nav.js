@@ -10,6 +10,7 @@
   var ACTIVE = (script && script.getAttribute("data-active")) || "";
   var ITEMS = [
     ["draft",    "DRAFT ROOM", "draft_room.html"],
+    ["board",    "BIG BOARD",  "big_board.html"],
     ["players",  "PLAYERS",    "players.html"],
     ["teams",    "TEAMS",      "teams.html"],
     ["findings", "FINDINGS",   "ff-hub.html"],
