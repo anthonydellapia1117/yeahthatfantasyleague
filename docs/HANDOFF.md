@@ -286,3 +286,17 @@ outside the ENGINE-DATA sentinels (regeneration verified byte-identical), the
 bar collapses to 36px in live mode, and a smoke guard keeps the answer, gear,
 and verdict above the fold at 390px. Guards: test_pages_data sections 13-15;
 smoke scenario 13.
+
+## Big Board - shipped 2026-08-13
+
+out/big_board.html - the pre-draft master list. The rank is VOR and nothing
+else (the guard asserts the sort expression in code); tiers render as cliff
+breaks under the position filters. Every factor Anthony asked for sits on the
+row as a LABELLED evidence chip with tap-provenance - market band and bye
+(FFC), 2025 workload (nflverse), depth slot (ESPN), play-caller with its
+source tag, PROE - and the factor ledger at the top states where each factor
+lives: decision input (VOR, survival timing), displayed evidence (coaching,
+team context - N1, rejected as probability input p=0.99), or not wired on
+purpose (schedule/competition - no stamped source, SOS approximations on the
+reject list). No hidden composite, ever. Guards: pages-data section 11b; smoke
+scenario 15 (on-screen order proven equal to payload VOR order).

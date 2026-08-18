@@ -195,6 +195,40 @@ if os.path.exists(tp_page):
     ok("not zero" in tpage and "Nothing on this page is estimated" in tpage,
        "team page declares absent data absent")
 
+# 11b. BIG BOARD. The rank is VOR and nothing else; every factor renders as
+#      labelled evidence; every reference resolves to a shard field; the
+#      honesty ledger names what is not wired and why.
+bb_page = os.path.join(ROOT, "out", "big_board.html")
+ok(os.path.exists(bb_page), "big_board.html exists")
+if os.path.exists(bb_page):
+    bpage = open(bb_page).read()
+    brefs = set(re.findall(r',\s*"([A-Za-z0-9_]+\.json)"\s*,\s*"([A-Za-z0-9_]+)"\s*\)', bpage))
+    ok(len(brefs) >= 10, "big board carries tappable provenance references",
+       f"only {len(brefs)}")
+    bfields = {}
+    if adp:
+        bfields["adp.json"] = set().union(*(set(x) for x in adp["players"][:300]))
+    if us:
+        bfields["usage_2025.json"] = set().union(*(set(x) for x in us["players"][:300]))
+    if dc:
+        bfields["depth_charts.json"] = set().union(*(set(x) for x in dc["entries"][:300]))
+    if pr:
+        bfields["team_proe_2025.json"] = set().union(*(set(x) for x in pr["teams"]))
+    emb = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    bfields["engine_2026.json"] = set().union(*(set(x) for x in emb["players"][:300]))
+    bbad = [f"{a}:{b}" for a, b in brefs if a not in bfields or b not in bfields[a]]
+    ok(not bbad, "every big-board reference resolves to a shard field",
+       "; ".join(bbad[:5]))
+    ok("The rank IS the model's math" in bpage,
+       "big board declares the ranking basis on its face")
+    ok("REJECTED" in bpage and "p=0.99" in bpage,
+       "big board states the rejected tendency fold with its number")
+    ok("NOT WIRED, ON PURPOSE" in bpage and "reject list" in bpage,
+       "schedule and competition declared not wired, with the reason")
+    ok(".sort((a, b) => b.vor - a.vor)" in bpage,
+       "the ordering in code is VOR alone - no hidden composite")
+    ok("Provenance (guard N2)" in bpage, "big board provenance footer present")
+
 # 12. PHASE E HOME PAGE. The action board: countdown from the payload (not a
 #     second hardcode), staleness thresholds stated, overlay completeness from
 #     the engine payload, trending attributed, all four surfaces linked, and
@@ -208,7 +242,8 @@ if os.path.exists(hp):
     ok("Fresh under 36h" in hpage and "aging under 7 days" in hpage,
        "staleness thresholds stated on the board")
     ok(all(f'href="{s}"' in hpage for s in
-           ("draft_room.html", "players.html", "teams.html", "ff-hub.html")),
+           ("draft_room.html", "big_board.html", "players.html", "teams.html",
+            "ff-hub.html")),
        "home links every surface")
     ok("0 times in 13 seasons" in hpage and "p=0.323" in hpage
        and "not significant" in hpage,
@@ -229,14 +264,14 @@ ok(os.path.exists(navp), "nav.js exists (single source of truth)")
 if os.path.exists(navp):
     navsrc = open(navp).read()
     nav_items = re.findall(r'\["(\w+)",\s*"[^"]+",\s*"([^"]+)"\]', navsrc)
-    ok(len(nav_items) == 5, "nav defines exactly five items", f"{len(nav_items)}")
+    ok(len(nav_items) == 6, "nav defines exactly six items", f"{len(nav_items)}")
     missing = [href for _, href in nav_items
                if not os.path.exists(os.path.join(ROOT, "out", href))]
     ok(not missing, "every nav link target resolves to a real file",
        "; ".join(missing))
-    PAGES = {"draft_room.html": "draft", "players.html": "players",
-             "teams.html": "teams", "ff-hub.html": "findings",
-             "home.html": "hub"}
+    PAGES = {"draft_room.html": "draft", "big_board.html": "board",
+             "players.html": "players", "teams.html": "teams",
+             "ff-hub.html": "findings", "home.html": "hub"}
     seen_keys = []
     for fname, want in PAGES.items():
         psrc = open(os.path.join(ROOT, "out", fname)).read()
@@ -259,9 +294,10 @@ if os.path.exists(navp):
 # 14. APP SHELL (Phase 2). Token, layout, and header consistency: one dark
 #     family (#0b1120, ff-hub's), one container width, one kicker treatment -
 #     and the semantic verdict colors did not move.
-ALL_PAGES = ["draft_room.html", "players.html", "teams.html", "home.html",
-             "ff-hub.html"]
-_tokened = ["draft_room.html", "players.html", "teams.html", "home.html"]
+ALL_PAGES = ["draft_room.html", "big_board.html", "players.html",
+             "teams.html", "home.html", "ff-hub.html"]
+_tokened = ["draft_room.html", "big_board.html", "players.html", "teams.html",
+            "home.html"]
 for fname in ALL_PAGES:
     psrc = open(os.path.join(ROOT, "out", fname)).read()
     ok("#0A0E1A" not in psrc and "0a0e1a" not in psrc.lower()
@@ -283,7 +319,7 @@ ok(".kick{" in open(navp).read(), "kicker style lives in nav.js (single source)"
 navsrc2 = open(navp).read()
 ok("data-reveal" not in open(os.path.join(ROOT, "out", "draft_room.html")).read(),
    "draft room NEVER carries the reveal attribute")
-for fname in ("players.html", "teams.html", "home.html", "ff-hub.html"):
+for fname in ("big_board.html", "players.html", "teams.html", "home.html", "ff-hub.html"):
     ok("data-reveal" in open(os.path.join(ROOT, "out", fname)).read(),
        f"{fname} opts into the phase 3 polish")
 ok("prefers-reduced-motion:no-preference" in navsrc2
@@ -335,7 +371,7 @@ def _root_tokens(src):
     block = src[i:src.index("}", i)]
     return dict(re.findall(r'--([\w-]+):\s*(#[0-9a-fA-F]{6})', block))
 
-for fname in ("draft_room.html", "players.html", "teams.html", "home.html"):
+for fname in ("draft_room.html", "big_board.html", "players.html", "teams.html", "home.html"):
     psrc = open(os.path.join(ROOT, "out", fname)).read()
     card = _scope_tokens(psrc)
     page = _root_tokens(psrc)

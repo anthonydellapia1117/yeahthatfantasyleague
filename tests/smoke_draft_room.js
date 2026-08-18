@@ -700,15 +700,16 @@ const ok = (cond, name, detail) => {
     });
     await new Promise(r => srv.listen(0, "127.0.0.1", r));
     const base = "http://127.0.0.1:" + srv.address().port;
-    const ACTIVE = { "players.html": "PLAYERS", "teams.html": "TEAMS",
-                     "home.html": "HUB", "ff-hub.html": "FINDINGS" };
+    const ACTIVE = { "big_board.html": "BIG BOARD", "players.html": "PLAYERS",
+                     "teams.html": "TEAMS", "home.html": "HUB",
+                     "ff-hub.html": "FINDINGS" };
     for (const [file, label] of Object.entries(ACTIVE)){
       const pg = await browser.newPage();
       await pg.route("**/api.sleeper.app/**", r => r.abort());
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(800);
       ok(await pg.locator(".ynav").count() === 1, `nav renders on ${file}`);
-      ok(await pg.locator(".ynav-items a").count() === 5, `nav carries five items on ${file}`);
+      ok(await pg.locator(".ynav-items a").count() === 6, `nav carries six items on ${file}`);
       const on = pg.locator(".ynav-items a.on");
       ok(await on.count() === 1 && (await on.textContent()).trim() === label
          && await on.getAttribute("aria-current") === "page",
@@ -788,6 +789,58 @@ const ok = (cond, name, detail) => {
     ok(await lv.evaluate(() => document.querySelectorAll(".yrv").length) === 0,
        "the draft room receives zero entrance animations");
     await lv.close();
+    srv.close();
+  }
+
+  // ---- scenario 15: BIG BOARD. VOR order, evidence chips from the shards,
+  // tier-cliff breaks under a position filter, links into the dossiers.
+  {
+    const http = require("http");
+    const fs = require("fs");
+    const root = path.resolve(".");
+    const srv = http.createServer((req, res) => {
+      if (req.url === "/favicon.ico"){ res.writeHead(204); return res.end(); }
+      const f = path.join(root, decodeURIComponent(req.url.split("?")[0].replace(/^\//, "")));
+      try {
+        res.writeHead(200, { "content-type": f.endsWith(".json") ? "application/json"
+          : f.endsWith(".html") ? "text/html"
+          : f.endsWith(".js") ? "text/javascript" : "text/plain" });
+        res.end(fs.readFileSync(f));
+      } catch { res.writeHead(404); res.end(); }
+    });
+    await new Promise(r => srv.listen(0, "127.0.0.1", r));
+    const base = "http://127.0.0.1:" + srv.address().port;
+    const pg = await browser.newPage();
+    const errs15 = [];
+    pg.on("pageerror", e => errs15.push(String(e)));
+    pg.on("console", m => { if (m.type() === "error") errs15.push(m.text()); });
+    await pg.goto(base + "/out/big_board.html");
+    await pg.waitForTimeout(1500);
+    ok(await pg.locator(".brow").count() >= 100, "big board renders the top 150");
+    // the order on screen must be the payload's VOR order - recompute and compare
+    const orderOk = await pg.evaluate(async () => {
+      const E = await fetch("engine_2026.json").then(r => r.json());
+      const want = E.players.slice().sort((a, b) => b.vor - a.vor).slice(0, 10).map(p => p.name);
+      const got = [...document.querySelectorAll(".brow .nm a")].slice(0, 10).map(a => a.textContent.trim());
+      return JSON.stringify(want) === JSON.stringify(got);
+    });
+    ok(orderOk, "on-screen order IS the payload VOR order, top 10 exact");
+    const btxt = await pg.textContent("#board");
+    ok(/2025:/.test(btxt) && /tgt/.test(btxt), "historical workload chips render");
+    ok(/REPORTED|SOURCED|VERIFIED/.test(btxt), "coaching chips render with their tag");
+    ok(/PROE/.test(btxt) && /bye/.test(btxt), "team tendency and bye chips render");
+    ok(/market \d/.test(btxt), "FFC market band chips render");
+    const ftxt = await pg.textContent(".factors");
+    ok(/NOT WIRED, ON PURPOSE/.test(ftxt) && /p=0\.99/.test(ftxt),
+       "the factor ledger names the rejected folds and the missing sources");
+    await pg.click('#posf button[data-pos="RB"]');
+    await pg.waitForTimeout(400);
+    ok(await pg.locator(".tierbreak").count() >= 2,
+       "position filter shows the tier cliffs");
+    ok((await pg.textContent("#board")).indexOf("QB - ") === -1,
+       "position filter actually filters");
+    ok(errs15.length === 0, "big board: zero console errors", errs15[0] || "");
+    await pg.close();
     srv.close();
   }
 
