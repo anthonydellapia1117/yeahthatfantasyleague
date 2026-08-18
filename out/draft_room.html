@@ -771,7 +771,11 @@ function renderLive(draft, newPick){
     L["lv-gear"].innerHTML = ""; L["lv-chips"].innerHTML = "";
   }
   renderRecs(alive, cur, myNextG, LiveState.mySlot ? R2 : null, top, liveVerdict, hasCoin);
-  renderPickEngine(alive, cur, myNextG, LiveState.mySlot ? R2 : null);   // PICKENGINE: additive
+  // PICKENGINE: additive. On my own clock "my next pick" is the one AFTER
+  // this one (mirrors the verdict card's isMe index) - otherwise survival
+  // to pick cur is trivially 1 and scarcity vanishes at decision time.
+  const peNext = (isMe ? mineAll[1] : mineAll[0]) || cur + 2 * E.league.teams;
+  renderPickEngine(alive, cur, peNext, LiveState.mySlot ? R2 : null);
   const aliveSet2 = new Set(alive.map(p => p.name));
   renderGrid(draft);
   renderValueBoard(aliveSet2);
@@ -1117,7 +1121,8 @@ async function loadCvs(){
     const r = await fetch("cvs.json");
     if (r.ok){
       CVS = await r.json();
-      if (LiveState.lastRender) LiveState.lastRender();   // repaint, don't wait a poll
+      // repaint, don't wait a poll - but only while the live DOM stands
+      if (LiveState.lastRender && LiveState.els) LiveState.lastRender();
     }
   } catch (e) { CVS = null; }
 }
@@ -1194,18 +1199,21 @@ function renderPickEngine(alive, cur, myNext, R){
     .sort((a, b) => b.s.total - a.s.total);
   if (!cands.length){ card.hidden = true; return; }
   const pick = cands[0], alts = cands.slice(1, 3);
-  const margin = alts.length ? pick.s.total - alts[0].s.total : 99;
-  const band = margin >= PE.HI ? "HIGH" : margin >= PE.MED ? "MEDIUM" : "LOW";
+  // no alternate -> no margin. Never invent one; the band needs a real gap.
+  const margin = alts.length ? pick.s.total - alts[0].s.total : null;
+  const band = margin === null ? null
+    : margin >= PE.HI ? "HIGH" : margin >= PE.MED ? "MEDIUM" : "LOW";
   const w = pick.c.walter;
-  const costWait = alts.length
-    ? (1 - pick.surv) * (pick.s.total - alts[0].s.total) : 0;
+  const stale = CVS.generated !== E.generated;
+  const costWait = margin === null ? null : (1 - pick.surv) * margin;
   const fitLine = pick.s.need >= PE.NEED
     ? `fills your open ${pick.p.pos} slot`
     : pick.s.need > 0 ? "base slots full - takes the open flex"
     : "depth - no open slot filled";
   body.innerHTML = `
+    ${stale ? `<p class="small">cvs.json generated ${esc(CVS.generated)} but the engine is ${esc(E.generated)} - mismatched boards. Rebuild both before trusting this card.</p>` : ""}
     <div class="rname">${esc(pick.p.name)} <span class="num">${pick.s.total.toFixed(1)}</span>
-      <span class="tag">confidence ${band}</span>
+      <span class="tag">${band ? "confidence " + band : "no alternate on the CVS board"}</span>
       ${pick.c.signal ? `<span class="tag">${PE_SIG[pick.c.signal] || esc(pick.c.signal)}</span>` : ""}
       ${pick.c.signal_conflict ? '<span class="tag">SIGNAL CONFLICT - see the big board</span>' : ""}</div>
     <div class="small">1. Value: CVS <span class="num">${pick.c.cvs}</span>
@@ -1218,15 +1226,16 @@ function renderPickEngine(alive, cur, myNext, R){
     <div class="small">3. Lens: wk15-17 SOS ${pick.c.playoff_sos_rank ? `rank <span class="num">${pick.c.playoff_sos_rank}</span>/32` : "unknown"}
       tilt <span class="num">${pick.s.playoff >= 0 ? "+" : ""}${pick.s.playoff.toFixed(1)}</span> pts -
       a schedule proxy for title odds, not a title-odds simulation.</div>
-    <div class="small">Cost of waiting: <span class="num">${pct(1 - pick.surv)}</span> gone by your pick ${myNext};
-      expected loss vs the alternate <span class="num">${costWait.toFixed(1)}</span> pts.</div>
+    ${costWait === null ? "" : `<div class="small">Cost of waiting: <span class="num">${pct(1 - pick.surv)}</span> gone by your pick ${myNext};
+      score margin at risk vs the alternate <span class="num">${costWait.toFixed(1)}</span> (composite scale, not projected points).</div>`}
     ${alts.map((a, i) => `<div class="rec"><div>
       <div class="rname">alt ${i + 1}: ${esc(a.p.name)} <span class="num">${a.s.total.toFixed(1)}</span></div>
       <div class="rmeta">${a.p.pos} ${esc(a.p.team)} - CVS <span class="num">${a.c.cvs}</span>
         - <span class="num">${pct(a.surv)}</span> lasts to ${myNext}
         - take him ${peCondition(a, pick, myNext)}</div></div></div>`).join("")}
-    <p class="small">What changes this card: the margin is <span class="num">${margin.toFixed(1)}</span> pts -
-      a position run before pick ${myNext} or a faller flips it. Additive lens only:
+    <p class="small">${margin === null ? "Only one CVS-covered player remains - nothing to rank against."
+      : `What changes this card: the margin is <span class="num">${margin.toFixed(1)}</span> pts -
+      a position run before pick ${myNext} or a faller flips it.`} Additive lens only:
       the verdict above stays the audited VOR model. Weights: need ${PE.NEED},
       flex ${PE.FLEX}, scarcity ${PE.SCARCITY}, playoff ${PE.PLAYOFF}/z.</p>`;
 }

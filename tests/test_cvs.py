@@ -36,14 +36,24 @@ ok(all(z == 0.0 for z in cvsmod.zscores([5.0, 5.0, 5.0, 5.0])),
    "zscores: degenerate spread collapses to zeros, never divides by zero")
 
 # 2. the anchor law: cvs_base = VOR + sum of non-baseline contributions,
-#    and cvs = cvs_base * (1 + capped_pct/100), within rounding
+#    and cvs = cvs_base + |cvs_base| * capped_pct/100 (sign-safe: an
+#    endorsement never lowers a negative-CVS player further), within rounding
 bad = [p["name"] for p in players
        if abs(p["cvs_base"] - (p["vor"] + sum(
            f["contribution"] for f in p["factors"]
            if f["factor"] != "baseline_projection"))) > 0.1
-       or abs(p["cvs"] - p["cvs_base"] * (1 + p["walter"]["capped_pct"] / 100)) > 0.1]
+       or abs(p["cvs"] - (p["cvs_base"] + abs(p["cvs_base"])
+                          * p["walter"]["capped_pct"] / 100)) > 0.1]
 ok(not bad, "anchor law: every CVS decomposes exactly into VOR + factor "
-   "contributions, then the capped walter percentage", "; ".join(bad[:3]))
+   "contributions, then the capped walter percentage on the magnitude",
+   "; ".join(bad[:3]))
+# sign safety directly: a positive capped pct never lowers cvs, a negative
+# one never raises it
+bad = [p["name"] for p in players
+       if (p["walter"]["capped_pct"] > 0 and p["cvs"] < p["cvs_base"] - 1e-9)
+       or (p["walter"]["capped_pct"] < 0 and p["cvs"] > p["cvs_base"] + 1e-9)]
+ok(not bad, "walter sign safety: endorsements only raise, fades only lower",
+   "; ".join(bad[:3]))
 
 # 3. null handling: null factors contribute zero and confidence reports the
 #    covered weight share exactly
@@ -129,14 +139,22 @@ esrc = open(os.path.join(ROOT, "src", "engine_2026.py")).read()
 ok("cvs" not in esrc.lower(),
    "the engine (verdict source of truth) never reads CVS")
 
-# 10. determinism: a rebuild reproduces the payload byte-identically
+# 10. determinism: a rebuild reproduces the payload from committed inputs.
+#     The generated stamp is the one date-of-run field, so it is excluded;
+#     the original file bytes are restored afterwards - a guard must never
+#     leave the working tree changed.
 import io, contextlib
+cvs_path = os.path.join(ROOT, "out", "cvs.json")
+orig_bytes = open(cvs_path, "rb").read()
 buf = io.StringIO()
 with contextlib.redirect_stdout(buf):
     cvsmod.main()
-C2 = json.load(open(os.path.join(ROOT, "out", "cvs.json")))
-ok(json.dumps(C, sort_keys=True) == json.dumps(C2, sort_keys=True),
-   "rebuild is byte-deterministic from committed inputs")
+C2 = json.load(open(cvs_path))
+open(cvs_path, "wb").write(orig_bytes)
+a, b = dict(C), dict(C2)
+a.pop("generated", None); b.pop("generated", None)
+ok(json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True),
+   "rebuild is deterministic from committed inputs (generated stamp aside)")
 
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")

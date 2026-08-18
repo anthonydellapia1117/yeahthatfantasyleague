@@ -108,7 +108,7 @@ def main():
                       key=lambda p: -p["vor"])[:cfg["pool_sizes"][pos]]
         by_adp = sorted([p for p in pool if p["adp"] < 900], key=lambda p: p["adp"])
         for i, p in enumerate(by_adp):
-            adp_pos_rank[p["name"]] = i + 1
+            adp_pos_rank[(p["name"], pos)] = i + 1
 
         def raws(p):
             n = norm(p["name"])
@@ -197,7 +197,9 @@ def main():
             cap = cfg["walter_cap_pct"]
             capped_pct = max(-cap, min(cap, proposed_pct))
             was_capped = abs(proposed_pct) > cap + 1e-9
-            walter_delta = cvs_base * capped_pct / 100.0
+            # sign-safe scale: the percentage applies to the magnitude, so an
+            # endorsement never pushes a negative-CVS player further down
+            walter_delta = abs(cvs_base) * capped_pct / 100.0
             cvs = cvs_base + walter_delta
 
             evid = [t for t in wt if t["class"] == "evidence"]
@@ -240,7 +242,7 @@ def main():
         for i, p in enumerate(grp):
             p["cvs_pos_rank"] = i + 1
     for p in players_out:
-        p["adp_pos_rank"] = adp_pos_rank.get(p["name"])
+        p["adp_pos_rank"] = adp_pos_rank.get((p["name"], p["pos"]))
     for pos in SKILL:
         grp = [p for p in players_out if p["pos"] == pos]
         zs = zscores([p["playoff_sos"] for p in grp])
