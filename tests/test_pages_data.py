@@ -195,39 +195,53 @@ if os.path.exists(tp_page):
     ok("not zero" in tpage and "Nothing on this page is estimated" in tpage,
        "team page declares absent data absent")
 
-# 11b. BIG BOARD. The rank is VOR and nothing else; every factor renders as
-#      labelled evidence; every reference resolves to a shard field; the
-#      honesty ledger names what is not wired and why.
+# 11b. BIG BOARD (CVS). The rank is the anchor law and nothing else; the cap
+#      and kill-switch are stated on the page; all seven signals carry three
+#      channels (container treatment + icon + text label) with a legend and
+#      persistent filters; the payload itself is ordered by CVS.
 bb_page = os.path.join(ROOT, "out", "big_board.html")
 ok(os.path.exists(bb_page), "big_board.html exists")
-if os.path.exists(bb_page):
+cvs_path = os.path.join(ROOT, "out", "cvs.json")
+ok(os.path.exists(cvs_path), "cvs.json exists")
+if os.path.exists(bb_page) and os.path.exists(cvs_path):
     bpage = open(bb_page).read()
-    brefs = set(re.findall(r',\s*"([A-Za-z0-9_]+\.json)"\s*,\s*"([A-Za-z0-9_]+)"\s*\)', bpage))
-    ok(len(brefs) >= 10, "big board carries tappable provenance references",
-       f"only {len(brefs)}")
-    bfields = {}
-    if adp:
-        bfields["adp.json"] = set().union(*(set(x) for x in adp["players"][:300]))
-    if us:
-        bfields["usage_2025.json"] = set().union(*(set(x) for x in us["players"][:300]))
-    if dc:
-        bfields["depth_charts.json"] = set().union(*(set(x) for x in dc["entries"][:300]))
-    if pr:
-        bfields["team_proe_2025.json"] = set().union(*(set(x) for x in pr["teams"]))
-    emb = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
-    bfields["engine_2026.json"] = set().union(*(set(x) for x in emb["players"][:300]))
-    bbad = [f"{a}:{b}" for a, b in brefs if a not in bfields or b not in bfields[a]]
-    ok(not bbad, "every big-board reference resolves to a shard field",
-       "; ".join(bbad[:5]))
-    ok("The rank IS the model's math" in bpage,
-       "big board declares the ranking basis on its face")
+    ok("CVS = VOR + z_point_scale x weighted-z" in bpage,
+       "big board declares the anchor law on its face")
+    ok("walter_enabled kill-switch" in bpage and "capped" in bpage,
+       "big board states the cap and the kill-switch as the risk bounds")
     ok("REJECTED" in bpage and "p=0.99" in bpage,
        "big board states the rejected tendency fold with its number")
-    ok("NOT WIRED, ON PURPOSE" in bpage and "reject list" in bpage,
-       "schedule and competition declared not wired, with the reason")
-    ok(".sort((a, b) => b.vor - a.vor)" in bpage,
-       "the ordering in code is VOR alone - no hidden composite")
+    ok("NOT WIRED, ON PURPOSE" in bpage,
+       "unwired factors declared not wired, with the reason")
+    ok("floors" in bpage and "off the CVS board" in bpage,
+       "K and DST floors stated off the board, with the reason")
+    ok('get("cvs.json")' in bpage, "board is driven by cvs.json")
     ok("Provenance (guard N2)" in bpage, "big board provenance footer present")
+    # signal encoding: every signal has a container treatment, an icon, and a
+    # text label; the legend and conflict marker render; filters persist
+    SIGNALS = ["personal_dnd", "consensus_dnd", "single_dnd",
+               "consensus_target", "single_target", "consensus_sleeper",
+               "single_sleeper"]
+    miss = [s for s in SIGNALS if f'.brow[data-sig="{s}"]' not in bpage]
+    ok(not miss, "every signal state has a container treatment",
+       "; ".join(miss))
+    for lbl in ("MY DND", "DND x2", '"DND"', "TARGET x2", '"TARGET"',
+                "SLEEPER x2", '"SLEEPER"'):
+        ok(lbl.strip('"') in bpage, f"signal text label {lbl} present")
+    ok("renderLegend" in bpage and "! CONFLICT" in bpage,
+       "legend always visible, conflict marker in it")
+    ok("signal_conflict" in bpage and "Conflicts view" in bpage,
+       "conflicts stay visible with their own marker and view")
+    ok("ytfl_bb2" in bpage and "localStorage" in bpage,
+       "filter and view state persists across refresh")
+    ok("${p.cvs_rank}" in bpage,
+       "rows render the payload's cvs_rank - no page-side re-rank")
+    # the ordering lives in the payload: strictly ranked, CVS-descending
+    cvsp = json.load(open(cvs_path))["players"]
+    ok([p["cvs_rank"] for p in cvsp] == list(range(1, len(cvsp) + 1)),
+       "cvs.json players arrive ranked 1..N in order")
+    ok(all(cvsp[i]["cvs"] >= cvsp[i + 1]["cvs"] for i in range(len(cvsp) - 1)),
+       "cvs.json order is CVS-descending - no hidden composite in the page")
 
 # 12. PHASE E HOME PAGE. The action board: countdown from the payload (not a
 #     second hardcode), staleness thresholds stated, overlay completeness from
@@ -398,6 +412,17 @@ pbad = [f"{k} {_contrast(v, _drcard):.2f}" for k, v in _pos.items()
 ok(len(_pos) == 6 and not pbad,
    "draft grid position colors clear 4.5:1 on the card", "; ".join(pbad))
 
+# the seven signal colors are load-bearing (names must stay legible inside
+# every signal treatment) - verify each against the big-board card surface
+_bbsrc = open(os.path.join(ROOT, "out", "big_board.html")).read()
+_bbcard = _scope_tokens(_bbsrc)["s1"]
+_sigcolors = set(re.findall(r'\.brow\[data-sig="[a-z_]+"\]\{border-color:(#[0-9a-fA-F]{6})', _bbsrc))
+sbad = [f"{c} {_contrast(c, _bbcard):.2f}" for c in _sigcolors
+        if _contrast(c, _bbcard) < 4.5]
+ok(len(_sigcolors) == 5 and not sbad,
+   "all five signal colors clear 4.5:1 on the big-board card",
+   f"{len(_sigcolors)} colors; " + "; ".join(sbad))
+
 _ffsrc = open(os.path.join(ROOT, "out", "ff-hub.html")).read()
 _ffcard = _scope_tokens(_ffsrc)
 _ffpage = _root_tokens(_ffsrc)
@@ -437,7 +462,8 @@ if all(os.path.exists(os.path.join(TEASER, f)) for f in _tfiles):
         src_t = open(os.path.join(TEASER, f)).read()
         leaks = [t for t in ("engine_2026", "data/", "nav.js", "../",
                              "my_board", "n_eff", "prior", "survival(",
-                             "0.0772", "88.55", "p=0.323", "2,039")
+                             "0.0772", "88.55", "p=0.323", "2,039",
+                             "cvs", "walter", "Walter")
                  if t in src_t]
         ok(not leaks, f"teaser {f}: reaches no data, no shard, no real page",
            "; ".join(leaks))
