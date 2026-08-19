@@ -1,5 +1,23 @@
 # Changelog
 
+## Item 3 - recency-bias coefficient: no effect, not used (2026-08-19)
+
+- src/analyze_recency.py: ln(pick paid) ~ z(last-4-weeks points) +
+  z(full-season points) + ln(FFC ADP) + position dummies, all 13 drafts,
+  1,677 skill picks (85% coverage; rookies and no-ADP picks excluded and
+  counted per year). League scoring applied to prior-season stats
+  (PPR + 6-pt pass TD). Late window anchored to each season's final four
+  REG weeks.
+- FINDING: b_late = +0.0002, season-cluster bootstrap 95% CI
+  [-0.0203, +0.0178] - not distinguishable from zero. At the median
+  selection a +1 SD hot finish moves this league +0.01 picks, i.e.
+  nothing. The market control (ADP) absorbs market-wide recency bias;
+  the league adds none of its own.
+- CONSEQUENCE (the commission's rule): no effect size, no usage - nothing
+  recency-related is wired anywhere. Guards: verdict-follows-interval,
+  usage rule, estimator unit tests, coverage accounting, cached-input
+  determinism.
+
 ## Item 2 - manager-profile backtest (2026-08-19)
 
 - src/backtest_profiles.py: walk-forward backtest (2016-2025, 1,766 picks,
