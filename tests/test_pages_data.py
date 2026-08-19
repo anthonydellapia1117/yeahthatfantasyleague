@@ -290,6 +290,52 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "the room's disclosure names the deployed era fit, not the rejected blend")
     ok("pre-draft verdicts use the frozen survival model" in drp,
        "the frozen/calibrated boundary is stated on the pre-draft surface")
+    # signal encoding in the room: same seven states, three channels,
+    # server-side precedence, walter-toggle aware, display only
+    ok("SIGENC-BEGIN" in drp and "SIGENC-END" in drp
+       and drp.index("SIGENC-BEGIN") > drp.index("engine-data-end"),
+       "room signal encoding is marker-quarantined outside the sentinels")
+    for lbl in ("MY DND", "DND x2", "TARGET x2", "SLEEPER x2"):
+        ok(lbl in drp, f"room carries signal label {lbl}")
+    for c in ("#b91c1c", "#b45309", "#047857", "#1e3a8a", "#1d4ed8"):
+        ok(c in drp, f"room carries signal color {c} (contrast-proven set)")
+    ok("peWalterOn() ? c : c.no_walter" in drp,
+       "room signals honor the walter live toggle via the server variants")
+    _pe_seg = drp[drp.index("function peScore"):drp.index("function peCondition")]
+    _gr_seg = drp[drp.index("const GRADE_W"):drp.index("function renderRecs")]
+    ok("sigOf" not in _pe_seg and "sigBadge" not in _pe_seg
+       and "sigOf" not in _gr_seg and "sigBadge" not in _gr_seg,
+       "signals are display only - never inside the score or the grade")
+    _vb_seg = drp[drp.index("function renderValueBoard"):drp.index("function simGauss")]
+    ok("sigAttr(" in _vb_seg and "sigBadge(" in _vb_seg and "sigLegend()" in _vb_seg,
+       "the value board (best-available view) carries all three signal channels")
+    # byte-identity with the big board: the SIG and ICON maps must never
+    # drift between the two pages (labels, colors, icon assignment, SVGs)
+    def _blk(src, name):
+        i = src.index(f"const {name} = {{")
+        return src[i:src.index("};", i) + 2]
+    ok(_blk(drp, "SIG") == _blk(bpage, "SIG")
+       and _blk(drp, "ICON") == _blk(bpage, "ICON"),
+       "room SIG and ICON maps are byte-identical to the big board")
+    # a novel cvs.json signal value must render nothing, never throw inside
+    # the render loop (refresh() swallows render errors AFTER stamping the
+    # freshness dot, so a throw here would freeze the room silently)
+    _sb_seg = drp[drp.index("function sigBadge"):drp.index("function sigAttr")]
+    _sa_seg = drp[drp.index("function sigAttr"):drp.index("function sigLegend")]
+    ok('if (!s) return "";' in _sb_seg and "SIG[s0.sig]" in _sa_seg,
+       "unknown signal keys are guarded in both channels (badge and data-sig)")
+    # gone/taken rows never carry a signal - pin the suppression branches
+    ok('${gone ? "" : sigAttr(p)}' in drp and '${gone ? "" : sigBadge(p)}' in drp,
+       "value board gone rows are signal-free (both channels suppressed)")
+    ok('${c.taken ? "" : sigAttr(c.p)}' in drp
+       and '${c.taken ? "" : sigBadge(c.p)}' in drp,
+       "a taken searched player in recs is signal-free (both channels suppressed)")
+    # ordering is pinned by the exact comparators - the signal cannot reach
+    # them without breaking these strings
+    ok(".sort((a, b) => b.s.total - a.s.total)" in drp,
+       "pick-engine alternatives order by score alone (comparator pinned)")
+    ok(".sort((a, b) => b.g - a.g)" in drp,
+       "recs order by grade alone (comparator pinned)")
     ok("${S(p).cvs_rank}" in bpage,
        "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending

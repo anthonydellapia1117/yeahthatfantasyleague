@@ -1075,11 +1075,56 @@ const ok = (cond, name, detail) => {
     ok(/Survival to your pick/.test(await pe.textContent("body")),
        "audited survival table still renders");
     ok(!/NaN/.test(petxt), "pick engine renders no NaN");
+    // SIGNAL ENCODING in the room: badges, containers, and legends render
+    // from the loaded cvs.json with the board's exact states
+    const sigOn = await pe.evaluate(() => ({
+      badges: document.querySelectorAll(".sig").length,
+      draftBadges: document.querySelectorAll("#scr-draft .sig").length,
+      draftContainers: document.querySelectorAll("#scr-draft [data-sig]").length,
+      legends: document.querySelectorAll(".siglegend").length,
+    }));
+    ok(sigOn.badges >= 3, "room signal badges render (icon + label)",
+       String(sigOn.badges));
+    // scoped to the draft screen so the (hidden) Board tab's rows can never
+    // satisfy the assertion on their own
+    ok(sigOn.draftBadges >= 3,
+       "draft-screen surfaces carry signal badges (not just the Board tab)",
+       String(sigOn.draftBadges));
+    ok(sigOn.draftContainers >= 2,
+       "draft-screen surfaces carry signal containers (not just the Board tab)",
+       String(sigOn.draftContainers));
+    ok(sigOn.legends >= 1, "room signal legend renders", String(sigOn.legends));
+    // the Board tab (best-available view) carries all three channels too
+    const vb = await pe.evaluate(() => ({
+      containers: document.querySelectorAll("#scr-board .vrow[data-sig]").length,
+      badges: document.querySelectorAll("#scr-board .sig").length,
+      legends: document.querySelectorAll("#scr-board .siglegend").length,
+    }));
+    ok(vb.containers >= 3, "value board rows carry the signal container", String(vb.containers));
+    ok(vb.badges >= 3, "value board rows carry signal badges", String(vb.badges));
+    ok(vb.legends >= 1, "value board carries the signal legend", String(vb.legends));
+    // grey-out mode: gone rows stay listed but never carry a signal
+    await pe.evaluate(() => document.getElementById("vb-keep").click());
+    const goneSig = await pe.evaluate(() => ({
+      gone: document.querySelectorAll("#scr-board .vrow.gone").length,
+      badged: document.querySelectorAll("#scr-board .vrow.gone .sig").length
+        + document.querySelectorAll("#scr-board .vrow.gone[data-sig]").length,
+    }));
+    ok(goneSig.gone >= 1, "grey-out mode lists gone rows", String(goneSig.gone));
+    ok(goneSig.badged === 0, "gone rows are signal-free (both channels)",
+       String(goneSig.badged));
+    await pe.evaluate(() => document.getElementById("vb-rm").click());
     // the shared kill-switch: with the layer off, the card says so and
     // scores from the pure-model variant with no walter percentages
     await pe.evaluate(() => localStorage.setItem("ytfl_walter_live", "off"));
     await pe.reload();
     await pe.waitForTimeout(3500);
+    const sigOff = await pe.evaluate(() => document.querySelectorAll(".sig").length);
+    // off mode must still RENDER the no_walter signals - a dead off-channel
+    // (0 badges) would otherwise pass a bare inequality check
+    ok(sigOff > 0 && sigOff !== sigOn.badges,
+       "walter toggle changes the room's rendered signals (server variants)",
+       `${sigOn.badges} -> ${sigOff}`);
     const offtxt = await pe.textContent("#pe-body");
     ok(/WALTER LAYER OFF/.test(offtxt), "pick engine honors the live kill-switch");
     ok(!/walter [+-]/.test(offtxt), "off-mode card carries no walter percentages");
