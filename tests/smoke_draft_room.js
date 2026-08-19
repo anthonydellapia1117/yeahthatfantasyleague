@@ -18,7 +18,9 @@ const ok = (cond, name, detail) => {
 };
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+  const browser = await chromium.launch({
+    // this image ships the browser at a fixed path; CI overrides it
+    executablePath: process.env.PW_CHROMIUM || "/opt/pw-browsers/chromium" });
 
   // ---- scenario 1: pre_draft, order not drawn (mocked - hermetic, no network)
   {

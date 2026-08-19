@@ -43,12 +43,17 @@ rehearsal's `real` times.
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
 
 Playwright note for step 10: the repo has no package.json, so a fresh
-container has no playwright-core. Install it once per session, then run
-the smoke against the browser this image already ships (do NOT run
-`playwright install` - the binary is preinstalled):
+container has no playwright-core. Install the driver once per session and
+run the smoke against the browser this image already ships - in the
+container, do NOT run `playwright install`, the binary is already at
+/opt/pw-browsers/chromium:
 
     mkdir -p /tmp/pw && (cd /tmp/pw && npm install --no-save playwright-core)
     NODE_PATH=/tmp/pw/node_modules node tests/smoke_draft_room.js out/draft_room.html
+
+The smoke takes the browser path from `PW_CHROMIUM` when it is set and
+falls back to that container path otherwise, which is how the CI workflow
+runs the same suite on a runner that has no preinstalled browser.
 
 If the teaser leak guard in step 8 fails after a regen, today's ADP
 moved a top name in or out of the allowed subset - rerun
@@ -86,21 +91,32 @@ with `PAGES=https://anthonydellapia1117.github.io/yeahthatfantasyleague`.
 
 ## Automation
 
-Two scheduled Routines run this sequence unattended at 6:00 AM Eastern
-(10:00 UTC) and report when they finish:
+Two layers, both aimed at 6:00 AM Eastern (10:00 UTC) on 2026-08-28 (a
+dry run three weeks out) and 2026-09-08 (draft morning).
 
-- 2026-08-28 - a dry run of the whole line, three weeks before the draft
-- 2026-09-08 - draft morning itself
+LAYER 1 - `.github/workflows/draft-refresh.yml`. The machine that does
+the work. Cron-fired on those two dates, it runs steps 2 through 10 of
+the sequence above on a GitHub runner and commits to main only if every
+gate passes; the push fires `pages.yml`, which is what deploys. A red
+gate means no commit, so the last verified build keeps serving. It needs
+no container, no session, and no API keys. `workflow_dispatch` runs it on
+demand with a `dry_run` input that defaults to true - every gate runs,
+nothing is committed.
 
-Each firing starts a fresh session on this repo, works the morning
-sequence above, and ships only if every gate is green. A red gate stops
-the line and leaves the last good build serving - the Routine reports
-the failure rather than pushing past it. Anthony still owns the
-night-before checklist (the board calls, any Walter revision, the walter
-layer decision); the Routine does not touch `data/`.
+LAYER 2 - a scheduled Claude Routine per date, firing after the workflow.
+It confirms the live site actually byte-matches main, and if the workflow
+went red it diagnoses the failure, pushes a fix to
+`claude/chat-migration-desktop-ruannr`, and reports. It does not push to
+main; a 6:00 AM failure leaves the whole day to land the fix, and the
+deployed build is never in a broken state while that happens.
 
-If the draft time or date moves, update the Routine rather than adding a
-second one, so there is only ever one scheduled run per morning.
+Anthony still owns the night-before checklist - the board calls, any
+Walter revision, the walter layer decision. Neither layer touches
+`data/`.
+
+If the draft date or time moves, update the workflow cron AND the
+Routines rather than adding new ones, so there is only ever one scheduled
+run per morning. The workflow refuses to run outside 2026 on purpose.
 
 ## If something breaks
 
