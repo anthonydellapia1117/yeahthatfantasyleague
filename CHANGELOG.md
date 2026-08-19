@@ -1,5 +1,19 @@
 # Changelog
 
+## Item 2 - manager-profile backtest (2026-08-19)
+
+- src/backtest_profiles.py: walk-forward backtest (2016-2025, 1,766 picks,
+  never any future data in a train window) of the simulator's franchise
+  positional profiles against league band priors, using the committed
+  phase3i methodology (half-life 6, method-of-moments shrinkage).
+- VERDICT: profiles beat priors on log-loss, delta +0.0081, season-cluster
+  bootstrap 95% CI [+0.0049, +0.0112]. Small and real. Top-1 hit rate is a
+  wash (both models name the modal position). The simulator's existing use
+  of these profiles is therefore justified; no wiring changed.
+- tests/test_analysis.py: walk-forward blindness, coverage-rule fallback,
+  proper distributions, verdict-follows-interval, seeded reproducibility,
+  engine/UI isolation.
+
 ## Walter layer: reference scale, live kill-switch, tier flags (2026-08-18)
 
 Anthony approved the shipped increment and directed three changes:
