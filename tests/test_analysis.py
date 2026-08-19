@@ -262,6 +262,54 @@ if os.path.exists(os.path.join(_base.HISTORY, "roster_2013.csv")):
 else:
     print("SKIP  durability determinism rerun - roster cache absent")
 
+# ---- item 5 follow-up: survival recalibration proposal
+S = json.load(open(os.path.join(ROOT, "out", "data",
+                                "survival_recalibration.json")))
+
+# 23. proposal status is explicit and the frozen functions are consumed
+#     read-only by the proposal script
+ok(S["status"].startswith("PROPOSAL"),
+   "calibration: payload states PROPOSAL - nothing adopted")
+csrc = open(os.path.join(ROOT, "src", "analyze_survival_calibration.py")).read()
+ok("import engine_2026" in csrc and "ADP_SD_CURVE =" not in csrc
+   and not any(l.strip().startswith("eng.") and "=" in l.split("#")[0]
+               and "==" not in l for l in csrc.splitlines()),
+   "calibration: frozen survival consumed read-only")
+
+# 24. both isotonic tables are monotone non-decreasing in [0, 1]
+for key in ("isotonic_table_20bin", "isotonic_table_adoption_all_years"):
+    t = S[key]
+    ok(len(t) == 20 and all(0 <= v <= 1 for v in t)
+       and all(t[i] <= t[i + 1] + 1e-9 for i in range(19)),
+       f"calibration: {key} is a monotone probability table")
+
+# 25. flip accounting is internally consistent
+for name, f in S["wait_or_reach_flips_holdout"].items():
+    ok(f["n_flips"] <= f["of_holdout_pairs"]
+       and (f["n_flips"] == 0 or 0 <= f["observed_still_available"] <= 1),
+       f"calibration: {name} flip accounting consistent")
+
+# 26. all three models evaluated on the same holdout pairs
+ns = {v["n"] for v in S["evaluation_holdout"].values()}
+ok(len(S["evaluation_holdout"]) == 3 and len(ns) == 1,
+   "calibration: frozen and both candidates share one holdout frame")
+
+# 27. determinism (cache-gated)
+if os.path.exists(os.path.join(_base.HISTORY, "ffc_ppr_2013.json")):
+    import analyze_survival_calibration as asc
+    out_path = os.path.join(ROOT, "out", "data", "survival_recalibration.json")
+    orig = open(out_path, "rb").read()
+    with contextlib.redirect_stdout(io.StringIO()):
+        asc.main()
+    S2 = json.load(open(out_path))
+    open(out_path, "wb").write(orig)
+    a, b = dict(S), dict(S2)
+    a.pop("generated", None); b.pop("generated", None)
+    ok(json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True),
+       "calibration: reproduces exactly from cached inputs (generated aside)")
+else:
+    print("SKIP  calibration determinism rerun - history cache absent")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
