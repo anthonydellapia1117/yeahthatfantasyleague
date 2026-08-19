@@ -1,5 +1,23 @@
 # Changelog
 
+## Item 4 - injury market inefficiency: none established, one flag (2026-08-19)
+
+- src/analyze_injury.py: two regressions x two burden measures over 1,697
+  ADP-matched skill picks. A: does the league discount injury history
+  beyond market price? B: do outcomes justify a discount at price?
+  Season-long absentee veterans stay in the sample (the item-3 frame
+  dropped exactly the most injury-discounted players); rookies stay out.
+- FINDINGS: designations say the league pays UP slightly vs market
+  (A b=-0.013, CI excludes zero) with no outcome penalty; games-missed
+  says the league tracks market but outcomes punish missed-time history
+  at price (B b=-0.084, CI [-0.148, -0.025]). The two disagree in
+  pattern; under the pre-registered agreement rule the verdict is
+  no_inefficiency_established and NOTHING is used.
+- FLAGGED, not wired: the games-missed outcome signal is a candidate
+  market-wide durability fade; investigating it is a separate approval.
+- Guards: agreement rule, flags-follow-intervals, absentee retention,
+  cached-input determinism.
+
 ## Item 3 - recency-bias coefficient: no effect, not used (2026-08-19)
 
 - src/analyze_recency.py: ln(pick paid) ~ z(last-4-weeks points) +

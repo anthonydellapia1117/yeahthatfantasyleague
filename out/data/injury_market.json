@@ -1,0 +1,157 @@
+{
+ "generated": "2026-08-19",
+ "n": 1697,
+ "models": {
+  "A_league_response": "ln(pick) - ln(adp) ~ z(burden) + z(full) + pos",
+  "B_outcome_justification": "z(realized | yr x pos) ~ z(burden) + ln(adp) + z(full) + pos"
+ },
+ "results": {
+  "inj_desig": {
+   "league_response": {
+    "b": -0.01324,
+    "ci95": [
+     -0.02807,
+     -0.00133
+    ],
+    "distinguishable": true
+   },
+   "outcome_justification": {
+    "b": -0.01672,
+    "ci95": [
+     -0.0658,
+     0.03375
+    ],
+    "distinguishable": false
+   }
+  },
+  "games_missed": {
+   "league_response": {
+    "b": -0.00714,
+    "ci95": [
+     -0.03107,
+     0.01415
+    ],
+    "distinguishable": false
+   },
+   "outcome_justification": {
+    "b": -0.08366,
+    "ci95": [
+     -0.14842,
+     -0.02451
+    ],
+    "distinguishable": true
+   }
+  }
+ },
+ "burden_measures_agree": false,
+ "verdict": "no_inefficiency_established",
+ "usage_rule": "USE nothing unless both burden measures agree and the relevant interval excludes zero",
+ "coverage_by_year": {
+  "2013": {
+   "picks": 160,
+   "used": 132,
+   "rookies_excluded": 10,
+   "no_ffc_adp": 18,
+   "zero_game_veterans_kept": 0
+  },
+  "2014": {
+   "picks": 162,
+   "used": 133,
+   "rookies_excluded": 10,
+   "no_ffc_adp": 19,
+   "zero_game_veterans_kept": 2
+  },
+  "2015": {
+   "picks": 155,
+   "used": 131,
+   "rookies_excluded": 13,
+   "no_ffc_adp": 11,
+   "zero_game_veterans_kept": 2
+  },
+  "2016": {
+   "picks": 156,
+   "used": 134,
+   "rookies_excluded": 12,
+   "no_ffc_adp": 10,
+   "zero_game_veterans_kept": 3
+  },
+  "2017": {
+   "picks": 153,
+   "used": 131,
+   "rookies_excluded": 12,
+   "no_ffc_adp": 10,
+   "zero_game_veterans_kept": 2
+  },
+  "2018": {
+   "picks": 154,
+   "used": 131,
+   "rookies_excluded": 12,
+   "no_ffc_adp": 11,
+   "zero_game_veterans_kept": 2
+  },
+  "2019": {
+   "picks": 154,
+   "used": 136,
+   "rookies_excluded": 13,
+   "no_ffc_adp": 5,
+   "zero_game_veterans_kept": 2
+  },
+  "2020": {
+   "picks": 154,
+   "used": 135,
+   "rookies_excluded": 16,
+   "no_ffc_adp": 3,
+   "zero_game_veterans_kept": 2
+  },
+  "2021": {
+   "picks": 153,
+   "used": 132,
+   "rookies_excluded": 13,
+   "no_ffc_adp": 8,
+   "zero_game_veterans_kept": 1
+  },
+  "2022": {
+   "picks": 152,
+   "used": 121,
+   "rookies_excluded": 15,
+   "no_ffc_adp": 16,
+   "zero_game_veterans_kept": 2
+  },
+  "2023": {
+   "picks": 155,
+   "used": 131,
+   "rookies_excluded": 13,
+   "no_ffc_adp": 11,
+   "zero_game_veterans_kept": 2
+  },
+  "2024": {
+   "picks": 147,
+   "used": 127,
+   "rookies_excluded": 17,
+   "no_ffc_adp": 3,
+   "zero_game_veterans_kept": 0
+  },
+  "2025": {
+   "picks": 123,
+   "used": 123,
+   "rookies_excluded": 0,
+   "no_ffc_adp": 0,
+   "zero_game_veterans_kept": 0
+  }
+ },
+ "scope_limits": [
+  "designation reporting is sparser and less standardized pre-2016",
+  "season-long IR players carry zero designations - the games_missed measure exists exactly for them",
+  "rookies excluded (no injury history to price)",
+  "picks without an FFC ADP row excluded (no market benchmark)",
+  "realized outcome is total season points - missed time counts against the player, which is the risk being priced"
+ ],
+ "provenance": {
+  "injuries": "nflverse injuries 2012-2024 (CC-BY-4.0)",
+  "stats": "nflverse stats_player_week, league scoring",
+  "adp": "FantasyFootballCalculator PPR 12-team by year",
+  "picks": "out/picks.csv",
+  "seed": 20260819,
+  "bootstrap_draws": 10000
+ }
+}
