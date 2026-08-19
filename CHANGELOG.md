@@ -1,5 +1,26 @@
 # Changelog
 
+## Survival recalibration PROPOSAL - evidence merged, nothing adopted (2026-08-19)
+
+- Diagnosis (src/analyze_survival_calibration.py): the frozen sd curve is
+  already league-fitted, so the overconfidence about removal is a SHAPE
+  defect - removal around ADP is right-heavy vs the assumed normal
+  (standardized q95 = 1.92 FFC frame / 1.90 archive frame vs 1.645
+  normal). Fallers keep falling; the normal kills the late tail too fast.
+- Candidates fit 2013-2022, judged on held-out 2023-2025: A empirical-
+  tail KM (Brier 0.0576, flips right 69.4%) vs B isotonic layer (Brier
+  0.0598, best sub-50% calibration, flips right 62.8%); frozen reference
+  0.0648 with the known low-bucket defect. RECOMMENDED: B - monotone
+  (never reorders a decision), a 20-number lookup applied AFTER the
+  frozen math, kill-switchable, trivially mirrored in JS.
+- The ADR in MODEL.md carries the exact gated diff (pure additions, two
+  adoption scopes: display-only or full wait-or-reach) and the all-years
+  adoption table. STATUS: PROPOSED, NOT ADOPTED - the frozen functions
+  are untouched and mathdiff still proves it.
+- Guards: proposal status pinned, read-only frozen import, table
+  monotonicity, flip accounting, shared holdout frame, cached-input
+  determinism.
+
 ## Durability-fade investigation: dropped under the pre-registered rule (2026-08-19)
 
 - src/analyze_durability.py on the shared injury frame (refactored

@@ -238,6 +238,68 @@ is dropped. The 2026 season will test the modern-era hypothesis out of
 sample for free; revisiting after that is a new decision, not this one.
 Payload: out/data/durability_fade.json.
 
+## ADR (PROPOSED, NOT ADOPTED): survival calibration layer
+
+Status: proposal awaiting Anthony's approval of the exact diff below.
+Nothing in this section is live. The five frozen functions are untouched
+and stay untouched either way.
+
+DIAGNOSIS (out/data/survival_recalibration.json): the frozen sd curve is
+already fitted on this league's own history, so the overconfidence about
+removal is a SHAPE defect, not scale. Removal around ADP is right-heavy
+versus the normal the model assumes - the standardized differential's
+q95 is 1.92 (FFC frame) and 1.90 (archive frame) against the normal's
+1.645. Fallers keep falling; the normal kills the late tail too fast.
+
+CANDIDATES, fit 2013-2022 and judged on held-out 2023-2025 (the same
+pair frame as the item-5 calibration):
+
+| Model | Brier | Skill vs base | Sub-50% bucket (pred vs obs) | TAKE NOW to WAIT flips | Flip win rate |
+|---|---|---|---|---|---|
+| frozen | 0.0648 | +21.8% | 0.32 vs 0.51 | - | - |
+| A empirical-tail (KM) | 0.0576 | +30.5% | 0.35 vs 0.23 | 366 | 69.4% |
+| B isotonic layer | 0.0598 | +27.8% | 0.42 vs 0.39 | 398 | 62.8% |
+
+RECOMMENDATION: candidate B. It is monotone (never reorders any
+decision, only rescales confidence), best calibrated in the bucket where
+the defect lives, a 20-number lookup that mirrors trivially in the
+room's JS, applied AFTER the frozen math, and kill-switchable. Candidate
+A wins raw Brier but replaces the distributional form (a full parallel
+survival function with its own JS mirror) and over-corrects its own low
+bucket; it is documented as the alternative. B's flips clear the room's
+own 0.6 WAIT threshold on held-out data (62.8% observed availability).
+
+THE EXACT DIFF ANTHONY WOULD BE APPROVING (adoption table = the
+all-years refit; the holdout numbers above are its out-of-sample
+estimate):
+
+    1. src/engine_2026.py - pure additions, zero existing lines change:
+       SURVIVAL_CALIBRATION = [0.3272, 0.3272, 0.3861, 0.4318, 0.4754,
+         0.4754, 0.4883, 0.6029, 0.6029, 0.6746, 0.6746, 0.6927, 0.7661,
+         0.7727, 0.819, 0.8842, 0.9136, 0.9459, 0.9651, 0.9964]
+       def calibrated_cond_survival(adp, to_pick, from_pick):
+           p = cond_survival(adp, to_pick, from_pick)
+           return SURVIVAL_CALIBRATION[min(19, int(p * 20))]
+       plus payload keys survival_calibration (the table) and
+       survival_calibration_enabled (the kill switch, true).
+    2. out/draft_room.html - a JS mirror calCondSurvival() doing the
+       same lookup over E.survival_calibration, falling back to the
+       frozen condSurvival when the switch is off or the table absent.
+       Two adoption scopes, Anthony picks one:
+         (i)  display-only: survival percentages shown in the tables,
+              recs, and pick engine read the calibrated value; the
+              wait-or-reach VERDICT keeps the frozen number.
+         (ii) full: the verdict threshold comparison also consumes the
+              calibrated value - on holdout, 398 TAKE NOW calls become
+              WAIT and are right 62.8% of the time, above the 0.6 bar.
+    3. Guards: mathdiff still proves the five functions byte-identical
+       (nothing touches them); new guards pin table monotonicity, the
+       kill switch fallback, and JS/Python lookup parity.
+
+Recommended scope: (ii) full, because the flips clear the threshold that
+defines them; (i) is the cautious middle if Anthony prefers the verdict
+untouched for one more season.
+
 ## Standing laws carried forward
 
 The five frozen survival functions and the engine's verdict logic are out of
