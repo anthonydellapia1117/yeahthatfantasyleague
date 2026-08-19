@@ -1,5 +1,17 @@
 # Changelog
 
+## Reproducibility: the history fetcher is now committed (2026-08-19)
+
+- src/fetch_history.py: idempotent fetcher for the analysis layer's data
+  cache - FFC PPR ADP 2013-2025, nflverse weekly 2012-2025, injuries
+  2012-2025 (gz and plain fallbacks), rosters 2013-2025 (birth dates for
+  the durability age control). Cache path via the HISTORY env var, same
+  resolution the analysis scripts use.
+- PROOF: a cache rebuilt from scratch into a fresh directory reproduces
+  every committed analysis payload exactly - tests/test_analysis.py ran
+  end-to-end against the rebuilt cache, ALL PASS including the
+  determinism reruns.
+
 ## Item 5 - replay backtest: drafter holds, survival skilled but conservative (2026-08-19)
 
 - src/replay_backtest.py, two honestly-scoped parts. Part 1 (value core,
