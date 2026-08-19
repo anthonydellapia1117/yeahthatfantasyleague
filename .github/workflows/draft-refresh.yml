@@ -1,0 +1,109 @@
+# Scheduled draft-morning refresh (docs/DRAFT_MORNING.md).
+# 10:00 UTC = 6:00 AM Eastern (EDT) on the two dates Anthony asked for:
+# 08-28 (dry run, three weeks out) and 09-08 (draft morning itself).
+# Every step is a gate. The commit only happens if all of them pass, so a
+# red run leaves the last verified build serving. Pushing to main fires
+# pages.yml, which is what actually deploys the site.
+name: draft-refresh
+on:
+  schedule:
+    - cron: "0 10 28 8 *"
+    - cron: "0 10 8 9 *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Rebuild and run every gate, but do not commit or push"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: draft-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # the 2026 app. A stray firing in a later season would rebuild last
+      # year's draft against this year's ADP - stop before that happens.
+      - name: Season guard
+        run: |
+          year=$(date -u +%Y)
+          if [ "$year" != "2026" ]; then
+            echo "::error::draft-refresh is scoped to the 2026 season, but it is $year. Update the workflow before re-enabling."
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # steps 2-4 of the runbook: live ADP and projections, then the CVS
+      # board. Pure stdlib - no pip install needed.
+      - name: Rebuild engine payload
+        run: python3 src/engine_2026.py
+      - name: Rebuild CVS inputs
+        run: python3 src/build_cvs_inputs.py
+      - name: Rebuild CVS board
+        run: python3 src/build_cvs.py
+
+      # steps 5-9: the python gates. mathdiff is the frozen-math law - it
+      # must print an EMPTY proof or the run stops here.
+      - name: Frozen survival behavior
+        run: python3 tests/test_survival.py
+      - name: Frozen math proof
+        run: python3 tests/mathdiff.py
+      - name: CVS guards
+        run: python3 tests/test_cvs.py
+      - name: Page and data guards
+        run: python3 tests/test_pages_data.py
+      - name: Analysis guards
+        run: python3 tests/test_analysis.py
+
+      # step 10: the browser suite. The repo has no package.json, so the
+      # driver and browser are installed here and the smoke is pointed at
+      # them through PW_CHROMIUM.
+      - name: Install browser driver
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Full smoke
+        run: |
+          export NODE_PATH=/tmp/pw/node_modules
+          PW_CHROMIUM=$(node -e "console.log(require('/tmp/pw/node_modules/playwright').chromium.executablePath())")
+          echo "browser: $PW_CHROMIUM"
+          PW_CHROMIUM="$PW_CHROMIUM" node tests/smoke_draft_room.js out/draft_room.html
+
+      - name: What moved
+        run: |
+          echo "## Refresh diff" >> "$GITHUB_STEP_SUMMARY"
+          git diff --stat -- out/ >> "$GITHUB_STEP_SUMMARY" || true
+
+      # step 11: ship. Every gate above is green by now, so this commit is
+      # the build. pages.yml deploys it on push to main.
+      - name: Commit and push
+        if: github.event_name == 'schedule' || inputs.dry_run == false
+        run: |
+          git config user.name "draft-refresh"
+          git config user.email "actions@users.noreply.github.com"
+          git add out/
+          if git diff --cached --quiet; then
+            echo "no payload changes - nothing to ship"
+            exit 0
+          fi
+          git commit -m "draft refresh: live inputs $(date -u +%F)"
+          git push
+
+      - name: Dry run notice
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        run: echo "::notice::Dry run - every gate passed, nothing committed."
