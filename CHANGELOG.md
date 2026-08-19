@@ -1,5 +1,28 @@
 # Changelog
 
+## Draft-order hypothesis card (2026-08-19)
+
+- Pre-draft draft room: Sleeper's lobby has no draw yet, so a new card
+  lets Anthony assign the 12 real franchises (name + sleeper handle,
+  from the engine payload) to slots and preview seat context under that
+  order. Assignment SWAPS, so the order is always a permutation; state
+  persists in localStorage (ytfl_order_hyp); the scenario view follows
+  his hypothesized seat.
+- THE LIVE SOURCE WINS: the moment Sleeper's real draw exists, the
+  hypothesis retires visibly and the drawn order labels everything -
+  automatically, per the standing conflict rule. Live mode never reads
+  the hypothesis at all.
+- Honesty boundaries stated on the card: verdicts and survival numbers
+  are pure pick geometry and never depend on seat order; only seat
+  labels and their tendency lifts remap (lifts recomputed per franchise
+  from the payload, since a label without its own lift would mislead);
+  engine-built urgency lines keep the build order until regeneration.
+- ORDERHYP marker quarantine outside the engine sentinels; guards pin
+  the markers, persistence key, live-wins language, and sentinel
+  placement; smoke covers the 12x12 selects, swap-no-duplicates, seat
+  follow, strip relabeling, reload persistence, and the drawn-order
+  retirement path.
+
 ## Survival recalibration PROPOSAL - evidence merged, nothing adopted (2026-08-19)
 
 - Diagnosis (src/analyze_survival_calibration.py): the frozen sd curve is

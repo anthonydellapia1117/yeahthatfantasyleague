@@ -53,7 +53,62 @@ const ok = (cond, name, detail) => {
     await page.click('.chips button[data-slot="3"]');
     await page.waitForTimeout(300);
     ok(/Slot 3 - your picks/.test(await page.textContent("body")), "slot tab switch");
+    // ORDER HYPOTHESIS: card renders with 12 selects x 12 franchises; a
+    // change persists, remaps the strips, and jumps to my hypothesized seat
+    ok(await page.locator("#ohyp-card [data-ohyp]").count() === 12,
+       "order hypothesis: 12 slot selects render");
+    ok(await page.locator('[data-ohyp="1"] option').count() === 12,
+       "order hypothesis: each select offers the 12 real franchises");
+    ok(/Rob & GregBo \(RobFlacc\)/.test(await page.textContent("#ohyp-card")),
+       "order hypothesis: options carry franchise and sleeper handle");
+    await page.selectOption('[data-ohyp="1"]', "10");
+    await page.waitForTimeout(400);
+    const t1h = await page.textContent("body");
+    ok(/hypothesis active/.test(t1h), "order hypothesis: active note renders");
+    ok(/Slot 7 - your picks/.test(t1h),
+       "order hypothesis: view follows my seat under the hypothesis");
+    ok(/your hypothesis order/.test(t1h),
+       "order hypothesis: gap strips relabel to the hypothesis");
+    // swap semantics: roster 10 moved to slot 1, so slot 10 got roster 1 -
+    // the order stays a permutation and no duplicate warning appears
+    ok(await page.locator('[data-ohyp="10"]').inputValue() === "1",
+       "order hypothesis: assignment swaps, never duplicates");
+    ok(!/duplicates:/.test(await page.textContent("#ohyp-card")),
+       "order hypothesis: no duplicate state from the UI");
+    await page.reload();
+    await page.waitForTimeout(3000);
+    ok(await page.locator('[data-ohyp="1"]').inputValue() === "10",
+       "order hypothesis: persists across reload");
+    await page.evaluate(() => localStorage.removeItem("ytfl_order_hyp"));
     ok(errors.length === 0, "zero console errors" + (errors.length ? ": " + errors[0] : ""));
+    await page.close();
+  }
+
+  // ---- scenario 1b: order DRAWN but draft not started - the hypothesis
+  // retires visibly and Sleeper's order labels the strips
+  {
+    const page = await browser.newPage();
+    await page.evaluate(() => {}).catch(() => {});
+    const drawn = {1:5,2:9,3:7,4:1,5:12,6:3,7:2,8:11,9:4,10:8,11:6,12:10};
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "pre_draft", draft_order: null,
+                               slot_to_roster_id: drawn }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(4000);
+    const t1b = await page.textContent("body");
+    ok(/draw is live - the hypothesis is retired/.test(t1b),
+       "drawn order: hypothesis card retires itself");
+    ok(/Sleeper's drawn order/.test(t1b),
+       "drawn order: gap strips credit the real draw");
+    ok(/seat 3/.test(await page.textContent("#banner")),
+       "drawn order: my real seat detected from the permutation");
     await page.close();
   }
 
