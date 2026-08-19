@@ -1,5 +1,24 @@
 # Changelog
 
+## Item 5 - replay backtest: drafter holds, survival skilled but conservative (2026-08-19)
+
+- src/replay_backtest.py, two honestly-scoped parts. Part 1 (value core,
+  one-step deviations at actual board states, 169 skill picks): Anthony
+  beats blind ADP-best by +35.6 realized pts/pick (CI excludes zero); the
+  proxy replay engine beats ADP by +42.7 but does NOT distinguishably
+  beat Anthony (CI [-47.2, +32.2]). The proxy prices by prior-season
+  points only and values rookies at zero - stated, not hidden; it bounds
+  the replay from below and does not measure the 2026 engine.
+- Part 2 (frozen cond_survival verbatim, 17,068 pairs): +19.6% Brier
+  skill over base rate, with systematic overconfidence about removal in
+  the sub-50% buckets (predicted 0.03 observed 0.33 at the extreme;
+  modern era 2023-2025 confirms: 0.32 predicted vs 0.51 observed below
+  50%). FLAGGED: wait-or-reach is conservative; recalibration is frozen-
+  math territory and gated on explicit approval.
+- Guards: honesty pins (non-replayable list, rookie caveat), delta/mean
+  consistency, calibration arithmetic, decile and era partitions,
+  read-only frozen import, cached-input determinism.
+
 ## Item 4 - injury market inefficiency: none established, one flag (2026-08-19)
 
 - src/analyze_injury.py: two regressions x two burden measures over 1,697
