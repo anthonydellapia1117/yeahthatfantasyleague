@@ -163,6 +163,23 @@ playoff-make and title thresholds from this league's history) and labels it
 as a proxy. Per stop condition 5, no number is presented that cannot be
 defended.
 
+## Analytical layer (items 2-5, reports first - nothing enters a rank or a
+## UI without per-item approval)
+
+Item 2 - manager profiles, validated: the simulator's per-franchise
+positional profiles (shrunk lifts x band base rates) were backtested
+walk-forward over 2016-2025 (1,766 picks; each season predicted from
+strictly earlier drafts with the committed phase3i methodology). Profiles
+beat the league-prior baseline on log-loss by +0.0081 (season-cluster
+bootstrap 95% CI [+0.0049, +0.0112]) - real, small, and honest: about a
+half-percent relative improvement, concentrated where tendencies actually
+differ; top-1 hit rate is a wash because both models usually name the
+modal position. The coverage rule (under 2 prior drafts falls back to
+league priors, marked low-confidence) is enforced in code and guarded.
+Payload: out/data/manager_profiles_backtest.json; guards in
+tests/test_analysis.py. The simulator already consumes exactly these
+profiles; this item's finding is that doing so is justified.
+
 ## Standing laws carried forward
 
 The five frozen survival functions and the engine's verdict logic are out of
