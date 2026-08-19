@@ -26,6 +26,9 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    # a hung step on draft morning is worse than a failed one - fail fast
+    # and let the last verified build keep serving.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -71,17 +74,25 @@ jobs:
       # step 10: the browser suite. The repo has no package.json, so the
       # driver and browser are installed here and the smoke is pointed at
       # them through PW_CHROMIUM.
+      # Call the installed CLI directly. npx would prompt on stdin for a
+      # package it cannot find and hang the whole job.
       - name: Install browser driver
+        timeout-minutes: 10
+        env:
+          CI: "1"
+          npm_config_yes: "true"
         run: |
           mkdir -p /tmp/pw
           cd /tmp/pw
-          npm install --no-save playwright
-          npx playwright install --with-deps chromium
+          npm install --no-save --no-fund --no-audit playwright
+          ./node_modules/.bin/playwright install --with-deps chromium
       - name: Full smoke
+        timeout-minutes: 10
         run: |
           export NODE_PATH=/tmp/pw/node_modules
           PW_CHROMIUM=$(node -e "console.log(require('/tmp/pw/node_modules/playwright').chromium.executablePath())")
           echo "browser: $PW_CHROMIUM"
+          test -x "$PW_CHROMIUM" || { echo "::error::chromium not found at $PW_CHROMIUM"; exit 1; }
           PW_CHROMIUM="$PW_CHROMIUM" node tests/smoke_draft_room.js out/draft_room.html
 
       - name: What moved
