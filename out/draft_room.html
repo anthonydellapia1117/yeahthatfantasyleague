@@ -73,7 +73,10 @@ h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
 .rc-body{font-size:13px;color:var(--ink2);margin-top:6px}
 .rc-body b{color:var(--ink)}
 details{margin-top:6px}
-summary{cursor:pointer;font-size:12px;color:var(--ink3);list-style:none;-webkit-user-select:none;user-select:none}
+summary{cursor:pointer;font-size:12px;color:var(--ink3);list-style:none;-webkit-user-select:none;user-select:none;
+  padding:6px 0;min-height:24px}
+.scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#f-hist{white-space:normal}
 summary::before{content:"+ "}
 details[open] summary::before{content:"- "}
 .gap{margin-top:8px;font-size:12px;color:var(--ink2)}
@@ -150,7 +153,7 @@ tr:last-child td{border-bottom:0}
 .pQB{border-left-color:#7c3aed}.pRB{border-left-color:#047857}.pWR{border-left-color:#1d4ed8}
 .pTE{border-left-color:#b45309}.pK{border-left-color:#475569}.pDEF{border-left-color:#475569}
 .tag{font-size:10px;font-weight:600;border:1px solid var(--line);border-radius:4px;
-  padding:0 4px;margin-left:6px;color:var(--ink2)}
+  padding:0 4px;margin-left:6px;color:var(--ink2);display:inline-block;white-space:nowrap}
 .runbanner{background:var(--s2);border:1px solid var(--warn);border-radius:8px;color:var(--warn);
   font-size:13px;font-weight:600;padding:8px 12px;margin:8px 0}
 .needline{font-size:14px;margin:6px 0;color:var(--ink2)}
@@ -377,15 +380,16 @@ function renderPre(activeSlot){
   }
   h += `</div>`;
 
-  // opponent priors - context card below the scenario
+  // opponent priors - context card below the scenario. The six-column table
+  // scrolls inside the card at phone widths instead of widening the page.
   h += `<div class="card"><h2>The table, as mapped today</h2>
-  <table><tr><th>Seat</th><th>Handle</th><th>Franchise era</th><th>1st QB</th><th>1st TE</th><th>n_eff</th></tr>`;
+  <div class="scrollx"><table><tr><th>Seat</th><th>Handle</th><th>Franchise era</th><th>1st QB</th><th>1st TE</th><th>n_eff</th></tr>`;
   for (const r of E.rosters){
     h += `<tr><td class="num">${r.roster_id}</td><td>${esc(r.handle)}</td><td>${esc(r.franchise)}</td>
       <td class="num">${r.first_qb ?? "-"}</td><td class="num">${r.first_te ?? "-"}</td>
       <td class="num">${r.n_eff ?? "-"}${r.thin ? ' <span class="thin">thin</span>' : ""}</td></tr>`;
   }
-  h += `</table><p class="small">Opponent priors: recency-weighted, shrunk toward league means.
+  h += `</table></div><p class="small">Opponent priors: recency-weighted, shrunk toward league means.
     Thin eras are labelled - never quote one without its n_eff.</p></div>`;
 
   $("app").innerHTML = h;

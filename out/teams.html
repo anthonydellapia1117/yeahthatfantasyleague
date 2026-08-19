@@ -49,7 +49,8 @@ table{border-collapse:collapse;width:100%;font-size:13px}
 th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);
   padding:4px 8px 4px 0;border-bottom:1px solid var(--line)}
 td{padding:5px 8px 5px 0;border-bottom:1px solid var(--s2)}
-.pv{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;
+th.sect{padding-top:16px}
+.pv{background:none;border:0;padding:5px 2px;margin:-5px -2px;font:inherit;color:inherit;cursor:pointer;
   border-bottom:1px dotted var(--ink3)}
 .pv:hover{color:var(--info)}
 #pvpop{position:fixed;z-index:50;max-width:320px;background:var(--s2);border:1px solid var(--line);
@@ -188,9 +189,12 @@ function vacated(team){
   const onChart = new Set(D.dc.entries.filter(e => e.team === team).map(e => e.gsis_id));
   const departed = D.usage.players.filter(u => u.team === team && !onChart.has(u.gsis_id)
     && ((u.targets || 0) >= 20 || (u.carries || 0) >= 40));
-  const arrivals = D.dc.entries.filter(e => e.team === team && D.usageByGsis[e.gsis_id]
-    && D.usageByGsis[e.gsis_id].team !== team)
-    .map(e => D.usageByGsis[e.gsis_id]);
+  // dedupe by gsis_id - a player holding two chart slots (WR + KR) is one
+  // arrival, not two identical rows
+  const arrivals = [...new Map(
+    D.dc.entries.filter(e => e.team === team && D.usageByGsis[e.gsis_id]
+      && D.usageByGsis[e.gsis_id].team !== team)
+      .map(e => [e.gsis_id, D.usageByGsis[e.gsis_id]])).values()];
   return { departed, arrivals };
 }
 
@@ -241,9 +245,11 @@ function renderTeam(team){
     <td class="num">${pv(u.carries, "usage_2025.json", "carries")}</td>
     <td class="num">${u.target_share_mean != null ? pv((u.target_share_mean * 100).toFixed(0) + "%", "usage_2025.json", "target_share_mean") : "-"}</td></tr>`).join("");
   h += `<div class="card"><h2>Vacated opportunity</h2>
-    ${dep ? `<table><tr><th>Departed (2025 usage)</th><th>Tgt</th><th>Car</th><th>Tgt share</th></tr>${dep}</table>`
-          : `<p class="small">No meaningful 2025 usage has left this roster (threshold: 20 targets or 40 carries).</p>`}
-    ${arr ? `<div style="margin-top:10px"><table><tr><th>Arrivals (2025 usage elsewhere)</th><th>Tgt</th><th>Car</th><th>Tgt share</th></tr>${arr}</table></div>` : ""}
+    ${!dep ? `<p class="small">No meaningful 2025 usage has left this roster (threshold: 20 targets or 40 carries).</p>` : ""}
+    ${dep || arr ? `<table>
+      ${dep ? `<tr><th>Departed (2025 usage)</th><th>Tgt</th><th>Car</th><th>Tgt share</th></tr>${dep}` : ""}
+      ${arr ? `<tr><th class="sect">Arrivals (2025 usage elsewhere)</th><th class="sect">Tgt</th><th class="sect">Car</th><th class="sect">Tgt share</th></tr>${arr}` : ""}
+    </table>` : ""}
     <p class="note">computation: 2025 usage rows (nflverse) whose player no longer appears on this team's 2026 ESPN depth chart = departed; players on the 2026 chart whose 2025 usage was elsewhere = arrivals. Shares are 2025 weekly means. Where the opportunity lands is NOT modelled - this is the size of the hole, not a projection.</p></div>`;
 
   const rows = depth.map(e => `<tr>

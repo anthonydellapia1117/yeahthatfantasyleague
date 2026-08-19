@@ -63,7 +63,8 @@ td{padding:5px 8px 5px 0;border-bottom:1px solid var(--s2)}
 .yc{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.4px;padding:1px 6px;border-radius:8px;border:1px solid;margin-left:5px;vertical-align:1px}
 .yc.bull{color:#0a7d33;border-color:#9ed9b2;background:#eafaf0}
 .yc.bear{color:#a83232;border-color:#e2b3b3;background:#faeeee}
-.idxrow{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid var(--s2);font-size:14px}
+.idxrow{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--s2);font-size:14px}
+.idxrow a{display:inline-block;padding:3px 0;margin:-3px 0}
 .idxrow:first-of-type{border-top:0}
 input[type=search]{width:100%;font:inherit;color:var(--ink);background:var(--s2);
   border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:12px}
@@ -94,7 +95,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
   s.sheet.insertRule("th{text-" + A + ":left}", 0);
   s.sheet.insertRule("td{vertical-" + A + ":top}", 1);
   s.sheet.insertRule("header{" + A + "-items:baseline}", 2);
-  s.sheet.insertRule(".idxrow{" + A + "-items:baseline}", 3);
+  s.sheet.insertRule(".idxrow{" + A + "-items:center}", 3);
 })();
 
 const esc = s => String(s).replace(/[&<>"']/g,
@@ -163,7 +164,7 @@ async function boot(){
 
 function renderFoot(){
   const rows = Object.entries(D.prov.shards).map(([k, v]) =>
-    `${esc(k)}: ${esc(v.source)} (fetched ${esc(v.fetched_at || "-")})`).join("<br>");
+    `${esc(k)}: ${esc(v.source)} (fetched <span style="white-space:nowrap">${esc(v.fetched_at || "-")}</span>)`).join("<br>");
   document.getElementById("foot").innerHTML =
     `<b>Provenance (guard N2)</b> - engine generated ${esc(D.engine.generated)} - regenerate draft morning.<br>${rows}<br>
      ${esc(D.adp.provenance.ffc_attribution || "")}`;

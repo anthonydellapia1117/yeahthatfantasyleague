@@ -36,7 +36,17 @@ h3{font-size:15px;margin:22px 0 8px;color:var(--t2);text-transform:uppercase;let
 .stat{background:var(--s3);border:1px solid var(--bd);border-radius:6px;padding:16px}
 .stat .n{font:600 30px/1.1 ui-monospace,"JetBrains Mono",Menlo,monospace;color:var(--white)}
 .stat .l{color:var(--t2);font-size:12px;text-transform:uppercase;letter-spacing:.07em;margin-top:6px}
-.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* scroll shadows (background-attachment trick): the edge shading appears
+   only while columns are actually hidden in that direction, so a phone user
+   can see there is more table to swipe to - and it vanishes at the end */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  background:
+    linear-gradient(90deg, var(--s1) 30%, rgba(244,246,250,0)) left/40px 100%,
+    linear-gradient(270deg, var(--s1) 30%, rgba(244,246,250,0)) right/40px 100%,
+    radial-gradient(farthest-side at 0 50%, rgba(11,17,32,.28), transparent) left/14px 100%,
+    radial-gradient(farthest-side at 100% 50%, rgba(11,17,32,.28), transparent) right/14px 100%;
+  background-repeat:no-repeat;
+  background-attachment:local,local,scroll,scroll}
 table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
 th{color:var(--t2);font-weight:600;font-size:11px;text-transform:uppercase;
   letter-spacing:.07em;padding:9px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
