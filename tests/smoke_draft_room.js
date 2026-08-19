@@ -957,12 +957,24 @@ const ok = (cond, name, detail) => {
     const tmv = await pg.textContent("#tiermoves");
     ok(tmv.length > 10 && (/tier \d to \d/.test(tmv) || /none at the current cap/.test(tmv)),
        "tier-move list renders names or says none, never hides");
-    // CONFLICTS view: the Jayden Daniels queue entry
+    // CONFLICTS view: data-driven from the payload - names every live
+    // conflict, or shows the explicit empty states; either way, never hides
     await pg.click('#views button[data-v="conflicts"]');
     await pg.waitForTimeout(300);
     const conf = await pg.textContent("#v-conflicts");
-    ok(/Jayden Daniels/.test(conf), "model conflict queue names the live conflict");
-    ok(/disagreement preserved/.test(conf), "signal conflicts keep both sides visible");
+    const cvsPayload = JSON.parse(require("fs").readFileSync(
+      path.resolve("out/cvs.json"), "utf8"));
+    for (const c of cvsPayload.model_conflicts)
+      ok(conf.includes(c.name),
+         "model conflict queue names the live conflict: " + c.name);
+    if (!cvsPayload.model_conflicts.length)
+      ok(/queue empty/.test(conf), "model conflict queue states it is empty");
+    for (const c of cvsPayload.signal_conflicts)
+      ok(conf.includes(c.name) && /disagreement preserved/.test(conf),
+         "signal conflicts keep both sides visible: " + c.name);
+    if (!cvsPayload.signal_conflicts.length)
+      ok(/no opposing signals today/.test(conf),
+         "signal conflict list states it is empty");
     // filter persistence: set RB + a signal filter, reload, both survive
     await pg.click('#views button[data-v="board"]');
     await pg.click('#posf button[data-pos="RB"]');

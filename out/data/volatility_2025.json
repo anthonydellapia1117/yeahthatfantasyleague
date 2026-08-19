@@ -6136,7 +6136,7 @@
  "provenance": {
   "source": "nflverse stats_player_week 2025 (CC-BY-4.0)",
   "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz",
-  "fetched_at": "2026-08-19T06:09:30Z",
+  "fetched_at": "2026-08-19T11:24:07Z",
   "basis": "weekly fantasy_points_ppr, REG season, min 4 games; boom >=20, bust <5, p90/p25 by linear interpolation; literal column arithmetic only"
  }
 }
