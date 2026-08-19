@@ -120,6 +120,55 @@ else:
     print("SKIP  item3 determinism rerun - history cache absent (fetch with "
           "src docs; committed payload guards above still ran)")
 
+# ---- item 4: injury market inefficiency
+I = json.load(open(os.path.join(ROOT, "out", "data", "injury_market.json")))
+
+# 11. the agreement rule: a verdict other than "none" requires both burden
+#     measures to agree AND at least one relevant interval excluding zero
+def dirs(r):
+    A, B = r["league_response"], r["outcome_justification"]
+    a = "fades" if A["distinguishable"] and A["b"] > 0 else \
+        "pays_up" if A["distinguishable"] else "follows_market"
+    b = "justified" if B["distinguishable"] and B["b"] < 0 else \
+        "outperform_at_price" if B["distinguishable"] else "no_outcome_signal"
+    return a, b
+d1, d2 = dirs(I["results"]["inj_desig"]), dirs(I["results"]["games_missed"])
+ok(I["burden_measures_agree"] == (d1 == d2),
+   "item4: the agreement flag matches the two burden measures")
+if I["verdict"] != "no_inefficiency_established":
+    ok(d1 == d2, "item4: a positive verdict requires burden-measure agreement")
+else:
+    ok(True, "item4: verdict is no-inefficiency (agreement rule or null results)")
+
+# 12. every distinguishable flag matches its own interval
+bad = [f"{m}.{k}" for m, r in I["results"].items() for k, v in r.items()
+       if v["distinguishable"] != (v["ci95"][1] < 0 or v["ci95"][0] > 0)]
+ok(not bad, "item4: distinguishable flags follow their intervals", "; ".join(bad))
+
+# 13. the zero-game veterans (season-long absentees) are IN the sample -
+#     they are the most injury-discounted players and must not be dropped
+kept = sum(c["zero_game_veterans_kept"] for c in I["coverage_by_year"].values())
+ok(kept > 0, "item4: season-long absentee veterans retained in the sample",
+   str(kept))
+
+# 14. determinism (cache-gated like item 3)
+sys.path.insert(0, os.path.join(ROOT, "src"))
+import analyze_recency as _base
+if os.path.exists(os.path.join(_base.HISTORY, "inj_2012.csv")):
+    import analyze_injury as ai
+    out_path = os.path.join(ROOT, "out", "data", "injury_market.json")
+    orig = open(out_path, "rb").read()
+    with contextlib.redirect_stdout(io.StringIO()):
+        ai.main()
+    I2 = json.load(open(out_path))
+    open(out_path, "wb").write(orig)
+    a, b = dict(I), dict(I2)
+    a.pop("generated", None); b.pop("generated", None)
+    ok(json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True),
+       "item4: analysis reproduces exactly from cached inputs (generated aside)")
+else:
+    print("SKIP  item4 determinism rerun - history cache absent")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

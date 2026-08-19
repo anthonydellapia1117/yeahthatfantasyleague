@@ -191,6 +191,20 @@ commission - no effect size, no usage - nothing recency-related enters
 any factor, flag, or recommendation. Payload:
 out/data/recency_bias.json.
 
+Item 4 - injury pricing, NO INEFFICIENCY ESTABLISHED (with one flagged
+candidate): two burden measures over 1,697 picks. By game-report
+designations (Out/Doubtful weeks), the league pays UP slightly for
+injury-history players vs market (b = -0.013, CI [-0.028, -0.001]) while
+outcomes show no penalty at price (CI spans zero). By games actually
+missed, the league tracks the market (CI spans zero) but outcomes DO
+punish missed-time history at the same price (b = -0.084 SD per SD,
+CI [-0.148, -0.025]). The measures disagree in pattern, so under the
+pre-registered agreement rule nothing is used. FLAGGED for a follow-up
+decision: the games-missed outcome signal is a candidate market-wide
+fade (durability persistence) - investigating it (age confound, the
+zero-game returners) is a separate approval. Payload:
+out/data/injury_market.json.
+
 ## Standing laws carried forward
 
 The five frozen survival functions and the engine's verdict logic are out of
