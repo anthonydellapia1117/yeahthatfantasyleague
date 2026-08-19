@@ -223,6 +223,45 @@ if os.path.exists(os.path.join(_base.HISTORY, "ffc_ppr_2013.json")):
 else:
     print("SKIP  item5 determinism rerun - history cache absent")
 
+# ---- item 4 follow-up: durability-fade investigation
+D = json.load(open(os.path.join(ROOT, "out", "data", "durability_fade.json")))
+
+# 20. the pre-registered verdict rule recomputes from the payload's own
+#     numbers - full_ctrl must exclude zero AND both era signs negative
+fc = D["specs"]["full_ctrl"]
+eras_neg = all(e["b"] < 0 for e in D["eras_full_ctrl"].values())
+want = ("durability_fade_real"
+        if fc["distinguishable"] and fc["b"] < 0 and eras_neg
+        else "confounded_or_unstable")
+ok(D["verdict"] == want, "durability: verdict recomputes from its own rule",
+   f"{D['verdict']} vs {want}")
+ok((D["verdict"] == "durability_fade_real") == ("gated decision" in D["recommendation"]),
+   "durability: recommendation follows the verdict")
+
+# 21. every spec interval matches its flag; age coverage is accounted
+bad = [k for k, v in D["specs"].items() if "ci95" in v
+       and v["distinguishable"] != (v["ci95"][1] < 0 or v["ci95"][0] > 0)]
+ok(not bad, "durability: distinguishable flags follow their intervals",
+   "; ".join(bad))
+ok("players_without_birth_date" in D,
+   "durability: age-control coverage stated")
+
+# 22. determinism (cache-gated on the roster files)
+if os.path.exists(os.path.join(_base.HISTORY, "roster_2013.csv")):
+    import analyze_durability as ad
+    out_path = os.path.join(ROOT, "out", "data", "durability_fade.json")
+    orig = open(out_path, "rb").read()
+    with contextlib.redirect_stdout(io.StringIO()):
+        ad.main()
+    D2 = json.load(open(out_path))
+    open(out_path, "wb").write(orig)
+    a, b = dict(D), dict(D2)
+    a.pop("generated", None); b.pop("generated", None)
+    ok(json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True),
+       "durability: reproduces exactly from cached inputs (generated aside)")
+else:
+    print("SKIP  durability determinism rerun - roster cache absent")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

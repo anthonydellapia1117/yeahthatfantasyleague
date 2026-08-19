@@ -1,0 +1,127 @@
+{
+ "generated": "2026-08-19",
+ "candidate": "games-missed durability fade from injury_market.json (b=-0.084, CI [-0.148,-0.025], approved for investigation)",
+ "specs": {
+  "base": {
+   "b": -0.08366,
+   "ci95": [
+    -0.14792,
+    -0.02357
+   ],
+   "distinguishable": true,
+   "n": 1697
+  },
+  "age": {
+   "b": -0.07488,
+   "ci95": [
+    -0.13543,
+    -0.01968
+   ],
+   "distinguishable": true,
+   "n": 1697
+  },
+  "ppg": {
+   "b": -0.08178,
+   "ci95": [
+    -0.15487,
+    -0.01552
+   ],
+   "distinguishable": true,
+   "n": 1697
+  },
+  "full_ctrl": {
+   "b": -0.07333,
+   "ci95": [
+    -0.14602,
+    -0.00712
+   ],
+   "distinguishable": true,
+   "n": 1697
+  },
+  "returners": {
+   "n": 1697,
+   "returner_dummy": {
+    "b": -0.24808,
+    "ci95": [
+     -0.75465,
+     0.30292
+    ],
+    "distinguishable": false
+   },
+   "missed_partial": {
+    "b": -0.0838,
+    "ci95": [
+     -0.19797,
+     0.0104
+    ],
+    "distinguishable": false
+   }
+  }
+ },
+ "eras_full_ctrl": {
+  "2013-2018": {
+   "n": 792,
+   "b": 0.00091,
+   "ci95": [
+    -0.10919,
+    0.07651
+   ]
+  },
+  "2019-2025": {
+   "n": 905,
+   "b": -0.14293,
+   "ci95": [
+    -0.20662,
+    -0.08136
+   ]
+  }
+ },
+ "positions_full_ctrl": {
+  "QB": {
+   "b": -0.43412,
+   "ci95": [
+    -0.89002,
+    -0.02415
+   ],
+   "distinguishable": true,
+   "n": 241
+  },
+  "RB": {
+   "b": 0.00487,
+   "ci95": [
+    -0.14463,
+    0.15681
+   ],
+   "distinguishable": false,
+   "n": 576
+  },
+  "WR": {
+   "b": -0.07468,
+   "ci95": [
+    -0.24369,
+    0.0601
+   ],
+   "distinguishable": false,
+   "n": 676
+  },
+  "TE": {
+   "b": 0.09704,
+   "ci95": [
+    -0.09576,
+    0.28559
+   ],
+   "distinguishable": false,
+   "n": 204
+  }
+ },
+ "players_without_birth_date": 0,
+ "verdict": "confounded_or_unstable",
+ "verdict_basis": "pre-registered: full_ctrl (age + ppg controls) must exclude zero AND both era signs negative - FAILED: era signs disagree",
+ "recommendation": "drop - the signal does not survive its controls",
+ "provenance": {
+  "frame": "analyze_injury.build_sample() (shared, guarded)",
+  "ages": "nflverse rosters 2013-2025 birth dates",
+  "seed": 20260819,
+  "bootstrap_draws": 10000
+ }
+}

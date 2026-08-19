@@ -94,7 +94,11 @@ def designations(y):
     return dict(d)
 
 
-def main():
+def build_sample():
+    """The shared sample frame: ADP-matched veteran skill picks with burden,
+    prior production, and realized outcome. Used here and by the durability
+    follow-up (analyze_durability.py). Rows carry pid and prior_games for
+    downstream controls; the emitted payload does not change."""
     picks = [r for r in csv.DictReader(open(os.path.join(ROOT, "out", "picks.csv")))
              if r["pos"] in SKILL and (r["player_id"] or "").startswith("00-")]
 
@@ -132,9 +136,10 @@ def main():
             full = pr["pts"] if pr else 0.0
             games = pr["games"] if pr else 0
             rl = realized.get(pid)
-            rows.append({"season": Y, "pos": r["pos"],
+            rows.append({"season": Y, "pos": r["pos"], "pid": pid,
                          "overall": int(r["overall"]), "adp": adp,
-                         "full": full,
+                         "full": full, "prior_games": games,
+                         "n_weeks": n_weeks,
                          "inj_desig": desig.get(pid, 0),
                          "games_missed": max(0, n_weeks - games),
                          "realized": rl["pts"] if rl else 0.0})
@@ -155,6 +160,11 @@ def main():
                             "rookies_excluded": rookies, "no_ffc_adp": no_adp,
                             "zero_game_veterans_kept":
                                 sum(1 for x in rows if x["games_missed"] >= n_weeks)}
+    return sample, coverage
+
+
+def main():
+    sample, coverage = build_sample()
 
     def run(burden_key):
         def dA(rows):
