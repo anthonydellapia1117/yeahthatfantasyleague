@@ -1,0 +1,95 @@
+{
+ "generated": "2026-08-19",
+ "design": "walk-forward: for each season S in 2016-2025, both models train on seasons < S only (recency half-life 6 anchored at S-1, method-of-moments shrinkage per band x position, verbatim phase3i methodology); <2 prior drafts falls back to league priors and counts as low-confidence",
+ "n_picks_scored": 1766,
+ "pct_low_confidence_fallback": 0.051,
+ "logloss": {
+  "league_baseline": 1.4594,
+  "profiles": 1.4512,
+  "delta": 0.0081,
+  "delta_ci95_season_bootstrap": [
+   0.0049,
+   0.0112
+  ],
+  "note": "delta = baseline - profiles; positive means the franchise component adds real predictive information"
+ },
+ "hit_rate_top1": {
+  "league_baseline": 0.355,
+  "profiles": 0.3539,
+  "note": "top-1 is a blunt metric here - both models usually name the modal position (RB/WR); log-loss is the honest headline"
+ },
+ "by_band": {
+  "rd1-3": {
+   "n": 359,
+   "logloss_delta": 0.0046,
+   "hit_base": 0.4568,
+   "hit_prof": 0.4735
+  },
+  "rd4-6": {
+   "n": 358,
+   "logloss_delta": 0.0074,
+   "hit_base": 0.4078,
+   "hit_prof": 0.3939
+  },
+  "rd7-10": {
+   "n": 475,
+   "logloss_delta": 0.018,
+   "hit_base": 0.3768,
+   "hit_prof": 0.3768
+  },
+  "rd11-14": {
+   "n": 574,
+   "logloss_delta": 0.0026,
+   "hit_base": 0.2404,
+   "hit_prof": 0.2352
+  }
+ },
+ "by_season": {
+  "2016": {
+   "n": 180,
+   "logloss_delta": 0.0012
+  },
+  "2017": {
+   "n": 179,
+   "logloss_delta": 0.004
+  },
+  "2018": {
+   "n": 178,
+   "logloss_delta": 0.0009
+  },
+  "2019": {
+   "n": 179,
+   "logloss_delta": 0.0097
+  },
+  "2020": {
+   "n": 179,
+   "logloss_delta": 0.0044
+  },
+  "2021": {
+   "n": 178,
+   "logloss_delta": 0.0143
+  },
+  "2022": {
+   "n": 178,
+   "logloss_delta": 0.0076
+  },
+  "2023": {
+   "n": 179,
+   "logloss_delta": 0.011
+  },
+  "2024": {
+   "n": 168,
+   "logloss_delta": 0.0139
+  },
+  "2025": {
+   "n": 168,
+   "logloss_delta": 0.015
+  }
+ },
+ "verdict": "profiles_beat_priors",
+ "provenance": {
+  "source": "out/picks.csv (13 league drafts) via the committed phase3i methodology",
+  "seed": 20260819,
+  "bootstrap_draws": 10000
+ }
+}

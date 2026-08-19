@@ -1,0 +1,203 @@
+{
+ "generated": "2026-08-19",
+ "status": "PROPOSAL - evidence only; frozen functions untouched; any adoption requires Anthony's approval of the exact diff in the ADR",
+ "era_analysis": {
+  "modern_fit_flips_holdout": {
+   "n_flips": 292,
+   "of_holdout_pairs": 4454,
+   "observed_still_available": 0.658,
+   "win_rate_ci95_binomial": [
+    0.6036,
+    0.7124
+   ],
+   "one_sided_z_vs_threshold": 2.089
+  },
+  "rule_registered_before_computing": "meaningful = max bin gap >= 0.05 or any bin straddling the 0.6 threshold; deploy modern iff meaningful and the 2019-2022 fit is not worse on the 2023-2025 holdout",
+  "holdout_brier_2013_2022_fit": 0.0598,
+  "holdout_brier_2019_2022_fit": 0.0597,
+  "holdout_low_bucket_2019_2022_fit": {
+   "n": 146,
+   "predicted_mean": 0.356,
+   "observed": 0.39
+  },
+  "table_all_years": [
+   0.3272,
+   0.3272,
+   0.3861,
+   0.4318,
+   0.4754,
+   0.4754,
+   0.4883,
+   0.6029,
+   0.6029,
+   0.6746,
+   0.6746,
+   0.6927,
+   0.7661,
+   0.7727,
+   0.819,
+   0.8842,
+   0.9136,
+   0.9459,
+   0.9651,
+   0.9964
+  ],
+  "table_modern_2019_2025": [
+   0.2749,
+   0.2749,
+   0.2749,
+   0.3559,
+   0.431,
+   0.431,
+   0.4632,
+   0.5484,
+   0.5484,
+   0.6448,
+   0.6448,
+   0.6929,
+   0.7487,
+   0.7487,
+   0.8062,
+   0.8834,
+   0.9182,
+   0.946,
+   0.9795,
+   0.9974
+  ],
+  "max_bin_gap": 0.1112,
+  "bins_straddling_threshold": [
+   7,
+   8
+  ],
+  "meaningfully_different": true,
+  "modern_fit_not_worse_on_holdout": true,
+  "decision": "deploy_modern"
+ },
+ "diagnosis": {
+  "hypothesis": "shape, not scale: removal is right-heavy vs the normal",
+  "ffc_frame": {
+   "n": 1875,
+   "q50": 0.144,
+   "q75": 0.752,
+   "q90": 1.442,
+   "q95": 1.919
+  },
+  "archive_frame": {
+   "n": 2039,
+   "q50": 0.073,
+   "q75": 0.716,
+   "q90": 1.402,
+   "q95": 1.898
+  },
+  "normal_reference": {
+   "q50": 0.0,
+   "q75": 0.674,
+   "q90": 1.282,
+   "q95": 1.645
+  }
+ },
+ "fit_window": "2013-2022",
+ "holdout_window": "2023-2025",
+ "isotonic_table_20bin": [
+  0.3404,
+  0.3404,
+  0.382,
+  0.4248,
+  0.4844,
+  0.4844,
+  0.4844,
+  0.6184,
+  0.6184,
+  0.6765,
+  0.6914,
+  0.701,
+  0.7816,
+  0.7816,
+  0.825,
+  0.8902,
+  0.9073,
+  0.9371,
+  0.9575,
+  0.9959
+ ],
+ "isotonic_table_adoption_all_years": [
+  0.3272,
+  0.3272,
+  0.3861,
+  0.4318,
+  0.4754,
+  0.4754,
+  0.4883,
+  0.6029,
+  0.6029,
+  0.6746,
+  0.6746,
+  0.6927,
+  0.7661,
+  0.7727,
+  0.819,
+  0.8842,
+  0.9136,
+  0.9459,
+  0.9651,
+  0.9964
+ ],
+ "adoption_note": "the adoption table refits on all 13 years; the holdout numbers above are the honest out-of-sample estimate of how such a table behaves",
+ "evaluation_holdout": {
+  "frozen": {
+   "n": 4454,
+   "brier": 0.0648,
+   "skill_vs_base_rate": 0.2178,
+   "low_bucket_lt50": {
+    "n": 329,
+    "predicted_mean": 0.32,
+    "observed": 0.508
+   }
+  },
+  "A_empirical_tail": {
+   "n": 4454,
+   "brier": 0.0576,
+   "skill_vs_base_rate": 0.3053,
+   "low_bucket_lt50": {
+    "n": 99,
+    "predicted_mean": 0.354,
+    "observed": 0.232
+   }
+  },
+  "B_isotonic_layer": {
+   "n": 4454,
+   "brier": 0.0598,
+   "skill_vs_base_rate": 0.2781,
+   "low_bucket_lt50": {
+    "n": 146,
+    "predicted_mean": 0.424,
+    "observed": 0.39
+   }
+  }
+ },
+ "wait_or_reach_flips_holdout": {
+  "A_empirical_tail": {
+   "n_flips": 366,
+   "of_holdout_pairs": 4454,
+   "observed_still_available": 0.694,
+   "note": "pairs where frozen < 0.6 <= candidate - the room's WAIT threshold; observed rate is how often waiting would have worked"
+  },
+  "B_isotonic_layer": {
+   "n_flips": 398,
+   "of_holdout_pairs": 4454,
+   "observed_still_available": 0.628,
+   "note": "pairs where frozen < 0.6 <= candidate - the room's WAIT threshold; observed rate is how often waiting would have worked",
+   "win_rate_ci95_binomial": [
+    0.5805,
+    0.6755
+   ],
+   "one_sided_z_vs_threshold": 1.156,
+   "ci_caveat": "binomial CI assumes independent flips; flips cluster within players and draft years, so the true interval is somewhat wider - stated, not estimated (3 holdout seasons is too few for a stable cluster interval)"
+  }
+ },
+ "provenance": {
+  "pairs_frame": "item 5 replay frame (Anthony's consecutive picks x FFC-listed availables)",
+  "frozen_functions": "engine_2026 sd_for/cond_survival, read-only",
+  "km_censoring": "undrafted censored at the year's final pick"
+ }
+}
