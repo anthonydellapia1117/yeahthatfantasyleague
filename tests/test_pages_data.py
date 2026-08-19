@@ -309,6 +309,33 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     _vb_seg = drp[drp.index("function renderValueBoard"):drp.index("function simGauss")]
     ok("sigAttr(" in _vb_seg and "sigBadge(" in _vb_seg and "sigLegend()" in _vb_seg,
        "the value board (best-available view) carries all three signal channels")
+    # byte-identity with the big board: the SIG and ICON maps must never
+    # drift between the two pages (labels, colors, icon assignment, SVGs)
+    def _blk(src, name):
+        i = src.index(f"const {name} = {{")
+        return src[i:src.index("};", i) + 2]
+    ok(_blk(drp, "SIG") == _blk(bpage, "SIG")
+       and _blk(drp, "ICON") == _blk(bpage, "ICON"),
+       "room SIG and ICON maps are byte-identical to the big board")
+    # a novel cvs.json signal value must render nothing, never throw inside
+    # the render loop (refresh() swallows render errors AFTER stamping the
+    # freshness dot, so a throw here would freeze the room silently)
+    _sb_seg = drp[drp.index("function sigBadge"):drp.index("function sigAttr")]
+    _sa_seg = drp[drp.index("function sigAttr"):drp.index("function sigLegend")]
+    ok('if (!s) return "";' in _sb_seg and "SIG[s0.sig]" in _sa_seg,
+       "unknown signal keys are guarded in both channels (badge and data-sig)")
+    # gone/taken rows never carry a signal - pin the suppression branches
+    ok('${gone ? "" : sigAttr(p)}' in drp and '${gone ? "" : sigBadge(p)}' in drp,
+       "value board gone rows are signal-free (both channels suppressed)")
+    ok('${c.taken ? "" : sigAttr(c.p)}' in drp
+       and '${c.taken ? "" : sigBadge(c.p)}' in drp,
+       "a taken searched player in recs is signal-free (both channels suppressed)")
+    # ordering is pinned by the exact comparators - the signal cannot reach
+    # them without breaking these strings
+    ok(".sort((a, b) => b.s.total - a.s.total)" in drp,
+       "pick-engine alternatives order by score alone (comparator pinned)")
+    ok(".sort((a, b) => b.g - a.g)" in drp,
+       "recs order by grade alone (comparator pinned)")
     ok("${S(p).cvs_rank}" in bpage,
        "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending

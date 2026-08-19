@@ -1461,8 +1461,8 @@ function renderPickEngine(alive, cur, myNext, R){
 // player renders: container treatment (data-sig border and tint), inline
 // icon, text label. Honors the walter live toggle (off = the server-ranked
 // no_walter signal). K/DEF and players outside the CVS pool carry no
-// signal. DISPLAY ONLY: nothing here feeds a verdict, a grade, survival,
-// or any ordering - the guard suite pins it.
+// signal. DISPLAY ONLY: nothing here feeds the score, the grade, survival,
+// or the pick-engine/recs ordering - the guard suite pins those paths.
 const SIG = {
   personal_dnd:    { color: "#b91c1c", icon: "block",  label: "MY DND" },
   consensus_dnd:   { color: "#b91c1c", icon: "block",  label: "DND x2" },
@@ -1491,12 +1491,13 @@ function sigBadge(p){
   const s0 = sigOf(p);
   if (!s0 || !s0.sig) return "";
   const s = SIG[s0.sig];
+  if (!s) return "";
   return `<span class="sig" style="color:${s.color};border-color:${s.color}">${ICON[s.icon]}${s.label}</span>` +
     (s0.conflict ? '<span class="sigconf" title="opposing signals - see the big board conflicts view">!</span>' : "");
 }
 function sigAttr(p){
   const s0 = sigOf(p);
-  return s0 && s0.sig ? ` data-sig="${s0.sig}"` : "";
+  return s0 && s0.sig && SIG[s0.sig] ? ` data-sig="${s0.sig}"` : "";
 }
 function sigLegend(){
   if (!CVS) return "";
@@ -1721,7 +1722,7 @@ function renderRecs(alive, cur, myNext, R, primary, verdict, hasCoin){
   }
   L["recs-cards"].innerHTML = sigLegend() + cards.map(c => `
     <div class="rec"${c.taken ? "" : sigAttr(c.p)}><div>
-      <div class="rname">${esc(c.p.name)}${c.searched ? ' <span class="tag">searched</span>' : ""}${c.taken ? ' <span class="floor">taken</span>' : ""}${injBadge(c.p)}${sigBadge(c.p)}</div>
+      <div class="rname">${esc(c.p.name)}${c.searched ? ' <span class="tag">searched</span>' : ""}${c.taken ? ' <span class="floor">taken</span>' : ""}${injBadge(c.p)}${c.taken ? "" : sigBadge(c.p)}</div>
       <div class="rmeta">${c.p.pos} ${esc(c.p.team)} - VOR <span class="num">${c.p.vor.toFixed(0)}</span>
         - ADP <span class="num">${c.p.adp < 900 ? c.p.adp.toFixed(1) : "-"}</span>
         - ${c.taken ? "off the board" : `<span class="num">${pct(calCondSurvival(c.p.adp, myNext, cur))}</span> lasts to ${myNext}`}${yourCallChip(c.p)}</div>
