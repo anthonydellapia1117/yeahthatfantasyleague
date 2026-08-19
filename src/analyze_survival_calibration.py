@@ -271,11 +271,88 @@ def main():
                     "room's WAIT threshold; observed rate is how often waiting "
                     "would have worked"}
 
+    # ---- era stability of the calibration itself (Anthony's question,
+    # 2026-08-19). THE RULE, REGISTERED BEFORE COMPUTING:
+    #   fit M on 2019-2022 only, evaluate on the same 2023-2025 holdout as
+    #   the 2013-2022 fit. Deployment candidates: T_all (fit 2013-2025) and
+    #   T_modern (fit 2019-2025). "Meaningfully different" means max bin gap
+    #   >= 0.05 over bins occupied in both, OR any bin straddling the 0.6
+    #   verdict threshold between the tables. Decision: meaningful AND the
+    #   modern-era fit is not worse on holdout -> deploy T_modern with T_all
+    #   as the conservative fallback; meaningful but modern fits worse ->
+    #   deploy T_all and flag the tension; not meaningful -> T_all stands
+    #   with more confidence than before.
+    modern_train = gen_pairs(years, 2019, TRAIN_MAX)
+    table_m = pav(modern_train)
+    eval_modern_fit = calib_stats(hold_full, lambda x: cand_b(table_m, x[2]))
+    t_all = [round(v, 4) for v in pav(gen_pairs(years, 2013, 2025))]
+    t_modern = [round(v, 4) for v in pav(gen_pairs(years, 2019, 2025))]
+    gaps = [abs(a - b) for a, b in zip(t_all, t_modern)]
+    straddle = [i for i, (a, b) in enumerate(zip(t_all, t_modern))
+                if (a >= WAIT_THRESHOLD) != (b >= WAIT_THRESHOLD)]
+    meaningful = max(gaps) >= 0.05 or bool(straddle)
+    modern_not_worse = eval_modern_fit["brier"] <= evaluation["B_isotonic_layer"]["brier"]
+    era_choice = ("deploy_modern" if meaningful and modern_not_worse
+                  else "deploy_all_flag_tension" if meaningful
+                  else "all_years_stands")
+    # walk-forward flips for the DEPLOYED lineage: the 2019-2022 fit is the
+    # honest out-of-sample analog of the modern deployment table
+    flm = [x for x in hold_full
+           if x[2] < WAIT_THRESHOLD <= cand_b(table_m, x[2])]
+    modern_flips = {"n_flips": len(flm), "of_holdout_pairs": len(hold_full),
+                    "observed_still_available": round(
+                        sum(x[3] for x in flm) / len(flm), 3) if flm else None}
+    if flm:
+        p_hat = modern_flips["observed_still_available"]
+        se = (p_hat * (1 - p_hat) / len(flm)) ** 0.5
+        modern_flips["win_rate_ci95_binomial"] = [round(p_hat - 1.96 * se, 4),
+                                                 round(p_hat + 1.96 * se, 4)]
+        modern_flips["one_sided_z_vs_threshold"] = round(
+            (p_hat - WAIT_THRESHOLD) / se, 3)
+
+    era_analysis = {
+        "modern_fit_flips_holdout": modern_flips,
+        "rule_registered_before_computing": (
+            "meaningful = max bin gap >= 0.05 or any bin straddling the 0.6 "
+            "threshold; deploy modern iff meaningful and the 2019-2022 fit "
+            "is not worse on the 2023-2025 holdout"),
+        "holdout_brier_2013_2022_fit": evaluation["B_isotonic_layer"]["brier"],
+        "holdout_brier_2019_2022_fit": eval_modern_fit["brier"],
+        "holdout_low_bucket_2019_2022_fit": eval_modern_fit["low_bucket_lt50"],
+        "table_all_years": t_all,
+        "table_modern_2019_2025": t_modern,
+        "max_bin_gap": round(max(gaps), 4),
+        "bins_straddling_threshold": straddle,
+        "meaningfully_different": meaningful,
+        "modern_fit_not_worse_on_holdout": modern_not_worse,
+        "decision": era_choice,
+    }
+
+    # ---- the flip win-rate interval (Anthony's adoption condition 1).
+    # Independence-assumption binomial CI exactly as he computed it, plus
+    # the honest caveat: flips cluster (same player across consecutive pick
+    # gaps, same draft year), so the true interval is somewhat wider; with
+    # only three holdout seasons a cluster interval is too unstable to
+    # quote, so the clustering is stated rather than estimated.
+    fb = flips["B_isotonic_layer"]
+    if fb["n_flips"]:
+        p_hat = fb["observed_still_available"]
+        se = (p_hat * (1 - p_hat) / fb["n_flips"]) ** 0.5
+        fb["win_rate_ci95_binomial"] = [round(p_hat - 1.96 * se, 4),
+                                        round(p_hat + 1.96 * se, 4)]
+        fb["one_sided_z_vs_threshold"] = round((p_hat - WAIT_THRESHOLD) / se, 3)
+        fb["ci_caveat"] = ("binomial CI assumes independent flips; flips "
+                           "cluster within players and draft years, so the "
+                           "true interval is somewhat wider - stated, not "
+                           "estimated (3 holdout seasons is too few for a "
+                           "stable cluster interval)")
+
     payload = {
         "generated": datetime.date.today().isoformat(),
         "status": "PROPOSAL - evidence only; frozen functions untouched; any "
                   "adoption requires Anthony's approval of the exact diff in "
                   "the ADR",
+        "era_analysis": era_analysis,
         "diagnosis": diagnosis,
         "fit_window": f"2013-{TRAIN_MAX}",
         "holdout_window": f"{TRAIN_MAX + 1}-2025",
