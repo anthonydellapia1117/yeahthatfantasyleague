@@ -1,5 +1,21 @@
 # Changelog
 
+## Durability-fade investigation: dropped under the pre-registered rule (2026-08-19)
+
+- src/analyze_durability.py on the shared injury frame (refactored
+  analyze_injury.build_sample, payload byte-identical): the fade survives
+  age and points-per-game controls (full_ctrl b=-0.073, CI excludes
+  zero) but fails era stability - nonexistent 2013-2018 (+0.001), entire
+  effect in 2019-2025 (-0.143). Only QB clears the position split (thin
+  n); the zero-game returner class is noise.
+- VERDICT: confounded_or_unstable; recommendation DROP. An effect that
+  only exists in the era it would be deployed in is the signature of
+  overfitting. 2026 tests the modern-era hypothesis out of sample for
+  free; revisiting after that is a new decision.
+- Guards: verdict recomputes from its own rule, flags follow intervals,
+  age coverage stated (0 players without birth dates), cached-input
+  determinism (roster-gated).
+
 ## Reproducibility: the history fetcher is now committed (2026-08-19)
 
 - src/fetch_history.py: idempotent fetcher for the analysis layer's data

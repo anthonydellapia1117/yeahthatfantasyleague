@@ -224,6 +224,20 @@ conservative - it says "reach" somewhat more often than the observed
 history justifies. Recalibrating touches the frozen math and happens
 only with explicit approval. Payload: out/data/replay_backtest.json.
 
+Item 4 follow-up - durability fade, DROPPED: the games-missed outcome
+signal survives the age control (-0.075), the points-per-game control
+(-0.082), and both together (-0.073, CI [-0.146, -0.007]) - it is not an
+age effect and not talent mismeasurement. It fails era stability, the
+other half of the pre-registered rule: 2013-2018 shows nothing (+0.001,
+CI [-0.109, +0.077]) and the entire effect lives in 2019-2025 (-0.143,
+CI [-0.207, -0.081]). Position splits reinforce the instability (only
+QB clears, n=241; RB/WR/TE all span zero), and the returner dummy is
+noise. A signal that appears only in the era you would use it in is
+exactly the pattern overfitting produces, so the rule says drop and it
+is dropped. The 2026 season will test the modern-era hypothesis out of
+sample for free; revisiting after that is a new decision, not this one.
+Payload: out/data/durability_fade.json.
+
 ## Standing laws carried forward
 
 The five frozen survival functions and the engine's verdict logic are out of
