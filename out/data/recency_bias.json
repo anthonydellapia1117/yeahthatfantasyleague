@@ -1,0 +1,138 @@
+{
+ "generated": "2026-08-19",
+ "model": "ln(overall) ~ z(late4) + z(full) + ln(ffc_adp) + pos dummies",
+ "n": 1677,
+ "seasons": [
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025
+ ],
+ "b_late": 0.00021,
+ "b_late_ci95_season_bootstrap": [
+  -0.02026,
+  0.01782
+ ],
+ "b_full": -0.04845,
+ "b_ln_adp": 0.98505,
+ "distinguishable_from_zero": false,
+ "direction": "none_established",
+ "picks_moved_at_median_selection_per_sd": 0.01,
+ "usage_rule": "USE only if distinguishable_from_zero is true - no effect size, no usage (commission)",
+ "coverage_by_year": {
+  "2013": {
+   "picks": 160,
+   "used": 132,
+   "rookies_excluded": 12,
+   "no_ffc_adp": 16,
+   "late_window_from_wk": 14
+  },
+  "2014": {
+   "picks": 162,
+   "used": 131,
+   "rookies_excluded": 17,
+   "no_ffc_adp": 14,
+   "late_window_from_wk": 14
+  },
+  "2015": {
+   "picks": 155,
+   "used": 129,
+   "rookies_excluded": 17,
+   "no_ffc_adp": 9,
+   "late_window_from_wk": 14
+  },
+  "2016": {
+   "picks": 156,
+   "used": 131,
+   "rookies_excluded": 17,
+   "no_ffc_adp": 8,
+   "late_window_from_wk": 14
+  },
+  "2017": {
+   "picks": 153,
+   "used": 129,
+   "rookies_excluded": 15,
+   "no_ffc_adp": 9,
+   "late_window_from_wk": 14
+  },
+  "2018": {
+   "picks": 154,
+   "used": 129,
+   "rookies_excluded": 17,
+   "no_ffc_adp": 8,
+   "late_window_from_wk": 14
+  },
+  "2019": {
+   "picks": 154,
+   "used": 134,
+   "rookies_excluded": 15,
+   "no_ffc_adp": 5,
+   "late_window_from_wk": 14
+  },
+  "2020": {
+   "picks": 154,
+   "used": 133,
+   "rookies_excluded": 18,
+   "no_ffc_adp": 3,
+   "late_window_from_wk": 14
+  },
+  "2021": {
+   "picks": 153,
+   "used": 131,
+   "rookies_excluded": 15,
+   "no_ffc_adp": 7,
+   "late_window_from_wk": 14
+  },
+  "2022": {
+   "picks": 152,
+   "used": 119,
+   "rookies_excluded": 19,
+   "no_ffc_adp": 14,
+   "late_window_from_wk": 15
+  },
+  "2023": {
+   "picks": 155,
+   "used": 129,
+   "rookies_excluded": 18,
+   "no_ffc_adp": 8,
+   "late_window_from_wk": 15
+  },
+  "2024": {
+   "picks": 147,
+   "used": 127,
+   "rookies_excluded": 17,
+   "no_ffc_adp": 3,
+   "late_window_from_wk": 15
+  },
+  "2025": {
+   "picks": 123,
+   "used": 123,
+   "rookies_excluded": 0,
+   "no_ffc_adp": 0,
+   "late_window_from_wk": 15
+  }
+ },
+ "scope_limits": [
+  "rookies excluded (no prior season)",
+  "picks without an FFC ADP row excluded (no market control)",
+  "K/DEF out of scope",
+  "FFC ADP is an early-September 12-team PPR snapshot",
+  "late window anchored to each season's final 4 REG weeks"
+ ],
+ "provenance": {
+  "picks": "out/picks.csv (13 league drafts)",
+  "stats": "nflverse stats_player_week 2012-2024 (CC-BY-4.0), league scoring = fantasy_points_ppr + 2 x passing_tds",
+  "adp": "FantasyFootballCalculator historical PPR ADP API, 12-team, by draft year",
+  "seed": 20260819,
+  "bootstrap_draws": 10000
+ }
+}

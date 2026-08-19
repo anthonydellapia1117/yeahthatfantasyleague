@@ -180,6 +180,17 @@ Payload: out/data/manager_profiles_backtest.json; guards in
 tests/test_analysis.py. The simulator already consumes exactly these
 profiles; this item's finding is that doing so is justified.
 
+Item 3 - recency bias, REJECTED for use: across 1,677 skill picks in all
+13 drafts (85% coverage; rookies and no-ADP picks excluded, stated),
+regressing ln(pick paid) on the prior season's last-4-weeks points
+(z within year) while controlling full-season points and ln(FFC ADP)
+gives b_late = +0.0002, season-cluster bootstrap 95% CI
+[-0.0203, +0.0178]. Not distinguishable from zero: whatever recency bias
+exists in the market price, this league does not add to it. Per the
+commission - no effect size, no usage - nothing recency-related enters
+any factor, flag, or recommendation. Payload:
+out/data/recency_bias.json.
+
 ## Standing laws carried forward
 
 The five frozen survival functions and the engine's verdict logic are out of

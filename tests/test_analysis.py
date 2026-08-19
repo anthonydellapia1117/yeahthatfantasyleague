@@ -79,6 +79,47 @@ src = open(os.path.join(ROOT, "src", "backtest_profiles.py")).read()
 ok("import engine" not in src and "draft_room" not in src and "cvs" not in src.lower(),
    "item2: backtest imports no engine, touches no page, reads no CVS")
 
+# ---- item 3: recency-bias coefficient
+ar = load_mod("ar", "src/analyze_recency.py")
+R = json.load(open(os.path.join(ROOT, "out", "data", "recency_bias.json")))
+
+# 7. the verdict follows the interval, and the usage rule follows the verdict
+lo, hi = R["b_late_ci95_season_bootstrap"]
+ok(R["distinguishable_from_zero"] == (hi < 0 or lo > 0),
+   "item3: distinguishable flag is exactly what the interval says")
+ok(R["distinguishable_from_zero"] or R["direction"] == "none_established",
+   "item3: no effect size, no direction claim - the usage rule holds")
+
+# 8. unit behavior of the estimator: zscore centering and a known OLS solve
+zs = ar.zscore([1.0, 2.0, 3.0])
+ok(abs(sum(zs)) < 1e-9 and abs(zs[2] - (-zs[0])) < 1e-9,
+   "item3: zscore centers and is symmetric")
+beta = ar.ols([[1.0, 0.0], [1.0, 1.0], [1.0, 2.0]], [1.0, 3.0, 5.0])
+ok(abs(beta[0] - 1.0) < 1e-9 and abs(beta[1] - 2.0) < 1e-9,
+   "item3: OLS recovers a known line exactly")
+
+# 9. every league draft season is in the sample and coverage is reported
+ok(R["seasons"] == list(range(2013, 2026))
+   and all(str(y) in R["coverage_by_year"] for y in range(2013, 2026)),
+   "item3: all 13 draft years covered with per-year exclusion accounting")
+
+# 10. determinism (only when the fetched history cache is present - the raw
+#     downloads are not committed)
+if os.path.exists(os.path.join(ar.HISTORY, "spw_2012.csv")):
+    out_path = os.path.join(ROOT, "out", "data", "recency_bias.json")
+    orig = open(out_path, "rb").read()
+    with contextlib.redirect_stdout(io.StringIO()):
+        ar.main()
+    R2 = json.load(open(out_path))
+    open(out_path, "wb").write(orig)
+    a, b = dict(R), dict(R2)
+    a.pop("generated", None); b.pop("generated", None)
+    ok(json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True),
+       "item3: regression reproduces exactly from cached inputs (generated aside)")
+else:
+    print("SKIP  item3 determinism rerun - history cache absent (fetch with "
+          "src docs; committed payload guards above still ran)")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
