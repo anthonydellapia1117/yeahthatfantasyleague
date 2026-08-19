@@ -169,6 +169,60 @@ if os.path.exists(os.path.join(_base.HISTORY, "inj_2012.csv")):
 else:
     print("SKIP  item4 determinism rerun - history cache absent")
 
+# ---- item 5: replay backtest
+P = json.load(open(os.path.join(ROOT, "out", "data", "replay_backtest.json")))
+
+# 15. the honesty pins: what cannot be replayed is stated, and the proxy
+#     carries its caveat on its face
+ok(len(P["not_replayable_stated"]) >= 3
+   and "rookie" in P["part1_value_core"]["proxy_caveat"],
+   "item5: non-replayable inputs stated; proxy caveat names the rookie hole")
+
+# 16. internal consistency: the reported deltas equal the reported means
+m5 = P["part1_value_core"]["mean_realized_pts"]
+d5 = P["part1_value_core"]["deltas_per_pick"]
+ok(abs(d5["actual_minus_adp_best"]["mean"] - (m5["actual"] - m5["adp_best"])) < 0.02
+   and abs(d5["actual_minus_replay_vor"]["mean"] - (m5["actual"] - m5["replay_vor"])) < 0.02,
+   "item5: deltas equal their means; nothing hand-adjusted")
+ok(all(v["ci95"][0] <= v["mean"] <= v["ci95"][1] for v in d5.values()),
+   "item5: every point estimate sits inside its own interval")
+
+# 17. calibration arithmetic: skill is exactly 1 - brier/base, deciles
+#     account for every pair
+c5 = P["part2_survival_calibration"]
+ok(abs(c5["skill_vs_base_rate"]
+       - (1 - c5["brier"] / c5["brier_always_base_rate"])) < 1e-3,
+   "item5: survival skill score recomputes from its own briers")
+ok(sum(d["n"] for d in c5["reliability_by_decile"]) == c5["n_pairs"],
+   "item5: reliability deciles account for every evaluated pair")
+ok(sum(e["n_pairs"] for e in c5["by_era"].values()) == c5["n_pairs"],
+   "item5: era splits partition the pairs exactly")
+
+# 18. the frozen functions are consumed read-only: the replay never assigns
+#     into the engine module or refits its curve
+rsrc = open(os.path.join(ROOT, "src", "replay_backtest.py")).read()
+ok("import engine_2026" in rsrc and "eng." in rsrc
+   and "ADP_SD_CURVE =" not in rsrc
+   and not any(l.strip().startswith("eng.") and "=" in l.split("#")[0]
+               and "==" not in l for l in rsrc.splitlines()),
+   "item5: frozen survival consumed read-only, never reassigned or refitted")
+
+# 19. determinism (cache-gated)
+if os.path.exists(os.path.join(_base.HISTORY, "ffc_ppr_2013.json")):
+    import replay_backtest as rb
+    out_path = os.path.join(ROOT, "out", "data", "replay_backtest.json")
+    orig = open(out_path, "rb").read()
+    with contextlib.redirect_stdout(io.StringIO()):
+        rb.main()
+    P2 = json.load(open(out_path))
+    open(out_path, "wb").write(orig)
+    a, b = dict(P), dict(P2)
+    a.pop("generated", None); b.pop("generated", None)
+    ok(json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True),
+       "item5: replay reproduces exactly from cached inputs (generated aside)")
+else:
+    print("SKIP  item5 determinism rerun - history cache absent")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
