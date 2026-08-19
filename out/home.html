@@ -182,9 +182,18 @@ async function boot(){
       ${unmatched.length ? `<p class="small stale">${unmatched.length} call(s) match no player in the projection feed: ${esc(unmatched.map(c => c.player).join(", "))}</p>` : ""}`;
   }
 
+  // provenance renders BEFORE the external trending fetch - local data never
+  // waits on a remote call, and a hung connection times out to the fallback
+  const provRows = Object.entries(prov.shards).map(([k, v]) =>
+    `${esc(k)}: ${esc(v.source)} (fetched <span style="white-space:nowrap">${esc(v.fetched_at || "-")}</span>)`).join("<br>");
+  document.getElementById("foot").innerHTML =
+    `<b>Provenance (guard N2)</b> - engine generated ${esc(E.generated)}.<br>${provRows}`;
+
   // trending adds - attributed, resolved through the engine payload
   try {
-    const tr = await get("https://api.sleeper.app/v1/players/nfl/trending/add?limit=25");
+    const tr = await fetch("https://api.sleeper.app/v1/players/nfl/trending/add?limit=25",
+      { signal: AbortSignal.timeout(5000) })
+      .then(r => { if (!r.ok) throw new Error("trending " + r.status); return r.json(); });
     const byId = Object.fromEntries(E.players.filter(p => p.sleeper_id).map(p => [p.sleeper_id, p]));
     const known = tr.map(t => ({ t, p: byId[String(t.player_id)] })).filter(x => x.p).slice(0, 10);
     const unknown = tr.length - known.length;
@@ -201,11 +210,6 @@ async function boot(){
     document.getElementById("trend").innerHTML =
       `<p class="small">Sleeper trending unreachable - the card degrades to nothing rather than to a guess.</p>`;
   }
-
-  const provRows = Object.entries(prov.shards).map(([k, v]) =>
-    `${esc(k)}: ${esc(v.source)} (fetched ${esc(v.fetched_at || "-")})`).join("<br>");
-  document.getElementById("foot").innerHTML =
-    `<b>Provenance (guard N2)</b> - engine generated ${esc(E.generated)}.<br>${provRows}`;
 }
 boot();
 </script>

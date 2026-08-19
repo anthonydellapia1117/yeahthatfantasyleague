@@ -22,7 +22,7 @@ h3{font-size:15px;margin:22px 0 8px;color:var(--t2);text-transform:uppercase;let
 .sub{color:var(--t2);margin:0 0 4px}
 .rule{height:1px;background:var(--bd);margin:26px 0}
 .gold{color:var(--gold)}.teal{color:var(--teal)}.red{color:var(--red)}
-.card{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:20px;margin:14px 0}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:20px;margin:14px 0}
 /* CARD SCOPE - white interiors (Anthony's contrast fix); ff-hub vocabulary.
    Gold is darkened to stay AA on the light card; page scope keeps #C7A26B. */
 .card,.stat{
@@ -33,10 +33,20 @@ h3{font-size:15px;margin:22px 0 8px;color:var(--t2);text-transform:uppercase;let
 .hero{background:var(--s2);border-left:3px solid var(--teal)}
 .dead{border-left:3px solid var(--red)}
 .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-.stat{background:var(--s3);border:1px solid var(--bd);border-radius:6px;padding:16px}
+.stat{background:var(--s3);border:1px solid var(--bd);border-radius:8px;padding:16px}
 .stat .n{font:600 30px/1.1 ui-monospace,"JetBrains Mono",Menlo,monospace;color:var(--white)}
 .stat .l{color:var(--t2);font-size:12px;text-transform:uppercase;letter-spacing:.07em;margin-top:6px}
-.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* scroll shadows (background-attachment trick): the edge shading appears
+   only while columns are actually hidden in that direction, so a phone user
+   can see there is more table to swipe to - and it vanishes at the end */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  background:
+    linear-gradient(90deg, var(--s1) 30%, rgba(244,246,250,0)) left/40px 100%,
+    linear-gradient(270deg, var(--s1) 30%, rgba(244,246,250,0)) right/40px 100%,
+    radial-gradient(farthest-side at 0 50%, rgba(11,17,32,.28), transparent) left/14px 100%,
+    radial-gradient(farthest-side at 100% 50%, rgba(11,17,32,.28), transparent) right/14px 100%;
+  background-repeat:no-repeat;
+  background-attachment:local,local,scroll,scroll}
 table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
 th{color:var(--t2);font-weight:600;font-size:11px;text-transform:uppercase;
   letter-spacing:.07em;padding:9px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
@@ -60,7 +70,7 @@ tbody tr:hover{background:var(--s2)}
   padding:8px 15px;border-radius:5px;cursor:pointer;font-size:13px}
 .tabs button[aria-selected=true]{background:var(--s2);color:var(--teal);border-color:var(--teal)}
 .panel[hidden]{display:none}
-footer{color:var(--t3);font-size:12px;margin-top:50px;padding-top:18px;border-top:1px solid var(--bd)}
+footer{color:var(--t3);font-size:11px;margin-top:50px;padding-top:18px;border-top:1px solid var(--bd)}
 </style>
 </head>
 <body>

@@ -606,6 +606,14 @@ const ok = (cond, name, detail) => {
     const pop = await page.textContent("#pvpop");
     ok(/usage_2025\.json/.test(pop) && /nflverse/.test(pop) && /fetched/.test(pop),
        "tap a number: popover names shard, source, fetch time");
+    const popFit = await page.evaluate(() => {
+      const p = document.getElementById("pvpop");
+      return { inner: p.scrollWidth - p.clientWidth,
+               inView: p.getBoundingClientRect().right <= document.documentElement.clientWidth + 1 };
+    });
+    ok(popFit.inner <= 1 && popFit.inView,
+       "popover content wraps inside its box (long shard URLs included)",
+       JSON.stringify(popFit));
     // K/DST carries the floor
     await page.goto(base + "/out/players.html");
     await page.waitForTimeout(500);
@@ -915,6 +923,29 @@ const ok = (cond, name, detail) => {
     ok(errs15.length === 0, "big board: zero console errors", errs15[0] || "");
     await pg.close();
 
+    // phone-width net: no horizontal overflow at 375, and injury badges
+    // never paint over the conf/vol column (the polish-pass regression)
+    const p375 = await browser.newPage({ viewport: { width: 375, height: 667 } });
+    await p375.goto(base + "/out/big_board.html");
+    await p375.waitForTimeout(1500);
+    const m375 = await p375.evaluate(() => {
+      const doc = document.documentElement;
+      let collisions = 0;
+      for (const row of document.querySelectorAll("#board .brow")){
+        const inj = row.querySelector(".inj"), trio = row.querySelector(".trio");
+        if (!inj || !trio) continue;
+        const a = inj.getBoundingClientRect(), b = trio.getBoundingClientRect();
+        if (a.right > b.left + 1 && a.left < b.right && a.bottom > b.top && a.top < b.bottom)
+          collisions++;
+      }
+      return { overflow: doc.scrollWidth - doc.clientWidth, collisions };
+    });
+    ok(m375.overflow <= 1, "big board 375: no horizontal page overflow",
+       String(m375.overflow));
+    ok(m375.collisions === 0, "big board 375: injury badges never overlap the score column",
+       String(m375.collisions));
+    await p375.close();
+
     // ---- scenario 16: PICK ENGINE. Served over the same hermetic server so
     // cvs.json resolves; a mocked live draft with Anthony's seat. The card is
     // additive: it names an available player, states its proxy honestly, and
@@ -1006,6 +1037,17 @@ const ok = (cond, name, detail) => {
        "survival on my clock is not the degenerate 100%-safe");
     ok(!/NaN/.test(octxt), "on-the-clock card renders no NaN");
     ok(errsOc.length === 0, "on-the-clock: zero console errors", errsOc[0] || "");
+    // phone-width net: the survival table's verdict tags fire here (target
+    // pick 18 makes most top rows sub-40%), so this state is exactly where
+    // the table used to widen the page at 375
+    await oc.setViewportSize({ width: 375, height: 667 });
+    await oc.waitForTimeout(400);
+    const ocOver = await oc.evaluate(() => {
+      const d = document.documentElement;
+      return d.scrollWidth - d.clientWidth;
+    });
+    ok(ocOver <= 1, "draft room live 375: no horizontal page overflow",
+       String(ocOver));
     await oc.close();
     srv.close();
   }

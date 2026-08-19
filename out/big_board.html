@@ -44,7 +44,8 @@ a{color:var(--info);text-decoration:none}
   color:var(--ink)}
 .small{font-size:12px;color:var(--ink3)}
 .muted{color:var(--ink2)}
-.inj{color:var(--stop);font-size:11px;font-weight:700;text-transform:uppercase;margin-left:6px}
+.inj{color:var(--stop);font-size:11px;font-weight:700;text-transform:uppercase;margin-left:6px;
+  display:inline-block}
 .floor{color:var(--ink3);font-size:10px;font-weight:600;border:1px solid var(--line);
   border-radius:4px;padding:1px 5px;margin-left:6px;text-transform:uppercase;letter-spacing:.04em}
 .yc{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.4px;padding:1px 6px;border-radius:8px;border:1px solid;margin-left:5px;vertical-align:1px}
@@ -63,17 +64,18 @@ a{color:var(--info);text-decoration:none}
 .legend span{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:6px;padding:2px 7px}
 /* signal encoding - three channels always: container treatment + icon + label.
    Colors verified against the card surface by the contrast guard. */
-.brow{display:grid;grid-template-columns:34px 1fr auto;gap:4px 10px;
+.brow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:4px 10px;
   padding:9px 8px;border:1.5px solid transparent;border-radius:10px;margin:3px 0}
 .brow .rk{font-size:13px;font-weight:700;color:var(--ink3);font-variant-numeric:tabular-nums;padding-top:2px}
 .brow .nm{font-size:15px;font-weight:700}
 .brow .nm a{color:var(--ink)}
-.brow .trio{text-align:right;white-space:nowrap}
+.brow .trio{text-align:right}
 .brow .trio .c{font-size:16px;font-weight:800}
-.brow .trio .sub{font-size:10.5px;color:var(--ink3)}
+.brow .trio .sub{font-size:10.5px;color:var(--ink3);white-space:normal}
 .brow .meta{grid-column:2/4;font-size:12px;color:var(--ink2)}
 .brow details{grid-column:1/4;margin-top:2px}
-.brow summary{cursor:pointer;font-size:11px;color:var(--ink3);list-style:none}
+.brow summary{cursor:pointer;font-size:11px;color:var(--ink3);list-style:none;
+  padding:6px 0;min-height:24px}
 .brow summary::before{content:"+ explain this rank"}
 .brow details[open] summary::before{content:"- explain this rank"}
 .sig{display:inline-flex;gap:4px;font-size:10px;font-weight:800;letter-spacing:.05em;
@@ -95,7 +97,15 @@ a{color:var(--info);text-decoration:none}
 .wq{font-size:11px;color:var(--ink2);border-left:2px solid #0f766e;padding:2px 0 2px 8px;margin:4px 0}
 .wq .lineref{color:var(--ink3);font-size:10px}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
-.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* scroll shadows: edge shading only while columns are hidden that way */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  background:
+    linear-gradient(90deg, var(--s1) 30%, rgba(244,246,250,0)) left/40px 100%,
+    linear-gradient(270deg, var(--s1) 30%, rgba(244,246,250,0)) right/40px 100%,
+    radial-gradient(farthest-side at 0 50%, rgba(11,17,32,.28), transparent) left/14px 100%,
+    radial-gradient(farthest-side at 100% 50%, rgba(11,17,32,.28), transparent) right/14px 100%;
+  background-repeat:no-repeat;
+  background-attachment:local,local,scroll,scroll}
 </style>
 </head>
 <body>
@@ -381,7 +391,7 @@ function renderBoard(){
     (list.map(p => `
     <div class="brow" data-sig="${S(p).signal || ""}">
       <div class="rk num">${S(p).cvs_rank}</div>
-      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? `<span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
+      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
       <div class="trio"><span class="c num">${val(p)}</span><br>
         <span class="sub num">conf ${pct(p.confidence)} - vol ${p.volatility ? p.volatility.sd : "-"}</span></div>
       <div class="meta">${p.pos} - <a href="teams.html#t=${encodeURIComponent(p.team || "")}">${esc(p.team || "-")}</a>
