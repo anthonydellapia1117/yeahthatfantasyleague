@@ -38,13 +38,27 @@ rehearsal's `real` times.
 | 7 | `python3 tests/test_cvs.py` | 0.1 s | anchor law, cap, signals, determinism |
 | 8 | `python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
 | 9 | `python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
-| 10 | full smoke: `NODE_PATH=<playwright-core install> node tests/smoke_draft_room.js out/draft_room.html` | 94 s | 17 hermetic browser scenarios |
+| 10 | full smoke (see the playwright note below) | 94 s + install | 17 hermetic browser scenarios |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
+
+Playwright note for step 10: the repo has no package.json, so a fresh
+container has no playwright-core. Install it once per session, then run
+the smoke against the browser this image already ships (do NOT run
+`playwright install` - the binary is preinstalled):
+
+    mkdir -p /tmp/pw && (cd /tmp/pw && npm install --no-save playwright-core)
+    NODE_PATH=/tmp/pw/node_modules node tests/smoke_draft_room.js out/draft_room.html
 
 If the teaser leak guard in step 8 fails after a regen, today's ADP
 moved a top name in or out of the allowed subset - rerun
 `python3 src/build_teaser.py`, then repeat step 8.
+
+Data-dependent test note: assertions that name a specific player from a
+live payload (the big board conflicts view is the one that bit us) must
+stay payload-driven - read out/cvs.json and assert on what is actually
+in it, including the empty states. A refresh day that legitimately has
+no conflicts must not fail the suite.
 
 Commit convention: author `Anthony DellaPia <anthonydellapia@gmail.com>`,
 hyphens not em dashes, no emojis. Deploy compare loop:
@@ -69,6 +83,24 @@ with `PAGES=https://anthonydellapia1117.github.io/yeahthatfantasyleague`.
 - [ ] Big board WALTER LAYER toggle set to the decided state.
 - [ ] Screen-lock off / wake lock allowed in the browser (the room
       requests one, but check the OS will not fight it).
+
+## Automation
+
+Two scheduled Routines run this sequence unattended at 6:00 AM Eastern
+(10:00 UTC) and report when they finish:
+
+- 2026-08-28 - a dry run of the whole line, three weeks before the draft
+- 2026-09-08 - draft morning itself
+
+Each firing starts a fresh session on this repo, works the morning
+sequence above, and ships only if every gate is green. A red gate stops
+the line and leaves the last good build serving - the Routine reports
+the failure rather than pushing past it. Anthony still owns the
+night-before checklist (the board calls, any Walter revision, the walter
+layer decision); the Routine does not touch `data/`.
+
+If the draft time or date moves, update the Routine rather than adding a
+second one, so there is only ever one scheduled run per morning.
 
 ## If something breaks
 
