@@ -281,6 +281,15 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "calibration code sits outside the engine sentinels")
     ok("1 - condSurvival(p.adp, ctx.myNext" in drp,
        "grade urgency stays on the frozen number (not in the approved diff)")
+    ok("CALIBRATED SURVIVAL UNAVAILABLE" in drp,
+       "toggle label honors the payload kill switch, never claims ON falsely")
+    _cref = emb2.get("calibration_reference") or []
+    ok(len(_cref) >= 5 and all(0 <= r["cal"] <= 1 for r in _cref),
+       "payload carries Python-computed calibration anchors for JS parity")
+    ok("2019-2025 era" in drp,
+       "the room's disclosure names the deployed era fit, not the rejected blend")
+    ok("pre-draft verdicts use the frozen survival model" in drp,
+       "the frozen/calibrated boundary is stated on the pre-draft surface")
     ok("${S(p).cvs_rank}" in bpage,
        "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending

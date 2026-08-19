@@ -165,20 +165,20 @@ const ok = (cond, name, detail) => {
     // SURVIVAL CALIBRATION: wrapper parity with the payload table, the
     // one-tap toggle, and the frozen fallback
     const calPar = await page.evaluate(() => {
-      const probes = [[24, 18, 7], [60, 40, 10], [5, 18, 7], [100, 120, 60]];
+      // cross-language parity: the JS wrapper must reproduce the
+      // Python-computed anchors embedded by the engine (never circular)
       const t = E.survival_calibration;
-      let okAll = true, flipBin = false;
-      for (const [adp, k, c] of probes){
-        const p = condSurvival(adp, k, c);
-        const want = t[Math.min(t.length - 1, Math.floor(p * t.length))];
-        if (Math.abs(window.__calCondSurvival(adp, k, c) - want) > 1e-12) okAll = false;
+      let okAll = (E.calibration_reference || []).length >= 5, flipBin = false;
+      for (const r of E.calibration_reference || []){
+        if (Math.abs(window.__calCondSurvival(r.adp, r.to_pick, r.from_pick) - r.cal) > 1e-9)
+          okAll = false;
       }
       for (let i = 0; i < t.length; i++)
         if (i / t.length < 0.6 && t[i] >= 0.6) flipBin = true;
       return { okAll, flipBin, len: t.length, enabled: E.survival_calibration_enabled };
     });
     ok(calPar.okAll && calPar.len === 20 && calPar.enabled,
-       "calibrated wrapper matches the payload table on live probes");
+       "JS wrapper reproduces the Python-computed calibration anchors");
     ok(calPar.flipBin,
        "the table contains bins that flip TAKE NOW to WAIT (the correction is real)");
     ok(/CALIBRATED SURVIVAL ON/.test(await page.textContent("#survcal-toggle")),

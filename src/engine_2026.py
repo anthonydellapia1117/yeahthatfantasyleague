@@ -439,6 +439,15 @@ def build_model():
         "adp_sd_curve": [[round(a, 2), round(s, 4)] for a, s in ADP_SD_CURVE],
         "survival_calibration": SURVIVAL_CALIBRATION,
         "survival_calibration_enabled": SURVIVAL_CALIBRATION_ENABLED,
+        "calibration_reference": [
+            # Python-computed calibrated anchors the JS wrapper must
+            # reproduce - the same cross-language parity pattern as
+            # survival_reference, so the smoke check is not circular
+            {"adp": adp, "from_pick": c, "to_pick": k,
+             "cal": calibrated_cond_survival(adp, k, c)}
+            for adp, k, c in ((24, 18, 7), (60, 40, 10), (5, 18, 7),
+                              (100, 120, 60), (1.7, 70, 60))
+        ],
         "survival_reference": [
             # Python-computed anchors the JS mirror must reproduce (parity test).
             # Includes a deep-tail case that the old 1-erf JS collapsed to 0.

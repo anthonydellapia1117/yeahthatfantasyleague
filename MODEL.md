@@ -321,9 +321,14 @@ all-years refit; the holdout numbers above are its out-of-sample
 estimate):
 
     1. src/engine_2026.py - pure additions, zero existing lines change:
-       SURVIVAL_CALIBRATION = [0.3272, 0.3272, 0.3861, 0.4318, 0.4754,
-         0.4754, 0.4883, 0.6029, 0.6029, 0.6746, 0.6746, 0.6927, 0.7661,
-         0.7727, 0.819, 0.8842, 0.9136, 0.9459, 0.9651, 0.9964]
+       SURVIVAL_CALIBRATION = [0.2749, 0.2749, 0.2749, 0.3559, 0.431,
+         0.431, 0.4632, 0.5484, 0.5484, 0.6448, 0.6448, 0.6929, 0.7487,
+         0.7487, 0.8062, 0.8834, 0.9182, 0.946, 0.9795, 0.9974]
+       (AMENDED 2026-08-19 after the block was first written: the era
+       rule selected the 2019-2025 modern fit as the deployed constant;
+       the all-years table [0.3272, ..., 0.9964] this block originally
+       quoted is the documented conservative fallback in
+       out/data/survival_recalibration.json, not the shipped value)
        def calibrated_cond_survival(adp, to_pick, from_pick):
            p = cond_survival(adp, to_pick, from_pick)
            return SURVIVAL_CALIBRATION[min(19, int(p * 20))]
