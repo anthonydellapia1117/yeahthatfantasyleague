@@ -1075,11 +1075,36 @@ const ok = (cond, name, detail) => {
     ok(/Survival to your pick/.test(await pe.textContent("body")),
        "audited survival table still renders");
     ok(!/NaN/.test(petxt), "pick engine renders no NaN");
+    // SIGNAL ENCODING in the room: badges, containers, and legends render
+    // from the loaded cvs.json with the board's exact states
+    const sigOn = await pe.evaluate(() => ({
+      badges: document.querySelectorAll(".sig").length,
+      containers: document.querySelectorAll("[data-sig]").length,
+      legends: document.querySelectorAll(".siglegend").length,
+    }));
+    ok(sigOn.badges >= 3, "room signal badges render (icon + label)",
+       String(sigOn.badges));
+    ok(sigOn.containers >= 3, "room signal containers render (third channel)",
+       String(sigOn.containers));
+    ok(sigOn.legends >= 1, "room signal legend renders", String(sigOn.legends));
+    // the Board tab (best-available view) carries all three channels too
+    const vb = await pe.evaluate(() => ({
+      containers: document.querySelectorAll("#scr-board .vrow[data-sig]").length,
+      badges: document.querySelectorAll("#scr-board .sig").length,
+      legends: document.querySelectorAll("#scr-board .siglegend").length,
+    }));
+    ok(vb.containers >= 3, "value board rows carry the signal container", String(vb.containers));
+    ok(vb.badges >= 3, "value board rows carry signal badges", String(vb.badges));
+    ok(vb.legends >= 1, "value board carries the signal legend", String(vb.legends));
     // the shared kill-switch: with the layer off, the card says so and
     // scores from the pure-model variant with no walter percentages
     await pe.evaluate(() => localStorage.setItem("ytfl_walter_live", "off"));
     await pe.reload();
     await pe.waitForTimeout(3500);
+    const sigOff = await pe.evaluate(() => document.querySelectorAll(".sig").length);
+    ok(sigOff !== sigOn.badges,
+       "walter toggle changes the room's rendered signals (server variants)",
+       `${sigOn.badges} -> ${sigOff}`);
     const offtxt = await pe.textContent("#pe-body");
     ok(/WALTER LAYER OFF/.test(offtxt), "pick engine honors the live kill-switch");
     ok(!/walter [+-]/.test(offtxt), "off-mode card carries no walter percentages");

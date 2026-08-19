@@ -1,5 +1,31 @@
 # Changelog
 
+## Signal encoding live in the draft room (2026-08-19)
+
+Anthony's question two: the seven-state signal encoding was board-only
+(plus a pick-engine headline tag). Now it is live in the room's
+available-player views, same precedence and same three channels as the
+big board.
+
+- THE SIGNAL is read, never re-derived: sigOf(p) takes the server-ranked
+  cvs entry and picks the walter-on or walter-off variant with the same
+  peWalterOn() precedence the pick engine already uses - so the one-tap
+  walter toggle flips the room's signals exactly as it flips the board.
+- THREE CHANNELS on every surface, verbatim from big_board: the
+  [data-sig] container treatment (3px border-left + tint), the inline
+  SVG icon, and the text label (MY DND / DND x2 / DND / TARGET x2 /
+  TARGET / SLEEPER x2 / SLEEPER), with the conflict marker when the
+  walter-off signal disagrees.
+- SURFACES: the on-the-clock card (name + comparison chips), the two
+  runner chips, the by-position minis, the watch-queue board (with a
+  legend), the recs cards (with a legend), the pick-engine
+  alternatives, and the Board tab's best-available view - overall and
+  per-position rows both, with the legend at the top.
+- DISPLAY ONLY, guarded: pages guards prove the signal never enters
+  peScore or the grade path, the maps match big_board byte-for-byte,
+  and the smoke test asserts badges/containers/legends render and that
+  toggling walter changes the rendered signals.
+
 ## Survival calibration ADOPTED at scope (ii), era-informed table (2026-08-19)
 
 Anthony adopted candidate B with two conditions, both met, and asked

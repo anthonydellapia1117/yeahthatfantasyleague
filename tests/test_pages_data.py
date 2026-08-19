@@ -290,6 +290,25 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "the room's disclosure names the deployed era fit, not the rejected blend")
     ok("pre-draft verdicts use the frozen survival model" in drp,
        "the frozen/calibrated boundary is stated on the pre-draft surface")
+    # signal encoding in the room: same seven states, three channels,
+    # server-side precedence, walter-toggle aware, display only
+    ok("SIGENC-BEGIN" in drp and "SIGENC-END" in drp
+       and drp.index("SIGENC-BEGIN") > drp.index("engine-data-end"),
+       "room signal encoding is marker-quarantined outside the sentinels")
+    for lbl in ("MY DND", "DND x2", "TARGET x2", "SLEEPER x2"):
+        ok(lbl in drp, f"room carries signal label {lbl}")
+    for c in ("#b91c1c", "#b45309", "#047857", "#1e3a8a", "#1d4ed8"):
+        ok(c in drp, f"room carries signal color {c} (contrast-proven set)")
+    ok("peWalterOn() ? c : c.no_walter" in drp,
+       "room signals honor the walter live toggle via the server variants")
+    _pe_seg = drp[drp.index("function peScore"):drp.index("function peCondition")]
+    _gr_seg = drp[drp.index("const GRADE_W"):drp.index("function renderRecs")]
+    ok("sigOf" not in _pe_seg and "sigBadge" not in _pe_seg
+       and "sigOf" not in _gr_seg and "sigBadge" not in _gr_seg,
+       "signals are display only - never inside the score or the grade")
+    _vb_seg = drp[drp.index("function renderValueBoard"):drp.index("function simGauss")]
+    ok("sigAttr(" in _vb_seg and "sigBadge(" in _vb_seg and "sigLegend()" in _vb_seg,
+       "the value board (best-available view) carries all three signal channels")
     ok("${S(p).cvs_rank}" in bpage,
        "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending
