@@ -244,6 +244,15 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     drp = open(os.path.join(ROOT, "out", "draft_room.html")).read()
     ok("ytfl_walter_live" in drp and "cvs_base" in drp,
        "pick engine reads the same kill-switch and pure-model variant")
+    # the draft-order hypothesis: quarantined, persisted, and explicitly
+    # subordinate to Sleeper's real draw
+    ok("ORDERHYP-BEGIN" in drp and "ORDERHYP-END" in drp
+       and "ytfl_order_hyp" in drp,
+       "order hypothesis is marker-quarantined and persisted")
+    ok("THE LIVE SOURCE WINS" in drp and "hypothesis is retired" in drp,
+       "order hypothesis states that Sleeper's draw wins, and retires visibly")
+    ok(drp.index("ORDERHYP-BEGIN") > drp.index("engine-data-end"),
+       "order hypothesis code sits outside the engine sentinels")
     ok("${S(p).cvs_rank}" in bpage,
        "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending

@@ -77,6 +77,10 @@ summary{cursor:pointer;font-size:12px;color:var(--ink3);list-style:none;-webkit-
   padding:6px 0;min-height:24px}
 .scrollx,#lv-surv{overflow-x:auto;-webkit-overflow-scrolling:touch}
 #f-hist{white-space:normal}
+.ohyp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 10px;margin:8px 0}
+.ohyp-grid label{display:flex;gap:6px}
+.ohyp-grid select{flex:1;min-width:0;background:var(--s2);color:var(--ink);
+  border:1px solid var(--line);border-radius:6px;padding:5px 6px;font-size:12px}
 summary::before{content:"+ "}
 details[open] summary::before{content:"- "}
 .gap{margin-top:8px;font-size:12px;color:var(--ink2)}
@@ -304,21 +308,84 @@ const pct = (p) => Math.round(p * 100) + "%";
 const norm = (s) => String(s).toLowerCase().replace(/[.']/g, "")
   .replace(/\s+(jr|sr|ii|iii|iv|v)$/,"").trim();
 
+// ======== ORDERHYP-BEGIN ========
+// Draft-order hypothesis (pre-draft only). Sleeper's lobby shows no draw
+// yet; this lets Anthony assign the 12 real franchises to slots and see
+// the seat context under that order. THE LIVE SOURCE WINS: the moment
+// Sleeper's real draw exists it replaces the hypothesis everywhere,
+// automatically. The scenario math (survival, verdicts) is pure pick
+// geometry and never depends on who sits where - only the seat LABELS
+// and their tendency lifts remap. Live mode never reads any of this.
+const OrderHyp = {
+  KEY: "ytfl_order_hyp",
+  realMap: null,                 // Sleeper's draw, set by refresh()
+  get(){ try { return JSON.parse(localStorage.getItem(this.KEY) || "null"); } catch { return null; } },
+  set(m){ try { localStorage.setItem(this.KEY, JSON.stringify(m)); } catch {} },
+  clear(){ try { localStorage.removeItem(this.KEY); } catch {} },
+  active(){
+    if (this.realMap) return false;
+    const h = this.get();
+    return !!h && Object.keys(h).some(k => Number(h[k]) !== Number(k));
+  },
+  map(){ return this.realMap || (this.active() ? this.get() : null); },
+  rosterAt(slot){ const m = this.map(); return Number((m || {})[slot] || slot); },
+  seatAt(slot){
+    const rid = this.rosterAt(slot);
+    return E.rosters.find(r => Number(r.roster_id) === rid);
+  },
+  mySlot(){
+    const m = this.map();
+    if (!m) return null;
+    for (const s of Object.keys(m))
+      if (Number(m[s]) === E.league.anthony_roster_id) return Number(s);
+    return null;
+  },
+  dupes(){
+    const h = this.get() || {};
+    const seen = {}, d = [];
+    for (const s of Object.keys(h)){
+      const rid = Number(h[s]);
+      if (seen[rid]) d.push(rid); else seen[rid] = true;
+    }
+    return d;
+  },
+};
+// ======== ORDERHYP-END ========
+
 // Who picks between this turn and the next, and how each leans at the target
 // position. CONTEXT ONLY - never folded into the probability. Folding it in was
 // tested and made the model worse out of sample (see E.tendency_note).
 function gapStrip(r, pos){
   if (!r.gap_seats || !r.gap_seats.length) return "";
+  // ORDERHYP: under a hypothesis (or Sleeper's real draw before the room
+  // goes live) the seat chips remap - franchise AND its lift, recomputed
+  // from the payload's per-franchise lifts, since a label without its own
+  // lift would mislead. The engine-built aggregate line describes the
+  // build order, so it is dropped when a remap is active.
+  const remap = OrderHyp.map();
   const chips = r.gap_seats.map(s => {
-    const l = s.lift;
+    let fr = s.franchise, l = s.lift, thin = s.thin;
+    if (remap){
+      const seat = OrderHyp.seatAt(slotOfOverall(s.pick));
+      if (seat){
+        fr = seat.franchise;
+        thin = seat.thin;
+        const band = simBand(Math.ceil(s.pick / E.league.teams));
+        l = simLift(fr, band, pos);
+      }
+    }
     const cls = l === null ? "" : (l >= 1.10 ? " hot" : (l <= 0.90 ? " cold" : ""));
     const val = l === null ? "?" : l.toFixed(2) + "x";
-    return `<span class="seat${cls}" title="pick ${s.pick}">${esc(s.franchise)} ${val}${s.thin ? "*" : ""}</span>`;
+    return `<span class="seat${cls}" title="pick ${s.pick}">${esc(fr)} ${val}${thin ? "*" : ""}</span>`;
   }).join("");
   const lean = r.gap_lift === null || r.gap_lift === undefined ? "unknown"
     : r.gap_lift.toFixed(2) + "x league average";
-  return `<div class="gap"><b>${r.gap_seats.length} seats pick before your next turn</b>
-    - collectively ${lean} at ${pos} (context only, not in the probability)<br>${chips}</div>`;
+  const head = remap
+    ? `<b>${r.gap_seats.length} seats pick before your next turn</b>
+       - ${OrderHyp.realMap ? "Sleeper's drawn order" : "your hypothesis order"} (context only, not in the probability)`
+    : `<b>${r.gap_seats.length} seats pick before your next turn</b>
+       - collectively ${lean} at ${pos} (context only, not in the probability)`;
+  return `<div class="gap">${head}<br>${chips}</div>`;
 }
 
 function injBadge(p){ return p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""; }
@@ -380,6 +447,37 @@ function renderPre(activeSlot){
   }
   h += `</div>`;
 
+  // ORDERHYP: the order card sits between the scenario and the priors.
+  // Retired automatically (and visibly) once Sleeper's draw exists.
+  h += `<div class="card" id="ohyp-card"><h2>Draft order - your hypothesis</h2>`;
+  if (OrderHyp.realMap){
+    h += `<p class="small">The draw is live - the hypothesis is retired and
+      Sleeper's order wins everywhere. Seats below the scenario reflect it.</p>`;
+  } else {
+    const hyp = OrderHyp.get() || {};
+    h += `<p class="small">Sleeper has not drawn the order. Assign the 12
+      franchises to slots to preview seat context under that order -
+      the moment the real draw exists it wins, everywhere, automatically.
+      The verdicts and survival numbers never depend on this; only seat
+      labels and their tendency lifts do.</p><div class="ohyp-grid">`;
+    for (let s = 1; s <= E.league.teams; s++){
+      const cur = Number(hyp[s] || s);
+      h += `<label class="small">slot ${s} <select data-ohyp="${s}">` +
+        E.rosters.map(r => `<option value="${r.roster_id}"${Number(r.roster_id) === cur ? " selected" : ""}>${esc(r.franchise)} (${esc(r.handle)})</option>`).join("") +
+        `</select></label>`;
+    }
+    h += `</div><div class="togglerow"><button id="ohyp-clear">reset to seed order</button></div>`;
+    const d = OrderHyp.dupes();
+    if (d.length){
+      const names = d.map(rid => (E.rosters.find(r => Number(r.roster_id) === rid) || {}).franchise || rid);
+      h += `<p class="small" style="color:var(--stop)">duplicates: ${names.map(esc).join(", ")} appear more than once - fix before trusting the seat strips.</p>`;
+    } else if (OrderHyp.active()){
+      const ms = OrderHyp.mySlot();
+      h += `<p class="small">hypothesis active${ms ? ` - your seat is slot ${ms}` : ""}. Engine-built urgency lines still use the build order until the next regeneration.</p>`;
+    }
+  }
+  h += `</div>`;
+
   // opponent priors - context card below the scenario. The six-column table
   // scrolls inside the card at phone widths instead of widening the page.
   h += `<div class="card"><h2>The table, as mapped today</h2>
@@ -399,6 +497,23 @@ function renderPre(activeSlot){
     `<button data-slot="${s}" class="${s === activeSlot ? "on" : ""}" title="Slot ${s}">${s}</button>`).join("");
   chips.querySelectorAll("button").forEach(b =>
     b.addEventListener("click", () => renderPre(Number(b.dataset.slot))));
+  // ORDERHYP events: assignment SWAPS - the chosen franchise leaves its old
+  // slot and the displaced franchise takes this one, so the order is always
+  // a permutation and no duplicate state is reachable from the UI
+  document.querySelectorAll("[data-ohyp]").forEach(sel =>
+    sel.addEventListener("change", () => {
+      const m = OrderHyp.get() || {};
+      for (let s = 1; s <= E.league.teams; s++) m[s] = Number(m[s] || s);
+      const slot = Number(sel.dataset.ohyp), rid = Number(sel.value);
+      const from = Object.keys(m).find(s => m[s] === rid);
+      if (from) m[from] = m[slot];
+      m[slot] = rid;
+      OrderHyp.set(m);
+      const ms = OrderHyp.mySlot();
+      renderPre(ms || activeSlot);
+    }));
+  const oc = document.getElementById("ohyp-clear");
+  if (oc) oc.addEventListener("click", () => { OrderHyp.clear(); renderPre(activeSlot); });
 }
 
 // ---- Mode 2: live draft
@@ -1716,6 +1831,14 @@ async function refresh(){
   const seat = detectSeat(draft);
   if (seat) LiveState.mySlot = seat;
   if (!live){
+    // ORDERHYP: record Sleeper's draw the moment it exists; if it just
+    // appeared over a rendered hypothesis, re-render so the live source
+    // visibly wins
+    const rm = realSlotMap(draft);
+    const hadHyp = OrderHyp.active();
+    OrderHyp.realMap = rm;
+    if (rm && hadHyp && document.querySelector(".rowcard"))
+      renderPre(LiveState.mySlot || 7);
     $("mode").textContent = "MODE 1 - PRE-DRAFT - all 12 scenarios";
     $("mode").classList.remove("live");
     if (LiveState.mySlot){
