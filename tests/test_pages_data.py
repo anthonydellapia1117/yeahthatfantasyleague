@@ -253,6 +253,43 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "order hypothesis states that Sleeper's draw wins, and retires visibly")
     ok(drp.index("ORDERHYP-BEGIN") > drp.index("engine-data-end"),
        "order hypothesis code sits outside the engine sentinels")
+    # the survival calibration layer (ADOPTED, scope ii): payload table is
+    # the committed constant, monotone, kill-switchable; the room consumes
+    # it through the wrapper with the frozen fallback and shows the delta
+    # on threshold-straddling picks only
+    _esrc = open(os.path.join(ROOT, "src", "engine_2026.py")).read()
+    _m = re.search(r"SURVIVAL_CALIBRATION = \[([^\]]+)\]", _esrc)
+    _tbl = [float(x) for x in _m.group(1).replace("\n", " ").split(",")]
+    emb2 = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    ok(emb2.get("survival_calibration") == _tbl,
+       "calibration table in the payload equals the committed constant")
+    ok(len(_tbl) == 20 and all(0 <= v <= 1 for v in _tbl)
+       and all(_tbl[i] <= _tbl[i + 1] + 1e-9 for i in range(19)),
+       "calibration table is a monotone 20-bin probability table")
+    ok(isinstance(emb2.get("survival_calibration_enabled"), bool),
+       "payload carries the calibration kill switch")
+    ok("SURVCAL-BEGIN" in drp and "ytfl_survcal_live" in drp
+       and "function calCondSurvival" in drp,
+       "room carries the calibrated wrapper and its one-tap toggle")
+    ok("|| !survCalOn()) return p" in drp.replace("  ", " ")
+       or "!survCalOn()) return p" in drp,
+       "wrapper falls back to the frozen number when any switch is off")
+    ok("const s = calCondSurvival(comp.adp" in drp
+       and "the calibration flips this call" in drp,
+       "verdict consumes the calibrated number and shows both on straddles")
+    ok(drp.index("SURVCAL-BEGIN") > drp.index("engine-data-end"),
+       "calibration code sits outside the engine sentinels")
+    ok("1 - condSurvival(p.adp, ctx.myNext" in drp,
+       "grade urgency stays on the frozen number (not in the approved diff)")
+    ok("CALIBRATED SURVIVAL UNAVAILABLE" in drp,
+       "toggle label honors the payload kill switch, never claims ON falsely")
+    _cref = emb2.get("calibration_reference") or []
+    ok(len(_cref) >= 5 and all(0 <= r["cal"] <= 1 for r in _cref),
+       "payload carries Python-computed calibration anchors for JS parity")
+    ok("2019-2025 era" in drp,
+       "the room's disclosure names the deployed era fit, not the rejected blend")
+    ok("pre-draft verdicts use the frozen survival model" in drp,
+       "the frozen/calibrated boundary is stated on the pre-draft surface")
     ok("${S(p).cvs_rank}" in bpage,
        "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending

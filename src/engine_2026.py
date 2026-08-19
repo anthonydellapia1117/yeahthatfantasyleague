@@ -167,6 +167,34 @@ def cond_survival(adp, to_pick, from_pick):
     return max(0.0, min(1.0, survival(adp, to_pick) / s_from))
 
 
+# ---- survival calibration layer (ADOPTED 2026-08-19, Anthony, scope ii).
+# The five frozen functions above are UNTOUCHED - this is a monotone 20-bin
+# lookup applied AFTER them, correcting the normal model's thin late tail
+# (fallers keep falling; the frozen model says "gone" too confidently below
+# 50 percent predicted survival). Table = the 2019-2025 era fit, chosen over
+# the all-years blend by a pre-registered rule (the eras differ by up to
+# 0.111 per bin and straddle the 0.6 verdict threshold; the modern fit is
+# not worse on the 2023-2025 holdout). Full evidence, the fallback table,
+# and both flip intervals: out/data/survival_recalibration.json and the
+# MODEL.md ADR. Kill switches: this flag (rebuild-level) and the room's
+# one-tap CALIBRATED SURVIVAL toggle (display-level).
+SURVIVAL_CALIBRATION = [0.2749, 0.2749, 0.2749, 0.3559, 0.431, 0.431,
+                        0.4632, 0.5484, 0.5484, 0.6448, 0.6448, 0.6929,
+                        0.7487, 0.7487, 0.8062, 0.8834, 0.9182, 0.946,
+                        0.9795, 0.9974]
+SURVIVAL_CALIBRATION_ENABLED = True
+
+
+def calibrated_cond_survival(adp, to_pick, from_pick):
+    """cond_survival, then the calibration lookup. Monotone by construction,
+    so it can rescale confidence but never reorder two players."""
+    p = cond_survival(adp, to_pick, from_pick)
+    if not SURVIVAL_CALIBRATION_ENABLED:
+        return p
+    return SURVIVAL_CALIBRATION[min(len(SURVIVAL_CALIBRATION) - 1,
+                                    int(p * len(SURVIVAL_CALIBRATION)))]
+
+
 def snake_picks(slot):
     return [(r - 1) * TEAMS + (slot if r % 2 == 1 else TEAMS + 1 - slot)
             for r in range(1, ROUNDS + 1)]
@@ -409,6 +437,17 @@ def build_model():
         "baselines": {p: baseline[p] for p in baseline},
         "replacement_ranks": dict(repl),
         "adp_sd_curve": [[round(a, 2), round(s, 4)] for a, s in ADP_SD_CURVE],
+        "survival_calibration": SURVIVAL_CALIBRATION,
+        "survival_calibration_enabled": SURVIVAL_CALIBRATION_ENABLED,
+        "calibration_reference": [
+            # Python-computed calibrated anchors the JS wrapper must
+            # reproduce - the same cross-language parity pattern as
+            # survival_reference, so the smoke check is not circular
+            {"adp": adp, "from_pick": c, "to_pick": k,
+             "cal": calibrated_cond_survival(adp, k, c)}
+            for adp, k, c in ((24, 18, 7), (60, 40, 10), (5, 18, 7),
+                              (100, 120, 60), (1.7, 70, 60))
+        ],
         "survival_reference": [
             # Python-computed anchors the JS mirror must reproduce (parity test).
             # Includes a deep-tail case that the old 1-erf JS collapsed to 0.

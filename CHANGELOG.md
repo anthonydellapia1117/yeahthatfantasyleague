@@ -1,5 +1,36 @@
 # Changelog
 
+## Survival calibration ADOPTED at scope (ii), era-informed table (2026-08-19)
+
+Anthony adopted candidate B with two conditions, both met, and asked
+whether the 2019 regime shift lives in the calibration table. It does.
+
+- ERA ANALYSIS (rule registered before computing): the all-years and
+  modern (2019-2025) tables differ by up to 0.111 per bin and straddle
+  the 0.6 verdict threshold in bins 7-8; the modern-era fit is not worse
+  on the 2023-2025 holdout (0.0597 vs 0.0598). THE MODERN TABLE DEPLOYS;
+  the all-years table is the documented conservative fallback.
+- CONDITION 1: Anthony's interval arithmetic confirmed exactly (398
+  flips, 62.8%, CI [58.1%, 67.6%], z=1.16 - all-years lineage). The
+  deployed lineage is stronger: 292 walk-forward flips at 65.8%,
+  CI [60.4%, 71.2%], z=2.09 - the lower bound clears the 0.6 bar.
+  Clustering caveat stated, not estimated.
+- CONDITION 2: one-tap CALIBRATED SURVIVAL toggle in the live room
+  (localStorage, like the walter toggle); when frozen and calibrated
+  straddle the verdict threshold, the card shows both numbers - only on
+  those picks.
+- THE WIRING (approved diff, verbatim): SURVIVAL_CALIBRATION constant +
+  calibrated_cond_survival wrapper + two payload keys in the engine
+  (pure additions); calCondSurvival JS mirror with frozen fallback;
+  verdict comparison, survival tables, tier cliffs, board survival,
+  recs, and pick engine consume the calibrated number. The pick-grade
+  urgency and engine-baked pre-draft verdicts stay frozen (not in the
+  approved diff, stated in the ADR). The ten frozen function bodies
+  remain byte-identical - mathdiff proves it.
+- Pre-registered alongside (Anthony's item-2 follow-up): the modern-era
+  durability hypothesis and its 2026 decision rule, written into
+  MODEL.md before the season.
+
 ## Draft-order hypothesis card (2026-08-19)
 
 - Pre-draft draft room: Sleeper's lobby has no draw yet, so a new card

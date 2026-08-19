@@ -162,6 +162,35 @@ const ok = (cond, name, detail) => {
     ok(/PICK 4/i.test(body), "current pick derived from picks gone (3+1)");
     ok(await page.locator("#lv-dot").count() === 1, "freshness dot present");
     ok(/ON THE CLOCK/.test(body), "on-the-clock lower third");
+    // SURVIVAL CALIBRATION: wrapper parity with the payload table, the
+    // one-tap toggle, and the frozen fallback
+    const calPar = await page.evaluate(() => {
+      // cross-language parity: the JS wrapper must reproduce the
+      // Python-computed anchors embedded by the engine (never circular)
+      const t = E.survival_calibration;
+      let okAll = (E.calibration_reference || []).length >= 5, flipBin = false;
+      for (const r of E.calibration_reference || []){
+        if (Math.abs(window.__calCondSurvival(r.adp, r.to_pick, r.from_pick) - r.cal) > 1e-9)
+          okAll = false;
+      }
+      for (let i = 0; i < t.length; i++)
+        if (i / t.length < 0.6 && t[i] >= 0.6) flipBin = true;
+      return { okAll, flipBin, len: t.length, enabled: E.survival_calibration_enabled };
+    });
+    ok(calPar.okAll && calPar.len === 20 && calPar.enabled,
+       "JS wrapper reproduces the Python-computed calibration anchors");
+    ok(calPar.flipBin,
+       "the table contains bins that flip TAKE NOW to WAIT (the correction is real)");
+    ok(/CALIBRATED SURVIVAL ON/.test(await page.textContent("#survcal-toggle")),
+       "calibration toggle renders ON by default");
+    await page.click("#survcal-toggle");
+    await page.waitForTimeout(300);
+    ok(/CALIBRATED SURVIVAL OFF/.test(await page.textContent("#survcal-toggle")),
+       "one tap flips the calibration off");
+    const calOff = await page.evaluate(() =>
+      window.__calCondSurvival(24, 18, 7) === condSurvival(24, 18, 7));
+    ok(calOff, "with the toggle off the wrapper returns the frozen number");
+    await page.evaluate(() => localStorage.removeItem("ytfl_survcal_live"));
     await page.close();
   }
 

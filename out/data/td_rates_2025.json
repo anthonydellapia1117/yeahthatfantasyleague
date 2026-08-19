@@ -1934,7 +1934,7 @@
  "provenance": {
   "source": "nflverse stats_player_week 2025 (CC-BY-4.0)",
   "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz",
-  "fetched_at": "2026-08-19T03:31:56Z",
+  "fetched_at": "2026-08-19T06:09:30Z",
   "basis": "2025 REG TDs per opportunity: QB = passing TDs / attempts; RB/WR/TE = (rush+rec TDs) / (carries + targets); outliers = top/bottom decile within position at minimum-opportunity thresholds"
  }
 }

@@ -238,11 +238,58 @@ is dropped. The 2026 season will test the modern-era hypothesis out of
 sample for free; revisiting after that is a new decision, not this one.
 Payload: out/data/durability_fade.json.
 
-## ADR (PROPOSED, NOT ADOPTED): survival calibration layer
+PRE-REGISTERED (2026-08-19, before the season, per Anthony): the
+modern-era durability hypothesis and its decision rule, written before
+the data exists. Hypothesis: the games-missed fade is a real 2019+
+regime, not overfitting. Test: after the 2026 season completes, re-run
+the full_ctrl spec (age + points-per-game controls, season-cluster
+bootstrap) on 2019-2026 - eight seasons, one of them genuinely out of
+sample relative to everything computed today. Decision rule: if the
+2019-2026 coefficient's 95% interval excludes zero AND the sign is
+negative AND the 2026-only contribution does not oppose it (the 2026
+season's own coefficient point estimate is negative), the fade becomes
+a CANDIDATE for a gated decision - display-only flag or CVS factor,
+Anthony's call, nothing automatic. Any other outcome closes the
+question permanently. No re-specification after seeing 2026 data;
+this paragraph is the analysis plan.
 
-Status: proposal awaiting Anthony's approval of the exact diff below.
-Nothing in this section is live. The five frozen functions are untouched
-and stay untouched either way.
+## ADR (ADOPTED 2026-08-19): survival calibration layer
+
+Status: ADOPTED by Anthony at scope (ii) full, with two conditions, both
+met below. The five frozen functions are untouched - the calibration is
+a monotone lookup applied AFTER them, kill-switchable at two levels
+(payload flag + a one-tap live toggle in the room).
+
+ERA ANALYSIS (Anthony's question, rule registered before computing):
+does the durability-style 2019 regime shift live in the calibration
+table? YES. The all-years and modern (2019-2025) tables differ by up to
+0.111 per bin, and bins 7-8 straddle the 0.6 verdict threshold between
+them - the all-years blend imports the old era's fatter tails and
+over-corrects exactly in the decision region. The 2019-2022 fit is not
+worse on the 2023-2025 holdout (Brier 0.0597 vs 0.0598). Per the rule:
+THE MODERN TABLE DEPLOYS; the all-years table is the documented
+conservative fallback in out/data/survival_recalibration.json.
+
+CONDITION 1 (the interval, on the record): Anthony's arithmetic on the
+all-years lineage is confirmed exactly - 398 flips at 62.8%, binomial SE
+0.024, CI95 [58.1%, 67.6%], one-sided z vs the 0.6 bar = 1.16. The
+DEPLOYED lineage (2019-2022 fit, walk-forward on 2023-2025) is stronger:
+292 flips at 65.8%, CI95 [60.4%, 71.2%], z = 2.09 - the lower bound
+clears the bar. Caveat, stated not estimated: flips cluster within
+players and draft years, so both intervals are somewhat narrow; three
+holdout seasons are too few for a stable cluster interval.
+
+CONDITION 2 (the switch and the delta): the room carries a one-tap
+CALIBRATED SURVIVAL toggle (localStorage, like the Walter toggle), and
+whenever the frozen and calibrated numbers land on opposite sides of the
+0.6 verdict threshold on the current comparison, the card shows both -
+only on those picks.
+
+Scope notes: the live room's verdict comparison, survival tables, tier
+cliffs, recs, and pick engine consume the calibrated value. The pick
+grade's urgency input and the engine-baked pre-draft scenario verdicts
+stay on the frozen number (not in the approved diff); draft-morning
+regeneration refreshes the pre-draft cards anyway.
 
 DIAGNOSIS (out/data/survival_recalibration.json): the frozen sd curve is
 already fitted on this league's own history, so the overconfidence about
@@ -274,9 +321,14 @@ all-years refit; the holdout numbers above are its out-of-sample
 estimate):
 
     1. src/engine_2026.py - pure additions, zero existing lines change:
-       SURVIVAL_CALIBRATION = [0.3272, 0.3272, 0.3861, 0.4318, 0.4754,
-         0.4754, 0.4883, 0.6029, 0.6029, 0.6746, 0.6746, 0.6927, 0.7661,
-         0.7727, 0.819, 0.8842, 0.9136, 0.9459, 0.9651, 0.9964]
+       SURVIVAL_CALIBRATION = [0.2749, 0.2749, 0.2749, 0.3559, 0.431,
+         0.431, 0.4632, 0.5484, 0.5484, 0.6448, 0.6448, 0.6929, 0.7487,
+         0.7487, 0.8062, 0.8834, 0.9182, 0.946, 0.9795, 0.9974]
+       (AMENDED 2026-08-19 after the block was first written: the era
+       rule selected the 2019-2025 modern fit as the deployed constant;
+       the all-years table [0.3272, ..., 0.9964] this block originally
+       quoted is the documented conservative fallback in
+       out/data/survival_recalibration.json, not the shipped value)
        def calibrated_cond_survival(adp, to_pick, from_pick):
            p = cond_survival(adp, to_pick, from_pick)
            return SURVIVAL_CALIBRATION[min(19, int(p * 20))]
