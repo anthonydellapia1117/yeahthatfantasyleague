@@ -133,6 +133,19 @@ ok("clock unavailable - use Sleeper" in _room,
 ok("LiveState.pickTimer = (draft.settings && Number(draft.settings.pick_timer)) || null" in _room,
    "P0: the duration is captured from settings on every fetch")
 
+# 8c. DEPLOY COMPLETENESS: pages.yml copies an explicit file list, which
+#     silently omitted a brand-new page once (paths.html shipped to main,
+#     every gate green, live site 404). Every page the shared nav links to
+#     must appear in the deploy copy list.
+_pgy = open(os.path.join(ROOT, ".github", "workflows", "pages.yml")).read()
+_navsrc0 = open(os.path.join(ROOT, "out", "nav.js")).read()
+import re as _re
+_nav_hrefs = _re.findall(r'\["\w+",\s*"[^"]+",\s*"([^"]+)"\]', _navsrc0)
+_missing_deploy = [h for h in _nav_hrefs if f"out/{h}" not in _pgy]
+ok(not _missing_deploy,
+   "every nav-linked page is in the pages.yml deploy list",
+   "; ".join(_missing_deploy))
+
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")
 

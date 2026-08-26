@@ -23,8 +23,8 @@ jobs:
         run: |
           mkdir -p _site/out/data
           cp index.html _site/
-          cp out/draft_room.html out/big_board.html out/players.html out/teams.html \
-             out/home.html out/nav.js out/icon-180.png out/ff-hub.html \
+          cp out/draft_room.html out/big_board.html out/players.html out/paths.html \
+             out/teams.html out/home.html out/nav.js out/icon-180.png out/ff-hub.html \
              out/engine_2026.json out/cvs.json _site/out/
           cp out/data/*.json out/data/heartbeat.txt _site/out/data/
           mkdir -p _site/out/teaser
