@@ -43,6 +43,9 @@ import os
 import re
 import sys
 import datetime
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from forward_policy import pick_marginal, roster_caps  # noqa: E402
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -357,9 +360,18 @@ def build_model():
                 tier_no[x["name"]] = i
 
     slots = {}
+    caps = roster_caps(lg.get("flex_alloc", {}))
     for slot in range(1, TEAMS + 1):
         picks = snake_picks(slot)
         rounds = []
+        # FORWARD-PICK LAW (shared with the mock simulator via
+        # forward_policy): a multi-pick projection consumes its own prior
+        # selections. Each round's primary leaves the pool, and the next
+        # round is solved with the marginal-lineup policy against what
+        # remains - never the same player at consecutive picks, never a
+        # duplicate elite position priced at starter value.
+        consumed = set()
+        proj_roster = []
         for rnd, pick in enumerate(picks, 1):
             nxt = picks[rnd] if rnd < ROUNDS else pick + 2 * TEAMS
             if rnd >= ROUNDS - 1:
@@ -367,22 +379,32 @@ def build_model():
                                "kdef": True, "primary": None})
                 continue
             avail = [(r, survival(r["adp"], pick)) for p in SKILL
-                     for r in by_pos[p] if r["adp"] < 900]
+                     for r in by_pos[p] if r["adp"] < 900
+                     and r["name"] not in consumed]
             likely = sorted([(r, s) for r, s in avail if s >= 0.5],
                             key=lambda t: -t[0]["vor"])
             if not likely:
                 rounds.append({"round": rnd, "pick": pick,
                                "kdef": False, "primary": None})
                 continue
-            prim, ps = likely[0]
-            fall = next(((r, s) for r, s in likely[1:]
+            prim = pick_marginal([r for r, _s in likely], proj_roster,
+                                 baseline, caps)
+            if prim is None:      # every position capped: relax the caps
+                prim = pick_marginal([r for r, _s in likely], proj_roster,
+                                     baseline, None)
+            ps = next(s for r, s in likely if r is prim)
+            others = [(r, s) for r, s in likely if r is not prim]
+            consumed.add(prim["name"])
+            proj_roster.append({"name": prim["name"], "pos": prim["pos"],
+                                "pts": prim["pts"]})
+            fall = next(((r, s) for r, s in others
                          if r["pos"] != prim["pos"]
                          or r["vor"] < prim["vor"] - COMPARABLE_VOR),
-                        likely[1] if len(likely) > 1 else (None, 0))
+                        others[0] if others else (None, 0))
             # WAIT-OR-REACH: best same-position comparable most likely to
             # survive to the NEXT turn. The centrepiece comparison.
             comp = None
-            for r, _s in likely[1:]:
+            for r, _s in others:
                 if r["pos"] != prim["pos"]:
                     continue
                 if prim["vor"] - r["vor"] > COMPARABLE_VOR:
@@ -399,7 +421,7 @@ def build_model():
                             if any(x["name"] == prim["name"] for x in t)), [])
             cliff = sum(1 for x in tier_of
                         if cond_survival(x["adp"], pick + 2 * TEAMS, pick) >= 0.5)
-            coin = [r["name"] for r, s in likely[1:4]
+            coin = [r["name"] for r, s in others[:3]
                     if r["pos"] == prim["pos"]
                     and prim["vor"] - r["vor"] <= COMPARABLE_VOR]
             urgent = (urgency_list(rosters, prim["pos"], rnd)

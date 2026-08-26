@@ -44,6 +44,8 @@ import os
 import statistics
 from collections import Counter, defaultdict
 
+from forward_policy import phantom_lineup_pts, roster_caps
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 OUT = os.path.join(D, "mock_drafts_2026.json")
@@ -115,20 +117,6 @@ def snake(teams, rounds_total):
             yield rnd, slot
 
 
-def roster_caps(flex_alloc):
-    """Bench sanity for the marginal autopilot, derived from the league's
-    own observed flex allocation: a position may hold at most its maximum
-    simultaneous starters (base slots, plus the flex slot only where the
-    league has ever actually flexed the position) plus ONE injury spare -
-    a stated convention, like the p75/p90 choices elsewhere."""
-    base = {"QB": 1, "RB": 2, "WR": 2, "TE": 1, "K": 1, "DEF": 1}
-    caps = {}
-    for pos, k in base.items():
-        flexes = 1 if flex_alloc.get(pos, 0) > 0 and pos in FLEX_OK else 0
-        caps[pos] = k + flexes + (1 if pos not in ("K", "DEF") else 0)
-    return caps
-
-
 def run_sim(players, rounds_total, teams_n, our_slot, our_policy,
             window_start, baselines, caps):
     taken = set()
@@ -172,39 +160,6 @@ def run_sim(players, rounds_total, teams_n, our_slot, our_policy,
                         "adp": pick["adp"], "vor": pick.get("vor"),
                         "pts": pick["pts"], "tier": pick.get("tier")})
     return teams[our_slot], log
-
-
-def phantom_lineup_pts(players, baselines):
-    """Optimal starter points with replacement-level phantoms in empty
-    slots - the lineup value function the marginal policy maximizes."""
-    by_pos = defaultdict(list)
-    for p in sorted(players, key=lambda x: -x["pts"]):
-        by_pos[p["pos"]].append(p)
-    total = 0.0
-    used = set()
-
-    def take(pos, n):
-        nonlocal total
-        got = 0
-        for p in by_pos.get(pos, []):
-            if got == n:
-                break
-            k = p["name"] + "|" + p["pos"]
-            if k not in used:
-                used.add(k)
-                total += max(p["pts"], baselines[pos])
-                got += 1
-        while got < n:
-            total += baselines[pos]
-            got += 1
-
-    take("QB", 1), take("RB", 2), take("WR", 2), take("TE", 1)
-    flex = [p for pos in FLEX_OK for p in by_pos.get(pos, [])
-            if p["name"] + "|" + p["pos"] not in used]
-    flex_phantom = max(baselines[p] for p in FLEX_OK)
-    total += max([p["pts"] for p in flex] + [flex_phantom])
-    take("K", 1), take("DEF", 1)
-    return total
 
 
 def optimal_starters(team):

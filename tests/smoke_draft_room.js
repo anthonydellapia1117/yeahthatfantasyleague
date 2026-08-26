@@ -1481,6 +1481,40 @@ const ok = (cond, name, detail) => {
     await page.close();
   }
 
+  // ---- scenario 20: forward-pick law at the snake turn - no player may
+  // appear twice in any slot's projected sequence (the live bug: the same
+  // WR at back-to-back picks 24 and 25 from slot 1)
+  {
+    const page = await browser.newPage();
+    await page.route("**/api.sleeper.app/**", r => r.abort());
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    for (const slot of [1, 12]){   // both wrap seats take back-to-back picks
+      await page.click(`.chips button[data-slot="${slot}"]`);
+      await page.waitForTimeout(300);
+      const names = (await page.$$eval(".rc-name", els =>
+        els.map(e => e.textContent.trim())))
+        .filter(n => !/best available/.test(n))
+        .map(n => n.replace(/projection = floor.*$/, "").trim());
+      const dupes = names.filter((n, i) => names.indexOf(n) !== i);
+      ok(names.length >= 10 && dupes.length === 0,
+         `slot ${slot}: no player repeats across its projected picks`,
+         dupes.join(", "));
+    }
+    // the wrap itself: slot 1 rounds 2 and 3 are consecutive overall picks
+    await page.click('.chips button[data-slot="1"]');
+    await page.waitForTimeout(300);
+    const picks = await page.$$eval(".rowcard", cards => cards.slice(0, 4).map(c => ({
+      pick: (c.querySelector(".rc-pick") || {}).textContent || "",
+      name: (c.querySelector(".rc-name") || {}).textContent || "" })));
+    const r2 = picks.find(p => /pick 24\b/.test(p.pick));
+    const r3 = picks.find(p => /pick 25\b/.test(p.pick));
+    ok(!!r2 && !!r3 && r2.name.trim() !== r3.name.trim(),
+       "back-to-back turn picks 24 and 25 project two different players",
+       r2 && r3 ? r2.name + " / " + r3.name : "cards missing");
+    await page.close();
+  }
+
   await browser.close();
   console.log(failures === 0 ? "\nALL PASS" : `\n${failures} FAILURES`);
   process.exit(failures === 0 ? 0 : 1);
