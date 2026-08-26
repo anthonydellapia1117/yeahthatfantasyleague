@@ -1057,7 +1057,7 @@ function renderLive(draft, newPick){
   if (top){
     const g = pickGrade(top, gradeCtx(top, alive, cur, myNextG, LiveState.mySlot ? R2 : null));
     L["lv-gear"].innerHTML = gearSvg(g);
-    L["lv-chips"].innerHTML = sigBadge(top) + yourCallChip(top) + evidenceChips(top);
+    L["lv-chips"].innerHTML = sigBadge(top) + bullChip(top) + yourCallChip(top) + evidenceChips(top);
     const topSig = sigOf(top);                      // SIGENC container channel
     if (topSig && topSig.sig) L["lv-name"].dataset.sig = topSig.sig;
     else delete L["lv-name"].dataset.sig;
@@ -1441,6 +1441,31 @@ const PE_SIG = { personal_dnd: "MY DND", consensus_dnd: "walter+model DND",
   single_dnd: "DND (one source)", consensus_target: "walter+model TARGET",
   single_target: "TARGET (one source)", consensus_sleeper: "walter+model SLEEPER",
   single_sleeper: "SLEEPER (one source)" };
+// C5 BULLISH layer: computed tags BESIDE the signal encoding, never replacing
+// it. Optional load; the room runs identically without the artifact.
+let BULL = null;
+async function loadBullish(){
+  try {
+    const r = await fetch("data/bullish_2026.json");
+    if (r.ok){
+      BULL = await r.json();
+      if (LiveState.lastRender && LiveState.els) LiveState.lastRender();
+    }
+  } catch (e) { /* absent is a supported state */ }
+}
+loadBullish();
+function bullChip(p){
+  if (!BULL) return "";
+  const t = BULL.tags.find(x => x.name === p.name && x.pos === p.pos);
+  if (!t) return "";
+  const ageH = Math.max(0, (Date.now() - Date.parse(t.computed_at)) / 3600000);
+  let st = t.status, stale = "";
+  if (st === "BULLISH" && ageH > t.ttl_hours){ st = "WATCH"; stale = " (stale)"; }
+  const color = st === "BULLISH" ? "var(--go)" : st === "WATCH" ? "var(--warn)" : "var(--ink3)";
+  const title = `${t.gate} = ${t.score}%; ${t.reasons[0] || "all criteria computed"}; age ${ageH.toFixed(0)}h`;
+  return `<span class="sig" style="color:${color};border-color:${color}" title="${esc(title)}">${st}${stale} ${ageH.toFixed(0)}h</span>`;
+}
+
 async function loadCvs(){
   try {
     const r = await fetch("cvs.json");

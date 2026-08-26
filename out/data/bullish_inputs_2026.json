@@ -1,0 +1,4498 @@
+{
+ "provenance": {
+  "generated": "2026-08-26",
+  "vegas": {
+   "source": "nflverse schedules, Week-1 2026 closing lines (16/16 games - the only complete coverage window)",
+   "pulled": "2026-08-26"
+  },
+  "td_per_point": {
+   "value": 0.1055,
+   "basis": "2025 offensive TDs / 2025 points scored"
+  },
+  "roles": "inside-5 share and YMS are 2025-role priors and say so",
+  "proxy": "routes = on-field membership on team dropbacks (participation 2025); counts pass-block snaps as routes"
+ },
+ "teams": {
+  "implied_total": {
+   "SEA": 24.0,
+   "NE": 20.5,
+   "LA": 26.0,
+   "SF": 22.5,
+   "CAR": 22.5,
+   "CHI": 25.0,
+   "CIN": 27.5,
+   "TB": 24.0,
+   "DET": 28.25,
+   "NO": 21.25,
+   "HOU": 21.5,
+   "BUF": 23.0,
+   "IND": 22.5,
+   "BAL": 26.0,
+   "JAX": 24.0,
+   "CLE": 16.5,
+   "PIT": 22.25,
+   "ATL": 19.25,
+   "TEN": 20.75,
+   "NYJ": 17.75,
+   "LAC": 28.5,
+   "ARI": 18.0,
+   "LV": 22.0,
+   "MIA": 18.5,
+   "MIN": 23.5,
+   "GB": 22.0,
+   "PHI": 25.5,
+   "WAS": 21.0,
+   "NYG": 23.0,
+   "DAL": 25.5,
+   "KC": 22.75,
+   "DEN": 19.75
+  },
+  "implied_tds": {
+   "SEA": 2.53,
+   "NE": 2.16,
+   "LA": 2.74,
+   "SF": 2.37,
+   "CAR": 2.37,
+   "CHI": 2.64,
+   "CIN": 2.9,
+   "TB": 2.53,
+   "DET": 2.98,
+   "NO": 2.24,
+   "HOU": 2.27,
+   "BUF": 2.43,
+   "IND": 2.37,
+   "BAL": 2.74,
+   "JAX": 2.53,
+   "CLE": 1.74,
+   "PIT": 2.35,
+   "ATL": 2.03,
+   "TEN": 2.19,
+   "NYJ": 1.87,
+   "LAC": 3.01,
+   "ARI": 1.9,
+   "LV": 2.32,
+   "MIA": 1.95,
+   "MIN": 2.48,
+   "GB": 2.32,
+   "PHI": 2.69,
+   "WAS": 2.22,
+   "NYG": 2.43,
+   "DAL": 2.69,
+   "KC": 2.4,
+   "DEN": 2.08
+  },
+  "line_ybc_2025": {
+   "PHI": 2.642,
+   "DAL": 2.658,
+   "LAC": 2.672,
+   "KC": 2.756,
+   "ATL": 2.522,
+   "TB": 2.697,
+   "CLE": 1.808,
+   "CIN": 2.412,
+   "IND": 2.48,
+   "MIA": 2.199,
+   "JAX": 2.219,
+   "CAR": 2.49,
+   "NE": 2.561,
+   "LV": 1.629,
+   "NO": 2.057,
+   "ARI": 2.593,
+   "NYJ": 2.899,
+   "PIT": 2.285,
+   "WAS": 2.512,
+   "NYG": 2.714,
+   "DEN": 2.592,
+   "TEN": 2.54,
+   "SEA": 2.477,
+   "SF": 2.349,
+   "GB": 2.325,
+   "DET": 2.923,
+   "LA": 2.811,
+   "HOU": 2.099,
+   "BUF": 2.905,
+   "BAL": 3.219,
+   "CHI": 3.309,
+   "MIN": 2.441
+  }
+ },
+ "thresholds": {
+  "wr_tprr": {
+   "n": 51,
+   "p50": 0.2273,
+   "p75": 0.2581,
+   "p80": 0.2597
+  },
+  "wr_yprr": {
+   "n": 51,
+   "p50": 1.84,
+   "p75": 2.241,
+   "p80": 2.332
+  },
+  "wr_first_read": {
+   "n": 51,
+   "p50": 0.2206,
+   "p75": 0.2836,
+   "p80": 0.2875
+  },
+  "rb_targets_pg": {
+   "n": 46,
+   "p50": 2.89,
+   "p75": 3.5,
+   "p80": 3.68
+  },
+  "rb_inside5": {
+   "n": 46,
+   "p50": 0.381,
+   "p75": 0.5,
+   "p80": 0.6061
+  },
+  "team_line_ybc": {
+   "n": 32,
+   "p50": 2.54,
+   "p75": 2.697,
+   "p80": 2.756
+  },
+  "te_route_part": {
+   "n": 19,
+   "p50": 0.7192,
+   "p75": 0.842,
+   "p80": 0.842
+  },
+  "qb_rush_ypg": {
+   "n": 19,
+   "p50": 23.58,
+   "p75": 32.65,
+   "p80": 32.65
+  },
+  "implied_total": {
+   "n": 32,
+   "p50": 22.5,
+   "p75": 24.0,
+   "p80": 25.5
+  },
+  "note": "qualification floors: WR/TE routes-proxy >= 150/100, QB 150+ attempts, RB with 2025 usage; proxies count pass-block snaps as routes (stated weakness), so thresholds are percentiles of OUR distribution, never PFF-unit imports"
+ },
+ "qb_gap": {
+  "definition": "top-12 QB season finishes 2016-2025 (n=120), rushing class = rush yds/g >= that season's p75 among 8+ game QBs; season TOTAL points under each scoring",
+  "league_6pt": {
+   "rushing": {
+    "mean": 399.9,
+    "sd": 54.2,
+    "n": 49
+   },
+   "pocket": {
+    "mean": 378.0,
+    "sd": 48.0,
+    "n": 71
+   },
+   "gap": 22.0,
+   "gap_ci95": [
+    3.1,
+    40.8
+   ]
+  },
+  "counterfactual_4pt": {
+   "rushing": {
+    "mean": 339.6,
+    "sd": 45.2,
+    "n": 53
+   },
+   "pocket": {
+    "mean": 317.3,
+    "sd": 36.7,
+    "n": 67
+   },
+   "gap": 22.4,
+   "gap_ci95": [
+    7.3,
+    37.4
+   ]
+  }
+ },
+ "players": [
+  {
+   "name": "Jahmyr Gibbs",
+   "pos": "RB",
+   "adp": 1.6,
+   "team_2026": "DET",
+   "implied_total": 28.25,
+   "implied_tds": 2.98,
+   "team_line_ybc": 2.923,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 440,
+   "tprr_proxy": {
+    "k": 94,
+    "n": 440
+   },
+   "yprr_proxy": 1.393,
+   "route_part": {
+    "k": 440,
+    "n": 624
+   },
+   "first_read": {
+    "k": 27,
+    "n": 357
+   },
+   "targets_pg": 5.53,
+   "carries_pg": 14.29,
+   "rush_ypg": 71.94,
+   "inside5_share": {
+    "k": 10,
+    "n": 27,
+    "basis": "2025 role on DET"
+   },
+   "backfield_share": 0.655
+  },
+  {
+   "name": "Bijan Robinson",
+   "pos": "RB",
+   "adp": 2.5,
+   "team_2026": "ATL",
+   "implied_total": 19.25,
+   "implied_tds": 2.03,
+   "team_line_ybc": 2.522,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 508,
+   "tprr_proxy": {
+    "k": 103,
+    "n": 508
+   },
+   "yprr_proxy": 1.614,
+   "route_part": {
+    "k": 508,
+    "n": 586
+   },
+   "first_read": {
+    "k": 27,
+    "n": 320
+   },
+   "targets_pg": 6.06,
+   "carries_pg": 16.88,
+   "rush_ypg": 86.94,
+   "inside5_share": {
+    "k": 11,
+    "n": 24,
+    "basis": "2025 role on ATL"
+   },
+   "backfield_share": 0.7513
+  },
+  {
+   "name": "Puka Nacua",
+   "pos": "WR",
+   "adp": 4.7,
+   "team_2026": "LA",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 2.811,
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "routes_proxy": 467,
+   "tprr_proxy": {
+    "k": 166,
+    "n": 467
+   },
+   "yprr_proxy": 3.672,
+   "route_part": {
+    "k": 467,
+    "n": 624
+   },
+   "first_read": {
+    "k": 118,
+    "n": 367
+   },
+   "targets_pg": 10.95,
+   "carries_pg": 0.84,
+   "rush_ypg": 6.79
+  },
+  {
+   "name": "Ja'Marr Chase",
+   "pos": "WR",
+   "adp": 3.0,
+   "team_2026": "CIN",
+   "implied_total": 27.5,
+   "implied_tds": 2.9,
+   "team_line_ybc": 2.412,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 630,
+   "tprr_proxy": {
+    "k": 185,
+    "n": 630
+   },
+   "yprr_proxy": 2.241,
+   "route_part": {
+    "k": 630,
+    "n": 691
+   },
+   "first_read": {
+    "k": 121,
+    "n": 376
+   },
+   "targets_pg": 11.56,
+   "carries_pg": 0.19,
+   "rush_ypg": 0.88
+  },
+  {
+   "name": "Christian McCaffrey",
+   "pos": "RB",
+   "adp": 5.0,
+   "team_2026": "SF",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.349,
+   "gp_rate_2yr": 0.6176,
+   "exp_missed": 6.5,
+   "routes_proxy": 559,
+   "tprr_proxy": {
+    "k": 129,
+    "n": 559
+   },
+   "yprr_proxy": 1.617,
+   "route_part": {
+    "k": 559,
+    "n": 629
+   },
+   "first_read": {
+    "k": 41,
+    "n": 347
+   },
+   "targets_pg": 7.53,
+   "carries_pg": 17.74,
+   "rush_ypg": 67.63,
+   "inside5_share": {
+    "k": 20,
+    "n": 26,
+    "basis": "2025 role on SF"
+   },
+   "backfield_share": 1.0
+  },
+  {
+   "name": "Jonathan Taylor",
+   "pos": "RB",
+   "adp": 7.1,
+   "team_2026": "IND",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.48,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 486,
+   "tprr_proxy": {
+    "k": 56,
+    "n": 486
+   },
+   "yprr_proxy": 0.778,
+   "route_part": {
+    "k": 486,
+    "n": 605
+   },
+   "first_read": {
+    "k": 9,
+    "n": 397
+   },
+   "targets_pg": 3.24,
+   "carries_pg": 19.0,
+   "rush_ypg": 93.24,
+   "inside5_share": {
+    "k": 24,
+    "n": 36,
+    "basis": "2025 role on IND"
+   },
+   "backfield_share": 1.0
+  },
+  {
+   "name": "Jaxon Smith-Njigba",
+   "pos": "WR",
+   "adp": 6.4,
+   "team_2026": "SEA",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.477,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 485,
+   "tprr_proxy": {
+    "k": 163,
+    "n": 485
+   },
+   "yprr_proxy": 3.697,
+   "route_part": {
+    "k": 485,
+    "n": 520
+   },
+   "first_read": {
+    "k": 132,
+    "n": 320
+   },
+   "targets_pg": 9.45,
+   "carries_pg": 0.35,
+   "rush_ypg": 1.8
+  },
+  {
+   "name": "Amon-Ra St. Brown",
+   "pos": "WR",
+   "adp": 7.1,
+   "team_2026": "DET",
+   "implied_total": 28.25,
+   "implied_tds": 2.98,
+   "team_line_ybc": 2.923,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 566,
+   "tprr_proxy": {
+    "k": 172,
+    "n": 566
+   },
+   "yprr_proxy": 2.475,
+   "route_part": {
+    "k": 566,
+    "n": 624
+   },
+   "first_read": {
+    "k": 141,
+    "n": 357
+   },
+   "targets_pg": 10.12,
+   "carries_pg": 0.18,
+   "rush_ypg": 0.53
+  },
+  {
+   "name": "James Cook",
+   "pos": "RB",
+   "adp": 10.1,
+   "team_2026": "BUF",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.905,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 279,
+   "tprr_proxy": {
+    "k": 40,
+    "n": 279
+   },
+   "yprr_proxy": 1.043,
+   "route_part": {
+    "k": 279,
+    "n": 593
+   },
+   "first_read": {
+    "k": 13,
+    "n": 266
+   },
+   "targets_pg": 2.42,
+   "carries_pg": 18.32,
+   "rush_ypg": 93.89,
+   "inside5_share": {
+    "k": 16,
+    "n": 43,
+    "basis": "2025 role on BUF"
+   },
+   "backfield_share": 0.7632
+  },
+  {
+   "name": "Brock Bowers",
+   "pos": "TE",
+   "adp": 23.6,
+   "team_2026": "LV",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 1.629,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 411,
+   "tprr_proxy": {
+    "k": 87,
+    "n": 411
+   },
+   "yprr_proxy": 1.655,
+   "route_part": {
+    "k": 411,
+    "n": 600
+   },
+   "first_read": {
+    "k": 71,
+    "n": 320
+   },
+   "targets_pg": 7.17,
+   "carries_pg": 0.17,
+   "rush_ypg": 0.17,
+   "yms_2025": 0.1945
+  },
+  {
+   "name": "De'Von Achane",
+   "pos": "RB",
+   "adp": 12.3,
+   "team_2026": "MIA",
+   "implied_total": 18.5,
+   "implied_tds": 1.95,
+   "team_line_ybc": 2.199,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 392,
+   "tprr_proxy": {
+    "k": 85,
+    "n": 392
+   },
+   "yprr_proxy": 1.227,
+   "route_part": {
+    "k": 392,
+    "n": 533
+   },
+   "first_read": {
+    "k": 19,
+    "n": 279
+   },
+   "targets_pg": 5.31,
+   "carries_pg": 14.88,
+   "rush_ypg": 84.38,
+   "inside5_share": {
+    "k": 5,
+    "n": 16,
+    "basis": "2025 role on MIA"
+   },
+   "backfield_share": 0.6296
+  },
+  {
+   "name": "Chase Brown",
+   "pos": "RB",
+   "adp": 15.7,
+   "team_2026": "CIN",
+   "implied_total": 27.5,
+   "implied_tds": 2.9,
+   "team_line_ybc": 2.412,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 449,
+   "tprr_proxy": {
+    "k": 89,
+    "n": 449
+   },
+   "yprr_proxy": 0.922,
+   "route_part": {
+    "k": 449,
+    "n": 691
+   },
+   "first_read": {
+    "k": 17,
+    "n": 376
+   },
+   "targets_pg": 5.18,
+   "carries_pg": 13.65,
+   "rush_ypg": 59.94,
+   "inside5_share": {
+    "k": 13,
+    "n": 20,
+    "basis": "2025 role on CIN"
+   },
+   "backfield_share": 0.7342
+  },
+  {
+   "name": "CeeDee Lamb",
+   "pos": "WR",
+   "adp": 9.0,
+   "team_2026": "DAL",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.658,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 452,
+   "tprr_proxy": {
+    "k": 117,
+    "n": 452
+   },
+   "yprr_proxy": 2.383,
+   "route_part": {
+    "k": 452,
+    "n": 684
+   },
+   "first_read": {
+    "k": 95,
+    "n": 402
+   },
+   "targets_pg": 9.0,
+   "carries_pg": 0.08,
+   "rush_ypg": 0.15
+  },
+  {
+   "name": "Derrick Henry",
+   "pos": "RB",
+   "adp": 20.5,
+   "team_2026": "BAL",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 3.219,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 195,
+   "tprr_proxy": {
+    "k": 21,
+    "n": 195
+   },
+   "yprr_proxy": 0.769,
+   "route_part": {
+    "k": 195,
+    "n": 503
+   },
+   "first_read": {
+    "k": 2,
+    "n": 232
+   },
+   "targets_pg": 1.24,
+   "carries_pg": 18.06,
+   "rush_ypg": 93.82,
+   "inside5_share": {
+    "k": 27,
+    "n": 32,
+    "basis": "2025 role on BAL"
+   },
+   "backfield_share": 0.9247
+  },
+  {
+   "name": "Saquon Barkley",
+   "pos": "RB",
+   "adp": 13.0,
+   "team_2026": "PHI",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.642,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 415,
+   "tprr_proxy": {
+    "k": 51,
+    "n": 415
+   },
+   "yprr_proxy": 0.658,
+   "route_part": {
+    "k": 415,
+    "n": 575
+   },
+   "first_read": {
+    "k": 7,
+    "n": 316
+   },
+   "targets_pg": 3.29,
+   "carries_pg": 18.0,
+   "rush_ypg": 73.29,
+   "inside5_share": {
+    "k": 15,
+    "n": 33,
+    "basis": "2025 role on PHI"
+   },
+   "backfield_share": 0.7907
+  },
+  {
+   "name": "Nico Collins",
+   "pos": "WR",
+   "adp": 25.3,
+   "team_2026": "HOU",
+   "implied_total": 21.5,
+   "implied_tds": 2.27,
+   "team_line_ybc": 2.099,
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "routes_proxy": 479,
+   "tprr_proxy": {
+    "k": 121,
+    "n": 479
+   },
+   "yprr_proxy": 2.332,
+   "route_part": {
+    "k": 479,
+    "n": 648
+   },
+   "first_read": {
+    "k": 98,
+    "n": 404
+   },
+   "targets_pg": 7.94,
+   "carries_pg": 0.12,
+   "rush_ypg": 0.94
+  },
+  {
+   "name": "Kenneth Walker",
+   "pos": "RB",
+   "adp": 19.7,
+   "team_2026": "KC",
+   "implied_total": 22.75,
+   "implied_tds": 2.4,
+   "team_line_ybc": 2.756,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 227,
+   "tprr_proxy": {
+    "k": 36,
+    "n": 227
+   },
+   "yprr_proxy": 1.242,
+   "route_part": {
+    "k": 227,
+    "n": 520
+   },
+   "first_read": {
+    "k": 6,
+    "n": 320
+   },
+   "targets_pg": 2.35,
+   "carries_pg": 14.3,
+   "rush_ypg": 67.0,
+   "inside5_share": {
+    "k": 8,
+    "n": 30,
+    "basis": "2025 role on SEA"
+   },
+   "backfield_share": 0.7647
+  },
+  {
+   "name": "Omarion Hampton",
+   "pos": "RB",
+   "adp": 15.5,
+   "team_2026": "LAC",
+   "implied_total": 28.5,
+   "implied_tds": 3.01,
+   "team_line_ybc": 2.672,
+   "gp_rate_2yr": 0.5294,
+   "exp_missed": 8.0,
+   "routes_proxy": 219,
+   "tprr_proxy": {
+    "k": 35,
+    "n": 219
+   },
+   "yprr_proxy": 0.877,
+   "route_part": {
+    "k": 219,
+    "n": 681
+   },
+   "first_read": {
+    "k": 4,
+    "n": 334
+   },
+   "targets_pg": 3.5,
+   "carries_pg": 12.5,
+   "rush_ypg": 54.4,
+   "inside5_share": {
+    "k": 8,
+    "n": 21,
+    "basis": "2025 role on LAC"
+   },
+   "backfield_share": 0.3197
+  },
+  {
+   "name": "Trey McBride",
+   "pos": "TE",
+   "adp": 21.5,
+   "team_2026": "ARI",
+   "implied_total": 18.0,
+   "implied_tds": 1.9,
+   "team_line_ybc": 2.593,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 705,
+   "tprr_proxy": {
+    "k": 170,
+    "n": 705
+   },
+   "yprr_proxy": 1.757,
+   "route_part": {
+    "k": 705,
+    "n": 748
+   },
+   "first_read": {
+    "k": 112,
+    "n": 357
+   },
+   "targets_pg": 9.94,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.2908
+  },
+  {
+   "name": "Josh Allen",
+   "pos": "QB",
+   "adp": 22.8,
+   "team_2026": "BUF",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.905,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 554,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 554
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 554,
+    "n": 593
+   },
+   "first_read": {
+    "k": 0,
+    "n": 266
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 7.5,
+   "rush_ypg": 37.67,
+   "epa_per_att": 0.1551
+  },
+  {
+   "name": "Ashton Jeanty",
+   "pos": "RB",
+   "adp": 14.7,
+   "team_2026": "LV",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 1.629,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 441,
+   "tprr_proxy": {
+    "k": 73,
+    "n": 441
+   },
+   "yprr_proxy": 0.785,
+   "route_part": {
+    "k": 441,
+    "n": 600
+   },
+   "first_read": {
+    "k": 12,
+    "n": 320
+   },
+   "targets_pg": 4.29,
+   "carries_pg": 15.65,
+   "rush_ypg": 57.35,
+   "inside5_share": {
+    "k": 11,
+    "n": 13,
+    "basis": "2025 role on LV"
+   },
+   "backfield_share": 0.9603
+  },
+  {
+   "name": "Justin Jefferson",
+   "pos": "WR",
+   "adp": 11.4,
+   "team_2026": "MIN",
+   "implied_total": 23.5,
+   "implied_tds": 2.48,
+   "team_line_ybc": 2.441,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 553,
+   "tprr_proxy": {
+    "k": 142,
+    "n": 553
+   },
+   "yprr_proxy": 1.895,
+   "route_part": {
+    "k": 553,
+    "n": 575
+   },
+   "first_read": {
+    "k": 98,
+    "n": 288
+   },
+   "targets_pg": 8.29,
+   "carries_pg": 0.12,
+   "rush_ypg": 0.41
+  },
+  {
+   "name": "Drake London",
+   "pos": "WR",
+   "adp": 17.4,
+   "team_2026": "ATL",
+   "implied_total": 19.25,
+   "implied_tds": 2.03,
+   "team_line_ybc": 2.522,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 394,
+   "tprr_proxy": {
+    "k": 113,
+    "n": 394
+   },
+   "yprr_proxy": 2.332,
+   "route_part": {
+    "k": 394,
+    "n": 586
+   },
+   "first_read": {
+    "k": 92,
+    "n": 320
+   },
+   "targets_pg": 9.33,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "A.J. Brown",
+   "pos": "WR",
+   "adp": 18.8,
+   "team_2026": "NE",
+   "implied_total": 20.5,
+   "implied_tds": 2.16,
+   "team_line_ybc": 2.561,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 480,
+   "tprr_proxy": {
+    "k": 121,
+    "n": 480
+   },
+   "yprr_proxy": 2.09,
+   "route_part": {
+    "k": 480,
+    "n": 575
+   },
+   "first_read": {
+    "k": 103,
+    "n": 316
+   },
+   "targets_pg": 8.0,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "George Pickens",
+   "pos": "WR",
+   "adp": 23.6,
+   "team_2026": "DAL",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.658,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 608,
+   "tprr_proxy": {
+    "k": 138,
+    "n": 608
+   },
+   "yprr_proxy": 2.35,
+   "route_part": {
+    "k": 608,
+    "n": 684
+   },
+   "first_read": {
+    "k": 114,
+    "n": 402
+   },
+   "targets_pg": 8.06,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Colston Loveland",
+   "pos": "TE",
+   "adp": 39.2,
+   "team_2026": "CHI",
+   "implied_total": 25.0,
+   "implied_tds": 2.64,
+   "team_line_ybc": 3.309,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 407,
+   "tprr_proxy": {
+    "k": 83,
+    "n": 407
+   },
+   "yprr_proxy": 1.752,
+   "route_part": {
+    "k": 407,
+    "n": 644
+   },
+   "first_read": {
+    "k": 56,
+    "n": 298
+   },
+   "targets_pg": 5.94,
+   "carries_pg": 0.06,
+   "rush_ypg": -0.11,
+   "yms_2025": 0.1993
+  },
+  {
+   "name": "Malik Nabers",
+   "pos": "WR",
+   "adp": 28.6,
+   "team_2026": "NYG",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.714,
+   "gp_rate_2yr": 0.5588,
+   "exp_missed": 7.5,
+   "routes_proxy": 134,
+   "tprr_proxy": {
+    "k": 35,
+    "n": 134
+   },
+   "yprr_proxy": 2.022,
+   "route_part": {
+    "k": 134,
+    "n": 627
+   },
+   "first_read": {
+    "k": 30,
+    "n": 314
+   },
+   "targets_pg": 8.75,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Chris Olave",
+   "pos": "WR",
+   "adp": 30.4,
+   "team_2026": "NO",
+   "implied_total": 21.25,
+   "implied_tds": 2.24,
+   "team_line_ybc": 2.057,
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "routes_proxy": 582,
+   "tprr_proxy": {
+    "k": 156,
+    "n": 582
+   },
+   "yprr_proxy": 1.998,
+   "route_part": {
+    "k": 582,
+    "n": 671
+   },
+   "first_read": {
+    "k": 119,
+    "n": 365
+   },
+   "targets_pg": 9.75,
+   "carries_pg": 0.06,
+   "rush_ypg": -0.19
+  },
+  {
+   "name": "Rashee Rice",
+   "pos": "WR",
+   "adp": 27.3,
+   "team_2026": "KC",
+   "implied_total": 22.75,
+   "implied_tds": 2.4,
+   "team_line_ybc": 2.756,
+   "gp_rate_2yr": 0.3529,
+   "exp_missed": 11.0,
+   "routes_proxy": 266,
+   "tprr_proxy": {
+    "k": 79,
+    "n": 266
+   },
+   "yprr_proxy": 2.147,
+   "route_part": {
+    "k": 266,
+    "n": 689
+   },
+   "first_read": {
+    "k": 38,
+    "n": 310
+   },
+   "targets_pg": 9.75,
+   "carries_pg": 0.62,
+   "rush_ypg": 2.5
+  },
+  {
+   "name": "DeVonta Smith",
+   "pos": "WR",
+   "adp": 36.4,
+   "team_2026": "PHI",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.642,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 520,
+   "tprr_proxy": {
+    "k": 114,
+    "n": 520
+   },
+   "yprr_proxy": 1.938,
+   "route_part": {
+    "k": 520,
+    "n": 575
+   },
+   "first_read": {
+    "k": 85,
+    "n": 316
+   },
+   "targets_pg": 6.89,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Jeremiyah Love",
+   "pos": "RB",
+   "adp": 26.9,
+   "team_2026": "ARI",
+   "implied_total": 18.0,
+   "implied_tds": 1.9,
+   "team_line_ybc": 2.593,
+   "gp_rate_2yr": null,
+   "exp_missed": null,
+   "backfield_share": 0.0
+  },
+  {
+   "name": "Breece Hall",
+   "pos": "RB",
+   "adp": 33.1,
+   "team_2026": "NYJ",
+   "implied_total": 17.75,
+   "implied_tds": 1.87,
+   "team_line_ybc": 2.899,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 331,
+   "tprr_proxy": {
+    "k": 48,
+    "n": 331
+   },
+   "yprr_proxy": 1.057,
+   "route_part": {
+    "k": 331,
+    "n": 613
+   },
+   "first_read": {
+    "k": 8,
+    "n": 276
+   },
+   "targets_pg": 3.0,
+   "carries_pg": 15.19,
+   "rush_ypg": 66.56,
+   "inside5_share": {
+    "k": 4,
+    "n": 12,
+    "basis": "2025 role on NYJ"
+   },
+   "backfield_share": 0.7666
+  },
+  {
+   "name": "Zay Flowers",
+   "pos": "WR",
+   "adp": 42.8,
+   "team_2026": "BAL",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 3.219,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 478,
+   "tprr_proxy": {
+    "k": 119,
+    "n": 478
+   },
+   "yprr_proxy": 2.533,
+   "route_part": {
+    "k": 478,
+    "n": 503
+   },
+   "first_read": {
+    "k": 69,
+    "n": 232
+   },
+   "targets_pg": 6.94,
+   "carries_pg": 0.59,
+   "rush_ypg": 3.65
+  },
+  {
+   "name": "Ladd McConkey",
+   "pos": "WR",
+   "adp": 38.9,
+   "team_2026": "LAC",
+   "implied_total": 28.5,
+   "implied_tds": 3.01,
+   "team_line_ybc": 2.672,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 563,
+   "tprr_proxy": {
+    "k": 106,
+    "n": 563
+   },
+   "yprr_proxy": 1.401,
+   "route_part": {
+    "k": 563,
+    "n": 681
+   },
+   "first_read": {
+    "k": 63,
+    "n": 334
+   },
+   "targets_pg": 6.47,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Kyren Williams",
+   "pos": "RB",
+   "adp": 29.7,
+   "team_2026": "LA",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 2.811,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 455,
+   "tprr_proxy": {
+    "k": 50,
+    "n": 455
+   },
+   "yprr_proxy": 0.618,
+   "route_part": {
+    "k": 455,
+    "n": 624
+   },
+   "first_read": {
+    "k": 10,
+    "n": 367
+   },
+   "targets_pg": 2.95,
+   "carries_pg": 15.15,
+   "rush_ypg": 71.75,
+   "inside5_share": {
+    "k": 18,
+    "n": 34,
+    "basis": "2025 role on LA"
+   },
+   "backfield_share": 0.6392
+  },
+  {
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "adp": 55.8,
+   "team_2026": "CHI",
+   "implied_total": 25.0,
+   "implied_tds": 2.64,
+   "team_line_ybc": 3.309,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 347,
+   "tprr_proxy": {
+    "k": 48,
+    "n": 347
+   },
+   "yprr_proxy": 0.836,
+   "route_part": {
+    "k": 347,
+    "n": 644
+   },
+   "first_read": {
+    "k": 6,
+    "n": 298
+   },
+   "targets_pg": 2.78,
+   "carries_pg": 14.17,
+   "rush_ypg": 67.61,
+   "inside5_share": {
+    "k": 14,
+    "n": 28,
+    "basis": "2025 role on CHI"
+   },
+   "backfield_share": 0.573
+  },
+  {
+   "name": "Travis Etienne",
+   "pos": "RB",
+   "adp": 44.1,
+   "team_2026": "NO",
+   "implied_total": 21.25,
+   "implied_tds": 2.24,
+   "team_line_ybc": 2.057,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 349,
+   "tprr_proxy": {
+    "k": 52,
+    "n": 349
+   },
+   "yprr_proxy": 0.837,
+   "route_part": {
+    "k": 349,
+    "n": 646
+   },
+   "first_read": {
+    "k": 10,
+    "n": 367
+   },
+   "targets_pg": 3.17,
+   "carries_pg": 15.0,
+   "rush_ypg": 65.22,
+   "inside5_share": {
+    "k": 12,
+    "n": 34,
+    "basis": "2025 role on JAX"
+   },
+   "backfield_share": 0.5347
+  },
+  {
+   "name": "Garrett Wilson",
+   "pos": "WR",
+   "adp": 45.7,
+   "team_2026": "NYJ",
+   "implied_total": 17.75,
+   "implied_tds": 1.87,
+   "team_line_ybc": 2.899,
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "routes_proxy": 226,
+   "tprr_proxy": {
+    "k": 60,
+    "n": 226
+   },
+   "yprr_proxy": 1.748,
+   "route_part": {
+    "k": 226,
+    "n": 613
+   },
+   "first_read": {
+    "k": 46,
+    "n": 276
+   },
+   "targets_pg": 8.43,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Tyler Warren",
+   "pos": "TE",
+   "adp": 47.7,
+   "team_2026": "IND",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.48,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 541,
+   "tprr_proxy": {
+    "k": 114,
+    "n": 541
+   },
+   "yprr_proxy": 1.51,
+   "route_part": {
+    "k": 541,
+    "n": 605
+   },
+   "first_read": {
+    "k": 82,
+    "n": 397
+   },
+   "targets_pg": 6.59,
+   "carries_pg": 0.35,
+   "rush_ypg": 0.47,
+   "yms_2025": 0.1879
+  },
+  {
+   "name": "Javonte Williams",
+   "pos": "RB",
+   "adp": 35.0,
+   "team_2026": "DAL",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.658,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 453,
+   "tprr_proxy": {
+    "k": 51,
+    "n": 453
+   },
+   "yprr_proxy": 0.302,
+   "route_part": {
+    "k": 453,
+    "n": 684
+   },
+   "first_read": {
+    "k": 7,
+    "n": 402
+   },
+   "targets_pg": 3.19,
+   "carries_pg": 15.75,
+   "rush_ypg": 75.06,
+   "inside5_share": {
+    "k": 20,
+    "n": 33,
+    "basis": "2025 role on DAL"
+   },
+   "backfield_share": 0.7262
+  },
+  {
+   "name": "Tee Higgins",
+   "pos": "WR",
+   "adp": 34.3,
+   "team_2026": "CIN",
+   "implied_total": 27.5,
+   "implied_tds": 2.9,
+   "team_line_ybc": 2.412,
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "routes_proxy": 526,
+   "tprr_proxy": {
+    "k": 99,
+    "n": 526
+   },
+   "yprr_proxy": 1.608,
+   "route_part": {
+    "k": 526,
+    "n": 691
+   },
+   "first_read": {
+    "k": 89,
+    "n": 376
+   },
+   "targets_pg": 6.53,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Emeka Egbuka",
+   "pos": "WR",
+   "adp": 39.4,
+   "team_2026": "TB",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.697,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 535,
+   "tprr_proxy": {
+    "k": 128,
+    "n": 535
+   },
+   "yprr_proxy": 1.753,
+   "route_part": {
+    "k": 535,
+    "n": 644
+   },
+   "first_read": {
+    "k": 92,
+    "n": 334
+   },
+   "targets_pg": 7.47,
+   "carries_pg": 0.12,
+   "rush_ypg": 0.53
+  },
+  {
+   "name": "David Montgomery",
+   "pos": "RB",
+   "adp": 49.3,
+   "team_2026": "HOU",
+   "implied_total": 21.5,
+   "implied_tds": 2.27,
+   "team_line_ybc": 2.099,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 225,
+   "tprr_proxy": {
+    "k": 29,
+    "n": 225
+   },
+   "yprr_proxy": 0.853,
+   "route_part": {
+    "k": 225,
+    "n": 624
+   },
+   "first_read": {
+    "k": 3,
+    "n": 357
+   },
+   "targets_pg": 1.71,
+   "carries_pg": 9.29,
+   "rush_ypg": 42.12,
+   "inside5_share": {
+    "k": 17,
+    "n": 27,
+    "basis": "2025 role on DET"
+   },
+   "backfield_share": 0.3674
+  },
+  {
+   "name": "Tetairoa McMillan",
+   "pos": "WR",
+   "adp": 37.8,
+   "team_2026": "CAR",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.49,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 547,
+   "tprr_proxy": {
+    "k": 122,
+    "n": 547
+   },
+   "yprr_proxy": 1.852,
+   "route_part": {
+    "k": 547,
+    "n": 585
+   },
+   "first_read": {
+    "k": 98,
+    "n": 317
+   },
+   "targets_pg": 7.17,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Mike Evans",
+   "pos": "WR",
+   "adp": 61.5,
+   "team_2026": "SF",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.349,
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "routes_proxy": 229,
+   "tprr_proxy": {
+    "k": 62,
+    "n": 229
+   },
+   "yprr_proxy": 1.607,
+   "route_part": {
+    "k": 229,
+    "n": 644
+   },
+   "first_read": {
+    "k": 53,
+    "n": 334
+   },
+   "targets_pg": 7.75,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Jaylen Waddle",
+   "pos": "WR",
+   "adp": 46.2,
+   "team_2026": "DEN",
+   "implied_total": 19.75,
+   "implied_tds": 2.08,
+   "team_line_ybc": 2.592,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 406,
+   "tprr_proxy": {
+    "k": 100,
+    "n": 406
+   },
+   "yprr_proxy": 2.241,
+   "route_part": {
+    "k": 406,
+    "n": 533
+   },
+   "first_read": {
+    "k": 84,
+    "n": 279
+   },
+   "targets_pg": 6.25,
+   "carries_pg": 0.12,
+   "rush_ypg": 1.75
+  },
+  {
+   "name": "Sam LaPorta",
+   "pos": "TE",
+   "adp": 59.1,
+   "team_2026": "DET",
+   "implied_total": 28.25,
+   "implied_tds": 2.98,
+   "team_line_ybc": 2.923,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 275,
+   "tprr_proxy": {
+    "k": 49,
+    "n": 275
+   },
+   "yprr_proxy": 1.778,
+   "route_part": {
+    "k": 275,
+    "n": 624
+   },
+   "first_read": {
+    "k": 28,
+    "n": 357
+   },
+   "targets_pg": 5.44,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.1086
+  },
+  {
+   "name": "Josh Jacobs",
+   "pos": "RB",
+   "adp": 31.0,
+   "team_2026": "GB",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 2.325,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 266,
+   "tprr_proxy": {
+    "k": 44,
+    "n": 266
+   },
+   "yprr_proxy": 1.06,
+   "route_part": {
+    "k": 266,
+    "n": 554
+   },
+   "first_read": {
+    "k": 3,
+    "n": 281
+   },
+   "targets_pg": 2.94,
+   "carries_pg": 15.81,
+   "rush_ypg": 61.5,
+   "inside5_share": {
+    "k": 20,
+    "n": 27,
+    "basis": "2025 role on GB"
+   },
+   "backfield_share": 0.9004
+  },
+  {
+   "name": "Lamar Jackson",
+   "pos": "QB",
+   "adp": 31.2,
+   "team_2026": "BAL",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 3.219,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 369,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 369
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 369,
+    "n": 503
+   },
+   "first_read": {
+    "k": 0,
+    "n": 232
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 5.15,
+   "rush_ypg": 26.85,
+   "epa_per_att": 0.0601
+  },
+  {
+   "name": "Cam Skattebo",
+   "pos": "RB",
+   "adp": 43.8,
+   "team_2026": "NYG",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.714,
+   "gp_rate_2yr": 0.4706,
+   "exp_missed": 9.0,
+   "routes_proxy": 151,
+   "tprr_proxy": {
+    "k": 32,
+    "n": 151
+   },
+   "yprr_proxy": 1.371,
+   "route_part": {
+    "k": 151,
+    "n": 627
+   },
+   "first_read": {
+    "k": 7,
+    "n": 314
+   },
+   "targets_pg": 4.0,
+   "carries_pg": 12.62,
+   "rush_ypg": 51.25,
+   "inside5_share": {
+    "k": 10,
+    "n": 31,
+    "basis": "2025 role on NYG"
+   },
+   "backfield_share": 0.2457
+  },
+  {
+   "name": "Drake Maye",
+   "pos": "QB",
+   "adp": 47.1,
+   "team_2026": "NE",
+   "implied_total": 20.5,
+   "implied_tds": 2.16,
+   "team_line_ybc": 2.561,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 602,
+   "tprr_proxy": {
+    "k": 1,
+    "n": 602
+   },
+   "yprr_proxy": 0.003,
+   "route_part": {
+    "k": 602,
+    "n": 614
+   },
+   "first_read": {
+    "k": 0,
+    "n": 315
+   },
+   "targets_pg": 0.1,
+   "carries_pg": 6.29,
+   "rush_ypg": 29.9,
+   "epa_per_att": 0.3378
+  },
+  {
+   "name": "Bucky Irving",
+   "pos": "RB",
+   "adp": 41.3,
+   "team_2026": "TB",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.697,
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "routes_proxy": 213,
+   "tprr_proxy": {
+    "k": 35,
+    "n": 213
+   },
+   "yprr_proxy": 1.3,
+   "route_part": {
+    "k": 213,
+    "n": 644
+   },
+   "first_read": {
+    "k": 7,
+    "n": 334
+   },
+   "targets_pg": 3.5,
+   "carries_pg": 17.3,
+   "rush_ypg": 58.8,
+   "inside5_share": {
+    "k": 0,
+    "n": 22,
+    "basis": "2025 role on TB"
+   },
+   "backfield_share": 0.4565
+  },
+  {
+   "name": "Terry McLaurin",
+   "pos": "WR",
+   "adp": 55.3,
+   "team_2026": "WAS",
+   "implied_total": 21.0,
+   "implied_tds": 2.22,
+   "team_line_ybc": 2.512,
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "routes_proxy": 260,
+   "tprr_proxy": {
+    "k": 60,
+    "n": 260
+   },
+   "yprr_proxy": 2.238,
+   "route_part": {
+    "k": 260,
+    "n": 568
+   },
+   "first_read": {
+    "k": 48,
+    "n": 273
+   },
+   "targets_pg": 6.0,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Quinshon Judkins",
+   "pos": "RB",
+   "adp": 54.9,
+   "team_2026": "CLE",
+   "implied_total": 16.5,
+   "implied_tds": 1.74,
+   "team_line_ybc": 1.808,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 187,
+   "tprr_proxy": {
+    "k": 36,
+    "n": 187
+   },
+   "yprr_proxy": 0.914,
+   "route_part": {
+    "k": 187,
+    "n": 641
+   },
+   "first_read": {
+    "k": 4,
+    "n": 316
+   },
+   "targets_pg": 2.57,
+   "carries_pg": 16.43,
+   "rush_ypg": 59.07,
+   "inside5_share": {
+    "k": 12,
+    "n": 24,
+    "basis": "2025 role on CLE"
+   },
+   "backfield_share": 0.7143
+  },
+  {
+   "name": "Parker Washington",
+   "pos": "WR",
+   "adp": 76.6,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 408,
+   "tprr_proxy": {
+    "k": 97,
+    "n": 408
+   },
+   "yprr_proxy": 2.076,
+   "route_part": {
+    "k": 408,
+    "n": 646
+   },
+   "first_read": {
+    "k": 71,
+    "n": 367
+   },
+   "targets_pg": 6.29,
+   "carries_pg": 0.53,
+   "rush_ypg": 0.12
+  },
+  {
+   "name": "Joe Burrow",
+   "pos": "QB",
+   "adp": 51.7,
+   "team_2026": "CIN",
+   "implied_total": 27.5,
+   "implied_tds": 2.9,
+   "team_line_ybc": 2.412,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 286,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 286
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 286,
+    "n": 691
+   },
+   "first_read": {
+    "k": 0,
+    "n": 376
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 1.75,
+   "rush_ypg": 5.12,
+   "epa_per_att": 0.1413
+  },
+  {
+   "name": "Luther Burden",
+   "pos": "WR",
+   "adp": 52.8,
+   "team_2026": "CHI",
+   "implied_total": 25.0,
+   "implied_tds": 2.64,
+   "team_line_ybc": 3.309,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 242,
+   "tprr_proxy": {
+    "k": 60,
+    "n": 242
+   },
+   "yprr_proxy": 2.694,
+   "route_part": {
+    "k": 242,
+    "n": 644
+   },
+   "first_read": {
+    "k": 34,
+    "n": 298
+   },
+   "targets_pg": 4.35,
+   "carries_pg": 0.47,
+   "rush_ypg": 1.94
+  },
+  {
+   "name": "Rome Odunze",
+   "pos": "WR",
+   "adp": 65.8,
+   "team_2026": "CHI",
+   "implied_total": 25.0,
+   "implied_tds": 2.64,
+   "team_line_ybc": 3.309,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 412,
+   "tprr_proxy": {
+    "k": 91,
+    "n": 412
+   },
+   "yprr_proxy": 1.604,
+   "route_part": {
+    "k": 412,
+    "n": 644
+   },
+   "first_read": {
+    "k": 64,
+    "n": 298
+   },
+   "targets_pg": 7.29,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Christian Watson",
+   "pos": "WR",
+   "adp": 70.1,
+   "team_2026": "GB",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 2.325,
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "routes_proxy": 242,
+   "tprr_proxy": {
+    "k": 55,
+    "n": 242
+   },
+   "yprr_proxy": 2.525,
+   "route_part": {
+    "k": 242,
+    "n": 554
+   },
+   "first_read": {
+    "k": 46,
+    "n": 281
+   },
+   "targets_pg": 5.64,
+   "carries_pg": 0.09,
+   "rush_ypg": 0.27
+  },
+  {
+   "name": "Jameson Williams",
+   "pos": "WR",
+   "adp": 58.4,
+   "team_2026": "DET",
+   "implied_total": 28.25,
+   "implied_tds": 2.98,
+   "team_line_ybc": 2.923,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 596,
+   "tprr_proxy": {
+    "k": 102,
+    "n": 596
+   },
+   "yprr_proxy": 1.861,
+   "route_part": {
+    "k": 596,
+    "n": 624
+   },
+   "first_read": {
+    "k": 77,
+    "n": 357
+   },
+   "targets_pg": 6.0,
+   "carries_pg": 0.35,
+   "rush_ypg": 0.71
+  },
+  {
+   "name": "Dak Prescott",
+   "pos": "QB",
+   "adp": 78.1,
+   "team_2026": "DAL",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.658,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 657,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 657
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 657,
+    "n": 684
+   },
+   "first_read": {
+    "k": 0,
+    "n": 402
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 3.12,
+   "rush_ypg": 10.41,
+   "epa_per_att": 0.1906
+  },
+  {
+   "name": "Harold Fannin",
+   "pos": "TE",
+   "adp": 68.5,
+   "team_2026": "CLE",
+   "implied_total": 16.5,
+   "implied_tds": 1.74,
+   "team_line_ybc": 1.808,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 461,
+   "tprr_proxy": {
+    "k": 108,
+    "n": 461
+   },
+   "yprr_proxy": 1.586,
+   "route_part": {
+    "k": 461,
+    "n": 641
+   },
+   "first_read": {
+    "k": 66,
+    "n": 316
+   },
+   "targets_pg": 6.69,
+   "carries_pg": 0.44,
+   "rush_ypg": 0.81,
+   "yms_2025": 0.2391
+  },
+  {
+   "name": "Brock Purdy",
+   "pos": "QB",
+   "adp": 121.2,
+   "team_2026": "SF",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.349,
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "routes_proxy": 317,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 317
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 317,
+    "n": 629
+   },
+   "first_read": {
+    "k": 0,
+    "n": 347
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 4.27,
+   "rush_ypg": 18.91,
+   "epa_per_att": 0.2223
+  },
+  {
+   "name": "Tucker Kraft",
+   "pos": "TE",
+   "adp": 63.8,
+   "team_2026": "GB",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 2.325,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 237,
+   "tprr_proxy": {
+    "k": 44,
+    "n": 237
+   },
+   "yprr_proxy": 2.063,
+   "route_part": {
+    "k": 237,
+    "n": 554
+   },
+   "first_read": {
+    "k": 26,
+    "n": 281
+   },
+   "targets_pg": 5.5,
+   "carries_pg": 0.12,
+   "rush_ypg": 0.38,
+   "yms_2025": 0.118
+  },
+  {
+   "name": "Jayden Reed",
+   "pos": "WR",
+   "adp": 114.4,
+   "team_2026": "GB",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 2.325,
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "routes_proxy": 112,
+   "tprr_proxy": {
+    "k": 22,
+    "n": 112
+   },
+   "yprr_proxy": 1.848,
+   "route_part": {
+    "k": 112,
+    "n": 554
+   },
+   "first_read": {
+    "k": 10,
+    "n": 281
+   },
+   "targets_pg": 4.83,
+   "carries_pg": 0.67,
+   "rush_ypg": 7.0
+  },
+  {
+   "name": "Brian Thomas",
+   "pos": "WR",
+   "adp": 73.3,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 468,
+   "tprr_proxy": {
+    "k": 91,
+    "n": 468
+   },
+   "yprr_proxy": 1.511,
+   "route_part": {
+    "k": 468,
+    "n": 646
+   },
+   "first_read": {
+    "k": 76,
+    "n": 367
+   },
+   "targets_pg": 6.2,
+   "carries_pg": 0.2,
+   "rush_ypg": 1.4
+  },
+  {
+   "name": "Kyle Pitts",
+   "pos": "TE",
+   "adp": 69.0,
+   "team_2026": "ATL",
+   "implied_total": 19.25,
+   "implied_tds": 2.03,
+   "team_line_ybc": 2.522,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 560,
+   "tprr_proxy": {
+    "k": 119,
+    "n": 560
+   },
+   "yprr_proxy": 1.657,
+   "route_part": {
+    "k": 560,
+    "n": 586
+   },
+   "first_read": {
+    "k": 68,
+    "n": 320
+   },
+   "targets_pg": 6.94,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.2542
+  },
+  {
+   "name": "Travis Kelce",
+   "pos": "TE",
+   "adp": 92.2,
+   "team_2026": "KC",
+   "implied_total": 22.75,
+   "implied_tds": 2.4,
+   "team_line_ybc": 2.756,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 600,
+   "tprr_proxy": {
+    "k": 109,
+    "n": 600
+   },
+   "yprr_proxy": 1.418,
+   "route_part": {
+    "k": 600,
+    "n": 689
+   },
+   "first_read": {
+    "k": 63,
+    "n": 310
+   },
+   "targets_pg": 6.35,
+   "carries_pg": 0.06,
+   "rush_ypg": 0.06,
+   "yms_2025": 0.2178
+  },
+  {
+   "name": "Trevor Lawrence",
+   "pos": "QB",
+   "adp": 100.9,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "routes_proxy": 643,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 643
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 643,
+    "n": 646
+   },
+   "first_read": {
+    "k": 0,
+    "n": 367
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 4.89,
+   "rush_ypg": 21.67,
+   "epa_per_att": 0.0686
+  },
+  {
+   "name": "Caleb Williams",
+   "pos": "QB",
+   "adp": 71.3,
+   "team_2026": "CHI",
+   "implied_total": 25.0,
+   "implied_tds": 2.64,
+   "team_line_ybc": 3.309,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 640,
+   "tprr_proxy": {
+    "k": 2,
+    "n": 640
+   },
+   "yprr_proxy": 0.034,
+   "route_part": {
+    "k": 640,
+    "n": 644
+   },
+   "first_read": {
+    "k": 0,
+    "n": 298
+   },
+   "targets_pg": 0.11,
+   "carries_pg": 4.53,
+   "rush_ypg": 23.58,
+   "epa_per_att": 0.0743
+  },
+  {
+   "name": "George Kittle",
+   "pos": "TE",
+   "adp": 91.2,
+   "team_2026": "SF",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.349,
+   "gp_rate_2yr": 0.7647,
+   "exp_missed": 4.0,
+   "routes_proxy": 317,
+   "tprr_proxy": {
+    "k": 69,
+    "n": 317
+   },
+   "yprr_proxy": 1.981,
+   "route_part": {
+    "k": 317,
+    "n": 629
+   },
+   "first_read": {
+    "k": 45,
+    "n": 347
+   },
+   "targets_pg": 5.92,
+   "carries_pg": 0.08,
+   "rush_ypg": -0.25,
+   "yms_2025": 0.1313
+  },
+  {
+   "name": "Davante Adams",
+   "pos": "WR",
+   "adp": 50.5,
+   "team_2026": "LA",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 2.811,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 408,
+   "tprr_proxy": {
+    "k": 114,
+    "n": 408
+   },
+   "yprr_proxy": 1.934,
+   "route_part": {
+    "k": 408,
+    "n": 624
+   },
+   "first_read": {
+    "k": 86,
+    "n": 367
+   },
+   "targets_pg": 8.18,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Bhayshul Tuten",
+   "pos": "RB",
+   "adp": 62.6,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 100,
+   "tprr_proxy": {
+    "k": 14,
+    "n": 100
+   },
+   "yprr_proxy": 0.79,
+   "route_part": {
+    "k": 100,
+    "n": 646
+   },
+   "first_read": {
+    "k": 5,
+    "n": 367
+   },
+   "targets_pg": 0.88,
+   "carries_pg": 5.44,
+   "rush_ypg": 22.38,
+   "inside5_share": {
+    "k": 8,
+    "n": 34,
+    "basis": "2025 role on JAX"
+   },
+   "backfield_share": 0.3671
+  },
+  {
+   "name": "Jalen Hurts",
+   "pos": "QB",
+   "adp": 60.9,
+   "team_2026": "PHI",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.642,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 526,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 526
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 526,
+    "n": 575
+   },
+   "first_read": {
+    "k": 0,
+    "n": 316
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 6.47,
+   "rush_ypg": 25.59,
+   "epa_per_att": 0.0756
+  },
+  {
+   "name": "Jayden Daniels",
+   "pos": "QB",
+   "adp": 63.8,
+   "team_2026": "WAS",
+   "implied_total": 21.0,
+   "implied_tds": 2.22,
+   "team_line_ybc": 2.512,
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "routes_proxy": 243,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 243
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 243,
+    "n": 568
+   },
+   "first_read": {
+    "k": 0,
+    "n": 273
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 8.29,
+   "rush_ypg": 39.71,
+   "epa_per_att": -0.0254
+  },
+  {
+   "name": "TreVeyon Henderson",
+   "pos": "RB",
+   "adp": 53.8,
+   "team_2026": "NE",
+   "implied_total": 20.5,
+   "implied_tds": 2.16,
+   "team_line_ybc": 2.561,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 273,
+   "tprr_proxy": {
+    "k": 42,
+    "n": 273
+   },
+   "yprr_proxy": 0.81,
+   "route_part": {
+    "k": 273,
+    "n": 614
+   },
+   "first_read": {
+    "k": 6,
+    "n": 315
+   },
+   "targets_pg": 2.29,
+   "carries_pg": 10.0,
+   "rush_ypg": 47.0,
+   "inside5_share": {
+    "k": 8,
+    "n": 29,
+    "basis": "2025 role on NE"
+   },
+   "backfield_share": 0.506
+  },
+  {
+   "name": "Jaylen Warren",
+   "pos": "RB",
+   "adp": 72.0,
+   "team_2026": "PIT",
+   "implied_total": 22.25,
+   "implied_tds": 2.35,
+   "team_line_ybc": 2.285,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 242,
+   "tprr_proxy": {
+    "k": 45,
+    "n": 242
+   },
+   "yprr_proxy": 1.376,
+   "route_part": {
+    "k": 242,
+    "n": 593
+   },
+   "first_read": {
+    "k": 7,
+    "n": 286
+   },
+   "targets_pg": 2.71,
+   "carries_pg": 13.12,
+   "rush_ypg": 58.88,
+   "inside5_share": {
+    "k": 14,
+    "n": 29,
+    "basis": "2025 role on PIT"
+   },
+   "backfield_share": 0.4806
+  },
+  {
+   "name": "Dalton Kincaid",
+   "pos": "TE",
+   "adp": 89.4,
+   "team_2026": "BUF",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.905,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 206,
+   "tprr_proxy": {
+    "k": 50,
+    "n": 206
+   },
+   "yprr_proxy": 2.772,
+   "route_part": {
+    "k": 206,
+    "n": 593
+   },
+   "first_read": {
+    "k": 26,
+    "n": 266
+   },
+   "targets_pg": 4.29,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.1593
+  },
+  {
+   "name": "Jadarian Price",
+   "pos": "RB",
+   "adp": 67.7,
+   "team_2026": "SEA",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.477,
+   "gp_rate_2yr": null,
+   "exp_missed": null,
+   "backfield_share": 0.0
+  },
+  {
+   "name": "Bo Nix",
+   "pos": "QB",
+   "adp": 119.9,
+   "team_2026": "DEN",
+   "implied_total": 19.75,
+   "implied_tds": 2.08,
+   "team_line_ybc": 2.592,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 676,
+   "tprr_proxy": {
+    "k": 1,
+    "n": 676
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 676,
+    "n": 676
+   },
+   "first_read": {
+    "k": 1,
+    "n": 297
+   },
+   "targets_pg": 0.06,
+   "carries_pg": 5.28,
+   "rush_ypg": 21.39,
+   "epa_per_att": 0.1035
+  },
+  {
+   "name": "Justin Herbert",
+   "pos": "QB",
+   "adp": 82.9,
+   "team_2026": "LAC",
+   "implied_total": 28.5,
+   "implied_tds": 3.01,
+   "team_line_ybc": 2.672,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 615,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 615
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 615,
+    "n": 681
+   },
+   "first_read": {
+    "k": 0,
+    "n": 334
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 5.47,
+   "rush_ypg": 32.65,
+   "epa_per_att": 0.0315
+  },
+  {
+   "name": "Rhamondre Stevenson",
+   "pos": "RB",
+   "adp": 81.8,
+   "team_2026": "NE",
+   "implied_total": 20.5,
+   "implied_tds": 2.16,
+   "team_line_ybc": 2.561,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 341,
+   "tprr_proxy": {
+    "k": 38,
+    "n": 341
+   },
+   "yprr_proxy": 1.012,
+   "route_part": {
+    "k": 341,
+    "n": 614
+   },
+   "first_read": {
+    "k": 8,
+    "n": 315
+   },
+   "targets_pg": 2.89,
+   "carries_pg": 10.44,
+   "rush_ypg": 45.56,
+   "inside5_share": {
+    "k": 12,
+    "n": 29,
+    "basis": "2025 role on NE"
+   },
+   "backfield_share": 0.453
+  },
+  {
+   "name": "Marvin Harrison",
+   "pos": "WR",
+   "adp": 75.5,
+   "team_2026": "ARI",
+   "implied_total": 18.0,
+   "implied_tds": 1.9,
+   "team_line_ybc": 2.593,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 383,
+   "tprr_proxy": {
+    "k": 74,
+    "n": 383
+   },
+   "yprr_proxy": 1.587,
+   "route_part": {
+    "k": 383,
+    "n": 748
+   },
+   "first_read": {
+    "k": 59,
+    "n": 357
+   },
+   "targets_pg": 6.08,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Mark Andrews",
+   "pos": "TE",
+   "adp": 129.2,
+   "team_2026": "BAL",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 3.219,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 363,
+   "tprr_proxy": {
+    "k": 70,
+    "n": 363
+   },
+   "yprr_proxy": 1.163,
+   "route_part": {
+    "k": 363,
+    "n": 503
+   },
+   "first_read": {
+    "k": 45,
+    "n": 232
+   },
+   "targets_pg": 4.12,
+   "carries_pg": 0.59,
+   "rush_ypg": 2.82,
+   "yms_2025": 0.1292
+  },
+  {
+   "name": "Brenton Strange",
+   "pos": "TE",
+   "adp": 151.8,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": 0.7647,
+   "exp_missed": 4.0,
+   "routes_proxy": 342,
+   "tprr_proxy": {
+    "k": 60,
+    "n": 342
+   },
+   "yprr_proxy": 1.579,
+   "route_part": {
+    "k": 342,
+    "n": 646
+   },
+   "first_read": {
+    "k": 33,
+    "n": 367
+   },
+   "targets_pg": 5.0,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.148
+  },
+  {
+   "name": "Jake Ferguson",
+   "pos": "TE",
+   "adp": 98.2,
+   "team_2026": "DAL",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.658,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 531,
+   "tprr_proxy": {
+    "k": 103,
+    "n": 531
+   },
+   "yprr_proxy": 1.13,
+   "route_part": {
+    "k": 531,
+    "n": 684
+   },
+   "first_read": {
+    "k": 58,
+    "n": 402
+   },
+   "targets_pg": 6.0,
+   "carries_pg": 0.06,
+   "rush_ypg": 0.06,
+   "yms_2025": 0.1274
+  },
+  {
+   "name": "Patrick Mahomes",
+   "pos": "QB",
+   "adp": 106.3,
+   "team_2026": "KC",
+   "implied_total": 22.75,
+   "implied_tds": 2.4,
+   "team_line_ybc": 2.756,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 589,
+   "tprr_proxy": {
+    "k": 1,
+    "n": 589
+   },
+   "yprr_proxy": -0.017,
+   "route_part": {
+    "k": 589,
+    "n": 689
+   },
+   "first_read": {
+    "k": 0,
+    "n": 310
+   },
+   "targets_pg": 0.07,
+   "carries_pg": 4.57,
+   "rush_ypg": 30.14,
+   "epa_per_att": 0.136
+  },
+  {
+   "name": "DK Metcalf",
+   "pos": "WR",
+   "adp": 74.7,
+   "team_2026": "PIT",
+   "implied_total": 22.25,
+   "implied_tds": 2.35,
+   "team_line_ybc": 2.285,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 462,
+   "tprr_proxy": {
+    "k": 99,
+    "n": 462
+   },
+   "yprr_proxy": 1.84,
+   "route_part": {
+    "k": 462,
+    "n": 593
+   },
+   "first_read": {
+    "k": 74,
+    "n": 286
+   },
+   "targets_pg": 6.5,
+   "carries_pg": 0.12,
+   "rush_ypg": 0.75
+  },
+  {
+   "name": "Matthew Stafford",
+   "pos": "QB",
+   "adp": 95.4,
+   "team_2026": "LA",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 2.811,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 624,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 624
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 624,
+    "n": 624
+   },
+   "first_read": {
+    "k": 0,
+    "n": 367
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 1.7,
+   "rush_ypg": 0.8,
+   "epa_per_att": 0.252
+  },
+  {
+   "name": "Jared Goff",
+   "pos": "QB",
+   "adp": 133.8,
+   "team_2026": "DET",
+   "implied_total": 28.25,
+   "implied_tds": 2.98,
+   "team_line_ybc": 2.923,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 622,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 622
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 622,
+    "n": 624
+   },
+   "first_read": {
+    "k": 0,
+    "n": 357
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 1.12,
+   "rush_ypg": 2.65,
+   "epa_per_att": 0.1842
+  },
+  {
+   "name": "Isaiah Likely",
+   "pos": "TE",
+   "adp": 109.9,
+   "team_2026": "NYG",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.714,
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "routes_proxy": 251,
+   "tprr_proxy": {
+    "k": 36,
+    "n": 251
+   },
+   "yprr_proxy": 1.223,
+   "route_part": {
+    "k": 251,
+    "n": 503
+   },
+   "first_read": {
+    "k": 20,
+    "n": 232
+   },
+   "targets_pg": 3.0,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.094
+  },
+  {
+   "name": "Jaxson Dart",
+   "pos": "QB",
+   "adp": 90.6,
+   "team_2026": "NYG",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.714,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 415,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 415
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 415,
+    "n": 627
+   },
+   "first_read": {
+    "k": 0,
+    "n": 314
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 6.14,
+   "rush_ypg": 34.79,
+   "epa_per_att": 0.0101
+  },
+  {
+   "name": "DJ Moore",
+   "pos": "WR",
+   "adp": 57.9,
+   "team_2026": "BUF",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.905,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 559,
+   "tprr_proxy": {
+    "k": 85,
+    "n": 559
+   },
+   "yprr_proxy": 1.193,
+   "route_part": {
+    "k": 559,
+    "n": 644
+   },
+   "first_read": {
+    "k": 45,
+    "n": 298
+   },
+   "targets_pg": 5.26,
+   "carries_pg": 0.89,
+   "rush_ypg": 4.32
+  },
+  {
+   "name": "T.J. Hockenson",
+   "pos": "TE",
+   "adp": 164.0,
+   "team_2026": "MIN",
+   "implied_total": 23.5,
+   "implied_tds": 2.48,
+   "team_line_ybc": 2.441,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 450,
+   "tprr_proxy": {
+    "k": 66,
+    "n": 450
+   },
+   "yprr_proxy": 0.973,
+   "route_part": {
+    "k": 450,
+    "n": 575
+   },
+   "first_read": {
+    "k": 30,
+    "n": 288
+   },
+   "targets_pg": 4.4,
+   "carries_pg": 0.07,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.1339
+  },
+  {
+   "name": "Rico Dowdle",
+   "pos": "RB",
+   "adp": 85.3,
+   "team_2026": "PIT",
+   "implied_total": 22.25,
+   "implied_tds": 2.35,
+   "team_line_ybc": 2.285,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 296,
+   "tprr_proxy": {
+    "k": 50,
+    "n": 296
+   },
+   "yprr_proxy": 1.003,
+   "route_part": {
+    "k": 296,
+    "n": 585
+   },
+   "first_read": {
+    "k": 6,
+    "n": 317
+   },
+   "targets_pg": 2.89,
+   "carries_pg": 13.39,
+   "rush_ypg": 60.28,
+   "inside5_share": {
+    "k": 9,
+    "n": 14,
+    "basis": "2025 role on CAR"
+   },
+   "backfield_share": 0.5194
+  },
+  {
+   "name": "Alec Pierce",
+   "pos": "WR",
+   "adp": 101.0,
+   "team_2026": "IND",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.48,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 475,
+   "tprr_proxy": {
+    "k": 84,
+    "n": 475
+   },
+   "yprr_proxy": 2.112,
+   "route_part": {
+    "k": 475,
+    "n": 605
+   },
+   "first_read": {
+    "k": 75,
+    "n": 397
+   },
+   "targets_pg": 5.6,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "J.K. Dobbins",
+   "pos": "RB",
+   "adp": 94.6,
+   "team_2026": "DEN",
+   "implied_total": 19.75,
+   "implied_tds": 2.08,
+   "team_line_ybc": 2.592,
+   "gp_rate_2yr": 0.6765,
+   "exp_missed": 5.5,
+   "routes_proxy": 147,
+   "tprr_proxy": {
+    "k": 14,
+    "n": 147
+   },
+   "yprr_proxy": 0.252,
+   "route_part": {
+    "k": 147,
+    "n": 676
+   },
+   "first_read": {
+    "k": 2,
+    "n": 297
+   },
+   "targets_pg": 1.4,
+   "carries_pg": 15.3,
+   "rush_ypg": 77.2,
+   "inside5_share": {
+    "k": 7,
+    "n": 21,
+    "basis": "2025 role on DEN"
+   },
+   "backfield_share": 0.4113
+  },
+  {
+   "name": "Tony Pollard",
+   "pos": "RB",
+   "adp": 84.8,
+   "team_2026": "TEN",
+   "implied_total": 20.75,
+   "implied_tds": 2.19,
+   "team_line_ybc": 2.54,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 364,
+   "tprr_proxy": {
+    "k": 41,
+    "n": 364
+   },
+   "yprr_proxy": 0.566,
+   "route_part": {
+    "k": 364,
+    "n": 646
+   },
+   "first_read": {
+    "k": 6,
+    "n": 310
+   },
+   "targets_pg": 2.41,
+   "carries_pg": 14.24,
+   "rush_ypg": 63.65,
+   "inside5_share": {
+    "k": 4,
+    "n": 12,
+    "basis": "2025 role on TEN"
+   },
+   "backfield_share": 0.5961
+  },
+  {
+   "name": "Carnell Tate",
+   "pos": "WR",
+   "adp": 66.3,
+   "team_2026": "TEN",
+   "implied_total": 20.75,
+   "implied_tds": 2.19,
+   "team_line_ybc": 2.54,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Hunter Henry",
+   "pos": "TE",
+   "adp": 138.3,
+   "team_2026": "NE",
+   "implied_total": 20.5,
+   "implied_tds": 2.16,
+   "team_line_ybc": 2.561,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 517,
+   "tprr_proxy": {
+    "k": 87,
+    "n": 517
+   },
+   "yprr_proxy": 1.485,
+   "route_part": {
+    "k": 517,
+    "n": 614
+   },
+   "first_read": {
+    "k": 59,
+    "n": 315
+   },
+   "targets_pg": 4.86,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.1667
+  },
+  {
+   "name": "Courtland Sutton",
+   "pos": "WR",
+   "adp": 79.2,
+   "team_2026": "DEN",
+   "implied_total": 19.75,
+   "implied_tds": 2.08,
+   "team_line_ybc": 2.592,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 624,
+   "tprr_proxy": {
+    "k": 125,
+    "n": 624
+   },
+   "yprr_proxy": 1.63,
+   "route_part": {
+    "k": 624,
+    "n": 676
+   },
+   "first_read": {
+    "k": 85,
+    "n": 297
+   },
+   "targets_pg": 7.26,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Chris Godwin",
+   "pos": "WR",
+   "adp": 95.8,
+   "team_2026": "TB",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.697,
+   "gp_rate_2yr": 0.4706,
+   "exp_missed": 9.0,
+   "routes_proxy": 267,
+   "tprr_proxy": {
+    "k": 52,
+    "n": 267
+   },
+   "yprr_proxy": 1.348,
+   "route_part": {
+    "k": 267,
+    "n": 644
+   },
+   "first_read": {
+    "k": 33,
+    "n": 334
+   },
+   "targets_pg": 5.67,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Josh Downs",
+   "pos": "WR",
+   "adp": 107.1,
+   "team_2026": "IND",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.48,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 341,
+   "tprr_proxy": {
+    "k": 88,
+    "n": 341
+   },
+   "yprr_proxy": 1.639,
+   "route_part": {
+    "k": 341,
+    "n": 605
+   },
+   "first_read": {
+    "k": 72,
+    "n": 397
+   },
+   "targets_pg": 5.5,
+   "carries_pg": 0.12,
+   "rush_ypg": -0.12
+  },
+  {
+   "name": "Jonathon Brooks",
+   "pos": "RB",
+   "adp": 108.1,
+   "team_2026": "CAR",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.49,
+   "gp_rate_2yr": 0.0882,
+   "exp_missed": 15.5,
+   "backfield_share": 0.0
+  },
+  {
+   "name": "Kyle Monangai",
+   "pos": "RB",
+   "adp": 99.4,
+   "team_2026": "CHI",
+   "implied_total": 25.0,
+   "implied_tds": 2.64,
+   "team_line_ybc": 3.309,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 264,
+   "tprr_proxy": {
+    "k": 30,
+    "n": 264
+   },
+   "yprr_proxy": 0.621,
+   "route_part": {
+    "k": 264,
+    "n": 644
+   },
+   "first_read": {
+    "k": 2,
+    "n": 298
+   },
+   "targets_pg": 1.95,
+   "carries_pg": 10.0,
+   "rush_ypg": 44.53,
+   "inside5_share": {
+    "k": 12,
+    "n": 28,
+    "basis": "2025 role on CHI"
+   },
+   "backfield_share": 0.427
+  },
+  {
+   "name": "Jordan Addison",
+   "pos": "WR",
+   "adp": 103.1,
+   "team_2026": "MIN",
+   "implied_total": 23.5,
+   "implied_tds": 2.48,
+   "team_line_ybc": 2.441,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 443,
+   "tprr_proxy": {
+    "k": 79,
+    "n": 443
+   },
+   "yprr_proxy": 1.377,
+   "route_part": {
+    "k": 443,
+    "n": 575
+   },
+   "first_read": {
+    "k": 60,
+    "n": 288
+   },
+   "targets_pg": 5.64,
+   "carries_pg": 0.14,
+   "rush_ypg": 5.79
+  },
+  {
+   "name": "Jordan Love",
+   "pos": "QB",
+   "adp": 148.8,
+   "team_2026": "GB",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 2.325,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 485,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 485
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 485,
+    "n": 554
+   },
+   "first_read": {
+    "k": 0,
+    "n": 281
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 3.0,
+   "rush_ypg": 13.12,
+   "epa_per_att": 0.252
+  },
+  {
+   "name": "Jordan Mason",
+   "pos": "RB",
+   "adp": 117.9,
+   "team_2026": "MIN",
+   "implied_total": 23.5,
+   "implied_tds": 2.48,
+   "team_line_ybc": 2.441,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 221,
+   "tprr_proxy": {
+    "k": 16,
+    "n": 221
+   },
+   "yprr_proxy": 0.231,
+   "route_part": {
+    "k": 221,
+    "n": 575
+   },
+   "first_read": {
+    "k": 2,
+    "n": 288
+   },
+   "targets_pg": 1.0,
+   "carries_pg": 9.94,
+   "rush_ypg": 47.38,
+   "inside5_share": {
+    "k": 7,
+    "n": 15,
+    "basis": "2025 role on MIN"
+   },
+   "backfield_share": 0.4923
+  },
+  {
+   "name": "Michael Pittman",
+   "pos": "WR",
+   "adp": 102.5,
+   "team_2026": "PIT",
+   "implied_total": 22.25,
+   "implied_tds": 2.35,
+   "team_line_ybc": 2.285,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 539,
+   "tprr_proxy": {
+    "k": 114,
+    "n": 539
+   },
+   "yprr_proxy": 1.471,
+   "route_part": {
+    "k": 539,
+    "n": 605
+   },
+   "first_read": {
+    "k": 88,
+    "n": 397
+   },
+   "targets_pg": 6.53,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Khalil Shakir",
+   "pos": "WR",
+   "adp": 140.8,
+   "team_2026": "BUF",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.905,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 385,
+   "tprr_proxy": {
+    "k": 97,
+    "n": 385
+   },
+   "yprr_proxy": 1.782,
+   "route_part": {
+    "k": 385,
+    "n": 593
+   },
+   "first_read": {
+    "k": 45,
+    "n": 266
+   },
+   "targets_pg": 6.44,
+   "carries_pg": 0.06,
+   "rush_ypg": 0.28
+  },
+  {
+   "name": "Wan'Dale Robinson",
+   "pos": "WR",
+   "adp": 116.2,
+   "team_2026": "TEN",
+   "implied_total": 20.75,
+   "implied_tds": 2.19,
+   "team_line_ybc": 2.54,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 543,
+   "tprr_proxy": {
+    "k": 141,
+    "n": 543
+   },
+   "yprr_proxy": 1.867,
+   "route_part": {
+    "k": 543,
+    "n": 627
+   },
+   "first_read": {
+    "k": 89,
+    "n": 314
+   },
+   "targets_pg": 8.75,
+   "carries_pg": 0.19,
+   "rush_ypg": 0.31
+  },
+  {
+   "name": "Matthew Golden",
+   "pos": "WR",
+   "adp": 127.9,
+   "team_2026": "GB",
+   "implied_total": 22.0,
+   "implied_tds": 2.32,
+   "team_line_ybc": 2.325,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 268,
+   "tprr_proxy": {
+    "k": 44,
+    "n": 268
+   },
+   "yprr_proxy": 1.347,
+   "route_part": {
+    "k": 268,
+    "n": 554
+   },
+   "first_read": {
+    "k": 31,
+    "n": 281
+   },
+   "targets_pg": 3.27,
+   "carries_pg": 0.67,
+   "rush_ypg": 3.27
+  },
+  {
+   "name": "Kenny Gainwell",
+   "pos": "RB",
+   "adp": 111.6,
+   "team_2026": "TB",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.697,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 351,
+   "tprr_proxy": {
+    "k": 85,
+    "n": 351
+   },
+   "yprr_proxy": 1.385,
+   "route_part": {
+    "k": 351,
+    "n": 593
+   },
+   "first_read": {
+    "k": 22,
+    "n": 286
+   },
+   "targets_pg": 5.06,
+   "carries_pg": 6.67,
+   "rush_ypg": 30.94,
+   "inside5_share": {
+    "k": 9,
+    "n": 29,
+    "basis": "2025 role on PIT"
+   },
+   "backfield_share": 0.3166
+  },
+  {
+   "name": "Jakobi Meyers",
+   "pos": "WR",
+   "adp": 110.1,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 527,
+   "tprr_proxy": {
+    "k": 110,
+    "n": 527
+   },
+   "yprr_proxy": 1.584,
+   "route_part": {
+    "k": 527,
+    "n": 646
+   },
+   "first_read": {
+    "k": 87,
+    "n": 367
+   },
+   "targets_pg": 6.71,
+   "carries_pg": 0.29,
+   "rush_ypg": 0.76
+  },
+  {
+   "name": "Makai Lemon",
+   "pos": "WR",
+   "adp": 87.8,
+   "team_2026": "PHI",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.642,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Michael Wilson",
+   "pos": "WR",
+   "adp": 83.8,
+   "team_2026": "ARI",
+   "implied_total": 18.0,
+   "implied_tds": 1.9,
+   "team_line_ybc": 2.593,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 633,
+   "tprr_proxy": {
+    "k": 127,
+    "n": 633
+   },
+   "yprr_proxy": 1.589,
+   "route_part": {
+    "k": 633,
+    "n": 748
+   },
+   "first_read": {
+    "k": 101,
+    "n": 357
+   },
+   "targets_pg": 7.41,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Jalen Coker",
+   "pos": "WR",
+   "adp": 144.0,
+   "team_2026": "CAR",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.49,
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "routes_proxy": 289,
+   "tprr_proxy": {
+    "k": 45,
+    "n": 289
+   },
+   "yprr_proxy": 1.363,
+   "route_part": {
+    "k": 289,
+    "n": 585
+   },
+   "first_read": {
+    "k": 32,
+    "n": 317
+   },
+   "targets_pg": 4.58,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Baker Mayfield",
+   "pos": "QB",
+   "adp": 141.3,
+   "team_2026": "TB",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.697,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 626,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 626
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 626,
+    "n": 644
+   },
+   "first_read": {
+    "k": 0,
+    "n": 334
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 3.24,
+   "rush_ypg": 22.47,
+   "epa_per_att": 0.0012
+  },
+  {
+   "name": "Oronde Gadsden",
+   "pos": "TE",
+   "adp": 127.8,
+   "team_2026": "LAC",
+   "implied_total": 28.5,
+   "implied_tds": 3.01,
+   "team_line_ybc": 2.672,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 417,
+   "tprr_proxy": {
+    "k": 69,
+    "n": 417
+   },
+   "yprr_proxy": 1.592,
+   "route_part": {
+    "k": 417,
+    "n": 681
+   },
+   "first_read": {
+    "k": 41,
+    "n": 334
+   },
+   "targets_pg": 4.5,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0,
+   "yms_2025": 0.1682
+  },
+  {
+   "name": "Chuba Hubbard",
+   "pos": "RB",
+   "adp": 77.8,
+   "team_2026": "CAR",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.49,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 266,
+   "tprr_proxy": {
+    "k": 39,
+    "n": 266
+   },
+   "yprr_proxy": 0.838,
+   "route_part": {
+    "k": 266,
+    "n": 585
+   },
+   "first_read": {
+    "k": 12,
+    "n": 317
+   },
+   "targets_pg": 2.69,
+   "carries_pg": 9.19,
+   "rush_ypg": 34.81,
+   "inside5_share": {
+    "k": 2,
+    "n": 14,
+    "basis": "2025 role on CAR"
+   },
+   "backfield_share": 0.875
+  },
+  {
+   "name": "Quentin Johnston",
+   "pos": "WR",
+   "adp": 113.9,
+   "team_2026": "LAC",
+   "implied_total": 28.5,
+   "implied_tds": 3.01,
+   "team_line_ybc": 2.672,
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "routes_proxy": 487,
+   "tprr_proxy": {
+    "k": 84,
+    "n": 487
+   },
+   "yprr_proxy": 1.509,
+   "route_part": {
+    "k": 487,
+    "n": 681
+   },
+   "first_read": {
+    "k": 64,
+    "n": 334
+   },
+   "targets_pg": 6.43,
+   "carries_pg": 0.14,
+   "rush_ypg": 0.5
+  },
+  {
+   "name": "Xavier Worthy",
+   "pos": "WR",
+   "adp": 139.2,
+   "team_2026": "KC",
+   "implied_total": 22.75,
+   "implied_tds": 2.4,
+   "team_line_ybc": 2.756,
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "routes_proxy": 418,
+   "tprr_proxy": {
+    "k": 73,
+    "n": 418
+   },
+   "yprr_proxy": 1.273,
+   "route_part": {
+    "k": 418,
+    "n": 689
+   },
+   "first_read": {
+    "k": 50,
+    "n": 310
+   },
+   "targets_pg": 5.21,
+   "carries_pg": 0.79,
+   "rush_ypg": 6.21
+  },
+  {
+   "name": "RJ Harvey",
+   "pos": "RB",
+   "adp": 79.9,
+   "team_2026": "DEN",
+   "implied_total": 19.75,
+   "implied_tds": 2.08,
+   "team_line_ybc": 2.592,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 290,
+   "tprr_proxy": {
+    "k": 58,
+    "n": 290
+   },
+   "yprr_proxy": 1.228,
+   "route_part": {
+    "k": 290,
+    "n": 676
+   },
+   "first_read": {
+    "k": 15,
+    "n": 297
+   },
+   "targets_pg": 3.68,
+   "carries_pg": 8.68,
+   "rush_ypg": 31.42,
+   "inside5_share": {
+    "k": 10,
+    "n": 21,
+    "basis": "2025 role on DEN"
+   },
+   "backfield_share": 0.4435
+  },
+  {
+   "name": "Romeo Doubs",
+   "pos": "WR",
+   "adp": 132.8,
+   "team_2026": "NE",
+   "implied_total": 20.5,
+   "implied_tds": 2.16,
+   "team_line_ybc": 2.561,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 412,
+   "tprr_proxy": {
+    "k": 86,
+    "n": 412
+   },
+   "yprr_proxy": 1.757,
+   "route_part": {
+    "k": 412,
+    "n": 554
+   },
+   "first_read": {
+    "k": 62,
+    "n": 281
+   },
+   "targets_pg": 5.65,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "Dallas Goedert",
+   "pos": "TE",
+   "adp": 123.1,
+   "team_2026": "PHI",
+   "implied_total": 25.5,
+   "implied_tds": 2.69,
+   "team_line_ybc": 2.642,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 446,
+   "tprr_proxy": {
+    "k": 82,
+    "n": 446
+   },
+   "yprr_proxy": 1.325,
+   "route_part": {
+    "k": 446,
+    "n": 575
+   },
+   "first_read": {
+    "k": 50,
+    "n": 316
+   },
+   "targets_pg": 5.56,
+   "carries_pg": 0.06,
+   "rush_ypg": 0.06,
+   "yms_2025": 0.1624
+  },
+  {
+   "name": "Stefon Diggs",
+   "pos": "WR",
+   "adp": 111.3,
+   "team_2026": "WAS",
+   "implied_total": 21.0,
+   "implied_tds": 2.22,
+   "team_line_ybc": 2.512,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 413,
+   "tprr_proxy": {
+    "k": 102,
+    "n": 413
+   },
+   "yprr_proxy": 2.453,
+   "route_part": {
+    "k": 413,
+    "n": 614
+   },
+   "first_read": {
+    "k": 73,
+    "n": 315
+   },
+   "targets_pg": 5.81,
+   "carries_pg": 0.0,
+   "rush_ypg": 0.0
+  },
+  {
+   "name": "KC Concepcion",
+   "pos": "WR",
+   "adp": 122.9,
+   "team_2026": "CLE",
+   "implied_total": 16.5,
+   "implied_tds": 1.74,
+   "team_line_ybc": 1.808,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Deebo Samuel",
+   "pos": "WR",
+   "adp": 137.2,
+   "team_2026": "SF",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.349,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 436,
+   "tprr_proxy": {
+    "k": 100,
+    "n": 436
+   },
+   "yprr_proxy": 1.667,
+   "route_part": {
+    "k": 436,
+    "n": 568
+   },
+   "first_read": {
+    "k": 44,
+    "n": 273
+   },
+   "targets_pg": 6.19,
+   "carries_pg": 1.06,
+   "rush_ypg": 4.69
+  },
+  {
+   "name": "Kyler Murray",
+   "pos": "QB",
+   "adp": 159.5,
+   "team_2026": "MIN",
+   "implied_total": 23.5,
+   "implied_tds": 2.48,
+   "team_line_ybc": 2.441,
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "routes_proxy": 193,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 193
+   },
+   "yprr_proxy": 0.0,
+   "route_part": {
+    "k": 193,
+    "n": 748
+   },
+   "first_read": {
+    "k": 0,
+    "n": 357
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 5.8,
+   "rush_ypg": 34.6,
+   "epa_per_att": 0.0355
+  },
+  {
+   "name": "Aaron Jones",
+   "pos": "RB",
+   "adp": 124.9,
+   "team_2026": "MIN",
+   "implied_total": 23.5,
+   "implied_tds": 2.48,
+   "team_line_ybc": 2.441,
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "routes_proxy": 212,
+   "tprr_proxy": {
+    "k": 41,
+    "n": 212
+   },
+   "yprr_proxy": 0.939,
+   "route_part": {
+    "k": 212,
+    "n": 575
+   },
+   "first_read": {
+    "k": 8,
+    "n": 288
+   },
+   "targets_pg": 3.42,
+   "carries_pg": 11.0,
+   "rush_ypg": 45.67,
+   "inside5_share": {
+    "k": 3,
+    "n": 15,
+    "basis": "2025 role on MIN"
+   },
+   "backfield_share": 0.4087
+  },
+  {
+   "name": "Blake Corum",
+   "pos": "RB",
+   "adp": 103.8,
+   "team_2026": "LA",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 2.811,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 167,
+   "tprr_proxy": {
+    "k": 14,
+    "n": 167
+   },
+   "yprr_proxy": 0.216,
+   "route_part": {
+    "k": 167,
+    "n": 624
+   },
+   "first_read": {
+    "k": 0,
+    "n": 367
+   },
+   "targets_pg": 0.95,
+   "carries_pg": 8.55,
+   "rush_ypg": 43.25,
+   "inside5_share": {
+    "k": 13,
+    "n": 34,
+    "basis": "2025 role on LA"
+   },
+   "backfield_share": 0.3608
+  },
+  {
+   "name": "Chris Rodriguez",
+   "pos": "RB",
+   "adp": 142.3,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": 0.5588,
+   "exp_missed": 7.5,
+   "routes_proxy": 109,
+   "tprr_proxy": {
+    "k": 4,
+    "n": 109
+   },
+   "yprr_proxy": 0.275,
+   "route_part": {
+    "k": 109,
+    "n": 568
+   },
+   "first_read": {
+    "k": 0,
+    "n": 273
+   },
+   "targets_pg": 0.33,
+   "carries_pg": 9.33,
+   "rush_ypg": 41.67,
+   "inside5_share": {
+    "k": 14,
+    "n": 37,
+    "basis": "2025 role on WAS"
+   },
+   "backfield_share": 0.4726
+  },
+  {
+   "name": "Rachaad White",
+   "pos": "RB",
+   "adp": 131.7,
+   "team_2026": "WAS",
+   "implied_total": 21.0,
+   "implied_tds": 2.22,
+   "team_line_ybc": 2.512,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 378,
+   "tprr_proxy": {
+    "k": 45,
+    "n": 378
+   },
+   "yprr_proxy": 0.577,
+   "route_part": {
+    "k": 378,
+    "n": 644
+   },
+   "first_read": {
+    "k": 2,
+    "n": 334
+   },
+   "targets_pg": 2.65,
+   "carries_pg": 7.76,
+   "rush_ypg": 33.65,
+   "inside5_share": {
+    "k": 9,
+    "n": 22,
+    "basis": "2025 role on TB"
+   },
+   "backfield_share": 0.3761
+  },
+  {
+   "name": "Jacory Croskey-Merritt",
+   "pos": "RB",
+   "adp": 115.7,
+   "team_2026": "WAS",
+   "implied_total": 21.0,
+   "implied_tds": 2.22,
+   "team_line_ybc": 2.512,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 173,
+   "tprr_proxy": {
+    "k": 13,
+    "n": 173
+   },
+   "yprr_proxy": 0.393,
+   "route_part": {
+    "k": 173,
+    "n": 568
+   },
+   "first_read": {
+    "k": 2,
+    "n": 273
+   },
+   "targets_pg": 0.76,
+   "carries_pg": 10.29,
+   "rush_ypg": 47.35,
+   "inside5_share": {
+    "k": 13,
+    "n": 37,
+    "basis": "2025 role on WAS"
+   },
+   "backfield_share": 0.4986
+  },
+  {
+   "name": "Rashid Shaheed",
+   "pos": "WR",
+   "adp": 147.6,
+   "team_2026": "SEA",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.477,
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "routes_proxy": 480,
+   "tprr_proxy": {
+    "k": 92,
+    "n": 480
+   },
+   "yprr_proxy": 1.431,
+   "route_part": {
+    "k": 480,
+    "n": 520
+   },
+   "first_read": {
+    "k": 63,
+    "n": 320
+   },
+   "targets_pg": 4.86,
+   "carries_pg": 0.62,
+   "rush_ypg": 4.33
+  },
+  {
+   "name": "Denzel Boston",
+   "pos": "WR",
+   "adp": 165.5,
+   "team_2026": "CLE",
+   "implied_total": 16.5,
+   "implied_tds": 1.74,
+   "team_line_ybc": 1.808,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Tyjae Spears",
+   "pos": "RB",
+   "adp": 166.0,
+   "team_2026": "TEN",
+   "implied_total": 20.75,
+   "implied_tds": 2.19,
+   "team_line_ybc": 2.54,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 266,
+   "tprr_proxy": {
+    "k": 50,
+    "n": 266
+   },
+   "yprr_proxy": 0.992,
+   "route_part": {
+    "k": 266,
+    "n": 646
+   },
+   "first_read": {
+    "k": 5,
+    "n": 310
+   },
+   "targets_pg": 3.85,
+   "carries_pg": 5.54,
+   "rush_ypg": 21.77,
+   "inside5_share": {
+    "k": 2,
+    "n": 12,
+    "basis": "2025 role on TEN"
+   },
+   "backfield_share": 0.1773
+  },
+  {
+   "name": "Tyrone Tracy",
+   "pos": "RB",
+   "adp": 163.7,
+   "team_2026": "NYG",
+   "implied_total": 23.0,
+   "implied_tds": 2.43,
+   "team_line_ybc": 2.714,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 322,
+   "tprr_proxy": {
+    "k": 48,
+    "n": 322
+   },
+   "yprr_proxy": 0.894,
+   "route_part": {
+    "k": 322,
+    "n": 627
+   },
+   "first_read": {
+    "k": 9,
+    "n": 314
+   },
+   "targets_pg": 3.2,
+   "carries_pg": 11.73,
+   "rush_ypg": 49.33,
+   "inside5_share": {
+    "k": 2,
+    "n": 31,
+    "basis": "2025 role on NYG"
+   },
+   "backfield_share": 0.4282
+  },
+  {
+   "name": "De'Zhaun Stribling",
+   "pos": "WR",
+   "adp": 156.2,
+   "team_2026": "SF",
+   "implied_total": 22.5,
+   "implied_tds": 2.37,
+   "team_line_ybc": 2.349,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Kenyon Sadiq",
+   "pos": "TE",
+   "adp": 151.0,
+   "team_2026": "NYJ",
+   "implied_total": 17.75,
+   "implied_tds": 1.87,
+   "team_line_ybc": 2.899,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Jordyn Tyson",
+   "pos": "WR",
+   "adp": 86.1,
+   "team_2026": "NO",
+   "implied_total": 21.25,
+   "implied_tds": 2.24,
+   "team_line_ybc": 2.057,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Ja'Kobi Lane",
+   "pos": "WR",
+   "adp": 157.2,
+   "team_2026": "BAL",
+   "implied_total": 26.0,
+   "implied_tds": 2.74,
+   "team_line_ybc": 3.219,
+   "gp_rate_2yr": null,
+   "exp_missed": null
+  },
+  {
+   "name": "Woody Marks",
+   "pos": "RB",
+   "adp": 159.1,
+   "team_2026": "HOU",
+   "implied_total": 21.5,
+   "implied_tds": 2.27,
+   "team_line_ybc": 2.099,
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "routes_proxy": 321,
+   "tprr_proxy": {
+    "k": 36,
+    "n": 321
+   },
+   "yprr_proxy": 0.648,
+   "route_part": {
+    "k": 321,
+    "n": 648
+   },
+   "first_read": {
+    "k": 8,
+    "n": 404
+   },
+   "targets_pg": 2.22,
+   "carries_pg": 12.72,
+   "rush_ypg": 46.22,
+   "inside5_share": {
+    "k": 9,
+    "n": 25,
+    "basis": "2025 role on HOU"
+   },
+   "backfield_share": 0.5326
+  },
+  {
+   "name": "Travis Hunter",
+   "pos": "WR",
+   "adp": 167.4,
+   "team_2026": "JAX",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.219,
+   "gp_rate_2yr": null,
+   "exp_missed": null,
+   "routes_proxy": 223,
+   "tprr_proxy": {
+    "k": 45,
+    "n": 223
+   },
+   "yprr_proxy": 1.336,
+   "route_part": {
+    "k": 223,
+    "n": 646
+   },
+   "first_read": {
+    "k": 24,
+    "n": 367
+   }
+  },
+  {
+   "name": "Brian Robinson",
+   "pos": "RB",
+   "adp": 154.1,
+   "team_2026": "ATL",
+   "implied_total": 19.25,
+   "implied_tds": 2.03,
+   "team_line_ybc": 2.522,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 71,
+   "tprr_proxy": {
+    "k": 12,
+    "n": 71
+   },
+   "yprr_proxy": 0.352,
+   "route_part": {
+    "k": 71,
+    "n": 629
+   },
+   "first_read": {
+    "k": 1,
+    "n": 347
+   },
+   "targets_pg": 0.68,
+   "carries_pg": 5.0,
+   "rush_ypg": 21.26,
+   "inside5_share": {
+    "k": 2,
+    "n": 26,
+    "basis": "2025 role on SF"
+   },
+   "backfield_share": 0.2487
+  },
+  {
+   "name": "Tyler Allgeier",
+   "pos": "RB",
+   "adp": 145.6,
+   "team_2026": "ARI",
+   "implied_total": 18.0,
+   "implied_tds": 1.9,
+   "team_line_ybc": 2.593,
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "routes_proxy": 137,
+   "tprr_proxy": {
+    "k": 16,
+    "n": 137
+   },
+   "yprr_proxy": 0.701,
+   "route_part": {
+    "k": 137,
+    "n": 586
+   },
+   "first_read": {
+    "k": 3,
+    "n": 320
+   },
+   "targets_pg": 0.94,
+   "carries_pg": 8.41,
+   "rush_ypg": 30.24,
+   "inside5_share": {
+    "k": 10,
+    "n": 24,
+    "basis": "2025 role on ATL"
+   },
+   "backfield_share": 0.5564
+  },
+  {
+   "name": "Zach Charbonnet",
+   "pos": "RB",
+   "adp": 146.0,
+   "team_2026": "SEA",
+   "implied_total": 24.0,
+   "implied_tds": 2.53,
+   "team_line_ybc": 2.477,
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "routes_proxy": 256,
+   "tprr_proxy": {
+    "k": 24,
+    "n": 256
+   },
+   "yprr_proxy": 0.562,
+   "route_part": {
+    "k": 256,
+    "n": 520
+   },
+   "first_read": {
+    "k": 2,
+    "n": 320
+   },
+   "targets_pg": 1.41,
+   "carries_pg": 11.12,
+   "rush_ypg": 44.12,
+   "inside5_share": {
+    "k": 19,
+    "n": 30,
+    "basis": "2025 role on SEA"
+   },
+   "backfield_share": 0.5526
+  },
+  {
+   "name": "Jonah Coleman",
+   "pos": "RB",
+   "adp": 167.3,
+   "team_2026": "DEN",
+   "implied_total": 19.75,
+   "implied_tds": 2.08,
+   "team_line_ybc": 2.592,
+   "gp_rate_2yr": null,
+   "exp_missed": null,
+   "backfield_share": 0.0
+  },
+  {
+   "name": "Alvin Kamara",
+   "pos": "RB",
+   "adp": 162.5,
+   "team_2026": "NO",
+   "implied_total": 21.25,
+   "implied_tds": 2.24,
+   "team_line_ybc": 2.057,
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "routes_proxy": 280,
+   "tprr_proxy": {
+    "k": 39,
+    "n": 280
+   },
+   "yprr_proxy": 0.664,
+   "route_part": {
+    "k": 280,
+    "n": 671
+   },
+   "first_read": {
+    "k": 8,
+    "n": 365
+   },
+   "targets_pg": 3.55,
+   "carries_pg": 11.91,
+   "rush_ypg": 42.82,
+   "inside5_share": {
+    "k": 2,
+    "n": 17,
+    "basis": "2025 role on NO"
+   },
+   "backfield_share": 0.2594
+  }
+ ]
+}

@@ -602,3 +602,65 @@ backlog); estimating it from one 12-team season would be noise wearing a formula
 The lens therefore ranks by the direct empirical ceiling stat the format pays for.
 When the historical module lands, the premium gets estimated and this entry
 updated. tests/test_ceiling.py gates (workflow + runbook 7e).
+
+## C.5 BULLISH engine (Phase C component 5)
+
+Artifacts: out/data/bullish_inputs_2026.json (every computed input with k/n or
+weekly SEs, thresholds as percentiles of OUR distributions, Vegas = Week-1 2026
+closing lines with a pull timestamp) and out/data/bullish_2026.json (tag state
+objects). Matrices per the reconciled spec: RB 4-of-5 (receiving volume,
+expected-TD equity = implied TDs x inside-5 share, current-team line YBC,
+availability, backfield command; NFL capital demoted to a years-1-2 tiebreak
+field), WR 4-of-5 (TPRR-proxy, YPRR-proxy, first-read share from FTN, computed
+adjusted vacated targets OR top-5-implied primary role, route participation), QB
+2-of-3 stable inputs (rushing, environment, prior EPA efficiency - no projected
+TDs anywhere), TE both-of-2 (route participation, top-2 current-team market
+share). Criterion evaluation is probabilistic - exact normal-approx on k/n for
+proportions, a stated derived-scale soft band for the rest - the gate is the
+exact Poisson-binomial P(>= k of n), BULLISH at P>=0.60 / WATCH at P>=0.35
+(stated conventions), missing inputs count as NOT met and say so in the reason.
+State machine: SUSPENDED/demotions from current injury status per the review's
+taxonomy; 72h TTL enforced client-side (chips degrade BULLISH->WATCH past it
+and always render age); every rebuild diffs against the previous artifact (the
+T-24h delta report is that diff on the T-24h run). Chips render on the board
+rows and the room's on-the-clock line BESIDE the seven-state signal encoding -
+a new computed layer, never a replacement. tests/test_bullish.py gates
+(workflow + runbook 7f).
+
+Result: 20 BULLISH, 14 WATCH.
+
+**ADP-edge accountability (the checkpoint's most-important directive).** The
+answer is NOT null: 16 tagged players sit >=4 positional-ADP ranks below their
+tag rank, led by Jared Goff (QB tag rank 1 vs QB16 by ADP - the 6-pt matrix at
+work), Zay Flowers (WR5 vs WR19), D'Andre Swift, Javonte Williams, and Derrick
+Henry (RB1 by tag vs RB12 by ADP). Spearman between tag rank and ADP among
+tagged players is 0.806 - correlated with the market (as any sane model is)
+but demonstrably not a restatement of it. The divergence list IS the edge
+claim, and it is checkable after the season.
+
+**QB rushing-vs-pocket gap under exact scoring (settings correction item 1).**
+Top-12 QB seasons 2016-2025 (n=120), rushing class = rush yds/g >= that
+season's p75: gap = +22.0 season points, CI [3.1, 40.8] under our 6-pt table;
++22.4 [7.3, 37.4] under the 4-pt counterfactual. The DERIVED conclusion, which
+neither report states: the rushing premium survives 6-pt scoring essentially
+unchanged in absolute points (~1.3 PPG, significant), because the sixth point
+lifts both classes nearly equally; it compresses only as a SHARE of QB scoring
+(6.6% -> 5.5%). The director report's late-rushing-QB lean is directionally
+fine here, but the 6-pt matrix correctly also admits high-environment pocket
+QBs - which is exactly what the tags did (Goff, Prescott, Stafford BULLISH).
+
+**TE scarcity adjudication (the two-report conflict) - SETTLED from our data.**
+League-exact PPG, 8+ game TEs, 2023-2025: TE1-TE3 mean gap 1.66 PPG, TE1-TE6
+3.67, TE1-TE12 6.21. The Gemini doc's "TE1-TE3 is now under 1.0 PPG" is
+CONTRADICTED on our scoring; the director report's "elite TE is a real edge"
+is SUPPORTED by the 6.21-PPG TE1-TE12 spread (and by C2's rd1-3 TE hit12 of
+83% with zero busts).
+
+**Verification queue status after C5**: settled - inside-5/6-10 split, TE
+scarcity, 140-target WR, 400-touch fade (direction), league target-vs-carry
+ratio (implicit in exact scoring throughout), QB gap. Remaining for later
+components/season: TPRR and target-share YoY stability (proxy, 2016-2025),
+xYPRR vs YPRR stability, first-downs-per-route-run predictiveness, draft-capital
+career curves, DST derived-weight validation, preseason-implied-totals backtest
+gate (the Vegas layer currently informs two criteria; the backtest gate runs
+before any expansion of its weight).

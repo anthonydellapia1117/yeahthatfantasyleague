@@ -975,6 +975,10 @@ const ok = (cond, name, detail) => {
     ok(/No synthetic variance premium/.test(ceil),
        "the lens declares its limitation");
     await pg.click('#views button[data-v="board"]');
+    // C5: BULLISH chips render on the board with age, beside the signals
+    const bull = await pg.textContent("#board");
+    ok(/BULLISH \d+h|WATCH \d+h/.test(bull),
+       "BULLISH/WATCH chips render with their age");
     ok(await pg.locator("#board .brow .sig svg").count() >= 5,
        "signal icons render (third channel)");
     // Explain: full factor decomposition + walter layer

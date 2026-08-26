@@ -1,5 +1,25 @@
 # Changelog
 
+## C5: BULLISH engine - probabilistic matrices, tag state machine (2026-08-26)
+
+Two artifacts: computed inputs (k/n proportions, percentile thresholds,
+Week-1 Vegas with timestamps, the route-proxy weakness stated) and tag
+state objects (BULLISH/WATCH/SUSPENDED with reason codes, 72h TTL the
+chips enforce with visible age, delta report on every rebuild). Matrices
+per the reconciled spec - RB expected-TD equity on inside-5 share,
+current-team line quality, availability and backfield command; WR
+TPRR/YPRR proxies, FTN first-read, live-computed adjusted vacated
+targets; QB stable inputs only under 6-pt scoring; TE route share +
+market share. Exact Poisson-binomial gates, no cliffs, missing inputs
+never count as met. 20 BULLISH / 14 WATCH. The edge accounting Anthony
+ordered: 16 tagged players diverge >=4 positional-ADP ranks (Goff QB1
+by tag vs QB16 by market, Flowers, Javonte, D. Henry), Spearman 0.806 -
+not a restatement of ADP. QB rushing-vs-pocket gap derived: +22.0 pts
+[3.1,40.8] at 6-pt vs +22.4 [7.3,37.4] at 4-pt - the premium survives
+in absolute points and compresses only as a share. TE scarcity settled
+against the Gemini doc (TE1-TE3 1.66 PPG, not <1.0) and for the
+director report (TE1-TE12 6.21). tests/test_bullish.py gates (7f).
+
 ## C4: ceiling lens for the median game, enabled (2026-08-26)
 
 The median game is confirmed (league_average_match=1 verified live on

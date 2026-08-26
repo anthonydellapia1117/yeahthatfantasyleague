@@ -291,6 +291,7 @@ async function boot(){
     // identically in its absence, so this fetch never gates boot
     try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
     try { D.ceil = await get("data/ceiling_2026.json"); } catch (e) { D.ceil = null; }
+    try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -414,7 +415,7 @@ function renderBoard(){
     (list.map(p => `
     <div class="brow" data-sig="${S(p).signal || ""}">
       <div class="rk num">${S(p).cvs_rank}</div>
-      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
+      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${bullishChip(p)}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
       <div class="trio"><span class="c num">${val(p)}</span><br>
         <span class="sub num">conf ${pct(p.confidence)} - vol ${p.volatility ? p.volatility.sd : "-"}</span></div>
       <div class="meta">${p.pos} - <a href="teams.html#t=${encodeURIComponent(p.team || "")}">${esc(p.team || "-")}</a>
@@ -437,6 +438,22 @@ function rateBand(rank){
     if (rank >= lo && rank <= hi) return name;
   return null;
 }
+// ---- C5 BULLISH tags: a computed layer BESIDE the signal encoding, never
+// superseding it. Chip shows status + age; title carries the top reason and
+// the gate probability. Past the 72h TTL a BULLISH chip degrades to WATCH.
+function bullishChip(p){
+  if (!D.bull) return "";
+  const t = D.bull.tags.find(x => x.name === p.name && x.pos === p.pos);
+  if (!t) return "";
+  const ageH = Math.max(0, (Date.now() - Date.parse(t.computed_at)) / 3600000);
+  let st = t.status;
+  let stale = "";
+  if (st === "BULLISH" && ageH > t.ttl_hours){ st = "WATCH"; stale = " (stale)"; }
+  const color = st === "BULLISH" ? "var(--go)" : st === "WATCH" ? "var(--warn)" : "var(--ink3)";
+  const title = `${t.gate} = ${t.score}%; ${t.reasons[0] || "all criteria computed"}; age ${ageH.toFixed(0)}h`;
+  return `<span class="sig" style="color:${color};border-color:${color}" title="${esc(title)}">${st}${stale} ${ageH.toFixed(0)}h</span>`;
+}
+
 function baseRateChip(p){
   if (!D.rates || !p.adp_pos_rank) return "";
   const band = rateBand(p.adp_pos_rank);

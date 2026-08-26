@@ -40,6 +40,7 @@ rehearsal's `real` times.
 | 7c | `python3 tests/test_baserates.py` | 0.1 s | base-rate artifact integrity + board wiring |
 | 7d | `python3 tests/test_archetypes.py` | 0.1 s | archetype tags: computed thresholds, zero-IR flags, page wiring |
 | 7e | `python3 tests/test_ceiling.py` | 0.1 s | ceiling lens: boom rates, zero-IR availability, enabled view |
+| 7f | `python3 tests/test_bullish.py` | 0.2 s | BULLISH engine: probabilistic gates, state machine, ADP-edge accounting |
 | 8 | `python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
 | 9 | `python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
 | 10 | full smoke (see the playwright note below) | 94 s + install | 17 hermetic browser scenarios |
