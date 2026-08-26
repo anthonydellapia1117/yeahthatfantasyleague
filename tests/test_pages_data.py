@@ -336,6 +336,41 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "pick-engine alternatives order by score alone (comparator pinned)")
     ok(".sort((a, b) => b.g - a.g)" in drp,
        "recs order by grade alone (comparator pinned)")
+    # IDENT + UPNEXT: the Sleeper identity layer and the "am I next" strip
+    ok("IDENT-BEGIN" in drp and "UPNEXT-BEGIN" in drp
+       and drp.index("IDENT-BEGIN") > drp.index("engine-data-end"),
+       "identity and up-next blocks are marker-quarantined outside the sentinels")
+    # the room's link must be DERIVED from the polled draft id, never typed in
+    ok('"https://sleeper.com/draft/nfl/" + (E.league ? E.league.draft_id : "")' in drp,
+       "the room's Sleeper link is derived from the polled draft id")
+    ok("https://sleeper.com/draft/nfl/1389" not in drp,
+       "the room hardcodes no draft url - it cannot drift from the feed")
+    ok('$("sleeper-link").href = DRAFT_URL;' in drp,
+       "the header link is wired to the derived draft url")
+    # team_name is display only and must never displace the history join key
+    eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    rs = eng["rosters"]
+    ok(all("team_name" in r and "franchise" in r for r in rs),
+       "every roster carries both the Sleeper team name and the franchise era")
+    mine = [r for r in rs if r["roster_id"] == eng["league"]["anthony_roster_id"]]
+    ok(len(mine) == 1 and mine[0]["handle"] == "antdell"
+       and mine[0]["team_name"] == "Taylor Made",
+       "Anthony's roster resolves to antdell / Taylor Made",
+       str(mine and (mine[0]["handle"], mine[0]["team_name"])))
+    ok(mine and mine[0]["franchise"] == "Antdell & Ernie",
+       "the franchise era key is unchanged by the team-name work")
+    _up = drp[drp.index("UPNEXT-BEGIN"):drp.index("UPNEXT-END")]
+    ok("YOU ARE ON THE CLOCK" in _up and "UP IN " in _up and "before you:" in _up,
+       "the up-next strip states the clock, the count, and who picks first")
+    ok("teamLabel(" in _up, "the up-next queue names teams, not bare slot numbers")
+    # display only: identity must not reach the score or the grade
+    _pe2 = drp[drp.index("function peScore"):drp.index("function peCondition")]
+    ok("teamLabel" not in _pe2 and "team_name" not in _pe2,
+       "the Sleeper team name never enters the pick-engine score")
+    for pg_ in ("big_board.html", "home.html"):
+        _t = open(os.path.join(ROOT, "out", pg_)).read()
+        ok(eng["league"]["draft_id"] in _t,
+           f"{pg_} links to the live Sleeper draft")
     ok("${S(p).cvs_rank}" in bpage,
        "rows render the payload's server-ranked variant - no page-side re-rank")
     # the ordering lives in the payload: strictly ranked, CVS-descending

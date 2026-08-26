@@ -1,5 +1,53 @@
 # Changelog
 
+## Live-draft wiring: Sleeper link, team identity, up-next (2026-08-26)
+
+Anthony asked for the app refreshed and pointed at the live draft, and to
+know mid-draft when he is next and who goes before him.
+
+- SLEEPER LINK on the draft room, big board, and hub. In the room it is
+  DERIVED from the polled draft id, so the link can never point somewhere
+  the room is not actually watching; a guard fails the build if anyone
+  hardcodes a draft url there.
+- TEAM IDENTITY, two names kept apart on purpose. The engine now carries
+  each roster's Sleeper `team_name` (Anthony's is "Taylor Made"; six of
+  twelve managers set one) alongside `franchise`, which stays the archive
+  member name that joins 13 seasons of history and keys every prior. The
+  room leads with the Sleeper name and keeps the franchise visible as
+  provenance, so a dossier is still traceable to the history it came from.
+  Guards pin both, and pin that the team name never reaches the score.
+- UP NEXT strip in the live card: "UP IN 2 PICKS - your pick 7", who picks
+  before you by team, and the pick after that. It turns amber inside three
+  picks and green on the clock. No seat means it says so rather than
+  guessing.
+- REFRESH to today's live inputs: engine, CVS board, and the page-data
+  shards. Two guards caught real problems on the fresh data rather than
+  waving them through - see below.
+
+### Two data defects the refresh exposed
+
+- CROSSWALK, father onto son. The suffix strip that rescues "Kenneth
+  Walker" vs "Kenneth Walker III" also collapses Marvin Harrison (1996,
+  IND) onto Marvin Harrison Jr. (2024, ARI) - same name, same position,
+  and `latest_team` cannot separate them because nflverse keeps the last
+  team a retired player suited up for. Draftable match rate had fallen to
+  97.5% against a 98% floor. Resolved by entry year, applied only when
+  unique and only when every candidate has one: `draft_year` is None for
+  the UNDRAFTED, not the old, so a son who went undrafted (Frank Gore Jr.)
+  would otherwise resolve backwards onto his father. Twelve collisions now
+  resolve, all of them modern-over-namesake, and every one is logged.
+- STALE DEPTH CHARTS. The as-of date was nine days old against a
+  seven-day guard; the shards had not rebuilt since 08-17.
+
+### Two tests that hardcoded a day's data
+
+Both failed on correct behavior and are now payload-driven, per the rule
+written into the runbook: the coin-flip overlay named Ashton Jeanty, whose
+VOR moved 99 -> 74 in this refresh and who is no longer the runner-up (it
+derives the runner now); and the order-hypothesis options asserted one
+franchise string, which the team names displaced (it now checks every
+handle and every franchise era from the payload).
+
 ## Signal encoding live in the draft room (2026-08-19)
 
 Anthony's question two: the seven-state signal encoding was board-only
