@@ -1,5 +1,113 @@
 # Changelog
 
+## P2: the pages-data cron was failing silently - verified, fixed, and watched at the publication (2026-08-26)
+
+VERIFIED: the reported numbers are exact. The pages-data workflow's
+first 15 runs are 1 manual dispatch (green) and 14 scheduled runs, 8 of
+them failures - Aug 16, 18, 19, 20, then 23 through 26, the last four
+consecutive. The live site served Aug-22 data for four days and nothing
+alerted: the third silent-cron incident.
+
+CAUSE, from the failed runs' own logs: one guard - "draftable players
+match at >=98%" - over the ADP < 250 window. Sleeper's preseason pool
+deepens through late August, pushing camp bodies at ADP 237-249 into
+the window; eight were unmatched against nflverse (7 legitimately do
+not exist there; 1, Audric Estime, was a genuine crosswalk miss -
+Sleeper spells him without the accent, nflverse as Estimé, and the
+normalizer did not fold diacritics). 8/287 = 97.2%, under the bar, so
+the guard failed, the commit step never ran, and no publication
+happened - by design, silently.
+
+FIXES, all three legs:
+1. norm_name now folds diacritics (NFKD strip), so Estimé matches. The
+   fold is guarded in the pages suite.
+2. The hard >=98% guard now covers the real draft window, ADP < 200
+   (the league drafts 180 picks; currently 187/187 matched). The
+   200-249 fringe may legitimately miss nflverse, but every miss must
+   be logged in reconciliation.json - the logged-never-dropped law is
+   now asserted, not assumed. A normalizer regression still trips the
+   hard guard instantly because it would unmatch across the whole
+   window, not just the fringe.
+3. THE LESSON, ENCODED: alert on missing successful PUBLICATION, not on
+   workflow execution. New src/check_publication.py reads the LIVE
+   site's deployed provenance.json - the artifact a green run actually
+   produces - and reports FRESH / STALE (>48h) / UNREADABLE in one
+   line. A daily Claude Routine runs it and push-notifies Anthony only
+   on STALE or UNREADABLE. Runbook automation section gains layer 4.
+
+Also in this pass: the committed shards are refreshed to today's build,
+so publication resumes at merge rather than waiting on tomorrow's cron.
+
+P2-E, resolved by inspection (no code change): the reviewer could not
+find the N.1 findings entry in out/ff-hub.html because it does not live
+there - ff-hub is the retrospective dashboard for the 2013-2025 history
+analysis (its "eight draft-day hypotheses" table is the separate
+Phase-3 result), and it is under a standing do-not-modify instruction.
+N.1 ships in docs/research/gemini_independent_assessment.md, updated in
+this same pass.
+
+## P1: VONA one-frame conditioning + starter feasibility, room response validity, fixed BULLISH-vs-ADP verdict (2026-08-26)
+
+Four items from the same independent review that found the P0 clock
+defect, in the review's own order.
+
+A. VONA CONDITIONING MISMATCH, verified then fixed. The tree computed
+E[best at this pick] from unconditional survival but E[best at next
+pick] from per-player conditional survival - two different probability
+frames subtracted from each other. The artifact wore the symptom
+openly: 57 of 204 branch nodes (28%) carried NEGATIVE VONA, worst
+-29.8, an impossibility under a single frame (waiting cannot create
+value in expectation over the same pool). Both terms now use the same
+unconditional survival() and the builder asserts E[next] <= E[now] at
+every node where the pool sits above replacement (below replacement
+both terms drift toward zero from below, and the final round has no
+next pick - the assertion states its own scope). Rebuilt: zero negative
+nodes. The provenance block now names the frame so a future edit that
+splits the frames again fails the guards.
+
+B. VONA ROSTER FEASIBILITY - the third occurrence of the multi-pick
+defect class (M1 naive max-VOR, the back-to-back duplicate pick, now
+paths through three early TEs). Fixed at the shared layer, not in the
+caller: src/forward_policy.py gains starter_caps() - base slots plus
+flex only where the league actually flexes the position, NO injury
+spare, because a seven-round path is building the starting lineup
+itself - and the tree's pool filtering consumes it on every walk step
+and in the greedy baseline. Rebuilt: zero infeasible paths, and the
+tree's shape moved materially (slots 4-8 collapsed to forced lines;
+forks concentrate at the turns). tests/test_vona.py now walks every
+path asserting caps and non-negative VONA.
+
+C. ROOM RESPONSE VALIDITY vs freshness - the room validated that
+Sleeper ANSWERED, not that the answer was usable, and a shared cache
+was observed serving picks 118 seconds old while the room called them
+fresh. Every draft-room fetch now cache-busts (?cb=timestamp), requires
+response.ok, validates shape (draft object with string status; picks
+must be an array), and refuses a picks payload shorter than one already
+rendered ("stale picks ignored") so the board can never regress. The
+connection line now shows the SOURCE age (Sleeper's own
+last_message_time / last_picked) separately from fetch success -
+"sleeper 200 - 187ms - data 4s old" - because a 200 in 200ms says
+nothing about how old the data inside it is. Pages guards 8d and smoke
+scenario asserts cover all of it.
+
+F. THE BULLISH-vs-ADP VERDICT IS NOW REPORTED, NOT COMPUTED. The prior
+entry's reframe to "underpowered" was right, but its AUTOMATION was
+statistically unsound three ways: a post-hoc minimum-detectable-effect
+comparison is not an equivalence test and licenses nothing about
+absence; the BEATS branch searched six cells with no multiplicity
+control; and it was sign-blind, so a significantly harmful tag would
+have read "BEATS ADP". The three-state rule and the MDE search are
+deleted. The artifact now carries the reviewed verdict verbatim -
+INCONCLUSIVE, the pos1-12 band's 28/43 (65.1%) vs 133/257 (51.8%),
++13.4pp, 95% CI [-2.1, +28.9], regions beyond pos12 not identifiable,
+tag display-only pending a continuous-ADP season-held-out test - and
+the builder cross-checks every figure the text cites against the
+freshly computed cells on each run, refusing to publish on mismatch so
+data drift sends the verdict back to review instead of shipping stale
+numbers. Guards hold an independent copy of the text and repeat the
+cross-check. Findings N.1 rewritten with the full two-round correction
+history.
+
 ## P0: the pick clock is server-anchored or absent (2026-08-26)
 
 Independent review found the room's clock hardcoded 120 seconds against a

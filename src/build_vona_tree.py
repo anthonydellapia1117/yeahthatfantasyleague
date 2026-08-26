@@ -49,8 +49,8 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, ROOT)
 
 # the frozen survival model is CALLED, never reimplemented
-from engine_2026 import survival, cond_survival, snake_picks, TEAMS  # noqa: E402
-from forward_policy import phantom_lineup_pts  # noqa: E402
+from engine_2026 import survival, snake_picks, TEAMS  # noqa: E402
+from forward_policy import phantom_lineup_pts, starter_caps  # noqa: E402
 
 OUT = os.path.join(ROOT, "out", "data", "vona_tree_2026.json")
 SKILL = ("QB", "RB", "WR", "TE")
@@ -81,9 +81,25 @@ def vona_at(pool_by_pos, pick, nxt):
     for pos, pool in pool_by_pos.items():
         if not pool:
             continue
+        # ONE CONDITIONING FRAME (review finding P1-A). Both expectations
+        # are taken from the same pre-draft information state, so both use
+        # the unconditional survival curve. The first build mixed
+        # unconditional survival for "now" with per-player cond_survival
+        # for "next"; cond(next|now) >= surv(next) always, so E[next] was
+        # inflated and 28% of nodes carried negative VONA - an expected
+        # best available that RISES as the pool shrinks is impossible.
+        # With one frame, availability is monotone in the pick number and
+        # VONA >= 0 holds structurally (asserted below and in the guards).
         now = e_best(pool, lambda p: survival(p["adp"], pick))
-        later = (e_best(pool, lambda p: cond_survival(p["adp"], nxt, pick))
+        later = (e_best(pool, lambda p: survival(p["adp"], nxt))
                  if nxt else 0.0)
+        # In VOR units "everyone gone" IS replacement level (0), so for an
+        # above-replacement pool availability is monotone in the pick number
+        # and E[next] <= E[now]. A BELOW-replacement pool can legitimately
+        # drift up toward 0 by waiting - negative VONA there reads "waiting
+        # costs nothing, the position is below replacement," which is true.
+        if nxt is not None and now >= 0:
+            assert later <= now + 1e-9, (pos, pick, nxt, now, later)
         # the player actually takeable here: best VOR still plausibly there
         cand = [p for p in pool if survival(p["adp"], pick) >= SURV_FLOOR]
         if not cand:
@@ -130,10 +146,12 @@ def overdispersion(picks_path):
     return out
 
 
-def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band):
+def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
+               caps):
     """Walk one slot's tree, branching only where the data says to."""
     picks = snake_picks(slot)[:DEPTH]
     nodes = {"count": 0}
+    pos_of = {p["name"]: p["pos"] for p in players}
     pruned = {"dominated": 0, "budget": 0, "narrow_kept": 0}
     branches = {"count": 0, "collapsed": 0}
 
@@ -153,6 +171,17 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band):
         pick = picks[depth]
         nxt = picks[depth + 1] if depth + 1 < len(picks) else None
         v = vona_at(pool_for(taken), pick, nxt)
+        # ROSTER FEASIBILITY (review finding P1-B, the third occurrence of
+        # this defect class): a position at its startable maximum for the
+        # path so far is not a choice. Caps come from the shared
+        # forward_policy layer, derived from the league's own observed flex
+        # allocation - never typed here.
+        counts = {}
+        for name in taken:
+            p_pos = pos_of.get(name)
+            counts[p_pos] = counts.get(p_pos, 0) + 1
+        v = {pos: d for pos, d in v.items()
+             if counts.get(pos, 0) < caps.get(pos, 99)}
         if not v:
             return []
         ranked = sorted(v.items(), key=lambda kv: -kv[1]["vona"])
@@ -267,6 +296,8 @@ def main():
                if p["pos"] in SKILL and p.get("adp", 999) < 900]
     players.sort(key=lambda p: -p["vor"])
 
+    caps = starter_caps(eng.get("flex_allocation", {}))
+
     # PASS 1: greedy walk per slot to observe the VONA gaps this board
     # actually produces at each depth, so the branch threshold is
     # calibrated to the board rather than typed in.
@@ -283,6 +314,12 @@ def main():
             for pos in by_pos:
                 by_pos[pos].sort(key=lambda x: -x["vor"])
             v = vona_at(by_pos, pick, nxt)
+            cnt = {}
+            for nm in taken:
+                pp = next((q["pos"] for q in players if q["name"] == nm), None)
+                cnt[pp] = cnt.get(pp, 0) + 1
+            v = {pos: d for pos, d in v.items()
+                 if cnt.get(pos, 0) < caps.get(pos, 99)}
             if len(v) < 2:
                 break
             ranked = sorted(v.items(), key=lambda kv: -kv[1]["vona"])
@@ -304,7 +341,7 @@ def main():
     probe = {"vona_by_depth": defaultdict(list), "margins": []}
     for slot in range(1, TEAMS + 1):
         build_slot(slot, players, eps_by_depth, probe, eng["baselines"],
-                   float("inf"))
+                   float("inf"), caps)
     narrow_band = p25(probe["margins"]) if probe["margins"] else 0.0
 
     # PASS 2b: build for real
@@ -312,7 +349,7 @@ def main():
     slots = {}
     for slot in range(1, TEAMS + 1):
         slots[str(slot)] = build_slot(slot, players, eps_by_depth, stats,
-                                      eng["baselines"], narrow_band)
+                                      eng["baselines"], narrow_band, caps)
 
     corr = overdispersion(os.path.join(ROOT, "out", "picks.csv"))
     clustered = [p for p, d in corr.items() if d["ratio"] and d["ratio"] > 1.0]
@@ -324,9 +361,21 @@ def main():
             "objective": ("VONA(pos) = E[best available at this pick] - "
                           "E[best available at my next pick], both survival-"
                           "weighted over the whole positional pool"),
-            "survival": ("frozen calibrated model called from "
-                         "src/engine_2026.py - survival() and cond_survival(), "
-                         "never reimplemented here"),
+            "survival": ("frozen survival model called from "
+                         "src/engine_2026.py - the pre-draft convention every "
+                         "artifact uses; the adopted calibration applies to "
+                         "conditional survival in the LIVE room only, and "
+                         "after the one-frame fix this builder uses no "
+                         "conditional survival at all"),
+            "conditioning": ("ONE frame: both expectations use unconditional "
+                             "survival from the same pre-draft information "
+                             "state. E[next] <= E[now] and VONA >= 0 are "
+                             "structural and guarded - the first build mixed "
+                             "frames and 28% of nodes went negative"),
+            "feasibility": ("starter caps from the shared forward_policy "
+                            "layer (max simultaneous starters, flex from the "
+                            "observed allocation): no path may hold more of "
+                            "a position than the lineup can start"),
             "depth": DEPTH,
             "depth_rationale": ("structural: the starting lineup is exactly "
                                 "seven skill slots (QB RB RB WR WR TE FLEX), "

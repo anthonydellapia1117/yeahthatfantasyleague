@@ -22,6 +22,7 @@ import json
 import math
 import os
 import sys
+import unicodedata
 import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -111,9 +112,13 @@ def build_adp():
 
 
 def norm_name(n):
-    """Suffix/punctuation normalizer - the same fix the 3B audit forced on
-    ingest.py's reconciliation: lowercase-only matching left 'Kenneth Walker'
-    unmatched against 'Kenneth Walker III'."""
+    """Suffix/punctuation/diacritic normalizer - the suffix and punctuation
+    strip is the same fix the 3B audit forced on ingest.py's reconciliation
+    ('Kenneth Walker' vs 'Kenneth Walker III'). Diacritic folding joined it
+    when the P2 cron audit found Sleeper's 'Audric Estime' unmatched against
+    nflverse's 'Audric Estimé' - a real draftable RB lost to an accent."""
+    n = unicodedata.normalize("NFKD", n)
+    n = "".join(c for c in n if not unicodedata.combining(c))
     n = n.lower().replace(".", "").replace("'", "")
     parts = [w for w in n.split() if w not in ("jr", "sr", "ii", "iii", "iv", "v")]
     return " ".join(parts)

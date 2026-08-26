@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""Guards for the BULLISH-vs-ADP null test artifact.
+"""Guards for the BULLISH-vs-ADP test artifact.
 
-The point of these guards is that the null cannot be quietly upgraded: the
-verdict must follow the intervals, the concentration must be reported, and
-the limitation must stay on the artifact.
+The verdict on this artifact is REPORTED, not computed: the automated
+three-state rule was removed as statistically unsound (a post-hoc
+minimum-detectable-effect comparison is not an equivalence test, the
+significance branch searched six cells without multiplicity control, and
+its BEATS label was sign-blind). These guards enforce the replacement
+contract: the verdict is the reviewed INCONCLUSIVE text verbatim, every
+figure it cites cross-checks against the computed cells so data drift
+fails loudly instead of shipping a stale verdict, no power/three-state
+machinery remains, the concentration confound stays reported, and the
+limitation stays on the artifact.
 """
 import json
 import os
@@ -37,36 +44,60 @@ for band, v in a["within_band"].items():
             ok(c["hit12"]["ci95"][0] <= c["hit12"]["rate"] <= c["hit12"]["ci95"][1],
                f"{band}/{side}: the interval brackets its own rate")
 
-# the verdict is DERIVED from the intervals, never asserted
-sig = [b for b, v in a["within_band"].items()
-       for key in ("lift_hit12", "lift_hit24")
-       if v[key] and (v[key]["diff_ci95"][0] > 0 or v[key]["diff_ci95"][1] < 0)]
-ok(sig == a["significant_cells"],
-   "the significant-cell list recomputes from the artifact's own intervals")
-# the verdict is THREE-state: a non-significant result in an underpowered
-# band is UNDERPOWERED, never NULL. Calling it null would claim evidence
-# of absence from a design that could not have found the effect.
-testable = {b: v for b, v in a["within_band"].items() if v["tagged"]["n"] > 0}
-under = [b for b, v in testable.items()
-         if not v["power"]["powered_for_observed_effect"]]
-ok(under == a["underpowered_bands"],
-   "the underpowered-band list recomputes from the artifact's own power block")
-if sig:
-    want = "BEATS ADP"
-elif under:
-    want = "UNDERPOWERED"
-else:
-    want = "NULL"
-ok(a["verdict"].startswith(want),
-   "the verdict follows significance AND power, not the p-value alone")
-ok(not (a["verdict"].startswith("NULL") and under),
-   "an underpowered band is never reported as a null")
-for band, v in testable.items():
-    pw = v["power"]
-    ok(pw["min_detectable_diff_80pct"] is not None,
-       f"{band}: minimum detectable effect computed")
-    ok("cannot be called absent" in pw["note"],
-       f"{band}: the power note states what a non-detection does not mean")
+# THE VERDICT IS REPORTED, NOT COMPUTED - the reviewed text, verbatim.
+# This copy is the guard's own record of what was reviewed; the builder
+# holds an independent copy. Either drifting from the other fails here.
+FIXED_VERDICT = (
+    "INCONCLUSIVE - incremental value over ADP is unresolved in the only "
+    "band with usable overlap. Among positional ADP ranks 1-12, tagged "
+    "players finished top-12 in 28/43 cases (65.1%) vs 133/257 (51.8%), "
+    "+13.4pp, 95% CI [-2.1, +28.9]. That interval permits slight harm and "
+    "useful lift alike. Only three tags occur at ranks 13-24 and none at "
+    "25-48, so those regions are not identifiable. Coarse bands do not "
+    "adjust for exact ADP, position, season, or repeated players. Tag "
+    "stays display-only pending a continuous-ADP, season-held-out test.")
+ok(a["verdict"] == FIXED_VERDICT,
+   "the verdict is the reviewed INCONCLUSIVE text, byte-identical")
+ok(a["verdict"].startswith("INCONCLUSIVE"), "the verdict reads INCONCLUSIVE")
+ok("reported, fixed by review" in a.get("verdict_basis", ""),
+   "the artifact states the verdict is reported, not computed")
+ok("not an equivalence test" in a.get("verdict_basis", "")
+   and "multiplicity" in a.get("verdict_basis", "")
+   and "sign-blind" in a.get("verdict_basis", ""),
+   "the basis names all three defects of the removed automation")
+
+# the automation must actually be GONE, not just overridden
+ok("significant_cells" not in a and "underpowered_bands" not in a,
+   "no three-state machinery keys remain on the artifact")
+ok(all("power" not in v for v in a["within_band"].values()),
+   "no per-band post-hoc power block remains")
+src = open(os.path.join(ROOT, "src", "bullish_vs_adp.py")).read()
+ok("min_detectable" not in src,
+   "the post-hoc MDE search is deleted from the builder")
+ok('verdict = "' not in src and "verdict = (" not in src,
+   "the builder never assigns a computed verdict")
+
+# every figure the fixed verdict cites, recomputed from the cells - data
+# drift must fail loudly, never ship under the reviewed text
+top = a["within_band"]["pos1-12"]
+tk, tn = top["tagged"]["hit12"]["k"], top["tagged"]["n"]
+uk, un = top["untagged"]["hit12"]["k"], top["untagged"]["n"]
+l12 = top["lift_hit12"]
+ok((tk, tn) == (28, 43), "verdict cite 28/43 matches the computed tagged cell")
+ok((uk, un) == (133, 257),
+   "verdict cite 133/257 matches the computed untagged cell")
+ok(round(100.0 * tk / tn, 1) == 65.1, "verdict cite 65.1% recomputes")
+ok(round(100.0 * uk / un, 1) == 51.8, "verdict cite 51.8% recomputes")
+ok(round(l12["diff"] * 100, 1) == 13.4, "verdict cite +13.4pp recomputes")
+ok([round(x * 100, 1) for x in l12["diff_ci95"]] == [-2.1, 28.9],
+   "verdict cite CI [-2.1, +28.9] recomputes")
+ok(a["within_band"]["pos13-24"]["tagged"]["n"] == 3,
+   "verdict cite 'three tags at ranks 13-24' matches the cell")
+ok(a["within_band"]["pos25-48"]["tagged"]["n"] == 0,
+   "verdict cite 'none at 25-48' matches the cell")
+for k in ("28/43", "65.1%", "133/257", "51.8%", "+13.4pp", "[-2.1, +28.9]"):
+    ok(k in a["verdict"], f"the verdict text actually cites {k}")
+ok("verdict_cites" in a, "the cited-figure ledger ships on the artifact")
 
 # the ADP-confound disclosure is mandatory
 c = a["concentration"]
@@ -78,7 +109,7 @@ ok(a["pooled"]["tagged"]["n"] ==
    sum(v["tagged"]["n"] for v in a["within_band"].values()),
    "pooled and within-band tag counts reconcile")
 
-# the shipped tag must stay display-only while this test reads NULL
+# the shipped tag must stay display-only while the verdict is unresolved
 room = open(os.path.join(ROOT, "out", "draft_room.html")).read()
 board = open(os.path.join(ROOT, "out", "big_board.html")).read()
 ok("bullChip" in room and "sigBadge" in room,

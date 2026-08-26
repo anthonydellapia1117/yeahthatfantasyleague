@@ -97,11 +97,11 @@ const ok = (cond, name, detail) => {
     const page = await browser.newPage();
     await page.evaluate(() => {}).catch(() => {});
     const drawn = {1:5,2:9,3:7,4:1,5:12,6:3,7:2,8:11,9:4,10:8,11:6,12:10};
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" }, body: "[]" }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "pre_draft", draft_order: null,
@@ -138,7 +138,7 @@ const ok = (cond, name, detail) => {
     const page = await browser.newPage();
     const order = {}; order["345197760305307648"] = 7;
     const slotToRoster = {}; for (let i = 1; i <= 12; i++) slotToRoster[i] = i;
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([
@@ -148,7 +148,7 @@ const ok = (cond, name, detail) => {
       ]),
     }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({
         contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
@@ -163,6 +163,8 @@ const ok = (cond, name, detail) => {
     ok(/seat 7/.test(mode), "Anthony's seat auto-detected from the draw");
     ok(/sleeper 200 - \d+ms/.test(await page.textContent("#conn")),
        "live: the connection diagnostic shows status and round-trip");
+    ok(/data \d+s old/.test(await page.textContent("#conn")),
+       "live: SOURCE age is shown separately from fetch time");
     const body = await page.textContent("body");
     ok(await page.locator(".bignm").count() === 1, "one huge answer name");
     const big = await page.textContent(".bignm");
@@ -209,12 +211,12 @@ const ok = (cond, name, detail) => {
   {
     const page = await browser.newPage();
     const drawn = {1:5,2:9,3:7,4:1,5:12,6:3,7:2,8:11,9:4,10:8,11:6,12:10};
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
       body: "[]" }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: null,
@@ -253,11 +255,11 @@ const ok = (cond, name, detail) => {
     await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([{ player_id: topId, count: 9876 }]) }));
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify(picks) }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
@@ -329,11 +331,11 @@ const ok = (cond, name, detail) => {
     const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
     await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([{ metadata: { first_name: "Jonathan", last_name: "Taylor", position: "RB" } }]) }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "complete", draft_order: { "345197760305307648": 7 },
@@ -354,11 +356,11 @@ const ok = (cond, name, detail) => {
   {
     const page = await browser.newPage();
     const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" }, body: "[]" }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: null,
@@ -380,10 +382,10 @@ const ok = (cond, name, detail) => {
     const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
     await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
@@ -477,11 +479,11 @@ const ok = (cond, name, detail) => {
     const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
     await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify(picks) }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
@@ -530,11 +532,11 @@ const ok = (cond, name, detail) => {
     const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
     await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify(picks) }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
@@ -646,11 +648,11 @@ const ok = (cond, name, detail) => {
     const idSlots9 = {}; for (let i = 1; i <= 12; i++) idSlots9[i] = i;
     await p9.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
-    await p9.route("**/v1/draft/*/picks", r => r.fulfill({
+    await p9.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify(picks9) }));
     await p9.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
@@ -936,12 +938,12 @@ const ok = (cond, name, detail) => {
     const mk13 = (f, l, pos) => ({ metadata: { first_name: f, last_name: l, position: pos } });
     await lv.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
-    await lv.route("**/v1/draft/*/picks", r => r.fulfill({
+    await lv.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([mk13("Ja'Marr","Chase","WR"), mk13("Bijan","Robinson","RB"),
                             mk13("Jahmyr","Gibbs","RB")]) }));
     await lv.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
@@ -1178,7 +1180,7 @@ const ok = (cond, name, detail) => {
     pe.on("console", m => { if (m.type() === "error") errs16.push(m.text()); });
     const order16 = {}; order16["345197760305307648"] = 7;
     const s2r16 = {}; for (let i = 1; i <= 12; i++) s2r16[i] = i;
-    await pe.route("**/v1/draft/*/picks", r => r.fulfill({
+    await pe.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([
@@ -1187,7 +1189,7 @@ const ok = (cond, name, detail) => {
         { metadata: { first_name: "Ja'Marr", last_name: "Chase", position: "WR" } },
       ]) }));
     await pe.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order16,
@@ -1303,12 +1305,12 @@ const ok = (cond, name, detail) => {
         return { metadata: { first_name: parts[0], last_name: parts.slice(1, -1).join(" "),
                              position: parts[parts.length - 1] } };
       });
-    await oc.route("**/v1/draft/*/picks", r => r.fulfill({
+    await oc.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify(ocPicks) }));
     await oc.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order16,
@@ -1364,11 +1366,11 @@ const ok = (cond, name, detail) => {
     const idSlots2 = {}; for (let i = 1; i <= 12; i++) idSlots2[i] = i;
     await pr2.route("**/v1/players/nfl/trending/**", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
-    await pr2.route("**/v1/draft/*/picks", r => r.fulfill({
+    await pr2.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify(runPicks) }));
     await pr2.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
@@ -1484,11 +1486,11 @@ const ok = (cond, name, detail) => {
       slot_to_roster_id: ident(12),
       settings: { teams: 12, rounds: 14, slots_flex: 1, pick_timer: 60 },
       metadata: { scoring_type: "ppr" } };
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" }, body: "[]" }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify(r.request().url().includes(REAL) ? realDraft : mockDraft) });
@@ -1529,14 +1531,14 @@ const ok = (cond, name, detail) => {
       slot_to_roster_id: ident(12),
       settings: { teams: 12, rounds: 14, slots_flex: 1, pick_timer: 60 },
       metadata: { scoring_type: "ppr" } };
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([
         { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
       ]) }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify(r.request().url().includes(REAL) ? realDraft : mockDraft) });
@@ -1657,14 +1659,14 @@ const ok = (cond, name, detail) => {
     // 22a: a 60-second draft, last pick 20s ago -> the clock must read the
     // REAL remainder (~40s), never 2:00, never anything over 1:00
     const page = await browser.newPage();
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([
         { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
       ]) }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting",
@@ -1688,11 +1690,11 @@ const ok = (cond, name, detail) => {
   {
     // 22b: last_picked missing -> no plausible wrong number, an honest absence
     const page = await browser.newPage();
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" }, body: "[]" }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting",
@@ -1712,11 +1714,11 @@ const ok = (cond, name, detail) => {
   {
     // 22c: the clock expired by Sleeper's own timestamps -> says so, holds 0:00
     const page = await browser.newPage();
-    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" }, body: "[]" }));
     await page.route("**/v1/draft/*", r => {
-      if (r.request().url().endsWith("/picks")) return r.fallback();
+      if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
         body: JSON.stringify({ status: "drafting",
