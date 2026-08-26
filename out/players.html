@@ -64,9 +64,37 @@ td{padding:5px 8px 5px 0;border-bottom:1px solid var(--s2)}
 .yc{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.4px;padding:1px 6px;border-radius:8px;border:1px solid;margin-left:5px;vertical-align:1px}
 .yc.bull{color:#0a7d33;border-color:#9ed9b2;background:#eafaf0}
 .yc.bear{color:#a83232;border-color:#e2b3b3;background:#faeeee}
-.idxrow{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--s2);font-size:14px}
-.idxrow a{display:inline-block;padding:3px 0;margin:-3px 0}
+/* DENSITY: name and its numbers read as one tight block. The old rule was
+   justify-content:space-between, which pushed the name and the
+   "VOR 68 - ADP 22.8" line to opposite edges of the row. */
+.idxrow{display:flex;justify-content:flex-start;align-items:baseline;gap:8px;
+  padding:5px 0;border-top:1px solid var(--s2);font-size:14px;line-height:1.35}
+.idxrow a{display:inline-block;padding:2px 0;margin:-2px 0}
 .idxrow:first-of-type{border-top:0}
+.idxrow .who{min-width:0;overflow-wrap:anywhere}
+.idxrow .nums{white-space:nowrap;color:var(--ink3)}
+.idxrow .vorv{font-weight:800}
+/* three position groups across, two rows: QB RB WR / TE DST K. Each group
+   sizes to its own filtered content; an emptied group collapses out of the
+   grid instead of leaving a hole. */
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:4px 18px;align-items:start}
+@media(max-width:760px){.pgrid{grid-template-columns:1fr}}
+.pgrp h2{margin:6px 0 4px}
+.pgrp .cnt{font-weight:600;color:var(--ink3)}
+.pgrp[hidden]{display:none}
+.pfilt{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
+.pfilt button{background:var(--s2);border:1px solid var(--line);color:var(--ink2);
+  border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.pfilt button.on{background:var(--info);border-color:var(--info);color:#fff}
+.pactive{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 8px;font-size:11px}
+.pactive[hidden]{display:none}
+.pactive .afl{color:var(--ink3);font-weight:600;letter-spacing:.06em}
+.pactive .afc{border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--ink2)}
+.pactive button{background:none;border:1px solid var(--line);border-radius:99px;
+  padding:2px 8px;font-size:11px;color:var(--ink2);cursor:pointer}
+.vorkey{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink3);margin:0 0 10px}
+.vorkey .ramp{height:8px;width:120px;border-radius:99px;border:1px solid var(--line)}
 input[type=search]{width:100%;font:inherit;color:var(--ink);background:var(--s2);
   border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:12px}
 .cols{display:grid;grid-template-columns:1fr;gap:0 24px}
@@ -149,8 +177,10 @@ async function boot(){
     [D.engine, D.adp, D.usage, D.xwalk, D.prov] = await Promise.all([
       get("engine_2026.json"), get("data/adp.json"), get("data/usage_2025.json"),
       get("data/crosswalk.json"), get("data/provenance.json")]);
-    // C3 archetypes: display-only; the page renders identically without them
+    // C3 archetypes and C5 BULLISH tags: display and filtering only; the
+    // page renders identically without them, and neither gates boot
     try { D.arch = await get("data/archetypes_2026.json"); } catch (e) { D.arch = null; }
+    try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -190,28 +220,140 @@ function route(){
   window.scrollTo(0, 0);
 }
 
+// ---- VOR SCALE -------------------------------------------------------
+// A continuous data ramp, deliberately NOT the reserved verdict palette
+// (--go / --stop / --warn are reserved for verdicts, clock states, and seat
+// hot-cold). Distinct anchor hexes, stated in the on-page key.
+//
+// Anchors are computed across the ENTIRE player database, never per group,
+// so a color means the same thing in every position container. The MEDIAN
+// is the midpoint anchor, not the mean: VOR is right-skewed, and a mean
+// midpoint would drag the middle up and paint most of the board red.
+// ADP is never colored.
+const VOR_LO = [159, 18, 57], VOR_MID = [133, 77, 14], VOR_HI = [21, 128, 61];
+let VOR_SCALE = null;
+function vorScale(){
+  if (VOR_SCALE) return VOR_SCALE;
+  const vs = D.engine.players.map(p => p.vor)
+    .filter(v => typeof v === "number" && isFinite(v)).sort((a, b) => a - b);
+  const mid = vs.length % 2 ? vs[(vs.length - 1) / 2]
+    : (vs[vs.length / 2 - 1] + vs[vs.length / 2]) / 2;
+  VOR_SCALE = { min: vs[0], median: mid, max: vs[vs.length - 1], n: vs.length };
+  return VOR_SCALE;
+}
+function mix(a, b, t){
+  return "rgb(" + a.map((x, i) => Math.round(x + (b[i] - x) * t)).join(",") + ")";
+}
+function vorColor(v){
+  const s = vorScale();
+  if (typeof v !== "number" || !isFinite(v)) return "var(--ink3)";
+  if (v <= s.median){
+    const span = s.median - s.min;
+    return mix(VOR_LO, VOR_MID, span > 0 ? Math.min(1, Math.max(0, (v - s.min) / span)) : 1);
+  }
+  const span = s.max - s.median;
+  return mix(VOR_MID, VOR_HI, span > 0 ? Math.min(1, Math.max(0, (v - s.median) / span)) : 0);
+}
+
+// ---- index filters ---------------------------------------------------
+// Filters apply WITHIN each position group; non-matching rows are removed
+// from the DOM (never dimmed), each container rescales to its filtered
+// count, and an emptied group collapses out of the grid.
+const PFILTERS = { bull: "BULLISH/WATCH only", arch: "archetype-tagged only",
+                   call: "your call only" };
+const PView = { q: "", bull: false, arch: false, call: false };
+function pTagged(p){
+  return !!(D.bull && D.bull.tags &&
+            D.bull.tags.some(t => t.name === p.name && t.pos === p.pos));
+}
+function pArch(p){
+  return !!(D.arch && D.arch.players &&
+            D.arch.players.some(a => norm(a.name) === norm(p.name) && a.pos === p.pos));
+}
+function pMatch(p){
+  if (PView.q && !norm(p.name).includes(PView.q)) return false;
+  if (PView.bull && !pTagged(p)) return false;
+  if (PView.arch && !pArch(p)) return false;
+  if (PView.call && !D.board[norm(p.name)]) return false;
+  return true;
+}
+function pActive(){
+  const on = [];
+  if (PView.q) on.push('search "' + PView.q + '"');
+  for (const k of Object.keys(PFILTERS)) if (PView[k]) on.push(PFILTERS[k]);
+  return on;
+}
+
 function renderIndex(msg){
   const c = document.getElementById("content");
-  const lists = ["QB", "RB", "WR", "TE", "K", "DEF"].map(pos => {
-    const rows = D.vorSorted.filter(p => p.pos === pos).slice(0, pos === "QB" || pos === "TE" ? 20 : 40)
-      .map(p => `<div class="idxrow"><span><a href="#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.floor ? '<span class="floor">floor</span>' : ""}${ycChip(p)}</span>
-        <span class="num small">VOR ${p.vor.toFixed(0)} - ADP ${p.adp < 900 ? p.adp.toFixed(1) : "-"}</span></div>`).join("");
-    return `<div><h2>${pos === "DEF" ? "DST" : pos}</h2>${rows}</div>`;
-  }).join("");
+  const s = vorScale();
   c.innerHTML = `${msg ? `<div class="banner">${msg}</div>` : ""}
     <div class="card">
     <input type="search" id="q" placeholder="search any player" autocomplete="off">
-    <div id="qout"></div>
-    <div class="cols">${lists}</div>
+    <div class="pfilt" id="pfilt"></div>
+    <div class="pactive" id="pactive" hidden></div>
+    <div class="vorkey"><span>VOR scale</span>
+      <span class="ramp" style="background:linear-gradient(90deg,${
+        vorColor(s.min)},${vorColor(s.median)},${vorColor(s.max)})"></span>
+      <span>min ${s.min.toFixed(0)} - median ${s.median.toFixed(0)} - max ${
+        s.max.toFixed(0)}, computed across all ${s.n} players (median anchors
+        the midpoint - VOR is right-skewed). A data ramp, distinct from the
+        reserved verdict colors. ADP is not colored.</span></div>
+    <div class="pgrid" id="pgrid"></div>
     </div>`;
   document.getElementById("q").addEventListener("input", e => {
-    const q = norm(e.target.value);
-    const out = document.getElementById("qout");
-    if (!q){ out.innerHTML = ""; return; }
-    out.innerHTML = D.engine.players.filter(p => norm(p.name).includes(q)).slice(0, 12)
-      .map(p => `<div class="idxrow"><span><a href="#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a></span>
-        <span class="num small">${p.pos} - VOR ${p.vor.toFixed(0)}</span></div>`).join("");
+    PView.q = norm(e.target.value); renderPFilters(); renderGroups();
   });
+  renderPFilters();
+  renderGroups();
+}
+
+function renderPFilters(){
+  const f = document.getElementById("pfilt");
+  if (!f) return;
+  f.innerHTML = Object.keys(PFILTERS).map(k =>
+    `<button data-pf="${k}"${PView[k] ? ' class="on"' : ""}>${PFILTERS[k]}</button>`).join("");
+  f.querySelectorAll("button").forEach(b => b.onclick = () => {
+    PView[b.dataset.pf] = !PView[b.dataset.pf]; renderPFilters(); renderGroups();
+  });
+}
+
+function renderGroups(){
+  const g = document.getElementById("pgrid");
+  if (!g) return;
+  // top row QB RB WR, bottom row TE DST K
+  const ORDER = ["QB", "RB", "WR", "TE", "DEF", "K"];
+  let shown = 0, total = 0;
+  g.innerHTML = ORDER.map(pos => {
+    const all = D.vorSorted.filter(p => p.pos === pos)
+      .slice(0, pos === "QB" || pos === "TE" ? 20 : 40);
+    total += all.length;
+    const rows = all.filter(pMatch);
+    shown += rows.length;
+    const body = rows.map(p => `<div class="idxrow"><span class="who"><a href="#p=${
+      encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${
+      p.floor ? '<span class="floor">floor</span>' : ""}${ycChip(p)}</span>
+      <span class="num small nums"><span class="vorv" style="color:${
+        vorColor(p.vor)}">VOR ${p.vor.toFixed(0)}</span> - ADP ${
+        p.adp < 900 ? p.adp.toFixed(1) : "-"}</span></div>`).join("");
+    return `<div class="pgrp"${rows.length ? "" : " hidden"}><h2>${
+      pos === "DEF" ? "DST" : pos}${rows.length !== all.length
+        ? ` <span class="cnt">${rows.length}</span>` : ""}</h2>${body}</div>`;
+  }).join("");
+  const pa = document.getElementById("pactive");
+  const on = pActive();
+  pa.hidden = !on.length;
+  if (on.length)
+    pa.innerHTML = '<span class="afl">FILTERED:</span> ' +
+      on.map(l => `<span class="afc">${esc(l)}</span>`).join("") +
+      `<span class="afc">${shown} of ${total}</span>` +
+      '<button id="pf-clear">CLEAR ALL</button>';
+  const cl = document.getElementById("pf-clear");
+  if (cl) cl.onclick = () => {
+    PView.q = ""; for (const k of Object.keys(PFILTERS)) PView[k] = false;
+    const qi = document.getElementById("q"); if (qi) qi.value = "";
+    renderPFilters(); renderGroups();
+  };
 }
 
 function ycChip(p){

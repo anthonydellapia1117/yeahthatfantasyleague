@@ -60,6 +60,14 @@ a{color:var(--info);text-decoration:none}
 .filters button,.views button{background:var(--s2);border:1px solid var(--line);color:var(--ink2);
   border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
 .filters button.on,.views button.on{background:var(--info);border-color:var(--info);color:#fff}
+.activef{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0 2px;font-size:11px}
+/* an author display rule beats the hidden attribute's UA display:none */
+.activef[hidden]{display:none}
+.activef .afl{color:var(--ink3);font-weight:600;letter-spacing:.06em}
+.activef .afc{border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--ink2)}
+.activef .afn{color:var(--ink3);margin-left:2px}
+.activef button{background:none;border:1px solid var(--line);border-radius:99px;
+  padding:2px 8px;font-size:11px;color:var(--ink2);cursor:pointer}
 .legend{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--ink2);margin-bottom:10px}
 .legend span{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:6px;padding:2px 7px}
 /* signal encoding - three channels always: container treatment + icon + label.
@@ -172,6 +180,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <div class="filters" id="posf"></div>
     <div class="filters" id="sigf"></div>
     <div class="filters" id="togf"></div>
+    <div class="activef" id="activef" hidden></div>
     <div class="legend" id="legend"></div>
     <div id="board"><p class="small">loading cvs.json...</p></div>
     <p class="small" style="margin-top:10px">Three numbers per row, never one:
@@ -275,11 +284,12 @@ function walterOn(){ try { return localStorage.getItem(WL_KEY) !== "off"; } catc
 function setWalter(on){ try { localStorage.setItem(WL_KEY, on ? "on" : "off"); } catch {} }
 const saved = store.get();
 const View = Object.assign({ v: "board", pos: "ALL", sig: "ALL",
-                             avail: false, rookies: false, walter: false },
+                             avail: false, rookies: false, walter: false,
+                             bull: false },
                            saved);
 function persist(){ store.set({ v: View.v, pos: View.pos, sig: View.sig,
                                 avail: View.avail, rookies: View.rookies,
-                                walter: View.walter }); }
+                                walter: View.walter, bull: View.bull }); }
 
 const D = { cvs: null, eng: null, drafted: new Set(), live: false };
 
@@ -351,6 +361,7 @@ function renderFilters(){
     <button data-t="avail"${View.avail ? ' class="on"' : ""}>available only</button>
     <button data-t="rookies"${View.rookies ? ' class="on"' : ""}>rookies only</button>
     <button data-t="walter"${View.walter ? ' class="on"' : ""}>walter-tagged only</button>
+    <button data-t="bull"${View.bull ? ' class="on"' : ""}>BULLISH/WATCH only</button>
     <button data-t="wl" id="wl-toggle"${walterOn() ? ' class="on"' : ""}
       style="margin-left:auto${walterOn() ? "" : ";border-color:#b91c1c;color:#b91c1c"}">WALTER LAYER ${walterOn() ? "ON" : "OFF"}</button>`;
   togf.querySelectorAll("button").forEach(b => b.onclick = () => {
@@ -360,6 +371,40 @@ function renderFilters(){
       return;
     }
     View[b.dataset.t] = !View[b.dataset.t]; persist(); renderFilters(); renderBoard(); });
+  renderActiveFilters();
+}
+
+// Active-filter state, visible and clearable in one place (review ask).
+// Every filter the board applies is named here; CLEAR ALL returns the
+// board to its unfiltered state.
+const FILTER_LABELS = { avail: "available only", rookies: "rookies only",
+                        walter: "walter-tagged only",
+                        bull: "BULLISH/WATCH only" };
+function activeFilters(){
+  const on = [];
+  if (View.pos !== "ALL") on.push(["pos", "position " + View.pos]);
+  if (View.sig !== "ALL") on.push(["sig", "signal " + View.sig.replace(/_/g, " ")]);
+  for (const k of Object.keys(FILTER_LABELS))
+    if (View[k]) on.push([k, FILTER_LABELS[k]]);
+  return on;
+}
+function clearFilters(){
+  View.pos = "ALL"; View.sig = "ALL";
+  for (const k of Object.keys(FILTER_LABELS)) View[k] = false;
+  persist(); renderFilters(); renderBoard();
+}
+function renderActiveFilters(shown, total){
+  const el = document.getElementById("activef");
+  if (!el) return;
+  const on = activeFilters();
+  el.hidden = !on.length;
+  if (!on.length) return;
+  el.innerHTML = '<span class="afl">FILTERED:</span> ' +
+    on.map(([k, label]) => `<span class="afc">${esc(label)}</span>`).join("") +
+    (shown != null ? `<span class="afn">${shown} of ${total}</span>` : "") +
+    '<button id="af-clear">CLEAR ALL</button>';
+  const c = document.getElementById("af-clear");
+  if (c) c.onclick = clearFilters;
 }
 
 function renderLegend(){
@@ -410,6 +455,9 @@ function renderBoard(){
   if (View.avail && D.drafted.size) list = list.filter(p => !D.drafted.has(norm(p.name)));
   if (View.rookies) list = list.filter(isRookie);
   if (View.walter) list = list.filter(p => p.walter.applied.length || p.walter.evidence.length);
+  if (View.bull && D.bull)
+    list = list.filter(p => D.bull.tags.some(x => x.name === p.name && x.pos === p.pos));
+  renderActiveFilters(list.length, D.cvs.players.length);
   document.getElementById("board").innerHTML =
     (wl ? "" : '<p class="small" id="wl-note">WALTER LAYER OFF (live toggle) - pure model board, ranks and signals recomputed server-side without the guide.</p>') +
     (list.map(p => `

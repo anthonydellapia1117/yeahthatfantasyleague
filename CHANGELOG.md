@@ -1,5 +1,39 @@
 # Changelog
 
+## UI: board tag filter, players tab rebuild (2026-08-26)
+
+BIG BOARD - the C5 BULLISH/WATCH chip already rendered inline on each row;
+this adds the tagged-only filter beside the existing toggles, plus a
+FILTERED bar that names every active filter (position, signal, and each
+toggle), shows the shown-of-total count, and clears them all in one tap.
+
+PLAYERS TAB - three changes.
+1. Layout: six position groups render three across in two rows, QB RB WR
+   over TE DST K, each container sized to its own content.
+2. Density: the row rule was justify-content:space-between, which pushed
+   the player name and its "VOR 68 - ADP 22.8" line to opposite edges of
+   the row. Rows now pack from flex-start with a small gap; the name
+   stays a link to the player page.
+3. VOR color conditioning: a continuous ramp, red at the minimum through
+   yellow at the MEDIAN to green at the maximum, interpolated smoothly.
+   Anchors are computed across the entire player database, never per
+   group, so a color means the same thing in every container; the median
+   anchors the midpoint because VOR is right-skewed and a mean would drag
+   the middle up and paint most of the board red. ADP gets no color. Per
+   the repo color law the verdict palette is reserved, so the ramp uses a
+   distinct scale, states that on the page, and a new guard proves every
+   interpolated color on it (not just the three anchors) clears 4.5:1 on
+   the card surface and reuses no reserved hex.
+4. Filtering applies within each position group - search plus
+   BULLISH/WATCH, archetype-tagged, and your-call toggles. Non-matching
+   rows are REMOVED from the DOM rather than dimmed, each group's heading
+   shows its filtered count, and an emptied group collapses out of the
+   grid instead of leaving a hole.
+
+A CSS bug surfaced by the new smoke: an author display:flex rule beats
+the hidden attribute's UA display:none, so the filter bar never hid
+itself; fixed with an explicit [hidden] rule on both pages.
+
 ## M4: DRAFT MODE - the live room runs against any Sleeper mock (2026-08-26)
 
 `out/draft_room.html?draft=<mock id>` points the whole live machinery -

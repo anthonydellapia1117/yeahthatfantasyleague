@@ -573,6 +573,45 @@ ok(len(_sigcolors) == 5 and not sbad,
    "all five signal colors clear 4.5:1 on the big-board card",
    f"{len(_sigcolors)} colors; " + "; ".join(sbad))
 
+# the players-page VOR ramp is a CONTINUOUS scale, so every interpolated
+# color between the anchors must clear 4.5:1 on that card - not just the
+# three anchors. It is also a DISTINCT scale: the ramp must not reuse the
+# reserved verdict hexes (--go / --stop / --warn) in that card scope.
+_plsrc = open(os.path.join(ROOT, "out", "players.html")).read()
+_plcard = _scope_tokens(_plsrc)["s1"]
+_anchors = re.search(
+    r"const VOR_LO = \[(\d+), (\d+), (\d+)\], VOR_MID = \[(\d+), (\d+), (\d+)\],"
+    r" VOR_HI = \[(\d+), (\d+), (\d+)\]", _plsrc)
+ok(bool(_anchors), "players page declares the three VOR ramp anchors")
+if _anchors:
+    _n = [int(x) for x in _anchors.groups()]
+    _lo, _mid, _hi = tuple(_n[0:3]), tuple(_n[3:6]), tuple(_n[6:9])
+    _hex = lambda c: "#%02x%02x%02x" % c
+    _ramp = []
+    for _a, _b in ((_lo, _mid), (_mid, _hi)):
+        for _i in range(21):
+            _t = _i / 20
+            _ramp.append(tuple(round(_a[j] + (_b[j] - _a[j]) * _t)
+                               for j in range(3)))
+    _rbad = [f"{_hex(c)} {_contrast(_hex(c), _plcard):.2f}" for c in _ramp
+             if _contrast(_hex(c), _plcard) < 4.5]
+    ok(not _rbad, "every interpolated VOR ramp color clears 4.5:1 on the card",
+       "; ".join(_rbad[:3]))
+    _pltok = _scope_tokens(_plsrc)
+    _reserved = {_pltok[t].lower() for t in ("go", "stop", "warn") if t in _pltok}
+    ok(not ({_hex(c) for c in (_lo, _mid, _hi)} & _reserved),
+       "the VOR ramp is a distinct scale - no reserved verdict hexes reused",
+       str(_reserved))
+# the scale must be database-wide and median-anchored, both stated in code
+ok("D.engine.players.map(p => p.vor)" in _plsrc,
+   "VOR scale anchors are computed across the whole player database")
+ok("right-skewed" in _plsrc and "median" in _plsrc,
+   "the median-not-mean midpoint choice is stated on the page")
+ok(".idxrow{display:flex;justify-content:flex-start" in _plsrc,
+   "player rows are tight-packed, not space-between")
+ok("grid-template-columns:repeat(3,minmax(0,1fr))" in _plsrc,
+   "position groups render three across")
+
 _ffsrc = open(os.path.join(ROOT, "out", "ff-hub.html")).read()
 _ffcard = _scope_tokens(_ffsrc)
 _ffpage = _root_tokens(_ffsrc)

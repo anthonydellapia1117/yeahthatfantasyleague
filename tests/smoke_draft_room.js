@@ -741,6 +741,56 @@ const ok = (cond, name, detail) => {
     await page.waitForTimeout(800);
     ok((await page.textContent("#content")).includes("projection = floor"),
        "K page carries the floor label");
+
+    // players index: 3-across groups, tight rows, database-wide VOR ramp,
+    // in-group filtering that REMOVES rows and collapses emptied groups
+    await page.goto(base + "/out/players.html");
+    await page.waitForTimeout(700);
+    const grpOrder = await page.$$eval("#pgrid .pgrp h2",
+      els => els.map(e => e.textContent.trim().split(/\s+/)[0]));
+    ok(JSON.stringify(grpOrder) === JSON.stringify(["QB","RB","WR","TE","DST","K"]),
+       "players: groups run QB RB WR then TE DST K", grpOrder.join(","));
+    ok(await page.$eval("#pgrid", el =>
+         getComputedStyle(el).gridTemplateColumns.split(" ").length === 3),
+       "players: the grid renders three containers across");
+    ok(await page.$eval(".idxrow", el =>
+         getComputedStyle(el).justifyContent === "flex-start"),
+       "players: rows pack name and numbers together, not space-between");
+    // the ramp: highest-VOR player greener than the lowest shown, and both
+    // colored from the same database-wide scale
+    const ramp = await page.evaluate(() => {
+      const vs = [...document.querySelectorAll("#pgrid .vorv")];
+      const parse = e => getComputedStyle(e).color.match(/\d+/g).map(Number);
+      const nums = vs.map(e => ({ v: parseFloat(e.textContent.replace(/\D+/g, "")),
+                                  c: parse(e) }));
+      nums.sort((a, b) => b.v - a.v);
+      return { hi: nums[0].c, lo: nums[nums.length - 1].c, n: nums.length };
+    });
+    ok(ramp.n > 50 && ramp.hi[1] > ramp.hi[0] && ramp.lo[0] > ramp.lo[1],
+       "players: VOR ramp runs green at the top and red at the bottom",
+       JSON.stringify(ramp));
+    ok(!/color/.test(await page.$eval("#pgrid .nums", el => el.outerHTML)
+        .then(h => h.replace(/<span class="vorv"[^>]*>.*?<\/span>/, ""))),
+       "players: ADP carries no color conditioning");
+    // filter: BULLISH/WATCH only
+    const beforeRows = await page.locator("#pgrid .idxrow").count();
+    const beforeGrps = await page.locator("#pgrid .pgrp:not([hidden])").count();
+    await page.click('#pfilt button[data-pf="bull"]');
+    await page.waitForTimeout(300);
+    const afterRows = await page.locator("#pgrid .idxrow").count();
+    ok(afterRows > 0 && afterRows < beforeRows,
+       "players: tagged-only filter removes non-matching rows from the DOM",
+       beforeRows + " -> " + afterRows);
+    ok(await page.locator("#pgrid .pgrp[hidden]").count() > 0 ||
+       await page.locator("#pgrid .pgrp:not([hidden])").count() < beforeGrps,
+       "players: a group with no matches collapses out of the grid");
+    ok(/FILTERED/.test(await page.textContent("#pactive")),
+       "players: active-filter state is visible");
+    await page.click("#pf-clear");
+    await page.waitForTimeout(300);
+    ok(await page.locator("#pgrid .idxrow").count() === beforeRows &&
+       await page.locator("#pgrid .pgrp:not([hidden])").count() === beforeGrps,
+       "players: CLEAR ALL restores every group and row");
     ok(errors.length === 0, "players page: zero console errors",
        errors[0] || "");
     await page.close();
@@ -1071,6 +1121,27 @@ const ok = (cond, name, detail) => {
        "K/DST floor card renders off the CVS board");
     ok(/walter cap 10%/.test(await pg.textContent("#foot")),
        "provenance footer echoes the cap from config");
+    // BULLISH/WATCH filter: tagged-only, with visible clearable state
+    const beforeN = await pg.locator("#board .brow").count();
+    await pg.click('#togf button[data-t="bull"]');
+    await pg.waitForTimeout(300);
+    const afterN = await pg.locator("#board .brow").count();
+    ok(afterN > 0 && afterN < beforeN,
+       "board: BULLISH/WATCH filter narrows the board to tagged players",
+       beforeN + " -> " + afterN);
+    const taggedOnly = await pg.$$eval("#board .brow .nm",
+      els => els.every(e => /BULLISH|WATCH/.test(e.textContent)));
+    ok(taggedOnly, "board: every surviving row carries a tag");
+    const af = await pg.textContent("#activef");
+    ok(/FILTERED/.test(af) && /BULLISH\/WATCH only/.test(af) &&
+       new RegExp(afterN + " of ").test(af),
+       "board: active-filter state is visible with the shown-of-total count");
+    await pg.click("#af-clear");
+    await pg.waitForTimeout(300);
+    ok(await pg.locator("#board .brow").count() === beforeN,
+       "board: CLEAR ALL restores the unfiltered board");
+    ok(await pg.locator("#activef").isHidden(),
+       "board: the filter bar hides itself when nothing is filtered");
     ok(errs15.length === 0, "big board: zero console errors", errs15[0] || "");
     await pg.close();
 
