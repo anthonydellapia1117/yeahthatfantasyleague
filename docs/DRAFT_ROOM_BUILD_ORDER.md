@@ -32,14 +32,14 @@ The app is functional but reads as a spreadsheet. Rebuild the presentation layer
 
 **Gate 1**: screenshots of both modes at 390px and 1280px, smoke suite green, zero changes to any math function (diff proof).
 
-## PHASE 2 - Live mode rebuilt for the two-minute clock
+## PHASE 2 - Live mode rebuilt for the pick clock (duration from draft settings - the live league runs 60s; never hardcoded)
 
 - **One answer per screen, fixed stack**: clock strip; ON THE CLOCK lower-third (kicker 11px uppercase, franchise 20px/700, pick number monospace); THE NAME at 64px clamped with fixed min-height; verdict chip; one-line why; two next-best rows. Everything else behind accordions.
 - **Kill the innerHTML rebuild** on every 10s poll. Patch text nodes only. A name change must not reflow the page.
 - **Clock**: 56px tabular monospace, ink >= 60s, amber < 60s, red < 30s, broadcast blink (steps(2), behind prefers-reduced-motion) < 10s. Counts down client-side between polls.
 - **New-pick transition**: 300ms background flash + 150ms name crossfade. The flash is the haptic - navigator.vibrate is dead on iOS.
 - **Alerts**: tab-title flash + a short WebAudio beep when Anthony goes on the clock and again at 30 seconds. No audio assets, generate the tone.
-- **Freshness dot** by the LIVE pill: green pulse per successful poll, amber "reconnecting" past 25s, red past 60s. Under a two-minute clock the user must know at a glance whether the number is current.
+- **Freshness dot** by the LIVE pill: green pulse per successful poll, amber "reconnecting" past 25s, red past 60s. Under a live pick clock the user must know at a glance whether the number is current.
 - **Wake lock** (`navigator.wakeLock`) in live mode; on visibilitychange, re-request and refetch immediately so returning from the group chat repaints fresh, not 10 seconds later.
 - **Spectator fallback**: when the seat is unknown, show the board wall and ticker with a manual seat picker - never a blank panel.
 

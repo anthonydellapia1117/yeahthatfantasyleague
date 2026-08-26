@@ -152,7 +152,7 @@ const ok = (cond, name, detail) => {
       r.fulfill({
         contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: order,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order,
                                slot_to_roster_id: slotToRoster }),
       });
     });
@@ -217,7 +217,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: null,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: null,
                                slot_to_roster_id: drawn }) });
     });
     await page.goto(FILE);
@@ -260,7 +260,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -361,7 +361,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: null,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: null,
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -386,7 +386,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -484,7 +484,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -537,7 +537,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -653,7 +653,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots9 }) });
     });
     await p9.goto("file://" + tmp);
@@ -944,7 +944,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots13 }) });
     });
     await lv.goto(base + "/out/draft_room.html");
@@ -1190,7 +1190,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: order16,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order16,
                                slot_to_roster_id: s2r16 }) });
     });
     await pe.goto(base + "/out/draft_room.html");
@@ -1311,7 +1311,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: order16,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order16,
                                slot_to_roster_id: s2r16 }) });
     });
     await oc.goto(base + "/out/draft_room.html");
@@ -1371,7 +1371,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots2 }) });
     });
     await pr2.goto(base + "/out/draft_room.html");
@@ -1519,6 +1519,7 @@ const ok = (cond, name, detail) => {
     const MOCK = "1398365807171371008", REAL = "1389378429505241089";
     const ident = n => { const m = {}; for (let i = 1; i <= n; i++) m[i] = i; return m; };
     const mockDraft = { league_id: null, status: "drafting",
+      last_picked: Date.now() - 10000,
       creators: ["345197760305307648"],
       draft_order: { "345197760305307648": 3 },
       slot_to_roster_id: ident(10),
@@ -1646,6 +1647,91 @@ const ok = (cond, name, detail) => {
     ok(perr.length === 0, "paths: zero console errors", perr[0] || "");
     await pg.close();
     srv.close();
+  }
+
+  // ---- scenario 22: THE PICK CLOCK IS SERVER-ANCHORED OR ABSENT (P0).
+  // The old clock hardcoded 120s and anchored to poll detection - it could
+  // show time remaining after the real 60s window had expired and the pick
+  // had been autopicked, silently. These asserts make that impossible.
+  {
+    // 22a: a 60-second draft, last pick 20s ago -> the clock must read the
+    // REAL remainder (~40s), never 2:00, never anything over 1:00
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([
+        { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
+      ]) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: Date.now() - 20000,
+          draft_order: { "345197760305307648": 7 },
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    const c = (await page.textContent("#clock")).trim();
+    const m = c.match(/^(\d+):(\d\d)$/);
+    const secs = m ? Number(m[1]) * 60 + Number(m[2]) : -1;
+    ok(m && secs <= 45 && secs >= 25,
+       "60s draft: the clock reads the real server-anchored remainder", c);
+    ok(secs <= 60, "60s draft: the room NEVER renders more than the real timer", c);
+    ok(/clock 60s per pick \(draft settings\)/.test(await page.textContent("#lv-rule")),
+       "the rule line states the duration came from draft settings");
+    await page.close();
+  }
+  {
+    // 22b: last_picked missing -> no plausible wrong number, an honest absence
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: null,
+          draft_order: { "345197760305307648": 7 },
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    ok((await page.textContent("#clock")).trim() === "-:--",
+       "no last_picked: the clock shows no number at all");
+    ok(/waiting for Sleeper|clock unavailable/.test(await page.textContent("#lv-rule")),
+       "no last_picked: the rule line says why, and points at Sleeper");
+    await page.close();
+  }
+  {
+    // 22c: the clock expired by Sleeper's own timestamps -> says so, holds 0:00
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: Date.now() - 300000,
+          draft_order: { "345197760305307648": 7 },
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    ok((await page.textContent("#clock")).trim() === "0:00",
+       "expired by server timestamps: the clock holds 0:00, never a live number");
+    ok(/expired.*check Sleeper/.test(await page.textContent("#lv-rule")),
+       "expired: the rule line says to check Sleeper");
+    await page.close();
   }
 
   await browser.close();

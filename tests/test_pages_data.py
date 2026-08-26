@@ -118,6 +118,21 @@ src = open(eng_path).read()
 ok("build_pages_data" not in src and "team_proe" not in src and "playcallers" not in src,
    "N1: engine imports nothing from the pages-data layer")
 
+# 8b. P0 PICK CLOCK LAW: the clock derives from the draft's own settings
+#     and anchors to Sleeper's last_picked - never a hardcoded duration,
+#     never poll-detection time. The 2x silent-clock defect stays dead.
+_room = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+ok("pick_timer" in _room and "last_picked" in _room,
+   "P0: the room reads pick_timer and last_picked from the draft")
+ok("two minutes" not in _room and ">2:00<" not in _room,
+   "P0: no two-minute language or hardcoded 2:00 anywhere in the room")
+ok("120 - Math.floor" not in _room and "clockStart" not in _room,
+   "P0: the hardcoded duration and the poll-anchored clock are gone")
+ok("clock unavailable - use Sleeper" in _room,
+   "P0: absent clock data renders an honest absence, not a plausible number")
+ok("LiveState.pickTimer = (draft.settings && Number(draft.settings.pick_timer)) || null" in _room,
+   "P0: the duration is captured from settings on every fetch")
+
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")
 

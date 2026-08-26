@@ -1,5 +1,38 @@
 # Changelog
 
+## P0: the pick clock is server-anchored or absent (2026-08-26)
+
+Independent review found the room's clock hardcoded 120 seconds against a
+live draft whose pick_timer is 60, and anchored the countdown to the
+moment POLLING NOTICED a pick rather than to Sleeper's last_picked
+timestamp. Compounded, the room could show time remaining after the real
+window had expired and the pick had been autopicked - silently, on the
+primary draft-night surface.
+
+The fix, all three legs:
+1. Duration comes from draft.settings.pick_timer on every fetch - never
+   hardcoded, dynamic per draft (the live league runs 60s, mocks vary).
+2. The countdown anchors to draft.last_picked, Sleeper's own epoch-ms
+   stamp of the previous pick - poll latency no longer inflates it.
+3. No server duration AND anchor, no number: last_picked null (the
+   current pre-draft state) renders "-:--" with "clock unavailable - use
+   Sleeper"; a countdown expired by Sleeper's own timestamps holds 0:00
+   and says "check Sleeper". A wrong clock is worse than no clock.
+
+Every "two minutes" / 2:00 reference is purged from the room's UI and
+comments and from the live docs (DRAFT_ROOM_BUILD_ORDER, VISION, HANDOFF,
+the plugin reference); archived chat logs keep their historical text. The
+two-minute figure was the old Yahoo-era rule 3.2 and was never the
+Sleeper timer - VISION.md now says so explicitly.
+
+Guards: pages guards assert the room reads pick_timer and last_picked,
+carries no two-minute language, and renders the honest absence; smoke
+scenario 22 drives a 60-second draft (the clock must read the real
+server-anchored remainder and may never exceed the real timer), the
+missing-anchor case, and the expired case. All drafting-status smoke
+stubs now carry settings.pick_timer and last_picked, so every live
+scenario exercises the server-anchored clock.
+
 ## L1: LeagueLegacy coverage audit, champions-vs-field, base rates to 2013 (2026-08-26)
 
 COVERAGE AUDIT (docs/LEAGUELEGACY_COVERAGE_AUDIT.md). The commissioned

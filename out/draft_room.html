@@ -646,7 +646,8 @@ function renderPre(activeSlot){
 
 // ---- Mode 2: live draft
 const LiveState = { picks: [], mySlot: null, timer: null, lastPickCount: -1,
-                    clockStart: null, lastPollOk: 0, wasMe: false, warned30: false,
+                    lastPollOk: 0, wasMe: false, warned30: false,
+                    pickTimer: null, lastPicked: null,
                     els: null, lastName: "" };
 
 // ======== UPNEXT-BEGIN ========
@@ -715,7 +716,7 @@ function buildLiveDom(){
     <div class="lvstrip">
       <div><span id="lv-dot" class="dot"></span><span class="kicker">LIVE</span>
         <span class="kicker" id="lv-fresh" style="margin-left:6px">now</span></div>
-      <div class="clock" id="clock">2:00</div>
+      <div class="clock" id="clock">-:--</div>
     </div>
     <div class="kicker" id="lv-kick">ON THE CLOCK - PICK - - ROUND -</div>
     <div class="franch" id="lv-franch">-</div>
@@ -730,7 +731,7 @@ function buildLiveDom(){
     <div class="needline" id="f-need"></div>
     <div id="f-run"></div>
     <div class="small num" id="f-hist"></div>
-    <div class="small" id="lv-rule">rule 3.2 - two minutes, forfeit on expiry. Clock resets when a pick is detected (10s poll).</div>
+    <div class="small" id="lv-rule">clock loads from draft settings...</div>
     <div class="small" id="survcal-row"><button id="survcal-toggle" class="tag" style="cursor:pointer"></button>
       survival numbers and the wait-or-reach bar - calibrated against the 2019-2025 era of observed removal (7 drafts); frozen model underneath, one tap back.</div>
   </div>
@@ -969,7 +970,7 @@ function flashTitle(on){
     document.title = "YTFL Draft Room 2026";
   }
 }
-// Keep the screen awake through a two-minute clock; re-acquire on return.
+// Keep the screen awake through the pick clock; re-acquire on return.
 let wakeLock = null;
 async function keepAwake(){
   try { wakeLock = await navigator.wakeLock.request("screen"); } catch (e) { /* unsupported */ }
@@ -1113,16 +1114,33 @@ function renderLive(draft, newPick){
 
 function tickClock(){
   const el = LiveState.els && LiveState.els["clock"];
-  if (!el || !LiveState.clockStart) return;
-  const left = Math.max(0, 120 - Math.floor((Date.now() - LiveState.clockStart) / 1000));
-  el.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
-  el.classList.toggle("amber", left < 60 && left >= 30);
-  el.classList.toggle("red", left < 30);
-  el.classList.toggle("blink", left < 10 && left > 0);
-  if (LiveState.wasMe && left <= 30 && left > 0 && !LiveState.warned30){
-    LiveState.warned30 = true; beep(1200);
+  if (!el) return;
+  const t = LiveState.pickTimer, lp = LiveState.lastPicked;
+  const rule = document.getElementById("lv-rule");
+  if (!t || !lp){
+    // A wrong clock is worse than no clock. Without BOTH the draft's own
+    // pick_timer and Sleeper's last_picked anchor, no number is shown.
+    el.textContent = "-:--";
+    el.classList.remove("amber", "red", "blink");
+    if (rule) rule.textContent = t
+      ? `clock ${t}s per pick (draft settings) - waiting for Sleeper's first last-pick timestamp`
+      : "clock unavailable - use Sleeper";
+  } else {
+    const left = Math.max(0, Math.ceil((lp + t * 1000 - Date.now()) / 1000));
+    el.textContent = left > 0
+      ? Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0")
+      : "0:00";
+    el.classList.toggle("amber", left < t / 2 && left >= 30);
+    el.classList.toggle("red", left < 30);
+    el.classList.toggle("blink", left < 10 && left > 0);
+    if (rule) rule.textContent = left > 0
+      ? `clock ${t}s per pick (draft settings), anchored to Sleeper's last-pick timestamp - forfeit on expiry (rule 3.2)`
+      : "clock expired by Sleeper's own timestamps - check Sleeper";
+    if (LiveState.wasMe && left <= 30 && left > 0 && !LiveState.warned30){
+      LiveState.warned30 = true; beep(1200);
+    }
   }
-  // freshness dot - under a two-minute clock the user must know the number is current
+  // freshness dot - on a live clock the user must know the number is current
   const age = (Date.now() - LiveState.lastPollOk) / 1000;
   const dot = LiveState.els["lv-dot"], fresh = LiveState.els["lv-fresh"];
   if (dot){
@@ -2266,6 +2284,14 @@ async function refresh(){
     GEO.teams = Number(draft.settings.teams);
     GEO.rounds = Number(draft.settings.rounds) || GEO.rounds;
   }
+  // THE CLOCK IS SERVER-ANCHORED OR ABSENT. pick_timer is the draft's own
+  // duration (the real league runs 60s; mocks vary), last_picked is
+  // Sleeper's epoch-ms stamp of the previous pick. The old clock hardcoded
+  // 120s and started when POLLING NOTICED a pick - double the real window
+  // plus poll latency, silently. Never again: no server duration + anchor,
+  // no number.
+  LiveState.pickTimer = (draft.settings && Number(draft.settings.pick_timer)) || null;
+  LiveState.lastPicked = draft.last_picked ? Number(draft.last_picked) : null;
   if (MOCK_MODE) renderMockBar(draft);
   const live = draft.status === "drafting" || draft.status === "complete" ||
                ((MOCK_MODE ? !!(draft.draft_order &&
@@ -2312,7 +2338,8 @@ async function refresh(){
     const newPick = picks.length !== LiveState.lastPickCount && LiveState.lastPickCount >= 0;
     if (picks.length !== LiveState.lastPickCount){
       LiveState.lastPickCount = picks.length;
-      LiveState.clockStart = Date.now();
+      // the clock is anchored to draft.last_picked, never to the moment
+      // polling happened to notice the pick
     }
     LiveState.picks = picks;
     renderLive(draft, newPick);
