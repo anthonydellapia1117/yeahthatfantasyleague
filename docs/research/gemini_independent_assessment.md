@@ -508,3 +508,39 @@ live-verified league table (6-pt passing TDs, PPR, K distance tiers and miss
 penalties, DEF points-allowed tiers, ST-player keys), with Sleeper's precomputed
 pts_ppr and adp_ fields proven excluded. The QB rushing-vs-pocket value gap under
 this scoring lands with C5's findings entry, per the checkpoint directive.
+
+## C.2 Base-rate columns (Phase C component 2)
+
+Artifact: out/data/base_rates.json (src/build_base_rates.py). Two computed tables,
+2016-2025, outcomes scored under the exact league table (6-pt passing TDs, full
+PPR), positional finish by season total: MARKET (FFC positional-ADP bands, 1,140
+joined player-seasons + 17 zero-point seasons counted as busts) and LEAGUE (this
+league's own archive picks by round band, 1,448 joined + 26). Every cell carries n
+and a Wilson 95% interval; definitions (hit12/hit24/bust36) are stated in the
+artifact and repeated on the board. Rendered as per-player band chips on the big
+board rows (from adp_pos_rank) plus a full reference table, labeled "History, not a
+projection." Display-only, guarded (tests/test_baserates.py; gates at workflow +
+runbook 7c).
+
+Adjudications the tables settle or inform:
+
+- **RB dead-zone shape replicates in OUR league; the cited numbers do not carry
+  over.** League RB hit12 by round: rd1-3 50% [43,58] n=165 -> rd4-6 15% [10,23]
+  n=117 -> rd7-10 9% [5,15] n=138. The cliff after round 3 is real here. The Gemini
+  doc's 33%/37%/14%/5% "league-winning" ladder used an undefined metric on other
+  leagues' mock drafts; our numbers are the ones the board shows.
+- **Waiting on QB has not cost this league QB1 production (the 6-pt effect,
+  observed).** League QB hit12: rd1-3 68% [46,85] n=19, rd4-6 72% [58,83] n=47,
+  rd7-10 50% [37,63] n=50 - the rounds-4-6 QB pool hits as often as the early one.
+  First observed input to the C5 rushing-vs-pocket derivation; the value question
+  (points over replacement) stays with the C1 VOR board.
+- **Elite TE has paid here**: league TE rd1-3 hit12 83% [63,93] n=23, with bust36
+  0% [0,14] - the first data point for the TE-scarcity adjudication (the full
+  TE1/TE3/TE6/TE12 PPG-gap computation stays in the C5 queue).
+- **The Gemini WR hit-rate table is frame-incompatible, not wrong**: its "40.54% of
+  Rd1 WRs deliver a WR1 season" is a CAREER rate by NFL draft round; our 60%
+  [47,71] for pos1-6 ADP WRs is a per-season rate by market price. Logged as
+  non-comparable; the draft-capital career curves belong to the C5 queue.
+- Method note: a drafted player-season with zero recorded points joins as a bust
+  rather than dropping out (17 market / 26 league cases) - dropping them would
+  survivorship-bias every bust rate downward.

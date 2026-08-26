@@ -98,6 +98,7 @@ a{color:var(--info);text-decoration:none}
 .wq .lineref{color:var(--ink3);font-size:10px}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
 /* scroll shadows: edge shading only while columns are hidden that way */
+.thin{color:var(--ink3);font-size:10px}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;
   background:
     linear-gradient(90deg, var(--s1) 30%, rgba(244,246,250,0)) left/40px 100%,
@@ -274,6 +275,9 @@ async function boot(){
   const get = f => fetch(f).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
   try {
     [D.cvs, D.eng] = await Promise.all([get("cvs.json"), get("engine_2026.json")]);
+    // C2 base rates: display-only historical context; the board must render
+    // identically in its absence, so this fetch never gates boot
+    try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -403,9 +407,48 @@ function renderBoard(){
         - tier ${p.tier ?? "-"} - VOR <span class="num">${p.vor}</span>
         - ADP <span class="num">${p.adp < 900 ? p.adp.toFixed(1) : "-"}</span>
         - pos rank CVS <span class="num">${S(p).cvs_pos_rank}</span> / ADP <span class="num">${p.adp_pos_rank ?? "-"}</span>
-        ${p.playoff_sos_rank ? ` - wk15-17 SOS rank <span class="num">${p.playoff_sos_rank}</span>` : ""}</div>
+        ${p.playoff_sos_rank ? ` - wk15-17 SOS rank <span class="num">${p.playoff_sos_rank}</span>` : ""}${baseRateChip(p)}</div>
       <details><summary></summary>${factorTable(p)}</details>
-    </div>`).join("") || '<p class="small">nothing matches these filters</p>');
+    </div>`).join("") || '<p class="small">nothing matches these filters</p>') +
+    baseRateTable();
+}
+
+// ---- C2 base-rate columns: what this ADP band has RETURNED, 2016-2025,
+// scored under this league's exact table. Display-only history; n and the
+// Wilson 95% interval render with every rate so thin cells look thin.
+const RATE_BANDS = [[1, 6, "pos1-6"], [7, 12, "pos7-12"], [13, 18, "pos13-18"],
+                    [19, 24, "pos19-24"], [25, 36, "pos25-36"]];
+function rateBand(rank){
+  for (const [lo, hi, name] of RATE_BANDS)
+    if (rank >= lo && rank <= hi) return name;
+  return null;
+}
+function baseRateChip(p){
+  if (!D.rates || !p.adp_pos_rank) return "";
+  const band = rateBand(p.adp_pos_rank);
+  const cell = band && (D.rates.market[p.pos] || {})[band];
+  if (!cell) return "";
+  const f = m => `${Math.round(cell[m].rate * 100)}% <span class="thin">[${Math.round(cell[m].ci95[0] * 100)}-${Math.round(cell[m].ci95[1] * 100)}]</span>`;
+  return ` - band ${band}: top12 ${f("hit12")} - top24 ${f("hit24")} - bust ${f("bust36")} <span class="thin">n=${cell.n}</span>`;
+}
+function baseRateTable(){
+  if (!D.rates) return "";
+  const defs = D.rates.definitions;
+  const row = (pos, band, c) => `<tr><td>${pos}</td><td>${band}</td><td class="num">${c.n}</td>
+    <td class="num">${Math.round(c.hit12.rate * 100)}% [${Math.round(c.hit12.ci95[0] * 100)}-${Math.round(c.hit12.ci95[1] * 100)}]</td>
+    <td class="num">${Math.round(c.hit24.rate * 100)}% [${Math.round(c.hit24.ci95[0] * 100)}-${Math.round(c.hit24.ci95[1] * 100)}]</td>
+    <td class="num">${Math.round(c.bust36.rate * 100)}% [${Math.round(c.bust36.ci95[0] * 100)}-${Math.round(c.bust36.ci95[1] * 100)}]</td></tr>`;
+  const block = (title, tbl) => `<h2 style="margin-top:12px">${title}</h2>
+    <div class="tw"><table><tr><th>Pos</th><th>Band</th><th>n</th><th>top-12</th><th>top-24</th><th>bust</th></tr>
+    ${Object.entries(tbl).map(([pos, bands]) =>
+      Object.entries(bands).map(([band, c]) => row(pos, band, c)).join("")).join("")}</table></div>`;
+  return `<details id="base-rates"><summary>Base rates 2016-2025 - what each ADP band actually returned</summary>
+    ${block("Market (FFC positional ADP bands)", D.rates.market)}
+    ${block("This league (archive draft rounds)", D.rates.league)}
+    <p class="small">hit12: ${esc(defs.hit12)}. hit24: ${esc(defs.hit24)}. bust: ${esc(defs.bust36)}.
+    Outcomes scored under the exact league table (6-pt passing TDs, full PPR);
+    ${esc(D.rates.provenance.seasons)}; join counts in data/base_rates.json. History, not a projection.</p>
+  </details>`;
 }
 
 function renderDelta(){

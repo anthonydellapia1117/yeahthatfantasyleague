@@ -955,6 +955,15 @@ const ok = (cond, name, detail) => {
       ok(leg.includes(lbl), "legend carries " + lbl);
     ok(await pg.locator('#board .brow[data-sig]:not([data-sig=""])').count() >= 5,
        "signal container treatments render on the board");
+    // C2 base-rate columns: chips carry the band, the interval, and n; the
+    // reference table and its honesty line render under the board
+    const brd = await pg.textContent("#board");
+    ok(/band pos\d/.test(brd) && /n=\d+/.test(brd),
+       "base-rate chips name the band and its sample size");
+    ok(await pg.locator("#board .brow .thin").count() >= 5,
+       "base-rate intervals render beside the rates");
+    ok(/Base rates 2016-2025/.test(brd), "base-rate reference table present");
+    ok(/History, not a projection/.test(brd), "base-rate honesty line rendered");
     ok(await pg.locator("#board .brow .sig svg").count() >= 5,
        "signal icons render (third channel)");
     // Explain: full factor decomposition + walter layer

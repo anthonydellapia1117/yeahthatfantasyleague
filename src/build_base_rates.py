@@ -1,0 +1,221 @@
+#!/usr/bin/env python3
+"""C2: hit and bust base rates by ADP band and position, with n and Wilson CIs.
+
+Two independent tables, both computed - nothing imported from any document:
+
+MARKET: for each season 2016-2025, FFC PPR ADP (12-team) gives every player a
+positional ADP rank; nflverse weekly stats scored under THIS league's exact
+table (6-pt passing TDs, full PPR) give the realized positional finish by
+season total. Cells aggregate seasons by position x positional-ADP band.
+
+LEAGUE: the same outcomes joined to this league's own 2,339 archive picks
+(out/picks.csv) by round band - what OUR room's draft slots actually returned.
+
+Definitions (stated here and in the artifact; the UI repeats them):
+  hit12  = finished top-12 at the position by season total points
+  hit24  = finished top-24
+  bust36 = finished OUTSIDE the positional top-36 (includes injury wipeouts -
+           a drafted season that returns nothing is a bust however it died)
+Positions: QB/RB/WR/TE. K/DEF are excluded - their year-to-year finish is
+noise this league already treats as floor-projected.
+
+Needs the HISTORY cache (env HISTORY or the scratchpad default). The artifact
+is committed, so rebuilds without the cache keep serving the committed table.
+
+Run: python3 src/build_base_rates.py
+"""
+import csv
+import datetime
+import json
+import math
+import os
+import re
+from collections import defaultdict
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HISTORY = os.environ.get(
+    "HISTORY",
+    "/tmp/claude-0/-home-user-yeahthatfantasyleague/"
+    "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history")
+OUT = os.path.join(ROOT, "out", "data", "base_rates.json")
+PICKS = os.path.join(ROOT, "out", "picks.csv")
+SEASONS = range(2016, 2026)
+POSITIONS = ("QB", "RB", "WR", "TE")
+BANDS = [(1, 6, "pos1-6"), (7, 12, "pos7-12"), (13, 18, "pos13-18"),
+         (19, 24, "pos19-24"), (25, 36, "pos25-36")]
+ROUND_BANDS = [(1, 3, "rd1-3"), (4, 6, "rd4-6"), (7, 10, "rd7-10"),
+               (11, 14, "rd11-14")]
+
+# League-exact scoring, verified live against both league ids 2026-08-26
+# (the same fact table tests/test_vor.py pins). Weekly-stat column -> points.
+W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
+     "passing_2pt_conversions": 2.0,
+     "rushing_yards": 0.1, "rushing_tds": 6.0, "rushing_2pt_conversions": 2.0,
+     "receptions": 1.0, "receiving_yards": 0.1, "receiving_tds": 6.0,
+     "receiving_2pt_conversions": 2.0,
+     "sack_fumbles_lost": -2.0, "rushing_fumbles_lost": -2.0,
+     "receiving_fumbles_lost": -2.0,
+     "special_teams_tds": 6.0}
+
+
+def norm(n):
+    n = n.lower().replace(".", "").replace("'", "")
+    return " ".join(w for w in n.split()
+                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
+
+
+def wilson(k, n, z=1.96):
+    if n == 0:
+        return (0.0, 0.0)
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return (round(c - h, 4), round(c + h, 4))
+
+
+def season_finishes(year):
+    """name|pos -> positional finish rank by league-exact season total (REG)."""
+    totals = defaultdict(float)
+    pos_of = {}
+    with open(os.path.join(HISTORY, f"spw_{year}.csv")) as fh:
+        for r in csv.DictReader(fh):
+            if r.get("season_type") != "REG" or r.get("position") not in POSITIONS:
+                continue
+            key = norm(r["player_display_name"]) + "|" + r["position"]
+            pos_of[key] = r["position"]
+            for col, w in W.items():
+                v = r.get(col)
+                if v:
+                    try:
+                        totals[key] += float(v) * w
+                    except ValueError:
+                        pass
+    ranks = {}
+    by_pos = defaultdict(list)
+    for key, pts in totals.items():
+        by_pos[pos_of[key]].append((pts, key))
+    for pos, lst in by_pos.items():
+        lst.sort(reverse=True)
+        for i, (_, key) in enumerate(lst, 1):
+            ranks[key] = i
+    return ranks
+
+
+def band_of(rank, bands):
+    for lo, hi, name in bands:
+        if lo <= rank <= hi:
+            return name
+    return None
+
+
+def main():
+    cells = {p: {b[2]: {"n": 0, "hit12": 0, "hit24": 0, "bust36": 0}
+                 for b in BANDS} for p in POSITIONS}
+    lg_cells = {p: {b[2]: {"n": 0, "hit12": 0, "hit24": 0, "bust36": 0}
+                    for b in ROUND_BANDS} for p in POSITIONS}
+    joined = unjoined = lg_joined = lg_unjoined = 0
+
+    league_picks = defaultdict(list)   # season -> [(name|pos, round)]
+    for r in csv.DictReader(open(PICKS)):
+        try:
+            season, rnd = int(r["season"]), int(r["round"])
+        except (KeyError, ValueError):
+            continue
+        if season in SEASONS and r.get("pos") in POSITIONS:
+            league_picks[season].append((norm(r["player_name"]) + "|" + r["pos"], rnd))
+
+    for year in SEASONS:
+        finishes = season_finishes(year)
+        ffc = json.load(open(os.path.join(HISTORY, f"ffc_ppr_{year}.json")))
+        players = ffc["players"] if isinstance(ffc, dict) else ffc
+        by_pos = defaultdict(list)
+        for p in players:
+            if p.get("position") in POSITIONS:
+                by_pos[p["position"]].append(p)
+        for pos, lst in by_pos.items():
+            lst.sort(key=lambda x: x["adp"])
+            for i, p in enumerate(lst, 1):
+                band = band_of(i, BANDS)
+                if band is None:
+                    continue
+                key = norm(p["name"]) + "|" + pos
+                fin = finishes.get(key)
+                if fin is None:
+                    unjoined += 1     # drafted, produced zero recorded points
+                    fin = 10 ** 6     # counts as the deepest possible bust
+                else:
+                    joined += 1
+                c = cells[pos][band]
+                c["n"] += 1
+                c["hit12"] += fin <= 12
+                c["hit24"] += fin <= 24
+                c["bust36"] += fin > 36
+
+        for key, rnd in league_picks.get(year, []):
+            band = band_of(rnd, ROUND_BANDS)
+            pos = key.split("|")[1]
+            if band is None:
+                continue
+            fin = finishes.get(key)
+            if fin is None:
+                lg_unjoined += 1
+                fin = 10 ** 6
+            else:
+                lg_joined += 1
+            c = lg_cells[pos][band]
+            c["n"] += 1
+            c["hit12"] += fin <= 12
+            c["hit24"] += fin <= 24
+            c["bust36"] += fin > 36
+
+    def finish(table):
+        out = {}
+        for pos, bands in table.items():
+            out[pos] = {}
+            for band, c in bands.items():
+                if c["n"] == 0:
+                    continue
+                out[pos][band] = {"n": c["n"]}
+                for m in ("hit12", "hit24", "bust36"):
+                    k = c[m]
+                    out[pos][band][m] = {
+                        "k": k, "rate": round(k / c["n"], 4),
+                        "ci95": wilson(k, c["n"]),
+                    }
+        return out
+
+    artifact = {
+        "provenance": {
+            "generated": datetime.date.today().isoformat(),
+            "seasons": "2016-2025",
+            "market_adp": "FFC PPR 12-team (history cache)",
+            "outcomes": ("nflverse weekly REG totals scored under the exact "
+                         "league table (6-pt pass TD, full PPR), positional "
+                         "rank by season total"),
+            "league_picks": "out/picks.csv archive, joined by name|pos+season",
+            "join": {"market_joined": joined, "market_unjoined_as_bust": unjoined,
+                     "league_joined": lg_joined,
+                     "league_unjoined_as_bust": lg_unjoined},
+        },
+        "definitions": {
+            "hit12": "finished top-12 at the position by season total points",
+            "hit24": "finished top-24 at the position",
+            "bust36": ("finished outside the positional top-36; a drafted "
+                       "player with no recorded points counts as a bust"),
+        },
+        "market": finish(cells),
+        "league": finish(lg_cells),
+    }
+    json.dump(artifact, open(OUT, "w"), indent=1)
+    print(f"wrote {OUT}: market joins {joined} (+{unjoined} zero-point busts), "
+          f"league joins {lg_joined} (+{lg_unjoined})")
+    for pos in POSITIONS:
+        row = artifact["market"][pos].get("pos1-6")
+        if row:
+            print(f"  {pos} pos1-6: hit12 {row['hit12']['rate']:.0%} "
+                  f"{row['hit12']['ci95']} n={row['n']}")
+
+
+if __name__ == "__main__":
+    main()

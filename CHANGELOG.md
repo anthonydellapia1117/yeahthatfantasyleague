@@ -1,5 +1,21 @@
 # Changelog
 
+## C2: base-rate columns on the big board (2026-08-26)
+
+What each ADP band actually returned, 2016-2025, scored under the exact
+league table - not imported hit rates. Market table (FFC positional-ADP
+bands x nflverse outcomes, 1,140 player-seasons) and league table (our
+own archive rounds, 1,448), every cell with n and a Wilson 95% interval,
+zero-point drafted seasons counted as busts rather than dropped. Board
+rows carry the player's band chip (top-12 / top-24 / bust with interval
+and n from adp_pos_rank); a reference table with stated definitions sits
+under the board, labeled history-not-projection. The tables land three
+findings: the RB cliff after round 3 is real in this league (50% -> 15%
+-> 9% hit12 by round band); waiting on QB has not cost QB1 production
+under 6-pt scoring (rd4-6 72% vs rd1-3 68%); and rd1-3 TEs hit at 83%
+with zero busts (n=23). tests/test_baserates.py gates artifact and
+board; wired into the workflow and runbook (7c).
+
 ## C1: VOR engine derives what it used to assume (2026-08-26)
 
 Phase C component 1 of the research-integration pass - the draft-night
