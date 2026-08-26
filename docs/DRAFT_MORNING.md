@@ -38,6 +38,7 @@ rehearsal's `real` times.
 | 7 | `python3 tests/test_cvs.py` | 0.1 s | anchor law, cap, signals, determinism |
 | 7b | `python3 tests/test_vor.py` | 0.1 s | exact scoring, derived flex allocation, derived tiers |
 | 7c | `python3 tests/test_baserates.py` | 0.1 s | base-rate artifact integrity + board wiring |
+| 7d | `python3 tests/test_archetypes.py` | 0.1 s | archetype tags: computed thresholds, zero-IR flags, page wiring |
 | 8 | `python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
 | 9 | `python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
 | 10 | full smoke (see the playwright note below) | 94 s + install | 17 hermetic browser scenarios |

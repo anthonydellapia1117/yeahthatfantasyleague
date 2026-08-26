@@ -1,5 +1,22 @@
 # Changelog
 
+## C3: archetype tagger from computed thresholds (2026-08-26)
+
+97 rules-based tags on 77 draftable players (year-2 WR, rookie-capital
+RB, pass-catching RB, ambiguous backfield, late rushing QB, elite TE /
+late TE dart, 140-target WR, post-injury discount, RB1-curse and
+400-touch fades). Every threshold is a computed percentile of observed
+2025 usage or a value verified from 2016-2025 history inside the
+artifact; the builder's code body carries no player names (guarded).
+Post-injury tags carry the zero-IR cost flag - no IR slot means an
+injured hold burns a startable spot. Player pages render the tags with
+reasons and orientations. Computed alongside and logged: the inside-5
+vs 6-10 conversion split (38.6% vs 12.6%, settling the Gemini doc's
+mis-scaled 42% green-zone figure), the 140-target claim replicating
+almost exactly (94.9%/74.2%, n=97), and the 400-touch ledger agreeing
+in direction but not in the cited n (ours: 3 qualifying seasons, 0
+top-5 next year). tests/test_archetypes.py gates (workflow + runbook 7d).
+
 ## C2: base-rate columns on the big board (2026-08-26)
 
 What each ADP band actually returned, 2016-2025, scored under the exact

@@ -544,3 +544,39 @@ Adjudications the tables settle or inform:
 - Method note: a drafted player-season with zero recorded points joins as a bust
   rather than dropping out (17 market / 26 league cases) - dropping them would
   survivorship-bias every bust rate downward.
+
+## C.3 Archetype tagger (Phase C component 3)
+
+Artifact: out/data/archetypes_2026.json (src/build_archetypes.py) - 97 tags on 77
+draftable players, every threshold computed (percentiles of observed 2025 usage,
+league-exact scoring, live depth-chart state) and every tag carrying a numeric
+reason code. The builder's code body holds no player-name constant (canary-guarded);
+the one permitted fact table is the preseason-RB1 conversion ledger with its 2016
+source-dependency flag. Post-injury-discount tags carry the zero-IR cost flag per
+the settings correction. Rendered as an Archetypes card on the player pages,
+orientation-colored, labeled "history and structure, never a projection."
+tests/test_archetypes.py gates it (workflow + runbook 7d).
+
+Adjudications computed alongside:
+
+- **Inside-5 vs 6-10 conversion split (priority queue) - SETTLED.** nflverse pbp
+  2023-2025 REG, all rushers: inside-5 38.6% [36.7, 40.6] n=2,390; the 6-10 zone
+  12.6% [11.1, 14.2] n=1,689; blended inside-10 27.8% [26.5, 29.2] n=4,079. The
+  Gemini doc's "42% green zone (inside the 10)" is CONTRADICTED as an inside-10
+  figure and is close to the true inside-5 rate - the Phase A hypothesis, now with
+  intervals. The 3.1x conversion gap between zones is the empirical basis for the
+  reconciled spec's expected-TD equity using INSIDE-5 share (C5).
+- **140-target WR claim - AGREES.** Our 2016-2025, league-exact computation: 97
+  qualifying WR seasons, top-24 94.9% [88.5, 97.8], top-12 74.2% [64.7, 81.9] vs
+  the report's since-2000 claim of 96%/74%. Replicates almost exactly on our window;
+  the 140 threshold enters the tagger as a VERIFIED value, not an import.
+- **400-touch fade - direction agrees, the cited n does not.** Report: "only one of
+  the last 13 such RBs was top-5 the next year." Our REG-season carries+receptions
+  ledger 2013-2024 finds THREE qualifying seasons (2014: 449, 2017: 407, 2019: 403),
+  zero of them top-5 the following year [CI 0-56%]. The fade direction stands on our
+  data; the report's n=13 is unreproducible under any REG-touch reading and likely
+  mixes eras or includes postseason. Logged as computed-vs-cited disagreement.
+- **2025 touch leader computes to 413, not the report's 450** (REG carries +
+  receptions, league basis stated). The fade flags land on the computed 2025 RB1
+  and the computed 400+ touch back regardless - both resolve to the same player the
+  report names, from data rather than citation.

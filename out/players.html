@@ -73,6 +73,13 @@ input[type=search]{width:100%;font:inherit;color:var(--ink);background:var(--s2)
 @media(min-width:800px){.cols{grid-template-columns:1fr 1fr}}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
 .gap-pos{color:var(--go)}.gap-neg{color:var(--stop)}
+.arch{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0}
+.arch-t{border-left:3px solid var(--go)}
+.arch-f{border-left:3px solid var(--stop)}
+.arch-c{border-left:3px solid var(--warn)}
+.archname{font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:12px}
+.archlbl{font-size:10px;color:var(--ink3);margin-left:8px;letter-spacing:.06em}
+.archzir{color:var(--warn)}
 </style>
 </head>
 <body>
@@ -142,6 +149,8 @@ async function boot(){
     [D.engine, D.adp, D.usage, D.xwalk, D.prov] = await Promise.all([
       get("engine_2026.json"), get("data/adp.json"), get("data/usage_2025.json"),
       get("data/crosswalk.json"), get("data/provenance.json")]);
+    // C3 archetypes: display-only; the page renders identically without them
+    try { D.arch = await get("data/archetypes_2026.json"); } catch (e) { D.arch = null; }
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -211,6 +220,28 @@ function ycChip(p){
   return `<span class="yc ${c.call === "BULL" ? "bull" : "bear"}">YOUR CALL - ${c.call}</span>`;
 }
 
+// ---- C3 archetype tags: rules-based, every threshold computed (percentiles
+// of observed usage or verified 2016-2025 rates carried in the artifact).
+// Display only. Orientation colors follow the existing verdict palette use.
+function archCard(p){
+  if (!D.arch) return "";
+  const e = D.arch.players.find(x => x.name === p.name && x.pos === p.pos);
+  if (!e) return "";
+  const cls = o => o === "target" ? "arch-t" : o === "fade" ? "arch-f" : "arch-c";
+  const lbl = o => o === "target" ? "TARGET ARCHETYPE" : o === "fade" ? "FADE ARCHETYPE"
+    : o === "context" ? "CONTEXT" : "PRICE-CONDITIONAL";
+  return `<div class="card"><h2>Archetypes</h2>` + e.tags.map(t => `
+    <div class="arch ${cls(t.orientation)}">
+      <span class="archname">${esc(t.tag.replace(/_/g, " "))}</span>
+      <span class="archlbl">${lbl(t.orientation)}</span>
+      <div class="small">${esc(t.reason)}</div>
+      ${t.zero_ir_cost ? `<div class="small archzir">zero-IR cost: ${esc(t.zero_ir_cost)}</div>` : ""}
+    </div>`).join("") +
+    `<p class="small">Rules-based from computed thresholds (artifact carries each
+    threshold's derivation and the 2016-2025 verification blocks). History and
+    structure, never a projection.</p></div>`;
+}
+
 function renderPlayer(p){
   const c = document.getElementById("content");
   const band = D.adpByNorm[norm(p.name)];
@@ -228,6 +259,7 @@ function renderPlayer(p){
       - ADP ${pv(p.adp < 900 ? p.adp.toFixed(1) : "-", "engine_2026.json", "adp")} <span class="small">(sleeper)</span></div>
   </div>`;
 
+  h += archCard(p);
   h += `<div class="card"><h2>Value vs the market</h2>
     <p>Model rank ${pv(vorRank, "engine_2026.json", "vor_rank")} overall by VOR.
     ${aRank ? `Market ADP rank <span class="num">${aRank}</span> (sleeper).
