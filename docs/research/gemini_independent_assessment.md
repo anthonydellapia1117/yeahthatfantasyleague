@@ -580,3 +580,25 @@ Adjudications computed alongside:
   receptions, league basis stated). The fade flags land on the computed 2025 RB1
   and the computed 400+ touch back regardless - both resolve to the same player the
   report names, from data rather than citation.
+
+## C.4 Ceiling weighting (Phase C component 4) - ENABLED
+
+Artifact: out/data/ceiling_2026.json (src/build_ceiling.py). The median game is
+confirmed (league_average_match=1, both league ids, verified live), so the lens
+ships enabled per the checkpoint directive - no flag. Per draftable player, from
+2025 weekly league-exact scoring: boom rate against each week's ACTUAL positional
+top-12 cutoff (computed per week, never a constant), p90 week, weekly sd; plus the
+zero-IR availability penalty the settings correction requires: avail_adj =
+projection x two-year games-played rate minus expected missed weeks x weekly
+replacement points (C1 baselines / 17) - his missed weeks return nothing AND block
+a bench slot on a 5-bench, no-IR roster. Rookies with no NFL sample are declared
+unadjusted, never estimated. Rendered as the board's fourth view (CEILING), ranked
+by boom rate.
+
+DELIBERATE LIMITATION, logged rather than smuggled: no synthetic variance-premium
+coefficient is applied. An honest lambda for "how much extra is a boom week worth
+in this format" needs multi-season weekly TEAM scores (the yfpy 2014-2024
+backlog); estimating it from one 12-team season would be noise wearing a formula.
+The lens therefore ranks by the direct empirical ceiling stat the format pays for.
+When the historical module lands, the premium gets estimated and this entry
+updated. tests/test_ceiling.py gates (workflow + runbook 7e).

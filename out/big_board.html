@@ -165,6 +165,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <button data-v="board" class="on">BOARD</button>
     <button data-v="delta">CVS vs WALTER</button>
     <button data-v="conflicts">CONFLICTS</button>
+    <button data-v="ceiling">CEILING</button>
   </div>
 
   <div id="v-board">
@@ -191,6 +192,17 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <div class="tw"><table class="xtable" id="cross-t"></table></div>
   </div>
 
+  <div id="v-ceiling" hidden>
+    <h2>Ceiling lens - the median game scores every week twice</h2>
+    <p class="small">league_average_match confirmed on: each week is an H2H result
+    AND a result against the league median, so weekly ceiling is paid twice.
+    Ranked by 2025 boom rate - weeks at that week's positional top-12 level
+    (cutoffs computed per week, league-exact scoring). The availability column
+    prices the zero-IR roster: expected missed weeks return nothing and block a
+    bench slot. No synthetic variance premium is applied - deriving one honestly
+    needs the multi-season weekly history (yfpy backlog); stated, not smuggled.</p>
+    <div id="ceil-t"></div>
+  </div>
   <div id="v-conflicts" hidden>
     <h2>Model conflict queue - where the sources genuinely disagree</h2>
     <div id="mconf"></div>
@@ -278,6 +290,7 @@ async function boot(){
     // C2 base rates: display-only historical context; the board must render
     // identically in its absence, so this fetch never gates boot
     try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
+    try { D.ceil = await get("data/ceiling_2026.json"); } catch (e) { D.ceil = null; }
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -286,7 +299,7 @@ async function boot(){
     return;
   }
   renderViews(); renderFilters(); renderLegend();
-  renderBoard(); renderDelta(); renderConflicts(); renderKdef(); renderFoot();
+  renderBoard(); renderDelta(); renderConflicts(); renderCeiling(); renderKdef(); renderFoot();
   pollDraft();
   setInterval(pollDraft, 15000);
 }
@@ -313,6 +326,7 @@ function renderViews(){
   document.getElementById("v-board").hidden = View.v !== "board";
   document.getElementById("v-delta").hidden = View.v !== "delta";
   document.getElementById("v-conflicts").hidden = View.v !== "conflicts";
+  document.getElementById("v-ceiling").hidden = View.v !== "ceiling";
 }
 
 function renderFilters(){
@@ -484,6 +498,29 @@ function renderDelta(){
       <td class="num">${x.model_2025_td_rate ?? "-"}</td>
       <td>${esc(x.model_says)}</td>
       <td><b>${esc(x.agreement)}</b></td></tr>`).join("");
+}
+
+function renderCeiling(){
+  const el = document.getElementById("ceil-t");
+  if (!el) return;
+  if (!D.ceil){ el.innerHTML = '<p class="small">ceiling artifact absent - the board runs without it</p>'; return; }
+  const rows = D.ceil.players.filter(p => p.boom)
+    .sort((a, b) => b.boom.rate - a.boom.rate || b.p90_week - a.p90_week);
+  el.innerHTML = `<div class="tw"><table>
+    <tr><th>Player</th><th>Boom</th><th>p90 wk</th><th>sd</th><th>proj</th><th>avail-adj</th><th>gp 2yr</th></tr>` +
+    rows.slice(0, 60).map(p => `<tr>
+      <td>${esc(p.name)} <span class="thin">${p.pos}</span></td>
+      <td class="num">${p.boom.k}/${p.boom.n} (${Math.round(p.boom.rate * 100)}%)</td>
+      <td class="num">${p.p90_week.toFixed(1)}</td>
+      <td class="num">${p.weekly_sd.toFixed(1)}</td>
+      <td class="num">${p.proj.toFixed(0)}</td>
+      <td class="num">${p.avail_adj_proj !== undefined ? p.avail_adj_proj.toFixed(0) : "-"}</td>
+      <td class="num">${p.gp_rate_2yr !== undefined ? Math.round(p.gp_rate_2yr * 100) + "%" : "-"}</td>
+    </tr>`).join("") + `</table></div>
+    <p class="small">avail-adj = projection x two-year games-played rate minus expected
+    missed weeks x weekly replacement points (${Object.entries(D.ceil.weekly_replacement)
+      .map(([k, v]) => k + " " + v).join(", ")}) - the zero-IR cost, stated. Boom cutoffs
+    are each week's actual positional top-12 score. History, not a projection.</p>`;
 }
 
 function renderConflicts(){

@@ -1,0 +1,2695 @@
+{
+ "provenance": {
+  "generated": "2026-08-26",
+  "format": "H2H + league median, league_average_match=1 verified live on both league ids - every week scores twice",
+  "scoring": "league-exact (6-pt pass TD, full PPR)",
+  "boom_cutoffs": "per-week positional top-12 scores, computed",
+  "limitation": "no synthetic variance-premium coefficient: deriving one needs multi-season weekly team data (yfpy backlog); the lens ranks by boom_rate directly"
+ },
+ "weekly_replacement": {
+  "QB": 20.44,
+  "RB": 9.94,
+  "WR": 10.95,
+  "TE": 9.56
+ },
+ "players": [
+  {
+   "name": "Jahmyr Gibbs",
+   "pos": "RB",
+   "adp": 1.6,
+   "proj": 331.4,
+   "weeks_2025": 17,
+   "weekly_mean": 21.58,
+   "weekly_sd": 13.12,
+   "p90_week": 37.0,
+   "boom": {
+    "k": 9,
+    "n": 17,
+    "rate": 0.5294
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 331.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Bijan Robinson",
+   "pos": "RB",
+   "adp": 2.5,
+   "proj": 324.9,
+   "weeks_2025": 17,
+   "weekly_mean": 21.81,
+   "weekly_sd": 9.95,
+   "p90_week": 30.3,
+   "boom": {
+    "k": 12,
+    "n": 17,
+    "rate": 0.7059
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 324.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Puka Nacua",
+   "pos": "WR",
+   "adp": 4.7,
+   "proj": 312.5,
+   "weeks_2025": 16,
+   "weekly_mean": 23.44,
+   "weekly_sd": 9.88,
+   "p90_week": 36.0,
+   "boom": {
+    "k": 10,
+    "n": 16,
+    "rate": 0.625
+   },
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "avail_adj_proj": 209.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Ja'Marr Chase",
+   "pos": "WR",
+   "adp": 3.0,
+   "proj": 311.1,
+   "weeks_2025": 16,
+   "weekly_mean": 19.6,
+   "weekly_sd": 9.94,
+   "p90_week": 36.5,
+   "boom": {
+    "k": 9,
+    "n": 16,
+    "rate": 0.5625
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 296.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Christian McCaffrey",
+   "pos": "RB",
+   "adp": 5.0,
+   "proj": 291.0,
+   "weeks_2025": 17,
+   "weekly_mean": 24.51,
+   "weekly_sd": 7.98,
+   "p90_week": 34.3,
+   "boom": {
+    "k": 14,
+    "n": 17,
+    "rate": 0.8235
+   },
+   "gp_rate_2yr": 0.6176,
+   "exp_missed": 6.5,
+   "avail_adj_proj": 115.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jonathan Taylor",
+   "pos": "RB",
+   "adp": 7.1,
+   "proj": 272.3,
+   "weeks_2025": 17,
+   "weekly_mean": 21.31,
+   "weekly_sd": 12.07,
+   "p90_week": 34.2,
+   "boom": {
+    "k": 8,
+    "n": 17,
+    "rate": 0.4706
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 233.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jaxon Smith-Njigba",
+   "pos": "WR",
+   "adp": 6.4,
+   "proj": 284.6,
+   "weeks_2025": 17,
+   "weekly_mean": 21.17,
+   "weekly_sd": 7.26,
+   "p90_week": 28.1,
+   "boom": {
+    "k": 12,
+    "n": 17,
+    "rate": 0.7059
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 284.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Amon-Ra St. Brown",
+   "pos": "WR",
+   "adp": 7.1,
+   "proj": 280.5,
+   "weeks_2025": 17,
+   "weekly_mean": 19.06,
+   "weekly_sd": 10.6,
+   "p90_week": 29.9,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 280.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "James Cook",
+   "pos": "RB",
+   "adp": 10.1,
+   "proj": 260.8,
+   "weeks_2025": 17,
+   "weekly_mean": 17.78,
+   "weekly_sd": 8.93,
+   "p90_week": 26.5,
+   "boom": {
+    "k": 10,
+    "n": 17,
+    "rate": 0.5882
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 248.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Brock Bowers",
+   "pos": "TE",
+   "adp": 23.6,
+   "proj": 253.5,
+   "weeks_2025": 12,
+   "weekly_mean": 14.68,
+   "weekly_sd": 9.69,
+   "p90_week": 22.3,
+   "boom": {
+    "k": 7,
+    "n": 12,
+    "rate": 0.5833
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 192.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "De'Von Achane",
+   "pos": "RB",
+   "adp": 12.3,
+   "proj": 257.4,
+   "weeks_2025": 16,
+   "weekly_mean": 20.18,
+   "weekly_sd": 6.79,
+   "p90_week": 31.0,
+   "boom": {
+    "k": 11,
+    "n": 16,
+    "rate": 0.6875
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 244.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Chase Brown",
+   "pos": "RB",
+   "adp": 15.7,
+   "proj": 255.2,
+   "weeks_2025": 17,
+   "weekly_mean": 16.62,
+   "weekly_sd": 7.13,
+   "p90_week": 25.5,
+   "boom": {
+    "k": 8,
+    "n": 17,
+    "rate": 0.4706
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 242.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "CeeDee Lamb",
+   "pos": "WR",
+   "adp": 9.0,
+   "proj": 270.5,
+   "weeks_2025": 13,
+   "weekly_mean": 15.45,
+   "weekly_sd": 5.75,
+   "p90_week": 22.0,
+   "boom": {
+    "k": 4,
+    "n": 13,
+    "rate": 0.3077
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 189.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Derrick Henry",
+   "pos": "RB",
+   "adp": 20.5,
+   "proj": 246.9,
+   "weeks_2025": 17,
+   "weekly_mean": 16.44,
+   "weekly_sd": 9.7,
+   "p90_week": 22.8,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 246.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Saquon Barkley",
+   "pos": "RB",
+   "adp": 13.0,
+   "proj": 246.7,
+   "weeks_2025": 16,
+   "weekly_mean": 14.52,
+   "weekly_sd": 6.97,
+   "p90_week": 21.2,
+   "boom": {
+    "k": 6,
+    "n": 16,
+    "rate": 0.375
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 222.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Nico Collins",
+   "pos": "WR",
+   "adp": 25.3,
+   "proj": 262.0,
+   "weeks_2025": 15,
+   "weekly_mean": 15.08,
+   "weekly_sd": 6.28,
+   "p90_week": 23.5,
+   "boom": {
+    "k": 5,
+    "n": 15,
+    "rate": 0.3333
+   },
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "avail_adj_proj": 169.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Kenneth Walker",
+   "pos": "RB",
+   "adp": 19.7,
+   "proj": 244.0,
+   "weeks_2025": 17,
+   "weekly_mean": 11.29,
+   "weekly_sd": 6.33,
+   "p90_week": 18.8,
+   "boom": {
+    "k": 5,
+    "n": 17,
+    "rate": 0.2941
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 171.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Omarion Hampton",
+   "pos": "RB",
+   "adp": 15.5,
+   "proj": 242.9,
+   "weeks_2025": 9,
+   "weekly_mean": 15.08,
+   "weekly_sd": 7.61,
+   "p90_week": 24.9,
+   "boom": {
+    "k": 3,
+    "n": 9,
+    "rate": 0.3333
+   },
+   "gp_rate_2yr": 0.5294,
+   "exp_missed": 8.0,
+   "avail_adj_proj": 49.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Trey McBride",
+   "pos": "TE",
+   "adp": 21.5,
+   "proj": 234.9,
+   "weeks_2025": 17,
+   "weekly_mean": 18.58,
+   "weekly_sd": 8.12,
+   "p90_week": 27.7,
+   "boom": {
+    "k": 15,
+    "n": 17,
+    "rate": 0.8824
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 223.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Josh Allen",
+   "pos": "QB",
+   "adp": 22.8,
+   "proj": 415.5,
+   "weeks_2025": 16,
+   "weekly_mean": 26.54,
+   "weekly_sd": 11.63,
+   "p90_week": 43.84,
+   "boom": {
+    "k": 10,
+    "n": 16,
+    "rate": 0.625
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 370.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Ashton Jeanty",
+   "pos": "RB",
+   "adp": 14.7,
+   "proj": 233.9,
+   "weeks_2025": 17,
+   "weekly_mean": 14.42,
+   "weekly_sd": 8.43,
+   "p90_week": 24.8,
+   "boom": {
+    "k": 5,
+    "n": 17,
+    "rate": 0.2941
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 233.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Justin Jefferson",
+   "pos": "WR",
+   "adp": 11.4,
+   "proj": 250.4,
+   "weeks_2025": 17,
+   "weekly_mean": 11.85,
+   "weekly_sd": 5.62,
+   "p90_week": 18.4,
+   "boom": {
+    "k": 3,
+    "n": 17,
+    "rate": 0.1765
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 250.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Drake London",
+   "pos": "WR",
+   "adp": 17.4,
+   "proj": 250.2,
+   "weeks_2025": 12,
+   "weekly_mean": 16.82,
+   "weekly_sd": 10.97,
+   "p90_week": 31.8,
+   "boom": {
+    "k": 6,
+    "n": 12,
+    "rate": 0.5
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 186.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "A.J. Brown",
+   "pos": "WR",
+   "adp": 18.8,
+   "proj": 247.2,
+   "weeks_2025": 15,
+   "weekly_mean": 14.69,
+   "weekly_sd": 9.42,
+   "p90_week": 28.1,
+   "boom": {
+    "k": 4,
+    "n": 15,
+    "rate": 0.2667
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 170.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "George Pickens",
+   "pos": "WR",
+   "adp": 23.6,
+   "proj": 245.7,
+   "weeks_2025": 17,
+   "weekly_mean": 17.17,
+   "weekly_sd": 9.36,
+   "p90_week": 29.6,
+   "boom": {
+    "k": 5,
+    "n": 17,
+    "rate": 0.2941
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 207.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Colston Loveland",
+   "pos": "TE",
+   "adp": 39.2,
+   "proj": 215.4,
+   "weeks_2025": 16,
+   "weekly_mean": 10.32,
+   "weekly_sd": 8.23,
+   "p90_week": 25.1,
+   "boom": {
+    "k": 5,
+    "n": 16,
+    "rate": 0.3125
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 193.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Malik Nabers",
+   "pos": "WR",
+   "adp": 28.6,
+   "proj": 236.7,
+   "weeks_2025": 4,
+   "weekly_mean": 14.28,
+   "weekly_sd": 13.96,
+   "p90_week": 37.7,
+   "boom": {
+    "k": 1,
+    "n": 4,
+    "rate": 0.25
+   },
+   "gp_rate_2yr": 0.5588,
+   "exp_missed": 7.5,
+   "avail_adj_proj": 50.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Chris Olave",
+   "pos": "WR",
+   "adp": 30.4,
+   "proj": 235.9,
+   "weeks_2025": 16,
+   "weekly_mean": 16.81,
+   "weekly_sd": 7.6,
+   "p90_week": 26.8,
+   "boom": {
+    "k": 5,
+    "n": 16,
+    "rate": 0.3125
+   },
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "avail_adj_proj": 111.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Rashee Rice",
+   "pos": "WR",
+   "adp": 27.3,
+   "proj": 229.3,
+   "weeks_2025": 8,
+   "weekly_mean": 18.76,
+   "weekly_sd": 7.59,
+   "p90_week": 25.5,
+   "boom": {
+    "k": 5,
+    "n": 8,
+    "rate": 0.625
+   },
+   "gp_rate_2yr": 0.3529,
+   "exp_missed": 11.0,
+   "avail_adj_proj": -39.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "DeVonta Smith",
+   "pos": "WR",
+   "adp": 36.4,
+   "proj": 229.2,
+   "weeks_2025": 17,
+   "weekly_mean": 11.87,
+   "weekly_sd": 7.57,
+   "p90_week": 19.4,
+   "boom": {
+    "k": 3,
+    "n": 17,
+    "rate": 0.1765
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 180.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jeremiyah Love",
+   "pos": "RB",
+   "adp": 26.9,
+   "proj": 211.8,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Breece Hall",
+   "pos": "RB",
+   "adp": 33.1,
+   "proj": 211.0,
+   "weeks_2025": 16,
+   "weekly_mean": 13.1,
+   "weekly_sd": 7.72,
+   "p90_week": 20.9,
+   "boom": {
+    "k": 5,
+    "n": 16,
+    "rate": 0.3125
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 188.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Zay Flowers",
+   "pos": "WR",
+   "adp": 42.8,
+   "proj": 228.2,
+   "weeks_2025": 17,
+   "weekly_mean": 14.31,
+   "weekly_sd": 7.26,
+   "p90_week": 21.2,
+   "boom": {
+    "k": 4,
+    "n": 17,
+    "rate": 0.2353
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 228.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Ladd McConkey",
+   "pos": "WR",
+   "adp": 38.9,
+   "proj": 228.2,
+   "weeks_2025": 16,
+   "weekly_mean": 11.31,
+   "weekly_sd": 6.64,
+   "p90_week": 20.8,
+   "boom": {
+    "k": 3,
+    "n": 16,
+    "rate": 0.1875
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 203.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Kyren Williams",
+   "pos": "RB",
+   "adp": 29.7,
+   "proj": 208.0,
+   "weeks_2025": 17,
+   "weekly_mean": 15.49,
+   "weekly_sd": 5.93,
+   "p90_week": 21.8,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 196.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "adp": 55.8,
+   "proj": 208.0,
+   "weeks_2025": 16,
+   "weekly_mean": 14.29,
+   "weekly_sd": 6.46,
+   "p90_week": 22.6,
+   "boom": {
+    "k": 5,
+    "n": 16,
+    "rate": 0.3125
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 196.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Travis Etienne",
+   "pos": "RB",
+   "adp": 44.1,
+   "proj": 207.7,
+   "weeks_2025": 17,
+   "weekly_mean": 14.94,
+   "weekly_sd": 6.74,
+   "p90_week": 20.6,
+   "boom": {
+    "k": 6,
+    "n": 17,
+    "rate": 0.3529
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 185.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Garrett Wilson",
+   "pos": "WR",
+   "adp": 45.7,
+   "proj": 224.9,
+   "weeks_2025": 7,
+   "weekly_mean": 14.21,
+   "weekly_sd": 8.94,
+   "p90_week": 22.5,
+   "boom": {
+    "k": 4,
+    "n": 7,
+    "rate": 0.5714
+   },
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "avail_adj_proj": 104.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Tyler Warren",
+   "pos": "TE",
+   "adp": 47.7,
+   "proj": 201.1,
+   "weeks_2025": 17,
+   "weekly_mean": 11.09,
+   "weekly_sd": 4.73,
+   "p90_week": 17.9,
+   "boom": {
+    "k": 8,
+    "n": 17,
+    "rate": 0.4706
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 201.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Javonte Williams",
+   "pos": "RB",
+   "adp": 35.0,
+   "proj": 207.3,
+   "weeks_2025": 16,
+   "weekly_mean": 15.18,
+   "weekly_sd": 5.83,
+   "p90_week": 25.0,
+   "boom": {
+    "k": 5,
+    "n": 16,
+    "rate": 0.3125
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 196.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Tee Higgins",
+   "pos": "WR",
+   "adp": 34.3,
+   "proj": 224.4,
+   "weeks_2025": 15,
+   "weekly_mean": 14.11,
+   "weekly_sd": 7.95,
+   "p90_week": 27.2,
+   "boom": {
+    "k": 4,
+    "n": 15,
+    "rate": 0.2667
+   },
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "avail_adj_proj": 139.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Emeka Egbuka",
+   "pos": "WR",
+   "adp": 39.4,
+   "proj": 224.0,
+   "weeks_2025": 17,
+   "weekly_mean": 11.51,
+   "weekly_sd": 8.17,
+   "p90_week": 23.5,
+   "boom": {
+    "k": 4,
+    "n": 17,
+    "rate": 0.2353
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 224.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "David Montgomery",
+   "pos": "RB",
+   "adp": 49.3,
+   "proj": 206.1,
+   "weeks_2025": 17,
+   "weekly_mean": 9.94,
+   "weekly_sd": 6.69,
+   "p90_week": 14.3,
+   "boom": {
+    "k": 2,
+    "n": 17,
+    "rate": 0.1176
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 173.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Tetairoa McMillan",
+   "pos": "WR",
+   "adp": 37.8,
+   "proj": 223.0,
+   "weeks_2025": 17,
+   "weekly_mean": 12.55,
+   "weekly_sd": 6.86,
+   "p90_week": 17.9,
+   "boom": {
+    "k": 2,
+    "n": 17,
+    "rate": 0.1176
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 223.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Mike Evans",
+   "pos": "WR",
+   "adp": 61.5,
+   "proj": 222.2,
+   "weeks_2025": 8,
+   "weekly_mean": 10.6,
+   "weekly_sd": 5.42,
+   "p90_week": 14.1,
+   "boom": {
+    "k": 1,
+    "n": 8,
+    "rate": 0.125
+   },
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "avail_adj_proj": 78.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jaylen Waddle",
+   "pos": "WR",
+   "adp": 46.2,
+   "proj": 221.0,
+   "weeks_2025": 16,
+   "weekly_mean": 12.13,
+   "weekly_sd": 6.65,
+   "p90_week": 20.9,
+   "boom": {
+    "k": 3,
+    "n": 16,
+    "rate": 0.1875
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 185.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Sam LaPorta",
+   "pos": "TE",
+   "adp": 59.1,
+   "proj": 196.5,
+   "weeks_2025": 9,
+   "weekly_mean": 11.88,
+   "weekly_sd": 6.09,
+   "p90_week": 20.2,
+   "boom": {
+    "k": 5,
+    "n": 9,
+    "rate": 0.5556
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 101.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Josh Jacobs",
+   "pos": "RB",
+   "adp": 31.0,
+   "proj": 202.6,
+   "weeks_2025": 15,
+   "weekly_mean": 15.81,
+   "weekly_sd": 8.71,
+   "p90_week": 31.7,
+   "boom": {
+    "k": 7,
+    "n": 15,
+    "rate": 0.4667
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 180.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Lamar Jackson",
+   "pos": "QB",
+   "adp": 31.2,
+   "proj": 380.0,
+   "weeks_2025": 13,
+   "weekly_mean": 20.3,
+   "weekly_sd": 11.01,
+   "p90_week": 33.56,
+   "boom": {
+    "k": 6,
+    "n": 13,
+    "rate": 0.4615
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 294.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Cam Skattebo",
+   "pos": "RB",
+   "adp": 43.8,
+   "proj": 201.2,
+   "weeks_2025": 8,
+   "weekly_mean": 15.96,
+   "weekly_sd": 8.06,
+   "p90_week": 24.1,
+   "boom": {
+    "k": 3,
+    "n": 8,
+    "rate": 0.375
+   },
+   "gp_rate_2yr": 0.4706,
+   "exp_missed": 9.0,
+   "avail_adj_proj": 5.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Drake Maye",
+   "pos": "QB",
+   "adp": 47.1,
+   "proj": 378.8,
+   "weeks_2025": 17,
+   "weekly_mean": 24.82,
+   "weekly_sd": 7.16,
+   "p90_week": 33.24,
+   "boom": {
+    "k": 11,
+    "n": 17,
+    "rate": 0.6471
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 293.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Bucky Irving",
+   "pos": "RB",
+   "adp": 41.3,
+   "proj": 197.3,
+   "weeks_2025": 10,
+   "weekly_mean": 13.85,
+   "weekly_sd": 5.32,
+   "p90_week": 18.1,
+   "boom": {
+    "k": 2,
+    "n": 10,
+    "rate": 0.2
+   },
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "avail_adj_proj": 121.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Terry McLaurin",
+   "pos": "WR",
+   "adp": 55.3,
+   "proj": 213.8,
+   "weeks_2025": 10,
+   "weekly_mean": 11.42,
+   "weekly_sd": 4.84,
+   "p90_week": 15.9,
+   "boom": {
+    "k": 1,
+    "n": 10,
+    "rate": 0.1
+   },
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "avail_adj_proj": 131.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Quinshon Judkins",
+   "pos": "RB",
+   "adp": 54.9,
+   "proj": 196.0,
+   "weeks_2025": 14,
+   "weekly_mean": 12.13,
+   "weekly_sd": 6.48,
+   "p90_week": 21.5,
+   "boom": {
+    "k": 4,
+    "n": 14,
+    "rate": 0.2857
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 131.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Parker Washington",
+   "pos": "WR",
+   "adp": 76.6,
+   "proj": 212.4,
+   "weeks_2025": 16,
+   "weekly_mean": 11.54,
+   "weekly_sd": 7.17,
+   "p90_week": 19.7,
+   "boom": {
+    "k": 4,
+    "n": 16,
+    "rate": 0.25
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 165.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Joe Burrow",
+   "pos": "QB",
+   "adp": 51.7,
+   "proj": 372.1,
+   "weeks_2025": 8,
+   "weekly_mean": 21.68,
+   "weekly_sd": 10.61,
+   "p90_week": 33.36,
+   "boom": {
+    "k": 5,
+    "n": 8,
+    "rate": 0.625
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 181.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Luther Burden",
+   "pos": "WR",
+   "adp": 52.8,
+   "proj": 209.0,
+   "weeks_2025": 15,
+   "weekly_mean": 8.53,
+   "weekly_sd": 7.29,
+   "p90_week": 19.8,
+   "boom": {
+    "k": 2,
+    "n": 15,
+    "rate": 0.1333
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 162.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Rome Odunze",
+   "pos": "WR",
+   "adp": 65.8,
+   "proj": 207.9,
+   "weeks_2025": 12,
+   "weekly_mean": 12.17,
+   "weekly_sd": 8.78,
+   "p90_week": 20.6,
+   "boom": {
+    "k": 3,
+    "n": 12,
+    "rate": 0.25
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 149.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Christian Watson",
+   "pos": "WR",
+   "adp": 70.1,
+   "proj": 207.6,
+   "weeks_2025": 10,
+   "weekly_mean": 13.24,
+   "weekly_sd": 7.28,
+   "p90_week": 22.3,
+   "boom": {
+    "k": 4,
+    "n": 10,
+    "rate": 0.4
+   },
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "avail_adj_proj": 91.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jameson Williams",
+   "pos": "WR",
+   "adp": 58.4,
+   "proj": 206.2,
+   "weeks_2025": 17,
+   "weekly_mean": 12.94,
+   "weekly_sd": 8.7,
+   "p90_week": 23.9,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 183.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Dak Prescott",
+   "pos": "QB",
+   "adp": 78.1,
+   "proj": 365.9,
+   "weeks_2025": 17,
+   "weekly_mean": 22.58,
+   "weekly_sd": 10.2,
+   "p90_week": 32.32,
+   "boom": {
+    "k": 11,
+    "n": 17,
+    "rate": 0.6471
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 177.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Harold Fannin",
+   "pos": "TE",
+   "adp": 68.5,
+   "proj": 180.4,
+   "weeks_2025": 16,
+   "weekly_mean": 11.65,
+   "weekly_sd": 5.55,
+   "p90_week": 19.5,
+   "boom": {
+    "k": 8,
+    "n": 16,
+    "rate": 0.5
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 160.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Brock Purdy",
+   "pos": "QB",
+   "adp": 121.2,
+   "proj": 363.2,
+   "weeks_2025": 9,
+   "weekly_mean": 25.26,
+   "weekly_sd": 11.79,
+   "p90_week": 41.9,
+   "boom": {
+    "k": 5,
+    "n": 9,
+    "rate": 0.5556
+   },
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "avail_adj_proj": 154.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Tucker Kraft",
+   "pos": "TE",
+   "adp": 63.8,
+   "proj": 174.4,
+   "weeks_2025": 8,
+   "weekly_mean": 14.65,
+   "weekly_sd": 9.23,
+   "p90_week": 24.4,
+   "boom": {
+    "k": 4,
+    "n": 8,
+    "rate": 0.5
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 85.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jayden Reed",
+   "pos": "WR",
+   "adp": 114.4,
+   "proj": 197.6,
+   "weeks_2025": 5,
+   "weekly_mean": 9.7,
+   "weekly_sd": 2.22,
+   "p90_week": 13.5,
+   "boom": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "avail_adj_proj": 62.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Brian Thomas",
+   "pos": "WR",
+   "adp": 73.3,
+   "proj": 195.4,
+   "weeks_2025": 14,
+   "weekly_mean": 9.91,
+   "weekly_sd": 4.83,
+   "p90_week": 17.1,
+   "boom": {
+    "k": 1,
+    "n": 14,
+    "rate": 0.0714
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 161.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Kyle Pitts",
+   "pos": "TE",
+   "adp": 69.0,
+   "proj": 171.6,
+   "weeks_2025": 17,
+   "weekly_mean": 12.4,
+   "weekly_sd": 9.64,
+   "p90_week": 18.0,
+   "boom": {
+    "k": 9,
+    "n": 17,
+    "rate": 0.5294
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 171.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Travis Kelce",
+   "pos": "TE",
+   "adp": 92.2,
+   "proj": 171.4,
+   "weeks_2025": 17,
+   "weekly_mean": 11.36,
+   "weekly_sd": 6.21,
+   "p90_week": 19.1,
+   "boom": {
+    "k": 9,
+    "n": 17,
+    "rate": 0.5294
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 161.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Trevor Lawrence",
+   "pos": "QB",
+   "adp": 100.9,
+   "proj": 355.4,
+   "weeks_2025": 17,
+   "weekly_mean": 24.01,
+   "weekly_sd": 10.29,
+   "p90_week": 29.3,
+   "boom": {
+    "k": 11,
+    "n": 17,
+    "rate": 0.6471
+   },
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "avail_adj_proj": 210.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Caleb Williams",
+   "pos": "QB",
+   "adp": 71.3,
+   "proj": 355.3,
+   "weeks_2025": 17,
+   "weekly_mean": 22.33,
+   "weekly_sd": 9.35,
+   "p90_week": 27.66,
+   "boom": {
+    "k": 8,
+    "n": 17,
+    "rate": 0.4706
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 355.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "George Kittle",
+   "pos": "TE",
+   "adp": 91.2,
+   "proj": 169.3,
+   "weeks_2025": 11,
+   "weekly_mean": 14.68,
+   "weekly_sd": 7.88,
+   "p90_week": 24.5,
+   "boom": {
+    "k": 7,
+    "n": 11,
+    "rate": 0.6364
+   },
+   "gp_rate_2yr": 0.7647,
+   "exp_missed": 4.0,
+   "avail_adj_proj": 91.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Davante Adams",
+   "pos": "WR",
+   "adp": 50.5,
+   "proj": 192.5,
+   "weeks_2025": 14,
+   "weekly_mean": 15.92,
+   "weekly_sd": 6.59,
+   "p90_week": 23.2,
+   "boom": {
+    "k": 6,
+    "n": 14,
+    "rate": 0.4286
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 125.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Bhayshul Tuten",
+   "pos": "RB",
+   "adp": 62.6,
+   "proj": 174.8,
+   "weeks_2025": 15,
+   "weekly_mean": 5.91,
+   "weekly_sd": 4.75,
+   "p90_week": 13.4,
+   "boom": {
+    "k": 0,
+    "n": 15,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 134.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jalen Hurts",
+   "pos": "QB",
+   "adp": 60.9,
+   "proj": 352.5,
+   "weeks_2025": 16,
+   "weekly_mean": 22.32,
+   "weekly_sd": 8.43,
+   "p90_week": 33.36,
+   "boom": {
+    "k": 8,
+    "n": 16,
+    "rate": 0.5
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 290.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jayden Daniels",
+   "pos": "QB",
+   "adp": 63.8,
+   "proj": 350.7,
+   "weeks_2025": 7,
+   "weekly_mean": 19.04,
+   "weekly_sd": 7.24,
+   "p90_week": 23.7,
+   "boom": {
+    "k": 1,
+    "n": 7,
+    "rate": 0.1429
+   },
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "avail_adj_proj": 145.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "TreVeyon Henderson",
+   "pos": "RB",
+   "adp": 53.8,
+   "proj": 171.0,
+   "weeks_2025": 17,
+   "weekly_mean": 12.13,
+   "weekly_sd": 9.31,
+   "p90_week": 28.0,
+   "boom": {
+    "k": 4,
+    "n": 17,
+    "rate": 0.2353
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 171.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jaylen Warren",
+   "pos": "RB",
+   "adp": 72.0,
+   "proj": 170.6,
+   "weeks_2025": 16,
+   "weekly_mean": 13.57,
+   "weekly_sd": 5.44,
+   "p90_week": 19.8,
+   "boom": {
+    "k": 3,
+    "n": 16,
+    "rate": 0.1875
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 140.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Dalton Kincaid",
+   "pos": "TE",
+   "adp": 89.4,
+   "proj": 163.6,
+   "weeks_2025": 12,
+   "weekly_mean": 10.51,
+   "weekly_sd": 6.28,
+   "p90_week": 17.6,
+   "boom": {
+    "k": 5,
+    "n": 12,
+    "rate": 0.4167
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 77.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jadarian Price",
+   "pos": "RB",
+   "adp": 67.7,
+   "proj": 170.0,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Bo Nix",
+   "pos": "QB",
+   "adp": 119.9,
+   "proj": 347.7,
+   "weeks_2025": 17,
+   "weekly_mean": 21.52,
+   "weekly_sd": 9.61,
+   "p90_week": 32.78,
+   "boom": {
+    "k": 6,
+    "n": 17,
+    "rate": 0.3529
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 347.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Justin Herbert",
+   "pos": "QB",
+   "adp": 82.9,
+   "proj": 347.5,
+   "weeks_2025": 16,
+   "weekly_mean": 21.99,
+   "weekly_sd": 8.9,
+   "p90_week": 34.2,
+   "boom": {
+    "k": 5,
+    "n": 16,
+    "rate": 0.3125
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 327.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Rhamondre Stevenson",
+   "pos": "RB",
+   "adp": 81.8,
+   "proj": 169.0,
+   "weeks_2025": 14,
+   "weekly_mean": 12.77,
+   "weekly_sd": 9.69,
+   "p90_week": 27.2,
+   "boom": {
+    "k": 3,
+    "n": 14,
+    "rate": 0.2143
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 119.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Marvin Harrison",
+   "pos": "WR",
+   "adp": 75.5,
+   "proj": 186.2,
+   "weeks_2025": 12,
+   "weekly_mean": 10.65,
+   "weekly_sd": 6.8,
+   "p90_week": 18.6,
+   "boom": {
+    "k": 2,
+    "n": 12,
+    "rate": 0.1667
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 131.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Mark Andrews",
+   "pos": "TE",
+   "adp": 129.2,
+   "proj": 162.5,
+   "weeks_2025": 17,
+   "weekly_mean": 7.71,
+   "weekly_sd": 6.58,
+   "p90_week": 15.7,
+   "boom": {
+    "k": 4,
+    "n": 17,
+    "rate": 0.2353
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 162.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Brenton Strange",
+   "pos": "TE",
+   "adp": 151.8,
+   "proj": 161.0,
+   "weeks_2025": 12,
+   "weekly_mean": 9.83,
+   "weekly_sd": 4.54,
+   "p90_week": 14.9,
+   "boom": {
+    "k": 5,
+    "n": 12,
+    "rate": 0.4167
+   },
+   "gp_rate_2yr": 0.7647,
+   "exp_missed": 4.0,
+   "avail_adj_proj": 84.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jake Ferguson",
+   "pos": "TE",
+   "adp": 98.2,
+   "proj": 159.8,
+   "weeks_2025": 17,
+   "weekly_mean": 11.06,
+   "weekly_sd": 6.88,
+   "p90_week": 21.2,
+   "boom": {
+    "k": 9,
+    "n": 17,
+    "rate": 0.5294
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 131.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Patrick Mahomes",
+   "pos": "QB",
+   "adp": 106.3,
+   "proj": 344.7,
+   "weeks_2025": 14,
+   "weekly_mean": 24.33,
+   "weekly_sd": 9.63,
+   "p90_week": 37.44,
+   "boom": {
+    "k": 8,
+    "n": 14,
+    "rate": 0.5714
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 263.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "DK Metcalf",
+   "pos": "WR",
+   "adp": 74.7,
+   "proj": 183.3,
+   "weeks_2025": 15,
+   "weekly_mean": 12.48,
+   "weekly_sd": 5.8,
+   "p90_week": 21.8,
+   "boom": {
+    "k": 4,
+    "n": 15,
+    "rate": 0.2667
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 139.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Matthew Stafford",
+   "pos": "QB",
+   "adp": 95.4,
+   "proj": 344.2,
+   "weeks_2025": 17,
+   "weekly_mean": 26.49,
+   "weekly_sd": 8.24,
+   "p90_week": 34.9,
+   "boom": {
+    "k": 11,
+    "n": 17,
+    "rate": 0.6471
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 323.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jared Goff",
+   "pos": "QB",
+   "adp": 133.8,
+   "proj": 343.5,
+   "weeks_2025": 17,
+   "weekly_mean": 21.94,
+   "weekly_sd": 8.84,
+   "p90_week": 31.52,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 343.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Isaiah Likely",
+   "pos": "TE",
+   "adp": 109.9,
+   "proj": 157.3,
+   "weeks_2025": 12,
+   "weekly_mean": 5.14,
+   "weekly_sd": 3.93,
+   "p90_week": 12.5,
+   "boom": {
+    "k": 2,
+    "n": 12,
+    "rate": 0.1667
+   },
+   "gp_rate_2yr": 0.7941,
+   "exp_missed": 3.5,
+   "avail_adj_proj": 91.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jaxson Dart",
+   "pos": "QB",
+   "adp": 90.6,
+   "proj": 340.5,
+   "weeks_2025": 14,
+   "weekly_mean": 19.76,
+   "weekly_sd": 11.08,
+   "p90_week": 31.24,
+   "boom": {
+    "k": 7,
+    "n": 14,
+    "rate": 0.5
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 219.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "DJ Moore",
+   "pos": "WR",
+   "adp": 57.9,
+   "proj": 179.0,
+   "weeks_2025": 17,
+   "weekly_mean": 10.25,
+   "weekly_sd": 8.15,
+   "p90_week": 22.9,
+   "boom": {
+    "k": 4,
+    "n": 17,
+    "rate": 0.2353
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 179.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "T.J. Hockenson",
+   "pos": "TE",
+   "adp": 164.0,
+   "proj": 155.0,
+   "weeks_2025": 15,
+   "weekly_mean": 7.52,
+   "weekly_sd": 3.9,
+   "p90_week": 11.9,
+   "boom": {
+    "k": 3,
+    "n": 15,
+    "rate": 0.2
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 71.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Rico Dowdle",
+   "pos": "RB",
+   "adp": 85.3,
+   "proj": 161.1,
+   "weeks_2025": 17,
+   "weekly_mean": 12.72,
+   "weekly_sd": 9.51,
+   "p90_week": 28.1,
+   "boom": {
+    "k": 3,
+    "n": 17,
+    "rate": 0.1765
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 151.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Alec Pierce",
+   "pos": "WR",
+   "adp": 101.0,
+   "proj": 177.9,
+   "weeks_2025": 15,
+   "weekly_mean": 12.22,
+   "weekly_sd": 8.02,
+   "p90_week": 24.6,
+   "boom": {
+    "k": 2,
+    "n": 15,
+    "rate": 0.1333
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 145.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "J.K. Dobbins",
+   "pos": "RB",
+   "adp": 94.6,
+   "proj": 160.2,
+   "weeks_2025": 10,
+   "weekly_mean": 11.59,
+   "weekly_sd": 3.89,
+   "p90_week": 15.4,
+   "boom": {
+    "k": 0,
+    "n": 10,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.6765,
+   "exp_missed": 5.5,
+   "avail_adj_proj": 53.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Tony Pollard",
+   "pos": "RB",
+   "adp": 84.8,
+   "proj": 160.1,
+   "weeks_2025": 17,
+   "weekly_mean": 10.93,
+   "weekly_sd": 5.45,
+   "p90_week": 14.8,
+   "boom": {
+    "k": 2,
+    "n": 17,
+    "rate": 0.1176
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 150.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Carnell Tate",
+   "pos": "WR",
+   "adp": 66.3,
+   "proj": 177.3,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Hunter Henry",
+   "pos": "TE",
+   "adp": 138.3,
+   "proj": 153.5,
+   "weeks_2025": 17,
+   "weekly_mean": 10.52,
+   "weekly_sd": 7.06,
+   "p90_week": 15.5,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 144.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Courtland Sutton",
+   "pos": "WR",
+   "adp": 79.2,
+   "proj": 174.3,
+   "weeks_2025": 17,
+   "weekly_mean": 12.92,
+   "weekly_sd": 7.26,
+   "p90_week": 20.6,
+   "boom": {
+    "k": 4,
+    "n": 17,
+    "rate": 0.2353
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 163.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Chris Godwin",
+   "pos": "WR",
+   "adp": 95.8,
+   "proj": 173.6,
+   "weeks_2025": 9,
+   "weekly_mean": 9.22,
+   "weekly_sd": 6.34,
+   "p90_week": 14.0,
+   "boom": {
+    "k": 1,
+    "n": 9,
+    "rate": 0.1111
+   },
+   "gp_rate_2yr": 0.4706,
+   "exp_missed": 9.0,
+   "avail_adj_proj": -16.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Josh Downs",
+   "pos": "WR",
+   "adp": 107.1,
+   "proj": 172.3,
+   "weeks_2025": 16,
+   "weekly_mean": 8.65,
+   "weekly_sd": 4.59,
+   "p90_week": 16.2,
+   "boom": {
+    "k": 0,
+    "n": 16,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 130.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jonathon Brooks",
+   "pos": "RB",
+   "adp": 108.1,
+   "proj": 154.9,
+   "gp_rate_2yr": 0.0882,
+   "exp_missed": 15.5,
+   "avail_adj_proj": -140.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Kyle Monangai",
+   "pos": "RB",
+   "adp": 99.4,
+   "proj": 154.6,
+   "weeks_2025": 17,
+   "weekly_mean": 8.63,
+   "weekly_sd": 6.09,
+   "p90_week": 17.4,
+   "boom": {
+    "k": 3,
+    "n": 17,
+    "rate": 0.1765
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 154.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jordan Addison",
+   "pos": "WR",
+   "adp": 103.1,
+   "proj": 171.7,
+   "weeks_2025": 14,
+   "weekly_mean": 9.65,
+   "weekly_sd": 5.46,
+   "p90_week": 15.4,
+   "boom": {
+    "k": 1,
+    "n": 14,
+    "rate": 0.0714
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 119.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jordan Love",
+   "pos": "QB",
+   "adp": 148.8,
+   "proj": 332.5,
+   "weeks_2025": 15,
+   "weekly_mean": 19.14,
+   "weekly_sd": 9.46,
+   "p90_week": 33.76,
+   "boom": {
+    "k": 6,
+    "n": 15,
+    "rate": 0.4
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 252.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jordan Mason",
+   "pos": "RB",
+   "adp": 117.9,
+   "proj": 153.7,
+   "weeks_2025": 16,
+   "weekly_mean": 8.06,
+   "weekly_sd": 5.33,
+   "p90_week": 12.6,
+   "boom": {
+    "k": 1,
+    "n": 16,
+    "rate": 0.0625
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 96.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Michael Pittman",
+   "pos": "WR",
+   "adp": 102.5,
+   "proj": 170.9,
+   "weeks_2025": 17,
+   "weekly_mean": 11.91,
+   "weekly_sd": 7.27,
+   "p90_week": 20.5,
+   "boom": {
+    "k": 3,
+    "n": 17,
+    "rate": 0.1765
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 160.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Khalil Shakir",
+   "pos": "WR",
+   "adp": 140.8,
+   "proj": 170.7,
+   "weeks_2025": 16,
+   "weekly_mean": 10.4,
+   "weekly_sd": 5.62,
+   "p90_week": 17.9,
+   "boom": {
+    "k": 1,
+    "n": 16,
+    "rate": 0.0625
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 139.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Wan'Dale Robinson",
+   "pos": "WR",
+   "adp": 116.2,
+   "proj": 170.7,
+   "weeks_2025": 16,
+   "weekly_mean": 13.62,
+   "weekly_sd": 7.93,
+   "p90_week": 28.2,
+   "boom": {
+    "k": 4,
+    "n": 16,
+    "rate": 0.25
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 160.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Matthew Golden",
+   "pos": "WR",
+   "adp": 127.9,
+   "proj": 170.1,
+   "weeks_2025": 14,
+   "weekly_mean": 5.0,
+   "weekly_sd": 4.14,
+   "p90_week": 11.3,
+   "boom": {
+    "k": 0,
+    "n": 14,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 107.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Kenny Gainwell",
+   "pos": "RB",
+   "adp": 111.6,
+   "proj": 152.3,
+   "weeks_2025": 17,
+   "weekly_mean": 13.02,
+   "weekly_sd": 9.1,
+   "p90_week": 23.8,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 152.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jakobi Meyers",
+   "pos": "WR",
+   "adp": 110.1,
+   "proj": 169.3,
+   "weeks_2025": 16,
+   "weekly_mean": 10.99,
+   "weekly_sd": 4.21,
+   "p90_week": 17.7,
+   "boom": {
+    "k": 1,
+    "n": 16,
+    "rate": 0.0625
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 137.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Makai Lemon",
+   "pos": "WR",
+   "adp": 87.8,
+   "proj": 168.5,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Michael Wilson",
+   "pos": "WR",
+   "adp": 83.8,
+   "proj": 166.0,
+   "weeks_2025": 17,
+   "weekly_mean": 12.98,
+   "weekly_sd": 10.29,
+   "p90_week": 21.8,
+   "boom": {
+    "k": 5,
+    "n": 17,
+    "rate": 0.2941
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 155.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jalen Coker",
+   "pos": "WR",
+   "adp": 144.0,
+   "proj": 165.9,
+   "weeks_2025": 11,
+   "weekly_mean": 8.22,
+   "weekly_sd": 5.59,
+   "p90_week": 16.7,
+   "boom": {
+    "k": 1,
+    "n": 11,
+    "rate": 0.0909
+   },
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "avail_adj_proj": 41.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Baker Mayfield",
+   "pos": "QB",
+   "adp": 141.3,
+   "proj": 326.9,
+   "weeks_2025": 17,
+   "weekly_mean": 19.7,
+   "weekly_sd": 7.12,
+   "p90_week": 28.58,
+   "boom": {
+    "k": 8,
+    "n": 17,
+    "rate": 0.4706
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 326.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Oronde Gadsden",
+   "pos": "TE",
+   "adp": 127.8,
+   "proj": 141.8,
+   "weeks_2025": 15,
+   "weekly_mean": 8.76,
+   "weekly_sd": 7.29,
+   "p90_week": 18.7,
+   "boom": {
+    "k": 5,
+    "n": 15,
+    "rate": 0.3333
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 106.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Chuba Hubbard",
+   "pos": "RB",
+   "adp": 77.8,
+   "proj": 147.9,
+   "weeks_2025": 15,
+   "weekly_mean": 8.36,
+   "weekly_sd": 5.94,
+   "p90_week": 18.7,
+   "boom": {
+    "k": 3,
+    "n": 15,
+    "rate": 0.2
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 110.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Quentin Johnston",
+   "pos": "WR",
+   "adp": 113.9,
+   "proj": 163.9,
+   "weeks_2025": 13,
+   "weekly_mean": 13.17,
+   "weekly_sd": 7.15,
+   "p90_week": 23.8,
+   "boom": {
+    "k": 3,
+    "n": 13,
+    "rate": 0.2308
+   },
+   "gp_rate_2yr": 0.8235,
+   "exp_missed": 3.0,
+   "avail_adj_proj": 102.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Xavier Worthy",
+   "pos": "WR",
+   "adp": 139.2,
+   "proj": 161.5,
+   "weeks_2025": 14,
+   "weekly_mean": 7.85,
+   "weekly_sd": 4.36,
+   "p90_week": 11.4,
+   "boom": {
+    "k": 0,
+    "n": 14,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.8824,
+   "exp_missed": 2.0,
+   "avail_adj_proj": 120.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "RJ Harvey",
+   "pos": "RB",
+   "adp": 79.9,
+   "proj": 144.1,
+   "weeks_2025": 17,
+   "weekly_mean": 12.15,
+   "weekly_sd": 7.43,
+   "p90_week": 22.0,
+   "boom": {
+    "k": 7,
+    "n": 17,
+    "rate": 0.4118
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 144.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Romeo Doubs",
+   "pos": "WR",
+   "adp": 132.8,
+   "proj": 161.2,
+   "weeks_2025": 16,
+   "weekly_mean": 10.34,
+   "weekly_sd": 7.03,
+   "p90_week": 19.4,
+   "boom": {
+    "k": 1,
+    "n": 16,
+    "rate": 0.0625
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 110.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Dallas Goedert",
+   "pos": "TE",
+   "adp": 123.1,
+   "proj": 136.0,
+   "weeks_2025": 15,
+   "weekly_mean": 12.34,
+   "weekly_sd": 6.93,
+   "p90_week": 25.0,
+   "boom": {
+    "k": 6,
+    "n": 15,
+    "rate": 0.4
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 57.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Stefon Diggs",
+   "pos": "WR",
+   "adp": 111.3,
+   "proj": 157.3,
+   "weeks_2025": 17,
+   "weekly_mean": 12.37,
+   "weekly_sd": 6.61,
+   "p90_week": 22.1,
+   "boom": {
+    "k": 4,
+    "n": 17,
+    "rate": 0.2353
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 66.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "KC Concepcion",
+   "pos": "WR",
+   "adp": 122.9,
+   "proj": 156.4,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Deebo Samuel",
+   "pos": "WR",
+   "adp": 137.2,
+   "proj": 155.7,
+   "weeks_2025": 16,
+   "weekly_mean": 11.76,
+   "weekly_sd": 6.72,
+   "p90_week": 22.6,
+   "boom": {
+    "k": 4,
+    "n": 16,
+    "rate": 0.25
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 125.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Kyler Murray",
+   "pos": "QB",
+   "adp": 159.5,
+   "proj": 316.7,
+   "weeks_2025": 5,
+   "weekly_mean": 18.56,
+   "weekly_sd": 3.03,
+   "p90_week": 22.32,
+   "boom": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "avail_adj_proj": 82.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Aaron Jones",
+   "pos": "RB",
+   "adp": 124.9,
+   "proj": 137.1,
+   "weeks_2025": 12,
+   "weekly_mean": 9.89,
+   "weekly_sd": 4.32,
+   "p90_week": 15.7,
+   "boom": {
+    "k": 2,
+    "n": 12,
+    "rate": 0.1667
+   },
+   "gp_rate_2yr": 0.8529,
+   "exp_missed": 2.5,
+   "avail_adj_proj": 92.1,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Blake Corum",
+   "pos": "RB",
+   "adp": 103.8,
+   "proj": 135.3,
+   "weeks_2025": 17,
+   "weekly_mean": 7.19,
+   "weekly_sd": 6.3,
+   "p90_week": 13.1,
+   "boom": {
+    "k": 1,
+    "n": 17,
+    "rate": 0.0588
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 117.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Chris Rodriguez",
+   "pos": "RB",
+   "adp": 142.3,
+   "proj": 132.5,
+   "weeks_2025": 12,
+   "weekly_mean": 7.67,
+   "weekly_sd": 4.63,
+   "p90_week": 13.9,
+   "boom": {
+    "k": 0,
+    "n": 12,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.5588,
+   "exp_missed": 7.5,
+   "avail_adj_proj": -0.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Rachaad White",
+   "pos": "RB",
+   "adp": 131.7,
+   "proj": 128.1,
+   "weeks_2025": 17,
+   "weekly_mean": 8.41,
+   "weekly_sd": 5.33,
+   "p90_week": 14.6,
+   "boom": {
+    "k": 2,
+    "n": 17,
+    "rate": 0.1176
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 110.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jacory Croskey-Merritt",
+   "pos": "RB",
+   "adp": 115.7,
+   "proj": 127.9,
+   "weeks_2025": 17,
+   "weekly_mean": 8.25,
+   "weekly_sd": 7.25,
+   "p90_week": 15.6,
+   "boom": {
+    "k": 2,
+    "n": 17,
+    "rate": 0.1176
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 127.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Rashid Shaheed",
+   "pos": "WR",
+   "adp": 147.6,
+   "proj": 138.1,
+   "weeks_2025": 18,
+   "weekly_mean": 8.7,
+   "weekly_sd": 5.67,
+   "p90_week": 15.2,
+   "boom": {
+    "k": 1,
+    "n": 18,
+    "rate": 0.0556
+   },
+   "gp_rate_2yr": 0.7059,
+   "exp_missed": 5.0,
+   "avail_adj_proj": 42.7,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Denzel Boston",
+   "pos": "WR",
+   "adp": 165.5,
+   "proj": 134.7,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Tyjae Spears",
+   "pos": "RB",
+   "adp": 166.0,
+   "proj": 114.6,
+   "weeks_2025": 13,
+   "weekly_mean": 8.59,
+   "weekly_sd": 5.33,
+   "p90_week": 17.2,
+   "boom": {
+    "k": 2,
+    "n": 13,
+    "rate": 0.1538
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 39.5,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Tyrone Tracy",
+   "pos": "RB",
+   "adp": 163.7,
+   "proj": 111.3,
+   "weeks_2025": 15,
+   "weekly_mean": 10.72,
+   "weekly_sd": 7.4,
+   "p90_week": 24.7,
+   "boom": {
+    "k": 3,
+    "n": 15,
+    "rate": 0.2
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 94.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "De'Zhaun Stribling",
+   "pos": "WR",
+   "adp": 156.2,
+   "proj": 128.4,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Kenyon Sadiq",
+   "pos": "TE",
+   "adp": 151.0,
+   "proj": 100.2,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Jordyn Tyson",
+   "pos": "WR",
+   "adp": 86.1,
+   "proj": 111.0,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Ja'Kobi Lane",
+   "pos": "WR",
+   "adp": 157.2,
+   "proj": 104.9,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Woody Marks",
+   "pos": "RB",
+   "adp": 159.1,
+   "proj": 83.8,
+   "weeks_2025": 16,
+   "weekly_mean": 9.07,
+   "weekly_sd": 6.71,
+   "p90_week": 16.1,
+   "boom": {
+    "k": 2,
+    "n": 16,
+    "rate": 0.125
+   },
+   "gp_rate_2yr": 0.9412,
+   "exp_missed": 1.0,
+   "avail_adj_proj": 68.9,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Travis Hunter",
+   "pos": "WR",
+   "adp": 167.4,
+   "proj": 96.6,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Brian Robinson",
+   "pos": "RB",
+   "adp": 154.1,
+   "proj": 69.9,
+   "weeks_2025": 17,
+   "weekly_mean": 3.68,
+   "weekly_sd": 3.11,
+   "p90_week": 5.4,
+   "boom": {
+    "k": 0,
+    "n": 17,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "avail_adj_proj": 48.8,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Tyler Allgeier",
+   "pos": "RB",
+   "adp": 145.6,
+   "proj": 69.4,
+   "weeks_2025": 17,
+   "weekly_mean": 7.24,
+   "weekly_sd": 5.19,
+   "p90_week": 13.5,
+   "boom": {
+    "k": 1,
+    "n": 17,
+    "rate": 0.0588
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 69.4,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Zach Charbonnet",
+   "pos": "RB",
+   "adp": 146.0,
+   "proj": 67.2,
+   "weeks_2025": 16,
+   "weekly_mean": 11.34,
+   "weekly_sd": 6.49,
+   "p90_week": 19.5,
+   "boom": {
+    "k": 3,
+    "n": 16,
+    "rate": 0.1875
+   },
+   "gp_rate_2yr": 0.9706,
+   "exp_missed": 0.5,
+   "avail_adj_proj": 60.3,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
+   "name": "Jonah Coleman",
+   "pos": "RB",
+   "adp": 167.3,
+   "proj": 63.9,
+   "avail_note": "no NFL sample - availability unadjusted"
+  },
+  {
+   "name": "Alvin Kamara",
+   "pos": "RB",
+   "adp": 162.5,
+   "proj": 63.0,
+   "weeks_2025": 11,
+   "weekly_mean": 9.15,
+   "weekly_sd": 4.67,
+   "p90_week": 14.5,
+   "boom": {
+    "k": 0,
+    "n": 11,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.7353,
+   "exp_missed": 4.5,
+   "avail_adj_proj": 1.6,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  }
+ ]
+}

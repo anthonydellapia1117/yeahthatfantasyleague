@@ -964,6 +964,17 @@ const ok = (cond, name, detail) => {
        "base-rate intervals render beside the rates");
     ok(/Base rates 2016-2025/.test(brd), "base-rate reference table present");
     ok(/History, not a projection/.test(brd), "base-rate honesty line rendered");
+    // C4 ceiling view: enabled, ranked table with boom rates and the zero-IR
+    // availability column, limitation stated
+    await pg.click('#views button[data-v="ceiling"]');
+    await pg.waitForTimeout(300);
+    const ceil = await pg.textContent("#v-ceiling");
+    ok(/scores every week twice/.test(ceil), "ceiling view states the format basis");
+    ok(await pg.locator("#ceil-t tr").count() >= 20, "ceiling table ranks a real pool");
+    ok(/\d+\/\d+ \(\d+%\)/.test(ceil), "boom rates render as k/n with percent");
+    ok(/No synthetic variance premium/.test(ceil),
+       "the lens declares its limitation");
+    await pg.click('#views button[data-v="board"]');
     ok(await pg.locator("#board .brow .sig svg").count() >= 5,
        "signal icons render (third channel)");
     // Explain: full factor decomposition + walter layer

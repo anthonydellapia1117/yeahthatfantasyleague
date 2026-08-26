@@ -1,5 +1,20 @@
 # Changelog
 
+## C4: ceiling lens for the median game, enabled (2026-08-26)
+
+The median game is confirmed (league_average_match=1 verified live on
+both league ids), so the lens ships enabled - the board's fourth view.
+Per draftable player from 2025 weekly league-exact scoring: boom rate
+against each week's actual positional top-12 cutoff, p90 week, weekly
+sd, and the zero-IR availability adjustment (projection x two-year
+games-played rate minus expected missed weeks x weekly replacement
+points - missed weeks return nothing and block a bench slot on a
+5-bench, no-IR roster). Rookies without an NFL sample say so instead
+of being estimated. Stated limitation: no synthetic variance premium -
+deriving one honestly needs the multi-season weekly history (yfpy
+backlog), so the lens ranks by the direct boom rate the format pays
+for. tests/test_ceiling.py gates (workflow + runbook 7e).
+
 ## C3: archetype tagger from computed thresholds (2026-08-26)
 
 97 rules-based tags on 77 draftable players (year-2 WR, rookie-capital
