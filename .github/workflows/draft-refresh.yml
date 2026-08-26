@@ -84,6 +84,8 @@ jobs:
         run: sh tests/run_gate.sh python3 tests/test_bullish.py
       - name: WS2 audit guards
         run: sh tests/run_gate.sh python3 tests/test_ws2.py
+      - name: Mock-draft guards
+        run: sh tests/run_gate.sh python3 tests/test_mock.py
       - name: Page and data guards
         run: sh tests/run_gate.sh python3 tests/test_pages_data.py
       - name: Analysis guards

@@ -790,3 +790,41 @@ restriction if the Yahoo 2014-2024 pull (post-merge item 2) shows the
 leaguelegacy archive was reconstructed incompletely. Guards added to
 `tests/test_baserates.py`: the label must be present and every season
 used must show 12 franchises and a full draft's worth of picks.
+
+## M.1 Mock-draft validation (post-merge item 1)
+
+Artifact: `out/data/mock_drafts_2026.json` (builder `src/mock_draft.py`,
+guards `tests/test_mock.py`). Three deterministic 14-round snake
+simulations from slots 1, 6, and 12: our seat on the board's marginal
+policy (candidate value = improvement to the optimal lineup with
+replacement-level phantoms from the engine's own baselines, VOR
+tie-break), eleven ADP seats with the league's observed K/DEF window
+(first K/DEF at median 2 rounds from the end, n=44 franchise-seasons
+2024-2025), plus naive-max-VOR and ADP-chalk comparison runs per slot.
+
+**Headline: the board beats chalk from every slot** on projected optimal
+starters - slot 1 +51.7, slot 6 +96.5, slot 12 +71.0 points - with legal,
+coherent rosters (all sanity guards pass; benches carry QB2, one backup
+TE, and RB/WR depth; Jared Goff, C5's BULLISH QB tag, lands as the slot-1
+QB2 without the simulator knowing about the tag).
+
+**Two findings the validation exists to catch:**
+1. Naive max-VOR drafts DUPLICATE elite TEs in rounds 2-3 from slots 6
+   and 12 (Bowers then Loveland) - raw VOR prices a duplicate at starter
+   value even though the league's own derived flex allocation
+   (WR 8 / RB 4 / TE 0, n=216) says a second TE never starts here. The
+   marginal policy corrects it (+20.5 and +12.8 points over naive at
+   those slots) and the live room's roster-need line is the same guard in
+   interactive form - it flags when max-VOR duplicates a filled slot.
+2. VOR has no bench-value model: with starters set, a pure VOR tie-break
+   filled the bench with four backup TEs (late TEs sit closest to their
+   replacement level, so VOR truthfully but uselessly prefers them).
+   The autopilot now carries positional caps derived from the flex
+   allocation (max simultaneous starters + one injury spare, a stated
+   convention); a principled bench model (promotion probability from the
+   C4 availability rates) is future work, noted here.
+
+Both comparison rosters are preserved in the artifact so the divergence
+stays visible. The board-beats-chalk deltas are guarded in tests: if a
+future engine refresh ever makes the board LOSE to chalk at any slot,
+the suite goes red and the regression surfaces before draft night.

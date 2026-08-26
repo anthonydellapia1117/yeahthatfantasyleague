@@ -1,5 +1,22 @@
 # Changelog
 
+## M1: mock-draft validation - the board drafts, not just ranks (2026-08-26)
+
+`src/mock_draft.py` -> `out/data/mock_drafts_2026.json`: deterministic
+14-round snake sims from slots 1, 6, and 12. Our seat runs the board's
+marginal policy (optimal-lineup improvement over replacement phantoms
+from the engine's own baselines, VOR tie-break, positional caps derived
+from the observed flex allocation); eleven ADP seats use the league's
+observed K/DEF window (median 2 rounds from the end, computed from
+out/picks.csv). The board beats ADP chalk from every slot (+51.7 /
++96.5 / +71.0 projected starter points) with legal, coherent rosters.
+The validation caught what it was built to catch: naive max-VOR drafts
+duplicate elite TEs early (the live room's roster-need line already
+guards this interactively) and has no bench-value model (a pure VOR
+tie-break benches four TE2s). Both comparison rosters are preserved in
+the artifact; tests/test_mock.py guards legality, the caps, and the
+board-beats-chalk deltas, wired into the workflow. Findings M.1.
+
 ## R1: review response - gate runner, computed RB1 ledger, survivorship label (2026-08-26)
 
 Three pre-merge review items on PR #48. (1) Exit-code-masking class fix:
