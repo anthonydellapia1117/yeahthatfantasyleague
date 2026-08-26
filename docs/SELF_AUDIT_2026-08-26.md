@@ -287,7 +287,18 @@ all: `00_league/members.csv`, `14_members/member_profiles.csv` and three sibling
   flipping visibility would take the app dark twelve days before the draft.**
 
 **P2-U2. Half the analysis layer cannot be rebuilt by anyone, and five of its inputs
-have no recorded source at all.**
+have no recorded source at all.** RESOLVED 2026-08-26: `fetch_history.py` now
+covers all nine families. The five orphan URLs were identified from the cached
+files' own schemas and each verified by downloading it and byte-comparing against
+the cache that produced the committed artifacts - `pbp/play_by_play_2025.parquet`,
+`pbp_participation/pbp_participation_2025.parquet`,
+`ftn_charting/ftn_charting_2025.parquet`,
+`pfr_advstats/advstats_week_rush_2025.parquet` (the `advstats_week_rush.parquet`
+name 404s; it is year-partitioned), and `habitatring.com/games.csv` (a live file,
+not a versioned release - a fresh pull differs by a few bytes as games are scored,
+which is expected and now documented). A guard asserts every HISTORY filename any
+`src/` module reads is a family the fetcher knows, so the gap cannot silently
+reopen; it was verified to bite by deleting a download and watching it fail.
 
 Nine source files hardcode the same ephemeral container path as their `HISTORY`
 default (`build_base_rates`, `bullish_vs_adp`, `build_ws2_audit`, `build_bullish`,
@@ -325,6 +336,7 @@ context this handoff is meant to preserve.
 ### DRAFT-NIGHT RELEVANT
 
 **P2-1. `run_gate.sh` cannot tell a fully-run suite from a half-skipped one.**
+RESOLVED 2026-08-26 - see the measured coverage below.
 FAIL-OPEN GUARD, occurrence 3.
 
 Confirmed by execution:
@@ -346,6 +358,8 @@ not run its guards.
 
 **P2-2. Nothing reads `draft.type` or `settings.reversal_round`. The snake math is
 assumed, and it is right only because the current settings happen to match.**
+RESOLVED 2026-08-26: `src/preflight_draft.py`, wired into both the 2-hourly draw
+watch and the draft-morning workflow.
 This is the #31 shape exactly, predicted from it, and confirmed.
 
 Live ground truth fetched this session:
@@ -376,7 +390,9 @@ draft. The *engine* is not.)
   draft-refresh workflow.
 
 **P2-3. The draft-morning workflow rebuilds the engine but not the artifacts derived
-from it, and no guard notices the divergence.**
+from it, and no guard notices the divergence.** RESOLVED 2026-08-26: the workflow
+rebuilds the tree, and a page guard asserts every artifact carrying
+`engine_generated` matches the engine shipping beside it.
 
 `draft-refresh.yml` rebuilds exactly three things: `engine_2026.py`,
 `build_cvs_inputs.py`, `build_cvs.py`. It does **not** rebuild
@@ -461,3 +477,181 @@ future edit conflates them the tests would not notice.
   four content pages. Correct.
 - **Frozen math.** `mathdiff` proof EMPTY at HEAD; the ten frozen function bodies are
   byte-identical to origin/main.
+
+---
+
+## PART 3: TACIT KNOWLEDGE INVENTORY
+
+Most of this is now written into `docs/AGENT_HANDOFF_SPEC.md`, where it is useful
+to the next agent rather than filed in an audit: governance rationale is §3,
+rejected approaches §5, module map and non-obvious coupling §6, sequencing §6,
+sharp edges §7, do-not-modify §6. What follows is the residue - things that are
+true, undocumented, and did not belong in a spec.
+
+**Why the architecture is the shape it is.** The static-site-plus-embedded-payload
+design was not chosen for elegance. It was chosen because the draft is one evening,
+on a phone, possibly on hotel wifi, and every moving part is a thing that can fail
+at 8pm on 2026-09-08. No server means no server to be down. The engine payload is
+*embedded* rather than fetched for the same reason: one fewer request between
+Anthony and his board. The cost is that rebuilding the engine rewrites
+`draft_room.html`, which surprises everyone once.
+
+**Why so much is display-only.** Not caution for its own sake. Each display-only
+decision has a specific dead backtest behind it (spec §5). The pattern to
+internalise: this project has repeatedly found real, persistent effects that do not
+predict - opponent tendencies are genuinely real and genuinely worthless in the
+arithmetic (p=0.99). "Real" and "useful" came apart often enough that display-only
+became the default landing place for anything that has not earned its way into a
+number.
+
+**Why the guards are adversarial.** `test_survival.py` runs the OLD model through
+the cliff guard to prove the guard bites. That convention exists because a guard
+that has never failed on the bug it was written for is decoration. When you add a
+guard, break the code deliberately and watch it fail. I did this for the two new
+guards in this pass, and the fetcher-coverage guard did NOT bite on the first
+attempt - it was matching the fetcher's docstring rather than its downloads. Only
+the deliberate break exposed that.
+
+**What "verified" means in the docs.** Numbers in `docs/` are labelled by their
+verification status and the labels are load-bearing. "Reproduced" means re-run this
+session. "Documented-only" means it came from a session whose code was not
+committed - the three dead-hypothesis p-values (0.252, 0.266, 0.197) are the
+standing example and they have no generator. Do not promote a documented-only
+number to a verified one by quoting it confidently.
+
+**Anthony's working style, since it shapes what good work looks like here.** He
+reads everything, checks numbers independently, and corrects both directions -
+including withdrawing his own claims when the evidence goes the other way (the
+LeagueLegacy coverage claim). He wants the harsh version. Hedging reads as evasion.
+When he says "report the verdict, do not compute it", he means the automation is
+the error, not the conclusion. When he asks for a checkpoint, stop and produce it.
+
+**The one instruction-shaped failure to remember.** He corrected N.1 from "null" to
+"underpowered", which was right. I then built a three-state classifier out of it,
+which was wrong in three independent ways. The lesson is mine: **a correction to a
+conclusion is not a mandate to build a classifier.**
+
+---
+
+## PART 4: WHAT SHOULD BE BETTER
+
+Effort is a rough order of magnitude. "Draft-critical" means it can produce a wrong
+decision or a dead surface on 2026-09-08.
+
+### Done in this pass
+
+| Item | Effort | Draft-critical |
+|---|---|---|
+| Geometry preflight (`draft.type`, `reversal_round`, teams, rounds) | S | **yes, conditionally** |
+| VONA tree rebuilt with its engine + provenance guard on every derived artifact | S | **yes** |
+| Skipped guards fail the gate; `RAN n GUARDS` on every run | S | no |
+| Archive pruned, dual root collapsed, PII removed from HEAD | M | no |
+| `fetch_history.py` extended to all nine families + coverage guard | M | no |
+
+### Architecture
+
+**The dual-source-root hazard is resolved** (one root, 165 files deleted). The
+residual structural problem is that `src/` mixes three unrelated layers with no
+boundary: the draft-night path (5 files), the analysis layer (14 files needing a
+156MB cache), and one-off investigation scripts. A newcomer cannot tell which is
+which. **Effort M, not draft-critical:** move analysis and investigation scripts
+into `src/analysis/` and `src/research/`. Do this AFTER the draft.
+
+### Test coverage - the honest gaps
+
+**The live browser-to-Sleeper path has never been exercised, and it is the
+draft-night path.** All 326 smoke scenarios stub the API. Every clock, freshness,
+and DRAFT MODE guarantee is proven against a fixture that behaves the way I assumed
+Sleeper behaves - the exact shape of failure mode §1.1. **Effort M, DRAFT-CRITICAL.**
+The cheapest real coverage: one Playwright run against a live Sleeper mock draft
+(publicly readable, already verified), asserting the clock tracks the real timer and
+picks appear. Anthony currently covers this manually.
+
+**Untested paths that only fail in production:** a mid-draft Sleeper outage longer
+than the poll interval; a pick payload that shrinks (the new refusal path is smoke-
+tested, but not against a real cache); the wake-lock on a real phone; behaviour when
+`last_picked` is stale but `status` is still `drafting`.
+
+**Not covered anywhere:** the pick engine's grade weights (typed, never
+backtested); optional-shard absence (silent); non-nav-linked page deploy coverage.
+
+### Monitoring
+
+Three silent failures in two weeks; the publication watch now covers the pages-data
+cron. **Still unwatched:** `draft-refresh.yml` fires twice ever (08-28, 09-08) and
+nothing alerts if a run fails - the 08-28 dry run is the only rehearsal and a
+failure would be discovered by looking. **Effort S, draft-critical-adjacent:** point
+the publication watch at the engine payload's `generated` date on the two refresh
+dates. Also: the Pages deploy itself has no watch - `pages.yml` could fail after a
+successful merge and the site would silently serve the previous build.
+
+### Statistical rigor
+
+**Where claims are still weaker than the governance requires:**
+- The pick grade (0-100, the headline number on the on-the-clock card) is a weighted
+  sum of typed constants. Never validated. Honest on its face, but it is the largest
+  standing exception to derive-don't-type. **Effort M:** backtest against the replay
+  harness that already exists, or relabel.
+- The M1 mock validation shows the board beats ADP chalk from three slots
+  (+51.7/+96.5/+71.0 starter points) against **one** opponent model - ADP chalk with
+  an observed K/DEF window. That is a weak adversary. A board that beats chalk has
+  not been shown to beat a competent human league.
+- `flex_allocation` is derived from a **single** season (2025 observed starters).
+  Correctly labelled `flex_source: observed_2025`, but one season of a 12-team
+  league is a small sample to set positional caps from, and `TE: 0` is why the VONA
+  tree can never propose a second TE.
+- The C4 ceiling weighting **cannot be validated against league history** -
+  `use_median_scoring` is 0 for every season through 2024, so the format it is
+  tuned for did not exist before 2025.
+
+### Complexity that has not earned itself
+
+- `out/draft_room.html` is ~2,400 lines of HTML, CSS and JS in one file, and it is
+  the most defect-dense file in the repo by a wide margin. Splitting it is correct
+  and **must not happen before the draft.**
+- The VONA guard emits **1,347 of the project's 2,089 non-browser checks** because it walks
+  every node of every path. That is one assertion repeated, not 1,347 kinds of
+  coverage: strip it and the real figure is 742. It inflates every coverage number
+  in this repo and should report "N paths checked" instead.
+- `verify_yahoo.py` is ungated, needs an uncommitted `raw/yahoo/` input, and cannot
+  run. It should be deleted or documented as historical.
+
+### Security and data handling
+
+Scanned clean: no API keys, tokens, or private keys in any tracked file; the Yahoo
+OAuth scripts read credentials from env and hardcode none; `MOCK_ID` is
+digit-stripped at the source and escaped at render; member-controlled Sleeper team
+names are escaped at every interpolation site checked; critical shard fetches
+`throw` with a visible banner.
+
+The one real finding was P2-U1, now fixed at HEAD with history retention deferred.
+The lesson generalises past this repo: **a `.gitignore` rule is a control with a
+scope, and duplicating a tree silently moves data outside that scope.** Anything
+excluded by path should be excluded by pattern across all roots - which the
+rewritten rules now do, verified with `git check-ignore`.
+
+
+---
+
+## MEASURED COVERAGE (2026-08-26, after the P2-1 fix)
+
+`run_gate` now reports `RAN n GUARDS` on every run, so coverage is a number
+instead of an assumption. Measured across all fifteen suites, with and without the
+HISTORY cache:
+
+| | with cache | on CI (no cache) |
+|---|---|---|
+| checks that ran | 2,089 | 2,084 |
+| checks skipped | 0 | **5** |
+
+All five skips are in `test_analysis.py`; every other suite runs identically with
+and without the cache. Numerically that is 0.24% of the battery - but the five are
+precisely the determinism reruns that prove the analysis artifacts reproduce from
+their inputs, so **the reproducibility guarantee is the one thing CI never
+exercises.** The workflow now sets `GATE_ALLOW_SKIP=1` on that single step with the
+loss named at the call site, rather than the skip being invisible.
+
+One caveat on the headline number: `test_vona.py` contributes 1,347 of the 2,089
+because it walks every node of every path asserting the same three invariants. The
+count of *distinct* checks is closer to 742. Coverage figures from this repo should
+say so.
