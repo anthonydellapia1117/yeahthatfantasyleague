@@ -829,58 +829,66 @@ stays visible. The board-beats-chalk deltas are guarded in tests: if a
 future engine refresh ever makes the board LOSE to chalk at any slot,
 the suite goes red and the regression surfaces before draft night.
 
-## N.1 The BULLISH-vs-ADP null test (carryover 3)
+## N.1 BULLISH vs ADP: UNDERPOWERED, not null (carryover 3, corrected)
 
 Artifact: `out/data/bullish_vs_adp.json` (builder `src/bullish_vs_adp.py`).
 Anthony's Phase A conclusion is why this test exists: the tag's candidate
 pool is gated on fantasy ADP, so by construction the engine can only
-re-rank players the market has already surfaced. That makes it a
-confirmation device unless it shows lift ADP does not already carry.
+re-rank players the market has already surfaced.
 
-**Result: NULL. The tag does not beat ADP alone.**
+**CORRECTION.** This entry originally read "NULL - the tag does not beat
+ADP." That was wrong, and the error mattered: a non-significant result
+is only evidence of absence when the design had the power to find an
+effect worth caring about. It did not. The verdict is now three-state
+and derived from a computed power analysis, not from the p-value alone.
 
-Method: 2026 outcomes do not exist, so the criteria are backtested rather
-than the tags. For each season 2017-2025 the opportunity + efficiency
-spine is rebuilt from the PRIOR season under league-exact scoring
-(per-game touches at or above the pool's p75 AND points per touch at or
-above the pool's p75, thresholds recomputed per season and position),
-then tagged and untagged hit rates are compared WITHIN each preseason ADP
-band - the only comparison that isolates the tag from the market.
+**Result: UNDERPOWERED. The tag cannot be distinguished from ADP at
+these sample sizes - which is not the same as showing it adds nothing.**
 
-| ADP band | tagged top-12 | untagged top-12 | difference (95% CI) | p |
-|---|---|---|---|---|
-| pos1-12 | 65.1% (n=43) | 51.8% (n=257) | +13.4pp [-2.1, +28.9] | 0.104 |
-| pos13-24 | 33.3% (n=3) | 23.5% (n=238) | +9.8pp [-43.8, +63.4] | 0.691 |
-| pos25-48 | no tagged players (n=0) | 340 untagged | no comparison possible | - |
+| ADP band | tagged top-12 | untagged top-12 | difference (95% CI) | p | needed at 80% power | verdict |
+|---|---|---|---|---|---|---|
+| pos1-12 | 65.1% (n=43) | 51.8% (n=257) | +13.4pp [-2.1, +28.9] | 0.104 | **21.6pp** | underpowered |
+| pos13-24 | 33.3% (n=3) | 23.5% (n=238) | +9.8pp [-43.8, +63.4] | 0.691 | **61.9pp** | underpowered |
+| pos25-48 | none tagged (n=0) | n=340 | no comparison possible | - | - | not identifiable |
 
-Every within-band interval crosses zero. The direction is positive in
-both testable bands, which is worth something, but at these sample sizes
-it is indistinguishable from noise.
+With 43 tagged players in the top band, the smallest true difference the
+design could reliably detect is 21.6 percentage points. The observed
++13.4pp is well below that. An effect of exactly the size observed would
+have failed to reach significance most of the time in this design, so
+"we did not detect it" carries almost no information about whether it is
+there. Both testable bands are in the same position, the second far
+worse (61.9pp needed on n=3).
 
-**The pooled number is a trap, and naming it is the point.** Pooled, the
-tagged players hit top-12 at 63.0% (29/46) versus 26.8% (224/835)
-untagged - a gap that looks decisive and is almost entirely ADP.
-**93.5% of all tags land in the pos1-12 ADP band**, and zero land beyond
-pos24. The pooled comparison is therefore measuring the market's ranking,
-not the tag's contribution. Any future presentation of this engine that
-quotes a pooled tagged-vs-untagged rate is quoting ADP.
+**What can still be said with confidence.** The pooled comparison is a
+trap: tagged 63.0% vs untagged 26.8% looks decisive, but **93.5% of all
+tags land in the pos1-12 ADP band** and none beyond pos24, so pooled it
+measures the market's ranking, not the tag. Any presentation quoting a
+pooled tagged-vs-untagged rate is quoting ADP. That part of the original
+entry stands, and it is the finding with real evidential weight.
 
-**What this means for the shipped engine.** The 2026 BULLISH artifact
-stays as built and stays DISPLAY-ONLY - it already renders beside the
-seven-state signal encoding and never replaces it, and nothing in the
-verdict path consumes it. This null is the evidence for keeping it that
-way: on the record we can reconstruct, the tag confirms ADP rather than
-beating it, exactly as the Phase A ADP-gate finding predicted.
+**Consequence for the shipped engine, unchanged.** The BULLISH artifact
+stays DISPLAY-ONLY - beside the seven-state signal encoding, never in a
+verdict path - and it is deliberately absent from the VONA tree. But the
+reason is now stated correctly: not "it was shown not to work", rather
+"it has not been shown to work, and the concentration means it mostly
+re-marks what the board already ranks highly." Guards enforce the
+three-state verdict, so an underpowered result can never be reported as
+a null again.
 
-**Stated limitation, honestly.** This backtests a PROXY, not the shipped
-matrix. Route participation, first-read share, inside-5 TD equity,
+**Stated limitation, unchanged.** This backtests the opportunity +
+efficiency spine common to every criterion set, not the full shipped
+matrix - route participation, first-read share, inside-5 TD equity,
 implied totals and current-team line quality have no clean per-season
-history in this cache, so what is testable is the opportunity+efficiency
-spine every criterion set shares. A lift here would have been evidence
-for the spine, not proof of the full matrix; this null is evidence
-against it, and it is the strongest evidence available before draft
-night. The honest summary: the reconciled BULLISH tag has not been shown
-to discover anything ADP alone does not.
+history in this cache.
+
+**What would settle it.** The design is sample-starved because only 46
+tag-seasons exist across 2017-2025 under the reconstructable spine.
+Extending the league-side history to 2013 (the LeagueLegacy work) does
+not help here - this test runs on nflverse and FFC, not league data. What
+would help is either a looser tag definition producing more tagged
+seasons per year, or accepting that a 13-point edge in the top ADP band
+is not resolvable with nine seasons of data and treating the tag as
+unproven indefinitely.
 
 ## V.1 The VONA draft-path tree (approved build)
 

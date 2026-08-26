@@ -43,9 +43,30 @@ sig = [b for b, v in a["within_band"].items()
        if v[key] and (v[key]["diff_ci95"][0] > 0 or v[key]["diff_ci95"][1] < 0)]
 ok(sig == a["significant_cells"],
    "the significant-cell list recomputes from the artifact's own intervals")
-ok((a["verdict"].startswith("NULL") and not sig) or
-   (not a["verdict"].startswith("NULL") and sig),
-   "the verdict matches whether any within-band interval excludes zero")
+# the verdict is THREE-state: a non-significant result in an underpowered
+# band is UNDERPOWERED, never NULL. Calling it null would claim evidence
+# of absence from a design that could not have found the effect.
+testable = {b: v for b, v in a["within_band"].items() if v["tagged"]["n"] > 0}
+under = [b for b, v in testable.items()
+         if not v["power"]["powered_for_observed_effect"]]
+ok(under == a["underpowered_bands"],
+   "the underpowered-band list recomputes from the artifact's own power block")
+if sig:
+    want = "BEATS ADP"
+elif under:
+    want = "UNDERPOWERED"
+else:
+    want = "NULL"
+ok(a["verdict"].startswith(want),
+   "the verdict follows significance AND power, not the p-value alone")
+ok(not (a["verdict"].startswith("NULL") and under),
+   "an underpowered band is never reported as a null")
+for band, v in testable.items():
+    pw = v["power"]
+    ok(pw["min_detectable_diff_80pct"] is not None,
+       f"{band}: minimum detectable effect computed")
+    ok("cannot be called absent" in pw["note"],
+       f"{band}: the power note states what a non-detection does not mean")
 
 # the ADP-confound disclosure is mandatory
 c = a["concentration"]

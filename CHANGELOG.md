@@ -1,5 +1,27 @@
 # Changelog
 
+## N1 CORRECTION: the BULLISH-vs-ADP result is UNDERPOWERED, not null (2026-08-26)
+
+The N.1 entry originally read "NULL - the tag does not beat ADP." That
+was wrong, and the distinction matters: a non-significant result is only
+evidence of absence when the design could have detected an effect worth
+caring about. A computed power analysis says this one could not. With 43
+tagged players in the top ADP band, the smallest true difference
+detectable at 80% power is 21.6 percentage points; the observed
+difference is +13.4pp. The second band needs 61.9pp on n=3. Both
+testable bands are underpowered, so the verdict is now three-state -
+BEATS ADP / UNDERPOWERED / NULL - derived from significance AND power
+rather than the p-value alone, and guards enforce that an underpowered
+band can never be reported as a null again.
+
+What survives unchanged is the finding that actually carries evidential
+weight: 93.5% of tags land in the top ADP band and none beyond pos24, so
+the pooled 63.0%-vs-26.8% gap measures the market, not the tag. The
+shipped consequence is unchanged too - the tag stays display-only and is
+absent from the VONA tree - but the stated reason is now correct: not
+"shown not to work", rather "not shown to work, and concentrated where
+the board already ranks highly." Findings N.1.
+
 ## V1: VONA draft-path tree, new PATHS tab (2026-08-26)
 
 `src/build_vona_tree.py` -> `out/data/vona_tree_2026.json`, rendered by

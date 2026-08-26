@@ -69,6 +69,12 @@
     ],
     "z": 0.768,
     "p_two_sided": 0.4423
+   },
+   "power": {
+    "min_detectable_diff_80pct": 0.216,
+    "observed_diff": 0.1337,
+    "powered_for_observed_effect": false,
+    "note": "the smallest true difference this band's sample sizes could detect at 80% power; an observed effect smaller than this cannot be called absent, only unproven"
    }
   },
   "pos13-24": {
@@ -127,6 +133,12 @@
     ],
     "z": 0.36,
     "p_two_sided": 0.719
+   },
+   "power": {
+    "min_detectable_diff_80pct": 0.619,
+    "observed_diff": 0.098,
+    "powered_for_observed_effect": false,
+    "note": "the smallest true difference this band's sample sizes could detect at 80% power; an observed effect smaller than this cannot be called absent, only unproven"
    }
   },
   "pos25-48": {
@@ -163,7 +175,13 @@
     }
    },
    "lift_hit12": null,
-   "lift_hit24": null
+   "lift_hit24": null,
+   "power": {
+    "min_detectable_diff_80pct": null,
+    "observed_diff": null,
+    "powered_for_observed_effect": false,
+    "note": "the smallest true difference this band's sample sizes could detect at 80% power; an observed effect smaller than this cannot be called absent, only unproven"
+   }
   }
  },
  "pooled": {
@@ -224,8 +242,12 @@
    "p_two_sided": 0.0001
   }
  },
- "verdict": "NULL - no within-band edge over ADP alone",
+ "verdict": "UNDERPOWERED - cannot distinguish from ADP at these sample sizes; not evidence of absence",
  "significant_cells": [],
+ "underpowered_bands": [
+  "pos1-12",
+  "pos13-24"
+ ],
  "concentration": {
   "tagged_by_band": {
    "pos1-12": 43,
