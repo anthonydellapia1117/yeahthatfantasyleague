@@ -1,5 +1,33 @@
 # Changelog
 
+## N1: the BULLISH-vs-ADP null test - the tag does not beat ADP (2026-08-26)
+
+`src/bullish_vs_adp.py` -> `out/data/bullish_vs_adp.json`, answering the
+third ask and the Phase A concern that produced it: the tag's candidate
+pool is ADP-gated, so it can only re-rank what the market already
+surfaced. 2026 outcomes do not exist, so the CRITERIA are backtested
+across 2017-2025 - the opportunity + efficiency spine rebuilt from each
+prior season under league-exact scoring, thresholds recomputed per season
+and position - and tagged vs untagged hit rates are compared WITHIN each
+preseason ADP band.
+
+RESULT: NULL. Within pos1-12, tagged players finish top-12 at 65.1%
+(n=43) vs 51.8% untagged (n=257), a +13.4pp difference whose 95% interval
+is [-2.1, +28.9] (p=0.10). Within pos13-24 the difference is +9.8pp with
+an interval spanning [-43.8, +63.4]. No tagged player lands beyond
+pos24, so that band admits no comparison. Every interval crosses zero.
+
+The pooled figure is a trap and the artifact says so: tagged 63.0% vs
+untagged 26.8% looks decisive but 93.5% of all tags land in the pos1-12
+ADP band, so the pooled gap measures the market's ranking, not the tag.
+Guards enforce that the verdict is derived from the intervals, that the
+concentration disclosure stays on the artifact, and that the shipped tag
+remains display-only - beside the signal encoding, never in a verdict
+path - which this null is the evidence for. Limitation stated: this
+backtests the opportunity+efficiency spine, not the full shipped matrix
+(route participation, first-read, inside-5 equity, implied totals and
+line quality have no clean per-season history). Findings N.1.
+
 ## UI: board tag filter, players tab rebuild (2026-08-26)
 
 BIG BOARD - the C5 BULLISH/WATCH chip already rendered inline on each row;
