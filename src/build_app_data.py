@@ -13,7 +13,7 @@ import csv, json, os
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-A = os.path.join(ROOT, "made-resources",
+A = os.path.join(ROOT, "LeagueLegacy-io",
                  "YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026")
 OUT = os.path.join(ROOT, "out")
 

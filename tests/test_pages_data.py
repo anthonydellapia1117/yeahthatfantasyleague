@@ -738,6 +738,85 @@ if all(os.path.exists(os.path.join(TEASER, f)) for f in _tfiles):
                                      "pages.yml")).read(),
        "pages workflow deploys the teaser")
 
+# ---------------------------------------------------------------------------
+# REPRODUCIBILITY. Every historical input any src/ module reads out of the
+# HISTORY cache must be a family src/fetch_history.py knows how to download.
+# fetch_history was committed so anyone could rebuild the cache and reproduce
+# the artifacts byte-for-byte; later work then added five dependencies it
+# never learned about (pbp, participation, ftn, advrush, games), with no URL
+# recorded anywhere in the repo, which left the C5 BULLISH inputs
+# unreproducible by anyone. The guarantee lapsed silently because nothing
+# tied the builders' inputs to the fetcher's coverage. This is that tie.
+import re as _re2
+_fetcher = open(os.path.join(ROOT, "src", "fetch_history.py")).read()
+# Match against what the fetcher actually WRITES, not its prose: the
+# docstring names every family, so a whole-file substring test passes even
+# when the download has been deleted (verified - it did).
+_fetch_dests = set()
+for _m in _re2.finditer(r'os\.path\.join\(\s*(?:HISTORY|"/tmp/fresh_hist")\s*,\s*f?"([^"]+)"',
+                        _fetcher):
+    _fetch_dests.add(_m.group(1))
+for _m in _re2.finditer(r'^\s*\("([^"]+\.(?:parquet|csv|json))",', _fetcher, _re2.M):
+    _fetch_dests.add(_m.group(1))
+
+
+def _fam_key(fn):
+    """spw_{y}.csv and spw_2025.csv both -> spw.csv ; pbp_2025.parquet ->
+    pbp.parquet. Collapses the year, whether it is a literal or an
+    f-string placeholder, plus the separator it leaves behind."""
+    bare = _re2.sub(r"\{[^}]*\}", "", fn)
+    bare = _re2.sub(r"_?\d{4}", "", bare)
+    return _re2.sub(r"_+(?=\.)", "", bare)
+
+
+_known = {_fam_key(d) for d in _fetch_dests}
+_srcdir = os.path.join(ROOT, "src")
+_wanted = set()
+for _mod in sorted(os.listdir(_srcdir)):
+    if not _mod.endswith(".py") or _mod == "fetch_history.py":
+        continue
+    _txt = open(os.path.join(_srcdir, _mod)).read()
+    for _m in _re2.finditer(r'(?:HISTORY|base\.HISTORY)\s*,\s*f?"([^"]+)"', _txt):
+        _wanted.add((_mod, _m.group(1)))
+_unknown = [f"{m} reads {fn}" for m, fn in sorted(_wanted)
+            if _fam_key(fn) not in _known]
+ok(not _unknown,
+   "every HISTORY input a builder reads is a family fetch_history can download",
+   "; ".join(_unknown[:4]))
+ok(len(_wanted) >= 8 and len(_known) >= 8,
+   "the reproducibility scan found both the builders' inputs and the fetcher's",
+   f"builders want {len(_wanted)} refs, fetcher provides {len(_known)} families")
+
+# ---------------------------------------------------------------------------
+# ENGINE PROVENANCE. Any artifact derived from the engine payload must record
+# which engine it was built from, and that record must MATCH the engine that
+# ships beside it. The draft-morning workflow rebuilds engine_2026.json (a
+# previous refresh moved 259 ADP values) and every derived artifact has to be
+# rebuilt with it. The failure this closes is a nav-linked decision surface -
+# the PATHS tab - silently rendering a tree computed against yesterday's board
+# on draft night. test_mock.py asserted the key EXISTED; nothing asserted it
+# AGREED, and paths.html cannot show the mismatch either: it prints the tree's
+# own recorded engine date and never fetches the engine to compare.
+_eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+_derived = 0
+for _f in sorted(os.listdir(D)):
+    if not _f.endswith(".json"):
+        continue
+    try:
+        _a = json.load(open(os.path.join(D, _f)))
+    except (ValueError, OSError):
+        continue
+    _p = _a.get("provenance") if isinstance(_a, dict) else None
+    if not isinstance(_p, dict) or "engine_generated" not in _p:
+        continue
+    _derived += 1
+    ok(_p["engine_generated"] == _eng["generated"],
+       f"{_f}: built from the engine that ships with it",
+       f"artifact says {_p['engine_generated']}, engine says {_eng['generated']}")
+ok(_derived >= 2,
+   "the engine-derived artifacts declare which engine built them",
+   f"found {_derived}")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

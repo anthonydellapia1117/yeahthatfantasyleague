@@ -27,8 +27,18 @@ raw/**/*.zip
 # Scratch
 out/**/*.tmp
 
-# Contains the league owner email address - excluded from the public repo
-made-resources/YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026/16_franchise/franchise_dashboard.json
+# Member PII and finances are NOT in this repo. The archive was pruned to the
+# files the pipeline reads (docs/LEAGUELEGACY_COVERAGE_AUDIT.md addendum); the
+# member, finance, achievement and franchise-dashboard files are deleted, not
+# ignored. This rule previously named only the made-resources copy and was
+# defeated by the duplicate LeagueLegacy-io root - which is why the exposure
+# happened. There is now ONE archive root. Do not re-add the full export.
+LeagueLegacy-io/**/16_franchise/
+LeagueLegacy-io/**/08_finances/
+LeagueLegacy-io/**/14_members/
+LeagueLegacy-io/**/members.csv
+LeagueLegacy-io/**/finances*
+LeagueLegacy-io/**/achievements*
 
 # secret literal list for the transcript redactor - never commit
 .redact-literals

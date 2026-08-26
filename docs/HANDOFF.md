@@ -1,8 +1,66 @@
 # YeahThatFantasyLeague - Full Handoff
 
-**Written 2026-08-11 for a successor Claude Code session. Self-contained: read this plus `out/`, no chat history needed.**
+**Written 2026-08-11 for a successor session. The research record below is
+self-contained: read this plus `out/`, no chat history needed.**
 
-Verifier: Anthony DellaPia. Draft is **2026-09-08**, 28 days out.
+Verifier: Anthony DellaPia. Draft is **2026-09-08**.
+
+---
+
+## LIVE BATON - update this block, last writer owns it
+
+**THE CONVENTION: whoever writes last updates this block, in the same commit as
+the work.** Not afterwards, not "when things settle". If this block disagrees with
+`git log`, the block is wrong and the next agent has been misled.
+
+| | |
+|---|---|
+| **Last touched** | 2026-08-26 by Claude (this session, ending - Anthony's Fable 5 budget is exhausted until 08-31) |
+| **Next agent** | **Codex.** Read `docs/AGENT_HANDOFF_SPEC.md` FIRST, sections 1 and 2 before touching anything. |
+| **Branch** | `claude/chat-migration-desktop-ruannr`, based on `main` |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - byte-verified against `main` as of `49e3ea9` |
+| **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. A Routine checks every 2h and self-retires on the draw. |
+| **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
+
+### What was done in the last session
+
+1. **P0** - the pick clock (hardcoded 120s against a real 60s `pick_timer`, anchored
+   to poll-detection). Server-anchored or honestly absent. Merged, deployed.
+2. **P1 A/B/C/F** - VONA one-frame conditioning (28% of nodes had negative VONA),
+   VONA starter feasibility via the shared `forward_policy` layer, room response
+   validity vs freshness, and the BULLISH-vs-ADP verdict changed from an unsound
+   automated rule to reviewed reported text. Merged (#51), deployed.
+3. **P2** - pages-data cron verified dead for 4 days (8 of 14 scheduled runs failed);
+   root-caused to a crosswalk guard and a missing diacritic fold; fixed, and the
+   alert moved to the published artifact (`src/check_publication.py`).
+4. **Self-audit** - `docs/SELF_AUDIT_2026-08-26.md`. 39 defects classified; 4 caught
+   pre-commit (~10%); five recurring classes; a predicted-defect hunt that found
+   the items below.
+5. **Archive prune** - the repo is public and member finance/profile data was
+   tracked under a duplicate root that defeated the `.gitignore` rule. 165 files
+   deleted, roots collapsed to one, nothing functional changed (verified
+   byte-for-byte).
+6. **Draft-critical fixes** - geometry preflight; the VONA tree now rebuilds with
+   the engine it derives from; skipped guards now fail the gate.
+7. **`fetch_history.py` extended** from four data families to nine. The five it did
+   not know about had no URL recorded anywhere, which left the C5 BULLISH inputs
+   unreproducible by anyone. All five URLs verified byte-identical to the cache.
+
+### In flight / nothing blocked
+
+Nothing is half-finished. Every change above is committed, gated, and either merged
+or on the branch with a green battery.
+
+### The three things the next agent most needs to know
+
+1. **`docs/AGENT_HANDOFF_SPEC.md` §1** - the three failure modes that produced this
+   project's live defects. More useful than the module map.
+2. **The live browser-to-Sleeper path has never been tested.** 326 smoke scenarios,
+   all hermetic. It is the draft-night path. Anthony tests it manually.
+3. **PII is out of HEAD but still in git history.** Retention is Anthony's call,
+   deferred to after the draft. Do not act on it unilaterally.
+
+---
 
 ---
 

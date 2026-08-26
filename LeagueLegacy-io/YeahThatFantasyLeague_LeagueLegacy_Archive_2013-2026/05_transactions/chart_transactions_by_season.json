@@ -1,3 +1,0 @@
-[
- "{\"labels\":[\"2014\",\"2015\",\"2016\",\"2017\",\"2018\",\"2019\",\"2020\",\"2021\",\"2022\",\"2023\",\"2024\",\"2025\"],\"datasets\":[{\"label\":\"# Total Transactions\",\"data\":[238,246,264,337,303,310,330,364,371,368,391,292],\"type\":\"line\",\"borderColor\":\"#3b82f6\",\"backgroundColor\":\"#60a5fa\",\"fill\":true,\"yAxisID\":\"y-axis-1\"},{\"label\":\"# Trades\",\"data\":[10,5,16,13,15,9,6,4,9,11,14,12],\"type\":\"bar\",\"borderColor\":\"#f59e0b\",\"backgroundColor\":\"#f59e0b\",\"fill\":true,\"yAxisID\":\"y-axis-2\"}]}"
-]

@@ -14,6 +14,14 @@ Prints exactly one status line for the alert Routine to act on:
   DRAFT ORDER DRAWN - Anthony has slot <N>
   DRAFT ORDER DRAWN - Anthony's slot not resolvable (see payload)
 
+It also runs the geometry preflight (src/preflight_draft.py) on every tick,
+because this script already polls the draft every two hours and the preflight
+needs no extra request budget to be worth having. The preflight is SILENT ON
+SUCCESS so the Routine's one-line contract above is unchanged; a FAILURE
+prints an extra PREFLIGHT FAIL line BEFORE the status line and sets a nonzero
+exit, which is a real alert - it means the draft format or geometry moved out
+from under the app.
+
 The room itself already collapses to the detected seat live (the
 order-hypothesis card retires, renderPre follows the real slot), so the
 only job here is detection for the out-of-app alert.
@@ -22,12 +30,21 @@ Run: python3 src/check_draft_order.py
 """
 import json
 import os
+import sys
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from preflight_draft import check as preflight_check
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def main():
+    # geometry preflight first, and loud only when it fails
+    pre_ok, pre_msg = preflight_check()
+    if not pre_ok:
+        print(pre_msg)
+
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
     lg = eng["league"]
     url = f"https://api.sleeper.app/v1/draft/{lg['draft_id']}"
@@ -46,6 +63,8 @@ def main():
 
     if not drawn:
         print(f"DRAFT ORDER UNDRAWN (status {draft.get('status')})")
+        if not pre_ok:
+            sys.exit(1)
         return
 
     slot = order.get(str(lg["anthony_user_id"]))
@@ -61,6 +80,8 @@ def main():
               "(see payload)")
         print(json.dumps({"draft_order": order,
                           "slot_to_roster_id": slot_map}))
+    if not pre_ok:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -6,6 +6,11 @@ The gate must catch every shape of the exit-code-masking class:
   crasher   exits nonzero mid-run                       -> gate nonzero
   mute      exits 0 with no success sentinel            -> gate nonzero
   honest    exits 0 and prints the sentinel             -> gate zero
+  skipper   exits 0, prints the sentinel, but a guard SKIPPED itself
+            -> gate nonzero by default, zero under GATE_ALLOW_SKIP=1.
+            This is the class one level up: run_gate originally proved
+            the envelope was healthy and could not see whether the
+            guards inside had run at all.
   masked    the historical shape itself: the crasher run through
             `sh -c '...; suite; echo done'` and `suite | tail` both
             return 0 raw (proving the mask is real), while the gate
@@ -38,6 +43,9 @@ LIAR = fixture('print("FAIL  something broke")\nprint("1 FAILURES")\n')
 CRASHER = fixture('print("PASS  one thing")\nraise SystemExit(3)\n')
 MUTE = fixture('print("did some work, said nothing conclusive")\n')
 HONEST = fixture('print("PASS  the only check")\nprint("ALL PASS")\n')
+SKIPPER = fixture('print("PASS  one real check")\n'
+                  'print("SKIP  the determinism rerun - cache absent")\n'
+                  'print("ALL PASS")\n')
 
 
 def gate(*cmd, env=None):
@@ -84,7 +92,24 @@ gated = subprocess.run(
 ok("GATE FAIL" in gated.stdout,
    "even piped, the gate's loud failure line survives in output")
 
-for p in (LIAR, CRASHER, MUTE, HONEST):
+# the SKIP rule: a guard that declines to run is not a guard that passed.
+# This is the masking class one level up - run_gate originally proved only
+# that the ENVELOPE was healthy (exit 0 plus sentinel) and could not see
+# whether the guards inside had run at all.
+r = gate(sys.executable, SKIPPER)
+ok(r.returncode != 0, "skipper: a SKIP line fails the gate despite exit 0 + sentinel")
+ok("GATE FAIL" in r.stdout and "SKIPPED" in r.stdout,
+   "skipper: the gate names the skip as the reason")
+r = gate(sys.executable, SKIPPER, env={"GATE_ALLOW_SKIP": "1"})
+ok(r.returncode == 0, "skipper: GATE_ALLOW_SKIP=1 permits an expected skip")
+ok("GATE NOTE" in r.stdout,
+   "skipper: an allowed skip is still reported, never silent")
+# and the coverage count is emitted on every healthy run
+r = gate(sys.executable, HONEST)
+ok("RAN 1 GUARDS" in r.stdout,
+   "honest: the gate reports how many guards actually ran")
+
+for p in (LIAR, CRASHER, MUTE, HONEST, SKIPPER):
     os.unlink(p)
 
 if FAILS:

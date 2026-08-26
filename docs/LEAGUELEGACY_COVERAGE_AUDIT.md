@@ -98,3 +98,74 @@ LeagueLegacy is a derivative import of Yahoo. Where it could disagree
 with another repo source on a draft pick, `src/ingest.py` already
 cross-validates the 2025 archive draft against Sleeper pick-for-pick and
 reports conflicts rather than preferring either silently.
+
+---
+
+## Addendum 2026-08-26: the archive was pruned, and this audit was incomplete
+
+The archive has been pruned to the files the pipeline actually reads, and the two
+roots collapsed to one. Reason: the duplicate root defeated the `.gitignore` rule
+protecting member PII on a public repository (see `docs/SELF_AUDIT_2026-08-26.md`,
+P2-U1). Deleting the unread files removes the exposure from HEAD at zero functional
+cost and retires the dual-root hazard in the same change.
+
+### The consumed set was established empirically, not by grep
+
+The table above was built by reading the source. That method missed files, because
+two scripts load through indirection (`ingest.load_archive(rel)`,
+`phase2_value.load(rel)`) rather than naming paths at the call site. The prune was
+therefore driven by a **runtime audit hook** (`sys.addaudithook` on the `open`
+event) around the full chain - `ingest`, `phase2_value`, `phase3_lineup`,
+`phase3_remainder`, `phase3e_startsit`, `build_app_data`, `draft_vs_acquired`.
+
+**Two consumed files this audit had missed**, both read by `draft_vs_acquired.py`,
+which is gated in the draft-morning workflow:
+
+| Missed file | Read by |
+|---|---|
+| `00_league/seasons.csv` | `draft_vs_acquired` (era flags) |
+| `leaguelegacy_.../champions_by_season.csv` | `draft_vs_acquired` (champion list) |
+
+Had the prune been driven by the original table, the draft-morning gate would have
+broken. Recording this because the failure mode is the point: **a coverage table
+written from source reading is a hypothesis; only execution is evidence.**
+
+### What is kept (11 files, one root)
+
+`LeagueLegacy-io/` is now the single root. `made-resources/` is deleted and the four
+scripts that read it (`ingest`, `phase2_value`, `build_app_data`, `verify_yahoo`)
+are repointed. Safe because every file consumed from both roots was verified
+**byte-identical** across them before the change.
+
+| Kept | Consumed by |
+|---|---|
+| `00_league/seasons.csv` | draft_vs_acquired |
+| `01_history/season_results.csv` | phase2_value, phase3_remainder |
+| `02_gamecenter/matchup_rosters.csv` | phase2_value, phase3_lineup, phase3e_startsit, build_app_data |
+| `03_playoffs/championship_games.csv` | ingest |
+| `04_draft/draft_results.csv` | ingest, phase2_value |
+| `05_transactions/transactions.csv` | phase3_remainder |
+| `06_players/players_all_time.csv` | phase3e_startsit |
+| `full_export/champions_by_season.csv` | draft_vs_acquired |
+| `full_export/matchups_all.csv` | verify_yahoo |
+| `README.md`, `_manifest.csv` | nothing - kept deliberately as the archive's own provenance record |
+
+Two deliberate keeps beyond "what executes", both stated rather than silent:
+`matchups_all.csv` (verify_yahoo is ungated and needs a `raw/yahoo/` input that is
+not committed, so it could not be traced; the file is small and non-PII) and the
+`README.md` / `_manifest.csv` pair (provenance for whoever inherits this).
+
+### What this costs
+
+**165 files deleted, no functional change.** Verification: the full chain was re-run
+after the prune and every output compared byte-for-byte against a pre-prune
+snapshot. 69 of 74 files byte-identical; the 5 that differed did so only in run
+timestamps plus three `points_left_per_week` cells differing by 0.01 - the
+round-half jitter across Python builds already documented in
+`docs/AUDIT_3B_2026-08-12.md`. Every gate re-ran green afterwards.
+
+**`transaction_items.csv` (4.1M) is among the deleted.** It is the one unread file
+with stated analytical value - the FAAB-bid detail that the FAAB-discipline question
+needs, and which this audit recommended reading. It remains in git history. If that
+work is wanted, restore it with
+`git checkout <pre-prune-sha> -- '<path>'` rather than re-exporting the archive.
