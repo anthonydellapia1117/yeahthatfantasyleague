@@ -885,7 +885,7 @@ const ok = (cond, name, detail) => {
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(800);
       ok(await pg.locator(".ynav").count() === 1, `nav renders on ${file}`);
-      ok(await pg.locator(".ynav-items a").count() === 6, `nav carries six items on ${file}`);
+      ok(await pg.locator(".ynav-items a").count() === 7, `nav carries seven items on ${file}`);
       const on = pg.locator(".ynav-items a.on");
       ok(await on.count() === 1 && (await on.textContent()).trim() === label
          && await on.getAttribute("aria-current") === "page",
@@ -1588,6 +1588,64 @@ const ok = (cond, name, detail) => {
        "back-to-back turn picks 24 and 25 project two different players",
        r2 && r3 ? r2.name + " / " + r3.name : "cards missing");
     await page.close();
+  }
+
+  // ---- scenario 21: the PATHS tab (VONA tree)
+  {
+    const http = require("http");
+    const fs = require("fs");
+    const srv = http.createServer((req, res) => {
+      const url = req.url.split("?")[0];
+      // the browser probes /favicon.ico on its own; answering it keeps the
+      // zero-console-error assertion about the PAGE, not about Chromium
+      if (url === "/favicon.ico"){ res.writeHead(204); res.end(); return; }
+      const p = path.join(process.cwd(), decodeURIComponent(url));
+      fs.readFile(p, (e, b) => {
+        if (e){ res.writeHead(404); res.end("nf"); return; }
+        res.writeHead(200, { "content-type": p.endsWith(".json")
+          ? "application/json" : p.endsWith(".js")
+          ? "text/javascript" : "text/html" });
+        res.end(b);
+      });
+    }).listen(0);
+    await new Promise(r => srv.on("listening", r));
+    const base = "http://127.0.0.1:" + srv.address().port;
+    const pg = await browser.newPage();
+    const perr = [];
+    pg.on("console", m => { if (m.type() === "error") perr.push(m.text()); });
+    await pg.goto(base + "/out/paths.html");
+    await pg.waitForTimeout(900);
+    const body = await pg.textContent("#content");
+    ok(/Slot 1 - picks/.test(body), "paths: renders a slot tree");
+    ok(await pg.locator(".tnode").count() > 3, "paths: the tree has nodes");
+    ok(!/BULLISH|WATCH/.test(body),
+       "paths: no BULLISH marker anywhere on the decision surface");
+    ok(/real decision points/.test(body) && /pruned as dominated/.test(body),
+       "paths: fork and prune accounting is on screen, never silent");
+    ok(/undrawn/.test(await pg.textContent("#hdr")),
+       "paths: slot-conditional, states the order is undrawn");
+    // switching slots re-renders a different tree
+    const t1 = await pg.textContent("#content");
+    await pg.click('#slots button[data-slot="8"]');
+    await pg.waitForTimeout(300);
+    const t8 = await pg.textContent("#content");
+    ok(/Slot 8 - picks/.test(t8) && t1 !== t8,
+       "paths: the slot picker re-renders the tree");
+    ok(/Correlation caveat/.test(t8) && /UNDERSTATES VONA/.test(t8),
+       "paths: the independence caveat and its direction are shown");
+    ok(/Stated deviation/.test(t8),
+       "paths: the spec deviations are disclosed on the page");
+    // every rendered node clears the survival floor the page states
+    const floorOk = await pg.evaluate(() => {
+      const nums = [...document.querySelectorAll(".tnums")]
+        .map(e => e.textContent.match(/there (\d+)%/))
+        .filter(Boolean).map(m => Number(m[1]));
+      return nums.length > 0 && nums.every(n => n >= 40);
+    });
+    ok(floorOk, "paths: every rendered node is at least 40% likely to be there");
+    ok(perr.length === 0, "paths: zero console errors", perr[0] || "");
+    await pg.close();
+    srv.close();
   }
 
   await browser.close();

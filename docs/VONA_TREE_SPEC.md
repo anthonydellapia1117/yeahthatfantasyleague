@@ -1,10 +1,7 @@
-# Draft Path Tree (VONA) - SPEC CHECKPOINT, not yet built
+# Draft Path Tree (VONA) - APPROVED, decisions resolved
 
-Status: **awaiting approval.** Nothing in this document is implemented.
-Per the build order, the tree is the largest item and its spec is
-checkpointed before any code. Everything below is either derived from
-artifacts this repo already ships or flagged as an open decision for
-Anthony.
+Status: **approved to build.** The three open decisions were resolved by
+Anthony and are recorded in section 7; the body below reflects them.
 
 ## 1. The objective function
 
@@ -45,14 +42,21 @@ do not" logic expressed as a number.
 - **Branch only at real decision points:** branch when two or more
   positions' VONA values sit within `BRANCH_EPS` of each other. A fake
   fork is worse than none.
-- **Parallel roots:** for middle and late first-round slots, render the
-  top-2 first-round constructions side by side (whatever they compute to
-  be - typically RB-first vs WR-first, but the tree does not assume it)
-  so the constructions compare directly.
-- **Depth:** rounds 1 through 7. Beyond that, survival dispersion and
-  projection error swamp the VONA signal; the page states the cutoff and
-  the reason rather than rendering noise. (Open decision D1 below: 7 or
-  8.)
+- **Parallel roots:** NOT gated on slot number. A slot cutoff would
+  hardcode an assumption the data should decide. The tree branches
+  wherever the top two options fall within the VONA threshold, at ANY
+  slot: slot 1 renders single-root naturally because one option
+  dominates, and slot 4 branches if the last elite RB and the first
+  elite WR are genuinely close. The artifact reports the threshold used
+  and the branch count produced per slot, so the shape is observable
+  rather than assumed.
+- **Depth:** rounds 1 through 7, on a STRUCTURAL boundary rather than a
+  noise argument. The starting lineup is exactly seven skill slots -
+  QB, RB, RB, WR, WR, TE, FLEX - so depth 7 covers starting-lineup
+  construction completely and stops where the lineup is full. K, DEF and
+  bench depth are separate problems the board already handles; extending
+  the tree past the lineup would add rounds whose decisions are not what
+  the tree is for.
 - **Pruning:** cap total rendered nodes at `MAX_NODES`; prune dominated
   branches (a branch whose best leaf VONA is worse than another branch's
   worst leaf by more than `BRANCH_EPS`) and print the pruned count -
@@ -66,6 +70,12 @@ Each node shows, all computed:
 - `P(available at this pick)` from the frozen survival model - the
   "realistic yet optimistic" requirement. A node whose survival is below
   `SURV_FLOOR` is not rendered at all.
+- NO BULLISH chip, not even display-only. The tree is a decision
+  surface, and a visual marker pulls the eye regardless of its label; at
+  93.5% top-band concentration (finding N.1) it would only re-mark
+  players the board already ranks highly. All nudge, no information. The
+  tag stays on the Players tab, where it is informational rather than
+  prescriptive.
 - VONA at that node: what taking this position now saves versus waiting
   for the next turn, in projected points
 - Tier state: which tier the player is in and how many of that tier
@@ -112,16 +122,18 @@ by hand.
 4. Findings-page entry with whatever the tree reveals about where the
    real decision points cluster.
 
-## 7. Open decisions for Anthony
+## 7. Decisions, resolved
 
-- **D1 - depth:** 7 rounds or 8? 7 is the conservative read of where
-  survival dispersion overwhelms the signal; 8 covers one more turn for
-  late slots. I recommend 7, with the cutoff stated on the page.
-- **D2 - parallel roots scope:** "middle and late" slots was the ask.
-  I propose parallel roots for slots 5-12 and a single root for 1-4
-  (where round 1 is usually forced), unless you want them everywhere.
-- **D3 - does the tree read the BULLISH tag?** Per the N.1 null test I
-  propose NO - it stays display-only and out of any planning
-  computation. Say the word if you want it shown on nodes as a chip
-  (display-only, beside the numbers), which would be consistent with
-  the room and board.
+- **D1 - depth: 7**, on a structural rationale rather than the
+  noise argument originally proposed. The starting lineup is exactly
+  seven skill slots (QB, RB, RB, WR, WR, TE, FLEX), so depth 7 covers
+  lineup construction completely and stops at a principled boundary
+  instead of an arbitrary one.
+- **D2 - branching: data-driven at every slot**, neither of the two
+  options proposed. No slot-number gating; the threshold decides, and
+  the artifact reports the threshold and the per-slot branch count so
+  the resulting shape can be checked against the assumption it replaced.
+- **D3 - BULLISH on nodes: no chip at all**, not even display-only. A
+  marker on a decision surface nudges regardless of its label, and the
+  N.1 concentration means it would re-mark only what the board already
+  ranks highly.

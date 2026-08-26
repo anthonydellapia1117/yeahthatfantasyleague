@@ -1,5 +1,36 @@
 # Changelog
 
+## V1: VONA draft-path tree, new PATHS tab (2026-08-26)
+
+`src/build_vona_tree.py` -> `out/data/vona_tree_2026.json`, rendered by
+`out/paths.html`. VONA = E[best available now] - E[best available at my
+next pick], survival-weighted over the whole positional pool, using the
+frozen calibrated survival functions called from the engine.
+
+Approved decisions implemented: depth 7 on the structural boundary (the
+starting lineup is exactly seven skill slots), branching data-driven at
+EVERY slot with no slot-number gate, and no BULLISH marker on any node.
+The data vindicated the branching call - nine slots fork, three (5, 9,
+10) are forced chains, and slot 4 forks on elite RB vs elite TE. The
+rejected slot-gating rule would have forced slot 5 to branch where there
+is no decision and denied slots 1-4 the forks that exist.
+
+Two defects surfaced and fixed during the build. The first prune rule
+summed raw VOR along a path - the objective M1 already disproved, which
+prices duplicates at starter value - so pruning now runs on lineup value
+from the shared src/forward_policy.py. Strict domination then collapsed
+nearly every fork, so branches beaten by less than a derived narrow band
+(7.8 lineup points, p25 of the 41 margins this board produces) are kept
+and flagged COIN FLIP instead of silently decided.
+
+The independence assumption is measured, not asserted: against the
+league's own 2,339 picks, same-position clustering runs RB 1.53x, QB
+1.24x, TE 1.14x, WR 1.12x over binomial. Clustering means the tree
+UNDERSTATES VONA and is biased toward WAIT, most strongly at RB - stated
+on the page and the artifact. Totals across twelve slots: 39 rendered
+forks, 29 dominated branches pruned, 15 coin flips kept, all reported
+per slot rather than silently. Findings V.1.
+
 ## N1: the BULLISH-vs-ADP null test - the tag does not beat ADP (2026-08-26)
 
 `src/bullish_vs_adp.py` -> `out/data/bullish_vs_adp.json`, answering the

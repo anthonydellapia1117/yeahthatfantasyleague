@@ -881,3 +881,63 @@ for the spine, not proof of the full matrix; this null is evidence
 against it, and it is the strongest evidence available before draft
 night. The honest summary: the reconciled BULLISH tag has not been shown
 to discover anything ADP alone does not.
+
+## V.1 The VONA draft-path tree (approved build)
+
+Artifact: `out/data/vona_tree_2026.json` (builder `src/build_vona_tree.py`,
+page `out/paths.html`, guards `tests/test_vona.py`). VONA at a node is
+E[best available at this pick] minus E[best available at my next pick],
+both survival-weighted over the whole positional pool using the frozen
+calibrated survival functions, called from the engine rather than
+reimplemented.
+
+**What the branch rule found, and why the slot-gating alternative would
+have been wrong.** Branching is data-driven at every slot with no
+slot-number gate. Across the twelve slots the tree renders 39 real
+decision points, prunes 29 dominated branches, and keeps 15 as flagged
+coin flips. Nine slots fork; three (5, 9, 10) are fully forced chains.
+Slot 4 forks at pick 21 between an elite RB and an elite TE - Anthony's
+own hypothetical - and slot 8 is the most open board on the sheet with
+22 forks. The originally proposed rule (parallel roots for slots 5-12,
+single root for 1-4) would have been wrong in both directions: it would
+have forced slot 5 to branch where the data says it has no decision at
+all, and denied slots 1-4 the forks the data actually finds.
+
+**Two defects the build surfaced and fixed:**
+1. The first prune rule summed raw VOR along a path. That is the exact
+   objective the M1 mock validation already disproved - it prices a
+   duplicate at starter value, so it would have rated a position-stacked
+   path above one that fills the lineup. The prune now runs on lineup
+   value from `src/forward_policy.py`, the shared layer.
+2. Strict domination on lineup value collapsed almost every fork (3
+   across all twelve slots), which is technically correct and
+   practically useless: a branch beaten by half a point is not a
+   decision the board has made for you. Branches dominated by less than
+   a derived narrow band (7.8 lineup points, the p25 of the 41
+   domination margins this board produces) are kept and flagged COIN
+   FLIP rather than silently decided.
+
+**The independence caveat, measured rather than asserted.** The frozen
+survival model treats players independently, but drafts run in
+positional bursts. Measured against this league's own 2,339 picks -
+observed variance of same-position counts per 12-pick window versus the
+binomial variance implied by the same mean - every position clusters:
+RB 1.53x, QB 1.24x, TE 1.14x, WR 1.12x. Positive clustering means the
+independent model understates the chance a whole tier vanishes between
+turns, which overstates E[best available next] and therefore UNDERSTATES
+VONA. **The tree is biased toward WAIT, not toward reaching**, and most
+strongly at RB. A marginal WAIT on an RB should be read as closer to a
+coin flip than the number shows.
+
+**Stated deviations from the spec text**, both on the artifact rather
+than made silently: the expectation runs over the whole positional pool
+rather than truncating at the survival floor (truncating would bias
+E[best available] downward precisely where a high-VOR player is
+unlikely-but-possible; the floor is a rendering rule, and no node is
+drawn below 40%), and survival is independent as described above.
+
+Per the approved decisions: depth 7 on the structural boundary (the
+starting lineup is exactly seven skill slots), and no BULLISH marker on
+any node - a marker on a decision surface nudges regardless of its
+label, and finding N.1 showed the tag re-marks what the board already
+ranks highly.

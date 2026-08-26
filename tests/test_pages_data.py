@@ -428,13 +428,14 @@ ok(os.path.exists(navp), "nav.js exists (single source of truth)")
 if os.path.exists(navp):
     navsrc = open(navp).read()
     nav_items = re.findall(r'\["(\w+)",\s*"[^"]+",\s*"([^"]+)"\]', navsrc)
-    ok(len(nav_items) == 6, "nav defines exactly six items", f"{len(nav_items)}")
+    ok(len(nav_items) == 7, "nav defines exactly seven items", f"{len(nav_items)}")
     missing = [href for _, href in nav_items
                if not os.path.exists(os.path.join(ROOT, "out", href))]
     ok(not missing, "every nav link target resolves to a real file",
        "; ".join(missing))
     PAGES = {"draft_room.html": "draft", "big_board.html": "board",
-             "players.html": "players", "teams.html": "teams",
+             "players.html": "players", "paths.html": "paths",
+             "teams.html": "teams",
              "ff-hub.html": "findings", "home.html": "hub"}
     seen_keys = []
     for fname, want in PAGES.items():
@@ -447,7 +448,7 @@ if os.path.exists(navp):
         ok('<nav class="small">' not in psrc,
            f"{fname} carries no second navigation system")
     ok(sorted(seen_keys) == sorted(k for k, _ in nav_items),
-       "each active key is used exactly once across the five pages")
+       "each active key is used exactly once across the seven pages")
     dr = open(os.path.join(ROOT, "out", "draft_room.html")).read()
     tag_at = dr.index('src="nav.js"')
     ok(tag_at < dr.index('<script id="engine-data"'),

@@ -12,6 +12,7 @@
     ["draft",    "DRAFT ROOM", "draft_room.html"],
     ["board",    "BIG BOARD",  "big_board.html"],
     ["players",  "PLAYERS",    "players.html"],
+    ["paths",    "PATHS",      "paths.html"],
     ["teams",    "TEAMS",      "teams.html"],
     ["findings", "FINDINGS",   "ff-hub.html"],
     ["hub",      "HUB",        "home.html"]
