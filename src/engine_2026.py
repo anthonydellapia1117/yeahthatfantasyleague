@@ -209,15 +209,23 @@ def load_opponents():
 
 
 def live_rosters(priors, handle_to_fr):
-    users = {u["user_id"]: u.get("display_name", "?")
+    users = {u["user_id"]: u
              for u in db.get(f"https://api.sleeper.app/v1/league/{LEAGUE}/users")}
     rosters = db.get(f"https://api.sleeper.app/v1/league/{LEAGUE}/rosters")
     out = []
     for r in sorted(rosters, key=lambda x: x["roster_id"]):
-        handle = users.get(r.get("owner_id"), "?")
+        u = users.get(r.get("owner_id")) or {}
+        handle = u.get("display_name", "?")
+        # The Sleeper team name is what Anthony sees on the draft board
+        # ("Taylor Made" for antdell); most managers leave it unset. It is
+        # DISPLAY ONLY and deliberately separate from `franchise`, which is
+        # the archive member name that joins 13 seasons of history and must
+        # never move.
+        team = ((u.get("metadata") or {}).get("team_name") or "").strip() or None
         fr = handle_to_fr.get(handle)
         row = priors.get(fr) if fr else None
         out.append({"roster_id": r["roster_id"], "handle": handle,
+                    "team_name": team,
                     "franchise": fr or "(unmapped)",
                     "prior": row,
                     "thin": (row is None) or row["confidence"].startswith("thin")})
@@ -464,6 +472,9 @@ def build_model():
                       "omits 21 scoring keys this league pays, including all "
                       "sub-40 FG brackets and pts_allow brackets"),
         "rosters": [{"roster_id": r["roster_id"], "handle": r["handle"],
+                     # Sleeper team name, display only; null when the manager
+                     # never set one. `franchise` stays the history join key.
+                     "team_name": r["team_name"],
                      "franchise": r["franchise"], "thin": r["thin"],
                      "first_qb": (float(r["prior"]["first_qb_shrunk"])
                                   if r["prior"] else None),

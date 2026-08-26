@@ -61,8 +61,13 @@ const ok = (cond, name, detail) => {
        "order hypothesis: 12 slot selects render");
     ok(await page.locator('[data-ohyp="1"] option').count() === 12,
        "order hypothesis: each select offers the 12 real franchises");
-    ok(/Rob & GregBo \(RobFlacc\)/.test(await page.textContent("#ohyp-card")),
-       "order hypothesis: options carry franchise and sleeper handle");
+    const ohypTxt = await page.textContent("#ohyp-card");
+    const engR = JSON.parse(require("fs").readFileSync(
+      path.resolve("out/engine_2026.json"), "utf8")).rosters;
+    ok(engR.every(r => ohypTxt.includes(r.handle)),
+       "order hypothesis: every option carries its sleeper handle");
+    ok(engR.every(r => ohypTxt.includes(r.franchise)),
+       "order hypothesis: every option still carries its franchise era");
     await page.selectOption('[data-ohyp="1"]', "10");
     await page.waitForTimeout(400);
     const t1h = await page.textContent("body");
@@ -607,8 +612,18 @@ const ok = (cond, name, detail) => {
                source: "test", confidence: "", date: "2026-08-13",
                matched: true, pos: p.pos, adp: p.adp, vor: p.vor, tier: p.tier };
     };
-    payload.my_board = [mkCall("Ashton Jeanty", "BULL", "+1 tier"),
-                        mkCall("Nico Collins", "BEAR", "-1 tier")];
+    // The bull call has to sit on whoever the model actually ranks second
+    // behind its primary once the fixture's six picks are gone - naming a
+    // player outright bakes one day's ADP into the suite (Ashton Jeanty was
+    // the runner until a refresh moved his VOR 99 -> 74). Derive it.
+    const gone9 = new Set(["Ja'Marr Chase", "Bijan Robinson", "Jahmyr Gibbs",
+                           "Jonathan Taylor", "Puka Nacua", "Christian McCaffrey"]);
+    const alive9 = payload.players
+      .filter(x => !gone9.has(x.name) && x.pos !== "K" && x.pos !== "DEF")
+      .sort((x, y) => y.vor - x.vor);
+    const runnerUp = alive9[1].name;
+    payload.my_board = [mkCall(runnerUp, "BULL", "+1 tier"),
+                        mkCall(alive9[8].name, "BEAR", "-1 tier")];
     const tmp = path.join(os.tmpdir(), "ytfl_overlay_smoke.html");
     fs.writeFileSync(tmp, raw.slice(0, a) + JSON.stringify(payload) + raw.slice(b));
     const p9 = await browser.newPage();
@@ -635,8 +650,8 @@ const ok = (cond, name, detail) => {
     ok(/James Cook/.test(big9),
        "overlay e2e: the model primary is still the subject: " + big9.trim());
     const body9 = await p9.textContent("body");
-    ok(body9.includes("break toward your call - Ashton Jeanty"),
-       "overlay e2e: live coin flip breaks toward the bull call");
+    ok(body9.includes("break toward your call - " + runnerUp),
+       "overlay e2e: live coin flip breaks toward the bull call (" + runnerUp + ")");
     await p9.click('#nav button[data-scr="board"]');
     await p9.waitForTimeout(400);
     ok(await p9.locator(".yc.bull").count() >= 1 && await p9.locator(".yc.bear").count() >= 1,
@@ -1108,6 +1123,27 @@ const ok = (cond, name, detail) => {
        "draft-screen surfaces carry signal containers (not just the Board tab)",
        String(sigOn.draftContainers));
     ok(sigOn.legends >= 1, "room signal legend renders", String(sigOn.legends));
+    // the Sleeper link: present, and pointing at the draft the room polls
+    const link = await pe.evaluate(() => {
+      const a = document.getElementById("sleeper-link");
+      return a ? { href: a.href, text: a.textContent.trim(), target: a.target } : null;
+    });
+    const wantDraft = JSON.parse(require("fs").readFileSync(
+      path.resolve("out/engine_2026.json"), "utf8")).league.draft_id;
+    ok(link && link.href === "https://sleeper.com/draft/nfl/" + wantDraft,
+       "header links to the live Sleeper draft the room polls",
+       link ? link.href : "no link");
+    ok(link && link.target === "_blank", "the draft link opens in its own tab");
+    // the on-the-clock line leads with the Sleeper team name
+    const upSoon = await pe.textContent("#lv-upnext");
+    ok(/UP IN \d+ PICKS?/.test(upSoon) || /YOU ARE ON THE CLOCK/.test(upSoon),
+       "up-next states the distance to your turn", upSoon.trim());
+    ok(/before you:/.test(upSoon) || /YOU ARE ON THE CLOCK/.test(upSoon),
+       "up-next names who picks before you", upSoon.trim());
+    const franch = await pe.textContent("#lv-franch");
+    ok(/Sex Panther|Taylor Made|Riley Reid|My Back Hurts|Kelce|Rob and GregBo/.test(franch)
+       || /\(/.test(franch),
+       "the clock line carries a team label with its provenance", franch.trim());
     // the Board tab (best-available view) carries all three channels too
     const vb = await pe.evaluate(() => ({
       containers: document.querySelectorAll("#scr-board .vrow[data-sig]").length,
@@ -1179,6 +1215,12 @@ const ok = (cond, name, detail) => {
     ok(!/: 0% gone by your pick/.test(octxt),
        "survival on my clock is not the degenerate 100%-safe");
     ok(!/NaN/.test(octxt), "on-the-clock card renders no NaN");
+    // UPNEXT: seat 7 is up at pick 7, so the strip must say so outright
+    const upNow = await oc.textContent("#lv-upnext");
+    ok(/YOU ARE ON THE CLOCK/.test(upNow),
+       "up-next says you are on the clock when it is your pick", upNow.trim());
+    ok(await oc.locator("#lv-upnext.now").count() === 1,
+       "the on-the-clock strip takes its clock-state treatment");
     ok(errsOc.length === 0, "on-the-clock: zero console errors", errsOc[0] || "");
     // phone-width net: the survival table's verdict tags fire here (target
     // pick 18 makes most top rows sub-40%), so this state is exactly where

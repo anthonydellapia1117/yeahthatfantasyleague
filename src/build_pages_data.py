@@ -137,7 +137,7 @@ def build_crosswalk(sleeper_ids):
             "draft_round": None if t["draft_round"][i].as_py() is None else int(t["draft_round"][i].as_py()),
             "draft_pick": None if t["draft_pick"][i].as_py() is None else int(t["draft_pick"][i].as_py()),
         })
-    matched, unmatched = {}, []
+    matched, unmatched, disambiguated = {}, [], []
     for pid, row in sleeper_ids.items():
         if row["pos"] == "DEF":
             continue                    # team entity, no gsis crosswalk exists
@@ -145,6 +145,33 @@ def build_crosswalk(sleeper_ids):
         pos_match = [c for c in cands if c["pos"] == row["pos"]]
         if len(pos_match) == 1:
             matched[pid] = pos_match[0]
+        elif len(pos_match) > 1:
+            # Same name, same position, different men. The suffix strip that
+            # rescues "Kenneth Walker" vs "Kenneth Walker III" also collapses
+            # fathers onto sons: Marvin Harrison (1996, IND) and Marvin Harrison
+            # Jr. (2024, ARI) are one key. latest_team cannot separate them -
+            # nflverse keeps the last team a retired player suited up for - so
+            # the discriminator is entry year: an ADP list for the coming season
+            # means the most recent entrant. Applied ONLY when that is unique,
+            # and every use is logged rather than resolved silently.
+            # Only compare like with like. draft_year is None for the
+            # UNDRAFTED, not the old, so a father/son pair where the son went
+            # undrafted (Frank Gore vs Frank Gore Jr.) would resolve backwards
+            # onto the retired father. If any candidate lacks an entry year the
+            # pair stays unmatched, which is exactly the status quo.
+            years = [c["draft_year"] for c in pos_match]
+            best = max(years) if all(y for y in years) else None
+            top = [c for c in pos_match if c["draft_year"] == best] if best else []
+            if best and len(top) == 1:
+                matched[pid] = top[0]
+                disambiguated.append({"player_id": pid, "name": row["name"],
+                                      "pos": row["pos"], "chose_draft_year": best,
+                                      "over": sorted(c["draft_year"] or 0 for c in pos_match
+                                                     if c is not top[0]),
+                                      "rule": "most recent draft_year"})
+            else:
+                unmatched.append({"player_id": pid, **row, "candidates": len(cands),
+                                  "why": "same name and position, entry year cannot separate"})
         elif len(cands) == 1:
             matched[pid] = cands[0]
         else:
@@ -156,7 +183,10 @@ def build_crosswalk(sleeper_ids):
     write("reconciliation", {"provenance": prov("crosswalk"),
                              "unmatched_count": len(unmatched),
                              "unmatched": sorted(unmatched, key=lambda r: r.get("adp_sleeper") or 999)[:50],
-                             "note": "unmatched players are logged, never silently dropped"})
+                             "disambiguated_count": len(disambiguated),
+                             "disambiguated": sorted(disambiguated, key=lambda r: r["name"]),
+                             "note": "unmatched players are logged, never silently dropped; "
+                                     "same-name collisions resolved by entry year are logged too"})
     return matched
 
 
