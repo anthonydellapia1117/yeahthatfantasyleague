@@ -137,6 +137,23 @@ pr = eng["replacement_ranks"]
 ok(pr["RB"] == 24 + fx["allocation"]["RB"] and pr["WR"] == 24 + fx["allocation"]["WR"],
    "payload replacement ranks reflect the derived allocation", str(pr))
 
+# FORWARD-PICK LAW: a multi-pick projection consumes its own selections.
+# No player may appear more than once in any slot's forward sequence, and
+# the sequence must respect the shared roster caps (the live bug: the same
+# WR recommended at picks 24 AND 25 across the snake turn).
+sys.path.insert(0, os.path.join(ROOT, "src"))
+from forward_policy import roster_caps
+caps = roster_caps(eng.get("flex_allocation", {}))
+for slot, rounds in eng["slots"].items():
+    names = [r["primary"]["name"] for r in rounds if r.get("primary")]
+    ok(len(set(names)) == len(names),
+       f"slot {slot}: no player repeats in the forward-pick sequence")
+    from collections import Counter as _C
+    pc = _C(r["primary"]["pos"] for r in rounds if r.get("primary"))
+    ok(all(pc[p] <= caps.get(p, 99) for p in pc),
+       f"slot {slot}: forward sequence respects the shared roster caps",
+       str(dict(pc)))
+
 print()
 if fails:
     print(f"{len(fails)} FAILURES")

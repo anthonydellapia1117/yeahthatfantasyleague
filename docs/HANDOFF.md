@@ -213,7 +213,7 @@ Never backfill a pick, roster, transaction, or result. Never merge manager ident
 Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html
 (local `out/draft_room.html` is the offline fallback; same embedded model).
 Six gated phases per docs/DRAFT_ROOM_BUILD_ORDER.md: broadcast-grade design
-system, two-minute-clock live mode, sixteen features (roster-need-aware
+system, live pick-clock mode (duration from draft settings), sixteen features (roster-need-aware
 recommendation first), the quarantined league-mate simulator, GitHub Pages
 deployment via the gh-pages workflow, and this review. Draft-morning flow:
 `python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push`.

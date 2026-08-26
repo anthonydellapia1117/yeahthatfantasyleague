@@ -43,9 +43,13 @@ rehearsal's `real` times.
 | 7e | `sh tests/run_gate.sh python3 tests/test_ceiling.py` | 0.1 s | ceiling lens: boom rates, zero-IR availability, enabled view |
 | 7f | `sh tests/run_gate.sh python3 tests/test_bullish.py` | 0.2 s | BULLISH engine: probabilistic gates, state machine, ADP-edge accounting |
 | 7g | `sh tests/run_gate.sh python3 tests/test_ws2.py` | 0.1 s | WS2 claims audit: verdict ledger coherent, cited-value canary, curse tag cross-check |
+| 7h | `sh tests/run_gate.sh python3 tests/test_mock.py` | 0.1 s | mock-draft validation: roster legality, caps, board-beats-chalk deltas |
+| 7i | `sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py` | 0.1 s | BULLISH-vs-ADP null test: derived verdict, ADP-confound disclosure, tag stays display-only |
+| 7j | `sh tests/run_gate.sh python3 tests/test_vona.py` | 0.2 s | VONA path tree: depth, derived thresholds, survival floor, no repeats, no BULLISH on nodes |
+| 7k | `sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py` | 0.2 s | drafted-vs-acquired: champions-vs-field intervals, era flags, the two results kept distinct |
 | 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
 | 9 | `sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
-| 10 | full smoke (see the playwright note below) | 94 s + install | 17 hermetic browser scenarios |
+| 10 | full smoke (see the playwright note below) | 94 s + install | 21 hermetic browser scenarios (incl. DRAFT MODE, the forward-pick law, and the path tree) |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
 
@@ -71,6 +75,13 @@ live payload (the big board conflicts view is the one that bit us) must
 stay payload-driven - read out/cvs.json and assert on what is actually
 in it, including the empty states. A refresh day that legitimately has
 no conflicts must not fail the suite.
+
+Pipe law: NEVER pipe a suite through tail/head/grep, even when exploring
+interactively - a pipe returns the pipe tail's exit code and hides the
+suite's, the exact masking shape run_gate.sh exists to close, and it bit
+twice (the C5 background smoke, then again reading a truncated tail
+during DRAFT MODE debugging). Run `sh tests/run_gate.sh <suite>` with
+output to a file and read the file.
 
 Commit convention: author `Anthony DellaPia <anthonydellapia@gmail.com>`,
 hyphens not em dashes, no emojis. Deploy compare loop:
@@ -116,6 +127,16 @@ went red it diagnoses the failure, pushes a fix to
 `claude/chat-migration-desktop-ruannr`, and reports. It does not push to
 main; a 6:00 AM failure leaves the whole day to land the fix, and the
 deployed build is never in a broken state while that happens.
+
+LAYER 3 - the draft-order draw watch. A Claude Routine runs
+`python3 src/check_draft_order.py` every two hours until the draw (or
+2026-09-08, whichever first). The script mirrors the room's own
+detection semantics - the identity slot map counts as NOT drawn - and
+the Routine stays silent until the order is real, then push-notifies
+Anthony with his slot and retires itself. The room needs nothing from
+it: it already collapses to the detected seat live (the order-hypothesis
+card retires, renderPre follows the real slot); the watch exists so
+Anthony hears about the draw without opening the app.
 
 Anthony still owns the night-before checklist - the board calls, any
 Walter revision, the walter layer decision. Neither layer touches

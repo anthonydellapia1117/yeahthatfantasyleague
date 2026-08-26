@@ -790,3 +790,232 @@ restriction if the Yahoo 2014-2024 pull (post-merge item 2) shows the
 leaguelegacy archive was reconstructed incompletely. Guards added to
 `tests/test_baserates.py`: the label must be present and every season
 used must show 12 franchises and a full draft's worth of picks.
+
+## M.1 Mock-draft validation (post-merge item 1)
+
+Artifact: `out/data/mock_drafts_2026.json` (builder `src/mock_draft.py`,
+guards `tests/test_mock.py`). Three deterministic 14-round snake
+simulations from slots 1, 6, and 12: our seat on the board's marginal
+policy (candidate value = improvement to the optimal lineup with
+replacement-level phantoms from the engine's own baselines, VOR
+tie-break), eleven ADP seats with the league's observed K/DEF window
+(first K/DEF at median 2 rounds from the end, n=44 franchise-seasons
+2024-2025), plus naive-max-VOR and ADP-chalk comparison runs per slot.
+
+**Headline: the board beats chalk from every slot** on projected optimal
+starters - slot 1 +51.7, slot 6 +96.5, slot 12 +71.0 points - with legal,
+coherent rosters (all sanity guards pass; benches carry QB2, one backup
+TE, and RB/WR depth; Jared Goff, C5's BULLISH QB tag, lands as the slot-1
+QB2 without the simulator knowing about the tag).
+
+**Two findings the validation exists to catch:**
+1. Naive max-VOR drafts DUPLICATE elite TEs in rounds 2-3 from slots 6
+   and 12 (Bowers then Loveland) - raw VOR prices a duplicate at starter
+   value even though the league's own derived flex allocation
+   (WR 8 / RB 4 / TE 0, n=216) says a second TE never starts here. The
+   marginal policy corrects it (+20.5 and +12.8 points over naive at
+   those slots) and the live room's roster-need line is the same guard in
+   interactive form - it flags when max-VOR duplicates a filled slot.
+2. VOR has no bench-value model: with starters set, a pure VOR tie-break
+   filled the bench with four backup TEs (late TEs sit closest to their
+   replacement level, so VOR truthfully but uselessly prefers them).
+   The autopilot now carries positional caps derived from the flex
+   allocation (max simultaneous starters + one injury spare, a stated
+   convention); a principled bench model (promotion probability from the
+   C4 availability rates) is future work, noted here.
+
+Both comparison rosters are preserved in the artifact so the divergence
+stays visible. The board-beats-chalk deltas are guarded in tests: if a
+future engine refresh ever makes the board LOSE to chalk at any slot,
+the suite goes red and the regression surfaces before draft night.
+
+## N.1 BULLISH vs ADP: UNDERPOWERED, not null (carryover 3, corrected)
+
+Artifact: `out/data/bullish_vs_adp.json` (builder `src/bullish_vs_adp.py`).
+Anthony's Phase A conclusion is why this test exists: the tag's candidate
+pool is gated on fantasy ADP, so by construction the engine can only
+re-rank players the market has already surfaced.
+
+**CORRECTION.** This entry originally read "NULL - the tag does not beat
+ADP." That was wrong, and the error mattered: a non-significant result
+is only evidence of absence when the design had the power to find an
+effect worth caring about. It did not. The verdict is now three-state
+and derived from a computed power analysis, not from the p-value alone.
+
+**Result: UNDERPOWERED. The tag cannot be distinguished from ADP at
+these sample sizes - which is not the same as showing it adds nothing.**
+
+| ADP band | tagged top-12 | untagged top-12 | difference (95% CI) | p | needed at 80% power | verdict |
+|---|---|---|---|---|---|---|
+| pos1-12 | 65.1% (n=43) | 51.8% (n=257) | +13.4pp [-2.1, +28.9] | 0.104 | **21.6pp** | underpowered |
+| pos13-24 | 33.3% (n=3) | 23.5% (n=238) | +9.8pp [-43.8, +63.4] | 0.691 | **61.9pp** | underpowered |
+| pos25-48 | none tagged (n=0) | n=340 | no comparison possible | - | - | not identifiable |
+
+With 43 tagged players in the top band, the smallest true difference the
+design could reliably detect is 21.6 percentage points. The observed
++13.4pp is well below that. An effect of exactly the size observed would
+have failed to reach significance most of the time in this design, so
+"we did not detect it" carries almost no information about whether it is
+there. Both testable bands are in the same position, the second far
+worse (61.9pp needed on n=3).
+
+**What can still be said with confidence.** The pooled comparison is a
+trap: tagged 63.0% vs untagged 26.8% looks decisive, but **93.5% of all
+tags land in the pos1-12 ADP band** and none beyond pos24, so pooled it
+measures the market's ranking, not the tag. Any presentation quoting a
+pooled tagged-vs-untagged rate is quoting ADP. That part of the original
+entry stands, and it is the finding with real evidential weight.
+
+**Consequence for the shipped engine, unchanged.** The BULLISH artifact
+stays DISPLAY-ONLY - beside the seven-state signal encoding, never in a
+verdict path - and it is deliberately absent from the VONA tree. But the
+reason is now stated correctly: not "it was shown not to work", rather
+"it has not been shown to work, and the concentration means it mostly
+re-marks what the board already ranks highly." Guards enforce the
+three-state verdict, so an underpowered result can never be reported as
+a null again.
+
+**Stated limitation, unchanged.** This backtests the opportunity +
+efficiency spine common to every criterion set, not the full shipped
+matrix - route participation, first-read share, inside-5 TD equity,
+implied totals and current-team line quality have no clean per-season
+history in this cache.
+
+**What would settle it.** The design is sample-starved because only 46
+tag-seasons exist across 2017-2025 under the reconstructable spine.
+Extending the league-side history to 2013 (the LeagueLegacy work) does
+not help here - this test runs on nflverse and FFC, not league data. What
+would help is either a looser tag definition producing more tagged
+seasons per year, or accepting that a 13-point edge in the top ADP band
+is not resolvable with nine seasons of data and treating the tag as
+unproven indefinitely.
+
+## V.1 The VONA draft-path tree (approved build)
+
+Artifact: `out/data/vona_tree_2026.json` (builder `src/build_vona_tree.py`,
+page `out/paths.html`, guards `tests/test_vona.py`). VONA at a node is
+E[best available at this pick] minus E[best available at my next pick],
+both survival-weighted over the whole positional pool using the frozen
+calibrated survival functions, called from the engine rather than
+reimplemented.
+
+**What the branch rule found, and why the slot-gating alternative would
+have been wrong.** Branching is data-driven at every slot with no
+slot-number gate. Across the twelve slots the tree renders 39 real
+decision points, prunes 29 dominated branches, and keeps 15 as flagged
+coin flips. Nine slots fork; three (5, 9, 10) are fully forced chains.
+Slot 4 forks at pick 21 between an elite RB and an elite TE - Anthony's
+own hypothetical - and slot 8 is the most open board on the sheet with
+22 forks. The originally proposed rule (parallel roots for slots 5-12,
+single root for 1-4) would have been wrong in both directions: it would
+have forced slot 5 to branch where the data says it has no decision at
+all, and denied slots 1-4 the forks the data actually finds.
+
+**Two defects the build surfaced and fixed:**
+1. The first prune rule summed raw VOR along a path. That is the exact
+   objective the M1 mock validation already disproved - it prices a
+   duplicate at starter value, so it would have rated a position-stacked
+   path above one that fills the lineup. The prune now runs on lineup
+   value from `src/forward_policy.py`, the shared layer.
+2. Strict domination on lineup value collapsed almost every fork (3
+   across all twelve slots), which is technically correct and
+   practically useless: a branch beaten by half a point is not a
+   decision the board has made for you. Branches dominated by less than
+   a derived narrow band (7.8 lineup points, the p25 of the 41
+   domination margins this board produces) are kept and flagged COIN
+   FLIP rather than silently decided.
+
+**The independence caveat, measured rather than asserted.** The frozen
+survival model treats players independently, but drafts run in
+positional bursts. Measured against this league's own 2,339 picks -
+observed variance of same-position counts per 12-pick window versus the
+binomial variance implied by the same mean - every position clusters:
+RB 1.53x, QB 1.24x, TE 1.14x, WR 1.12x. Positive clustering means the
+independent model understates the chance a whole tier vanishes between
+turns, which overstates E[best available next] and therefore UNDERSTATES
+VONA. **The tree is biased toward WAIT, not toward reaching**, and most
+strongly at RB. A marginal WAIT on an RB should be read as closer to a
+coin flip than the number shows.
+
+**Stated deviations from the spec text**, both on the artifact rather
+than made silently: the expectation runs over the whole positional pool
+rather than truncating at the survival floor (truncating would bias
+E[best available] downward precisely where a high-VOR player is
+unlikely-but-possible; the floor is a rendering rule, and no node is
+drawn below 40%), and survival is independent as described above.
+
+Per the approved decisions: depth 7 on the structural boundary (the
+starting lineup is exactly seven skill slots), and no BULLISH marker on
+any node - a marker on a decision surface nudges regardless of its
+label, and finding N.1 showed the tag re-marks what the board already
+ranks highly.
+
+## L.1 Are titles won on draft day? No - and the split is not why
+
+Artifact: `out/data/draft_vs_acquired.json` (builder
+`src/draft_vs_acquired.py`, guards `tests/test_draft_vs_acquired.py`),
+built on the split `src/phase2_value.py` has computed since 2026-08-11.
+Full coverage audit in `docs/LEAGUELEGACY_COVERAGE_AUDIT.md`.
+
+**The answer, and it is a clean null on the framing.** Champions draw
+71.0% of their starter points from drafted players; the field draws
+68.7%. The difference is +2.3pp with a bootstrap 95% interval of
+[-5.2, +9.7] - it overlaps zero, and it overlaps zero in both eras
+separately (13-week seasons +2.7pp [-6.5, +11.7]; 14-week seasons
++1.7pp [-9.4, +13.4]).
+
+**What DOES separate champions is total production, decisively.**
+Champion franchise-seasons score 2,030.6 starter points against the
+field's 1,827.4 - a gap of +203.3 with an interval of [163.4, 243.0]
+that clears zero by a wide margin.
+
+**So "won on draft day or after it" is the wrong question for this
+league.** Champions source their points in the same proportion as
+everyone else. They simply accumulate more, through both channels at
+once. A draft-day strategy that maximizes drafted share at the expense
+of total production would be optimizing the one quantity that does not
+distinguish winners from losers here. That is the conclusion to hold
+before drawing any draft-day inference, and it is why the board
+optimizes projected points rather than draft-capital efficiency.
+
+**Era and basis caveats, carried on the artifact.** 2013 is excluded
+from the acquired split (the archive holds no 2013 transaction data,
+flagged upstream as acquired_valid=no and honored rather than
+re-derived). Yahoo seasons 2013-2024 are bonus-exclusive - six 40-yard
+long-play bonuses are absent from per-player rows - which understates
+absolute points by roughly 5% but leaves the drafted-vs-acquired RATIO
+unaffected, since both sides share the basis.
+
+## L.2 Archive corrections to standing claims
+
+**The Cambria benchmark is incomplete.** From the export's own
+`champions_by_season.csv`: Cambria has 3 titles (2019, 2022, 2025) and
+**Phil Baldino also has 3** (2018, 2023, 2024), including back-to-back
+seasons at 12-2 and 11-3. The research director report names Cambria as
+the singular benchmark; on the record it is a tie, and Baldino is the
+more recent dynasty.
+
+**The C4 ceiling weighting cannot be validated against league history.**
+`00_league/seasons.csv` sets `use_median_scoring` = 0 for every season
+2013-2024 and 1 only from 2025. Every historical season was pure
+head-to-head, so there is no in-league record against which a
+median-format ceiling premium could be backtested. The C4 lens ships
+enabled on the confirmed 2025-2026 setting and remains, as its own
+limitation statement already says, without an empirically fitted
+variance premium. This entry records WHY that gap cannot be closed from
+league data: the format did not exist.
+
+**League base rates now run 2013-2025.** The C2 league table capped
+itself at 2016 because its league loop was nested inside the market
+loop, which starts where the FFC ADP cache starts. The loops are now
+independent - league 2013-2025, market 2016-2025, each window stated -
+and league joins rose from 1,448 to 1,867, a 29% increase. Era rows are
+reported alongside the pooled table: 13-week seasons hit top-12 at 28.5%
+[26.0, 31.2] and 14-week seasons at 27.3% [24.2, 30.7], overlapping
+intervals, so pooling across the boundary is defensible for hit rates -
+now demonstrated rather than assumed.
+
+**Keeper status is an OPEN QUESTION, deliberately unresolved.**
+`use_keepers` flips to 1 for 2025-2026, but the 2025 Sleeper draft
+contained zero keeper picks and `keeper_results.csv` is 2 bytes. Flagged
+for the commissioner rather than resolved from inference.

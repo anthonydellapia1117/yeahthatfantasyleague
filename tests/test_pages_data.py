@@ -118,6 +118,21 @@ src = open(eng_path).read()
 ok("build_pages_data" not in src and "team_proe" not in src and "playcallers" not in src,
    "N1: engine imports nothing from the pages-data layer")
 
+# 8b. P0 PICK CLOCK LAW: the clock derives from the draft's own settings
+#     and anchors to Sleeper's last_picked - never a hardcoded duration,
+#     never poll-detection time. The 2x silent-clock defect stays dead.
+_room = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+ok("pick_timer" in _room and "last_picked" in _room,
+   "P0: the room reads pick_timer and last_picked from the draft")
+ok("two minutes" not in _room and ">2:00<" not in _room,
+   "P0: no two-minute language or hardcoded 2:00 anywhere in the room")
+ok("120 - Math.floor" not in _room and "clockStart" not in _room,
+   "P0: the hardcoded duration and the poll-anchored clock are gone")
+ok("clock unavailable - use Sleeper" in _room,
+   "P0: absent clock data renders an honest absence, not a plausible number")
+ok("LiveState.pickTimer = (draft.settings && Number(draft.settings.pick_timer)) || null" in _room,
+   "P0: the duration is captured from settings on every fetch")
+
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")
 
@@ -352,8 +367,9 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     ok("IDENT-BEGIN" in drp and "UPNEXT-BEGIN" in drp
        and drp.index("IDENT-BEGIN") > drp.index("engine-data-end"),
        "identity and up-next blocks are marker-quarantined outside the sentinels")
-    # the room's link must be DERIVED from the polled draft id, never typed in
-    ok('"https://sleeper.com/draft/nfl/" + (E.league ? E.league.draft_id : "")' in drp,
+    # the room's link must be DERIVED from the polled draft id, never typed
+    # in - in DRAFT MODE it derives from the loaded mock id the same way
+    ok('"https://sleeper.com/draft/nfl/" +\n  (MOCK_MODE ? MOCK_ID : (E.league ? E.league.draft_id : ""))' in drp,
        "the room's Sleeper link is derived from the polled draft id")
     ok("https://sleeper.com/draft/nfl/1389" not in drp,
        "the room hardcodes no draft url - it cannot drift from the feed")
@@ -427,13 +443,14 @@ ok(os.path.exists(navp), "nav.js exists (single source of truth)")
 if os.path.exists(navp):
     navsrc = open(navp).read()
     nav_items = re.findall(r'\["(\w+)",\s*"[^"]+",\s*"([^"]+)"\]', navsrc)
-    ok(len(nav_items) == 6, "nav defines exactly six items", f"{len(nav_items)}")
+    ok(len(nav_items) == 7, "nav defines exactly seven items", f"{len(nav_items)}")
     missing = [href for _, href in nav_items
                if not os.path.exists(os.path.join(ROOT, "out", href))]
     ok(not missing, "every nav link target resolves to a real file",
        "; ".join(missing))
     PAGES = {"draft_room.html": "draft", "big_board.html": "board",
-             "players.html": "players", "teams.html": "teams",
+             "players.html": "players", "paths.html": "paths",
+             "teams.html": "teams",
              "ff-hub.html": "findings", "home.html": "hub"}
     seen_keys = []
     for fname, want in PAGES.items():
@@ -446,7 +463,7 @@ if os.path.exists(navp):
         ok('<nav class="small">' not in psrc,
            f"{fname} carries no second navigation system")
     ok(sorted(seen_keys) == sorted(k for k, _ in nav_items),
-       "each active key is used exactly once across the five pages")
+       "each active key is used exactly once across the seven pages")
     dr = open(os.path.join(ROOT, "out", "draft_room.html")).read()
     tag_at = dr.index('src="nav.js"')
     ok(tag_at < dr.index('<script id="engine-data"'),
@@ -571,6 +588,45 @@ sbad = [f"{c} {_contrast(c, _bbcard):.2f}" for c in _sigcolors
 ok(len(_sigcolors) == 5 and not sbad,
    "all five signal colors clear 4.5:1 on the big-board card",
    f"{len(_sigcolors)} colors; " + "; ".join(sbad))
+
+# the players-page VOR ramp is a CONTINUOUS scale, so every interpolated
+# color between the anchors must clear 4.5:1 on that card - not just the
+# three anchors. It is also a DISTINCT scale: the ramp must not reuse the
+# reserved verdict hexes (--go / --stop / --warn) in that card scope.
+_plsrc = open(os.path.join(ROOT, "out", "players.html")).read()
+_plcard = _scope_tokens(_plsrc)["s1"]
+_anchors = re.search(
+    r"const VOR_LO = \[(\d+), (\d+), (\d+)\], VOR_MID = \[(\d+), (\d+), (\d+)\],"
+    r" VOR_HI = \[(\d+), (\d+), (\d+)\]", _plsrc)
+ok(bool(_anchors), "players page declares the three VOR ramp anchors")
+if _anchors:
+    _n = [int(x) for x in _anchors.groups()]
+    _lo, _mid, _hi = tuple(_n[0:3]), tuple(_n[3:6]), tuple(_n[6:9])
+    _hex = lambda c: "#%02x%02x%02x" % c
+    _ramp = []
+    for _a, _b in ((_lo, _mid), (_mid, _hi)):
+        for _i in range(21):
+            _t = _i / 20
+            _ramp.append(tuple(round(_a[j] + (_b[j] - _a[j]) * _t)
+                               for j in range(3)))
+    _rbad = [f"{_hex(c)} {_contrast(_hex(c), _plcard):.2f}" for c in _ramp
+             if _contrast(_hex(c), _plcard) < 4.5]
+    ok(not _rbad, "every interpolated VOR ramp color clears 4.5:1 on the card",
+       "; ".join(_rbad[:3]))
+    _pltok = _scope_tokens(_plsrc)
+    _reserved = {_pltok[t].lower() for t in ("go", "stop", "warn") if t in _pltok}
+    ok(not ({_hex(c) for c in (_lo, _mid, _hi)} & _reserved),
+       "the VOR ramp is a distinct scale - no reserved verdict hexes reused",
+       str(_reserved))
+# the scale must be database-wide and median-anchored, both stated in code
+ok("D.engine.players.map(p => p.vor)" in _plsrc,
+   "VOR scale anchors are computed across the whole player database")
+ok("right-skewed" in _plsrc and "median" in _plsrc,
+   "the median-not-mean midpoint choice is stated on the page")
+ok(".idxrow{display:flex;justify-content:flex-start" in _plsrc,
+   "player rows are tight-packed, not space-between")
+ok("grid-template-columns:repeat(3,minmax(0,1fr))" in _plsrc,
+   "position groups render three across")
 
 _ffsrc = open(os.path.join(ROOT, "out", "ff-hub.html")).read()
 _ffcard = _scope_tokens(_ffsrc)

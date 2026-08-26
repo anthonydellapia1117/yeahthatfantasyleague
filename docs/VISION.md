@@ -137,7 +137,7 @@ This is *who is in the room*, translated from Sleeper handles into thirteen year
 
 ### MODE 2 - Live *(it arms itself the moment the draft starts)*
 
-The league rules give me **two minutes on the clock, and if I blow it I forfeit the pick.** So this screen is built to be read in under five seconds from across a room.
+The league gives me **a pick clock - 60 seconds in the live 2026 draft - and if I blow it I forfeit the pick.** So this screen is built to be read in under five seconds from across a room. The room reads the duration from the draft's own settings; the two-minute figure in earlier drafts of this document was the old Yahoo-era rule and was never the Sleeper timer.
 
 **The clock, huge, counting down**, turning red under thirty seconds. Above it: which seat is on the clock, by franchise name, and whether it's me.
 

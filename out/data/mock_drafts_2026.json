@@ -1,0 +1,890 @@
+{
+ "provenance": {
+  "generated": "2026-08-26",
+  "engine_generated": "2026-08-26",
+  "method": "deterministic snake sim from the committed engine payload; our seat scores candidates by optimal-lineup improvement over replacement-level phantoms (engine baselines), VOR tie-break; eleven ADP seats; comparison runs: naive max-VOR and ADP chalk",
+  "finding": "naive max-VOR drafts duplicate elite TEs early (slots 6 and 12) because raw VOR prices a duplicate at starter value; the marginal policy corrects it and the live room's roster-need line is the same guard in interactive form",
+  "kdef_window": {
+   "opponents_start_round": 12,
+   "observed_n": 44,
+   "median_rounds_from_end": 2.0,
+   "source": "out/picks.csv 2024-2025 observed"
+  },
+  "scope": "validates board economics only - no survival model, no RNG; the live room adds survival and need logic on top of this same VOR core"
+ },
+ "slots": {
+  "1": {
+   "picks": [
+    {
+     "round": 1,
+     "overall": 1,
+     "name": "Jahmyr Gibbs",
+     "pos": "RB",
+     "adp": 1.6,
+     "vor": 162.4,
+     "pts": 331.4,
+     "tier": 1
+    },
+    {
+     "round": 2,
+     "overall": 24,
+     "name": "Nico Collins",
+     "pos": "WR",
+     "adp": 25.3,
+     "vor": 75.8,
+     "pts": 262.0,
+     "tier": 2
+    },
+    {
+     "round": 3,
+     "overall": 25,
+     "name": "George Pickens",
+     "pos": "WR",
+     "adp": 23.6,
+     "vor": 59.5,
+     "pts": 245.7,
+     "tier": 2
+    },
+    {
+     "round": 4,
+     "overall": 48,
+     "name": "D'Andre Swift",
+     "pos": "RB",
+     "adp": 55.8,
+     "vor": 39.0,
+     "pts": 208.0,
+     "tier": 4
+    },
+    {
+     "round": 5,
+     "overall": 49,
+     "name": "Tyler Warren",
+     "pos": "TE",
+     "adp": 47.7,
+     "vor": 38.6,
+     "pts": 201.1,
+     "tier": 4
+    },
+    {
+     "round": 6,
+     "overall": 72,
+     "name": "Parker Washington",
+     "pos": "WR",
+     "adp": 76.6,
+     "vor": 26.2,
+     "pts": 212.4,
+     "tier": 2
+    },
+    {
+     "round": 7,
+     "overall": 73,
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "adp": 87.8,
+     "vor": 19.0,
+     "pts": 116.0,
+     "tier": null
+    },
+    {
+     "round": 8,
+     "overall": 96,
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "adp": 121.2,
+     "vor": 15.7,
+     "pts": 363.2,
+     "tier": 2
+    },
+    {
+     "round": 9,
+     "overall": 97,
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "adp": 93.6,
+     "vor": 11.0,
+     "pts": 116.0,
+     "tier": null
+    },
+    {
+     "round": 10,
+     "overall": 120,
+     "name": "Mark Andrews",
+     "pos": "TE",
+     "adp": 129.2,
+     "vor": 0.0,
+     "pts": 162.5,
+     "tier": 5
+    },
+    {
+     "round": 11,
+     "overall": 121,
+     "name": "Jared Goff",
+     "pos": "QB",
+     "adp": 133.8,
+     "vor": -4.0,
+     "pts": 343.5,
+     "tier": 2
+    },
+    {
+     "round": 12,
+     "overall": 144,
+     "name": "Jalen Coker",
+     "pos": "WR",
+     "adp": 144.0,
+     "vor": -20.3,
+     "pts": 165.9,
+     "tier": null
+    },
+    {
+     "round": 13,
+     "overall": 145,
+     "name": "Tyjae Spears",
+     "pos": "RB",
+     "adp": 166.0,
+     "vor": -54.4,
+     "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 168,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 163.7,
+     "vor": -57.7,
+     "pts": 111.3,
+     "tier": null
+    }
+   ],
+   "starters": [
+    {
+     "slot": "QB",
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "pts": 363.2
+    },
+    {
+     "slot": "RB",
+     "name": "Jahmyr Gibbs",
+     "pos": "RB",
+     "pts": 331.4
+    },
+    {
+     "slot": "RB",
+     "name": "D'Andre Swift",
+     "pos": "RB",
+     "pts": 208.0
+    },
+    {
+     "slot": "WR",
+     "name": "Nico Collins",
+     "pos": "WR",
+     "pts": 262.0
+    },
+    {
+     "slot": "WR",
+     "name": "George Pickens",
+     "pos": "WR",
+     "pts": 245.7
+    },
+    {
+     "slot": "TE",
+     "name": "Tyler Warren",
+     "pos": "TE",
+     "pts": 201.1
+    },
+    {
+     "slot": "FLEX",
+     "name": "Parker Washington",
+     "pos": "WR",
+     "pts": 212.4
+    },
+    {
+     "slot": "K",
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "pts": 116.0
+    },
+    {
+     "slot": "DEF",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "pts": 116.0
+    }
+   ],
+   "starter_pts_board": 2055.8,
+   "starter_pts_naive_vor": 2055.8,
+   "starter_pts_adp_chalk": 2004.1,
+   "board_minus_chalk": 51.7,
+   "board_minus_naive": 0.0,
+   "naive_vor_picks": [
+    {
+     "round": 1,
+     "name": "Jahmyr Gibbs",
+     "pos": "RB"
+    },
+    {
+     "round": 2,
+     "name": "Nico Collins",
+     "pos": "WR"
+    },
+    {
+     "round": 3,
+     "name": "George Pickens",
+     "pos": "WR"
+    },
+    {
+     "round": 4,
+     "name": "D'Andre Swift",
+     "pos": "RB"
+    },
+    {
+     "round": 5,
+     "name": "Tyler Warren",
+     "pos": "TE"
+    },
+    {
+     "round": 6,
+     "name": "Parker Washington",
+     "pos": "WR"
+    },
+    {
+     "round": 7,
+     "name": "Los Angeles Rams",
+     "pos": "DEF"
+    },
+    {
+     "round": 8,
+     "name": "Brock Purdy",
+     "pos": "QB"
+    },
+    {
+     "round": 9,
+     "name": "Jayden Reed",
+     "pos": "WR"
+    },
+    {
+     "round": 10,
+     "name": "Brandon Aubrey",
+     "pos": "K"
+    },
+    {
+     "round": 11,
+     "name": "Mark Andrews",
+     "pos": "TE"
+    },
+    {
+     "round": 12,
+     "name": "Brenton Strange",
+     "pos": "TE"
+    },
+    {
+     "round": 13,
+     "name": "T.J. Hockenson",
+     "pos": "TE"
+    },
+    {
+     "round": 14,
+     "name": "Dalton Schultz",
+     "pos": "TE"
+    }
+   ],
+   "position_counts": {
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "DEF": 1,
+    "QB": 2,
+    "K": 1
+   },
+   "sanity": {
+    "picks": true,
+    "no_duplicates": true,
+    "one_k_one_def": true,
+    "starters_fillable": true
+   }
+  },
+  "6": {
+   "picks": [
+    {
+     "round": 1,
+     "overall": 6,
+     "name": "Jonathan Taylor",
+     "pos": "RB",
+     "adp": 7.1,
+     "vor": 103.3,
+     "pts": 272.3,
+     "tier": 3
+    },
+    {
+     "round": 2,
+     "overall": 19,
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "adp": 23.6,
+     "vor": 91.0,
+     "pts": 253.5,
+     "tier": 1
+    },
+    {
+     "round": 3,
+     "overall": 30,
+     "name": "Chris Olave",
+     "pos": "WR",
+     "adp": 30.4,
+     "vor": 49.7,
+     "pts": 235.9,
+     "tier": 2
+    },
+    {
+     "round": 4,
+     "overall": 43,
+     "name": "D'Andre Swift",
+     "pos": "RB",
+     "adp": 55.8,
+     "vor": 39.0,
+     "pts": 208.0,
+     "tier": 4
+    },
+    {
+     "round": 5,
+     "overall": 54,
+     "name": "Mike Evans",
+     "pos": "WR",
+     "adp": 61.5,
+     "vor": 36.0,
+     "pts": 222.2,
+     "tier": 2
+    },
+    {
+     "round": 6,
+     "overall": 67,
+     "name": "Parker Washington",
+     "pos": "WR",
+     "adp": 76.6,
+     "vor": 26.2,
+     "pts": 212.4,
+     "tier": 2
+    },
+    {
+     "round": 7,
+     "overall": 78,
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "adp": 87.8,
+     "vor": 19.0,
+     "pts": 116.0,
+     "tier": null
+    },
+    {
+     "round": 8,
+     "overall": 91,
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "adp": 121.2,
+     "vor": 15.7,
+     "pts": 363.2,
+     "tier": 2
+    },
+    {
+     "round": 9,
+     "overall": 102,
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "adp": 93.6,
+     "vor": 11.0,
+     "pts": 116.0,
+     "tier": null
+    },
+    {
+     "round": 10,
+     "overall": 115,
+     "name": "Bo Nix",
+     "pos": "QB",
+     "adp": 119.9,
+     "vor": 0.2,
+     "pts": 347.7,
+     "tier": 2
+    },
+    {
+     "round": 11,
+     "overall": 126,
+     "name": "Brenton Strange",
+     "pos": "TE",
+     "adp": 151.8,
+     "vor": -1.5,
+     "pts": 161.0,
+     "tier": 5
+    },
+    {
+     "round": 12,
+     "overall": 139,
+     "name": "Jalen Coker",
+     "pos": "WR",
+     "adp": 144.0,
+     "vor": -20.3,
+     "pts": 165.9,
+     "tier": null
+    },
+    {
+     "round": 13,
+     "overall": 150,
+     "name": "Chris Rodriguez",
+     "pos": "RB",
+     "adp": 142.3,
+     "vor": -36.5,
+     "pts": 132.5,
+     "tier": 5
+    },
+    {
+     "round": 14,
+     "overall": 163,
+     "name": "Tyjae Spears",
+     "pos": "RB",
+     "adp": 166.0,
+     "vor": -54.4,
+     "pts": 114.6,
+     "tier": null
+    }
+   ],
+   "starters": [
+    {
+     "slot": "QB",
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "pts": 363.2
+    },
+    {
+     "slot": "RB",
+     "name": "Jonathan Taylor",
+     "pos": "RB",
+     "pts": 272.3
+    },
+    {
+     "slot": "RB",
+     "name": "D'Andre Swift",
+     "pos": "RB",
+     "pts": 208.0
+    },
+    {
+     "slot": "WR",
+     "name": "Chris Olave",
+     "pos": "WR",
+     "pts": 235.9
+    },
+    {
+     "slot": "WR",
+     "name": "Mike Evans",
+     "pos": "WR",
+     "pts": 222.2
+    },
+    {
+     "slot": "TE",
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "pts": 253.5
+    },
+    {
+     "slot": "FLEX",
+     "name": "Parker Washington",
+     "pos": "WR",
+     "pts": 212.4
+    },
+    {
+     "slot": "K",
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "pts": 116.0
+    },
+    {
+     "slot": "DEF",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "pts": 116.0
+    }
+   ],
+   "starter_pts_board": 1999.5,
+   "starter_pts_naive_vor": 1979.0,
+   "starter_pts_adp_chalk": 1903.0,
+   "board_minus_chalk": 96.5,
+   "board_minus_naive": 20.5,
+   "naive_vor_picks": [
+    {
+     "round": 1,
+     "name": "Jonathan Taylor",
+     "pos": "RB"
+    },
+    {
+     "round": 2,
+     "name": "Brock Bowers",
+     "pos": "TE"
+    },
+    {
+     "round": 3,
+     "name": "Colston Loveland",
+     "pos": "TE"
+    },
+    {
+     "round": 4,
+     "name": "D'Andre Swift",
+     "pos": "RB"
+    },
+    {
+     "round": 5,
+     "name": "Mike Evans",
+     "pos": "WR"
+    },
+    {
+     "round": 6,
+     "name": "Parker Washington",
+     "pos": "WR"
+    },
+    {
+     "round": 7,
+     "name": "Los Angeles Rams",
+     "pos": "DEF"
+    },
+    {
+     "round": 8,
+     "name": "Brock Purdy",
+     "pos": "QB"
+    },
+    {
+     "round": 9,
+     "name": "Jayden Reed",
+     "pos": "WR"
+    },
+    {
+     "round": 10,
+     "name": "Brandon Aubrey",
+     "pos": "K"
+    },
+    {
+     "round": 11,
+     "name": "Brenton Strange",
+     "pos": "TE"
+    },
+    {
+     "round": 12,
+     "name": "T.J. Hockenson",
+     "pos": "TE"
+    },
+    {
+     "round": 13,
+     "name": "Dalton Schultz",
+     "pos": "TE"
+    },
+    {
+     "round": 14,
+     "name": "Chig Okonkwo",
+     "pos": "TE"
+    }
+   ],
+   "position_counts": {
+    "RB": 4,
+    "TE": 2,
+    "WR": 4,
+    "DEF": 1,
+    "QB": 2,
+    "K": 1
+   },
+   "sanity": {
+    "picks": true,
+    "no_duplicates": true,
+    "one_k_one_def": true,
+    "starters_fillable": true
+   }
+  },
+  "12": {
+   "picks": [
+    {
+     "round": 1,
+     "overall": 12,
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "adp": 23.6,
+     "vor": 91.0,
+     "pts": 253.5,
+     "tier": 1
+    },
+    {
+     "round": 2,
+     "overall": 13,
+     "name": "De'Von Achane",
+     "pos": "RB",
+     "adp": 12.3,
+     "vor": 88.4,
+     "pts": 257.4,
+     "tier": 3
+    },
+    {
+     "round": 3,
+     "overall": 36,
+     "name": "DeVonta Smith",
+     "pos": "WR",
+     "adp": 36.4,
+     "vor": 43.0,
+     "pts": 229.2,
+     "tier": 2
+    },
+    {
+     "round": 4,
+     "overall": 37,
+     "name": "Zay Flowers",
+     "pos": "WR",
+     "adp": 42.8,
+     "vor": 42.0,
+     "pts": 228.2,
+     "tier": 2
+    },
+    {
+     "round": 5,
+     "overall": 60,
+     "name": "Mike Evans",
+     "pos": "WR",
+     "adp": 61.5,
+     "vor": 36.0,
+     "pts": 222.2,
+     "tier": 2
+    },
+    {
+     "round": 6,
+     "overall": 61,
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "adp": 87.8,
+     "vor": 19.0,
+     "pts": 116.0,
+     "tier": null
+    },
+    {
+     "round": 7,
+     "overall": 84,
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "adp": 121.2,
+     "vor": 15.7,
+     "pts": 363.2,
+     "tier": 2
+    },
+    {
+     "round": 8,
+     "overall": 85,
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "adp": 93.6,
+     "vor": 11.0,
+     "pts": 116.0,
+     "tier": null
+    },
+    {
+     "round": 9,
+     "overall": 108,
+     "name": "Jayden Reed",
+     "pos": "WR",
+     "adp": 114.4,
+     "vor": 11.4,
+     "pts": 197.6,
+     "tier": 2
+    },
+    {
+     "round": 10,
+     "overall": 109,
+     "name": "Bo Nix",
+     "pos": "QB",
+     "adp": 119.9,
+     "vor": 0.2,
+     "pts": 347.7,
+     "tier": 2
+    },
+    {
+     "round": 11,
+     "overall": 132,
+     "name": "Brenton Strange",
+     "pos": "TE",
+     "adp": 151.8,
+     "vor": -1.5,
+     "pts": 161.0,
+     "tier": 5
+    },
+    {
+     "round": 12,
+     "overall": 133,
+     "name": "Chris Rodriguez",
+     "pos": "RB",
+     "adp": 142.3,
+     "vor": -36.5,
+     "pts": 132.5,
+     "tier": 5
+    },
+    {
+     "round": 13,
+     "overall": 156,
+     "name": "Tyjae Spears",
+     "pos": "RB",
+     "adp": 166.0,
+     "vor": -54.4,
+     "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 157,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 163.7,
+     "vor": -57.7,
+     "pts": 111.3,
+     "tier": null
+    }
+   ],
+   "starters": [
+    {
+     "slot": "QB",
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "pts": 363.2
+    },
+    {
+     "slot": "RB",
+     "name": "De'Von Achane",
+     "pos": "RB",
+     "pts": 257.4
+    },
+    {
+     "slot": "RB",
+     "name": "Chris Rodriguez",
+     "pos": "RB",
+     "pts": 132.5
+    },
+    {
+     "slot": "WR",
+     "name": "DeVonta Smith",
+     "pos": "WR",
+     "pts": 229.2
+    },
+    {
+     "slot": "WR",
+     "name": "Zay Flowers",
+     "pos": "WR",
+     "pts": 228.2
+    },
+    {
+     "slot": "TE",
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "pts": 253.5
+    },
+    {
+     "slot": "FLEX",
+     "name": "Mike Evans",
+     "pos": "WR",
+     "pts": 222.2
+    },
+    {
+     "slot": "K",
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "pts": 116.0
+    },
+    {
+     "slot": "DEF",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "pts": 116.0
+    }
+   ],
+   "starter_pts_board": 1918.2,
+   "starter_pts_naive_vor": 1905.4,
+   "starter_pts_adp_chalk": 1847.2,
+   "board_minus_chalk": 71.0,
+   "board_minus_naive": 12.8,
+   "naive_vor_picks": [
+    {
+     "round": 1,
+     "name": "Brock Bowers",
+     "pos": "TE"
+    },
+    {
+     "round": 2,
+     "name": "De'Von Achane",
+     "pos": "RB"
+    },
+    {
+     "round": 3,
+     "name": "Colston Loveland",
+     "pos": "TE"
+    },
+    {
+     "round": 4,
+     "name": "DeVonta Smith",
+     "pos": "WR"
+    },
+    {
+     "round": 5,
+     "name": "Mike Evans",
+     "pos": "WR"
+    },
+    {
+     "round": 6,
+     "name": "Parker Washington",
+     "pos": "WR"
+    },
+    {
+     "round": 7,
+     "name": "Los Angeles Rams",
+     "pos": "DEF"
+    },
+    {
+     "round": 8,
+     "name": "Brock Purdy",
+     "pos": "QB"
+    },
+    {
+     "round": 9,
+     "name": "Jayden Reed",
+     "pos": "WR"
+    },
+    {
+     "round": 10,
+     "name": "Brandon Aubrey",
+     "pos": "K"
+    },
+    {
+     "round": 11,
+     "name": "Brenton Strange",
+     "pos": "TE"
+    },
+    {
+     "round": 12,
+     "name": "T.J. Hockenson",
+     "pos": "TE"
+    },
+    {
+     "round": 13,
+     "name": "Dalton Schultz",
+     "pos": "TE"
+    },
+    {
+     "round": 14,
+     "name": "Chris Rodriguez",
+     "pos": "RB"
+    }
+   ],
+   "position_counts": {
+    "TE": 2,
+    "RB": 4,
+    "WR": 4,
+    "DEF": 1,
+    "QB": 2,
+    "K": 1
+   },
+   "sanity": {
+    "picks": true,
+    "no_duplicates": true,
+    "one_k_one_def": true,
+    "starters_fillable": true
+   }
+  }
+ }
+}

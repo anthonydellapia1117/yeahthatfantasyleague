@@ -1,0 +1,260 @@
+{
+ "provenance": {
+  "generated": "2026-08-26",
+  "question": "does the tag add information ADP does not already carry? Phase A: the fantasy-ADP gate makes the tag a confirmation device by construction unless it shows within-band lift",
+  "method": "per season 2017-2025, rebuild the opportunity + efficiency spine from the PRIOR season (per-game touches >= pool p75 and points per touch >= pool p75, thresholds recomputed per season and position), then compare tagged vs untagged hit rates WITHIN each preseason ADP band",
+  "scoring": "league-exact (full PPR, 6-pt pass TD)",
+  "limitation": "PROXY for the shipped 2026 matrix: route participation, first-read share, inside-5 equity, implied totals and line quality have no clean per-season history in this cache. What is tested is the opportunity+efficiency spine common to every criterion set - a lift is evidence for the spine, not proof of the full matrix; a null is evidence against it",
+  "positions": [
+   "RB",
+   "WR",
+   "TE"
+  ],
+  "seasons": "2017-2025"
+ },
+ "within_band": {
+  "pos1-12": {
+   "tagged": {
+    "n": 43,
+    "hit12": {
+     "k": 28,
+     "rate": 0.6512,
+     "ci95": [
+      0.5017,
+      0.7758
+     ]
+    },
+    "hit24": {
+     "k": 34,
+     "rate": 0.7907,
+     "ci95": [
+      0.6479,
+      0.8858
+     ]
+    }
+   },
+   "untagged": {
+    "n": 257,
+    "hit12": {
+     "k": 133,
+     "rate": 0.5175,
+     "ci95": [
+      0.4566,
+      0.5779
+     ]
+    },
+    "hit24": {
+     "k": 189,
+     "rate": 0.7354,
+     "ci95": [
+      0.6783,
+      0.7856
+     ]
+    }
+   },
+   "lift_hit12": {
+    "diff": 0.1337,
+    "diff_ci95": [
+     -0.0213,
+     0.2887
+    ],
+    "z": 1.627,
+    "p_two_sided": 0.1038
+   },
+   "lift_hit24": {
+    "diff": 0.0553,
+    "diff_ci95": [
+     -0.0777,
+     0.1883
+    ],
+    "z": 0.768,
+    "p_two_sided": 0.4423
+   },
+   "power": {
+    "min_detectable_diff_80pct": 0.216,
+    "observed_diff": 0.1337,
+    "powered_for_observed_effect": false,
+    "note": "the smallest true difference this band's sample sizes could detect at 80% power; an observed effect smaller than this cannot be called absent, only unproven"
+   }
+  },
+  "pos13-24": {
+   "tagged": {
+    "n": 3,
+    "hit12": {
+     "k": 1,
+     "rate": 0.3333,
+     "ci95": [
+      0.0615,
+      0.7923
+     ]
+    },
+    "hit24": {
+     "k": 2,
+     "rate": 0.6667,
+     "ci95": [
+      0.2077,
+      0.9385
+     ]
+    }
+   },
+   "untagged": {
+    "n": 238,
+    "hit12": {
+     "k": 56,
+     "rate": 0.2353,
+     "ci95": [
+      0.1859,
+      0.2931
+     ]
+    },
+    "hit24": {
+     "k": 134,
+     "rate": 0.563,
+     "ci95": [
+      0.4995,
+      0.6245
+     ]
+    }
+   },
+   "lift_hit12": {
+    "diff": 0.098,
+    "diff_ci95": [
+     -0.4381,
+     0.6342
+    ],
+    "z": 0.397,
+    "p_two_sided": 0.6913
+   },
+   "lift_hit24": {
+    "diff": 0.1036,
+    "diff_ci95": [
+     -0.4335,
+     0.6408
+    ],
+    "z": 0.36,
+    "p_two_sided": 0.719
+   },
+   "power": {
+    "min_detectable_diff_80pct": 0.619,
+    "observed_diff": 0.098,
+    "powered_for_observed_effect": false,
+    "note": "the smallest true difference this band's sample sizes could detect at 80% power; an observed effect smaller than this cannot be called absent, only unproven"
+   }
+  },
+  "pos25-48": {
+   "tagged": {
+    "n": 0,
+    "hit12": {
+     "k": 0,
+     "rate": null,
+     "ci95": null
+    },
+    "hit24": {
+     "k": 0,
+     "rate": null,
+     "ci95": null
+    }
+   },
+   "untagged": {
+    "n": 340,
+    "hit12": {
+     "k": 35,
+     "rate": 0.1029,
+     "ci95": [
+      0.075,
+      0.1398
+     ]
+    },
+    "hit24": {
+     "k": 85,
+     "rate": 0.25,
+     "ci95": [
+      0.2069,
+      0.2986
+     ]
+    }
+   },
+   "lift_hit12": null,
+   "lift_hit24": null,
+   "power": {
+    "min_detectable_diff_80pct": null,
+    "observed_diff": null,
+    "powered_for_observed_effect": false,
+    "note": "the smallest true difference this band's sample sizes could detect at 80% power; an observed effect smaller than this cannot be called absent, only unproven"
+   }
+  }
+ },
+ "pooled": {
+  "tagged": {
+   "n": 46,
+   "hit12": {
+    "k": 29,
+    "rate": 0.6304,
+    "ci95": [
+     0.486,
+     0.7548
+    ]
+   },
+   "hit24": {
+    "k": 36,
+    "rate": 0.7826,
+    "ci95": [
+     0.6443,
+     0.8774
+    ]
+   }
+  },
+  "untagged": {
+   "n": 835,
+   "hit12": {
+    "k": 224,
+    "rate": 0.2683,
+    "ci95": [
+     0.2393,
+     0.2993
+    ]
+   },
+   "hit24": {
+    "k": 408,
+    "rate": 0.4886,
+    "ci95": [
+     0.4548,
+     0.5225
+    ]
+   }
+  },
+  "lift_hit12": {
+   "diff": 0.3622,
+   "diff_ci95": [
+    0.2195,
+    0.5049
+   ],
+   "z": 5.285,
+   "p_two_sided": 0.0
+  },
+  "lift_hit24": {
+   "diff": 0.294,
+   "diff_ci95": [
+    0.1701,
+    0.4179
+   ],
+   "z": 3.882,
+   "p_two_sided": 0.0001
+  }
+ },
+ "verdict": "UNDERPOWERED - cannot distinguish from ADP at these sample sizes; not evidence of absence",
+ "significant_cells": [],
+ "underpowered_bands": [
+  "pos1-12",
+  "pos13-24"
+ ],
+ "concentration": {
+  "tagged_by_band": {
+   "pos1-12": 43,
+   "pos13-24": 3,
+   "pos25-48": 0
+  },
+  "share_in_top12_band": 0.9348,
+  "note": "the pooled tagged-vs-untagged gap is dominated by this concentration - it measures ADP, not the tag. Only the within-band rows above test the tag itself"
+ }
+}

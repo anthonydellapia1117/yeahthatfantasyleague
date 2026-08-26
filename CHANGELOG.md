@@ -1,5 +1,254 @@
 # Changelog
 
+## P0: the pick clock is server-anchored or absent (2026-08-26)
+
+Independent review found the room's clock hardcoded 120 seconds against a
+live draft whose pick_timer is 60, and anchored the countdown to the
+moment POLLING NOTICED a pick rather than to Sleeper's last_picked
+timestamp. Compounded, the room could show time remaining after the real
+window had expired and the pick had been autopicked - silently, on the
+primary draft-night surface.
+
+The fix, all three legs:
+1. Duration comes from draft.settings.pick_timer on every fetch - never
+   hardcoded, dynamic per draft (the live league runs 60s, mocks vary).
+2. The countdown anchors to draft.last_picked, Sleeper's own epoch-ms
+   stamp of the previous pick - poll latency no longer inflates it.
+3. No server duration AND anchor, no number: last_picked null (the
+   current pre-draft state) renders "-:--" with "clock unavailable - use
+   Sleeper"; a countdown expired by Sleeper's own timestamps holds 0:00
+   and says "check Sleeper". A wrong clock is worse than no clock.
+
+Every "two minutes" / 2:00 reference is purged from the room's UI and
+comments and from the live docs (DRAFT_ROOM_BUILD_ORDER, VISION, HANDOFF,
+the plugin reference); archived chat logs keep their historical text. The
+two-minute figure was the old Yahoo-era rule 3.2 and was never the
+Sleeper timer - VISION.md now says so explicitly.
+
+Guards: pages guards assert the room reads pick_timer and last_picked,
+carries no two-minute language, and renders the honest absence; smoke
+scenario 22 drives a 60-second draft (the clock must read the real
+server-anchored remainder and may never exceed the real timer), the
+missing-anchor case, and the expired case. All drafting-status smoke
+stubs now carry settings.pick_timer and last_picked, so every live
+scenario exercises the server-anchored clock.
+
+## L1: LeagueLegacy coverage audit, champions-vs-field, base rates to 2013 (2026-08-26)
+
+COVERAGE AUDIT (docs/LEAGUELEGACY_COVERAGE_AUDIT.md). The commissioned
+belief - "the pipeline reads only 04_draft/draft_results.csv and only
+from 2016 forward" - is incorrect on both halves. The pipeline reads
+seven archive files; matchup_rosters.csv, named as unread, is the most
+read file in the archive. The archive is also committed TWICE
+(made-resources/ and LeagueLegacy-io/), with verify_yahoo.py reading
+both - a real hazard, logged rather than fixed since it touches seven
+scripts and is not draft-night critical.
+
+THE DRAFTED-VS-ACQUIRED SPLIT ALREADY EXISTED. src/phase2_value.py has
+computed it since 2026-08-11 across all thirteen seasons 2013-2025. What
+was actually missing is now built: src/draft_vs_acquired.py adds the
+champions-versus-field comparison with bootstrap intervals and the era
+flags the archive's own seasons.csv requires.
+
+THE ANSWER. Champions draw 71.0% of starter points from drafted players;
+the field draws 68.7%. The +2.3pp difference has a 95% interval of
+[-5.2, +9.7] and overlaps zero in both eras separately. What DOES
+separate champions is total production: 2,030.6 starter points vs
+1,827.4, a +203.3 gap with interval [163.4, 243.0]. So "won on draft day
+or after it" is the wrong question - champions source their points in
+the same proportion as everyone else and simply accumulate more through
+both channels. Optimizing drafted share would target the one quantity
+that does not distinguish winners here.
+
+BASE RATES NOW RUN 2013-2025. The C2 league table capped itself at 2016
+because its league loop was nested inside the market loop, which starts
+where the FFC ADP cache starts. The loops are now independent - league
+2013-2025, market 2016-2025 - and league joins rose from 1,448 to 1,867,
+a 29% increase. Era rows are published beside the pooled table and the
+two era hit rates overlap, so pooling is now demonstrated defensible
+rather than assumed.
+
+ARCHIVE CORRECTIONS. Baldino has 3 titles tied with Cambria and is the
+more recent dynasty (back-to-back 2023-24), correcting the research
+director report's singular-benchmark framing. use_median_scoring is 0
+for every season through 2024, so the C4 ceiling weighting CANNOT be
+validated against league history - the format did not exist before 2025.
+Keeper status stays an open question for the commissioner: the flag is
+on for 2025-2026 but the 2025 draft had zero keeper picks and
+keeper_results.csv is 2 bytes. Findings L.1 and L.2.
+
+## N1 CORRECTION: the BULLISH-vs-ADP result is UNDERPOWERED, not null (2026-08-26)
+
+The N.1 entry originally read "NULL - the tag does not beat ADP." That
+was wrong, and the distinction matters: a non-significant result is only
+evidence of absence when the design could have detected an effect worth
+caring about. A computed power analysis says this one could not. With 43
+tagged players in the top ADP band, the smallest true difference
+detectable at 80% power is 21.6 percentage points; the observed
+difference is +13.4pp. The second band needs 61.9pp on n=3. Both
+testable bands are underpowered, so the verdict is now three-state -
+BEATS ADP / UNDERPOWERED / NULL - derived from significance AND power
+rather than the p-value alone, and guards enforce that an underpowered
+band can never be reported as a null again.
+
+What survives unchanged is the finding that actually carries evidential
+weight: 93.5% of tags land in the top ADP band and none beyond pos24, so
+the pooled 63.0%-vs-26.8% gap measures the market, not the tag. The
+shipped consequence is unchanged too - the tag stays display-only and is
+absent from the VONA tree - but the stated reason is now correct: not
+"shown not to work", rather "not shown to work, and concentrated where
+the board already ranks highly." Findings N.1.
+
+## V1: VONA draft-path tree, new PATHS tab (2026-08-26)
+
+`src/build_vona_tree.py` -> `out/data/vona_tree_2026.json`, rendered by
+`out/paths.html`. VONA = E[best available now] - E[best available at my
+next pick], survival-weighted over the whole positional pool, using the
+frozen calibrated survival functions called from the engine.
+
+Approved decisions implemented: depth 7 on the structural boundary (the
+starting lineup is exactly seven skill slots), branching data-driven at
+EVERY slot with no slot-number gate, and no BULLISH marker on any node.
+The data vindicated the branching call - nine slots fork, three (5, 9,
+10) are forced chains, and slot 4 forks on elite RB vs elite TE. The
+rejected slot-gating rule would have forced slot 5 to branch where there
+is no decision and denied slots 1-4 the forks that exist.
+
+Two defects surfaced and fixed during the build. The first prune rule
+summed raw VOR along a path - the objective M1 already disproved, which
+prices duplicates at starter value - so pruning now runs on lineup value
+from the shared src/forward_policy.py. Strict domination then collapsed
+nearly every fork, so branches beaten by less than a derived narrow band
+(7.8 lineup points, p25 of the 41 margins this board produces) are kept
+and flagged COIN FLIP instead of silently decided.
+
+The independence assumption is measured, not asserted: against the
+league's own 2,339 picks, same-position clustering runs RB 1.53x, QB
+1.24x, TE 1.14x, WR 1.12x over binomial. Clustering means the tree
+UNDERSTATES VONA and is biased toward WAIT, most strongly at RB - stated
+on the page and the artifact. Totals across twelve slots: 39 rendered
+forks, 29 dominated branches pruned, 15 coin flips kept, all reported
+per slot rather than silently. Findings V.1.
+
+## N1: the BULLISH-vs-ADP null test - the tag does not beat ADP (2026-08-26)
+
+`src/bullish_vs_adp.py` -> `out/data/bullish_vs_adp.json`, answering the
+third ask and the Phase A concern that produced it: the tag's candidate
+pool is ADP-gated, so it can only re-rank what the market already
+surfaced. 2026 outcomes do not exist, so the CRITERIA are backtested
+across 2017-2025 - the opportunity + efficiency spine rebuilt from each
+prior season under league-exact scoring, thresholds recomputed per season
+and position - and tagged vs untagged hit rates are compared WITHIN each
+preseason ADP band.
+
+RESULT: NULL. Within pos1-12, tagged players finish top-12 at 65.1%
+(n=43) vs 51.8% untagged (n=257), a +13.4pp difference whose 95% interval
+is [-2.1, +28.9] (p=0.10). Within pos13-24 the difference is +9.8pp with
+an interval spanning [-43.8, +63.4]. No tagged player lands beyond
+pos24, so that band admits no comparison. Every interval crosses zero.
+
+The pooled figure is a trap and the artifact says so: tagged 63.0% vs
+untagged 26.8% looks decisive but 93.5% of all tags land in the pos1-12
+ADP band, so the pooled gap measures the market's ranking, not the tag.
+Guards enforce that the verdict is derived from the intervals, that the
+concentration disclosure stays on the artifact, and that the shipped tag
+remains display-only - beside the signal encoding, never in a verdict
+path - which this null is the evidence for. Limitation stated: this
+backtests the opportunity+efficiency spine, not the full shipped matrix
+(route participation, first-read, inside-5 equity, implied totals and
+line quality have no clean per-season history). Findings N.1.
+
+## UI: board tag filter, players tab rebuild (2026-08-26)
+
+BIG BOARD - the C5 BULLISH/WATCH chip already rendered inline on each row;
+this adds the tagged-only filter beside the existing toggles, plus a
+FILTERED bar that names every active filter (position, signal, and each
+toggle), shows the shown-of-total count, and clears them all in one tap.
+
+PLAYERS TAB - three changes.
+1. Layout: six position groups render three across in two rows, QB RB WR
+   over TE DST K, each container sized to its own content.
+2. Density: the row rule was justify-content:space-between, which pushed
+   the player name and its "VOR 68 - ADP 22.8" line to opposite edges of
+   the row. Rows now pack from flex-start with a small gap; the name
+   stays a link to the player page.
+3. VOR color conditioning: a continuous ramp, red at the minimum through
+   yellow at the MEDIAN to green at the maximum, interpolated smoothly.
+   Anchors are computed across the entire player database, never per
+   group, so a color means the same thing in every container; the median
+   anchors the midpoint because VOR is right-skewed and a mean would drag
+   the middle up and paint most of the board red. ADP gets no color. Per
+   the repo color law the verdict palette is reserved, so the ramp uses a
+   distinct scale, states that on the page, and a new guard proves every
+   interpolated color on it (not just the three anchors) clears 4.5:1 on
+   the card surface and reuses no reserved hex.
+4. Filtering applies within each position group - search plus
+   BULLISH/WATCH, archetype-tagged, and your-call toggles. Non-matching
+   rows are REMOVED from the DOM rather than dimmed, each group's heading
+   shows its filtered count, and an emptied group collapses out of the
+   grid instead of leaving a hole.
+
+A CSS bug surfaced by the new smoke: an author display:flex rule beats
+the hidden attribute's UA display:none, so the filter bar never hid
+itself; fixed with an explicit [hidden] rule on both pages.
+
+## M4: DRAFT MODE - the live room runs against any Sleeper mock (2026-08-26)
+
+`out/draft_room.html?draft=<mock id>` points the whole live machinery -
+board, pick engine, survival, runs, up-next, wall - at a standalone mock
+(publicly readable, verified live against 1398365807171371008). What is
+mock-aware: the snake geometry follows the LOADED draft's settings (a
+10-team/15-round mock computes correct rounds, on-clock seats, and a
+10-chip seat picker), and the seat has three confirmed states, never
+guessed - seated (user id in draft_order: auto-selected and shown for
+confirmation), creator-but-unseated (id in creators only: "your mock, no
+seat claimed yet"), and absent (pick from the list). What is NOT mock-
+aware, by law: the board itself. A format-mismatch bar compares the
+loaded draft against the real league draft's own settings (fetched, not
+hardcoded) and names each differing field - scoring (std vs ppr) flagged
+loudest - stating that values are priced for the real league and may not
+transfer; nothing is silently recomputed. League-keyed features shut off
+with their reason stated (13-season dossiers, league pick history, the
+league-mate simulator, franchise names on mock seats). An in-page opener
+loads a pasted mock id; EXIT returns to the real draft.
+`src/check_draft_order.py` now documents draft_order-going-non-null as
+the primary draw signal with the non-identity slot map kept as the cheap
+secondary. Two new hermetic smoke scenarios (19 total) cover the unseated
+mismatch-labeled mock and a live 10-team mock; a pages guard tracks the
+mock-aware link derivation. All suites and the full smoke GATE OK;
+mathdiff proof EMPTY.
+
+## M3: draft-order draw watch (2026-08-26)
+
+`src/check_draft_order.py` detects a drawn order with the room's own
+semantics (identity slot map = not drawn; draft_order by user id primary,
+slot_to_roster_id via roster 7 fallback) and prints one status line. A
+scheduled Routine runs it every two hours, silent until the draw, then
+push-notifies Anthony with his slot and retires itself; documented as
+automation LAYER 3 in the runbook. The room itself needed no change - it
+already collapses to the detected seat live. Yahoo 2014-2024 history
+(post-merge item 2) remains blocked on the owner side of the OAuth
+contract: no .env credentials exist in the container; src/fetch_yahoo.py
+and src/oauth_exchange.py are ready the moment the two values and one
+verification code arrive.
+
+## M1: mock-draft validation - the board drafts, not just ranks (2026-08-26)
+
+`src/mock_draft.py` -> `out/data/mock_drafts_2026.json`: deterministic
+14-round snake sims from slots 1, 6, and 12. Our seat runs the board's
+marginal policy (optimal-lineup improvement over replacement phantoms
+from the engine's own baselines, VOR tie-break, positional caps derived
+from the observed flex allocation); eleven ADP seats use the league's
+observed K/DEF window (median 2 rounds from the end, computed from
+out/picks.csv). The board beats ADP chalk from every slot (+51.7 /
++96.5 / +71.0 projected starter points) with legal, coherent rosters.
+The validation caught what it was built to catch: naive max-VOR drafts
+duplicate elite TEs early (the live room's roster-need line already
+guards this interactively) and has no bench-value model (a pure VOR
+tie-break benches four TE2s). Both comparison rosters are preserved in
+the artifact; tests/test_mock.py guards legality, the caps, and the
+board-beats-chalk deltas, wired into the workflow. Findings M.1.
+
 ## R1: review response - gate runner, computed RB1 ledger, survivorship label (2026-08-26)
 
 Three pre-merge review items on PR #48. (1) Exit-code-masking class fix:

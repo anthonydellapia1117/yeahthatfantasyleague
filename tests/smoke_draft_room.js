@@ -127,6 +127,8 @@ const ok = (cond, name, detail) => {
     await page.waitForTimeout(2500);
     const banner = await page.textContent("#banner");
     ok(/unreachable/.test(banner), "offline banner with staleness warning");
+    ok(/sleeper (FAILED|TIMEOUT) after \d+ms/.test(await page.textContent("#conn")),
+       "offline: the connection diagnostic names the failure and its timing");
     ok(await page.locator(".chips button").count() === 12, "offline still renders scenarios");
     await page.close();
   }
@@ -150,7 +152,7 @@ const ok = (cond, name, detail) => {
       r.fulfill({
         contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: order,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order,
                                slot_to_roster_id: slotToRoster }),
       });
     });
@@ -159,6 +161,8 @@ const ok = (cond, name, detail) => {
     const mode = await page.textContent("#mode");
     ok(/LIVE/.test(mode), "mode 2 detected");
     ok(/seat 7/.test(mode), "Anthony's seat auto-detected from the draw");
+    ok(/sleeper 200 - \d+ms/.test(await page.textContent("#conn")),
+       "live: the connection diagnostic shows status and round-trip");
     const body = await page.textContent("body");
     ok(await page.locator(".bignm").count() === 1, "one huge answer name");
     const big = await page.textContent(".bignm");
@@ -213,7 +217,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: null,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: null,
                                slot_to_roster_id: drawn }) });
     });
     await page.goto(FILE);
@@ -256,7 +260,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -357,7 +361,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: null,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: null,
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -382,7 +386,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -480,7 +484,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -533,7 +537,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -649,7 +653,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots9 }) });
     });
     await p9.goto("file://" + tmp);
@@ -737,6 +741,56 @@ const ok = (cond, name, detail) => {
     await page.waitForTimeout(800);
     ok((await page.textContent("#content")).includes("projection = floor"),
        "K page carries the floor label");
+
+    // players index: 3-across groups, tight rows, database-wide VOR ramp,
+    // in-group filtering that REMOVES rows and collapses emptied groups
+    await page.goto(base + "/out/players.html");
+    await page.waitForTimeout(700);
+    const grpOrder = await page.$$eval("#pgrid .pgrp h2",
+      els => els.map(e => e.textContent.trim().split(/\s+/)[0]));
+    ok(JSON.stringify(grpOrder) === JSON.stringify(["QB","RB","WR","TE","DST","K"]),
+       "players: groups run QB RB WR then TE DST K", grpOrder.join(","));
+    ok(await page.$eval("#pgrid", el =>
+         getComputedStyle(el).gridTemplateColumns.split(" ").length === 3),
+       "players: the grid renders three containers across");
+    ok(await page.$eval(".idxrow", el =>
+         getComputedStyle(el).justifyContent === "flex-start"),
+       "players: rows pack name and numbers together, not space-between");
+    // the ramp: highest-VOR player greener than the lowest shown, and both
+    // colored from the same database-wide scale
+    const ramp = await page.evaluate(() => {
+      const vs = [...document.querySelectorAll("#pgrid .vorv")];
+      const parse = e => getComputedStyle(e).color.match(/\d+/g).map(Number);
+      const nums = vs.map(e => ({ v: parseFloat(e.textContent.replace(/\D+/g, "")),
+                                  c: parse(e) }));
+      nums.sort((a, b) => b.v - a.v);
+      return { hi: nums[0].c, lo: nums[nums.length - 1].c, n: nums.length };
+    });
+    ok(ramp.n > 50 && ramp.hi[1] > ramp.hi[0] && ramp.lo[0] > ramp.lo[1],
+       "players: VOR ramp runs green at the top and red at the bottom",
+       JSON.stringify(ramp));
+    ok(!/color/.test(await page.$eval("#pgrid .nums", el => el.outerHTML)
+        .then(h => h.replace(/<span class="vorv"[^>]*>.*?<\/span>/, ""))),
+       "players: ADP carries no color conditioning");
+    // filter: BULLISH/WATCH only
+    const beforeRows = await page.locator("#pgrid .idxrow").count();
+    const beforeGrps = await page.locator("#pgrid .pgrp:not([hidden])").count();
+    await page.click('#pfilt button[data-pf="bull"]');
+    await page.waitForTimeout(300);
+    const afterRows = await page.locator("#pgrid .idxrow").count();
+    ok(afterRows > 0 && afterRows < beforeRows,
+       "players: tagged-only filter removes non-matching rows from the DOM",
+       beforeRows + " -> " + afterRows);
+    ok(await page.locator("#pgrid .pgrp[hidden]").count() > 0 ||
+       await page.locator("#pgrid .pgrp:not([hidden])").count() < beforeGrps,
+       "players: a group with no matches collapses out of the grid");
+    ok(/FILTERED/.test(await page.textContent("#pactive")),
+       "players: active-filter state is visible");
+    await page.click("#pf-clear");
+    await page.waitForTimeout(300);
+    ok(await page.locator("#pgrid .idxrow").count() === beforeRows &&
+       await page.locator("#pgrid .pgrp:not([hidden])").count() === beforeGrps,
+       "players: CLEAR ALL restores every group and row");
     ok(errors.length === 0, "players page: zero console errors",
        errors[0] || "");
     await page.close();
@@ -831,7 +885,7 @@ const ok = (cond, name, detail) => {
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(800);
       ok(await pg.locator(".ynav").count() === 1, `nav renders on ${file}`);
-      ok(await pg.locator(".ynav-items a").count() === 6, `nav carries six items on ${file}`);
+      ok(await pg.locator(".ynav-items a").count() === 7, `nav carries seven items on ${file}`);
       const on = pg.locator(".ynav-items a.on");
       ok(await on.count() === 1 && (await on.textContent()).trim() === label
          && await on.getAttribute("aria-current") === "page",
@@ -890,7 +944,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots13 }) });
     });
     await lv.goto(base + "/out/draft_room.html");
@@ -1067,6 +1121,27 @@ const ok = (cond, name, detail) => {
        "K/DST floor card renders off the CVS board");
     ok(/walter cap 10%/.test(await pg.textContent("#foot")),
        "provenance footer echoes the cap from config");
+    // BULLISH/WATCH filter: tagged-only, with visible clearable state
+    const beforeN = await pg.locator("#board .brow").count();
+    await pg.click('#togf button[data-t="bull"]');
+    await pg.waitForTimeout(300);
+    const afterN = await pg.locator("#board .brow").count();
+    ok(afterN > 0 && afterN < beforeN,
+       "board: BULLISH/WATCH filter narrows the board to tagged players",
+       beforeN + " -> " + afterN);
+    const taggedOnly = await pg.$$eval("#board .brow .nm",
+      els => els.every(e => /BULLISH|WATCH/.test(e.textContent)));
+    ok(taggedOnly, "board: every surviving row carries a tag");
+    const af = await pg.textContent("#activef");
+    ok(/FILTERED/.test(af) && /BULLISH\/WATCH only/.test(af) &&
+       new RegExp(afterN + " of ").test(af),
+       "board: active-filter state is visible with the shown-of-total count");
+    await pg.click("#af-clear");
+    await pg.waitForTimeout(300);
+    ok(await pg.locator("#board .brow").count() === beforeN,
+       "board: CLEAR ALL restores the unfiltered board");
+    ok(await pg.locator("#activef").isHidden(),
+       "board: the filter bar hides itself when nothing is filtered");
     ok(errs15.length === 0, "big board: zero console errors", errs15[0] || "");
     await pg.close();
 
@@ -1115,7 +1190,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: order16,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order16,
                                slot_to_roster_id: s2r16 }) });
     });
     await pe.goto(base + "/out/draft_room.html");
@@ -1236,7 +1311,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: order16,
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: order16,
                                slot_to_roster_id: s2r16 }) });
     });
     await oc.goto(base + "/out/draft_room.html");
@@ -1296,7 +1371,7 @@ const ok = (cond, name, detail) => {
       if (r.request().url().endsWith("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
                                slot_to_roster_id: idSlots2 }) });
     });
     await pr2.goto(base + "/out/draft_room.html");
@@ -1391,6 +1466,271 @@ const ok = (cond, name, detail) => {
        "JS matches Python within tolerance",
        "worst rel diff " + res.worst.d + " at adp " + res.worst.adp + " pick " + res.worst.pick);
     ok(!res.deepTailZero, "JS deep tail never collapses to 0 where Python keeps mass");
+    await page.close();
+  }
+
+  // ---- scenario 18: DRAFT MODE - mock loaded, creator unseated, format
+  // mismatch labeled (three-state seat law: creator is NOT seat)
+  {
+    const page = await browser.newPage();
+    const MOCK = "1398365807171371008", REAL = "1389378429505241089";
+    const ident = n => { const m = {}; for (let i = 1; i <= n; i++) m[i] = i; return m; };
+    const mockDraft = { league_id: null, status: "pre_draft",
+      creators: ["345197760305307648"], draft_order: null,
+      slot_to_roster_id: ident(10),
+      settings: { teams: 10, rounds: 15, slots_flex: 2, pick_timer: 120, cpu_autopick: 1 },
+      metadata: { scoring_type: "std" } };
+    const realDraft = { status: "pre_draft", draft_order: null,
+      slot_to_roster_id: ident(12),
+      settings: { teams: 12, rounds: 14, slots_flex: 1, pick_timer: 60 },
+      metadata: { scoring_type: "ppr" } };
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify(r.request().url().includes(REAL) ? realDraft : mockDraft) });
+    });
+    await page.goto(FILE + "?draft=" + MOCK);
+    await page.waitForTimeout(4000);
+    const bar = await page.textContent("#mockbar");
+    ok(/DRAFT MODE/.test(bar), "mock: the mockbar announces draft mode");
+    ok(/Your mock, no seat claimed yet/.test(bar),
+       "mock: creator-but-unseated state named explicitly, no seat guessed");
+    ok(/SCORING MISMATCH/.test(bar) && /std/.test(bar),
+       "mock: std-vs-ppr flagged loudest");
+    ok(/teams.*10.*vs league 12/.test(bar) && /rounds.*15.*vs league 14/.test(bar),
+       "mock: each differing format field named");
+    ok(/may not transfer/.test(bar),
+       "mock: board values labeled as real-league priced, never recomputed");
+    ok(/DRAFT MODE/.test(await page.textContent("#mode")),
+       "mock: mode pill carries draft mode");
+    ok(!/you are seat/.test(await page.textContent("#mode")),
+       "mock: no seat auto-selected while unseated");
+    await page.close();
+  }
+
+  // ---- scenario 19: DRAFT MODE live - seated via draft_order, mock
+  // geometry drives the snake, league-keyed features off
+  {
+    const page = await browser.newPage();
+    const MOCK = "1398365807171371008", REAL = "1389378429505241089";
+    const ident = n => { const m = {}; for (let i = 1; i <= n; i++) m[i] = i; return m; };
+    const mockDraft = { league_id: null, status: "drafting",
+      last_picked: Date.now() - 10000,
+      creators: ["345197760305307648"],
+      draft_order: { "345197760305307648": 3 },
+      slot_to_roster_id: ident(10),
+      settings: { teams: 10, rounds: 15, slots_flex: 2, pick_timer: 120 },
+      metadata: { scoring_type: "ppr" } };
+    const realDraft = { status: "pre_draft", draft_order: null,
+      slot_to_roster_id: ident(12),
+      settings: { teams: 12, rounds: 14, slots_flex: 1, pick_timer: 60 },
+      metadata: { scoring_type: "ppr" } };
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([
+        { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
+      ]) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify(r.request().url().includes(REAL) ? realDraft : mockDraft) });
+    });
+    await page.goto(FILE + "?draft=" + MOCK);
+    await page.waitForTimeout(4000);
+    const mode = await page.textContent("#mode");
+    ok(/DRAFT MODE - MOCK LIVE/.test(mode), "mock live: mode pill goes live");
+    ok(/seat 3/.test(mode), "mock live: seat 3 auto-selected from draft_order");
+    ok(/Seat.*3.*detected from draft_order/.test(await page.textContent("#mockbar")),
+       "mock live: the auto-selection is shown for confirmation");
+    ok(await page.locator("#lv-seatpick button").count() === 10,
+       "mock live: seat picker follows the mock's 10 teams, not the league's 12");
+    ok(/off in draft mode/.test(await page.textContent("#f-opps")),
+       "mock live: league-mate dossiers off with the reason stated");
+    ok(!/Antdell|Taylor Made|Cambrias/.test(await page.textContent("#lv-franch")),
+       "mock live: no league franchise names attached to mock seats");
+    await page.close();
+  }
+
+  // ---- scenario 20: forward-pick law at the snake turn - no player may
+  // appear twice in any slot's projected sequence (the live bug: the same
+  // WR at back-to-back picks 24 and 25 from slot 1)
+  {
+    const page = await browser.newPage();
+    await page.route("**/api.sleeper.app/**", r => r.abort());
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    for (const slot of [1, 12]){   // both wrap seats take back-to-back picks
+      await page.click(`.chips button[data-slot="${slot}"]`);
+      await page.waitForTimeout(300);
+      const names = (await page.$$eval(".rc-name", els =>
+        els.map(e => e.textContent.trim())))
+        .filter(n => !/best available/.test(n))
+        .map(n => n.replace(/projection = floor.*$/, "").trim());
+      const dupes = names.filter((n, i) => names.indexOf(n) !== i);
+      ok(names.length >= 10 && dupes.length === 0,
+         `slot ${slot}: no player repeats across its projected picks`,
+         dupes.join(", "));
+    }
+    // the wrap itself: slot 1 rounds 2 and 3 are consecutive overall picks
+    await page.click('.chips button[data-slot="1"]');
+    await page.waitForTimeout(300);
+    const picks = await page.$$eval(".rowcard", cards => cards.slice(0, 4).map(c => ({
+      pick: (c.querySelector(".rc-pick") || {}).textContent || "",
+      name: (c.querySelector(".rc-name") || {}).textContent || "" })));
+    const r2 = picks.find(p => /pick 24\b/.test(p.pick));
+    const r3 = picks.find(p => /pick 25\b/.test(p.pick));
+    ok(!!r2 && !!r3 && r2.name.trim() !== r3.name.trim(),
+       "back-to-back turn picks 24 and 25 project two different players",
+       r2 && r3 ? r2.name + " / " + r3.name : "cards missing");
+    await page.close();
+  }
+
+  // ---- scenario 21: the PATHS tab (VONA tree)
+  {
+    const http = require("http");
+    const fs = require("fs");
+    const srv = http.createServer((req, res) => {
+      const url = req.url.split("?")[0];
+      // the browser probes /favicon.ico on its own; answering it keeps the
+      // zero-console-error assertion about the PAGE, not about Chromium
+      if (url === "/favicon.ico"){ res.writeHead(204); res.end(); return; }
+      const p = path.join(process.cwd(), decodeURIComponent(url));
+      fs.readFile(p, (e, b) => {
+        if (e){ res.writeHead(404); res.end("nf"); return; }
+        res.writeHead(200, { "content-type": p.endsWith(".json")
+          ? "application/json" : p.endsWith(".js")
+          ? "text/javascript" : "text/html" });
+        res.end(b);
+      });
+    }).listen(0);
+    await new Promise(r => srv.on("listening", r));
+    const base = "http://127.0.0.1:" + srv.address().port;
+    const pg = await browser.newPage();
+    const perr = [];
+    pg.on("console", m => { if (m.type() === "error") perr.push(m.text()); });
+    await pg.goto(base + "/out/paths.html");
+    await pg.waitForTimeout(900);
+    const body = await pg.textContent("#content");
+    ok(/Slot 1 - picks/.test(body), "paths: renders a slot tree");
+    ok(await pg.locator(".tnode").count() > 3, "paths: the tree has nodes");
+    ok(!/BULLISH|WATCH/.test(body),
+       "paths: no BULLISH marker anywhere on the decision surface");
+    ok(/real decision points/.test(body) && /pruned as dominated/.test(body),
+       "paths: fork and prune accounting is on screen, never silent");
+    ok(/undrawn/.test(await pg.textContent("#hdr")),
+       "paths: slot-conditional, states the order is undrawn");
+    // switching slots re-renders a different tree
+    const t1 = await pg.textContent("#content");
+    await pg.click('#slots button[data-slot="8"]');
+    await pg.waitForTimeout(300);
+    const t8 = await pg.textContent("#content");
+    ok(/Slot 8 - picks/.test(t8) && t1 !== t8,
+       "paths: the slot picker re-renders the tree");
+    ok(/Correlation caveat/.test(t8) && /UNDERSTATES VONA/.test(t8),
+       "paths: the independence caveat and its direction are shown");
+    ok(/Stated deviation/.test(t8),
+       "paths: the spec deviations are disclosed on the page");
+    // every rendered node clears the survival floor the page states
+    const floorOk = await pg.evaluate(() => {
+      const nums = [...document.querySelectorAll(".tnums")]
+        .map(e => e.textContent.match(/there (\d+)%/))
+        .filter(Boolean).map(m => Number(m[1]));
+      return nums.length > 0 && nums.every(n => n >= 40);
+    });
+    ok(floorOk, "paths: every rendered node is at least 40% likely to be there");
+    ok(perr.length === 0, "paths: zero console errors", perr[0] || "");
+    await pg.close();
+    srv.close();
+  }
+
+  // ---- scenario 22: THE PICK CLOCK IS SERVER-ANCHORED OR ABSENT (P0).
+  // The old clock hardcoded 120s and anchored to poll detection - it could
+  // show time remaining after the real 60s window had expired and the pick
+  // had been autopicked, silently. These asserts make that impossible.
+  {
+    // 22a: a 60-second draft, last pick 20s ago -> the clock must read the
+    // REAL remainder (~40s), never 2:00, never anything over 1:00
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([
+        { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
+      ]) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: Date.now() - 20000,
+          draft_order: { "345197760305307648": 7 },
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    const c = (await page.textContent("#clock")).trim();
+    const m = c.match(/^(\d+):(\d\d)$/);
+    const secs = m ? Number(m[1]) * 60 + Number(m[2]) : -1;
+    ok(m && secs <= 45 && secs >= 25,
+       "60s draft: the clock reads the real server-anchored remainder", c);
+    ok(secs <= 60, "60s draft: the room NEVER renders more than the real timer", c);
+    ok(/clock 60s per pick \(draft settings\)/.test(await page.textContent("#lv-rule")),
+       "the rule line states the duration came from draft settings");
+    await page.close();
+  }
+  {
+    // 22b: last_picked missing -> no plausible wrong number, an honest absence
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: null,
+          draft_order: { "345197760305307648": 7 },
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    ok((await page.textContent("#clock")).trim() === "-:--",
+       "no last_picked: the clock shows no number at all");
+    ok(/waiting for Sleeper|clock unavailable/.test(await page.textContent("#lv-rule")),
+       "no last_picked: the rule line says why, and points at Sleeper");
+    await page.close();
+  }
+  {
+    // 22c: the clock expired by Sleeper's own timestamps -> says so, holds 0:00
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: Date.now() - 300000,
+          draft_order: { "345197760305307648": 7 },
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    ok((await page.textContent("#clock")).trim() === "0:00",
+       "expired by server timestamps: the clock holds 0:00, never a live number");
+    ok(/expired.*check Sleeper/.test(await page.textContent("#lv-rule")),
+       "expired: the rule line says to check Sleeper");
     await page.close();
   }
 
