@@ -38,6 +38,8 @@ h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
 .banner{background:var(--s2);border:1px solid var(--line);border-radius:8px;
   padding:8px 12px;font-size:13px;color:var(--ink2);margin-bottom:12px}
 .banner.err{border-color:var(--stop);color:var(--stop)}
+.conn{font-size:11px;color:var(--ink3);font-family:ui-monospace,Menlo,monospace}
+.conn.bad{color:var(--stop)}
 #mockbar{border-color:var(--warn)}
 #mockbar .scoreoff{color:var(--stop);font-weight:700}
 #mockbar a{color:var(--info)}
@@ -271,7 +273,8 @@ button.tag{appearance:none;-webkit-appearance:none;background:var(--s2)}
   <header>
     <div><div class="kick">YeahThatFantasyLeague</div><h1>YTFL Draft Room</h1></div>
     <div class="hdrlinks"><a id="sleeper-link" class="slink" target="_blank" rel="noopener noreferrer">SLEEPER DRAFT</a>
-      <span id="mode" class="mode">connecting...</span></div>
+      <span id="mode" class="mode">connecting...</span>
+      <span id="conn" class="conn"></span></div>
   </header>
   <div id="banner" class="banner" hidden></div>
   <div id="mockbar" class="banner" hidden></div>
@@ -2208,12 +2211,42 @@ async function renderMockBar(draft){
       : (!scoringOff ? '<br>Format matches the league (teams, rounds, flex, scoring' +
          (real.timer != null && mock.timer != null ? ', clock' : '') + ').' : ""));
 }
+// Connection diagnostic (review carryover): every draft fetch is timed and
+// bounded. A hang becomes a visible timeout instead of an eternal
+// "connecting...", and the header always shows the last fetch's HTTP
+// status and round-trip time so a live failure is legible.
+async function timedFetch(url, budgetMs){
+  const t0 = performance.now();
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), budgetMs || 10000);
+  try {
+    const r = await fetch(url, { signal: ctl.signal });
+    clearTimeout(timer);
+    return { r, rtt: Math.round(performance.now() - t0), status: r.status };
+  } catch (e){
+    clearTimeout(timer);
+    e.rtt = Math.round(performance.now() - t0);
+    e.timedOut = e.name === "AbortError";
+    throw e;
+  }
+}
+function connLine(ok, detail){
+  const el = $("conn");
+  if (!el) return;
+  el.textContent = detail;
+  el.className = "conn" + (ok ? "" : " bad");
+}
 async function refresh(){
   let draft;
   try {
-    draft = await (await fetch(API)).json();
+    const t = await timedFetch(API);
+    draft = await t.r.json();
+    connLine(t.status === 200,
+             "sleeper " + t.status + " - " + t.rtt + "ms");
     $("banner").hidden = true;
   } catch (e){
+    connLine(false, e.timedOut ? "sleeper TIMEOUT after " + e.rtt + "ms"
+                               : "sleeper FAILED after " + (e.rtt || "?") + "ms");
     $("banner").hidden = false;
     $("banner").className = "banner err";
     $("banner").textContent = "Sleeper unreachable - showing embedded pre-draft model, generated " +
@@ -2273,7 +2306,8 @@ async function refresh(){
   $("mode").classList.add("live");
   if (!LiveState.els) keepAwake();
   try {
-    const picks = await (await fetch(API + "/picks")).json();
+    const tp = await timedFetch(API + "/picks");
+    const picks = await tp.r.json();
     LiveState.lastPollOk = Date.now();
     const newPick = picks.length !== LiveState.lastPickCount && LiveState.lastPickCount >= 0;
     if (picks.length !== LiveState.lastPickCount){

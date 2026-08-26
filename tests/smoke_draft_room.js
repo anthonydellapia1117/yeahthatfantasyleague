@@ -127,6 +127,8 @@ const ok = (cond, name, detail) => {
     await page.waitForTimeout(2500);
     const banner = await page.textContent("#banner");
     ok(/unreachable/.test(banner), "offline banner with staleness warning");
+    ok(/sleeper (FAILED|TIMEOUT) after \d+ms/.test(await page.textContent("#conn")),
+       "offline: the connection diagnostic names the failure and its timing");
     ok(await page.locator(".chips button").count() === 12, "offline still renders scenarios");
     await page.close();
   }
@@ -159,6 +161,8 @@ const ok = (cond, name, detail) => {
     const mode = await page.textContent("#mode");
     ok(/LIVE/.test(mode), "mode 2 detected");
     ok(/seat 7/.test(mode), "Anthony's seat auto-detected from the draw");
+    ok(/sleeper 200 - \d+ms/.test(await page.textContent("#conn")),
+       "live: the connection diagnostic shows status and round-trip");
     const body = await page.textContent("body");
     ok(await page.locator(".bignm").count() === 1, "one huge answer name");
     const big = await page.textContent(".bignm");

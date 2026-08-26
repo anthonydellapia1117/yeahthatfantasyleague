@@ -72,6 +72,13 @@ stay payload-driven - read out/cvs.json and assert on what is actually
 in it, including the empty states. A refresh day that legitimately has
 no conflicts must not fail the suite.
 
+Pipe law: NEVER pipe a suite through tail/head/grep, even when exploring
+interactively - a pipe returns the pipe tail's exit code and hides the
+suite's, the exact masking shape run_gate.sh exists to close, and it bit
+twice (the C5 background smoke, then again reading a truncated tail
+during DRAFT MODE debugging). Run `sh tests/run_gate.sh <suite>` with
+output to a file and read the file.
+
 Commit convention: author `Anthony DellaPia <anthonydellapia@gmail.com>`,
 hyphens not em dashes, no emojis. Deploy compare loop:
 
