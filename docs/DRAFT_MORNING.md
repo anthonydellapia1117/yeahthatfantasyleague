@@ -47,7 +47,7 @@ rehearsal's `real` times.
 | 7i | `sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py` | 0.1 s | BULLISH-vs-ADP null test: derived verdict, ADP-confound disclosure, tag stays display-only |
 | 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
 | 9 | `sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
-| 10 | full smoke (see the playwright note below) | 94 s + install | 19 hermetic browser scenarios (incl. the two DRAFT MODE mock scenarios) |
+| 10 | full smoke (see the playwright note below) | 94 s + install | 20 hermetic browser scenarios (incl. DRAFT MODE and the forward-pick law) |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
 
