@@ -38,6 +38,52 @@ import math
 import os
 from collections import defaultdict
 
+# THE VERDICT IS REPORTED, NOT COMPUTED. The automated rule this script
+# used to carry (BEATS ADP / UNDERPOWERED / NULL, derived from six
+# interval checks plus a post-hoc minimum-detectable-effect search) was
+# statistically unsound three ways: a post-hoc MDE comparison is not an
+# equivalence test and cannot license any verdict about absence; the
+# BEATS branch searched six cells (three bands x two hit depths) with no
+# multiplicity control; and that branch was sign-blind, so a
+# significantly HARMFUL tag would have read "BEATS ADP". The reviewed
+# verdict below replaces the automation verbatim. cross_check() ties
+# every number the text cites to the freshly computed cells - if the
+# data moves, the run fails loudly so a stale verdict is never
+# republished; the text itself only changes by review, never by code.
+VERDICT = (
+    "INCONCLUSIVE - incremental value over ADP is unresolved in the only "
+    "band with usable overlap. Among positional ADP ranks 1-12, tagged "
+    "players finished top-12 in 28/43 cases (65.1%) vs 133/257 (51.8%), "
+    "+13.4pp, 95% CI [-2.1, +28.9]. That interval permits slight harm and "
+    "useful lift alike. Only three tags occur at ranks 13-24 and none at "
+    "25-48, so those regions are not identifiable. Coarse bands do not "
+    "adjust for exact ADP, position, season, or repeated players. Tag "
+    "stays display-only pending a continuous-ADP, season-held-out test.")
+
+VERDICT_BASIS = (
+    "reported, fixed by review 2026-08-26 - not computed. The prior "
+    "three-state automation was removed as unsound: a post-hoc minimum-"
+    "detectable-effect comparison is not an equivalence test, the "
+    "significance branch searched six cells without multiplicity "
+    "control, and its BEATS label was sign-blind. Every figure the "
+    "verdict cites is cross-checked against the computed cells at build "
+    "time; a mismatch fails the build for re-review instead of "
+    "regenerating the text")
+
+# the figures the fixed verdict cites, in the artifact's own units -
+# cross_check() recomputes each from the cells and refuses to publish on
+# any mismatch
+VERDICT_CITES = {
+    "pos1-12 tagged k/n": (28, 43),
+    "pos1-12 tagged rate pct": 65.1,
+    "pos1-12 untagged k/n": (133, 257),
+    "pos1-12 untagged rate pct": 51.8,
+    "pos1-12 diff pp": 13.4,
+    "pos1-12 diff ci95 pp": (-2.1, 28.9),
+    "pos13-24 tagged n": 3,
+    "pos25-48 tagged n": 0,
+}
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HISTORY = os.environ.get(
     "HISTORY",
@@ -73,29 +119,6 @@ def wilson(k, n):
     h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
     return [round(c - h, 4), round(c + h, 4)]
 
-
-def min_detectable(p_base, n1, n2, power=0.80, alpha=0.05):
-    """Smallest true difference this design could have detected.
-
-    A test that fails to reject is only evidence of absence when it had
-    the power to find an effect worth caring about. Solved by search on
-    the two-proportion normal approximation at the observed sample sizes.
-    """
-    if not n1 or not n2:
-        return None
-    z_a = 1.959963985                     # two-sided alpha 0.05
-    z_b = 0.8416212336                    # power 0.80
-    for step in range(1, 1001):
-        d = step / 1000.0
-        p2 = p_base + d
-        if p2 >= 1:
-            return None
-        pool = (p_base * n1 + p2 * n2) / (n1 + n2)
-        se0 = math.sqrt(pool * (1 - pool) * (1 / n1 + 1 / n2))
-        se1 = math.sqrt(p_base * (1 - p_base) / n1 + p2 * (1 - p2) / n2)
-        if d >= z_a * se0 + z_b * se1:
-            return round(d, 4)
-    return None
 
 
 def two_prop(k1, n1, k2, n2):
@@ -226,42 +249,35 @@ def main():
               "lift_hit24": two_prop(a_t["hit24"]["k"], a_t["n"],
                                      a_u["hit24"]["k"], a_u["n"])}
 
-    # POWER. A failure to reject is only evidence of absence when the
-    # design could have detected an effect worth caring about. Compute the
-    # minimum detectable difference at 80% power for each band's actual
-    # sample sizes, and compare it against the observed point estimate.
-    for band, v in within.items():
-        t_n, u_n = v["tagged"]["n"], v["untagged"]["n"]
-        base = v["untagged"]["hit12"]["rate"]
-        mde = min_detectable(base, t_n, u_n) if (t_n and u_n and base) else None
-        obs = v["lift_hit12"]["diff"] if v["lift_hit12"] else None
-        v["power"] = {
-            "min_detectable_diff_80pct": mde,
-            "observed_diff": obs,
-            "powered_for_observed_effect": (
-                bool(mde is not None and obs is not None and abs(obs) >= mde)),
-            "note": ("the smallest true difference this band's sample sizes "
-                     "could detect at 80% power; an observed effect smaller "
-                     "than this cannot be called absent, only unproven"),
-        }
-
-    # the verdict is derived, never asserted, and it is THREE-state: a
-    # non-significant result in an underpowered band is UNDERPOWERED, not
-    # NULL. Calling it null would claim evidence of absence from a design
-    # that could not have found the effect.
-    sig = [b for b, v in within.items()
-           for key in ("lift_hit12", "lift_hit24")
-           if v[key] and (v[key]["diff_ci95"][0] > 0 or v[key]["diff_ci95"][1] < 0)]
-    testable = {b: v for b, v in within.items() if v["tagged"]["n"] > 0}
-    underpowered = [b for b, v in testable.items()
-                    if not v["power"]["powered_for_observed_effect"]]
-    if sig:
-        verdict = "BEATS ADP within band"
-    elif underpowered:
-        verdict = ("UNDERPOWERED - cannot distinguish from ADP at these "
-                   "sample sizes; not evidence of absence")
-    else:
-        verdict = "NULL - adequately powered and no within-band edge over ADP"
+    # the cross-check: every figure the fixed verdict cites, recomputed
+    # from the cells this run just produced. A mismatch means the data
+    # moved under the reviewed text - fail the build for re-review, never
+    # regenerate the verdict in code.
+    top = within["pos1-12"]
+    l12 = top["lift_hit12"]
+    tk, tn = top["tagged"]["hit12"]["k"], top["tagged"]["n"]
+    uk, un = top["untagged"]["hit12"]["k"], top["untagged"]["n"]
+    computed = {
+        "pos1-12 tagged k/n": (tk, tn),
+        "pos1-12 tagged rate pct": round(100.0 * tk / tn, 1) if tn else None,
+        "pos1-12 untagged k/n": (uk, un),
+        "pos1-12 untagged rate pct": round(100.0 * uk / un, 1) if un else None,
+        "pos1-12 diff pp": round(l12["diff"] * 100, 1) if l12 else None,
+        "pos1-12 diff ci95 pp": (round(l12["diff_ci95"][0] * 100, 1),
+                                 round(l12["diff_ci95"][1] * 100, 1))
+        if l12 else None,
+        "pos13-24 tagged n": within["pos13-24"]["tagged"]["n"],
+        "pos25-48 tagged n": within["pos25-48"]["tagged"]["n"],
+    }
+    drift = [(k, VERDICT_CITES[k], computed[k])
+             for k in VERDICT_CITES if computed[k] != VERDICT_CITES[k]]
+    if drift:
+        print("VERDICT CROSS-CHECK FAILED - the data no longer matches the "
+              "reviewed verdict text. NOT publishing. Re-review the verdict; "
+              "do not regenerate it in code.")
+        for k, want, got in drift:
+            print(f"  {k}: verdict cites {want}, computed {got}")
+        raise SystemExit(1)
 
     out = {
         "provenance": {
@@ -290,9 +306,10 @@ def main():
         },
         "within_band": within,
         "pooled": pooled,
-        "verdict": verdict,
-        "significant_cells": sig,
-        "underpowered_bands": underpowered,
+        "verdict": VERDICT,
+        "verdict_basis": VERDICT_BASIS,
+        "verdict_cites": {k: list(v) if isinstance(v, tuple) else v
+                          for k, v in VERDICT_CITES.items()},
         # the Phase A concern, quantified: if nearly every tag lands on a
         # player ADP already ranks at the top, the tag is confirming the
         # market rather than adding to it, whatever the pooled rates say
@@ -324,14 +341,8 @@ def main():
     c = out["concentration"]
     print(f"concentration: {c['share_in_top12_band']} of tags land in the "
           f"pos1-12 ADP band ({c['tagged_by_band']})")
-    for band, v in within.items():
-        pw = v.get("power", {})
-        if pw.get("min_detectable_diff_80pct") is not None:
-            print(f"  {band:<10} power: needs >= "
-                  f"{pw['min_detectable_diff_80pct']*100:.1f}pp to detect at "
-                  f"80%, observed {pw['observed_diff']*100:+.1f}pp -> "
-                  f"{'powered' if pw['powered_for_observed_effect'] else 'UNDERPOWERED'}")
-    print("VERDICT:", verdict)
+    print("verdict cross-check: all cited figures match the computed cells")
+    print("VERDICT (reported, fixed by review):", VERDICT)
 
 
 if __name__ == "__main__":

@@ -44,7 +44,7 @@ rehearsal's `real` times.
 | 7f | `sh tests/run_gate.sh python3 tests/test_bullish.py` | 0.2 s | BULLISH engine: probabilistic gates, state machine, ADP-edge accounting |
 | 7g | `sh tests/run_gate.sh python3 tests/test_ws2.py` | 0.1 s | WS2 claims audit: verdict ledger coherent, cited-value canary, curse tag cross-check |
 | 7h | `sh tests/run_gate.sh python3 tests/test_mock.py` | 0.1 s | mock-draft validation: roster legality, caps, board-beats-chalk deltas |
-| 7i | `sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py` | 0.1 s | BULLISH-vs-ADP null test: derived verdict, ADP-confound disclosure, tag stays display-only |
+| 7i | `sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py` | 0.1 s | BULLISH-vs-ADP test: reviewed INCONCLUSIVE verdict verbatim, cited figures cross-check the cells, ADP-confound disclosure, tag stays display-only |
 | 7j | `sh tests/run_gate.sh python3 tests/test_vona.py` | 0.2 s | VONA path tree: depth, derived thresholds, survival floor, no repeats, no BULLISH on nodes |
 | 7k | `sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py` | 0.2 s | drafted-vs-acquired: champions-vs-field intervals, era flags, the two results kept distinct |
 | 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
@@ -137,6 +137,16 @@ Anthony with his slot and retires itself. The room needs nothing from
 it: it already collapses to the detected seat live (the order-hypothesis
 card retires, renderPre follows the real slot); the watch exists so
 Anthony hears about the draw without opening the app.
+
+LAYER 4 - the publication watch. The pages-data cron failed 8 of its
+first 14 scheduled runs (the last four consecutively) and nothing
+noticed - the third silent-cron incident. The lesson, applied: alert on
+missing successful PUBLICATION, not on workflow execution. A daily
+Claude Routine runs `python3 src/check_publication.py`, which reads the
+LIVE site's deployed provenance.json - the thing a green run actually
+produces - and stays silent while it is under 48 hours old.
+STALE or UNREADABLE push-notifies Anthony and triggers a diagnosis of
+the failed run. The Routine retires itself after draft day.
 
 Anthony still owns the night-before checklist - the board calls, any
 Walter revision, the walter layer decision. Neither layer touches

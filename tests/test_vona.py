@@ -45,6 +45,36 @@ ok("Raw VOR sums are NOT used" in th["prune_rule"],
    "the prune rule states it rejects raw VOR sums")
 ok(len(th["branch_eps_by_depth"]) == 7, "a branch threshold exists per round")
 
+# --- the P1-A conditioning law and P1-B feasibility law ---
+ok("conditioning" in prov and "ONE frame" in prov["conditioning"],
+   "one conditioning frame is stated on the artifact")
+ok("feasibility" in prov and "forward_policy" in prov["feasibility"],
+   "starter feasibility comes from the shared layer, stated")
+sys.path.insert(0, os.path.join(ROOT, "src"))
+from forward_policy import starter_caps
+eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+CAPS = starter_caps(eng.get("flex_allocation", {}))
+neg = []
+feas = []
+mono = []
+def check(nodes, counts, slot):
+    for n in nodes:
+        if n["vona"] < -1e-9:
+            neg.append((slot, n["round"], n["pos"], n["vona"]))
+        c = dict(counts); c[n["pos"]] = c.get(n["pos"], 0) + 1
+        if c[n["pos"]] > CAPS.get(n["pos"], 99):
+            feas.append((slot, n["round"], n["pos"], c[n["pos"]]))
+        if n["e_now"] >= 0 and n["e_next"] > n["e_now"] + 1e-6:
+            mono.append((slot, n["round"], n["pos"]))
+        check(n.get("children", []), c, slot)
+for _slot, _v in t["slots"].items():
+    check(_v["roots"], {}, _slot)
+ok(not neg, "no rendered node carries negative VONA", str(neg[:3]))
+ok(not feas, "every path respects the shared starter caps - no position "
+             "beyond its startable count", str(feas[:3]))
+ok(not mono, "E[next] never exceeds E[now] on an above-replacement pool",
+   str(mono[:3]))
+
 # --- honesty blocks ---
 ok(len(prov["deviations"]) == 2, "both spec deviations are stated on the artifact")
 ok(any("independent" in d for d in prov["deviations"]),

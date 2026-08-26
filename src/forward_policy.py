@@ -58,6 +58,22 @@ def phantom_lineup_pts(players, baselines):
     return total
 
 
+def starter_caps(flex_alloc):
+    """Maximum SIMULTANEOUS starters per position - the feasibility law for
+    starter-construction projections (the VONA tree's seven rounds). Base
+    slots, plus the flex slot only where the league has actually flexed the
+    position, with NO injury spare: a seven-round path is building the
+    lineup itself, and a position beyond its startable count is a wasted
+    starter slot, the exact defect class caught three times now (M1 naive
+    max-VOR, the back-to-back duplicate pick, three-early-TEs in the tree).
+    """
+    caps = {}
+    for pos, k in BASE_SLOTS.items():
+        flexes = 1 if flex_alloc.get(pos, 0) > 0 and pos in FLEX_OK else 0
+        caps[pos] = k + flexes
+    return caps
+
+
 def roster_caps(flex_alloc):
     """A position may hold at most its maximum simultaneous starters (base
     slots, plus the flex slot only where the league has actually flexed the

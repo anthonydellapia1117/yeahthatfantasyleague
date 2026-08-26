@@ -62,14 +62,35 @@ if xw and rec and adp:
     ok(n_matched + n_unmatched >= total * 0.9 - 32,
        "crosswalk accounts for ADP players (matched + logged; DEF excluded)",
        f"{n_matched}+{n_unmatched} vs {total}")
-    # The guard that matters: DRAFTABLE players (ADP < 250, non-DEF) must match.
+    # The guard that matters: players inside the real draft window must
+    # match. The window is ADP < 200 (the league drafts 12x15 = 180 picks;
+    # 200 leaves margin) - the old ADP < 250 window broke the cron for four
+    # straight days in late August when Sleeper's deepening preseason pool
+    # pushed camp bodies with ADP 237-249 past the 2% budget, players
+    # nflverse does not carry and no page renders. A normalizer regression
+    # still trips this instantly: it would unmatch names across the whole
+    # window, not just the fringe.
     matched_ids = set(xw["matched"])
-    draftable = [p for p in adp["players"]
-                 if (p.get("adp_sleeper") or 999) < 250 and p["pos"] != "DEF"]
-    un_draftable = [p["name"] for p in draftable if p["player_id"] not in matched_ids]
-    ok(len(un_draftable) <= max(2, len(draftable) * 0.02),
-       "draftable players match at >=98% (suffix-normalized)",
-       f"{len(un_draftable)}/{len(draftable)}: {un_draftable[:5]}")
+    window = [p for p in adp["players"]
+              if (p.get("adp_sleeper") or 999) < 200 and p["pos"] != "DEF"]
+    un_window = [p["name"] for p in window if p["player_id"] not in matched_ids]
+    ok(len(un_window) <= max(2, len(window) * 0.02),
+       "draft-window players (ADP < 200) match at >=98% (suffix-normalized)",
+       f"{len(un_window)}/{len(window)}: {un_window[:5]}")
+    # The 200-249 fringe may legitimately miss (Sleeper lists camp bodies
+    # nflverse lacks), but the law stands: unmatched is LOGGED, never
+    # silently dropped.
+    fringe = [p for p in adp["players"]
+              if 200 <= (p.get("adp_sleeper") or 999) < 250 and p["pos"] != "DEF"]
+    logged = {r["name"] for r in rec.get("unmatched", [])}
+    un_fringe = [p["name"] for p in fringe if p["player_id"] not in matched_ids]
+    ok(all(n in logged for n in un_fringe),
+       "every unmatched fringe player (ADP 200-249) is logged in reconciliation",
+       f"unlogged: {[n for n in un_fringe if n not in logged][:5]}")
+    # the diacritic fold stays in the normalizer (the Estime/Estimé miss)
+    bp = open(os.path.join(ROOT, "src", "build_pages_data.py")).read()
+    ok("unicodedata.normalize(\"NFKD\"" in bp and "unicodedata.combining" in bp,
+       "crosswalk normalizer folds diacritics (Estime/Estimé class)")
 
 # 4. Depth charts: all 32 teams, as-of date fresh (within 7 days of build)
 dc = load("depth_charts")
@@ -132,6 +153,21 @@ ok("clock unavailable - use Sleeper" in _room,
    "P0: absent clock data renders an honest absence, not a plausible number")
 ok("LiveState.pickTimer = (draft.settings && Number(draft.settings.pick_timer)) || null" in _room,
    "P0: the duration is captured from settings on every fetch")
+
+# 8d. RESPONSE VALIDITY AND FRESHNESS (review P1-C): a resolved fetch is
+#     not current data. The room must cache-bust, check response.ok,
+#     validate shape, refuse to move the board backwards, and show source
+#     age beside fetch time.
+ok('"?cb=" + Date.now()' in _room and '"/picks?cb=" + Date.now()' in _room,
+   "P1-C: both draft fetches are cache-busted per poll")
+ok("Array.isArray(picks)" in _room,
+   "P1-C: picks must be an array before the board renders from them")
+ok("picks.length < LiveState.lastPickCount" in _room,
+   "P1-C: an older cached board is refused - the room never moves backwards")
+ok("data \" + Math.max" in _room or "- data " in _room,
+   "P1-C: source age renders beside fetch time")
+ok("e.httpStatus" in _room and "badSchema" in _room,
+   "P1-C: HTTP errors and unusable payloads are named, not swallowed")
 
 # 8c. DEPLOY COMPLETENESS: pages.yml copies an explicit file list, which
 #     silently omitted a brand-new page once (paths.html shipped to main,

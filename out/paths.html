@@ -158,7 +158,7 @@ fetch("data/vona_tree_2026.json").then(function(r){ return r.json(); })
     $("hdr").textContent = "the order is undrawn - pick a slot";
     $("foot").textContent = "generated " + j.provenance.generated +
       " from engine " + j.provenance.engine_generated +
-      " - survival from the frozen calibrated model - " +
+      " - survival from the frozen pre-draft model (the live room applies the adopted calibration) - " +
       j.provenance.bullish_on_nodes;
     render();
   })

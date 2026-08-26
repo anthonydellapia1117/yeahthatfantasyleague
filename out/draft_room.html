@@ -2184,7 +2184,7 @@ async function realFmt(){
   if (REAL_FMT) return REAL_FMT;
   try {
     const rd = await (await fetch("https://api.sleeper.app/v1/draft/" +
-      E.league.draft_id)).json();
+      E.league.draft_id + "?cb=" + Date.now())).json();
     REAL_FMT = { teams: rd.settings.teams, rounds: rd.settings.rounds,
                  flex: rd.settings.slots_flex, timer: rd.settings.pick_timer,
                  scoring: (rd.metadata || {}).scoring_type || "" };
@@ -2257,14 +2257,32 @@ function connLine(ok, detail){
 async function refresh(){
   let draft;
   try {
-    const t = await timedFetch(API);
+    // cache-bust every poll: Sleeper responses ride shared caches (an
+    // observed cache age of 118s is two full pick cycles at a 60s timer),
+    // and a resolved fetch is NOT the same thing as current data
+    const t = await timedFetch(API + "?cb=" + Date.now());
+    if (!t.r.ok){
+      const e = new Error("http " + t.status);
+      e.rtt = t.rtt; e.httpStatus = t.status; throw e;
+    }
     draft = await t.r.json();
-    connLine(t.status === 200,
-             "sleeper " + t.status + " - " + t.rtt + "ms");
+    // error JSON parses successfully too - validate the shape before
+    // treating it as a draft
+    if (!draft || typeof draft !== "object" || typeof draft.status !== "string"){
+      const e = new Error("bad draft schema");
+      e.rtt = t.rtt; e.badSchema = true; throw e;
+    }
+    // FETCH time and SOURCE time are different facts: the header shows
+    // both, so a fresh fetch of stale data reads as exactly that
+    const srcTs = Number(draft.last_message_time || draft.last_picked || 0);
+    connLine(true, "sleeper 200 - " + t.rtt + "ms" +
+      (srcTs ? " - data " + Math.max(0, Math.round((Date.now() - srcTs) / 1000)) + "s old" : ""));
     $("banner").hidden = true;
   } catch (e){
     connLine(false, e.timedOut ? "sleeper TIMEOUT after " + e.rtt + "ms"
-                               : "sleeper FAILED after " + (e.rtt || "?") + "ms");
+      : e.httpStatus ? "sleeper HTTP " + e.httpStatus + " - " + e.rtt + "ms"
+      : e.badSchema ? "sleeper returned an unusable payload - showing last good state"
+      : "sleeper FAILED after " + (e.rtt || "?") + "ms");
     $("banner").hidden = false;
     $("banner").className = "banner err";
     $("banner").textContent = "Sleeper unreachable - showing embedded pre-draft model, generated " +
@@ -2332,8 +2350,19 @@ async function refresh(){
   $("mode").classList.add("live");
   if (!LiveState.els) keepAwake();
   try {
-    const tp = await timedFetch(API + "/picks");
+    const tp = await timedFetch(API + "/picks?cb=" + Date.now());
+    if (!tp.r.ok) throw new Error("picks http " + tp.status);
     const picks = await tp.r.json();
+    if (!Array.isArray(picks)) throw new Error("picks not an array");
+    if (picks.length < LiveState.lastPickCount){
+      // a shared cache served an OLDER board than the one already
+      // rendered - the room never moves backwards; keep the last good
+      // state and say why
+      connLine(false, "stale picks ignored (" + picks.length + " < " +
+        LiveState.lastPickCount + ")");
+      schedule(draft.status === "drafting" ? 10 : 60);
+      return;
+    }
     LiveState.lastPollOk = Date.now();
     const newPick = picks.length !== LiveState.lastPickCount && LiveState.lastPickCount >= 0;
     if (picks.length !== LiveState.lastPickCount){

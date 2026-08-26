@@ -829,35 +829,54 @@ stays visible. The board-beats-chalk deltas are guarded in tests: if a
 future engine refresh ever makes the board LOSE to chalk at any slot,
 the suite goes red and the regression surfaces before draft night.
 
-## N.1 BULLISH vs ADP: UNDERPOWERED, not null (carryover 3, corrected)
+## N.1 BULLISH vs ADP: INCONCLUSIVE, verdict fixed by review (carryover 3, corrected twice)
 
 Artifact: `out/data/bullish_vs_adp.json` (builder `src/bullish_vs_adp.py`).
 Anthony's Phase A conclusion is why this test exists: the tag's candidate
 pool is gated on fantasy ADP, so by construction the engine can only
 re-rank players the market has already surfaced.
 
-**CORRECTION.** This entry originally read "NULL - the tag does not beat
-ADP." That was wrong, and the error mattered: a non-significant result
-is only evidence of absence when the design had the power to find an
-effect worth caring about. It did not. The verdict is now three-state
-and derived from a computed power analysis, not from the p-value alone.
+**CORRECTION HISTORY - two rounds, both matter.** This entry originally
+read "NULL - the tag does not beat ADP." That was wrong: a
+non-significant result is only evidence of absence when the design had
+the power to find the effect, and this one did not. The first correction
+reframed the result as UNDERPOWERED - the reframe was right - but it
+also AUTOMATED the verdict: a three-state rule (BEATS ADP /
+UNDERPOWERED / NULL) computed from six interval checks plus a post-hoc
+minimum-detectable-effect search. That automation was itself
+statistically unsound, three ways. A post-hoc MDE comparison is not an
+equivalence test - it cannot license any statement about absence. The
+BEATS branch searched six cells (three bands, two hit depths) with no
+multiplicity control, so a single lucky interval would have upgraded
+the tag. And the branch was sign-blind: a significantly HARMFUL tag
+would have read "BEATS ADP." The automation is deleted; the verdict is
+now REPORTED - reviewed and fixed - not computed.
 
-**Result: UNDERPOWERED. The tag cannot be distinguished from ADP at
-these sample sizes - which is not the same as showing it adds nothing.**
+**The verdict, verbatim (fixed by review 2026-08-26):**
 
-| ADP band | tagged top-12 | untagged top-12 | difference (95% CI) | p | needed at 80% power | verdict |
-|---|---|---|---|---|---|---|
-| pos1-12 | 65.1% (n=43) | 51.8% (n=257) | +13.4pp [-2.1, +28.9] | 0.104 | **21.6pp** | underpowered |
-| pos13-24 | 33.3% (n=3) | 23.5% (n=238) | +9.8pp [-43.8, +63.4] | 0.691 | **61.9pp** | underpowered |
-| pos25-48 | none tagged (n=0) | n=340 | no comparison possible | - | - | not identifiable |
+> INCONCLUSIVE - incremental value over ADP is unresolved in the only
+> band with usable overlap. Among positional ADP ranks 1-12, tagged
+> players finished top-12 in 28/43 cases (65.1%) vs 133/257 (51.8%),
+> +13.4pp, 95% CI [-2.1, +28.9]. That interval permits slight harm and
+> useful lift alike. Only three tags occur at ranks 13-24 and none at
+> 25-48, so those regions are not identifiable. Coarse bands do not
+> adjust for exact ADP, position, season, or repeated players. Tag
+> stays display-only pending a continuous-ADP, season-held-out test.
 
-With 43 tagged players in the top band, the smallest true difference the
-design could reliably detect is 21.6 percentage points. The observed
-+13.4pp is well below that. An effect of exactly the size observed would
-have failed to reach significance most of the time in this design, so
-"we did not detect it" carries almost no information about whether it is
-there. Both testable bands are in the same position, the second far
-worse (61.9pp needed on n=3).
+| ADP band | tagged top-12 | untagged top-12 | difference (95% CI) | p |
+|---|---|---|---|---|
+| pos1-12 | 28/43 (65.1%) | 133/257 (51.8%) | +13.4pp [-2.1, +28.9] | 0.104 |
+| pos13-24 | 1/3 (33.3%) | 56/238 (23.5%) | +9.8pp [-43.8, +63.4] | 0.691 |
+| pos25-48 | none tagged (n=0) | 35/340 (10.3%) | not identifiable | - |
+
+A fixed verdict must not outlive its data, so the builder cross-checks
+every figure the text cites (28/43, 133/257, 65.1%, 51.8%, +13.4pp, the
+CI endpoints, the 13-24 and 25-48 tag counts) against the freshly
+computed cells on every run and refuses to publish on any mismatch -
+data drift sends the verdict back to review instead of silently
+shipping stale numbers. `tests/test_bullish_vs_adp.py` holds an
+independent copy of the text and repeats the cross-check, and also
+asserts the automation is actually gone from builder and artifact.
 
 **What can still be said with confidence.** The pooled comparison is a
 trap: tagged 63.0% vs untagged 26.8% looks decisive, but **93.5% of all
@@ -868,12 +887,10 @@ entry stands, and it is the finding with real evidential weight.
 
 **Consequence for the shipped engine, unchanged.** The BULLISH artifact
 stays DISPLAY-ONLY - beside the seven-state signal encoding, never in a
-verdict path - and it is deliberately absent from the VONA tree. But the
-reason is now stated correctly: not "it was shown not to work", rather
-"it has not been shown to work, and the concentration means it mostly
-re-marks what the board already ranks highly." Guards enforce the
-three-state verdict, so an underpowered result can never be reported as
-a null again.
+verdict path - and it is deliberately absent from the VONA tree. The
+reason stands as stated in the verdict: the tag has not been shown to
+add value over ADP, and the concentration means it mostly re-marks what
+the board already ranks highly.
 
 **Stated limitation, unchanged.** This backtests the opportunity +
 efficiency spine common to every criterion set, not the full shipped
@@ -881,14 +898,15 @@ matrix - route participation, first-read share, inside-5 TD equity,
 implied totals and current-team line quality have no clean per-season
 history in this cache.
 
-**What would settle it.** The design is sample-starved because only 46
-tag-seasons exist across 2017-2025 under the reconstructable spine.
-Extending the league-side history to 2013 (the LeagueLegacy work) does
-not help here - this test runs on nflverse and FFC, not league data. What
-would help is either a looser tag definition producing more tagged
-seasons per year, or accepting that a 13-point edge in the top ADP band
-is not resolvable with nine seasons of data and treating the tag as
-unproven indefinitely.
+**What would settle it.** The verdict names the bar: a continuous-ADP,
+season-held-out test - exact ADP as a covariate rather than coarse
+bands, scored on seasons the criteria never saw, accounting for
+repeated players. The design is sample-starved either way: only 46
+tag-seasons exist across 2017-2025 under the reconstructable spine, and
+extending the league-side history to 2013 (the LeagueLegacy work) does
+not help because this test runs on nflverse and FFC, not league data.
+Until that test exists and passes, the tag is unproven and stays
+display-only.
 
 ## V.1 The VONA draft-path tree (approved build)
 
