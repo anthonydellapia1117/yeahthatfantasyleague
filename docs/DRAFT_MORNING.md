@@ -33,11 +33,18 @@ rehearsal's `real` times.
 | 2 | `python3 src/engine_2026.py` | 3.7 s | live ADP + projections; rewrites the sentinel payload, engine_2026.json, decision cards |
 | 3 | `python3 src/build_cvs_inputs.py` | 2.0 s | nflverse volatility, TD rates, 2026 SOS |
 | 4 | `python3 src/build_cvs.py` | 0.3 s | the CVS board payload |
-| 5 | `python3 tests/test_survival.py` | 0.6 s | 37 frozen-behavior guards |
-| 6 | `python3 tests/mathdiff.py` | 0.1 s | ten function bodies byte-identical to origin/main |
-| 7 | `python3 tests/test_cvs.py` | 0.1 s | anchor law, cap, signals, determinism |
-| 8 | `python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
-| 9 | `python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
+| 4b | `python3 tests/test_run_gate.py` | 0.3 s | gate-runner self-test: proves the masking shapes (pipe, compound wrapper, exit-0 liar) are caught |
+| 5 | `sh tests/run_gate.sh python3 tests/test_survival.py` | 0.6 s | 37 frozen-behavior guards |
+| 6 | `GATE_SENTINEL="MATH DIFF PROOF: EMPTY" sh tests/run_gate.sh python3 tests/mathdiff.py` | 0.1 s | ten function bodies byte-identical to origin/main |
+| 7 | `sh tests/run_gate.sh python3 tests/test_cvs.py` | 0.1 s | anchor law, cap, signals, determinism |
+| 7b | `sh tests/run_gate.sh python3 tests/test_vor.py` | 0.1 s | exact scoring, derived flex allocation, derived tiers |
+| 7c | `sh tests/run_gate.sh python3 tests/test_baserates.py` | 0.1 s | base-rate artifact integrity + board wiring |
+| 7d | `sh tests/run_gate.sh python3 tests/test_archetypes.py` | 0.1 s | archetype tags: computed thresholds, zero-IR flags, page wiring |
+| 7e | `sh tests/run_gate.sh python3 tests/test_ceiling.py` | 0.1 s | ceiling lens: boom rates, zero-IR availability, enabled view |
+| 7f | `sh tests/run_gate.sh python3 tests/test_bullish.py` | 0.2 s | BULLISH engine: probabilistic gates, state machine, ADP-edge accounting |
+| 7g | `sh tests/run_gate.sh python3 tests/test_ws2.py` | 0.1 s | WS2 claims audit: verdict ledger coherent, cited-value canary, curse tag cross-check |
+| 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
+| 9 | `sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
 | 10 | full smoke (see the playwright note below) | 94 s + install | 17 hermetic browser scenarios |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
@@ -49,7 +56,7 @@ container, do NOT run `playwright install`, the binary is already at
 /opt/pw-browsers/chromium:
 
     mkdir -p /tmp/pw && (cd /tmp/pw && npm install --no-save playwright-core)
-    NODE_PATH=/tmp/pw/node_modules node tests/smoke_draft_room.js out/draft_room.html
+    NODE_PATH=/tmp/pw/node_modules sh tests/run_gate.sh node tests/smoke_draft_room.js out/draft_room.html
 
 The smoke takes the browser path from `PW_CHROMIUM` when it is set and
 falls back to that container path otherwise, which is how the CI workflow

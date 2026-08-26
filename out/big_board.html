@@ -98,6 +98,7 @@ a{color:var(--info);text-decoration:none}
 .wq .lineref{color:var(--ink3);font-size:10px}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
 /* scroll shadows: edge shading only while columns are hidden that way */
+.thin{color:var(--ink3);font-size:10px}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;
   background:
     linear-gradient(90deg, var(--s1) 30%, rgba(244,246,250,0)) left/40px 100%,
@@ -164,6 +165,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <button data-v="board" class="on">BOARD</button>
     <button data-v="delta">CVS vs WALTER</button>
     <button data-v="conflicts">CONFLICTS</button>
+    <button data-v="ceiling">CEILING</button>
   </div>
 
   <div id="v-board">
@@ -190,6 +192,17 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <div class="tw"><table class="xtable" id="cross-t"></table></div>
   </div>
 
+  <div id="v-ceiling" hidden>
+    <h2>Ceiling lens - the median game scores every week twice</h2>
+    <p class="small">league_average_match confirmed on: each week is an H2H result
+    AND a result against the league median, so weekly ceiling is paid twice.
+    Ranked by 2025 boom rate - weeks at that week's positional top-12 level
+    (cutoffs computed per week, league-exact scoring). The availability column
+    prices the zero-IR roster: expected missed weeks return nothing and block a
+    bench slot. No synthetic variance premium is applied - deriving one honestly
+    needs the multi-season weekly history (yfpy backlog); stated, not smuggled.</p>
+    <div id="ceil-t"></div>
+  </div>
   <div id="v-conflicts" hidden>
     <h2>Model conflict queue - where the sources genuinely disagree</h2>
     <div id="mconf"></div>
@@ -274,6 +287,11 @@ async function boot(){
   const get = f => fetch(f).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
   try {
     [D.cvs, D.eng] = await Promise.all([get("cvs.json"), get("engine_2026.json")]);
+    // C2 base rates: display-only historical context; the board must render
+    // identically in its absence, so this fetch never gates boot
+    try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
+    try { D.ceil = await get("data/ceiling_2026.json"); } catch (e) { D.ceil = null; }
+    try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -282,7 +300,7 @@ async function boot(){
     return;
   }
   renderViews(); renderFilters(); renderLegend();
-  renderBoard(); renderDelta(); renderConflicts(); renderKdef(); renderFoot();
+  renderBoard(); renderDelta(); renderConflicts(); renderCeiling(); renderKdef(); renderFoot();
   pollDraft();
   setInterval(pollDraft, 15000);
 }
@@ -309,6 +327,7 @@ function renderViews(){
   document.getElementById("v-board").hidden = View.v !== "board";
   document.getElementById("v-delta").hidden = View.v !== "delta";
   document.getElementById("v-conflicts").hidden = View.v !== "conflicts";
+  document.getElementById("v-ceiling").hidden = View.v !== "ceiling";
 }
 
 function renderFilters(){
@@ -396,16 +415,71 @@ function renderBoard(){
     (list.map(p => `
     <div class="brow" data-sig="${S(p).signal || ""}">
       <div class="rk num">${S(p).cvs_rank}</div>
-      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
+      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${bullishChip(p)}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
       <div class="trio"><span class="c num">${val(p)}</span><br>
         <span class="sub num">conf ${pct(p.confidence)} - vol ${p.volatility ? p.volatility.sd : "-"}</span></div>
       <div class="meta">${p.pos} - <a href="teams.html#t=${encodeURIComponent(p.team || "")}">${esc(p.team || "-")}</a>
         - tier ${p.tier ?? "-"} - VOR <span class="num">${p.vor}</span>
         - ADP <span class="num">${p.adp < 900 ? p.adp.toFixed(1) : "-"}</span>
         - pos rank CVS <span class="num">${S(p).cvs_pos_rank}</span> / ADP <span class="num">${p.adp_pos_rank ?? "-"}</span>
-        ${p.playoff_sos_rank ? ` - wk15-17 SOS rank <span class="num">${p.playoff_sos_rank}</span>` : ""}</div>
+        ${p.playoff_sos_rank ? ` - wk15-17 SOS rank <span class="num">${p.playoff_sos_rank}</span>` : ""}${baseRateChip(p)}</div>
       <details><summary></summary>${factorTable(p)}</details>
-    </div>`).join("") || '<p class="small">nothing matches these filters</p>');
+    </div>`).join("") || '<p class="small">nothing matches these filters</p>') +
+    baseRateTable();
+}
+
+// ---- C2 base-rate columns: what this ADP band has RETURNED, 2016-2025,
+// scored under this league's exact table. Display-only history; n and the
+// Wilson 95% interval render with every rate so thin cells look thin.
+const RATE_BANDS = [[1, 6, "pos1-6"], [7, 12, "pos7-12"], [13, 18, "pos13-18"],
+                    [19, 24, "pos19-24"], [25, 36, "pos25-36"]];
+function rateBand(rank){
+  for (const [lo, hi, name] of RATE_BANDS)
+    if (rank >= lo && rank <= hi) return name;
+  return null;
+}
+// ---- C5 BULLISH tags: a computed layer BESIDE the signal encoding, never
+// superseding it. Chip shows status + age; title carries the top reason and
+// the gate probability. Past the 72h TTL a BULLISH chip degrades to WATCH.
+function bullishChip(p){
+  if (!D.bull) return "";
+  const t = D.bull.tags.find(x => x.name === p.name && x.pos === p.pos);
+  if (!t) return "";
+  const ageH = Math.max(0, (Date.now() - Date.parse(t.computed_at)) / 3600000);
+  let st = t.status;
+  let stale = "";
+  if (st === "BULLISH" && ageH > t.ttl_hours){ st = "WATCH"; stale = " (stale)"; }
+  const color = st === "BULLISH" ? "var(--go)" : st === "WATCH" ? "var(--warn)" : "var(--ink3)";
+  const title = `${t.gate} = ${t.score}%; ${t.reasons[0] || "all criteria computed"}; age ${ageH.toFixed(0)}h`;
+  return `<span class="sig" style="color:${color};border-color:${color}" title="${esc(title)}">${st}${stale} ${ageH.toFixed(0)}h</span>`;
+}
+
+function baseRateChip(p){
+  if (!D.rates || !p.adp_pos_rank) return "";
+  const band = rateBand(p.adp_pos_rank);
+  const cell = band && (D.rates.market[p.pos] || {})[band];
+  if (!cell) return "";
+  const f = m => `${Math.round(cell[m].rate * 100)}% <span class="thin">[${Math.round(cell[m].ci95[0] * 100)}-${Math.round(cell[m].ci95[1] * 100)}]</span>`;
+  return ` - band ${band}: top12 ${f("hit12")} - top24 ${f("hit24")} - bust ${f("bust36")} <span class="thin">n=${cell.n}</span>`;
+}
+function baseRateTable(){
+  if (!D.rates) return "";
+  const defs = D.rates.definitions;
+  const row = (pos, band, c) => `<tr><td>${pos}</td><td>${band}</td><td class="num">${c.n}</td>
+    <td class="num">${Math.round(c.hit12.rate * 100)}% [${Math.round(c.hit12.ci95[0] * 100)}-${Math.round(c.hit12.ci95[1] * 100)}]</td>
+    <td class="num">${Math.round(c.hit24.rate * 100)}% [${Math.round(c.hit24.ci95[0] * 100)}-${Math.round(c.hit24.ci95[1] * 100)}]</td>
+    <td class="num">${Math.round(c.bust36.rate * 100)}% [${Math.round(c.bust36.ci95[0] * 100)}-${Math.round(c.bust36.ci95[1] * 100)}]</td></tr>`;
+  const block = (title, tbl) => `<h2 style="margin-top:12px">${title}</h2>
+    <div class="tw"><table><tr><th>Pos</th><th>Band</th><th>n</th><th>top-12</th><th>top-24</th><th>bust</th></tr>
+    ${Object.entries(tbl).map(([pos, bands]) =>
+      Object.entries(bands).map(([band, c]) => row(pos, band, c)).join("")).join("")}</table></div>`;
+  return `<details id="base-rates"><summary>Base rates 2016-2025 - what each ADP band actually returned</summary>
+    ${block("Market (FFC positional ADP bands)", D.rates.market)}
+    ${block("This league (archive draft rounds)", D.rates.league)}
+    <p class="small">hit12: ${esc(defs.hit12)}. hit24: ${esc(defs.hit24)}. bust: ${esc(defs.bust36)}.
+    Outcomes scored under the exact league table (6-pt passing TDs, full PPR);
+    ${esc(D.rates.provenance.seasons)}; join counts in data/base_rates.json. History, not a projection.</p>
+  </details>`;
 }
 
 function renderDelta(){
@@ -441,6 +515,29 @@ function renderDelta(){
       <td class="num">${x.model_2025_td_rate ?? "-"}</td>
       <td>${esc(x.model_says)}</td>
       <td><b>${esc(x.agreement)}</b></td></tr>`).join("");
+}
+
+function renderCeiling(){
+  const el = document.getElementById("ceil-t");
+  if (!el) return;
+  if (!D.ceil){ el.innerHTML = '<p class="small">ceiling artifact absent - the board runs without it</p>'; return; }
+  const rows = D.ceil.players.filter(p => p.boom)
+    .sort((a, b) => b.boom.rate - a.boom.rate || b.p90_week - a.p90_week);
+  el.innerHTML = `<div class="tw"><table>
+    <tr><th>Player</th><th>Boom</th><th>p90 wk</th><th>sd</th><th>proj</th><th>avail-adj</th><th>gp 2yr</th></tr>` +
+    rows.slice(0, 60).map(p => `<tr>
+      <td>${esc(p.name)} <span class="thin">${p.pos}</span></td>
+      <td class="num">${p.boom.k}/${p.boom.n} (${Math.round(p.boom.rate * 100)}%)</td>
+      <td class="num">${p.p90_week.toFixed(1)}</td>
+      <td class="num">${p.weekly_sd.toFixed(1)}</td>
+      <td class="num">${p.proj.toFixed(0)}</td>
+      <td class="num">${p.avail_adj_proj !== undefined ? p.avail_adj_proj.toFixed(0) : "-"}</td>
+      <td class="num">${p.gp_rate_2yr !== undefined ? Math.round(p.gp_rate_2yr * 100) + "%" : "-"}</td>
+    </tr>`).join("") + `</table></div>
+    <p class="small">avail-adj = projection x two-year games-played rate minus expected
+    missed weeks x weekly replacement points (${Object.entries(D.ceil.weekly_replacement)
+      .map(([k, v]) => k + " " + v).join(", ")}) - the zero-IR cost, stated. Boom cutoffs
+    are each week's actual positional top-12 score. History, not a projection.</p>`;
 }
 
 function renderConflicts(){

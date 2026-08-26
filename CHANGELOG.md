@@ -1,5 +1,146 @@
 # Changelog
 
+## R1: review response - gate runner, computed RB1 ledger, survivorship label (2026-08-26)
+
+Three pre-merge review items on PR #48. (1) Exit-code-masking class fix:
+`tests/run_gate.sh` is now the mandated suite-invocation path in the
+workflow and runbook - it never pipes the suite and requires exit 0 AND
+the ALL PASS sentinel together; `tests/test_run_gate.py` self-tests it
+against control fixtures proving the two masking shapes (compound
+wrapper, tail pipe) really return 0 around a crashing suite, plus the
+exit-0 liar and the silent pass. Every suite re-ran GATE OK; the audit
+found no repo-level fail-open wrapper - the class lived in ad-hoc
+invocation only. (2) The preseason-RB1 conversion ledger now computes
+both columns per year (FFC ADP preseason RB1; league-exact full-PPR
+actual RB1): ten rows 2016-2025 in the artifact, 2016 source-dependency
+flag kept, and the 2-of-10 count is unaffected even though the actual
+column flips in 2018 (McCaffrey) and 2024 (Gibbs). (3) League base rates
+keep 2016-2021 LABELED rather than restricted: the archive shows all 12
+franchises with full verified drafts every season including departed
+managers' franchises, so the claimed survivorship gap is not reproducible
+at the picks level; the computed coverage block and label live in the
+artifact provenance, guarded by tests, and convert to a restriction if
+the Yahoo history pull contradicts the archive. Findings R.1.1-R.1.3.
+
+## C6: Workstream-2 claims audit - every cited number faces its computed twin (2026-08-26)
+
+`src/build_ws2_audit.py` -> `out/data/ws2_audit_2026.json`. Each
+quantitative Workstream-2 claim in the research director report is now
+pointed at an earlier component's adjudication, recomputed from primary
+sources under league-exact scoring with n and Wilson CIs, or logged
+unverifiable with its reason. Cited values are quarantined in a CLAIMS
+provenance block; a source canary in `tests/test_ws2.py` proves none
+leak into computation, and verdicts are derived programmatically so a
+data refresh recomputes them. Score: 6 agree, 2 partial, 1 disagrees.
+Agrees: RB-over-WR top-12 direction and its non-significance (69/120 vs
+60/120, p=0.244), the 2025 outlier year (9/12 RBs, 16.08 games - exact),
+elite RB gap (+9.89 [8.46,11.32] vs cited +9.7), overall RB1 never from
+outside preseason top-24 (0/10), first-time WR1 share from WR18-50
+(61.7% vs 62%), and the team-success FOLKLORE verdict (4/12 playoff
+teams, 8.79 wins). Partial: the RB1 curse is 5/9 not 6/7 - under
+full-PPR league scoring the 2024 RB1 was Gibbs, who did not decline;
+and the QB1 rushing floor breaks here (Rodgers 2020, Stafford 2025 -
+pocket QB1s are possible at 6-pt pass TD). Disagrees: the "later RB
+bands beat expectation more" pattern vanishes in the full 2016-2025
+aggregate (57.5/53.3/51.7/56.7%) - the report's own caveat asked for
+this computation and the computation kills the pattern. Workstream 3
+adopted as methodology only: no analogs, opinions, or rankings imported;
+the C3 rb1_curse tag is cross-checked against this audit's own 2025 RB1
+in tests. Workflow step "WS2 audit guards" and runbook row 7g added.
+
+## C5: BULLISH engine - probabilistic matrices, tag state machine (2026-08-26)
+
+Two artifacts: computed inputs (k/n proportions, percentile thresholds,
+Week-1 Vegas with timestamps, the route-proxy weakness stated) and tag
+state objects (BULLISH/WATCH/SUSPENDED with reason codes, 72h TTL the
+chips enforce with visible age, delta report on every rebuild). Matrices
+per the reconciled spec - RB expected-TD equity on inside-5 share,
+current-team line quality, availability and backfield command; WR
+TPRR/YPRR proxies, FTN first-read, live-computed adjusted vacated
+targets; QB stable inputs only under 6-pt scoring; TE route share +
+market share. Exact Poisson-binomial gates, no cliffs, missing inputs
+never count as met. 20 BULLISH / 14 WATCH. The edge accounting Anthony
+ordered: 16 tagged players diverge >=4 positional-ADP ranks (Goff QB1
+by tag vs QB16 by market, Flowers, Javonte, D. Henry), Spearman 0.806 -
+not a restatement of ADP. QB rushing-vs-pocket gap derived: +22.0 pts
+[3.1,40.8] at 6-pt vs +22.4 [7.3,37.4] at 4-pt - the premium survives
+in absolute points and compresses only as a share. TE scarcity settled
+against the Gemini doc (TE1-TE3 1.66 PPG, not <1.0) and for the
+director report (TE1-TE12 6.21). tests/test_bullish.py gates (7f).
+
+## C4: ceiling lens for the median game, enabled (2026-08-26)
+
+The median game is confirmed (league_average_match=1 verified live on
+both league ids), so the lens ships enabled - the board's fourth view.
+Per draftable player from 2025 weekly league-exact scoring: boom rate
+against each week's actual positional top-12 cutoff, p90 week, weekly
+sd, and the zero-IR availability adjustment (projection x two-year
+games-played rate minus expected missed weeks x weekly replacement
+points - missed weeks return nothing and block a bench slot on a
+5-bench, no-IR roster). Rookies without an NFL sample say so instead
+of being estimated. Stated limitation: no synthetic variance premium -
+deriving one honestly needs the multi-season weekly history (yfpy
+backlog), so the lens ranks by the direct boom rate the format pays
+for. tests/test_ceiling.py gates (workflow + runbook 7e).
+
+## C3: archetype tagger from computed thresholds (2026-08-26)
+
+97 rules-based tags on 77 draftable players (year-2 WR, rookie-capital
+RB, pass-catching RB, ambiguous backfield, late rushing QB, elite TE /
+late TE dart, 140-target WR, post-injury discount, RB1-curse and
+400-touch fades). Every threshold is a computed percentile of observed
+2025 usage or a value verified from 2016-2025 history inside the
+artifact; the builder's code body carries no player names (guarded).
+Post-injury tags carry the zero-IR cost flag - no IR slot means an
+injured hold burns a startable spot. Player pages render the tags with
+reasons and orientations. Computed alongside and logged: the inside-5
+vs 6-10 conversion split (38.6% vs 12.6%, settling the Gemini doc's
+mis-scaled 42% green-zone figure), the 140-target claim replicating
+almost exactly (94.9%/74.2%, n=97), and the 400-touch ledger agreeing
+in direction but not in the cited n (ours: 3 qualifying seasons, 0
+top-5 next year). tests/test_archetypes.py gates (workflow + runbook 7d).
+
+## C2: base-rate columns on the big board (2026-08-26)
+
+What each ADP band actually returned, 2016-2025, scored under the exact
+league table - not imported hit rates. Market table (FFC positional-ADP
+bands x nflverse outcomes, 1,140 player-seasons) and league table (our
+own archive rounds, 1,448), every cell with n and a Wilson 95% interval,
+zero-point drafted seasons counted as busts rather than dropped. Board
+rows carry the player's band chip (top-12 / top-24 / bust with interval
+and n from adp_pos_rank); a reference table with stated definitions sits
+under the board, labeled history-not-projection. The tables land three
+findings: the RB cliff after round 3 is real in this league (50% -> 15%
+-> 9% hit12 by round band); waiting on QB has not cost QB1 production
+under 6-pt scoring (rd4-6 72% vs rd1-3 68%); and rd1-3 TEs hit at 83%
+with zero busts (n=23). tests/test_baserates.py gates artifact and
+board; wired into the workflow and runbook (7c).
+
+## C1: VOR engine derives what it used to assume (2026-08-26)
+
+Phase C component 1 of the research-integration pass - the draft-night
+critical path. Three constants became derivations, each logged on the
+findings page with n and CI:
+
+- FLEX ALLOCATION: the 12 flex slots were split 6 RB / 6 WR by
+  assumption. Observed behavior - all 216 flex starts of the 2025
+  season, read from the slot-ordered starters arrays - says WR 8 / RB 4
+  / TE 0 (WR 67.6% [61.1, 73.5]). Replacement ranks move to RB28/WR32,
+  repricing the rounds-3-5 RB/WR boundary where the flex decision
+  actually lives. The projection-greedy fill is the stated fallback;
+  the assumed split is gone from the source.
+- TIER BREAKS: the fixed 12.0 VOR gap cut QB nine times and WR once in
+  the same forty players. Thresholds now derive per position (p90 of
+  that position's own successive drops): five real tiers everywhere,
+  and the room's tier-cliff math sees WR structure for the first time.
+- RUN ALERTS: the 4-of-8 banner fired on the league's normal early RB
+  diet and missed real anomalies. Detection is now exact binomial
+  surprise against the archive's per-band base rates (p < 0.05, k >= 3,
+  both stated); the banner shows observed vs expected and the p-value.
+- tests/test_vor.py (26 assertions) gates the scoring table to the
+  tenth of a point under 6-pt passing TDs and pins all three
+  derivations; wired into the draft-refresh workflow and the runbook.
+
 ## Live-draft wiring: Sleeper link, team identity, up-next (2026-08-26)
 
 Anthony asked for the app refreshed and pointed at the live draft, and to

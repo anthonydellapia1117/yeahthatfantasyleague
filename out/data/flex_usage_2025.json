@@ -1,0 +1,40 @@
+{
+ "provenance": {
+  "source": "sleeper matchups, league 1245905122328846336 (2025 season)",
+  "excluded": "2024 shell 1092592577628426240 excluded from all analysis",
+  "method": "starters array is roster_positions-ordered; index 6 is FLEX; every non-empty flex start counted",
+  "generated": "2026-08-26",
+  "weeks": 18,
+  "n": 216
+ },
+ "counts": {
+  "RB": 63,
+  "WR": 146,
+  "TE": 7
+ },
+ "shares": {
+  "RB": 0.2917,
+  "WR": 0.6759,
+  "TE": 0.0324
+ },
+ "wilson95": {
+  "RB": [
+   0.2351,
+   0.3555
+  ],
+  "WR": [
+   0.6109,
+   0.7348
+  ],
+  "TE": [
+   0.0158,
+   0.0654
+  ]
+ },
+ "flex_slots": 12,
+ "allocation": {
+  "RB": 4,
+  "WR": 8,
+  "TE": 0
+ }
+}
