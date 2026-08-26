@@ -66,6 +66,8 @@ jobs:
         run: python3 tests/mathdiff.py
       - name: CVS guards
         run: python3 tests/test_cvs.py
+      - name: VOR guards
+        run: python3 tests/test_vor.py
       - name: Page and data guards
         run: python3 tests/test_pages_data.py
       - name: Analysis guards

@@ -281,8 +281,16 @@ const ok = (cond, name, detail) => {
     await page.click('#f-opps .who[data-doss="1"]');
     ok(!(await page.locator("#doss-1").isHidden()), "f14 dossier expands on tap");
     ok(/tendency \(display only\)/.test(await page.textContent("#doss-1")), "f14 lifts labelled display only");
-    // f6: position run - 6 RBs in the last 8 picks
-    ok(/POSITION RUN/.test(body), "f6 run banner fires");
+    // f6: position run - 6 RBs in the last 8 picks, round 2. Under the
+    // archive's rd1-3 base rates (RB ~45%) that is binomial p ~= 0.09: the
+    // derived detector correctly reads it as the league's normal diet and
+    // stays silent (the old 4-of-8 constant fired here). NOTE the old body
+    // regex was vacuous - page textContent includes the script source, where
+    // the banner template itself says "POSITION RUN" - so this asserts the
+    // rendered element. The positive case lives in the QB-burst scenario.
+    ok((await page.textContent("#f-run")).trim() === "",
+       "f6 six early RBs is the archive's normal - derived detector stays silent",
+       (await page.textContent("#f-run")).trim().slice(0, 60));
     // f7: ticker with value tags
     ok(/vs ADP|VALUE \+|REACH -/.test(await page.textContent("#lv-ticker")), "f7 ticker value tags");
     // f8: survival horizon toggle
@@ -647,8 +655,10 @@ const ok = (cond, name, detail) => {
     await p9.goto("file://" + tmp);
     await p9.waitForTimeout(3000);
     const big9 = await p9.textContent(".bignm");
-    ok(/James Cook/.test(big9),
-       "overlay e2e: the model primary is still the subject: " + big9.trim());
+    const expectedPrimary = alive9[0].name;
+    ok(big9.includes(expectedPrimary),
+       "overlay e2e: the model primary is still the subject (" + expectedPrimary + ")",
+       big9.trim());
     const body9 = await p9.textContent("body");
     ok(body9.includes("break toward your call - " + runnerUp),
        "overlay e2e: live coin flip breaks toward the bull call (" + runnerUp + ")");
@@ -1222,6 +1232,11 @@ const ok = (cond, name, detail) => {
     ok(await oc.locator("#lv-upnext.now").count() === 1,
        "the on-the-clock strip takes its clock-state treatment");
     ok(errsOc.length === 0, "on-the-clock: zero console errors", errsOc[0] || "");
+    // RUNDETECT negative case: 3 RB + 3 WR in round 1 IS the archive's normal
+    // diet (~45%/41% base) - the derived detector must stay silent where the
+    // old 4-of-8 constant would soon have fired on noise
+    ok((await oc.textContent("#f-run")).trim() === "",
+       "no run banner when the mix matches the archive's base rates");
     // phone-width net: the survival table's verdict tags fire here (target
     // pick 18 makes most top rows sub-40%), so this state is exactly where
     // the table used to widen the page at 375
@@ -1234,6 +1249,40 @@ const ok = (cond, name, detail) => {
     ok(ocOver <= 1, "draft room live 375: no horizontal page overflow",
        String(ocOver));
     await oc.close();
+
+    // POSITION RUN positive case: three QBs inside eight round-1 picks is a
+    // genuine anomaly for a league that drafts QBs at ~7.7% in rounds 1-3
+    // (binomial p ~= 0.02); the banner must fire, name QB, and show the
+    // archive's expected count
+    const pr2 = await browser.newPage();
+    const runPicks = ["Josh Allen QB", "Lamar Jackson QB", "Jayden Daniels QB",
+      "Jahmyr Gibbs RB", "Bijan Robinson RB", "Ja'Marr Chase WR", "Puka Nacua WR",
+      "Saquon Barkley RB"].map(s => {
+        const parts = s.split(" ");
+        return { metadata: { first_name: parts[0], last_name: parts.slice(1, -1).join(" "),
+                             position: parts[parts.length - 1] } };
+      });
+    const idSlots2 = {}; for (let i = 1; i <= 12; i++) idSlots2[i] = i;
+    await pr2.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await pr2.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(runPicks) }));
+    await pr2.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting", draft_order: { "345197760305307648": 7 },
+                               slot_to_roster_id: idSlots2 }) });
+    });
+    await pr2.goto(base + "/out/draft_room.html");
+    await pr2.waitForTimeout(3000);
+    const runTxt = await pr2.textContent("#f-run");
+    ok(/POSITION RUN/.test(runTxt) && /QB/.test(runTxt),
+       "run banner fires on a stage-anomalous QB burst", runTxt.trim().slice(0, 80));
+    ok(/archive expects/.test(runTxt),
+       "run banner cites the archive's expected count", runTxt.trim().slice(0, 80));
+    await pr2.close();
     srv.close();
   }
 

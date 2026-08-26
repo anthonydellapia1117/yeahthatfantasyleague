@@ -427,3 +427,84 @@ logged on this page with n and CI.
   target-vs-carry ratio; TE scarcity adjudication; WR/RB draft-capital hit-rate
   curves; DST derived-weight validation; preseason-implied-totals backtest gate;
   rushing-vs-pocket QB gap under 6-pt scoring.
+
+---
+
+# PHASE C FINDINGS LEDGER
+
+Running log of computed-vs-cited adjudications and source resolutions, per governance.
+Each entry states what was computed, from what, with n and CI where applicable.
+
+## C.0.1 What the p=0.99 tendency backtest actually tested (checkpoint note 1)
+
+Verified from `src/phase3i_backtest.py` and `out/tendency_backtest.json`: the target
+was **next-pick survival**, not championship outcome. For each season S from 2016,
+the tendency table is built from seasons before S only, then predicts - for every
+real pick in S - whether each still-available player survives to that team's NEXT
+PICK. Scored by Brier and log loss against what happened, paired permutation over
+10 seasons: base Brier 0.23030 vs adjusted 0.23050, adjusted better in 3 of 10
+seasons, p = 0.9932. So the rejected claim is precisely "manager tendencies improve
+next-pick survival probabilities out-of-sample." Tendency-to-championship was never
+tested. Per the checkpoint directive this question is not reopened before the draft;
+display-only stands either way, and edge-x-survival multiplies by the frozen +
+calibrated survival model.
+
+## C.0.2 Participation coverage window (checkpoint note 2)
+
+Resolved live 2026-08-26 against the nflverse pbp_participation release, superseding
+the cold-read draft's "coverage ended" belief: files exist for **2016 through 2025
+inclusive** (2015 is 404). The 2025 file carries 45,184 rows with `offense_players`
+populated on every row (0 nulls) and `offense_personnel`, `was_pressure`,
+`nflverse_game_id`/`play_id` join keys present. The committed Phase A feasibility
+table already stated 2016-2025 after workflow audit; this entry re-verifies it
+directly and closes the question: the WR route-based criteria (TPRR proxy, route
+participation proxy) ARE shippable on the on-field-dropback proxy through 2025, with
+the stated weakness (pass-block snaps counted as routes) carried into their
+uncertainty. The target-share/air-yards fallback is not needed.
+
+## C.1 VOR + tier-break engine (Phase C component 1)
+
+Three assumed constants replaced by derivations; the exact-scoring path verified by a
+new committed suite (tests/test_vor.py, 26 assertions, gating the draft-refresh
+workflow and the morning runbook at step 7b).
+
+**C.1.1 Flex allocation - observed behavior replaces the 50/50 assumption.**
+draft_board.py allocated the 12 FLEX slots as 6 RB / 6 WR by assumption ("flex splits
+roughly half RB, half WR in PPR"). Computed from every 2025 matchup week of this
+league (src/derive_flex.py -> out/data/flex_usage_2025.json; the 2024 shell excluded
+per standing rule): n = 216 flex starts over 18 weeks - WR 146 (67.6%, Wilson 95%
+[61.1%, 73.5%]), RB 63 (29.2%, [23.5%, 35.6%]), TE 7 (3.2%, [1.6%, 6.5%]).
+Largest-remainder allocation: WR 8 / RB 4 / TE 0. The projection-greedy fill (the
+theoretical optimum, kept as the fallback when the artifact is absent) says WR 12/12
+- WR36 projects 177.3 vs RB25 at 171.0, a robust 6.3-point margin - so observed
+behavior sits between the old assumption and the optimum, and is what replacement
+actually means in this league. Effect: replacement ranks RB30->RB28, WR30->WR32;
+baselines RB 160.2->169.0, WR 195.4->186.2; every RB VOR -8.8, every WR +9.2. The
+repricing concentrates in ranks 30-60 (mid RBs fall ~14 VOR ranks, mid WRs rise
+~10-13; the top-24 mix moves by one player), exactly the rounds where the flex
+decision is live.
+
+**C.1.2 Tier breaks - per-position derived thresholds replace gap=12.0.**
+A single absolute gap cut QB nine times and WR once across the same forty draftable
+players (QB drop p90 = 35.5, WR p90 = 9.0 - different scales, one constant). tiers()
+now derives each position's threshold as the p90 of its own successive-VOR-drop
+distribution (p90 is the stated convention; the values are computed): QB 24.1, RB
+11.5, WR 8.6, TE 15.0 on today's payload, giving five real tiers per position where
+WR previously collapsed into two. Tier-cliff math in the room inherits real WR tiers
+for the first time. Fewer than eight draftable players never claims tier structure.
+
+**C.1.3 Positional-run alerts - binomial surprise replaces the 4-of-8 constant.**
+The room's run banner fired at any 4-of-last-8 position count. Against the archive's
+own base rates (pos_base_rates, 2,339 picks by round band) that rule fires on the
+league's NORMAL early diet (RB base 44.9% in rounds 1-3: even 6-of-8 RBs is only
+p = 0.087) and misses genuine anomalies (3 QBs in 8 early picks is p = 0.022).
+runDetect now computes the exact binomial tail against the current band's base rate:
+alert at p < 0.05 with a k >= 3 floor (both stated in code), banner shows observed
+vs expected count and the p-value. Smoke covers the positive (QB burst fires), the
+negative (6 early RBs stays silent), and the base-rate-normal case.
+
+**Scoring exactness** - score() verified to the tenth of a point against the
+live-verified league table (6-pt passing TDs, PPR, K distance tiers and miss
+penalties, DEF points-allowed tiers, ST-player keys), with Sleeper's precomputed
+pts_ppr and adp_ fields proven excluded. The QB rushing-vs-pocket value gap under
+this scoring lands with C5's findings entry, per the checkpoint directive.

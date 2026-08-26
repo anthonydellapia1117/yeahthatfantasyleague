@@ -444,6 +444,11 @@ def build_model():
                    "starters": " ".join(lg["slots"])},
         "baselines": {p: baseline[p] for p in baseline},
         "replacement_ranks": dict(repl),
+        # flex allocation is DERIVED - observed league behavior (2025 matchup
+        # starters, out/data/flex_usage_2025.json) or projection-greedy fallback;
+        # the old assumed 50/50 RB/WR split is gone
+        "flex_allocation": lg.get("flex_alloc", {}),
+        "flex_source": lg.get("flex_source", ""),
         "adp_sd_curve": [[round(a, 2), round(s, 4)] for a, s in ADP_SD_CURVE],
         "survival_calibration": SURVIVAL_CALIBRATION,
         "survival_calibration_enabled": SURVIVAL_CALIBRATION_ENABLED,

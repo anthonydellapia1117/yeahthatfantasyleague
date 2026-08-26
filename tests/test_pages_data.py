@@ -336,6 +336,18 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "pick-engine alternatives order by score alone (comparator pinned)")
     ok(".sort((a, b) => b.g - a.g)" in drp,
        "recs order by grade alone (comparator pinned)")
+    # C1 RUNDETECT: the position-run alert derives from the league's own base
+    # rates, never a fixed count
+    _rd_seg = drp[drp.index("function runDetect"):drp.index("function renderFeatures")]
+    ok("pos_base_rates" in _rd_seg and "binomTail" in _rd_seg,
+       "run detection is binomial surprise against the archive's base rates")
+    ok("c[pos] < 3" in _rd_seg and "0.05" in _rd_seg,
+       "run floor (k>=3) and significance convention (p<0.05) are stated in code")
+    ok("the archive expects" in drp,
+       "run banner shows the expected count, not just the observed one")
+    # C1 FLEX: payload carries the derived allocation with its source
+    ok('"flex_allocation"' in open(os.path.join(ROOT, "src", "engine_2026.py")).read(),
+       "engine payload carries the derived flex allocation")
     # IDENT + UPNEXT: the Sleeper identity layer and the "am I next" strip
     ok("IDENT-BEGIN" in drp and "UPNEXT-BEGIN" in drp
        and drp.index("IDENT-BEGIN") > drp.index("engine-data-end"),

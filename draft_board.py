@@ -4,7 +4,7 @@
 Data comes from Sleeper's public API only. No credentials, no scraping, no third party.
 Run:  python3 draft_board.py <league_id> [--pick N] [--pos RB]
 """
-import json, sys, urllib.request, argparse
+import json, os, sys, urllib.request, argparse
 from collections import defaultdict
 
 SEASON = "2026"
@@ -87,8 +87,7 @@ def projections(lg):
     return rows
 
 
-def replacement_ranks(slots, teams):
-    """How deep each position is drafted for starters, flex shared by RB/WR/TE."""
+def flex_slot_count(slots):
     base = defaultdict(int)
     flex = 0
     for s in slots:
@@ -96,23 +95,68 @@ def replacement_ranks(slots, teams):
             flex += 1
         elif s in POSITIONS:
             base[s] += 1
-    # flex splits roughly half RB, half WR in PPR; TE rarely
+    return base, flex
+
+
+def greedy_flex_alloc(by_pos, base, flex, teams):
+    """Projection-optimal flex fill: each of the flex*teams slots goes to the
+    best remaining RB/WR/TE by projected points. The theoretical bound; the
+    observed-behavior artifact supersedes it when present."""
+    taken = {"RB": 0, "WR": 0, "TE": 0}
+    for _ in range(flex * teams):
+        best_pos, best_pts = None, float("-inf")
+        for p in ("RB", "WR", "TE"):
+            i = base[p] * teams + taken[p]
+            if i < len(by_pos[p]) and by_pos[p][i]["pts"] > best_pts:
+                best_pos, best_pts = p, by_pos[p][i]["pts"]
+        if best_pos is None:
+            break
+        taken[best_pos] += 1
+    return taken
+
+
+def load_flex_usage():
+    """The observed-behavior artifact: how this league ACTUALLY filled its flex
+    slot (2025 season, every matchup week, starters array is slot-ordered).
+    Written by src/derive_flex.py; None when absent so the caller can fall back
+    to the projection-greedy derivation - never to an assumed split."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        "out", "data", "flex_usage_2025.json")
+    if not os.path.exists(path):
+        return None
+    d = json.load(open(path))
+    return d.get("allocation")
+
+
+def replacement_ranks(slots, teams, flex_alloc):
+    """How deep each position is drafted for starters. The flex share is a
+    DERIVED input (observed league behavior, or projection-greedy fallback),
+    never an assumed constant - the old 50/50 RB/WR split mispriced both
+    positions against how this league actually starts its flex."""
+    base, flex = flex_slot_count(slots)
     out = {p: base[p] * teams for p in POSITIONS}
-    out["RB"] += int(flex * teams * 0.5)
-    out["WR"] += int(flex * teams * 0.5)
+    for p, n in (flex_alloc or {}).items():
+        out[p] = out.get(p, 0) + int(n)
     return out
 
 
 def build(league_id):
     lg = league(league_id)
     rows = projections(lg)
-    repl_rank = replacement_ranks(lg["slots"], lg["teams"])
 
     by_pos = defaultdict(list)
     for r in rows:
         by_pos[r["pos"]].append(r)
     for pos in by_pos:
         by_pos[pos].sort(key=lambda x: -x["pts"])
+
+    base, flex = flex_slot_count(lg["slots"])
+    flex_alloc = load_flex_usage()
+    lg["flex_source"] = "observed_2025" if flex_alloc else "projection_greedy"
+    if not flex_alloc:
+        flex_alloc = greedy_flex_alloc(by_pos, base, flex, lg["teams"])
+    lg["flex_alloc"] = dict(flex_alloc)
+    repl_rank = replacement_ranks(lg["slots"], lg["teams"], flex_alloc)
 
     # replacement baseline = the projected points of the last startable player
     baseline = {}
@@ -134,8 +178,26 @@ def draftable(players, limit=40):
     return [p for p in players if p["adp"] < 999][:limit]
 
 
-def tiers(players, gap=12.0):
-    """Split a position list into tiers wherever VOR drops by more than `gap`."""
+def tier_gap(players):
+    """Derived per-position tier threshold: the 90th percentile of successive
+    VOR drops among draftable players. A single absolute constant cannot serve
+    positions whose VOR scales differ - a fixed 12.0 cut QB nine times and WR
+    once in the same forty players. p90 is the stated convention; the threshold
+    VALUE is computed from the position's own distribution."""
+    ps = draftable(players)
+    drops = [ps[i]["vor"] - ps[i + 1]["vor"] for i in range(len(ps) - 1)]
+    if len(drops) < 8:
+        return float("inf")             # too few players to claim tier structure
+    drops_sorted = sorted(drops)
+    idx = max(0, min(len(drops) - 1, int(round(0.9 * (len(drops) - 1)))))
+    return drops_sorted[idx]
+
+
+def tiers(players, gap=None):
+    """Split a position list into tiers wherever VOR drops by more than `gap`.
+    gap=None derives the threshold from the position's own drop distribution."""
+    if gap is None:
+        gap = tier_gap(players)
     out, cur = [], []
     for p in draftable(players):
         if cur and (cur[-1]["vor"] - p["vor"]) > gap:

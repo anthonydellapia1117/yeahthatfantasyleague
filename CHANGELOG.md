@@ -1,5 +1,30 @@
 # Changelog
 
+## C1: VOR engine derives what it used to assume (2026-08-26)
+
+Phase C component 1 of the research-integration pass - the draft-night
+critical path. Three constants became derivations, each logged on the
+findings page with n and CI:
+
+- FLEX ALLOCATION: the 12 flex slots were split 6 RB / 6 WR by
+  assumption. Observed behavior - all 216 flex starts of the 2025
+  season, read from the slot-ordered starters arrays - says WR 8 / RB 4
+  / TE 0 (WR 67.6% [61.1, 73.5]). Replacement ranks move to RB28/WR32,
+  repricing the rounds-3-5 RB/WR boundary where the flex decision
+  actually lives. The projection-greedy fill is the stated fallback;
+  the assumed split is gone from the source.
+- TIER BREAKS: the fixed 12.0 VOR gap cut QB nine times and WR once in
+  the same forty players. Thresholds now derive per position (p90 of
+  that position's own successive drops): five real tiers everywhere,
+  and the room's tier-cliff math sees WR structure for the first time.
+- RUN ALERTS: the 4-of-8 banner fired on the league's normal early RB
+  diet and missed real anomalies. Detection is now exact binomial
+  surprise against the archive's per-band base rates (p < 0.05, k >= 3,
+  both stated); the banner shows observed vs expected and the p-value.
+- tests/test_vor.py (26 assertions) gates the scoring table to the
+  tenth of a point under 6-pt passing TDs and pins all three
+  derivations; wired into the draft-refresh workflow and the runbook.
+
 ## Live-draft wiring: Sleeper link, team identity, up-next (2026-08-26)
 
 Anthony asked for the app refreshed and pointed at the live draft, and to
