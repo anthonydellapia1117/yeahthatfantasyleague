@@ -76,6 +76,8 @@ jobs:
         run: python3 tests/test_ceiling.py
       - name: BULLISH guards
         run: python3 tests/test_bullish.py
+      - name: WS2 audit guards
+        run: python3 tests/test_ws2.py
       - name: Page and data guards
         run: python3 tests/test_pages_data.py
       - name: Analysis guards

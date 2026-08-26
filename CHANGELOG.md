@@ -1,5 +1,31 @@
 # Changelog
 
+## C6: Workstream-2 claims audit - every cited number faces its computed twin (2026-08-26)
+
+`src/build_ws2_audit.py` -> `out/data/ws2_audit_2026.json`. Each
+quantitative Workstream-2 claim in the research director report is now
+pointed at an earlier component's adjudication, recomputed from primary
+sources under league-exact scoring with n and Wilson CIs, or logged
+unverifiable with its reason. Cited values are quarantined in a CLAIMS
+provenance block; a source canary in `tests/test_ws2.py` proves none
+leak into computation, and verdicts are derived programmatically so a
+data refresh recomputes them. Score: 6 agree, 2 partial, 1 disagrees.
+Agrees: RB-over-WR top-12 direction and its non-significance (69/120 vs
+60/120, p=0.244), the 2025 outlier year (9/12 RBs, 16.08 games - exact),
+elite RB gap (+9.89 [8.46,11.32] vs cited +9.7), overall RB1 never from
+outside preseason top-24 (0/10), first-time WR1 share from WR18-50
+(61.7% vs 62%), and the team-success FOLKLORE verdict (4/12 playoff
+teams, 8.79 wins). Partial: the RB1 curse is 5/9 not 6/7 - under
+full-PPR league scoring the 2024 RB1 was Gibbs, who did not decline;
+and the QB1 rushing floor breaks here (Rodgers 2020, Stafford 2025 -
+pocket QB1s are possible at 6-pt pass TD). Disagrees: the "later RB
+bands beat expectation more" pattern vanishes in the full 2016-2025
+aggregate (57.5/53.3/51.7/56.7%) - the report's own caveat asked for
+this computation and the computation kills the pattern. Workstream 3
+adopted as methodology only: no analogs, opinions, or rankings imported;
+the C3 rb1_curse tag is cross-checked against this audit's own 2025 RB1
+in tests. Workflow step "WS2 audit guards" and runbook row 7g added.
+
 ## C5: BULLISH engine - probabilistic matrices, tag state machine (2026-08-26)
 
 Two artifacts: computed inputs (k/n proportions, percentile thresholds,

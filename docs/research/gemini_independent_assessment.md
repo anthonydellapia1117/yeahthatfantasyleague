@@ -664,3 +664,71 @@ xYPRR vs YPRR stability, first-downs-per-route-run predictiveness, draft-capital
 career curves, DST derived-weight validation, preseason-implied-totals backtest
 gate (the Vegas layer currently informs two criteria; the backtest gate runs
 before any expansion of its weight).
+
+## C.6 Workstream-2 claims audit (Phase C component 6)
+
+Artifact: `out/data/ws2_audit_2026.json` (builder `src/build_ws2_audit.py`,
+guards `tests/test_ws2.py`). Every quantitative Workstream-2 claim in the
+research director report is now either pointed at an earlier component's
+adjudication, recomputed from primary sources under league-exact scoring
+with n and Wilson 95% CIs, or logged unverifiable with the reason. Cited
+numbers are quarantined in a CLAIMS provenance block; a source canary
+proves no cited value leaks into computation. Workstream 3 is adopted as
+methodology only - no analog mappings, player opinions, or rankings are
+imported anywhere; the board stays engine-derived and slot-parameterized.
+
+**Recomputed, AGREES (6 of 9):**
+- RB vs WR preseason-top-12 conversion: RB 69/120 (57.5%, CI [48.6, 66.0])
+  vs WR 60/120 (50.0%, CI [41.2, 58.8]); z = 1.165, p = 0.244. The cited
+  direction and the cited non-significance both reproduce. Cited n = 84 per
+  position vs our 120 - source window differs, conclusion does not.
+- 2025 outlier year: 9/12 top-drafted RBs finished top-12, average 16.08
+  games - both EXACTLY as cited; WRs 5/12 vs cited 4/12 (scoring-frame
+  margin of one).
+- Elite RB gap: mean RB1-vs-RB12 PPG gap +9.89, CI [8.46, 11.32] (RB1
+  25.07, RB12 15.18) vs cited +9.7 (24.9 / 15.1). Basis: PPG rank among
+  RBs with >= 8 games.
+- Overall RB1 from outside preseason top-24: 0/10 seasons 2016-2025 -
+  consistent with "almost never" (cited frame is since-2005).
+- First-time WR1 finishers from WR18-50 ADP: 29/47 = 61.7%, CI
+  [47.4, 74.2] vs cited 62%. Near-exact reproduction on a different
+  window and scoring basis.
+- Team-success FOLKLORE verdict: 2025 top-12 league-scored RBs - 4/12
+  made the playoffs, average 8.79 wins (cited 4/12, 8.75). Supported.
+
+**Recomputed, PARTIAL (2 of 9):**
+- RB1 curse: 5/9 prior-year RB1s declined (2016-2024 pairs), weaker than
+  the cited 6-of-7. Two identity flips drive it: under full-PPR league
+  scoring the 2018 RB1 is McCaffrey (not Barkley, by a hair) and the 2024
+  RB1 is Jahmyr Gibbs (not Barkley) - and Gibbs did NOT decline in 2025
+  (+1.1% PPG). The C3 `rb1_curse` tag survives the audit: McCaffrey is
+  the league-scored 2025 RB1 by our own computation (cross-checked in
+  tests), and decline remains the majority outcome - but the flag's
+  strength is 5/9, not 6/7, and the Gibbs countercase is on the ledger.
+- QB1 rushing floor: the cited "every QB1 since 2019 ran 350+/4+" fails
+  under OUR scoring in 2020 (Aaron Rodgers) and 2025 (Matthew Stafford) -
+  5/7 years meet the floor. Under 6-pt passing TDs a pocket QB CAN finish
+  QB1 here. The top-12 rushing averages reproduce (360.9 yds / 4.28 TDs
+  vs cited 360 / 4.2), and the C5 rushing premium (+22.0, CI excluding
+  zero) stands - but the "rushing QB or bust" framing is overstated for
+  this league, which is exactly why C5's QB matrix kept stable inputs
+  and did not hard-require rushing.
+
+**Recomputed, DISAGREES (1 of 9):**
+- RB band-matched conversion: the full 2016-2025 aggregate is FLAT -
+  RB1-12 57.5%, RB13-24 53.3%, RB25-36 51.7%, RB37-48 56.7% - not
+  monotonically increasing. The report's "later bands beat expectation
+  more" pattern is an artifact of its single illustrative year (2023),
+  precisely the risk its own caveat flagged when it asked the app to
+  compute the aggregate. The app computed it; the pattern is not real.
+
+**Already adjudicated upstream (pointed, not recomputed):** 140-target
+WR (C3, agrees), 400-touch fade (C3, direction agrees / cited n
+irreproducible), preseason-RB1 ledger (C3 fact table, 2016 flag),
+goal-line split (C3, settled from 2025 pbp), TE scarcity (C5, elite gap
+real and growing), QB rushing value (C5, CI excludes zero).
+
+**Unverifiable from held sources (logged, not imported):**
+championship-roster shares (external multi-league population) and the
+consensus-No.1-drafted-by-champion 0/13 claim (needs the 2014-2024 Yahoo
+history; yfpy/Walter export backlog remains open).

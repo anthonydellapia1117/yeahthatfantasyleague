@@ -1453,7 +1453,9 @@ async function loadBullish(){
     }
   } catch (e) { /* absent is a supported state */ }
 }
-loadBullish();
+// file:// cannot fetch (CORS) and the browser logs the failure even inside
+// try/catch, tripping the zero-console-error gate; absent is a supported state
+if (location.protocol !== "file:") loadBullish();
 function bullChip(p){
   if (!BULL) return "";
   const t = BULL.tags.find(x => x.name === p.name && x.pos === p.pos);
