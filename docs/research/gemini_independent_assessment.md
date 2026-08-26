@@ -732,3 +732,61 @@ real and growing), QB rushing value (C5, CI excludes zero).
 championship-roster shares (external multi-league population) and the
 consensus-No.1-drafted-by-champion 0/13 claim (needs the 2014-2024 Yahoo
 history; yfpy/Walter export backlog remains open).
+
+## R.1 Review response - pre-merge items on PR #48
+
+**R.1.1 Exit-code masking (blocker).** Audit result: all eleven python
+suites and the browser smoke terminate with `sys.exit(1)` /
+`process.exit(1)` on failure, and every workflow step invokes its suite
+directly - no repo artifact carried the fail-open shape. The class lived
+entirely in the ad-hoc invocation layer: a compound background wrapper
+returns the LAST command's status, and a `suite | tail` pipe returns the
+pipe tail's status; both reported the C5 smoke failure as green. The
+class fix is `tests/run_gate.sh`, now the mandated invocation path in the
+workflow (every gate step) and the runbook (rows 4b-10): it never pipes
+the suite and demands exit 0 AND the ALL PASS sentinel together, failing
+loudly on nonzero exit, missing sentinel, or a FAILURES line beside exit
+0. Its self-test (`tests/test_run_gate.py`) proves the two masking shapes
+are real with control fixtures (a compound wrapper and a tail pipe around
+a deliberately crashing suite both return 0 raw) and that the gate
+catches them, plus the exit-0 liar and the silent-pass. Re-run of every
+suite through the gate: all GATE OK with explicit exit codes (survival,
+mathdiff via GATE_SENTINEL, cvs, vor, baserates, archetypes, ceiling,
+bullish, ws2, pages, full smoke, heavy analysis). Unverified prior
+greens, honestly stated: every fast-suite green reported during C1-C6
+via a `| tail` pipe had its exit code discarded and stood on output text
+alone; the one instance where BOTH channels were wrong was the C5
+background smoke (compound wrapper, output not read either) - caught one
+commit later, fixed in the C6 commit, and now structurally impossible
+through the gate. This is the same fail-open shape as the depth-chart
+cron incident; the gate closes it at the invocation layer where it
+actually lived.
+
+**R.1.2 Preseason-RB1 ledger recomputed (correction).** The authorized
+fact table in `archetypes_2026.json` now computes BOTH columns: preseason
+RB1 from the FFC PPR ADP snapshot per year, actual RB1 by league-exact
+full-PPR season total. All ten rows 2016-2025 are in the artifact; the
+2016 source-dependency flag is preserved on its row and surfaced as the
+table's flag. Under league scoring the actual column differs from the
+report's standard-scoring version in two years - 2018 Christian McCaffrey
+(not Barkley, by a hair) and 2024 Jahmyr Gibbs (not Barkley) - and the
+2-of-10 conversion count is UNAFFECTED: the conversions remain 2016
+(David Johnson) and 2023 (Christian McCaffrey), because neither flipped
+year was a conversion under either scoring basis.
+
+**R.1.3 League base rates and 2016-2021 survivorship (question).** Yes -
+the C2 league table draws on out/picks.csv for all of 2016-2025. Decision:
+LABELED, not restricted, and the label is computed evidence, not prose:
+`base_rates.json` provenance now carries `league_history_coverage` with
+per-season pick and franchise counts. What the archive actually shows for
+2016-2021: all 12 franchises present in every season with full drafts
+(single gap: one missing 2018 LFTLR row, 179/180), single source
+`leaguelegacy`, every row confidence `verified` - and the departed-manager
+franchises are IN the data (GaTTa drafts in 2016; Team JoeBa through
+2021). So no manager-level survivorship gap is detectable at the picks
+level; the claimed defect could not be reproduced against the archive.
+The label records the claim anyway and converts to a 2022-2025
+restriction if the Yahoo 2014-2024 pull (post-merge item 2) shows the
+leaguelegacy archive was reconstructed incompletely. Guards added to
+`tests/test_baserates.py`: the label must be present and every season
+used must show 12 franchises and a full draft's worth of picks.

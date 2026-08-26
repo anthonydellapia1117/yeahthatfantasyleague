@@ -103,8 +103,72 @@
  },
  "fact_tables": {
   "preseason_rb1_ledger": {
-   "fact": "preseason ADP RB1 converted to actual RB1 in 2 of 10 seasons 2016-2025 (2016, 2023)",
-   "flag": "the 2016 cell is source-dependent: FFC ADP names one RB1, ESPN another; the count holds under the standard FFC consensus"
+   "fact": "preseason ADP RB1 converted to actual RB1 in 2 of 10 seasons 2016-2025 (both columns computed)",
+   "basis": "preseason = FFC PPR ADP RB1; actual = RB1 by league-exact full-PPR season total, recomputed per the review correction",
+   "rows": [
+    {
+     "year": 2016,
+     "preseason_rb1": "David Johnson",
+     "actual_rb1": "David Johnson",
+     "converted": true,
+     "source_dependency": "the 2016 cell is source-dependent: FFC ADP names one RB1, ESPN another; the conversion holds under the standard FFC consensus"
+    },
+    {
+     "year": 2017,
+     "preseason_rb1": "David Johnson",
+     "actual_rb1": "Todd Gurley",
+     "converted": false
+    },
+    {
+     "year": 2018,
+     "preseason_rb1": "Todd Gurley",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": false
+    },
+    {
+     "year": 2019,
+     "preseason_rb1": "Saquon Barkley",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": false
+    },
+    {
+     "year": 2020,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Alvin Kamara",
+     "converted": false
+    },
+    {
+     "year": 2021,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Jonathan Taylor",
+     "converted": false
+    },
+    {
+     "year": 2022,
+     "preseason_rb1": "Jonathan Taylor",
+     "actual_rb1": "Austin Ekeler",
+     "converted": false
+    },
+    {
+     "year": 2023,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": true
+    },
+    {
+     "year": 2024,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Jahmyr Gibbs",
+     "converted": false
+    },
+    {
+     "year": 2025,
+     "preseason_rb1": "Bijan Robinson",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": false
+    }
+   ],
+   "flag": "the 2016 cell is source-dependent: FFC ADP names one RB1, ESPN another; the conversion holds under the standard FFC consensus"
   }
  },
  "players": [

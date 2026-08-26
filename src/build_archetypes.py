@@ -69,6 +69,9 @@ def pctile(vals, q):
     return vals[i]
 
 
+DISPLAY = {}                 # normalized name -> last seen display name
+
+
 def season_rows(year):
     """name|pos -> {league-scored totals, targets, touches, games}, REG."""
     agg = defaultdict(lambda: defaultdict(float))
@@ -77,6 +80,7 @@ def season_rows(year):
             if r.get("season_type") != "REG":
                 continue
             key = norm(r["player_display_name"]) + "|" + r.get("position", "")
+            DISPLAY[key.split("|")[0]] = r["player_display_name"]
             a = agg[key]
             a["games"] += 1
             for col in ("targets", "carries", "receptions"):
@@ -141,9 +145,13 @@ def main():
 
     # ---- verifications from history (findings-page material)
     # 140+ target WRs 2016-2025: top-24 / top-12 positional finish rates
+    # (the same pass captures each season's actual RB1 for the ledger below)
     v_n = v_24 = v_12 = 0
+    actual_rb1 = {}
     for yr in range(2016, 2026):
         agg = season_rows(yr)
+        rb1_of_yr = min(pos_rank(agg, "RB").items(), key=lambda kv: kv[1])
+        actual_rb1[yr] = rb1_of_yr[0].split("|")[0]
         ranks = pos_rank(agg, "WR")
         for key, a in agg.items():
             if key.endswith("|WR") and a["targets"] >= thr["wr_target_threshold"]:
@@ -209,12 +217,35 @@ def main():
     thr["ambiguous_top_share_median"] = round(amb_threshold, 4)
     ambiguous_teams = {t for t, s in top_share.items() if s < amb_threshold}
 
-    # conversion ledger: the one permitted fact table (governance exception)
+    # conversion ledger: the one authorized fact table - per the review
+    # correction, BOTH columns are now computed, never imported: preseason
+    # RB1 from the FFC PPR ADP snapshot, actual RB1 by league-exact season
+    # total (under full PPR the actual column differs from the report's
+    # standard-scoring version in some years; the rows are the record)
+    ledger_rows = []
+    for yr in range(2016, 2026):
+        ffc = json.load(open(os.path.join(HISTORY, f"ffc_ppr_{yr}.json")))
+        pre = min((p for p in ffc["players"] if p["position"] == "RB"),
+                  key=lambda p: p["adp"])
+        act = actual_rb1[yr]
+        row = {"year": yr, "preseason_rb1": pre["name"],
+               "actual_rb1": DISPLAY.get(act, act),
+               "converted": norm(pre["name"]) == act}
+        if yr == 2016:
+            row["source_dependency"] = (
+                "the 2016 cell is source-dependent: FFC ADP names one RB1, "
+                "ESPN another; the conversion holds under the standard FFC "
+                "consensus")
+        ledger_rows.append(row)
+    conv = sum(r["converted"] for r in ledger_rows)
     fact_rb1_ledger = {
-        "fact": "preseason ADP RB1 converted to actual RB1 in 2 of 10 seasons "
-                "2016-2025 (2016, 2023)",
-        "flag": "the 2016 cell is source-dependent: FFC ADP names one RB1, "
-                "ESPN another; the count holds under the standard FFC consensus",
+        "fact": f"preseason ADP RB1 converted to actual RB1 in {conv} of "
+                f"{len(ledger_rows)} seasons 2016-2025 (both columns computed)",
+        "basis": "preseason = FFC PPR ADP RB1; actual = RB1 by league-exact "
+                 "full-PPR season total, recomputed per the review correction",
+        "rows": ledger_rows,
+        "flag": next(r["source_dependency"] for r in ledger_rows
+                     if r["year"] == 2016),
     }
 
     tags = {}

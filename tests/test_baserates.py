@@ -77,6 +77,17 @@ _chip = bp[bp.index("function baseRateChip"):bp.index("function baseRateTable")]
 ok("cvs_rank" not in _chip and "signal" not in _chip and "score" not in _chip,
    "chip is display-only - reads adp_pos_rank and the artifact, nothing else")
 
+# survivorship review item: the league-history coverage must be computed and
+# labeled, and every season used must show a full 12-franchise draft
+cov = d["provenance"].get("league_history_coverage", {})
+ok("survivorship_label" in cov and "LABELED" in cov["survivorship_label"],
+   "survivorship decision recorded on the artifact (labeled, not restricted)")
+per = cov.get("per_season", {})
+ok(len(per) == 10 and all(v["franchises"] == 12 for v in per.values()),
+   "coverage computed: all 10 seasons carry 12 franchises")
+ok(all(v["picks"] >= 168 for v in per.values()),
+   "coverage computed: every season holds a full draft's worth of picks")
+
 print()
 if fails:
     print(f"{len(fails)} FAILURES")

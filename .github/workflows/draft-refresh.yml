@@ -58,30 +58,36 @@ jobs:
       - name: Rebuild CVS board
         run: python3 src/build_cvs.py
 
-      # steps 5-9: the python gates. mathdiff is the frozen-math law - it
-      # must print an EMPTY proof or the run stops here.
+      # steps 5-9: the python gates, every one through run_gate.sh, which
+      # demands exit 0 AND the ALL PASS sentinel together (the exit-code-
+      # masking guard; its own self-test runs first). mathdiff is the
+      # frozen-math law - it must print an EMPTY proof or the run stops here.
+      - name: Gate runner self-test
+        run: python3 tests/test_run_gate.py
       - name: Frozen survival behavior
-        run: python3 tests/test_survival.py
+        run: sh tests/run_gate.sh python3 tests/test_survival.py
       - name: Frozen math proof
-        run: python3 tests/mathdiff.py
+        env:
+          GATE_SENTINEL: "MATH DIFF PROOF: EMPTY"
+        run: sh tests/run_gate.sh python3 tests/mathdiff.py
       - name: CVS guards
-        run: python3 tests/test_cvs.py
+        run: sh tests/run_gate.sh python3 tests/test_cvs.py
       - name: VOR guards
-        run: python3 tests/test_vor.py
+        run: sh tests/run_gate.sh python3 tests/test_vor.py
       - name: Base-rate guards
-        run: python3 tests/test_baserates.py
+        run: sh tests/run_gate.sh python3 tests/test_baserates.py
       - name: Archetype guards
-        run: python3 tests/test_archetypes.py
+        run: sh tests/run_gate.sh python3 tests/test_archetypes.py
       - name: Ceiling guards
-        run: python3 tests/test_ceiling.py
+        run: sh tests/run_gate.sh python3 tests/test_ceiling.py
       - name: BULLISH guards
-        run: python3 tests/test_bullish.py
+        run: sh tests/run_gate.sh python3 tests/test_bullish.py
       - name: WS2 audit guards
-        run: python3 tests/test_ws2.py
+        run: sh tests/run_gate.sh python3 tests/test_ws2.py
       - name: Page and data guards
-        run: python3 tests/test_pages_data.py
+        run: sh tests/run_gate.sh python3 tests/test_pages_data.py
       - name: Analysis guards
-        run: python3 tests/test_analysis.py
+        run: sh tests/run_gate.sh python3 tests/test_analysis.py
 
       # step 10: the browser suite. The repo has no package.json, so the
       # driver and browser are installed here and the smoke is pointed at
@@ -105,7 +111,7 @@ jobs:
           PW_CHROMIUM=$(node -e "console.log(require('/tmp/pw/node_modules/playwright').chromium.executablePath())")
           echo "browser: $PW_CHROMIUM"
           test -x "$PW_CHROMIUM" || { echo "::error::chromium not found at $PW_CHROMIUM"; exit 1; }
-          PW_CHROMIUM="$PW_CHROMIUM" node tests/smoke_draft_room.js out/draft_room.html
+          PW_CHROMIUM="$PW_CHROMIUM" sh tests/run_gate.sh node tests/smoke_draft_room.js out/draft_room.html
 
       - name: What moved
         run: |

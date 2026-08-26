@@ -1,5 +1,27 @@
 # Changelog
 
+## R1: review response - gate runner, computed RB1 ledger, survivorship label (2026-08-26)
+
+Three pre-merge review items on PR #48. (1) Exit-code-masking class fix:
+`tests/run_gate.sh` is now the mandated suite-invocation path in the
+workflow and runbook - it never pipes the suite and requires exit 0 AND
+the ALL PASS sentinel together; `tests/test_run_gate.py` self-tests it
+against control fixtures proving the two masking shapes (compound
+wrapper, tail pipe) really return 0 around a crashing suite, plus the
+exit-0 liar and the silent pass. Every suite re-ran GATE OK; the audit
+found no repo-level fail-open wrapper - the class lived in ad-hoc
+invocation only. (2) The preseason-RB1 conversion ledger now computes
+both columns per year (FFC ADP preseason RB1; league-exact full-PPR
+actual RB1): ten rows 2016-2025 in the artifact, 2016 source-dependency
+flag kept, and the 2-of-10 count is unaffected even though the actual
+column flips in 2018 (McCaffrey) and 2024 (Gibbs). (3) League base rates
+keep 2016-2021 LABELED rather than restricted: the archive shows all 12
+franchises with full verified drafts every season including departed
+managers' franchises, so the claimed survivorship gap is not reproducible
+at the picks level; the computed coverage block and label live in the
+artifact provenance, guarded by tests, and convert to a restriction if
+the Yahoo history pull contradicts the archive. Findings R.1.1-R.1.3.
+
 ## C6: Workstream-2 claims audit - every cited number faces its computed twin (2026-08-26)
 
 `src/build_ws2_audit.py` -> `out/data/ws2_audit_2026.json`. Each

@@ -117,11 +117,15 @@ def main():
     joined = unjoined = lg_joined = lg_unjoined = 0
 
     league_picks = defaultdict(list)   # season -> [(name|pos, round)]
+    coverage = defaultdict(lambda: {"picks": 0, "franchises": set()})
     for r in csv.DictReader(open(PICKS)):
         try:
             season, rnd = int(r["season"]), int(r["round"])
         except (KeyError, ValueError):
             continue
+        if season in SEASONS:
+            coverage[season]["picks"] += 1
+            coverage[season]["franchises"].add(r.get("member_name"))
         if season in SEASONS and r.get("pos") in POSITIONS:
             league_picks[season].append((norm(r["player_name"]) + "|" + r["pos"], rnd))
 
@@ -197,6 +201,22 @@ def main():
             "join": {"market_joined": joined, "market_unjoined_as_bust": unjoined,
                      "league_joined": lg_joined,
                      "league_unjoined_as_bust": lg_unjoined},
+            "league_history_coverage": {
+                "per_season": {str(y): {"picks": coverage[y]["picks"],
+                                        "franchises":
+                                        len(coverage[y]["franchises"])}
+                               for y in sorted(coverage)},
+                "survivorship_label": (
+                    "LABELED, not restricted: a review note reports 2016-2021 "
+                    "as survivorship-filtered (1-3 departed managers per "
+                    "season). The archive itself shows all 12 franchises with "
+                    "full drafts in every season used here, departed-manager "
+                    "franchises included, so no manager-level gap is "
+                    "detectable at the picks level; the counts above are the "
+                    "computed evidence. The label stands, and converts to a "
+                    "2022-2025 restriction, if the Yahoo 2014-2024 history "
+                    "pull shows the archive was reconstructed incompletely."),
+            },
         },
         "definitions": {
             "hit12": "finished top-12 at the position by season total points",
