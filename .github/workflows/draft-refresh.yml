@@ -49,6 +49,17 @@ jobs:
         with:
           node-version: "22"
 
+      # GEOMETRY PREFLIGHT. The P0 defect was a server-knowable value assumed
+      # instead of read (a 120s clock against a 60s pick_timer). Nothing else
+      # in the codebase reads draft.type or settings.reversal_round, and
+      # TEAMS/ROUNDS are module constants never checked against the server -
+      # all correct today only because the settings happen to match. Enable
+      # third-round reversal and every computed pick number is wrong by a
+      # snake turn while the board still renders. Fail here, before the
+      # rebuild, rather than shipping a board built on a stale assumption.
+      - name: Draft geometry preflight
+        run: python3 src/preflight_draft.py
+
       # steps 2-4 of the runbook: live ADP and projections, then the CVS
       # board. Pure stdlib - no pip install needed.
       - name: Rebuild engine payload
@@ -57,6 +68,13 @@ jobs:
         run: python3 src/build_cvs_inputs.py
       - name: Rebuild CVS board
         run: python3 src/build_cvs.py
+      # The tree derives from the engine payload rebuilt above, so it has to
+      # move with it - a previous refresh shifted 259 ADP values, and PATHS is
+      # a nav-linked decision surface. Pure stdlib, no network, ~1s, and
+      # byte-deterministic. The provenance guard in the page suite fails the
+      # run if this is ever skipped and the tree falls behind the engine.
+      - name: Rebuild VONA path tree
+        run: python3 src/build_vona_tree.py
 
       # steps 5-9: the python gates, every one through run_gate.sh, which
       # demands exit 0 AND the ALL PASS sentinel together (the exit-code-
@@ -94,7 +112,18 @@ jobs:
         run: sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py
       - name: Page and data guards
         run: sh tests/run_gate.sh python3 tests/test_pages_data.py
+      # The five determinism reruns in this suite are cache-gated and the
+      # runner has no HISTORY cache, so they skip. run_gate now FAILS on a
+      # skip by default (a skipped guard is not a passing guard); this is the
+      # one place the skip is expected, so it is allowed explicitly and the
+      # coverage loss is named here rather than being invisible: 5 of 38
+      # checks in this suite do not run on CI, and they are precisely the
+      # ones that prove the analysis artifacts reproduce from their inputs.
+      # Closing this properly means committing or fetching the cache on the
+      # runner - see docs/SELF_AUDIT_2026-08-26.md P2-U2.
       - name: Analysis guards
+        env:
+          GATE_ALLOW_SKIP: "1"
         run: sh tests/run_gate.sh python3 tests/test_analysis.py
 
       # step 10: the browser suite. The repo has no package.json, so the

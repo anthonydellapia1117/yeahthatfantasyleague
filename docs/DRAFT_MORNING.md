@@ -30,9 +30,11 @@ rehearsal's `real` times.
 | # | Command | Rehearsed | What it does |
 |---|---|---|---|
 | 1 | `git fetch origin main && git checkout -B claude/chat-migration-desktop-ruannr origin/main` | 5 s | clean start from main |
+| 1b | `python3 src/preflight_draft.py` | 1 s | geometry preflight: asserts the LIVE draft is still snake, no third-round reversal, and the teams/rounds the payload ships. Stop here on a mismatch - every computed pick number depends on it |
 | 2 | `python3 src/engine_2026.py` | 3.7 s | live ADP + projections; rewrites the sentinel payload, engine_2026.json, decision cards |
 | 3 | `python3 src/build_cvs_inputs.py` | 2.0 s | nflverse volatility, TD rates, 2026 SOS |
 | 4 | `python3 src/build_cvs.py` | 0.3 s | the CVS board payload |
+| 4a | `python3 src/build_vona_tree.py` | 1.0 s | the PATHS tree - derives from the engine payload, so it MUST be rebuilt with it; the page guards fail if it falls behind |
 | 4b | `python3 tests/test_run_gate.py` | 0.3 s | gate-runner self-test: proves the masking shapes (pipe, compound wrapper, exit-0 liar) are caught |
 | 5 | `sh tests/run_gate.sh python3 tests/test_survival.py` | 0.6 s | 37 frozen-behavior guards |
 | 6 | `GATE_SENTINEL="MATH DIFF PROOF: EMPTY" sh tests/run_gate.sh python3 tests/mathdiff.py` | 0.1 s | ten function bodies byte-identical to origin/main |
@@ -48,7 +50,7 @@ rehearsal's `real` times.
 | 7j | `sh tests/run_gate.sh python3 tests/test_vona.py` | 0.2 s | VONA path tree: depth, derived thresholds, survival floor, no repeats, no BULLISH on nodes |
 | 7k | `sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py` | 0.2 s | drafted-vs-acquired: champions-vs-field intervals, era flags, the two results kept distinct |
 | 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
-| 9 | `sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
+| 9 | `GATE_ALLOW_SKIP=1 sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards. The five determinism reruns are cache-gated; without the HISTORY cache they skip, and run_gate now FAILS on a skip unless you say it is expected - hence the explicit `GATE_ALLOW_SKIP=1`. Coverage lost when you use it: 5 of 38 checks in this suite, and they are the ones proving the artifacts reproduce. With the cache they run and take ~25 min - merge-gate territory, not morning territory |
 | 10 | full smoke (see the playwright note below) | 94 s + install | 21 hermetic browser scenarios (incl. DRAFT MODE, the forward-pick law, and the path tree) |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
@@ -75,6 +77,12 @@ live payload (the big board conflicts view is the one that bit us) must
 stay payload-driven - read out/cvs.json and assert on what is actually
 in it, including the empty states. A refresh day that legitimately has
 no conflicts must not fail the suite.
+
+Gate law, second clause: run_gate now reports `RAN n GUARDS` on every run
+and FAILS on any `SKIP` line unless `GATE_ALLOW_SKIP=1` is set. A skipped
+guard is not a passing guard - the suite that printed five SKIPs and then
+`ALL PASS` is why. If you set the override, say in the same place what
+coverage you are giving up.
 
 Pipe law: NEVER pipe a suite through tail/head/grep, even when exploring
 interactively - a pipe returns the pipe tail's exit code and hides the

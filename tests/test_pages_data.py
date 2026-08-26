@@ -738,6 +738,36 @@ if all(os.path.exists(os.path.join(TEASER, f)) for f in _tfiles):
                                      "pages.yml")).read(),
        "pages workflow deploys the teaser")
 
+# ---------------------------------------------------------------------------
+# ENGINE PROVENANCE. Any artifact derived from the engine payload must record
+# which engine it was built from, and that record must MATCH the engine that
+# ships beside it. The draft-morning workflow rebuilds engine_2026.json (a
+# previous refresh moved 259 ADP values) and every derived artifact has to be
+# rebuilt with it. The failure this closes is a nav-linked decision surface -
+# the PATHS tab - silently rendering a tree computed against yesterday's board
+# on draft night. test_mock.py asserted the key EXISTED; nothing asserted it
+# AGREED, and paths.html cannot show the mismatch either: it prints the tree's
+# own recorded engine date and never fetches the engine to compare.
+_eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+_derived = 0
+for _f in sorted(os.listdir(D)):
+    if not _f.endswith(".json"):
+        continue
+    try:
+        _a = json.load(open(os.path.join(D, _f)))
+    except (ValueError, OSError):
+        continue
+    _p = _a.get("provenance") if isinstance(_a, dict) else None
+    if not isinstance(_p, dict) or "engine_generated" not in _p:
+        continue
+    _derived += 1
+    ok(_p["engine_generated"] == _eng["generated"],
+       f"{_f}: built from the engine that ships with it",
+       f"artifact says {_p['engine_generated']}, engine says {_eng['generated']}")
+ok(_derived >= 2,
+   "the engine-derived artifacts declare which engine built them",
+   f"found {_derived}")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
