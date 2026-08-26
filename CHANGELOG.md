@@ -1,5 +1,19 @@
 # Changelog
 
+## M3: draft-order draw watch (2026-08-26)
+
+`src/check_draft_order.py` detects a drawn order with the room's own
+semantics (identity slot map = not drawn; draft_order by user id primary,
+slot_to_roster_id via roster 7 fallback) and prints one status line. A
+scheduled Routine runs it every two hours, silent until the draw, then
+push-notifies Anthony with his slot and retires itself; documented as
+automation LAYER 3 in the runbook. The room itself needed no change - it
+already collapses to the detected seat live. Yahoo 2014-2024 history
+(post-merge item 2) remains blocked on the owner side of the OAuth
+contract: no .env credentials exist in the container; src/fetch_yahoo.py
+and src/oauth_exchange.py are ready the moment the two values and one
+verification code arrive.
+
 ## M1: mock-draft validation - the board drafts, not just ranks (2026-08-26)
 
 `src/mock_draft.py` -> `out/data/mock_drafts_2026.json`: deterministic

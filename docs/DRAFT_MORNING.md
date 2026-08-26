@@ -117,6 +117,16 @@ went red it diagnoses the failure, pushes a fix to
 main; a 6:00 AM failure leaves the whole day to land the fix, and the
 deployed build is never in a broken state while that happens.
 
+LAYER 3 - the draft-order draw watch. A Claude Routine runs
+`python3 src/check_draft_order.py` every two hours until the draw (or
+2026-09-08, whichever first). The script mirrors the room's own
+detection semantics - the identity slot map counts as NOT drawn - and
+the Routine stays silent until the order is real, then push-notifies
+Anthony with his slot and retires itself. The room needs nothing from
+it: it already collapses to the detected seat live (the order-hypothesis
+card retires, renderPre follows the real slot); the watch exists so
+Anthony hears about the draw without opening the app.
+
 Anthony still owns the night-before checklist - the board calls, any
 Walter revision, the walter layer decision. Neither layer touches
 `data/`.
