@@ -1,9 +1,0 @@
-stat,detail
-closest_series,"{""member"":{""id"":108587,""name"":""Pung & Tralie"",""slug"":""pung-tralie""},""opponent"":{""id"":108590,""name"":""Rob & GregBo"",""slug"":""rob-gregbo""},""score"":24}"
-most_contested,"{""member"":{""id"":54762,""name"":""Antdell & Ernie"",""slug"":""antdell-ernie""},""opponent"":{""id"":54774,""name"":""Cambrias"",""slug"":""cambrias""},""record"":""7-7"",""total"":14}"
-longest_streak,"{""member"":{""id"":54774,""name"":""Cambrias"",""slug"":""cambrias""},""opponent"":{""id"":54776,""name"":""Mike Long"",""slug"":""mike-long""},""count"":7,""result"":""win"",""label"":""W7""}"
-biggest_blowout,"{""member"":{""id"":108581,""name"":""Richie"",""slug"":""richie""},""opponent"":{""id"":108584,""name"":""Nolan & Vinny"",""slug"":""nolan-vinny""},""points"":242.12,""opponent_points"":127.62,""margin"":114.5}"
-most_matchups,"{""member"":{""id"":54762,""name"":""Antdell & Ernie"",""slug"":""antdell-ernie""},""opponent"":{""id"":108588,""name"":""Frank & Julian"",""slug"":""frank-julian""},""total"":26}"
-highest_scoring_game,"{""member"":{""id"":108592,""name"":""Chris & Dom"",""slug"":""chris-dom""},""opponent"":{""id"":108590,""name"":""Rob & GregBo"",""slug"":""rob-gregbo""},""points"":197.68,""opponent_points"":182.82,""combined"":380.5}"
-closest_game,"{""member"":{""id"":108590,""name"":""Rob & GregBo"",""slug"":""rob-gregbo""},""opponent"":{""id"":108588,""name"":""Frank & Julian"",""slug"":""frank-julian""},""points"":146.66,""opponent_points"":146.62,""margin"":0.04}"
-most_lopsided,"{""member"":{""id"":54774,""name"":""Cambrias"",""slug"":""cambrias""},""opponent"":{""id"":54776,""name"":""Mike Long"",""slug"":""mike-long""},""record"":""7-0"",""win_perc"":100}"

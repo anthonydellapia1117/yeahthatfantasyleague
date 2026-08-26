@@ -236,30 +236,55 @@ dead surface on 2026-09-08.
 
 ### URGENT, not draft-critical
 
-**P2-U1. The repo is PUBLIC and 23 league members' names, gender, Discord IDs and
-financial balances are committed in it. The `.gitignore` rule written to prevent
-exactly this is defeated by the duplicate archive root.**
+**P2-U1. The repo is PUBLIC and league members' personal and financial data is
+committed in it. The `.gitignore` rule written to prevent exactly this is defeated
+by the duplicate archive root.** RESOLVED in this pass - see the prune below.
 
-Confirmed: `GET /repos/...` returns `"private": false, "visibility": "public"`.
-`.gitignore` line: *"Contains the league owner email address - excluded from the
-public repo"* excluding
-`made-resources/.../16_franchise/franchise_dashboard.json`. That path is indeed
-untracked (0 files). **The byte-identical file at
-`LeagueLegacy-io/.../16_franchise/franchise_dashboard.json` IS tracked (1 file).**
-Four further tracked files under `LeagueLegacy-io/leaguelegacy_..._full_export/`
-carry member data; `finances_members.csv` has 23 rows with columns
-`name, gender, email, discord_user_id, total_debits, total_credits, net`.
+Confirmed: `GET /repos/...` returned `"private": false, "visibility": "public"`, and
+Anthony independently verified the files were fetchable with no auth.
 
-- Severity: **HIGH.** Third-party PII and financial records, publicly readable.
+`.gitignore` carries the rule *"Contains the league owner email address - excluded
+from the public repo"* for
+`made-resources/.../16_franchise/franchise_dashboard.json`. That path was indeed
+untracked. **The byte-identical file under `LeagueLegacy-io/` was tracked** - the
+exclusion was written for one root and defeated by the second.
+
+**Precise scope, corrected.** An earlier draft of this document said
+`finances_members.csv` exposed 23 members' emails and Discord ids. That was wrong
+and the correction matters, because overstating an exposure is its own inaccuracy.
+Verified by parsing the file: **24 rows**, with
+
+| column | populated |
+|---|---|
+| `name` | 24/24 |
+| `photo` (URLs) | 24/24 |
+| `total_debits` / `total_credits` / `net` | 24/24 |
+| `gender` | 14/24 |
+| `email` | **0/24 - the column exists and is empty** |
+| `discord_user_id` | **0/24 - the column exists and is empty** |
+
+So what that file actually exposed is 24 real names, gender for 14, financial
+balances for all 24, and photo URLs - not emails or Discord ids. Emails were exposed
+elsewhere: **one** distinct address appeared across five files
+(`franchise_dashboard.json`, `achievements.json`, `finances.json`,
+`league_meta.json`, and a `user` blob inside `finances_members.csv` itself).
+
+The prune also removed member data the original characterization had not found at
+all: `00_league/members.csv`, `14_members/member_profiles.csv` and three siblings,
+`08_finances/` (3 files), `16_franchise/franchise_stats.csv`, and the export's own
+`members.csv`.
+
+- Severity: **HIGH, now closed at HEAD.**
 - Draft-critical: no.
-- Cheapest confirmation: `git ls-files | grep 16_franchise` (done - returns the
-  LeagueLegacy-io copy).
-- This is the dual-root hazard's realised cost. It was logged as an architecture
-  smell; it is actually a live privacy exposure, and it upgrades the priority of
-  root consolidation from "cleanup" to "do this".
-- Note: removing the files from HEAD does not remove them from history. Anthony
-  should decide between (a) delete + accept history exposure, (b) history rewrite,
-  (c) make the repo private. **This is his call, not mine** - I have made no change.
+- This is the dual-root hazard's realised cost. It had been logged as an
+  architecture smell and deferred as "not draft-night critical"; that judgement
+  answered *when to fix* and was allowed to answer *whether to look*.
+- **History retention is deferred to after the draft, by Anthony's decision.** The
+  files remain reachable in git history at and before `bd8aff7`. Three options,
+  his call: (a) accept the history exposure and leave it, (b) rewrite history
+  (`git filter-repo`, force-push, invalidates existing clones), (c) make the repo
+  private - **rejected for now: GitHub Pages on a private repo requires Pro, and
+  flipping visibility would take the app dark twelve days before the draft.**
 
 **P2-U2. Half the analysis layer cannot be rebuilt by anyone, and five of its inputs
 have no recorded source at all.**

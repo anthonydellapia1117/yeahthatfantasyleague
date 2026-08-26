@@ -2,7 +2,7 @@
 """Phase 1 - ingest and reconcile YeahThatFantasyLeague.
 
 Sources
-  A. LeagueLegacy archive 2013-2025 (made-resources/, vendor export, complete)
+  A. LeagueLegacy archive 2013-2025 (LeagueLegacy-io/, vendor export, pruned)
   B. Sleeper public API, 2025 and 2026 (read-only, unauthenticated)
 
 Writes immutable pulls to raw/ and normalized tables to out/.
@@ -14,7 +14,7 @@ import csv, json, os, sys, urllib.request, datetime, hashlib
 from collections import defaultdict, Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ARCHIVE = os.path.join(ROOT, "made-resources",
+ARCHIVE = os.path.join(ROOT, "LeagueLegacy-io",
                        "YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026")
 RAW = os.path.join(ROOT, "raw")
 OUT = os.path.join(ROOT, "out")

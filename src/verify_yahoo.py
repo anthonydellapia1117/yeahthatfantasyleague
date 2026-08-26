@@ -12,7 +12,7 @@ Run:  python3 src/verify_yahoo.py raw/yahoo/players_2013.csv
 import csv, sys, os, collections, statistics
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-A = os.path.join(ROOT, "made-resources",
+A = os.path.join(ROOT, "LeagueLegacy-io",
                  "YeahThatFantasyLeague_LeagueLegacy_Archive_2013-2026")
 B = os.path.join(ROOT, "LeagueLegacy-io",
                  "leaguelegacy_YeahThatFantasyLeague_full_export")
