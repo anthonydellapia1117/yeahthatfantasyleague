@@ -34,6 +34,9 @@ def main():
     with urllib.request.urlopen(url, timeout=30) as r:
         draft = json.load(r)
 
+    # draft_order going non-null is the primary signal (review note: the
+    # cleaner test); the non-identity slot map stays as the cheap secondary
+    # in case Sleeper publishes the draw without the per-user mapping
     order = draft.get("draft_order") or {}
     slot_map = draft.get("slot_to_roster_id") or {}
     identity = bool(slot_map) and all(

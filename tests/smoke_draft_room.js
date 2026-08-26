@@ -1394,6 +1394,93 @@ const ok = (cond, name, detail) => {
     await page.close();
   }
 
+  // ---- scenario 18: DRAFT MODE - mock loaded, creator unseated, format
+  // mismatch labeled (three-state seat law: creator is NOT seat)
+  {
+    const page = await browser.newPage();
+    const MOCK = "1398365807171371008", REAL = "1389378429505241089";
+    const ident = n => { const m = {}; for (let i = 1; i <= n; i++) m[i] = i; return m; };
+    const mockDraft = { league_id: null, status: "pre_draft",
+      creators: ["345197760305307648"], draft_order: null,
+      slot_to_roster_id: ident(10),
+      settings: { teams: 10, rounds: 15, slots_flex: 2, pick_timer: 120, cpu_autopick: 1 },
+      metadata: { scoring_type: "std" } };
+    const realDraft = { status: "pre_draft", draft_order: null,
+      slot_to_roster_id: ident(12),
+      settings: { teams: 12, rounds: 14, slots_flex: 1, pick_timer: 60 },
+      metadata: { scoring_type: "ppr" } };
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify(r.request().url().includes(REAL) ? realDraft : mockDraft) });
+    });
+    await page.goto(FILE + "?draft=" + MOCK);
+    await page.waitForTimeout(4000);
+    const bar = await page.textContent("#mockbar");
+    ok(/DRAFT MODE/.test(bar), "mock: the mockbar announces draft mode");
+    ok(/Your mock, no seat claimed yet/.test(bar),
+       "mock: creator-but-unseated state named explicitly, no seat guessed");
+    ok(/SCORING MISMATCH/.test(bar) && /std/.test(bar),
+       "mock: std-vs-ppr flagged loudest");
+    ok(/teams.*10.*vs league 12/.test(bar) && /rounds.*15.*vs league 14/.test(bar),
+       "mock: each differing format field named");
+    ok(/may not transfer/.test(bar),
+       "mock: board values labeled as real-league priced, never recomputed");
+    ok(/DRAFT MODE/.test(await page.textContent("#mode")),
+       "mock: mode pill carries draft mode");
+    ok(!/you are seat/.test(await page.textContent("#mode")),
+       "mock: no seat auto-selected while unseated");
+    await page.close();
+  }
+
+  // ---- scenario 19: DRAFT MODE live - seated via draft_order, mock
+  // geometry drives the snake, league-keyed features off
+  {
+    const page = await browser.newPage();
+    const MOCK = "1398365807171371008", REAL = "1389378429505241089";
+    const ident = n => { const m = {}; for (let i = 1; i <= n; i++) m[i] = i; return m; };
+    const mockDraft = { league_id: null, status: "drafting",
+      creators: ["345197760305307648"],
+      draft_order: { "345197760305307648": 3 },
+      slot_to_roster_id: ident(10),
+      settings: { teams: 10, rounds: 15, slots_flex: 2, pick_timer: 120 },
+      metadata: { scoring_type: "ppr" } };
+    const realDraft = { status: "pre_draft", draft_order: null,
+      slot_to_roster_id: ident(12),
+      settings: { teams: 12, rounds: 14, slots_flex: 1, pick_timer: 60 },
+      metadata: { scoring_type: "ppr" } };
+    await page.route("**/v1/draft/*/picks", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([
+        { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
+      ]) }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().endsWith("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify(r.request().url().includes(REAL) ? realDraft : mockDraft) });
+    });
+    await page.goto(FILE + "?draft=" + MOCK);
+    await page.waitForTimeout(4000);
+    const mode = await page.textContent("#mode");
+    ok(/DRAFT MODE - MOCK LIVE/.test(mode), "mock live: mode pill goes live");
+    ok(/seat 3/.test(mode), "mock live: seat 3 auto-selected from draft_order");
+    ok(/Seat.*3.*detected from draft_order/.test(await page.textContent("#mockbar")),
+       "mock live: the auto-selection is shown for confirmation");
+    ok(await page.locator("#lv-seatpick button").count() === 10,
+       "mock live: seat picker follows the mock's 10 teams, not the league's 12");
+    ok(/off in draft mode/.test(await page.textContent("#f-opps")),
+       "mock live: league-mate dossiers off with the reason stated");
+    ok(!/Antdell|Taylor Made|Cambrias/.test(await page.textContent("#lv-franch")),
+       "mock live: no league franchise names attached to mock seats");
+    await page.close();
+  }
+
   await browser.close();
   console.log(failures === 0 ? "\nALL PASS" : `\n${failures} FAILURES`);
   process.exit(failures === 0 ? 0 : 1);

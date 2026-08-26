@@ -1,5 +1,31 @@
 # Changelog
 
+## M4: DRAFT MODE - the live room runs against any Sleeper mock (2026-08-26)
+
+`out/draft_room.html?draft=<mock id>` points the whole live machinery -
+board, pick engine, survival, runs, up-next, wall - at a standalone mock
+(publicly readable, verified live against 1398365807171371008). What is
+mock-aware: the snake geometry follows the LOADED draft's settings (a
+10-team/15-round mock computes correct rounds, on-clock seats, and a
+10-chip seat picker), and the seat has three confirmed states, never
+guessed - seated (user id in draft_order: auto-selected and shown for
+confirmation), creator-but-unseated (id in creators only: "your mock, no
+seat claimed yet"), and absent (pick from the list). What is NOT mock-
+aware, by law: the board itself. A format-mismatch bar compares the
+loaded draft against the real league draft's own settings (fetched, not
+hardcoded) and names each differing field - scoring (std vs ppr) flagged
+loudest - stating that values are priced for the real league and may not
+transfer; nothing is silently recomputed. League-keyed features shut off
+with their reason stated (13-season dossiers, league pick history, the
+league-mate simulator, franchise names on mock seats). An in-page opener
+loads a pasted mock id; EXIT returns to the real draft.
+`src/check_draft_order.py` now documents draft_order-going-non-null as
+the primary draw signal with the non-identity slot map kept as the cheap
+secondary. Two new hermetic smoke scenarios (19 total) cover the unseated
+mismatch-labeled mock and a live 10-team mock; a pages guard tracks the
+mock-aware link derivation. All suites and the full smoke GATE OK;
+mathdiff proof EMPTY.
+
 ## M3: draft-order draw watch (2026-08-26)
 
 `src/check_draft_order.py` detects a drawn order with the room's own

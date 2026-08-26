@@ -38,6 +38,15 @@ h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
 .banner{background:var(--s2);border:1px solid var(--line);border-radius:8px;
   padding:8px 12px;font-size:13px;color:var(--ink2);margin-bottom:12px}
 .banner.err{border-color:var(--stop);color:var(--stop)}
+#mockbar{border-color:var(--warn)}
+#mockbar .scoreoff{color:var(--stop);font-weight:700}
+#mockbar a{color:var(--info)}
+.dmopen{margin:0 0 12px;font-size:13px;color:var(--ink2)}
+.dmopen summary{cursor:pointer}
+.dmopen input{background:var(--s2);border:1px solid var(--line);border-radius:6px;
+  color:var(--ink);padding:5px 8px;font-size:13px;margin:6px 6px 0 0;width:200px}
+.dmopen button{background:var(--s2);border:1px solid var(--line);border-radius:6px;
+  color:var(--ink);padding:5px 10px;font-size:12px;cursor:pointer}
 .card{background:var(--s1);border:1px solid var(--line);border-radius:12px;
   padding:16px;margin-bottom:12px}
 /* CARD SCOPE - white interiors (Anthony's contrast fix). A color is picked by
@@ -265,6 +274,13 @@ button.tag{appearance:none;-webkit-appearance:none;background:var(--s2)}
       <span id="mode" class="mode">connecting...</span></div>
   </header>
   <div id="banner" class="banner" hidden></div>
+  <div id="mockbar" class="banner" hidden></div>
+  <details class="dmopen" id="dm-open"><summary>DRAFT MODE - practice on a Sleeper mock</summary>
+    <div class="small">Create a mock in Sleeper, paste its draft id (the long number in the
+      lobby URL), and load. The board stays priced for the real league; any format
+      mismatch is labeled, never silently recomputed.</div>
+    <input id="dm-id" inputmode="numeric" placeholder="mock draft id"><button id="dm-go">LOAD</button>
+  </details>
   <div id="app"></div>
   <p class="prov" id="foot"></p>
 </div>
@@ -317,7 +333,19 @@ function teamSub(seat){
 }
 // The live draft on Sleeper. Derived from the polled draft id so the link can
 // never point somewhere the room is not actually watching.
-const DRAFT_URL = "https://sleeper.com/draft/nfl/" + (E.league ? E.league.draft_id : "");
+// DRAFT MODE - point the room at a Sleeper mock via ?draft=<id>. Mocks are
+// publicly readable; league_id is null on them (no users/rosters to fetch).
+// The board stays priced for the REAL league's format - never recomputed.
+const MOCK_ID = (new URLSearchParams(location.search).get("draft") || "").replace(/\D/g, "");
+const MOCK_MODE = !!MOCK_ID && (!E.league || MOCK_ID !== String(E.league.draft_id));
+// live GEOMETRY - a mock's teams/rounds can differ from the league's; the
+// snake math must follow the loaded draft, not the embedded config. Defaults
+// to the league; refresh() updates it from the fetched draft's settings
+// (identical values for the real draft, so real behavior is unchanged).
+const GEO = { teams: E.league ? E.league.teams : 12,
+              rounds: E.league ? E.league.rounds : 14 };
+const DRAFT_URL = "https://sleeper.com/draft/nfl/" +
+  (MOCK_MODE ? MOCK_ID : (E.league ? E.league.draft_id : ""));
 // ======== IDENT-END ========
 
 // ---- survival math, identical bands to the engine (fitted to 2,039 league picks)
@@ -642,7 +670,9 @@ function renderUpNext(cur, slotMap){
   // wrap where a seat picks twice back to back
   const before = [];
   for (let o = cur; o < next; o++){
-    const seat = seatOfRoster(Number(slotMap[slotOfOverall(o)] || slotOfOverall(o)));
+    // DRAFT MODE: mock roster ids are seat numbers, never franchise names
+    const seat = MOCK_MODE ? null
+      : seatOfRoster(Number(slotMap[slotOfOverall(o)] || slotOfOverall(o)));
     const label = teamLabel(seat) || ("seat " + slotOfOverall(o));
     if (label !== before[before.length - 1]) before.push(label);
   }
@@ -663,8 +693,8 @@ function renderUpNext(cur, slotMap){
 
 function myPicks(slot){
   const out = [];
-  for (let r = 1; r <= E.league.rounds; r++)
-    out.push((r - 1) * E.league.teams + (r % 2 === 1 ? slot : E.league.teams + 1 - slot));
+  for (let r = 1; r <= GEO.rounds; r++)
+    out.push((r - 1) * GEO.teams + (r % 2 === 1 ? slot : GEO.teams + 1 - slot));
   return out;
 }
 
@@ -772,7 +802,7 @@ function buildLiveDom(){
                "lv-upnext"];
   LiveState.els = Object.fromEntries(ids.map(i => [i, $(i)]));
   const sp = LiveState.els["lv-seatpick"];
-  sp.innerHTML = Array.from({length: E.league.teams}, (_, i) =>
+  sp.innerHTML = Array.from({length: GEO.teams}, (_, i) =>
     `<button data-slot="${i + 1}">${i + 1}</button>`).join("");
   sp.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
     LiveState.mySlot = Number(b.dataset.slot);
@@ -880,8 +910,9 @@ function buildLiveDom(){
     LiveState.lastRender && LiveState.lastRender(); }));
   for (const [id, n] of [["f-sim-100", 100], ["f-sim-500", 500]]){
     $(id).addEventListener("click", () => {
-      if (SimState.running || !LiveState.mySlot) {
-        if (!LiveState.mySlot) $("f-sim-out").innerHTML = '<p class="small">pick a seat first</p>';
+      if (SimState.running || !LiveState.mySlot || MOCK_MODE) {
+        if (MOCK_MODE) $("f-sim-out").innerHTML = '<p class="small">off in draft mode - the simulator models YOUR league mates, not a mock room</p>';
+        else if (!LiveState.mySlot) $("f-sim-out").innerHTML = '<p class="small">pick a seat first</p>';
         return;
       }
       SimState.running = true;
@@ -958,15 +989,17 @@ function renderLive(draft, newPick){
   for (const o of overrides) gone.add(o);          // feature 10: manual corrections
   const alive = E.players.filter(p => !gone.has(norm(p.name) + "|" + p.pos));
   const cur = LiveState.picks.length + 1;
-  const rd = Math.ceil(cur / E.league.teams);
+  const rd = Math.ceil(cur / GEO.teams);
   const slotOnClock = slotOfOverall(cur);
   const rosterOnClock = Number((draft.slot_to_roster_id || {})[slotOnClock] || slotOnClock);
-  const seat = E.rosters.find(r => r.roster_id === rosterOnClock);
+  // in DRAFT MODE the roster ids are seat numbers, not this league's
+  // franchises - never resolve them to league-mate names
+  const seat = MOCK_MODE ? null : E.rosters.find(r => r.roster_id === rosterOnClock);
   const my = LiveState.mySlot;
   const mine = my ? myPicks(my) : [];
   const myNextTwo = mine.filter(k => k >= cur).slice(0, 2);
   const isMe = my !== null && slotOnClock === my;
-  const lastTwoRounds = rd >= E.league.rounds - 1;
+  const lastTwoRounds = rd >= GEO.rounds - 1;
 
   // fixed stack - text patches only
   L["lv-kick"].textContent = `ON THE CLOCK - PICK ${cur} - ROUND ${rd}`;
@@ -1053,7 +1086,7 @@ function renderLive(draft, newPick){
 
   // draft-day features: gear + chips on the answer, recs panel, grid, board
   const R2 = myRoster();
-  const myNextG = mineAll[0] || cur + 2 * E.league.teams;
+  const myNextG = mineAll[0] || cur + 2 * GEO.teams;
   if (top){
     const g = pickGrade(top, gradeCtx(top, alive, cur, myNextG, LiveState.mySlot ? R2 : null));
     L["lv-gear"].innerHTML = gearSvg(g);
@@ -1068,7 +1101,7 @@ function renderLive(draft, newPick){
   // PICKENGINE: additive. On my own clock "my next pick" is the one AFTER
   // this one (mirrors the verdict card's isMe index) - otherwise survival
   // to pick cur is trivially 1 and scarcity vanishes at decision time.
-  const peNext = (isMe ? mineAll[1] : mineAll[0]) || cur + 2 * E.league.teams;
+  const peNext = (isMe ? mineAll[1] : mineAll[0]) || cur + 2 * GEO.teams;
   renderPickEngine(alive, cur, peNext, LiveState.mySlot ? R2 : null);
   const aliveSet2 = new Set(alive.map(p => p.name));
   renderGrid(draft);
@@ -1109,9 +1142,9 @@ let queue = store.get("ytfl_queue", []);                          // feature 9
 let trendMap = null;                                              // feature 13
 
 function slotOfOverall(n){
-  const rd = Math.ceil(n / E.league.teams);
-  const i = n - (rd - 1) * E.league.teams;
-  return rd % 2 === 1 ? i : E.league.teams + 1 - i;
+  const rd = Math.ceil(n / GEO.teams);
+  const i = n - (rd - 1) * GEO.teams;
+  return rd % 2 === 1 ? i : GEO.teams + 1 - i;
 }
 function pickKey(md){ return norm((md.first_name || "") + " " + (md.last_name || "")) + "|" + (md.position || ""); }
 function playerByKey(key){ return E.players.find(p => norm(p.name) + "|" + p.pos === key); }
@@ -1179,7 +1212,7 @@ function runDetect(cur){
   // the archive's silence.
   const last = LiveState.picks.slice(-8);
   if (last.length < 4) return null;
-  const rd = Math.ceil(cur / E.league.teams);
+  const rd = Math.ceil(cur / GEO.teams);
   const band = rd <= 3 ? "rd1-3" : rd <= 6 ? "rd4-6" : rd <= 10 ? "rd7-10" : "rd11-14";
   const rates = (E.pos_base_rates || {})[band] || {};
   const c = {};
@@ -1232,8 +1265,9 @@ function renderFeatures(draft, alive, cur, myNextList){
       ? ` - tier ${cliff.tier} has ${cliff.left} left, ${pct(cliff.pAny)} that one lasts to your pick` : ""}</div>`;
   } else L["f-run"].innerHTML = "";
 
-  // 15. league-history flavor for the pick on the clock
-  const hist = (E.pick_history || {})[String(cur)];
+  // 15. league-history flavor for the pick on the clock (off in DRAFT
+  // MODE - the history is this league's, the mock room is strangers)
+  const hist = MOCK_MODE ? null : (E.pick_history || {})[String(cur)];
   L["f-hist"].textContent = hist
     ? `pick ${cur} has historically been ${hist.pos} ${Math.round(hist.share * 100)}% of the time (n=${hist.n})`
     : "";
@@ -1256,11 +1290,11 @@ function renderFeatures(draft, alive, cur, myNextList){
 
   // 4. snake board wall
   let wall = "";
-  const rounds = Math.min(E.league.rounds, Math.ceil((LiveState.picks.length + 1) / E.league.teams) + 1);
+  const rounds = Math.min(GEO.rounds, Math.ceil((LiveState.picks.length + 1) / GEO.teams) + 1);
   for (let rd = 1; rd <= rounds; rd++){
-    for (let i = 1; i <= E.league.teams; i++){
-      const slot = rd % 2 === 1 ? i : E.league.teams + 1 - i;
-      const overall = (rd - 1) * E.league.teams + i;
+    for (let i = 1; i <= GEO.teams; i++){
+      const slot = rd % 2 === 1 ? i : GEO.teams + 1 - i;
+      const overall = (rd - 1) * GEO.teams + i;
       const p = LiveState.picks[overall - 1];
       const md = p ? (p.metadata || {}) : null;
       const cls = md ? "p" + (md.position || "") : "";
@@ -1278,7 +1312,10 @@ function renderFeatures(draft, alive, cur, myNextList){
     (bySlot[s] = bySlot[s] || []).push((p.metadata || {}).position);
   });
   const slotMap = draft.slot_to_roster_id || {};
-  const curRd = Math.ceil(cur / E.league.teams);
+  const curRd = Math.ceil(cur / GEO.teams);
+  if (MOCK_MODE){
+    L["f-opps"].innerHTML = '<p class="small">off in draft mode - these seats are not your league mates, so the 13-season dossiers do not apply</p>';
+  } else {
   const openDoss = new Set([...L["f-opps"].querySelectorAll(".dossier:not([hidden])")]
     .map(d => d.id));
   L["f-opps"].innerHTML = Array.from({length: E.league.teams}, (_, i) => {
@@ -1317,6 +1354,7 @@ function renderFeatures(draft, alive, cur, myNextList){
     const d = $("doss-" + el.dataset.doss);
     if (d) d.hidden = !d.hidden;
   }));
+  }
 
   // 7. ticker with reach/value tags (adp_differential definition: overall - ADP)
   const tick = LiveState.picks.slice(-14).reverse().map((p, idx) => {
@@ -1353,7 +1391,7 @@ function renderFeatures(draft, alive, cur, myNextList){
   }));
 
   // 16. recap export when the draft is complete
-  const done = draft.status === "complete" || LiveState.picks.length >= E.league.teams * E.league.rounds;
+  const done = draft.status === "complete" || LiveState.picks.length >= GEO.teams * GEO.rounds;
   L["f-recap"].hidden = !done;
 }
 
@@ -2072,7 +2110,8 @@ function renderSimResults(r, mySlot){
 // ======== SIM-QUARANTINE-END ========
 
 // ---- mode detection and polling
-const API = "https://api.sleeper.app/v1/draft/" + (E.league ? E.league.draft_id : "");
+const API = "https://api.sleeper.app/v1/draft/" +
+  (MOCK_MODE ? MOCK_ID : (E.league ? E.league.draft_id : ""));
 // slot_to_roster_id returns the identity map {1:1,...,12:12} before the draw and a
 // real permutation after. A genuine draw landing on identity is 1 in 12!, so treat
 // identity as "not drawn yet".
@@ -2098,6 +2137,77 @@ function detectSeat(draft){
     if (Number(m[slot]) === E.league.anthony_roster_id) return Number(slot);
   return null;
 }
+// DRAFT MODE seat states - three, never guessed (verified live against a
+// mock 2026-08-26). Only draft_order, keyed by user id, identifies a seat
+// in a mock: slot_to_roster_id is the identity placeholder there and its
+// values are seat numbers, not this league's roster ids, so the roster-7
+// fallback must never run against a mock. Creator is NOT seat - Anthony
+// can create the mock and still hold no chair.
+function mockSeatState(draft){
+  const uid = String(E.league.anthony_user_id);
+  const order = draft.draft_order || {};
+  if (order[uid] != null) return { state: "seated", slot: Number(order[uid]) };
+  if ((draft.creators || []).map(String).indexOf(uid) >= 0)
+    return { state: "creator_unseated" };
+  return { state: "absent" };
+}
+function mockSeatSlot(draft){
+  const s = mockSeatState(draft);
+  return s.state === "seated" ? s.slot : null;
+}
+// Format comparison: the real league draft's settings are the ground truth,
+// fetched once per session. On any mismatch the board is LABELED, never
+// recomputed - every value on this page is priced for the real league.
+let REAL_FMT = null;
+async function realFmt(){
+  if (REAL_FMT) return REAL_FMT;
+  try {
+    const rd = await (await fetch("https://api.sleeper.app/v1/draft/" +
+      E.league.draft_id)).json();
+    REAL_FMT = { teams: rd.settings.teams, rounds: rd.settings.rounds,
+                 flex: rd.settings.slots_flex, timer: rd.settings.pick_timer,
+                 scoring: (rd.metadata || {}).scoring_type || "" };
+  } catch (e){
+    // offline fallback: the embedded league config, scoring derived from
+    // its own description - never an invented constant
+    REAL_FMT = { teams: E.league.teams, rounds: E.league.rounds,
+                 flex: (E.league.starters.match(/FLEX/g) || []).length,
+                 timer: null,
+                 scoring: /ppr/i.test(E.league.scoring || "") ? "ppr" : "std" };
+  }
+  return REAL_FMT;
+}
+async function renderMockBar(draft){
+  const el = $("mockbar");
+  el.hidden = false;
+  const real = await realFmt();
+  const st = mockSeatState(draft);
+  const seatLine =
+    st.state === "seated"
+      ? "Seat <b>" + st.slot + "</b> detected from draft_order - confirm or change it in the seat picker." :
+    st.state === "creator_unseated"
+      ? "<b>Your mock, no seat claimed yet</b> - pick your seat before trusting any YOU markers."
+      : "You are not in this draft's order - pick your seat.";
+  const ms = draft.settings || {}, mm = draft.metadata || {};
+  const mock = { teams: ms.teams, rounds: ms.rounds, flex: ms.slots_flex,
+                 timer: ms.pick_timer, scoring: mm.scoring_type || "" };
+  const diffs = [];
+  for (const [k, label] of [["teams", "teams"], ["rounds", "rounds"],
+                            ["flex", "flex slots"], ["timer", "clock (s)"]])
+    if (real[k] != null && mock[k] != null &&
+        Number(real[k]) !== Number(mock[k]))
+      diffs.push(label + " <b>" + mock[k] + "</b> vs league " + real[k]);
+  const scoringOff = real.scoring && mock.scoring && real.scoring !== mock.scoring;
+  el.innerHTML = '<b>DRAFT MODE</b> - mock ' + esc(MOCK_ID) +
+    ' - <a href="' + location.pathname + '">EXIT</a><br>' + seatLine +
+    (scoringOff ? '<br><span class="scoreoff">SCORING MISMATCH: this mock is ' +
+      esc(mock.scoring) + ' - the board is priced for ' + esc(real.scoring) +
+      ' (full PPR, 6-pt pass TD). Values do NOT transfer.</span>' : "") +
+    (diffs.length ? '<br>Format differs from the league: ' + diffs.join(" - ") +
+      '. Board values are computed for the real league&#39;s format and may not transfer.'
+      : (!scoringOff ? '<br>Format matches the league (teams, rounds, flex, scoring' +
+         (real.timer != null && mock.timer != null ? ', clock' : '') + ').' : ""));
+}
 async function refresh(){
   let draft;
   try {
@@ -2116,35 +2226,50 @@ async function refresh(){
     schedule(LiveState.els ? 10 : 60);
     return;
   }
+  // geometry follows the loaded draft (identical to the league config for
+  // the real draft; a mock's teams/rounds can differ and the snake math
+  // must respect them)
+  if (draft.settings && draft.settings.teams){
+    GEO.teams = Number(draft.settings.teams);
+    GEO.rounds = Number(draft.settings.rounds) || GEO.rounds;
+  }
+  if (MOCK_MODE) renderMockBar(draft);
   const live = draft.status === "drafting" || draft.status === "complete" ||
-               (isRealOrder(draft) && draft.status !== "pre_draft");
-  const seat = detectSeat(draft);
+               ((MOCK_MODE ? !!(draft.draft_order &&
+                 Object.keys(draft.draft_order).length) : isRealOrder(draft))
+                && draft.status !== "pre_draft");
+  const seat = MOCK_MODE ? mockSeatSlot(draft) : detectSeat(draft);
   if (seat) LiveState.mySlot = seat;
   if (!live){
     // ORDERHYP: record Sleeper's draw the moment it exists; if it just
     // appeared over a rendered hypothesis, re-render so the live source
-    // visibly wins
-    const rm = realSlotMap(draft);
-    const hadHyp = OrderHyp.active();
-    OrderHyp.realMap = rm;
-    if (rm && hadHyp && document.querySelector(".rowcard"))
-      renderPre(LiveState.mySlot || 7);
-    $("mode").textContent = "MODE 1 - PRE-DRAFT - all 12 scenarios";
+    // visibly wins. Never in DRAFT MODE - a mock's slot map is noise, not
+    // this league's draw.
+    if (!MOCK_MODE){
+      const rm = realSlotMap(draft);
+      const hadHyp = OrderHyp.active();
+      OrderHyp.realMap = rm;
+      if (rm && hadHyp && document.querySelector(".rowcard"))
+        renderPre(LiveState.mySlot || 7);
+    }
+    $("mode").textContent = (MOCK_MODE ? "DRAFT MODE - MOCK WAITING" :
+      "MODE 1 - PRE-DRAFT - all 12 scenarios");
     $("mode").classList.remove("live");
-    if (LiveState.mySlot){
+    if (!MOCK_MODE && LiveState.mySlot){
       $("banner").hidden = false;
       $("banner").className = "banner";
       $("banner").textContent = "Draft order is drawn - you are seat " + LiveState.mySlot +
         ". Showing that scenario; the room goes live when the draft starts.";
       if (!document.querySelector(".rowcard")) renderPre(LiveState.mySlot);
     } else if (!document.querySelector(".rowcard")){
-      renderPre(7); // documented seat last year; all 12 chips available
+      renderPre(MOCK_MODE ? (LiveState.mySlot || 7) : 7); // documented seat last year; all 12 chips available
     }
-    schedule(60);
+    schedule(MOCK_MODE ? 10 : 60);
     return;
   }
   // LIVE
-  $("mode").textContent = "MODE 2 - LIVE" + (LiveState.mySlot ? " - you are seat " + LiveState.mySlot : "");
+  $("mode").textContent = (MOCK_MODE ? "DRAFT MODE - MOCK LIVE" : "MODE 2 - LIVE") +
+    (LiveState.mySlot ? " - you are seat " + LiveState.mySlot : "");
   $("mode").classList.add("live");
   if (!LiveState.els) keepAwake();
   try {
@@ -2166,7 +2291,18 @@ function schedule(sec){
 }
 
 $("sleeper-link").href = DRAFT_URL;
-$("sleeper-link").title = "Open the live Sleeper draft board";
+$("sleeper-link").title = MOCK_MODE ? "Open the mock draft board on Sleeper"
+                                    : "Open the live Sleeper draft board";
+// DRAFT MODE entry: paste a mock id, load it via ?draft=. In mock mode the
+// opener collapses (the mockbar carries the EXIT link instead).
+if (MOCK_MODE) $("dm-open").hidden = true;
+$("dm-go").addEventListener("click", () => {
+  const v = ($("dm-id").value || "").replace(/\D/g, "");
+  if (v) location.search = "?draft=" + v;
+});
+$("dm-id").addEventListener("keydown", e => {
+  if (e.key === "Enter") $("dm-go").click();
+});
 $("foot").innerHTML = "13 seasons - 2,339 picks - Sleeper live feed - generated " +
   esc(E.generated || "?") + "<br>Regenerate with python3 src/engine_2026.py the morning of " +
   (E.league ? esc(E.league.draft_date) : "the draft") + ". " + esc(E.adp_sd_note || "") +

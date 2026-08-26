@@ -352,8 +352,9 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     ok("IDENT-BEGIN" in drp and "UPNEXT-BEGIN" in drp
        and drp.index("IDENT-BEGIN") > drp.index("engine-data-end"),
        "identity and up-next blocks are marker-quarantined outside the sentinels")
-    # the room's link must be DERIVED from the polled draft id, never typed in
-    ok('"https://sleeper.com/draft/nfl/" + (E.league ? E.league.draft_id : "")' in drp,
+    # the room's link must be DERIVED from the polled draft id, never typed
+    # in - in DRAFT MODE it derives from the loaded mock id the same way
+    ok('"https://sleeper.com/draft/nfl/" +\n  (MOCK_MODE ? MOCK_ID : (E.league ? E.league.draft_id : ""))' in drp,
        "the room's Sleeper link is derived from the polled draft id")
     ok("https://sleeper.com/draft/nfl/1389" not in drp,
        "the room hardcodes no draft url - it cannot drift from the feed")
