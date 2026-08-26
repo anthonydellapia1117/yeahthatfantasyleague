@@ -949,3 +949,73 @@ starting lineup is exactly seven skill slots), and no BULLISH marker on
 any node - a marker on a decision surface nudges regardless of its
 label, and finding N.1 showed the tag re-marks what the board already
 ranks highly.
+
+## L.1 Are titles won on draft day? No - and the split is not why
+
+Artifact: `out/data/draft_vs_acquired.json` (builder
+`src/draft_vs_acquired.py`, guards `tests/test_draft_vs_acquired.py`),
+built on the split `src/phase2_value.py` has computed since 2026-08-11.
+Full coverage audit in `docs/LEAGUELEGACY_COVERAGE_AUDIT.md`.
+
+**The answer, and it is a clean null on the framing.** Champions draw
+71.0% of their starter points from drafted players; the field draws
+68.7%. The difference is +2.3pp with a bootstrap 95% interval of
+[-5.2, +9.7] - it overlaps zero, and it overlaps zero in both eras
+separately (13-week seasons +2.7pp [-6.5, +11.7]; 14-week seasons
++1.7pp [-9.4, +13.4]).
+
+**What DOES separate champions is total production, decisively.**
+Champion franchise-seasons score 2,030.6 starter points against the
+field's 1,827.4 - a gap of +203.3 with an interval of [163.4, 243.0]
+that clears zero by a wide margin.
+
+**So "won on draft day or after it" is the wrong question for this
+league.** Champions source their points in the same proportion as
+everyone else. They simply accumulate more, through both channels at
+once. A draft-day strategy that maximizes drafted share at the expense
+of total production would be optimizing the one quantity that does not
+distinguish winners from losers here. That is the conclusion to hold
+before drawing any draft-day inference, and it is why the board
+optimizes projected points rather than draft-capital efficiency.
+
+**Era and basis caveats, carried on the artifact.** 2013 is excluded
+from the acquired split (the archive holds no 2013 transaction data,
+flagged upstream as acquired_valid=no and honored rather than
+re-derived). Yahoo seasons 2013-2024 are bonus-exclusive - six 40-yard
+long-play bonuses are absent from per-player rows - which understates
+absolute points by roughly 5% but leaves the drafted-vs-acquired RATIO
+unaffected, since both sides share the basis.
+
+## L.2 Archive corrections to standing claims
+
+**The Cambria benchmark is incomplete.** From the export's own
+`champions_by_season.csv`: Cambria has 3 titles (2019, 2022, 2025) and
+**Phil Baldino also has 3** (2018, 2023, 2024), including back-to-back
+seasons at 12-2 and 11-3. The research director report names Cambria as
+the singular benchmark; on the record it is a tie, and Baldino is the
+more recent dynasty.
+
+**The C4 ceiling weighting cannot be validated against league history.**
+`00_league/seasons.csv` sets `use_median_scoring` = 0 for every season
+2013-2024 and 1 only from 2025. Every historical season was pure
+head-to-head, so there is no in-league record against which a
+median-format ceiling premium could be backtested. The C4 lens ships
+enabled on the confirmed 2025-2026 setting and remains, as its own
+limitation statement already says, without an empirically fitted
+variance premium. This entry records WHY that gap cannot be closed from
+league data: the format did not exist.
+
+**League base rates now run 2013-2025.** The C2 league table capped
+itself at 2016 because its league loop was nested inside the market
+loop, which starts where the FFC ADP cache starts. The loops are now
+independent - league 2013-2025, market 2016-2025, each window stated -
+and league joins rose from 1,448 to 1,867, a 29% increase. Era rows are
+reported alongside the pooled table: 13-week seasons hit top-12 at 28.5%
+[26.0, 31.2] and 14-week seasons at 27.3% [24.2, 30.7], overlapping
+intervals, so pooling across the boundary is defensible for hit rates -
+now demonstrated rather than assumed.
+
+**Keeper status is an OPEN QUESTION, deliberately unresolved.**
+`use_keepers` flips to 1 for 2025-2026, but the 2025 Sleeper draft
+contained zero keeper picks and `keeper_results.csv` is 2 bytes. Flagged
+for the commissioner rather than resolved from inference.

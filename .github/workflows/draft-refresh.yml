@@ -90,6 +90,8 @@ jobs:
         run: sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py
       - name: VONA path-tree guards
         run: sh tests/run_gate.sh python3 tests/test_vona.py
+      - name: Drafted-vs-acquired guards
+        run: sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py
       - name: Page and data guards
         run: sh tests/run_gate.sh python3 tests/test_pages_data.py
       - name: Analysis guards

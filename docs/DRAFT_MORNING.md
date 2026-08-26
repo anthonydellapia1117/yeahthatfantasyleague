@@ -46,6 +46,7 @@ rehearsal's `real` times.
 | 7h | `sh tests/run_gate.sh python3 tests/test_mock.py` | 0.1 s | mock-draft validation: roster legality, caps, board-beats-chalk deltas |
 | 7i | `sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py` | 0.1 s | BULLISH-vs-ADP null test: derived verdict, ADP-confound disclosure, tag stays display-only |
 | 7j | `sh tests/run_gate.sh python3 tests/test_vona.py` | 0.2 s | VONA path tree: depth, derived thresholds, survival floor, no repeats, no BULLISH on nodes |
+| 7k | `sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py` | 0.2 s | drafted-vs-acquired: champions-vs-field intervals, era flags, the two results kept distinct |
 | 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
 | 9 | `sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards (the heavy reruns skip loudly without the history cache - fine on draft morning; with the cache they take ~25 min and are merge-gate territory, not morning territory) |
 | 10 | full smoke (see the playwright note below) | 94 s + install | 21 hermetic browser scenarios (incl. DRAFT MODE, the forward-pick law, and the path tree) |

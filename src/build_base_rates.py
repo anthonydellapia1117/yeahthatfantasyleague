@@ -39,7 +39,17 @@ HISTORY = os.environ.get(
     "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history")
 OUT = os.path.join(ROOT, "out", "data", "base_rates.json")
 PICKS = os.path.join(ROOT, "out", "picks.csv")
-SEASONS = range(2016, 2026)
+# LEAGUE-SIDE history runs 2013-2025: the LeagueLegacy archive covers all
+# thirteen completed seasons and out/picks.csv carries every one of them.
+# The MARKET side is capped at 2016 only where the FFC ADP cache starts;
+# both windows are reported per table rather than assumed equal.
+SEASONS = range(2013, 2026)
+MARKET_SEASONS = range(2016, 2026)
+# Era boundaries the archive states in 00_league/seasons.csv - pooling
+# across them without a flag would mix formats that are not the same game.
+ERAS = {"weeks13_playoffs_wk14": range(2013, 2021),
+        "weeks14_playoffs_wk15": range(2021, 2026),
+        "median_scoring": range(2025, 2026)}
 POSITIONS = ("QB", "RB", "WR", "TE")
 BANDS = [(1, 6, "pos1-6"), (7, 12, "pos7-12"), (13, 18, "pos13-18"),
          (19, 24, "pos19-24"), (25, 36, "pos25-36")]
@@ -129,7 +139,7 @@ def main():
         if season in SEASONS and r.get("pos") in POSITIONS:
             league_picks[season].append((norm(r["player_name"]) + "|" + r["pos"], rnd))
 
-    for year in SEASONS:
+    for year in MARKET_SEASONS:
         finishes = season_finishes(year)
         ffc = json.load(open(os.path.join(HISTORY, f"ffc_ppr_{year}.json")))
         players = ffc["players"] if isinstance(ffc, dict) else ffc
@@ -156,7 +166,19 @@ def main():
                 c["hit24"] += fin <= 24
                 c["bust36"] += fin > 36
 
-        for key, rnd in league_picks.get(year, []):
+
+    # LEAGUE table, its own loop over its own window. This used to be nested
+    # inside the market loop, which silently capped the league history at
+    # the market cache's 2016 start and discarded 2013-2015 - three seasons
+    # of this league's own drafts that the archive has always carried.
+    era_cells = {e: {"n": 0, "hit12": 0, "hit24": 0, "bust36": 0} for e in ERAS}
+    for year in SEASONS:
+        picks = league_picks.get(year, [])
+        if not picks:
+            continue
+        finishes = season_finishes(year)
+        eras_of = [e for e, yrs in ERAS.items() if year in yrs]
+        for key, rnd in picks:
             band = band_of(rnd, ROUND_BANDS)
             pos = key.split("|")[1]
             if band is None:
@@ -167,11 +189,11 @@ def main():
                 fin = 10 ** 6
             else:
                 lg_joined += 1
-            c = lg_cells[pos][band]
-            c["n"] += 1
-            c["hit12"] += fin <= 12
-            c["hit24"] += fin <= 24
-            c["bust36"] += fin > 36
+            for c in [lg_cells[pos][band]] + [era_cells[e] for e in eras_of]:
+                c["n"] += 1
+                c["hit12"] += fin <= 12
+                c["hit24"] += fin <= 24
+                c["bust36"] += fin > 36
 
     def finish(table):
         out = {}
@@ -192,7 +214,8 @@ def main():
     artifact = {
         "provenance": {
             "generated": datetime.date.today().isoformat(),
-            "seasons": "2016-2025",
+            "league_seasons": "2013-2025 (all thirteen completed)",
+            "market_seasons": "2016-2025 (FFC ADP cache starts 2016)",
             "market_adp": "FFC PPR 12-team (history cache)",
             "outcomes": ("nflverse weekly REG totals scored under the exact "
                          "league table (6-pt pass TD, full PPR), positional "
@@ -218,6 +241,20 @@ def main():
                     "pull shows the archive was reconstructed incompletely."),
             },
         },
+        "eras": {e: {"seasons": f"{min(y)}-{max(y)}",
+                     "n": c["n"],
+                     "hit12": {"k": c["hit12"],
+                               "rate": round(c["hit12"] / c["n"], 4) if c["n"] else None,
+                               "ci95": list(wilson(c["hit12"], c["n"]))},
+                     "bust36": {"k": c["bust36"],
+                                "rate": round(c["bust36"] / c["n"], 4) if c["n"] else None,
+                                "ci95": list(wilson(c["bust36"], c["n"]))}}
+                 for e, c, y in ((e, era_cells[e], ERAS[e]) for e in ERAS)},
+        "era_note": ("league eras from the archive's own 00_league/seasons.csv: "
+                     "13-week seasons with playoffs in week 14 through 2020, "
+                     "14-week with playoffs in week 15 from 2021, and league-"
+                     "median scoring only from 2025. Pooled league rates cross "
+                     "these boundaries - the per-era rows are the honest cut"),
         "definitions": {
             "hit12": "finished top-12 at the position by season total points",
             "hit24": "finished top-24 at the position",

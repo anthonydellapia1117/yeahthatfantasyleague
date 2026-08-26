@@ -27,7 +27,8 @@ for k in ("hit12", "hit24", "bust36"):
     ok(k in d["definitions"] and len(d["definitions"][k]) > 20,
        f"definition stated for {k}")
 prov = d["provenance"]
-ok(prov.get("seasons") == "2016-2025", "season window stated", str(prov.get("seasons")))
+ok(prov.get("league_seasons", "").startswith("2013-2025"),
+   "league season window stated", str(prov.get("league_seasons")))
 ok("6-pt pass TD" in prov.get("outcomes", ""),
    "outcomes declare league-exact scoring")
 j = prov.get("join", {})
@@ -83,8 +84,21 @@ cov = d["provenance"].get("league_history_coverage", {})
 ok("survivorship_label" in cov and "LABELED" in cov["survivorship_label"],
    "survivorship decision recorded on the artifact (labeled, not restricted)")
 per = cov.get("per_season", {})
-ok(len(per) == 10 and all(v["franchises"] == 12 for v in per.values()),
-   "coverage computed: all 10 seasons carry 12 franchises")
+ok(len(per) == 13 and all(v["franchises"] == 12 for v in per.values()),
+   "coverage computed: all 13 league seasons carry 12 franchises")
+ok(min(per) == "2013" and max(per) == "2025",
+   "the league window runs 2013-2025, not 2016 forward")
+# eras must be flagged, never pooled silently across format changes
+eras = d.get("eras", {})
+ok(set(eras) == {"weeks13_playoffs_wk14", "weeks14_playoffs_wk15", "median_scoring"},
+   "the three league eras are reported")
+ok(all(e["n"] > 0 and e["hit12"]["ci95"][0] <= e["hit12"]["rate"] <= e["hit12"]["ci95"][1]
+       for e in eras.values()),
+   "each era carries n and an interval bracketing its own rate")
+ok("median scoring only from 2025" in d.get("era_note", ""),
+   "the era note states that median scoring is 2025-only")
+ok(d["provenance"]["market_seasons"].startswith("2016"),
+   "the market window is separately stated as 2016-2025")
 ok(all(v["picks"] >= 168 for v in per.values()),
    "coverage computed: every season holds a full draft's worth of picks")
 

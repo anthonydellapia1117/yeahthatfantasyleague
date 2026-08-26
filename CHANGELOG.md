@@ -1,5 +1,49 @@
 # Changelog
 
+## L1: LeagueLegacy coverage audit, champions-vs-field, base rates to 2013 (2026-08-26)
+
+COVERAGE AUDIT (docs/LEAGUELEGACY_COVERAGE_AUDIT.md). The commissioned
+belief - "the pipeline reads only 04_draft/draft_results.csv and only
+from 2016 forward" - is incorrect on both halves. The pipeline reads
+seven archive files; matchup_rosters.csv, named as unread, is the most
+read file in the archive. The archive is also committed TWICE
+(made-resources/ and LeagueLegacy-io/), with verify_yahoo.py reading
+both - a real hazard, logged rather than fixed since it touches seven
+scripts and is not draft-night critical.
+
+THE DRAFTED-VS-ACQUIRED SPLIT ALREADY EXISTED. src/phase2_value.py has
+computed it since 2026-08-11 across all thirteen seasons 2013-2025. What
+was actually missing is now built: src/draft_vs_acquired.py adds the
+champions-versus-field comparison with bootstrap intervals and the era
+flags the archive's own seasons.csv requires.
+
+THE ANSWER. Champions draw 71.0% of starter points from drafted players;
+the field draws 68.7%. The +2.3pp difference has a 95% interval of
+[-5.2, +9.7] and overlaps zero in both eras separately. What DOES
+separate champions is total production: 2,030.6 starter points vs
+1,827.4, a +203.3 gap with interval [163.4, 243.0]. So "won on draft day
+or after it" is the wrong question - champions source their points in
+the same proportion as everyone else and simply accumulate more through
+both channels. Optimizing drafted share would target the one quantity
+that does not distinguish winners here.
+
+BASE RATES NOW RUN 2013-2025. The C2 league table capped itself at 2016
+because its league loop was nested inside the market loop, which starts
+where the FFC ADP cache starts. The loops are now independent - league
+2013-2025, market 2016-2025 - and league joins rose from 1,448 to 1,867,
+a 29% increase. Era rows are published beside the pooled table and the
+two era hit rates overlap, so pooling is now demonstrated defensible
+rather than assumed.
+
+ARCHIVE CORRECTIONS. Baldino has 3 titles tied with Cambria and is the
+more recent dynasty (back-to-back 2023-24), correcting the research
+director report's singular-benchmark framing. use_median_scoring is 0
+for every season through 2024, so the C4 ceiling weighting CANNOT be
+validated against league history - the format did not exist before 2025.
+Keeper status stays an open question for the commissioner: the flag is
+on for 2025-2026 but the 2025 draft had zero keeper picks and
+keeper_results.csv is 2 bytes. Findings L.1 and L.2.
+
 ## N1 CORRECTION: the BULLISH-vs-ADP result is UNDERPOWERED, not null (2026-08-26)
 
 The N.1 entry originally read "NULL - the tag does not beat ADP." That
