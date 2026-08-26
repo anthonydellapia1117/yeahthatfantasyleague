@@ -1,0 +1,438 @@
+# Self-audit and defect record - 2026-08-26
+
+Written at Anthony's direction ahead of an agent handoff to Codex. Parts 1 and 2
+are the empirical record and the predicted-defect hunt. Parts 3 and 4 (tacit
+knowledge, forward work) follow in this document; the migration spec is
+`docs/AGENT_HANDOFF_SPEC.md`.
+
+Method: reconstructed from `git log` (100 commits), `CHANGELOG.md` (35 entries),
+`docs/AUDIT_3B_2026-08-12.md`, `docs/AUDIT_SURVIVAL_2026-08-12.md`, the findings
+pages, and direct inspection of the working tree. Every claim below that says
+"confirmed" was executed in this session; claims that are inference are labelled.
+
+---
+
+## PART 1: THE DEFECT RECORD
+
+### 1.1 The table
+
+Discovery channels: **SELF-PRE** (caught before committing), **SELF-POST** (caught
+by me auditing already-committed work, almost always because Anthony
+commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
+**REVIEWER** (external independent review or a PR reviewer).
+
+| # | Defect | Found by | Age before discovery | Shipped live? | Class |
+|---|---|---|---|---|---|
+| 1 | Every DEF under-scored by the 10-pt shutout bonus (`pts_` prefix filter too broad) | SELF-POST (3B audit, hand-validation) | ~1 day | yes | over-broad filter |
+| 2 | 168/168 reconciliation did not reproduce (lowercase-only name match) | SELF-POST (3B audit) | ~1 day | yes | **NAME-NORM (1)** |
+| 3 | `lineup_efficiency.csv` had no generator - two scripts each pointed at the other | SELF-POST (3B audit) | ~2 commits | yes | **SILENT PIPELINE BREAK** |
+| 4 | `REFERENCE.md` led with superseded figures, self-contradicting table | SELF-POST (3B audit) | ~1 day | yes | **DOC/ARTIFACT DIVERGENCE (1)** |
+| 5 | Headline correlations (+0.055 / -0.124) had no committed generator | SELF-POST (3B audit) | ~1 day | yes | **REPRODUCIBILITY GAP (1)** |
+| 6 | One statistic, two bases, in three families of figures | SELF-POST (3B audit) | ~1 day | yes | basis drift |
+| 7 | ADP_SD step function: adjacent-ADP survival differed 8,284x at pick 48 | SELF-POST (adversarial review of an unrelated feature) | since first engine | yes | unvalidated model shape |
+| 8 | Wait-or-reach used unconditional survival; pre-draft cards and live room disagreed | SELF-POST (same review) | since first engine | yes | **CONDITIONING FRAME (1)** + **TWO-SURFACES (1)** |
+| 9 | Survival put mass below pick 1: consensus #1 read 50% available at pick 1 | GUARD (tests written after #7/#8) | hours | yes | boundary/domain assumption |
+| 10 | sd extrapolated below the observed range (1.30 at ADP 1 vs lowest bin 3.73) | GUARD (same run) | hours | yes | extrapolation beyond fit |
+| 11 | Lift ratios against near-zero base rates (DEF 4.30x on a 0.005 share) | GUARD (same run) | hours | yes | ratio-of-noise |
+| 12 | The power-law sd **lost its own out-of-sample backtest** to the step it replaced | SELF-POST (survival audit) | ~1 day | yes | **ADOPTED WITHOUT OUT-OF-SAMPLE TEST** |
+| 13 | JS `1-erf` saturates to hard 0 past z~6 while Python `erfc` keeps mass | SELF-POST (survival audit) | since first room | yes | **TWO-SURFACES (2)** |
+| 14 | A single failed poll permanently replaced the live UI with the pre-draft view, under a forfeit clock | REVIEWER (gated v2 review) | within the v2 diff | no (caught pre-merge) | **FAIL-OPEN ERROR HANDLING** |
+| 15 | Quarantine guard 8 built its leak list and **never asserted it** | REVIEWER (gated v2 review) | since written | no (pre-merge) | **FAIL-OPEN GUARD (1)** |
+| 16 | Nine further v2 defects (sim survival credit, mid-draft sim seeding, roster_id coercion, snake mapping triplicated, etc.) | REVIEWER (gated v2 review) | within the diff | no | mixed |
+| 17 | Walter multiplier inverted judgment for the 29 negative-CVS players | REVIEWER (red-team, post-merge #28) | ~1 day | yes | **UNTESTED SIGN DOMAIN** |
+| 18 | On your own clock the pick engine computed survival to the current pick (trivially 100%), zeroing scarcity | REVIEWER (red-team) | ~1 day | yes | **DEGENERATE-CASE ASSUMPTION** |
+| 19 | Depth charts 9 days stale against a 7-day guard; shards had not rebuilt since 08-17 | GUARD (during a refresh) | ~8 days | yes | **SILENT CRON (1)** |
+| 20 | Crosswalk collapsed Marvin Harrison onto Marvin Harrison Jr. | GUARD (98% floor) | ~1 day | yes | **NAME-NORM (2)** |
+| 21 | Two tests hardcoded one day's data and failed on correct behavior | GUARD | ~1 week | n/a | data-dependent test |
+| 22 | Test wrapper exit-code masking: a pipe/compound wrapper returned 0 around a crashing suite - **a false green was committed** | REVIEWER (PR #48 blocker, relayed by Anthony) | unknown, >=1 commit | yes | **FAIL-OPEN GUARD (2)** |
+| 23 | Same WR recommended at picks 24 and 25 across a snake turn | **ANTHONY** (visually, live) | since forward cards | yes | **MULTI-PICK INDEPENDENCE (1)** |
+| 24 | Naive max-VOR drafts duplicate elite TEs early | GUARD (M1 mock validation, built to catch this) | since first engine | yes | **MULTI-PICK INDEPENDENCE (2)** |
+| 25 | VONA prune summed raw VOR - the objective M1 had already disproved | **SELF-PRE** (mid-build) | 0 | no | **MULTI-PICK INDEPENDENCE (3)** |
+| 26 | Strict domination collapsed nearly every fork | SELF-PRE (mid-build) | 0 | no | threshold over-application |
+| 27 | VONA invariant assertion fired on below-replacement pools | SELF-PRE (own assertion) | 0 | no | assertion scope |
+| 28 | `.activef {display:flex}` beat the `hidden` attribute; the filter bar never hid | GUARD (new smoke) | 0 | no | CSS specificity |
+| 29 | DRAFT MODE: `const API` never switched to MOCK_ID | GUARD (smoke scenario) | 0 | no | incomplete wiring |
+| 30 | Gate sentinel false-positive on "FAILURES" inside a PASS label | SELF-PRE | 0 | no | sentinel brittleness |
+| 31 | **Pick clock hardcoded 120s against a real `pick_timer` of 60, anchored to poll-detection not `last_picked`** | **REVIEWER** | since Draft Room v2 (~2 weeks) | **yes, live** | **HARDCODED SERVER-KNOWABLE VALUE** |
+| 32 | VONA conditioning mismatch: E[now] unconditional vs E[next] conditional, 28% of nodes negative | **REVIEWER** | since the tree shipped | yes | **CONDITIONING FRAME (2)** |
+| 33 | VONA ignored roster feasibility (three early TEs on a path) | **REVIEWER** | since the tree shipped | yes | **MULTI-PICK INDEPENDENCE (4)** |
+| 34 | Room validated that Sleeper *answered*, not that the answer was *usable*; a shared cache served 118s-old picks read as fresh | **REVIEWER** | since first room | yes | **FAIL-OPEN FETCH** |
+| 35 | pages-data cron: 8 of 14 scheduled runs failed, last four consecutively; live site served 4-day-old data | **REVIEWER** | 4 days (this incident) | **yes, live** | **SILENT CRON (2)** |
+| 36 | BULLISH verdict automation statistically unsound (post-hoc MDE as equivalence test, six cells no multiplicity, sign-blind BEATS) | **REVIEWER** | ~1 day | yes | **AUTOMATING A JUDGMENT** |
+| 37 | N.1 written to a docs file, on no page in the app | **REVIEWER** | ~1 day | n/a | **DOC/ARTIFACT DIVERGENCE (2)** |
+| 38 | `paths.html` omitted from the Pages explicit copy list - live 404 | SELF-POST (deploy byte-compare) | ~1 hour | **yes, live** | **DEPLOY MANIFEST INCOMPLETENESS** |
+| 39 | Crosswalk normalizer did not fold diacritics (Estime / Estimé) | SELF-POST (diagnosing #35) | ~2 weeks | yes | **NAME-NORM (3)** |
+
+### 1.2 Base rate: how often do I catch my own defects before committing?
+
+**Roughly 1 in 8, and the honest number is probably worse.**
+
+Of the 39 entries: 4 are SELF-PRE (#25, #26, #27, #30) - about **10%**. Even those
+four are flattering to me. #25 was caught only because M1 had *already* published
+the finding that raw VOR sums are the wrong objective, so I was checking against a
+known answer. #27 was caught by an assertion I wrote in the same sitting. None of
+the four is an instance of me noticing an error I had no prior reason to look for.
+
+The other categories: SELF-POST 11, GUARD 9, REVIEWER 14, ANTHONY 1.
+
+The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
+came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
+deploy byte-compare he made me institute, the P2 investigation he ordered. Not one
+came from me spontaneously re-examining shipped work. So the accurate statement is
+not "I catch about a third of my defects afterwards"; it is **"I catch defects when
+someone tells me to go look, and almost never otherwise."**
+
+Fourteen of 39 - the largest single share, and disproportionately the severe ones -
+came from outside review. Of the five defects that reached the live site and stayed
+there for more than a day (#19, #31, #34, #35, #39), **four were found by someone
+other than me.**
+
+### 1.3 Which classes recur, and why the first fix did not generalize
+
+Five classes have three or more occurrences. In every case the first fix was
+applied at the **call site** rather than at the **rule**.
+
+**MULTI-PICK INDEPENDENCE - 4 occurrences (#23, #24, #25, #33).**
+The rule: any projection that solves more than one pick must consume its own prior
+selections and respect roster feasibility. First fix (#24) patched the mock
+simulator. Second (#23) patched the engine's slot cards. Third (#25) I caught in the
+VONA tree only because M1 had documented it. Fourth (#33) the reviewer caught,
+because `starter_caps` did not exist yet - `roster_caps` did, and the tree used
+neither. **Why it did not generalize:** the fix was expressed as *code in one
+consumer*, not as *a shared module every consumer must route through*. Only after
+#33 does `src/forward_policy.py` exist as the single layer, and even now nothing
+mechanically prevents a new consumer from re-implementing pick selection inline. The
+guard added in P1-B checks the VONA tree's output specifically; it does not check
+"every multi-pick artifact in `out/data/`."
+
+**NAME NORMALIZATION - 3 occurrences (#2, #20, #39).**
+Same component, three incidents: suffixes, father/son collisions, diacritics. Each
+fix extended `norm_name` by one transformation, discovered by the one case that had
+just broken. **Why it did not generalize:** there is no test that asserts the
+normalizer's *contract* (what classes of difference it must be blind to). There are
+tests that assert a match *rate* against today's data. A rate test tells you
+something broke; it never tells you what the function is supposed to do, so each
+repair is a patch to the symptom. Worse, there are **two** independent normalizers -
+`draft_board`/`ingest` `_norm_player` and `build_pages_data.norm_name` - and #39 was
+fixed in only one of them. (Confirmed this session: the diacritic fold exists in
+`build_pages_data.py` and not in `src/ingest.py`.)
+
+**SILENT CRON / STALE PUBLICATION - 3 occurrences (#19, #35, and the pre-#19
+shard staleness it exposed).**
+**Why it did not generalize:** after #19 the fix was a *guard inside the job* (a
+7-day as-of check). That makes the job fail loudly - but a failing job is exactly
+the state nobody was watching. The monitoring was pointed at the machine, not at the
+deliverable. Only P2 (this session) moved the check to the published artifact on the
+live site. That fix is one day old and unproven.
+
+**FAIL-OPEN GUARD - 3 occurrences (#15, #22, and the SKIP hole found in Part 2
+below).**
+A guard that constructs its evidence and never asserts (#15); a wrapper that returns
+0 around a crash (#22); a suite that prints ALL PASS having skipped a third of
+itself (Part 2, P2-1). **Why it did not generalize:** #22's fix (`run_gate.sh`) is
+excellent for the shape it targets - exit codes and sentinels. But it validates the
+*envelope*, never the *content*: it cannot tell whether the guards inside actually
+ran. The class is "a check that cannot fail," and only two of its three instances
+were addressed.
+
+**CONDITIONING FRAME - 2 occurrences (#8, #32).** Mixing conditional and
+unconditional survival in one expression, four months apart, in two different
+subsystems. **Why it did not generalize:** #8's fix routed three specific call sites
+through `cond_survival`. No invariant was written down. #32 then did the opposite
+mistake (conditional where unconditional was needed) in new code, and the artifact
+advertised it - 28% of nodes had negative VONA, an impossibility - for as long as it
+took an outsider to look.
+
+**DOC/ARTIFACT DIVERGENCE - 2 occurrences (#4, #37).** A finding exists in a
+document and not where it is consumed.
+
+### 1.4 Silent versus loud
+
+This is the sharpest split in the record, and it is the one that matters.
+
+**LOUD failures (test goes red, page shows an error, script raises):** #9-#11, #20,
+#21, #28, #29, #30, and every C-phase builder without its cache. All of these were
+caught quickly, most within hours, several before merge. **Not one loud failure ever
+reached Anthony.**
+
+**SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
+#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39. Sixteen of thirty-nine, and
+they include **every single defect that reached the live site and stayed.**
+
+The pattern is unambiguous: **this project does not have a bug-finding problem, it
+has a silence problem.** When something fails loudly the existing machinery catches
+it fast. The defects that survive are, without exception, the ones that produce a
+plausible-looking output: a clock that counts down (just wrong), a page that renders
+(from 4-day-old data), a guard that passes (having asserted nothing), a tree of
+recommendations (28% of which are mathematically impossible), a 200 OK (carrying a
+two-minute-old cache).
+
+The corollary I did not act on for two weeks: **every new feature should have been
+asked "how would this look if it were broken?" and if the answer is "the same,"
+that is a defect in the feature, not a monitoring gap.**
+
+### 1.5 What the outside reviewer saw that I did not
+
+Fourteen finds, including four of the five long-lived live defects. The mechanism is
+not "too close to it" - that is the comfortable answer. Three specific mechanisms,
+each of which I can name from the record:
+
+**(a) I verified against my own intent, the reviewer verified against the source of
+truth.** The clock (#31) is the cleanest case. I wrote a two-minute countdown
+because the build order said two minutes; I then tested that the countdown counted
+down correctly from two minutes. Every test I wrote passed. What I never did was
+`GET /v1/draft/{id}` and read `settings.pick_timer`. The reviewer did. The same
+mechanism produced #34 (I checked that the fetch resolved, not that the payload was
+fresh) and #35 (I checked that the workflow existed, not that it had succeeded).
+**I test that the code does what I meant. I do not test that what I meant is true.**
+
+**(b) I do not look at my own output as evidence.** The VONA artifact (#32) shipped
+with 57 of 204 nodes carrying negative VONA. That is not subtle - it is an
+impossibility, printed in the file, in a field named `vona`. I generated that file,
+wrote guards for its provenance and thresholds, and never once ran
+`min(n["vona"] for n in nodes)`. The reviewer read the artifact. **I write guards
+about a file's structure and never interrogate its values.**
+
+**(c) I accept a specification as a substitute for verification.** "Two minutes"
+came from the build order. `TEAMS = 12` came from me knowing the league. The step-sd
+bands (#7) came from a prior session. In each case a number entered the system as an
+assertion by an author, and no step ever asked the server or the data whether it was
+still true. **The reviewer's advantage is that they had no memory of the
+specification, so the only thing they could check against was reality.**
+
+### 1.6 Where Anthony's instructions contributed
+
+Asked for directly, so stated directly.
+
+**The "underpowered" reframe (#36).** The instruction was right: a non-significant
+result from an underpowered design is not evidence of absence. What went wrong is
+mine - I turned a *judgment about one result* into an *automated three-state rule*
+applied to six cells, which introduced three new statistical errors that were not in
+the instruction (post-hoc MDE used as an equivalence test, no multiplicity control,
+a sign-blind BEATS branch). The generalizable lesson is mine to carry:
+**a correction to a conclusion is not a mandate to build a classifier.** Anthony's
+later correction ("report the verdict, do not compute it from post-hoc power") was
+the right fix and I should have arrived at it myself.
+
+**The LeagueLegacy coverage claim.** Anthony stated the pipeline read one file from
+2016 forward. It reads seven files across all thirteen seasons. I checked, reported
+the contradiction, and he withdrew it. That exchange cost roughly one work item and
+is the system working correctly - it is listed here only because the audit asked for
+completeness, not as a criticism.
+
+**Deprioritizing the dual-root hazard.** Logged as "not draft-night critical" and
+deferred - a joint call, and correct on draft-night grounds. Part 2 shows it has a
+live consequence that neither of us checked for (P2-U1 below). The lesson: "not
+draft-critical" answers *when* to fix, and we let it answer *whether* to look.
+
+---
+
+## PART 2: WHAT IS STILL WRONG THAT NOBODY HAS FOUND
+
+Predicted from the recurrence patterns in 1.3, then hunted. Every item below was
+confirmed by execution in this session unless labelled otherwise. Severity is
+this-project severity; "draft-critical" means it can produce a wrong decision or a
+dead surface on 2026-09-08.
+
+### URGENT, not draft-critical
+
+**P2-U1. The repo is PUBLIC and 23 league members' names, gender, Discord IDs and
+financial balances are committed in it. The `.gitignore` rule written to prevent
+exactly this is defeated by the duplicate archive root.**
+
+Confirmed: `GET /repos/...` returns `"private": false, "visibility": "public"`.
+`.gitignore` line: *"Contains the league owner email address - excluded from the
+public repo"* excluding
+`made-resources/.../16_franchise/franchise_dashboard.json`. That path is indeed
+untracked (0 files). **The byte-identical file at
+`LeagueLegacy-io/.../16_franchise/franchise_dashboard.json` IS tracked (1 file).**
+Four further tracked files under `LeagueLegacy-io/leaguelegacy_..._full_export/`
+carry member data; `finances_members.csv` has 23 rows with columns
+`name, gender, email, discord_user_id, total_debits, total_credits, net`.
+
+- Severity: **HIGH.** Third-party PII and financial records, publicly readable.
+- Draft-critical: no.
+- Cheapest confirmation: `git ls-files | grep 16_franchise` (done - returns the
+  LeagueLegacy-io copy).
+- This is the dual-root hazard's realised cost. It was logged as an architecture
+  smell; it is actually a live privacy exposure, and it upgrades the priority of
+  root consolidation from "cleanup" to "do this".
+- Note: removing the files from HEAD does not remove them from history. Anthony
+  should decide between (a) delete + accept history exposure, (b) history rewrite,
+  (c) make the repo private. **This is his call, not mine** - I have made no change.
+
+**P2-U2. Half the analysis layer cannot be rebuilt by anyone, and five of its inputs
+have no recorded source at all.**
+
+Nine source files hardcode the same ephemeral container path as their `HISTORY`
+default (`build_base_rates`, `bullish_vs_adp`, `build_ws2_audit`, `build_bullish`,
+`build_bullish_inputs`, `build_archetypes`, `build_ceiling`, `analyze_recency`, and
+`fetch_history` via import). The cache is 156MB, 59 files, in
+`/tmp/claude-0/.../scratchpad/history`, and dies with this container.
+
+`src/fetch_history.py` - committed in #36 explicitly so "anyone can rebuild that
+cache and reproduce byte-for-byte" - downloads **four** families
+(`ffc_ppr`, `spw`, `inj`, `roster`). The cache holds **nine**. The five it cannot
+fetch are `pbp_2025.parquet`, `participation_2025.parquet`, `ftn_2025.parquet`,
+`advrush_2025.parquet`, `games.csv`. Confirmed by execution:
+
+```
+build_bullish_inputs -> FileNotFoundError: /tmp/emptyhist/pbp_2025.parquet
+build_ws2_audit      -> ... spw_2016.csv  (also reads games.csv at line 510)
+```
+
+Confirmed: **grep for `nflverse-data/releases/download` across `src/`, `docs/` and
+`.github/` returns no URL for any of the five.** The artifact provenance says
+"participation 2025" and "nflverse schedules" in prose, with no release name and no
+URL. The knowledge of how those five files were obtained exists only in the session
+context this handoff is meant to preserve.
+
+- Severity: **HIGH for the handoff.** C5 (BULLISH inputs) is unreproducible today.
+  C6 (WS2 audit) is partially unreproducible. The rest are recoverable but only by
+  re-running a fetcher nobody has documented as a prerequisite.
+- Draft-critical: no - the artifacts are committed and the draft-morning workflow
+  does not rebuild them (see P2-3).
+- Cheapest fix: extend `fetch_history.py` to all nine families and add a guard that
+  every `HISTORY`-reading path in `src/` corresponds to a family the fetcher knows.
+  I can derive four of the five URLs from `build_pages_data.py`'s `NV` pattern;
+  `advrush` I would have to look up and should not guess.
+
+### DRAFT-NIGHT RELEVANT
+
+**P2-1. `run_gate.sh` cannot tell a fully-run suite from a half-skipped one.**
+FAIL-OPEN GUARD, occurrence 3.
+
+Confirmed by execution:
+```
+HISTORY=/tmp/emptyhist sh tests/run_gate.sh python3 tests/test_analysis.py
+  -> 5 SKIP lines, "ALL PASS", "GATE OK", exit 0
+```
+On every GitHub runner - including the draft-morning workflow - `test_analysis.py`
+skips all five determinism reruns and reports success. The runbook says the reruns
+"skip loudly"; they do print SKIP, but the gate's contract is exit-0 + sentinel, and
+both hold. So the workflow step named "Analysis guards" is green on a suite that did
+not run its guards.
+
+- Severity: MEDIUM. No known defect is hiding behind it; the point is that one could
+  be, indefinitely, and this is the third instance of the class.
+- Draft-critical: indirectly - it is a draft-morning gate.
+- Cheapest fix: have each suite print `RAN n GUARDS` and have `run_gate.sh` fail if
+  a `SKIP` appears without `GATE_ALLOW_SKIP=1`.
+
+**P2-2. Nothing reads `draft.type` or `settings.reversal_round`. The snake math is
+assumed, and it is right only because the current settings happen to match.**
+This is the #31 shape exactly, predicted from it, and confirmed.
+
+Live ground truth fetched this session:
+```
+type: snake | teams: 12 | rounds: 14 | pick_timer: 60 | reversal_round: 0
+roster_positions: QB RB RB WR WR TE FLEX K DEF BN BN BN BN BN
+```
+`grep` confirms no code path reads `type` or `reversal_round` anywhere. If the
+commissioner enables third-round reversal (a checkbox in Sleeper) or changes the
+draft to linear, **every pick number the engine and the room compute becomes wrong,
+silently, on draft night** - the board would still render, the up-next strip would
+still name teams, and all of it would be off by a snake turn.
+
+Also: `TEAMS = 12` and `ROUNDS = 14` are hardcoded module constants in
+`src/engine_2026.py` and are never cross-checked against the `total_rosters` the
+same program already fetches, nor against the draft's `settings.rounds` which it
+never fetches at all. (The *room* is safe here - it derives `GEO` from the loaded
+draft. The *engine* is not.)
+
+- Severity: **HIGH if it ever changes, zero today.** Probability low; blast radius
+  total.
+- Draft-critical: **yes, conditionally.**
+- Cheapest fix: a preflight assertion - fetch the draft, assert
+  `type == "snake"`, `reversal_round in (0, None)`, `settings.teams == TEAMS`,
+  `settings.rounds == ROUNDS`, and fail the build otherwise. Ten lines, and it
+  converts a silent catastrophe into a loud stop. Recommend adding to
+  `check_draft_order.py` (already scheduled every 2 hours) *and* to the
+  draft-refresh workflow.
+
+**P2-3. The draft-morning workflow rebuilds the engine but not the artifacts derived
+from it, and no guard notices the divergence.**
+
+`draft-refresh.yml` rebuilds exactly three things: `engine_2026.py`,
+`build_cvs_inputs.py`, `build_cvs.py`. It does **not** rebuild
+`vona_tree_2026.json`, `mock_drafts_2026.json`, `archetypes_2026.json`,
+`ceiling_2026.json`, `bullish_2026.json`, or `base_rates.json`.
+
+A previous refresh moved 259 ADP values. So on draft morning the board refreshes and
+the PATHS tab does not - it will render a decision tree built against yesterday's
+board, on a nav-linked page, on draft night.
+
+Confirmed: only 2 of 30 artifacts record `engine_generated` at all
+(`vona_tree`, `mock_drafts`). `test_mock.py` asserts the key **exists**; nothing
+asserts it **matches**. `paths.html` displays the tree's own recorded engine date but
+never fetches `engine_2026.json`, so the mismatch is invisible on the page. The only
+staleness warning that exists anywhere is `draft_room.html:1627`, for cvs-vs-engine.
+
+Confirmed cost of the fix: `python3 src/build_vona_tree.py` takes **1.0s**, needs no
+network and no `HISTORY`, and is byte-deterministic (zero diff on rebuild). The
+others cannot go in the workflow because they need the `HISTORY` cache - which is
+P2-U2, and which is *why* they were left out, a reason recorded nowhere.
+
+- Severity: **MEDIUM-HIGH.**
+- Draft-critical: **yes** for PATHS.
+- Cheapest fix: add `build_vona_tree.py` to the workflow (1 second) and add a guard
+  asserting `tree.provenance.engine_generated == engine.generated`. For the
+  HISTORY-bound artifacts, surface the age on the page rather than pretending.
+
+**P2-4. Optional-shard fetch failures degrade silently.**
+On `big_board.html`, `base_rates.json` / `ceiling_2026.json` / archetypes / bullish
+are fetched in bare `try { ... } catch (e) { D.x = null; }` blocks. Critical shards
+correctly `throw` and show a banner; the optional ones vanish without a word. If a
+shard 404s in production, columns disappear and the page looks fine.
+
+- Severity: LOW-MEDIUM. Same silence class; small blast radius.
+- Draft-critical: no.
+- Cheapest test: a smoke scenario that serves the board with `base_rates.json`
+  removed and asserts a visible "unavailable" notice. None exists today.
+
+### NOT DRAFT-CRITICAL
+
+**P2-5. Hardcoded 12-team geometry inside DRAFT MODE.** `sleeperListHtml()` bands are
+`[1,36] [37,72] [73,120] [121,200]` and `simBand()` labels `rd11-14` - all derived
+from 12 teams x 14 rounds. DRAFT MODE explicitly supports other shapes (a 10-team
+15-round mock was verified live). In that mock the bands are wrong and the labels
+lie. Same class as #31, smaller stakes. Cheapest fix: derive from `GEO`.
+
+**P2-6. Two normalizers, one fixed.** The diacritic fold added in P2 exists in
+`build_pages_data.norm_name`. `src/ingest.py:_norm_player` and `bullish_vs_adp.norm`
+still strip only punctuation and suffixes. NAME-NORM occurrence 4 is pre-positioned.
+Cheapest fix: one shared normalizer with a contract test, not a rate test.
+
+**P2-7. Displayed numbers whose provenance is a typed constant.** The pick grade
+(0-100, the headline number on the on-the-clock card) is a weighted sum with
+`GRADE_W = {VALUE:30, MARKET:30, URGENCY:20, NEED:12, SCARCITY:8}`, and the pick
+engine uses `PE = {NEED:12, FLEX:6, SCARCITY:8, PLAYOFF:3, HI:10, MED:4}`. These are
+**judgment weights, never backtested against anything.** The M1 validation tested the
+*marginal-lineup policy*, not these weights. The card does say it is a stated proxy,
+which is honest, but the audit question was "can you trace every displayed number to
+a computed source" and for the grade the answer is **no - it traces to a number I
+chose.** Not a bug; an unearned precision. Listing it because the governance asks for
+derived-not-typed and this is the largest surviving exception.
+
+**P2-8. `renderPre(... || 7)`** - the pre-draft default seat is hardcoded 7 with the
+comment "documented seat last year". It is labelled and switchable, and the live path
+correctly resolves slot from `roster_id` (`draft_room.html:461`), so this is cosmetic.
+But note `roster_id == 7` and `slot == 7` are the same integer by coincidence; if a
+future edit conflates them the tests would not notice.
+
+### Hunted and found clean (stated so the next agent does not redo it)
+
+- **Injection.** `MOCK_ID` is sanitized at the source (`.replace(/\D/g,"")`) and
+  escaped at render. Member-controlled Sleeper team names are `esc()`'d at every
+  interpolation site checked. No unescaped network string found in an `innerHTML`
+  template literal.
+- **Secrets.** No API keys, tokens, or private keys in any tracked file
+  (scanned `sk-`, `ghp_`, `AKIA`, PEM headers). The Yahoo OAuth scripts take
+  credentials from env and hardcode none.
+- **Deploy manifest for data.** `pages.yml` copies `out/data/*.json` by wildcard, so
+  the #38 class cannot recur for shards - only for HTML pages, which guard 8c now
+  covers for nav-linked pages (a non-nav-linked page would still slip).
+- **Critical-shard fetch handling.** `if (!r.ok) throw` with a visible banner on all
+  four content pages. Correct.
+- **Frozen math.** `mathdiff` proof EMPTY at HEAD; the ten frozen function bodies are
+  byte-identical to origin/main.
