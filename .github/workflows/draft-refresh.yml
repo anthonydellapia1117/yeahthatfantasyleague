@@ -1,6 +1,6 @@
 # Scheduled draft-morning refresh (docs/DRAFT_MORNING.md).
 # 10:00 UTC = 6:00 AM Eastern (EDT) on the two dates Anthony asked for:
-# 08-28 (dry run, three weeks out) and 09-08 (draft morning itself).
+# 08-28 (pre-draft dry run) and 09-08 (draft morning itself).
 # Every step is a gate. The commit only happens if all of them pass, so a
 # red run leaves the last verified build serving. Pushing to main fires
 # pages.yml, which is what actually deploys the site.
@@ -104,7 +104,7 @@ jobs:
         run: sh tests/run_gate.sh python3 tests/test_ws2.py
       - name: Mock-draft guards
         run: sh tests/run_gate.sh python3 tests/test_mock.py
-      - name: BULLISH-vs-ADP null guards
+      - name: BULLISH-vs-ADP reviewed-verdict guards
         run: sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py
       - name: VONA path-tree guards
         run: sh tests/run_gate.sh python3 tests/test_vona.py

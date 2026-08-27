@@ -23,7 +23,7 @@ Thirteen seasons of **YeahThatFantasyLeague** turned into evidence: 2,339 draft 
 | File | What it is |
 |---|---|
 | `out/HANDOFF.md` | Distilled state. Read this first |
-| `out/ff-hub.html` | Self-contained dashboard, no backend. Open it |
+| `out/ff-hub.html` | Static dashboard. Serve the repo over HTTP so its N.1 artifact can load |
 | `docs/CHAT_HISTORY_*.md` | Full redacted build transcript |
 | `plugin/skills/ff-hub/` | Claude Code skill carrying the verified history |
 
@@ -33,11 +33,12 @@ Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_
 (add it to the phone home screen - it installs like an app). The local file
 `out/draft_room.html` is the offline fallback; both carry the same embedded model.
 
-Draft-morning flow:
-
-```bash
-python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push
-```
+Draft-morning flow is the gated sequence in `docs/DRAFT_MORNING.md`. The engine,
+CVS inputs, CVS board, and VONA tree are one provenance-linked build and must be
+regenerated together; every listed gate must pass before a branch is pushed for
+review. Never use an engine-only rebuild or manually push directly to main. The
+fully gated scheduled `draft-refresh` workflow is the documented automation
+exception.
 
 GitHub Pages redeploys in about a minute. Projections, ADP, and injury
 statuses move daily - regenerate the morning of 2026-09-08.
@@ -49,7 +50,8 @@ python3 src/ingest.py          # Phase 1: ingest and reconcile, 52 assertions
 python3 src/phase2_value.py    # Phase 2: pick value and drafted-vs-acquired
 python3 src/phase3_lineup.py   # Phase 3A: lineup efficiency + positional gap
 python3 src/build_app_data.py  # dashboard data (app_data.json)
-open out/ff-hub.html
+python3 -m http.server 8000    # from the repo root
+# open http://127.0.0.1:8000/out/ff-hub.html
 ```
 
 ## Basis, stated once

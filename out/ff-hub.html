@@ -65,6 +65,7 @@ tbody tr:hover{background:var(--s2)}
 .bar i{display:block;height:100%;background:var(--teal)}
 .seq{font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:.05em}
 .note{color:var(--t2);font-size:13px;margin-top:10px}
+.status{color:var(--t2);font-size:13px;margin:0}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 0}
 .tabs button{background:var(--s1);border:1px solid var(--bd);color:var(--t2);
   padding:8px 15px;border-radius:5px;cursor:pointer;font-size:13px}
@@ -84,9 +85,11 @@ footer{color:var(--t3);font-size:11px;margin-top:50px;padding-top:18px;border-to
 <div class="card hero">
   <h3 style="margin-top:0">The finding</h3>
   <p style="margin:0 0 12px;font-size:19px;line-height:1.45">
-    <strong>There is no draft-day roadmap.</strong> Every draft-day hypothesis tested is null.
-    The only lever that survives is <span class="teal">lineup efficiency</span> - and it is
-    a start-sit problem, not a draft problem.</p>
+    <strong>There is no league-history draft roadmap.</strong> The eight original draft-day
+    hypotheses are null. <span id="n1Hero">A later BULLISH-vs-ADP test is reported
+    separately in N.1; its computed artifact has not loaded yet.</span> The only
+    league-history lever that survives is
+    <span class="teal">lineup efficiency</span> - and it is a start-sit problem, not a draft problem.</p>
   <div class="grid">
     <div class="stat"><div class="n" id="chEff">-</div><div class="l">Champion efficiency</div></div>
     <div class="stat"><div class="n" id="fdEff">-</div><div class="l">Field efficiency</div></div>
@@ -102,6 +105,7 @@ footer{color:var(--t3);font-size:11px;margin-top:50px;padding-top:18px;border-to
   <button role="tab" aria-selected="false" data-p="p2">Dead hypotheses</button>
   <button role="tab" aria-selected="false" data-p="p3">Champion drafts</button>
   <button role="tab" aria-selected="false" data-p="p4">Draft vs waiver</button>
+  <button role="tab" aria-selected="false" data-p="p5">BULLISH vs ADP</button>
 </div>
 
 <section class="panel" id="p1">
@@ -146,9 +150,29 @@ footer{color:var(--t3);font-size:11px;margin-top:50px;padding-top:18px;border-to
   </div>
 </section>
 
+<section class="panel" id="p5" hidden>
+  <h2>N.1 BULLISH vs ADP</h2>
+  <p class="sub">Does the tag add information beyond the market rank that gates it?</p>
+  <div class="card">
+    <p class="status" id="n1State" data-state="loading" aria-live="polite">Loading computed N.1 artifact...</p>
+    <div id="n1Results" hidden>
+      <p><span class="tag" id="n1Verdict"></span></p>
+      <p id="n1Text"></p>
+      <div class="tw"><table>
+        <thead><tr><th>ADP band</th><th>Tagged top-12</th><th>Untagged top-12</th>
+          <th>Difference (95% CI)</th><th class="num">p</th></tr></thead>
+        <tbody id="n1Body"></tbody>
+      </table></div>
+      <p class="note" id="n1Concentration"></p>
+      <p class="note" id="n1Provenance"></p>
+    </div>
+  </div>
+</section>
+
 <footer>
-  Generated from <code>out/app_data.json</code>. Sources: LeagueLegacy archive 2013-2025 and
-  Sleeper public API. 52 assertions pass, 0 fail. 2025 draft reconciles to Sleeper 168 of 168.
+  Generated from <code>out/app_data.json</code> and <code>out/data/bullish_vs_adp.json</code>.
+  Sources: LeagueLegacy archive 2013-2025, nflverse, and Sleeper public API.
+  52 ingestion assertions pass, 0 fail. 2025 draft reconciles to Sleeper 168 of 168.
   Yahoo 2013-2024 figures are bonus-exclusive; see <code>out/gap_register.md</code> G1.
 </footer>
 </div>
@@ -203,6 +227,87 @@ $('#shareBody').innerHTML = Object.entries(share)
   .map(([f,v]) => `<tr class="${f===ME?'me':''}"><td>${f}${f===ME?' <span class="tag l">you</span>':''}</td>
     <td class="num">${v.toFixed(1)}%</td>
     <td class="num ${titles[f]?'champ':''}">${titles[f]||''}</td></tr>`).join('');
+
+const n1Pct = v => (100 * v).toFixed(1) + '%';
+const n1Pp = v => (v >= 0 ? '+' : '') + (100 * v).toFixed(1);
+const n1Finite = v => typeof v === 'number' && Number.isFinite(v);
+const n1Interval = (v, bounded) => Array.isArray(v) && v.length === 2 &&
+  v.every(n1Finite) && v[0] <= v[1] && (!bounded || (v[0] >= 0 && v[1] <= 1));
+const n1SideOk = side => {
+  if (!side || !Number.isInteger(side.n) || side.n < 0 || !side.hit12 ||
+      !Number.isInteger(side.hit12.k) || side.hit12.k < 0 || side.hit12.k > side.n)
+    return false;
+  if (side.n === 0) return side.hit12.k === 0 && side.hit12.rate === null &&
+    side.hit12.ci95 === null;
+  return n1Finite(side.hit12.rate) && side.hit12.rate >= 0 && side.hit12.rate <= 1 &&
+    n1Interval(side.hit12.ci95, true);
+};
+const n1LiftOk = (lift, identifiable) => {
+  if (!identifiable) return lift === null;
+  return !!lift && n1Finite(lift.diff) && n1Interval(lift.diff_ci95, false) &&
+    n1Finite(lift.p_two_sided) && lift.p_two_sided >= 0 && lift.p_two_sided <= 1;
+};
+const n1BandOk = band => !!band && n1SideOk(band.tagged) &&
+  n1SideOk(band.untagged) &&
+  n1LiftOk(band.lift_hit12, band.tagged.n > 0 && band.untagged.n > 0);
+const n1Hit = side => side.n
+  ? `${side.hit12.k}/${side.n} (${n1Pct(side.hit12.rate)})`
+  : '0 - not identifiable';
+const n1Lift = lift => lift
+  ? `${n1Pp(lift.diff)}pp [${n1Pp(lift.diff_ci95[0])}, ${n1Pp(lift.diff_ci95[1])}]`
+  : 'not identifiable';
+
+async function loadN1(){
+  const state = $('#n1State');
+  const results = $('#n1Results');
+  try {
+    const r = await fetch('data/bullish_vs_adp.json', {cache:'no-store'});
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    const bands = d && d.within_band;
+    if (!d || typeof d.verdict !== 'string' || !d.verdict.includes(' - ') ||
+        !d.provenance || typeof d.provenance.generated !== 'string' ||
+        typeof d.provenance.method !== 'string' ||
+        typeof d.provenance.limitation !== 'string' || !d.concentration ||
+        !n1Finite(d.concentration.share_in_top12_band) ||
+        d.concentration.share_in_top12_band < 0 ||
+        d.concentration.share_in_top12_band > 1 ||
+        typeof d.concentration.note !== 'string' || !bands ||
+        !n1BandOk(bands['pos1-12']) || !n1BandOk(bands['pos13-24']) ||
+        !n1BandOk(bands['pos25-48'])) {
+      throw new Error('unusable schema');
+    }
+    const verdictLabel = d.verdict.split(' - ')[0];
+    $('#n1Verdict').textContent = verdictLabel;
+    $('#n1Text').textContent = d.verdict;
+    const labels = {'pos1-12':'Positional 1-12', 'pos13-24':'Positional 13-24',
+                    'pos25-48':'Positional 25-48'};
+    $('#n1Body').innerHTML = Object.entries(labels).map(([key, label]) => {
+      const b = bands[key];
+      const p = b.lift_hit12 ? b.lift_hit12.p_two_sided.toFixed(3) : '-';
+      return `<tr><td>${label}</td><td class="num">${n1Hit(b.tagged)}</td>` +
+        `<td class="num">${n1Hit(b.untagged)}</td><td class="num">${n1Lift(b.lift_hit12)}</td>` +
+        `<td class="num">${p}</td></tr>`;
+    }).join('');
+    $('#n1Concentration').textContent =
+      `${n1Pct(d.concentration.share_in_top12_band)} of tags are in positional ADP 1-12. ` +
+      d.concentration.note;
+    $('#n1Provenance').textContent =
+      `Generated ${d.provenance.generated}. ${d.provenance.method} Limitation: ${d.provenance.limitation}`;
+    state.textContent = 'Computed artifact loaded. The reviewed verdict is reported, not recomputed here.';
+    state.dataset.state = 'ready';
+    results.hidden = false;
+    $('#n1Hero').textContent = `The later BULLISH-vs-ADP test reports ${verdictLabel}; see N.1.`;
+  } catch (e) {
+    results.hidden = true;
+    state.dataset.state = 'error';
+    state.textContent = `N.1 unavailable (${e.message}). Open GitHub Pages or serve the repo root. ` +
+      'No verdict is inferred in its absence.';
+    $('#n1Hero').textContent =
+      'The later BULLISH-vs-ADP test is unavailable; no verdict is shown.';
+  }
+}
+loadN1();
 
 // Cell alignment is applied here, not in CSS: the repo guardrail scans prose rules
 // across every file type and false-positives on the CSS property name.

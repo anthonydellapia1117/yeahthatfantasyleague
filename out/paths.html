@@ -54,11 +54,20 @@ a{color:var(--info);text-decoration:none}
 .tvona{font-weight:800}
 .tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.05em;
   border:1px solid var(--info);color:var(--info);border-radius:5px;padding:1px 5px}
-.tag.coin{border-color:var(--warn);color:var(--warn)}
 .twhy{font-size:11px;color:var(--ink3);font-style:italic}
+.ledger{margin:5px 0 4px;font-size:11px;color:var(--ink3)}
+.ledger summary{cursor:pointer;color:var(--info);font-weight:700}
+.ledger .tw{overflow-x:auto;margin-top:5px}
+.ledger table{border-collapse:collapse;min-width:480px;width:100%;font-size:10px}
+.ledger th,.ledger td{border-bottom:1px solid var(--line);padding:3px 6px;text-align:left}
+.ledger td.num,.ledger th.num{text-align:right}
 .stat{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:0 0 10px}
 .stat b{color:var(--ink)}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+@media(max-width:520px){
+  .wrap{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
+  .card{padding:12px}.tnode{padding-left:8px}.tnums{white-space:normal}
+}
 </style>
 </head>
 <body>
@@ -75,50 +84,74 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,
   function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function pct(v){ return Math.round(v * 1000) / 10 + "%"; }
+function ci95(v){ return "[" + pct(v[0]) + ", " + pct(v[1]) + "]"; }
 var T = null, SLOT = 1;
+
+function ledgerHtml(n){
+  var rows = (n.decision_set || []).map(function(a){
+    var status = a.pareto ? "kept on local frontier" :
+      "dominated by " + a.dominated_by.join(", ");
+    return "<tr><td>" + esc(a.pos) + '</td><td class="num">' +
+      (a.vona > 0 ? "+" : "") + a.vona.toFixed(2) +
+      '</td><td class="num">+' + a.expected_lineup_gain.toFixed(2) +
+      "</td><td>" + esc(status) + "</td></tr>";
+  }).join("");
+  return '<details class="ledger"><summary>Decision ledger - ' +
+    (n.decision_set || []).length + " feasible actions</summary>" +
+    '<div class="tw"><table><thead><tr><th>Position</th>' +
+    '<th class="num">VONA</th><th class="num">Lineup gain</th>' +
+    "<th>Local result</th></tr></thead><tbody>" + rows +
+    "</tbody></table></div></details>";
+}
 
 function nodeHtml(n){
   var fork = !n.forced;
-  var coin = n.narrowly_dominated != null;
+  var fallback = !!n.fallback_required;
+  var identity = fallback ? "Fallback required" : esc(n.name);
+  var market = fallback ? "replacement is modal" :
+    "ADP " + n.adp.toFixed(1) + " - there " + Math.round(n.p_available * 100) + "%";
+  var tier = fallback ? "" : " - tier " + (n.tier == null ? "-" : n.tier) +
+    " (expected " + n.tier_expected_available.toFixed(1) + ")";
   return '<div class="tnode' + (fork ? " fork" : "") + '">' +
     '<div class="trow">' +
-      '<span class="tpick num">R' + n.round + " - pick " + n.pick + '</span>' +
+      '<span class="tpick num">R' + n.round + " - pick " + n.pick +
+        " to " + n.next_pick + '</span>' +
       '<span class="tpos">' + esc(n.pos) + '</span>' +
-      '<span class="tname">' + esc(n.name) + '</span>' +
+      '<span class="tname">' + identity + '</span>' +
       '<span class="tnums num">VOR ' + n.vor.toFixed(0) +
-        " - ADP " + n.adp.toFixed(1) +
-        " - there " + Math.round(n.p_available * 100) + "%" +
-        " - tier " + (n.tier == null ? "-" : n.tier) +
-        " (" + n.tier_left + " left)" + '</span>' +
+        " - " + market + tier +
+        " - top state " + Math.round(n.p_modal_state * 100) + "%" +
+        " - no +VOR " + Math.round(n.p_no_above_replacement * 100) + "%" + '</span>' +
       '<span class="tnums">VONA <span class="tvona num">' +
-        (n.vona > 0 ? "+" : "") + n.vona.toFixed(1) + '</span></span>' +
+        (n.vona > 0 ? "+" : "") + n.vona.toFixed(1) +
+        '</span> - lineup <span class="num">+' +
+        n.expected_lineup_gain.toFixed(1) + '</span></span>' +
       (fork ? '<span class="tag">FORK</span>' : "") +
-      (coin ? '<span class="tag coin">COIN FLIP</span>' : "") +
     '</div>' +
     '<div class="twhy">' + esc(n.why) + '</div>' +
+    ledgerHtml(n) +
     (n.children || []).map(nodeHtml).join("") +
     '</div>';
 }
 
 function render(){
   var v = T.slots[String(SLOT)];
-  var th = T.thresholds;
+  var rules = T.decision_rules;
   var c = $("content");
   var chips = '<div class="filters" id="slots">' +
     Object.keys(T.slots).map(Number).sort(function(a, b){ return a - b; })
       .map(function(s){ return '<button data-slot="' + s + '"' +
         (s === SLOT ? ' class="on"' : "") + ">" + s + "</button>"; }).join("") +
     '</div>';
-  var pr = v.pruned;
   c.innerHTML = chips +
     '<div class="card">' +
       "<h2>Slot " + SLOT + " - picks " + v.picks.join(", ") + "</h2>" +
       '<div class="stat">' +
-        "<span><b>" + v.rendered_forks + "</b> real decision points</span>" +
-        "<span><b>" + pr.dominated + "</b> branches pruned as dominated</span>" +
-        "<span><b>" + pr.narrow_kept + "</b> kept as coin flips</span>" +
-        "<span><b>" + v.forks_collapsed_by_pruning + "</b> forks collapsed</span>" +
-        (pr.budget ? "<span><b>" + pr.budget + "</b> dropped at the render budget</span>" : "") +
+        "<span><b>" + v.decision_groups + "</b> decision groups</span>" +
+        "<span><b>" + v.evaluated_actions + "</b> feasible actions audited</span>" +
+        "<span><b>" + v.nodes + "</b> nodes rendered</span>" +
+        "<span><b>" + v.rendered_forks + "</b> model tradeoffs</span>" +
       '</div>' +
       v.roots.map(nodeHtml).join("") +
     '</div>' +
@@ -128,23 +161,25 @@ function render(){
       '<p class="small"><b>Depth ' + T.provenance.depth + ".</b> " +
       esc(T.provenance.depth_rationale) + '</p>' +
       '<p class="small"><b>Branching.</b> ' + esc(T.provenance.branch_rule) +
-      " Threshold per round: " + Object.keys(th.branch_eps_by_depth)
-        .map(function(d){ return "R" + (Number(d) + 1) + " " +
-          th.branch_eps_by_depth[d]; }).join(", ") + ". " +
-      esc(th.branch_eps_source) + '</p>' +
-      '<p class="small"><b>Pruning.</b> ' + esc(th.prune_rule) +
-      " Coin-flip band " + th.narrow_band + " lineup points, " +
-      esc(th.narrow_band_source) + '</p>' +
-      '<p class="small"><b>A node is only shown if the player is at least ' +
-      Math.round(th.surv_floor * 100) + '% likely to be there</b> - ' +
-      esc(th.surv_floor_source) + '.</p>' +
+      " " + esc(rules.branch) + '</p>' +
+      '<p class="small"><b>Continuation.</b> ' + esc(rules.continuation) +
+      " " + esc(rules.budget_behavior) + '</p>' +
+      '<p class="small"><b>Rendering.</b> ' + esc(T.provenance.render_rule) +
+      " " + esc(rules.render) + '</p>' +
       '<p class="small"><b>Correlation caveat.</b> ' +
-      esc(T.correlation.bias_direction) + " Measured clustering: " +
+      esc(T.correlation.what_breaks) + " " + esc(T.correlation.bias_direction) +
+      " Descriptive adjacency: " +
       Object.keys(T.correlation.by_pos).sort().map(function(p){
-        return p + " " + T.correlation.by_pos[p].ratio + "x"; }).join(", ") +
+        var d = T.correlation.by_pos[p];
+        return p + " " + pct(d.repeat_rate) + " repeat (" +
+          d.same_position_next_k + "/" + d.repeat_contexts_n +
+          ", Wilson 95% " + ci95(d.repeat_wilson95) + ") vs " +
+          pct(d.marginal_rate) + " marginal (" + d.marginal_next_k + "/" +
+          d.marginal_next_n + ", Wilson 95% " +
+          ci95(d.marginal_wilson95) + ")"; }).join(", ") +
       " (" + esc(T.correlation.method) + ").</p>" +
       T.provenance.deviations.map(function(d){
-        return '<p class="small"><b>Stated deviation.</b> ' + esc(d) + "</p>"; }).join("") +
+        return '<p class="small"><b>Model disclosure.</b> ' + esc(d) + "</p>"; }).join("") +
     '</div>';
   var sc = $("slots");
   sc.querySelectorAll("button").forEach(function(b){
@@ -152,7 +187,10 @@ function render(){
   });
 }
 
-fetch("data/vona_tree_2026.json").then(function(r){ return r.json(); })
+fetch("data/vona_tree_2026.json", {cache:"no-store"}).then(function(r){
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+})
   .then(function(j){
     T = j;
     $("hdr").textContent = "the order is undrawn - pick a slot";

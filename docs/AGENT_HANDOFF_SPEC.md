@@ -139,8 +139,10 @@ in a single expression. *Why:* twice - the wait-or-reach comparison, then VONA's
 
 **R5. The shared forward-pick policy.** Any projection solving more than one pick
 MUST route through `src/forward_policy.py`: it consumes its own prior selections
-and respects positional caps. *Why:* four occurrences of the same defect class,
-each fixed at a call site until the shared layer finally existed.
+and respects both positional caps and the exact single shared-FLEX starter
+composition. *Why:* four occurrences of the same defect class, each fixed at a
+call site until the shared layer finally existed. Coarse caps alone still allowed
+RB3 and WR3 to consume two FLEX slots; `starter_path_feasible()` is the contract.
 
 **R6. The gate law.** Every suite runs as `sh tests/run_gate.sh <cmd>`. It requires
 exit 0 AND the sentinel AND no `^[0-9]+ FAILURES` AND no `SKIP` (override with
@@ -206,18 +208,41 @@ GATE_ALLOW_SKIP=1 sh tests/run_gate.sh python3 tests/test_analysis.py
 # 4. browser suite (26 hermetic scenarios)
 NODE_PATH=/tmp/pw/node_modules sh tests/run_gate.sh \
   node tests/smoke_draft_room.js out/draft_room.html
+# OR, if macOS Chrome is not auto-detected, run this instead:
+PW_CHROMIUM="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  NODE_PATH=/tmp/pw/node_modules sh tests/run_gate.sh \
+  node tests/smoke_draft_room.js out/draft_room.html
 
 # 5. ship, then PROVE it shipped
 git push -u origin <branch>            # PR, ready-for-review, squash-merge
-for f in out/engine_2026.json out/cvs.json out/draft_room.html out/paths.html; do
-  curl -sS "$PAGES/$f" | cmp -s - "$f" && echo "BYTE-IDENTICAL $f" || echo "DIFFERS $f"
+files="out/engine_2026.json out/cvs.json out/draft_room.html out/big_board.html out/paths.html out/ff-hub.html out/data/vona_tree_2026.json out/data/bullish_vs_adp.json out/data/sos_2026.json out/data/td_rates_2025.json out/data/volatility_2025.json"
+attempt=0; all_match=0
+while [ "$attempt" -lt 30 ]; do
+  all_match=1
+  for f in $files; do
+    curl -fsS "$PAGES/$f?bust=$(date +%s)" | cmp -s - "$f" || all_match=0
+  done
+  [ "$all_match" -eq 1 ] && break
+  attempt=$((attempt + 1))
+  [ "$attempt" -lt 30 ] && sleep 10
+done
+[ "$all_match" -eq 1 ] || { echo "DEPLOY PROOF FAILED after 30 attempts" >&2; exit 1; }
+for f in $files; do
+  curl -fsS "$PAGES/$f?bust=$(date +%s)" | cmp -s - "$f" || {
+    echo "DIFFERS $f" >&2; exit 1;
+  }
+  echo "BYTE-IDENTICAL $f"
 done
 ```
 
-**Guard counts as of this writing** (a suite that suddenly runs fewer is a
-regression): survival 39, cvs 18, vor 50, baserates 70, archetypes 17, ceiling 14,
-bullish 29, ws2 63, mock 45, bullish_vs_adp 43, vona 1347, draft_vs_acquired 23,
-pages_data 277, run_gate 16, analysis 38 (33 on CI), smoke 326.
+**Guard counts as of this writing** (a fixed-count suite that suddenly runs fewer
+is a regression): survival 39, cvs 18, vor 50, baserates 70, archetypes 17, ceiling 14,
+bullish 29, ws2 63, mock 45, bullish_vs_adp 43, vona 17702, draft_vs_acquired 23,
+pages_data 289, run_gate 16, analysis 38 (33 without the history cache), smoke 347.
+VONA's current count is data-dependent because it independently checks every
+rendered node, feasible action, and dominance witness. A legitimate live ADP
+refresh can change its tree shape and count; a lower VONA count alone is not a
+regression when the reconciliation guards still pass.
 
 **Rebuilding the analysis layer** needs the historical cache, which is NOT in the
 repo: `python3 src/fetch_history.py` (~156MB, nine families, `HISTORY` env var to
@@ -247,7 +272,9 @@ new evidence wastes a cycle.
 | **Injury-market inefficiency** | None established; one candidate flagged, nothing shipped. |
 | **Optimizing for drafted-share of starter points** | Champions draw 71.0% from drafted players, the field 68.7%: +2.3pp, CI [-5.2, +9.7], overlapping zero in both eras. What separates champions is total production (+203.3, CI [163.4, 243.0]). Targeting drafted share targets the one quantity that does not distinguish winners. |
 | **Yahoo history via yfpy OAuth** | CANCELLED - the LeagueLegacy archive supplied the Yahoo era. `src/fetch_yahoo.py` and `src/oauth_exchange.py` remain but are not wired. |
-| **Gating VONA branching on slot number** | Rejected before building. The data vindicated it: nine slots fork and the rule would have forced slot 5 to branch where there is no decision. |
+| **Gating VONA branching on slot number** | Rejected before building. Branching is computed from the action set at each node, never prescribed by seat. |
+| **The VONA p25 epsilon branch rule** | Rejected after cold review. Its cutoff was estimated from the same model gaps it classified, so model compression or dispersion changed what counted as a decision. It could also hide a genuine lineup-value tradeoff. The tree now keeps the computed Pareto frontier on VONA and expected lineup gain. |
+| **A VONA survival floor** | Rejected after cold review. Truncating low-probability player states changed the expectation and could invent a named recommendation. The full positive-VOR top-survivor distribution now includes replacement as an explicit zero-value state and publishes an honest fallback when replacement is modal. |
 | **Making the repo private to fix the PII exposure** | Rejected: GitHub Pages on a private repo requires Pro, so it would take the app dark twelve days before the draft. Fixed by pruning instead. |
 
 ---
@@ -262,9 +289,11 @@ new evidence wastes a cycle.
 - `src/engine_2026.py` -> `out/engine_2026.json` - the payload every page reads.
   Survival model, per-slot decision cards, opponent priors. Contains the frozen
   math (R2). Embedded directly into `draft_room.html` between sentinel markers.
-- `src/forward_policy.py` - the shared multi-pick layer (R5). `starter_caps()` for
-  seven-round starter construction (no injury spare), `roster_caps()` for full
-  rosters (+1 spare), `pick_marginal()`, `phantom_lineup_pts()`.
+- `src/forward_policy.py` - the shared multi-pick layer (R5). `starter_caps()`
+  supplies coarse bounds; `starter_targets()` and `starter_path_feasible()`
+  enforce the exact seven-skill-starter composition with one shared FLEX;
+  `roster_caps()` covers full rosters (+1 spare), with `pick_marginal()` and
+  `phantom_lineup_pts()` for lineup value.
 - `src/build_cvs.py` + `build_cvs_inputs.py` -> `out/cvs.json` - the board the room
   and big board render. Reads the engine payload; the engine never reads CVS.
 - `out/draft_room.html` - ~2,400 lines. Live polling, clock, pick engine, DRAFT
@@ -298,14 +327,15 @@ new evidence wastes a cycle.
 5. `fetch_history.py` before any analysis builder, on a fresh machine.
 
 **Do-not-modify:**
-- `out/ff-hub.html` - standing instruction from the original build order. It is the
-  retrospective dashboard for the 2013-2025 analysis; its "eight draft-day
-  hypotheses are null" table is that separate result, NOT the N.1 BULLISH finding
-  (a reviewer looked for N.1 there and could not find it - N.1 lives in
-  `docs/research/gemini_independent_assessment.md`).
 - The ten frozen math functions (R2).
 - `docs/CHAT_HISTORY_2026-08-11.md` - an archived record; leave its historical text
   alone even when purging language elsewhere.
+
+`out/ff-hub.html` is no longer on this list. The reviewed N.1 BULLISH-vs-ADP
+finding is a dedicated tab that loads `out/data/bullish_vs_adp.json` at runtime,
+renders the artifact's fixed INCONCLUSIVE verdict verbatim, and exposes loading,
+schema-failure, and HTTP-failure states. Keep the eight original league-history
+null hypotheses distinct from this later test.
 
 ---
 
@@ -362,7 +392,7 @@ there was a second and a third.
 | Item | State | Next action |
 |---|---|---|
 | **Archive PII in git HISTORY** | Removed from HEAD by the 2026-08-26 prune; still reachable in history at/before `bd8aff7`. Repo is public. | **Anthony's call, deferred to after the draft.** (a) accept, (b) `git filter-repo` + force-push (invalidates clones), (c) private repo - rejected for now, Pages would go dark. |
-| **Live browser-to-Sleeper path** | **NEVER EXERCISED.** All 326 smoke scenarios are hermetic - they stub the Sleeper API. No test has ever driven a real browser against the real API. | Anthony tests it himself on the deployed page. This is the single largest untested surface and it is the draft-night one. |
+| **Live browser-to-Sleeper path** | **NEVER EXERCISED.** All 347 smoke guards across 26 scenarios are hermetic - they stub the Sleeper API. No test has ever driven a real browser against the real API. | Anthony tests it himself on the deployed page. This is the single largest untested surface and it is the draft-night one. |
 | **Keeper status** | `use_keepers` is on for 2025-2026 but the 2025 draft had zero keeper picks and `keeper_results.csv` is 2 bytes. | OPEN QUESTION for the commissioner. **Do not resolve by inference.** |
 | **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. | A Routine runs `src/check_draft_order.py` every 2h and self-retires on the draw. The room collapses to the real seat automatically. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
@@ -370,7 +400,7 @@ there was a second and a third.
 | **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Honest on the card, but the largest exception to R1. | Backtest or keep labelled. |
 | **Optional-shard silent degradation** | `base_rates`/`ceiling`/archetypes/bullish fetch failures vanish columns with no notice. | Add a visible "unavailable" state + a smoke scenario. |
 | **12-team geometry inside DRAFT MODE** | `sleeperListHtml` bands and `simBand` labels are hardcoded 12x14; wrong in a 10-team mock. | Derive from `GEO`. |
-| **`ff-hub.html` N.1** | Confirmed absent by design. | None - documented in §6. |
+| **VONA UI budget coupling** | `MAX_NODES = 120` is a deliberate UI safety budget, not a statistical threshold. The current largest slot is 102 nodes and passes the 390px no-overflow smoke, leaving 18 nodes of headroom. A valid future board can exceed it and block the linked refresh. | Keep the failure loud. Inspect the complete tree on mobile before deliberately raising the budget; never truncate actions to fit. |
 
 ---
 
@@ -379,7 +409,7 @@ there was a second and a third.
 1. `python3 src/preflight_draft.py` if you touched anything draft-geometry-shaped.
 2. Full gate battery (§4). Every suite through `run_gate`, output to a file.
 3. `mathdiff` prints `MATH DIFF PROOF: EMPTY`.
-4. Smoke suite, 326 PASS.
+4. Smoke suite, 347 guards PASS.
 5. **Interrogate the values of any artifact you regenerated**, not just its schema
    (§1.2). What would be impossible in this data? Check for it.
 6. Ask of any new guard: what change would make this fail? (§8.4)

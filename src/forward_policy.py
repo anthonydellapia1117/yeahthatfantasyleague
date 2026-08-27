@@ -59,19 +59,48 @@ def phantom_lineup_pts(players, baselines):
 
 
 def starter_caps(flex_alloc):
-    """Maximum SIMULTANEOUS starters per position - the feasibility law for
-    starter-construction projections (the VONA tree's seven rounds). Base
-    slots, plus the flex slot only where the league has actually flexed the
-    position, with NO injury spare: a seven-round path is building the
-    lineup itself, and a position beyond its startable count is a wasted
-    starter slot, the exact defect class caught three times now (M1 naive
-    max-VOR, the back-to-back duplicate pick, three-early-TEs in the tree).
+    """Maximum simultaneous starters per position.
+
+    These are useful coarse bounds, but they are not by themselves a valid
+    seven-pick construction: RB and WR can each be flex-eligible while the
+    lineup still has only one shared FLEX slot. Use starter_path_feasible for
+    a multi-pick starter path.
     """
     caps = {}
     for pos, k in BASE_SLOTS.items():
         flexes = 1 if flex_alloc.get(pos, 0) > 0 and pos in FLEX_OK else 0
         caps[pos] = k + flexes
     return caps
+
+
+def starter_targets(flex_positions):
+    """Every legal seven-skill-starter composition supported by league data.
+
+    The six fixed skill slots are QB/RB/RB/WR/WR/TE. The seventh is the one
+    shared FLEX, assigned only to positions the caller verified as eligible.
+    This represents the shared slot directly instead of granting one
+    independent flex allowance to every eligible position.
+    """
+    base = {p: BASE_SLOTS[p] for p in ("QB", "RB", "WR", "TE")}
+    targets = []
+    for pos in FLEX_OK:
+        if pos not in flex_positions:
+            continue
+        target = dict(base)
+        target[pos] += 1
+        targets.append(target)
+    return targets
+
+
+def starter_path_feasible(counts, picks_remaining, flex_positions):
+    """Can a partial skill roster still complete one legal starter target?"""
+    for target in starter_targets(flex_positions):
+        if any(counts.get(pos, 0) > cap for pos, cap in target.items()):
+            continue
+        needed = sum(cap - counts.get(pos, 0) for pos, cap in target.items())
+        if needed == picks_remaining:
+            return True
+    return False
 
 
 def roster_caps(flex_alloc):
