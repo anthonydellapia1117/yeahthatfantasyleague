@@ -1721,6 +1721,7 @@ const ok = (cond, name, detail) => {
     // Independent presentation oracle. It reads the committed artifact, not the
     // page's groups, scores, ordering, or rendered text.
     const indexed = {};
+    const allGroups = [];
     const allForks = [];
     function indexGroup(nodes, prior){
       if (!nodes || !nodes.length) return null;
@@ -1736,6 +1737,7 @@ const ok = (cond, name, detail) => {
           live.reduce((a, g) => a + g.forkReach, 0),
         nodeReach: nodes.length + live.reduce((a, g) => a + g.nodeReach, 0)
       };
+      allGroups.push(group);
       if (nodes.length > 1) allForks.push(group);
       return group;
     }
@@ -1777,7 +1779,7 @@ const ok = (cond, name, detail) => {
       b.groupReach - a.groupReach || b.forkReach - a.forkReach ||
       b.nodeReach - a.nodeReach || a.round - b.round || a.pick - b.pick ||
       a.crumb.localeCompare(b.crumb);
-    const priorityFor = slot => {
+    const distinctFor = slot => {
       const groups = [];
       function walk(group){
         if (!group) return;
@@ -1795,11 +1797,80 @@ const ok = (cond, name, detail) => {
         paths.sort(comparePriority);
         paths[0].occurrences = paths;
         return paths[0];
-      }).sort(comparePriority).slice(0, 5);
+      });
+    };
+    const displayDepth = vonaArtifact.provenance.depth;
+    const selectionProvenance = vonaArtifact.provenance.display_selection;
+    const distinctBySlot = Object.fromEntries(Object.keys(indexed).map(slot =>
+      [slot, distinctFor(slot)]));
+    const forkCounts = Object.fromEntries(Array.from(
+      { length: displayDepth }, (_x, i) => [i + 1, 0]));
+    Object.values(distinctBySlot).flat().forEach(group => {
+      forkCounts[group.round] += 1;
+    });
+    const chooseCuts = (positions, needed, start = 0, prior = []) => {
+      if (!needed) return [prior];
+      const out = [];
+      for (let i = start; i <= positions.length - needed; i++){
+        out.push(...chooseCuts(positions, needed - 1, i + 1,
+          prior.concat([positions[i]])));
+      }
+      return out;
+    };
+    const support = Object.keys(forkCounts).map(Number)
+      .filter(round => forkCounts[round] > 0);
+    const segmentCost = rounds => {
+      const values = rounds.map(round => forkCounts[round]);
+      const sum = values.reduce((a, b) => a + b, 0);
+      return values.reduce((a, value) => a + value * value, 0) -
+        sum * sum / values.length;
+    };
+    const cutOptions = chooseCuts(
+      Array.from({ length: support.length - 1 }, (_x, i) => i + 1),
+      selectionProvenance.coverage_band_count - 1);
+    const bandCandidates = cutOptions.map(cuts => {
+      const marks = [0].concat(cuts, [support.length]);
+      const segments = marks.slice(0, -1).map((start, i) =>
+        support.slice(start, marks[i + 1]));
+      return { cuts, segments,
+        score: segments.reduce((a, rounds) => a + segmentCost(rounds), 0) };
+    }).sort((a, b) => a.score - b.score ||
+      a.cuts.join(",").localeCompare(b.cuts.join(",")));
+    const labels = ["early", "middle", "late"];
+    let bandStart = 1;
+    const computedBands = bandCandidates[0].segments.map((rounds, i) => {
+      const end = i === bandCandidates[0].segments.length - 1
+        ? displayDepth : rounds[rounds.length - 1];
+      const band = { index: i + 1, label: labels[i],
+        start_round: bandStart, end_round: end,
+        forks_n: Array.from({ length: end - bandStart + 1 }, (_x, j) =>
+          forkCounts[bandStart + j]).reduce((a, b) => a + b, 0) };
+      bandStart = end + 1;
+      return band;
+    });
+    const bandFor = round => computedBands.find(band =>
+      round >= band.start_round && round <= band.end_round);
+    const priorityFor = slot => {
+      const ordered = distinctBySlot[String(slot)].slice().sort(comparePriority);
+      const selected = computedBands.map(band => {
+        const winner = ordered.find(group =>
+          group.round >= band.start_round && group.round <= band.end_round);
+        winner.band = band;
+        return winner;
+      });
+      for (const group of ordered){
+        if (selected.length >= selectionProvenance.card_cap) break;
+        if (!selected.includes(group)){
+          group.band = bandFor(group.round);
+          selected.push(group);
+        }
+      }
+      return selected.sort(comparePriority);
     };
     const renderedCards = async page => page.$$eval(".priority-card", cards =>
       cards.map(c => ({
         spread: Number(c.dataset.spread), round: Number(c.dataset.round),
+        band: c.dataset.band,
         pick: Number(c.dataset.pick), nextPick: Number(c.dataset.nextPick),
         actions: Number(c.dataset.actions), path: c.dataset.path,
         occurrences: Number(c.dataset.occurrences),
@@ -1816,6 +1887,7 @@ const ok = (cond, name, detail) => {
       })));
     const cardsMatch = (actual, expected) => actual.length === expected.length &&
       actual.every((a, i) => a.round === expected[i].round &&
+        a.band === expected[i].band.label &&
         a.pick === expected[i].pick && a.nextPick === expected[i].nextPick &&
         a.actions === expected[i].nodes.length && a.path === expected[i].crumb &&
         a.occurrences === expected[i].occurrences.length &&
@@ -1834,6 +1906,34 @@ const ok = (cond, name, detail) => {
             alt.visibleName.trim() === name && alt.availability === availability &&
             alt.text.includes(vona) && alt.text.includes(lineup);
         }));
+
+    ok(JSON.stringify(selectionProvenance.fork_counts_by_round) ===
+       JSON.stringify(forkCounts) &&
+       selectionProvenance.distinct_forks_n ===
+       Object.values(distinctBySlot).flat().length &&
+       selectionProvenance.raw_fork_occurrences_n === allForks.length,
+       "paths oracle: artifact reconciles distinct round supply and raw forks");
+    ok(JSON.stringify(selectionProvenance.bands) === JSON.stringify(computedBands),
+       "paths oracle: artifact bands match an independent minimum-error partition");
+    const computedSupport = Object.fromEntries(Object.entries(distinctBySlot)
+      .map(([slot, groups]) => [slot, Object.fromEntries(computedBands.map(band =>
+        [band.label, groups.filter(group => group.round >= band.start_round &&
+          group.round <= band.end_round).length]))]));
+    ok(JSON.stringify(selectionProvenance.slot_band_eligible_counts) ===
+       JSON.stringify(computedSupport) &&
+       Object.values(computedSupport).every(row =>
+         Object.values(row).every(count => count > 0)),
+       "paths oracle: every slot can supply every independently derived band");
+    const terminalGroups = allGroups.filter(group => group.round === displayDepth);
+    const terminal = selectionProvenance.terminal_round_check;
+    ok(terminal.lookahead_round ===
+       vonaArtifact.provenance.value_lookahead_rounds &&
+       terminal.decision_groups_n === terminalGroups.length &&
+       terminal.forks_n === terminalGroups.filter(group =>
+         group.nodes.length > 1).length &&
+       terminalGroups.every(group => group.nodes.every(node =>
+         Number.isFinite(node.next_pick) && node.e_next > 0)),
+       "paths oracle: terminal zero forks use a real positive round-8 expectation");
 
     const srv = http.createServer((req, res) => {
       const url = req.url.split("?")[0];
@@ -1861,7 +1961,10 @@ const ok = (cond, name, detail) => {
     const expected1 = priorityFor(1);
     const cards1 = await renderedCards(pg);
     ok(cardsMatch(cards1, expected1),
-       "paths: five cards match independent normalized-frontier-spread ranking");
+       "paths: five cards match independent band-constrained spread selection");
+    ok(new Set(cards1.map(card => card.band)).size === computedBands.length &&
+       computedBands.every(band => cards1.some(card => card.band === band.label)),
+       "paths: initial cards visibly cover every derived draft-depth band");
     ok(new Set(expected1.map(localPayloadKey)).size === expected1.length,
        "paths: exact repeated local decisions consume only one capped card");
     const expected1Nodes = expected1.reduce((a, g) => a + g.nodes.length, 0);
@@ -1906,8 +2009,43 @@ const ok = (cond, name, detail) => {
        body.includes("VONA SD " + vSd.toFixed(4)) &&
        body.includes("lineup SD " + gSd.toFixed(4)),
        "paths: normalization n and scales match the artifact, not typed values");
+    ok(/Draft-depth coverage/.test(body) &&
+       /Derived bands this build, from aggregate exact-distinct supply/.test(body) &&
+       body.includes(selectionProvenance.supply_diagnosis) &&
+       computedBands.every(band => body.includes(
+         band.label + " R" + band.start_round + "–R" + band.end_round +
+         " (" + band.forks_n + " exact-distinct forks)")),
+       "paths: page explains computed bands and the supply-first diagnosis");
     ok(/undrawn/.test(await pg.textContent("#hdr")),
        "paths: slot-conditional, states the order is undrawn");
+
+    const renderedRoundCounts = Object.fromEntries(Array.from(
+      { length: displayDepth }, (_x, i) => [i + 1, 0]));
+    const oracleRoundCounts = Object.fromEntries(Array.from(
+      { length: displayDepth }, (_x, i) => [i + 1, 0]));
+    const slotCoverageFailures = [];
+    for (const slot of Object.keys(indexed)){
+      await pg.click(`#slots button[data-slot="${slot}"]`);
+      await pg.waitForTimeout(20);
+      const actual = await renderedCards(pg);
+      const expected = priorityFor(slot);
+      if (!cardsMatch(actual, expected) || actual.length !==
+          selectionProvenance.card_cap || computedBands.some(band =>
+            !actual.some(card => card.band === band.label))){
+        slotCoverageFailures.push(slot);
+      }
+      actual.forEach(card => { renderedRoundCounts[card.round] += 1; });
+      expected.forEach(group => { oracleRoundCounts[group.round] += 1; });
+    }
+    ok(slotCoverageFailures.length === 0,
+       "paths: all twelve slots render one early, middle, and late card",
+       slotCoverageFailures.join(", "));
+    ok(JSON.stringify(renderedRoundCounts) === JSON.stringify(oracleRoundCounts) &&
+       Object.values(renderedRoundCounts).reduce((a, b) => a + b, 0) ===
+       selectionProvenance.card_cap * Object.keys(indexed).length,
+       "paths: all 60 rendered card rounds match the independent selector");
+    await pg.click('#slots button[data-slot="1"]');
+    await pg.waitForTimeout(20);
     // switching slots re-renders a different tree
     const t1 = await pg.textContent("#content");
     await pg.click('#slots button[data-slot="8"]');
@@ -1916,7 +2054,7 @@ const ok = (cond, name, detail) => {
     ok(/Slot 8 - picks/.test(t8) && t1 !== t8,
        "paths: the slot picker re-renders the tree");
     ok(cardsMatch(await renderedCards(pg), priorityFor(8)),
-       "paths: slot switch recomputes the independent spread ranking");
+       "paths: slot switch recomputes the independent coverage selection");
     ok(/Correlation caveat/.test(t8) && /UNKNOWN/.test(t8) &&
        /not identify player-level survival correlations/.test(t8) &&
        /Wilson 95%/.test(t8),
@@ -1950,7 +2088,7 @@ const ok = (cond, name, detail) => {
     await pg.waitForTimeout(100);
     const expected10 = priorityFor(10);
     ok(cardsMatch(await renderedCards(pg), expected10),
-       "paths desktop: slot 10 keeps the five widest frontier spreads");
+       "paths desktop: slot 10 matches the band-constrained spread selection");
     ok(new Set(expected10.map(localPayloadKey)).size === expected10.length,
        "paths desktop: slot 10 does not waste cards on exact path duplicates");
     const desktopHeight = await pg.evaluate(() => document.documentElement.scrollHeight);
@@ -1977,7 +2115,7 @@ const ok = (cond, name, detail) => {
     await pg.click('#slots button[data-slot="12"]');
     await pg.waitForTimeout(100);
     ok(cardsMatch(await renderedCards(pg), priorityFor(12)),
-       "paths mobile: slot 12 matches the independent deduplicated spread ranking");
+       "paths mobile: slot 12 matches the independent coverage selection");
     await pg.click('#slots button[data-slot="10"]');
     await pg.waitForTimeout(100);
     await pg.click("#showAll");

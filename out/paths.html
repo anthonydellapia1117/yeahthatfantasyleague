@@ -50,6 +50,8 @@ a{color:var(--info);text-decoration:none}
 .decision-head{display:flex;gap:8px;align-items:baseline;justify-content:space-between;
   flex-wrap:wrap;margin-bottom:3px}
 .decision-title{font-size:15px;font-weight:800;margin:0}
+.band-label{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink3);border:1px solid var(--line);border-radius:999px;padding:1px 6px}
 .spread{font-size:10px;color:var(--ink3)}
 .crumb{font-size:10px;color:var(--ink3);margin-bottom:7px;overflow-wrap:anywhere}
 .occurrences{font-size:10px;color:var(--ink3);margin:0 0 7px}
@@ -73,6 +75,7 @@ a{color:var(--info);text-decoration:none}
 .avail-track{height:5px;background:var(--avail-track);border-radius:999px;overflow:hidden}
 .avail-fill{display:block;height:100%;background:var(--avail);border-radius:inherit}
 .availability-note{border-left:3px solid var(--avail);padding-left:9px;margin:10px 0 12px}
+.coverage-note{border-left:3px solid var(--ink2);padding-left:9px;margin:10px 0 12px}
 .ledger{margin:5px 0 4px;font-size:11px;color:var(--ink3)}
 .ledger summary{cursor:pointer;color:var(--info);font-weight:700}
 .ledger .tw{overflow-x:auto;margin-top:5px}
@@ -119,7 +122,7 @@ function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,
 function pct(v){ return Math.round(v * 1000) / 10 + "%"; }
 function ci95(v){ return "[" + pct(v[0]) + ", " + pct(v[1]) + "]"; }
 var T = null, SLOT = 1, NORMALIZATION = null, GROUP_TREES = {};
-var DISPLAY_CARD_CAP = 5;
+var DISPLAY_SELECTION = null;
 
 function populationSd(values){
   if (!values.length) return 0;
@@ -156,6 +159,11 @@ function flattenGroups(root){
 }
 
 function preparePresentation(){
+  DISPLAY_SELECTION = T.provenance.display_selection;
+  if (!DISPLAY_SELECTION || !DISPLAY_SELECTION.card_cap ||
+      !DISPLAY_SELECTION.bands || !DISPLAY_SELECTION.bands.length){
+    throw new Error("artifact is missing derived display-selection provenance");
+  }
   GROUP_TREES = {};
   var forkGroups = [];
   Object.keys(T.slots).forEach(function(slot){
@@ -237,6 +245,39 @@ function aggregateExactDecisions(forks){
   });
 }
 
+function bandForRound(round){
+  return DISPLAY_SELECTION.bands.find(function(band){
+    return round >= band.start_round && round <= band.end_round;
+  }) || null;
+}
+
+function selectPriorityForks(distinctForks){
+  var ordered = distinctForks.slice().sort(priorityCompare);
+  var selected = [];
+  DISPLAY_SELECTION.bands.forEach(function(band){
+    var winner = ordered.find(function(g){
+      return g.round >= band.start_round && g.round <= band.end_round;
+    });
+    if (!winner){
+      throw new Error("slot " + SLOT + " has no fork in derived " +
+        band.label + " band");
+    }
+    winner.presentationBand = band;
+    selected.push(winner);
+  });
+  ordered.forEach(function(g){
+    if (selected.length < DISPLAY_SELECTION.card_cap &&
+        selected.indexOf(g) < 0){
+      g.presentationBand = bandForRound(g.round);
+      selected.push(g);
+    }
+  });
+  if (selected.length !== DISPLAY_SELECTION.card_cap){
+    throw new Error("slot " + SLOT + " cannot fill the display card cap");
+  }
+  return selected.sort(priorityCompare);
+}
+
 function ledgerHtml(n){
   var rows = (n.decision_set || []).map(function(a){
     var status = a.pareto ? "kept on local frontier" :
@@ -294,6 +335,7 @@ function alternativeHtml(n){
 
 function decisionCardHtml(g, rank){
   var occurrences = g.presentationOccurrences || [g];
+  var band = g.presentationBand || bandForRound(g.round);
   var paths = occurrences.map(function(x){ return breadcrumb(x); });
   var pathHtml = occurrences.length === 1 ?
     '<div class="crumb">' + esc(paths[0]) + '</div>' :
@@ -307,9 +349,11 @@ function decisionCardHtml(g, rank){
     '" data-round="' + g.round + '" data-pick="' + g.pick +
     '" data-next-pick="' + g.nextPick + '" data-actions="' + g.nodes.length +
     '" data-path="' + esc(breadcrumb(g)) + '" data-occurrences="' +
-    occurrences.length + '">' +
+    occurrences.length + '" data-band="' + esc(band.label) + '">' +
     '<div class="decision-head"><h3 class="decision-title">Decision ' + rank +
-      '</h3><span class="tpick num">R' + g.round + " - pick " + g.pick +
+      '</h3><span class="band-label">' + esc(band.label) + " · R" +
+      band.start_round + "–R" + band.end_round +
+      '</span><span class="tpick num">R' + g.round + " - pick " + g.pick +
       " to " + g.nextPick + '</span></div>' +
     pathHtml +
     '<div class="spread num">normalized frontier spread ' +
@@ -338,7 +382,7 @@ function render(){
   var groups = flattenGroups(root);
   var forks = groups.filter(function(g){ return g.nodes.length > 1; });
   var distinctForks = aggregateExactDecisions(forks);
-  var priority = distinctForks.sort(priorityCompare).slice(0, DISPLAY_CARD_CAP);
+  var priority = selectPriorityForks(distinctForks);
   var initialNodes = priority.reduce(function(a, g){ return a + g.nodes.length; }, 0);
   var representedForks = priority.reduce(function(a, g){
     return a + g.presentationOccurrences.length;
@@ -369,6 +413,13 @@ function render(){
         'literal probability; purple bar length is linear from 0% to 100%. It ' +
         'never filters, ranks, branches, or changes the model, and uses none of ' +
         'the reserved verdict colors.</div>' +
+      '<div class="coverage-note small"><b>Draft-depth coverage.</b> ' +
+        esc(DISPLAY_SELECTION.selection_rule) +
+        ". Derived bands this build, from aggregate exact-distinct supply: " +
+        DISPLAY_SELECTION.bands.map(function(band){
+          return esc(band.label) + " R" + band.start_round + "–R" +
+            band.end_round + " (" + band.forks_n + " exact-distinct forks)";
+        }).join("; ") + ".</div>" +
       '<div class="priority-grid">' + priority.map(function(g, i){
         return decisionCardHtml(g, i + 1);
       }).join("") + '</div>' +
@@ -398,8 +449,12 @@ function render(){
       NORMALIZATION.gainSd.toFixed(4) + '). Downstream decision reach breaks ' +
       'exact spread ties. Exact local payloads reached by multiple paths share ' +
       'one card; every breadcrumb remains disclosed and the complete tree stays ' +
-      'unchanged. This orders only the five initial cards; it never ' +
-      'changes the artifact or the Pareto model.</p>' +
+      'unchanged. <b>Coverage selection.</b> ' +
+      esc(DISPLAY_SELECTION.band_derivation) + ". " +
+      esc(DISPLAY_SELECTION.selection_rule) + ". " +
+      esc(DISPLAY_SELECTION.supply_diagnosis) +
+      ' This selects only the initial cards; it never changes the artifact ' +
+      'tree or the Pareto model.</p>' +
       '<p class="small"><b>Correlation caveat.</b> ' +
       esc(T.correlation.what_breaks) + " " + esc(T.correlation.bias_direction) +
       " Descriptive adjacency: " +

@@ -109,13 +109,25 @@ repeat the same ledger. The initial surface is five fork cards. The complete tre
 is created in the DOM only after explicit `Show all` disclosure, while the
 committed artifact always retains every node and ledger.
 
-The five cards are ranked by **normalized frontier spread**, a presentation-only
-measure of what is at stake in the local tradeoff. For every fork, take the maximum
-pairwise Euclidean distance between its non-dominated actions after dividing VONA
-and expected lineup gain by their observed population standard deviations across
-all fork alternatives in the current artifact. The two coordinates therefore
-enter symmetrically; the ranking never selects an action or changes the Pareto
-frontier. Downstream decision reach breaks exact spread ties.
+Cards are ranked by **normalized frontier spread**, a presentation-only measure of
+what is at stake in the local tradeoff. For every fork, take the maximum pairwise
+Euclidean distance between its non-dominated actions after dividing VONA and
+expected lineup gain by their observed population standard deviations across all
+fork alternatives in the current artifact. The two coordinates therefore enter
+symmetrically; the ranking never selects an action or changes the Pareto frontier.
+Downstream decision reach breaks exact spread ties.
+
+The five-card selection adds draft-depth coverage without changing that ranking.
+On every artifact build, exact-distinct fork counts by round are partitioned into
+three contiguous bands by the minimum-within-band-squared-error partition of the
+positive-support rounds. The final band extends through the display horizon, so a
+genuine zero-fork terminal round cannot manufacture an empty required band. The
+page selects the highest-spread fork in each computed band, then fills the two
+remaining cards from the highest-spread unselected forks globally. The builder
+fails loudly if any slot cannot contribute a card to every derived band. Computed
+boundaries, counts, per-slot support, the selection rule, and the observed reason
+for the coverage constraint are artifact provenance; no round boundary is typed
+into the page or model.
 
 The five-card cap ranks distinct local decision payloads, not repeated path
 instances. If every local node field and the complete feasible-action ledger are
@@ -146,6 +158,7 @@ There are no statistical thresholds in the branch or render rules.
 | `DEPTH = 7` | display and starter-construction horizon; round 8 remains the terminal value lookahead |
 | `MAX_NODES = 120` | deliberate UI safety budget, checked only after the complete local Pareto policy is built; the current maximum is 102 nodes and the mobile smoke renders that full slot without page-level horizontal overflow |
 | `DISPLAY_CARD_CAP = 5` | presentation-only initial disclosure budget; it changes no artifact, frontier, continuation, or model value, and `Show all` lazily creates the complete tree |
+| `DISPLAY_BAND_COUNT = 3` | presentation-only coverage budget; band boundaries are recomputed from exact-distinct fork density on every artifact build and never typed |
 
 The old `SURV_FLOOR = 0.40`, p25 VONA-gap epsilon, and p25 domination band are
 removed. Reusing a typed room convention did not make the floor derived, and a

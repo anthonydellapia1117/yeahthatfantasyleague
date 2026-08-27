@@ -26,7 +26,11 @@ flex_usage = json.load(open(os.path.join(D, "flex_usage_2025.json")))
 prov, rules = tree["provenance"], tree["decision_rules"]
 
 sys.path.insert(0, os.path.join(ROOT, "src"))
-from build_vona_tree import best_states, pareto_front, vona_at, wilson
+from build_vona_tree import (best_states, derive_display_bands,
+                             display_selection_provenance,
+                             exact_distinct_forks, iter_decision_groups,
+                             normalized_frontier_spread, pareto_front,
+                             population_sd, vona_at, wilson)
 from engine_2026 import survival, snake_picks
 from forward_policy import (phantom_lineup_pts, starter_path_feasible,
                             starter_targets)
@@ -67,6 +71,26 @@ ok("fails the build" in rules["budget_behavior"],
    "the UI budget fails loudly after the policy is built")
 ok("deliberately absent" in prov["bullish_on_nodes"],
    "BULLISH remains absent from the decision surface")
+
+selection = prov["display_selection"]
+ok(selection["card_cap"] == 5
+   and selection["coverage_cards"] == selection["coverage_band_count"] == 3
+   and selection["unrestricted_cards"] == 2,
+   "artifact declares the approved three-coverage-plus-two-global card budget")
+ok("recompute exact-distinct fork counts" in selection["band_derivation"]
+   and "positive-count rounds" in selection["band_derivation"]
+   and "zero-count terminal round" in selection["band_derivation"],
+   "artifact discloses data-derived bands and terminal-zero handling")
+ok("highest normalized-frontier-spread" in selection["selection_rule"]
+   and "remaining cards" in selection["selection_rule"]
+   and "exact spread ties" in selection["selection_rule"],
+   "artifact discloses one-per-band selection with global fill and reach tie-break")
+ok("Candidate supply is the larger observed driver" in
+   selection["supply_diagnosis"]
+   and "Wider later frontier spreads also contribute" in
+   selection["supply_diagnosis"]
+   and "presentation selection only" in selection["supply_diagnosis"],
+   "artifact records the computed supply-first diagnosis as presentation provenance")
 
 builder = open(os.path.join(ROOT, "src", "build_vona_tree.py")).read()
 old_tokens = ("SURV_FLOOR", "branch_eps_by_depth", "narrow_band",
@@ -358,6 +382,100 @@ ok(sum(v["nodes"] for v in tree["slots"].values()) == len(all_nodes),
 ok(total_forks == sum(v["rendered_forks"] for v in tree["slots"].values()),
    "fork ledger reconciles without requiring a quota")
 
+# Presentation bands come from the committed artifact's exact-distinct fork
+# supply. They never alter or truncate the raw occurrence tree above.
+distinct_by_slot = {
+    slot: exact_distinct_forks(payload)
+    for slot, payload in tree["slots"].items()
+}
+fork_counts = Counter(
+    nodes[0]["round"]
+    for groups in distinct_by_slot.values() for nodes in groups)
+expected_counts = {str(r): fork_counts[r] for r in range(1, prov["depth"] + 1)}
+expected_bands = derive_display_bands(fork_counts, depth=prov["depth"],
+                                      band_count=selection["coverage_band_count"])
+ok(selection["fork_counts_by_round"] == expected_counts
+   and selection["distinct_forks_n"] == sum(fork_counts.values()),
+   "display provenance recomputes exact-distinct fork supply by round")
+ok(selection["raw_fork_occurrences_n"] == total_forks
+   and selection["distinct_forks_n"] <= total_forks,
+   "display provenance distinguishes raw fork occurrences from exact deduplication")
+ok(selection["bands"] == expected_bands,
+   "display bands are the deterministic minimum-error contiguous partition")
+ok(selection["occupied_rounds"] ==
+   [r for r in range(1, prov["depth"] + 1) if fork_counts[r] > 0]
+   and selection["zero_fork_rounds"] ==
+   [r for r in range(1, prov["depth"] + 1) if fork_counts[r] == 0],
+   "band provenance publishes positive support and genuine zero-fork rounds")
+ok(expected_bands[0]["start_round"] == 1
+   and expected_bands[-1]["end_round"] == prov["depth"]
+   and all(left["end_round"] + 1 == right["start_round"]
+           for left, right in zip(expected_bands, expected_bands[1:])),
+   "derived bands cover the full display horizon without gaps")
+
+expected_support = {}
+for slot, groups in distinct_by_slot.items():
+    expected_support[slot] = {
+        band["label"]: sum(
+            band["start_round"] <= nodes[0]["round"] <= band["end_round"]
+            for nodes in groups)
+        for band in expected_bands
+    }
+ok(selection["slot_band_eligible_counts"] == expected_support
+   and all(count > 0 for row in expected_support.values()
+           for count in row.values()),
+   "every slot has an eligible exact-distinct fork in every derived band")
+
+raw_fork_groups = [
+    nodes for payload in tree["slots"].values()
+    for nodes in iter_decision_groups(payload["roots"]) if len(nodes) > 1
+]
+raw_fork_nodes = [node for nodes in raw_fork_groups for node in nodes]
+expected_vona_sd = population_sd(
+    [node["decision_vona_raw"] for node in raw_fork_nodes])
+expected_gain_sd = population_sd(
+    [node["decision_expected_lineup_gain_raw"] for node in raw_fork_nodes])
+spread_evidence = selection["spread_evidence"]
+norm = spread_evidence["normalization"]
+ok(norm["alternatives_n"] == len(raw_fork_nodes)
+   and math.isclose(norm["vona_population_sd"], expected_vona_sd,
+                    abs_tol=1e-12)
+   and math.isclose(norm["lineup_gain_population_sd"], expected_gain_sd,
+                    abs_tol=1e-12),
+   "spread evidence normalizes over every raw frontier alternative")
+for band in expected_bands:
+    values = [
+        normalized_frontier_spread(nodes, expected_vona_sd, expected_gain_sd)
+        for groups in distinct_by_slot.values() for nodes in groups
+        if band["start_round"] <= nodes[0]["round"] <= band["end_round"]
+    ]
+    reported = spread_evidence["by_band"][band["label"]]
+    ok(reported["n"] == len(values)
+       and math.isclose(reported["mean"], sum(values) / len(values),
+                        abs_tol=1e-12)
+       and math.isclose(reported["max"], max(values), abs_tol=1e-12),
+       f"spread evidence {band['label']}: n, mean, and max recompute")
+
+recomputed_selection = display_selection_provenance(tree["slots"])
+ok(recomputed_selection == selection,
+   "complete display-selection provenance deterministically rebuilds")
+
+terminal_groups = [
+    nodes for payload in tree["slots"].values()
+    for nodes in iter_decision_groups(payload["roots"])
+    if nodes and nodes[0]["round"] == prov["depth"]
+]
+terminal_check = selection["terminal_round_check"]
+ok(terminal_check["round"] == prov["depth"]
+   and terminal_check["lookahead_round"] == prov["value_lookahead_rounds"]
+   and terminal_check["decision_groups_n"] == len(terminal_groups)
+   and terminal_check["forks_n"] == sum(len(nodes) > 1
+                                         for nodes in terminal_groups)
+   and terminal_check["multi_action_ledgers_n"] == sum(
+       len(nodes[0]["decision_set"]) > 1 for nodes in terminal_groups)
+   and "genuine Pareto result" in terminal_check["result"],
+   "terminal zero-fork result is reconciled after real round-8 lookahead")
+
 # Correlation disclosure reports descriptive counts and Wilson intervals without
 # pretending adjacency identifies player-level survival or a bias direction.
 corr = tree["correlation"]
@@ -405,16 +523,23 @@ ok("BULLISH" not in page.upper().replace("BULLISH_ON_NODES", ""),
    "paths page renders no BULLISH marker")
 ok("Fallback required" in page and "Model disclosure" in page,
    "paths page renders the honest null and model disclosures")
-ok("DISPLAY_CARD_CAP = 5" in page and "priority-grid" in page
+ok("DISPLAY_SELECTION.card_cap" in page and "priority-grid" in page
    and "distinct tradeoffs shown" in page and "fork occurrences represented" in page
    and "tree nodes shown initially" in page,
-   "paths page caps only its initial presentation at five fork cards")
+   "paths page reads its initial card cap from artifact provenance")
 ok("populationSd" in page and "frontierSpread" in page
    and "decision_vona_raw" in page
    and "decision_expected_lineup_gain_raw" in page
    and "maximum pairwise distance" in page
    and "Downstream decision reach breaks" in page,
    "priority cards rank objective-symmetric normalized frontier spread")
+ok("selectPriorityForks" in page and "DISPLAY_SELECTION.bands" in page
+   and "bandForRound" in page and "Draft-depth coverage" in page
+   and "Coverage selection" in page and 'data-band="' in page,
+   "paths page applies and labels artifact-derived draft-depth coverage")
+ok("start_round" in page and "end_round" in page
+   and not re.search(r"(?:round|R)\s*1\s*[-–]\s*3\s*/\s*4", page, re.I),
+   "paths page consumes computed band boundaries instead of typing them")
 ok("localDecisionSignature" in page and "aggregateExactDecisions" in page
    and "presentationOccurrences" in page and "modeled tree paths" in page,
    "five-card cap aggregates only exact repeated local payloads and discloses paths")

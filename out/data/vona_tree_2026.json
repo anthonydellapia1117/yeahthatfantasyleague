@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-26",
+  "generated": "2026-08-27",
   "engine_generated": "2026-08-26",
   "objective": "VONA(pos) = E[best available at this pick] - E[best available at my next pick], both survival-weighted over the above-replacement positional pool; replacement is the explicit zero-value state",
   "survival": "frozen survival model called from src/engine_2026.py - the pre-draft convention every artifact uses; the adopted calibration applies to conditional survival in the LIVE room only, and after the one-frame fix this builder uses no conditional survival at all",
@@ -37,6 +37,157 @@
   "depth_rationale": "display horizon: render the seven skill-starter decisions, but value every node against the owner's real next pick. The round-7 node therefore looks to round 8; it never compares against nothing",
   "branch_rule": "at any slot, render the Pareto frontier on two computed objectives: VONA urgency and expected marginal lineup gain over the same top-survivor distribution. Decisions use unrounded coordinates and every feasible sibling is published in the node's decision_set ledger. A fork is a local model tradeoff, not a percentile quota or a statistical coin flip",
   "render_rule": "no survival cutoff: display the modal player state from the full above-replacement top-survivor distribution; if replacement is modal, show a fallback-required honest null instead of naming an invented player",
+  "display_selection": {
+   "card_cap": 5,
+   "coverage_band_count": 3,
+   "coverage_cards": 3,
+   "unrestricted_cards": 2,
+   "distinct_forks_n": 144,
+   "raw_fork_occurrences_n": 152,
+   "fork_counts_by_round": {
+    "1": 4,
+    "2": 15,
+    "3": 2,
+    "4": 20,
+    "5": 52,
+    "6": 51,
+    "7": 0
+   },
+   "occupied_rounds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "zero_fork_rounds": [
+    7
+   ],
+   "spread_evidence": {
+    "normalization": {
+     "alternatives_n": 313,
+     "vona_population_sd": 8.913384810388587,
+     "lineup_gain_population_sd": 21.516694402995583
+    },
+    "by_band": {
+     "early": {
+      "n": 21,
+      "mean": 0.756629863594899,
+      "median": 0.8004589619790401,
+      "max": 1.0750430820007202
+     },
+     "middle": {
+      "n": 20,
+      "mean": 1.205990209349605,
+      "median": 1.2277719560249434,
+      "max": 1.4138312861139728
+     },
+     "late": {
+      "n": 103,
+      "mean": 1.0162113103886081,
+      "median": 1.1293930908627214,
+      "max": 1.961717178477727
+     }
+    }
+   },
+   "bands": [
+    {
+     "index": 1,
+     "label": "early",
+     "start_round": 1,
+     "end_round": 3,
+     "forks_n": 21
+    },
+    {
+     "index": 2,
+     "label": "middle",
+     "start_round": 4,
+     "end_round": 4,
+     "forks_n": 20
+    },
+    {
+     "index": 3,
+     "label": "late",
+     "start_round": 5,
+     "end_round": 7,
+     "forks_n": 103
+    }
+   ],
+   "band_derivation": "recompute exact-distinct fork counts by round on every artifact build, then choose the contiguous three-band partition minimizing within-band squared count error across positive-count rounds; extend the final band through the display horizon so a zero-count terminal round cannot manufacture an empty coverage band",
+   "selection_rule": "select the highest normalized-frontier-spread fork from each derived band, then fill the two remaining cards with the highest-spread unselected forks globally; downstream reach breaks exact spread ties",
+   "slot_band_eligible_counts": {
+    "1": {
+     "early": 1,
+     "middle": 2,
+     "late": 7
+    },
+    "2": {
+     "early": 1,
+     "middle": 2,
+     "late": 7
+    },
+    "3": {
+     "early": 1,
+     "middle": 1,
+     "late": 7
+    },
+    "4": {
+     "early": 1,
+     "middle": 1,
+     "late": 7
+    },
+    "5": {
+     "early": 1,
+     "middle": 1,
+     "late": 5
+    },
+    "6": {
+     "early": 1,
+     "middle": 1,
+     "late": 5
+    },
+    "7": {
+     "early": 1,
+     "middle": 1,
+     "late": 5
+    },
+    "8": {
+     "early": 1,
+     "middle": 1,
+     "late": 5
+    },
+    "9": {
+     "early": 3,
+     "middle": 2,
+     "late": 12
+    },
+    "10": {
+     "early": 4,
+     "middle": 3,
+     "late": 16
+    },
+    "11": {
+     "early": 4,
+     "middle": 3,
+     "late": 16
+    },
+    "12": {
+     "early": 2,
+     "middle": 2,
+     "late": 11
+    }
+   },
+   "supply_diagnosis": "Candidate supply is the larger observed driver of the late-heavy unconstrained spread surface: the fork-bearing rounds in the derived late band (R5, R6) contain 103/144 exact-distinct forks, versus 21/144 in the early band R1-R3 (a 4.90x count ratio). Wider later frontier spreads also contribute: mean normalized spread is 1.016 versus 0.757 (a 1.34x ratio). This diagnosis changes presentation selection only, never the Pareto model or artifact tree.",
+   "terminal_round_check": {
+    "round": 7,
+    "lookahead_round": 8,
+    "decision_groups_n": 173,
+    "forks_n": 0,
+    "multi_action_ledgers_n": 2,
+    "result": "genuine Pareto result after real next-pick lookahead; zero forks is not the removed compare-against-zero defect"
+   }
+  },
   "bullish_on_nodes": "deliberately absent - the tree is a decision surface and a marker nudges regardless of its label (finding N.1)",
   "deviations": [
    "the expectation runs over every above-replacement player with replacement as the zero-value residual state; no survival floor truncates the expectation or display",
