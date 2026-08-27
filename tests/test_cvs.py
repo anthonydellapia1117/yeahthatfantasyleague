@@ -25,8 +25,13 @@ def ok(cond, name, detail=""):
 
 
 C = json.load(open(os.path.join(ROOT, "out", "cvs.json")))
+E = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 cfg = C["config"]
 players = C["players"]
+
+ok(C.get("engine_generated") == E.get("generated"),
+   "CVS records the engine generation date it consumed",
+   f"cvs says {C.get('engine_generated')}, engine says {E.get('generated')}")
 
 # 1. z-score unit behavior: mean 0, unit spread, None passthrough, degenerate
 zs = cvsmod.zscores([1.0, 2.0, 3.0, None, 4.0])

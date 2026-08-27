@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-26",
+  "generated": "2026-08-27",
   "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
   "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
  },
@@ -640,7 +640,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "PIT returning-RB carry concentration below league median (64%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+     "reason": "PIT returning-RB carry concentration below league median (64%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -669,17 +669,6 @@
      "orientation": "context",
      "reason": "played 8 weeks in 2025 with a recent top-24 finish (rank 2) on record",
      "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
-    }
-   ]
-  },
-  {
-   "name": "Jonah Coleman",
-   "pos": "RB",
-   "tags": [
-    {
-     "tag": "ambiguous_backfield",
-     "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "DEN returning-RB carry concentration below league median (64%); his ADP round is 14 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -996,7 +985,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "TEN returning-RB carry concentration below league median (64%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+     "reason": "TEN returning-RB carry concentration below league median (64%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },

@@ -19,6 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Publication is the shared boundary for manual merges and both producer
+      # workflows. Re-run the declared downstream invariant guards before deploy.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: CVS deterministic rebuild guards
+        run: sh tests/run_gate.sh python3 tests/test_cvs.py
+      - name: Archetype invariant guards
+        run: sh tests/run_gate.sh python3 tests/test_archetypes.py
+      - name: BULLISH invariant guards
+        run: sh tests/run_gate.sh python3 tests/test_bullish.py
+      - name: VONA deterministic rebuild guards
+        run: sh tests/run_gate.sh python3 tests/test_vona.py
+      - name: Mock-draft deterministic rebuild guards
+        run: sh tests/run_gate.sh python3 tests/test_mock.py
+      - name: Cross-artifact linkage guards
+        run: sh tests/run_gate.sh python3 tests/test_pages_data.py
       - name: Assemble site (apps + shards, not the 66MB archives)
         run: |
           mkdir -p _site/out/data

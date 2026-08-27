@@ -1,4 +1,14 @@
 {
  "source_sha256": "ed59c2b37b43897241bd3d659bb8c737d4e6bae4b60a47fb2469bdea5bdbb07f",
- "data": []
+ "data": [
+  {
+   "player": "Kayshon Boutte",
+   "field": "team",
+   "guide_value": "NE",
+   "live_value": "HOU",
+   "line": 214,
+   "section": "Regression",
+   "resolution": "live source wins; guide value logged only"
+  }
+ ]
 }

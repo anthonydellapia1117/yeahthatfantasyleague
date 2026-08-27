@@ -5,9 +5,12 @@ Runs WITHOUT network: operates only on committed out/data/*.json.
 Run: python3 tests/test_pages_data.py
 """
 import datetime
+import importlib.util
 import json
 import os
 import sys
+import tempfile
+from unittest import mock
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
@@ -834,17 +837,64 @@ ok(len(_wanted) >= 8 and len(_known) >= 8,
    "the reproducibility scan found both the builders' inputs and the fetcher's",
    f"builders want {len(_wanted)} refs, fetcher provides {len(_known)} families")
 
+# The live-source refresh must bypass the cache without making a failed fetch
+# destructive. Exercise the helper without network so this is behavior, not only
+# workflow-text coverage.
+_fetch_spec = importlib.util.spec_from_file_location(
+    "ytfl_fetch_history", os.path.join(ROOT, "src", "fetch_history.py"))
+_fetch_mod = importlib.util.module_from_spec(_fetch_spec)
+_fetch_spec.loader.exec_module(_fetch_mod)
+with tempfile.TemporaryDirectory() as _td:
+    _dest = os.path.join(_td, "games.csv")
+    _old = b"old-cache," + b"x" * 1200
+    with open(_dest, "wb") as _fh:
+        _fh.write(_old)
+    with mock.patch.object(_fetch_mod.urllib.request, "urlopen") as _urlopen:
+        _kept = _fetch_mod.fetch("https://example.invalid/games.csv", _dest)
+    ok(_kept == "have" and not _urlopen.called and open(_dest, "rb").read() == _old,
+       "history fetch retains a populated cache unless refresh is explicit")
+
+    _fresh = b"game_id,season,game_type,week," + b"y" * 1200
+    _response = mock.Mock()
+    _response.read.return_value = _fresh
+    with mock.patch.object(_fetch_mod.urllib.request, "urlopen",
+                           return_value=_response):
+        _updated = _fetch_mod.fetch(
+            "https://example.invalid/games.csv", _dest, refresh=True,
+            required_prefix=b"game_id,season,game_type,week,")
+    ok(_updated == "ok" and open(_dest, "rb").read() == _fresh,
+       "explicit live refresh atomically replaces the cached games file")
+
+    with mock.patch.object(_fetch_mod.urllib.request, "urlopen",
+                           side_effect=RuntimeError("offline")):
+        _failed = _fetch_mod.fetch(
+            "https://example.invalid/games.csv", _dest, refresh=True,
+            required_prefix=b"game_id,season,game_type,week,")
+    ok(_failed.startswith("FAIL") and open(_dest, "rb").read() == _fresh,
+       "failed live refresh preserves the last complete games file")
+
 # ---------------------------------------------------------------------------
-# ENGINE PROVENANCE. Any artifact derived from the engine payload must record
-# which engine it was built from, and that record must MATCH the engine that
-# ships beside it. The draft-morning workflow rebuilds engine_2026.json (a
-# previous refresh moved 259 ADP values) and every derived artifact has to be
+# ENGINE GENERATION LINKAGE. Artifacts registered with engine_generated must
+# MATCH the engine generation date that ships beside them. CVS is checked
+# explicitly below; the data-directory scan covers the registered VONA/mock set.
+# This does not discover undeclared dependencies. The draft-morning workflow rebuilds
+# engine_2026.json (a
+# previous refresh moved 259 ADP values) and the registered artifacts have to be
 # rebuilt with it. The failure this closes is a nav-linked decision surface -
 # the PATHS tab - silently rendering a tree computed against yesterday's board
 # on draft night. test_mock.py asserted the key EXISTED; nothing asserted it
 # AGREED, and paths.html cannot show the mismatch either: it prints the tree's
-# own recorded engine date and never fetches the engine to compare.
+# own recorded engine generation date and never fetches the engine to compare.
 _eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+_cvs = json.load(open(os.path.join(ROOT, "out", "cvs.json")))
+ok(_cvs.get("engine_generated") == _eng.get("generated"),
+   "cvs.json declares the engine generation date it consumed",
+   f"cvs says {_cvs.get('engine_generated')}, engine says {_eng.get('generated')}")
+_room_src = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+ok("CVS.engine_generated || CVS.generated" in _room_src and
+   "const stale = cvsEngine !== E.generated" in _room_src and
+   "CVS.generated !== E.generated" not in _room_src,
+   "the room compares CVS engine generation dates, not unrelated build dates")
 _derived = 0
 for _f in sorted(os.listdir(D)):
     if not _f.endswith(".json"):
@@ -861,8 +911,62 @@ for _f in sorted(os.listdir(D)):
        f"{_f}: built from the engine that ships with it",
        f"artifact says {_p['engine_generated']}, engine says {_eng['generated']}")
 ok(_derived >= 2,
-   "the engine-derived artifacts declare which engine built them",
+   "the registered engine-linked artifacts match the shipped generation date",
    f"found {_derived}")
+
+# ---------------------------------------------------------------------------
+# PRODUCER/PUBLICATION COVERAGE. The exact CVS determinism proof lives in
+# test_cvs.py; these checks make sure every automated path that can publish a
+# changed input rebuilds the declared consumers and runs their invariant guards.
+# This is deliberately enforced at the producer and at the shared Pages boundary,
+# rather than patched only into the workflow that most recently failed.
+_pages_data_yml = open(os.path.join(ROOT, ".github", "workflows",
+                                    "pages-data.yml")).read()
+_pages_yml = open(os.path.join(ROOT, ".github", "workflows", "pages.yml")).read()
+_draft_refresh_yml = open(os.path.join(ROOT, ".github", "workflows",
+                                       "draft-refresh.yml")).read()
+_downstream_builders = ("parse_walter.py", "build_cvs.py", "build_archetypes.py",
+                        "build_bullish_inputs.py", "build_bullish.py")
+_downstream_guards = ("test_cvs.py", "test_archetypes.py", "test_bullish.py")
+ok(all(f"python3 src/{name}" in _pages_data_yml
+       for name in _downstream_builders) and
+   all(f"run_gate.sh python3 tests/{name}" in _pages_data_yml
+       for name in _downstream_guards),
+   "pages-data runs every declared shard-derived builder and invariant guard")
+_producer_order = ("build_pages_data.py", "parse_walter.py", "build_cvs.py",
+                   "build_archetypes.py", "build_bullish_inputs.py",
+                   "build_bullish.py")
+ok(all(_pages_data_yml.index(_producer_order[i]) <
+       _pages_data_yml.index(_producer_order[i + 1])
+       for i in range(len(_producer_order) - 1)),
+   "pages-data orders refreshed shards before every declared consumer")
+ok("actions/cache@v4" in _pages_data_yml and
+   "python3 src/fetch_history.py --refresh-live" in _pages_data_yml and
+   _fetcher.count("refresh=args.refresh_live") == 1 and
+   _re2.search(r'\("games\.csv",\s*fetch\(.{0,300}'
+               r'refresh=args\.refresh_live', _fetcher, _re2.S),
+   "pages-data retains versioned history but refreshes live games.csv")
+ok("git add out/data/ out/cvs.json data/walter/" in _pages_data_yml,
+   "pages-data stages shards, Walter resolution, and derived artifacts atomically")
+ok("gh workflow run pages.yml --ref main" in _pages_data_yml and
+   "actions: write" in _pages_data_yml,
+   "pages-data explicitly dispatches Pages after its token-authored push")
+_publication_guards = _downstream_guards + ("test_vona.py", "test_mock.py")
+ok(all(f"run_gate.sh python3 tests/{name}" in _pages_yml and
+       _pages_yml.index(f"run_gate.sh python3 tests/{name}") <
+       _pages_yml.index("Assemble site") for name in _publication_guards),
+   "Pages runs declared invariant and exact artifact guards before assembly")
+ok("gh workflow run pages.yml --ref main" in _draft_refresh_yml and
+   "actions: write" in _draft_refresh_yml,
+   "draft-refresh explicitly dispatches Pages after its token-authored push")
+_engine_i = _draft_refresh_yml.index("python3 src/engine_2026.py")
+_vona_i = _draft_refresh_yml.index("python3 src/build_vona_tree.py")
+_mock_i = _draft_refresh_yml.index("python3 src/mock_draft.py")
+_teaser_i = _draft_refresh_yml.index("python3 src/build_teaser.py")
+_draft_gates_i = _draft_refresh_yml.index("python3 tests/test_mock.py")
+ok(all(_engine_i < i < _draft_gates_i
+       for i in (_vona_i, _mock_i, _teaser_i)),
+   "draft-refresh rebuilds VONA, mock, and teaser after their engine input")
 
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")

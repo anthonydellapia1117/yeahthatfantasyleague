@@ -10,6 +10,7 @@ import math
 import os
 import re
 import sys
+import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
@@ -34,6 +35,29 @@ for k in ("wr_tprr", "rb_targets_pg", "te_route_part", "qb_rush_ypg"):
 ok("pass-block snaps" in thr["note"], "route-proxy weakness stated")
 ok("Week-1" in inp["provenance"]["vegas"]["source"],
    "Vegas window declared (the complete-coverage week)")
+try:
+    datetime.date.fromisoformat(inp["provenance"]["vegas"]["pulled"])
+    _pulled_is_date = True
+except (KeyError, TypeError, ValueError):
+    _pulled_is_date = False
+ok(_pulled_is_date, "Vegas provenance carries a parseable source pull date")
+_games = os.path.join(os.environ.get(
+    "HISTORY",
+    "/tmp/claude-0/-home-user-yeahthatfantasyleague/"
+    "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history"), "games.csv")
+if os.path.exists(_games):
+    _games_date = datetime.datetime.fromtimestamp(
+        os.path.getmtime(_games), tz=datetime.timezone.utc).date().isoformat()
+    ok(inp["provenance"]["vegas"]["pulled"] == _games_date,
+       "Vegas provenance reports the cached source file's UTC fetch date",
+       f"artifact {inp['provenance']['vegas']['pulled']}, file {_games_date}")
+else:
+    ok(_pulled_is_date and
+       inp["provenance"]["vegas"]["pulled"] <=
+       inp["provenance"]["generated"],
+       "Vegas source date is plausible when the local cache is absent",
+       f"pulled {inp['provenance']['vegas'].get('pulled')}, "
+       f"generated {inp['provenance'].get('generated')}")
 n_prop = sum(1 for e in inp["players"] for f in ("tprr_proxy", "first_read",
              "route_part", "inside5_share") if isinstance(e.get(f), dict)
              and "k" in e[f] and "n" in e[f])
