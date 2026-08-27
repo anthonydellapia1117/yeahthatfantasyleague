@@ -105,9 +105,11 @@ Each player node shows only computed fields:
 
 The user-facing page exposes one closed ledger per displayed decision group,
 including dominated actions and their exact dominance witnesses; siblings never
-repeat the same ledger. The initial surface is five fork cards. The complete tree
-is created in the DOM only after explicit `Show all` disclosure, while the
-committed artifact always retains every node and ledger.
+repeat the same ledger. The initial surface is capped at five separable fork
+cards, plus an honest line for any derived depth band that has no separable
+decision at that slot. The complete tree is created in the DOM only after explicit
+`Show all` disclosure, while the committed artifact always retains every node and
+ledger.
 
 Cards are ranked by **normalized frontier spread**, a presentation-only measure of
 what is at stake in the local tradeoff. For every fork, take the maximum pairwise
@@ -117,17 +119,30 @@ fork alternatives in the current artifact. The two coordinates therefore enter
 symmetrically; the ranking never selects an action or changes the Pareto frontier.
 Downstream decision reach breaks exact spread ties.
 
-The five-card selection adds draft-depth coverage without changing that ranking.
-On every artifact build, exact-distinct fork counts by round are partitioned into
+The card selection adds draft-depth coverage without changing that ranking. On
+every artifact build, exact-distinct fork counts by round are partitioned into
 three contiguous bands by the minimum-within-band-squared-error partition of the
 positive-support rounds. The final band extends through the display horizon, so a
-genuine zero-fork terminal round cannot manufacture an empty required band. The
-page selects the highest-spread fork in each computed band, then fills the two
-remaining cards from the highest-spread unselected forks globally. The builder
-fails loudly if any slot cannot contribute a card to every derived band. Computed
-boundaries, counts, per-slot support, the selection rule, and the observed reason
-for the coverage constraint are artifact provenance; no round boundary is typed
-into the page or model.
+genuine zero-fork terminal round cannot manufacture an empty required band.
+
+Coverage is conditional on a second use of that same least-squares method. Every
+raw frontier alternative carries its local fork's normalized diameter. The sorted
+observations are partitioned into two contiguous classes minimizing total
+within-class squared error. The separation floor is the midpoint between the
+low-class maximum and high-class minimum, recomputed every build rather than
+typed. The class cut may fall only between unequal adjacent observations; an
+all-tied board fails loudly instead of inventing a card/null distinction. A
+band's highest-spread fork reserves a card only when its full-precision spread
+clears that floor. Otherwise the page says `No separable [band] decision at this
+slot`, reports the observed spread and current floor, and returns the card
+capacity to global selection. Global refill is restricted to forks clearing the
+same floor, so a rejected band winner cannot re-enter through the unrestricted
+path. The card cap is a maximum, not permission to backfill a non-decision.
+
+Computed boundaries, class ranges, counts, per-slot band outcomes, the selection
+rule, and the observed reason for the coverage constraint are artifact provenance;
+no round boundary or numeric spread floor is typed into the page or model. The
+neutral null line uses none of the reserved verdict colors.
 
 The five-card cap ranks distinct local decision payloads, not repeated path
 instances. If every local node field and the complete feasible-action ledger are
@@ -151,14 +166,18 @@ does not establish incremental value over ADP.
 
 ## 5. Decision constants
 
-There are no statistical thresholds in the branch or render rules.
+There are no statistical thresholds in the model branch rule or complete-tree
+rendering. The initial planning surface uses one presentation-only separation
+floor derived afresh from the board's own normalized spread distribution; it
+never changes an action, node, continuation, or ledger.
 
 | Constant | Meaning |
 |---|---|
 | `DEPTH = 7` | display and starter-construction horizon; round 8 remains the terminal value lookahead |
 | `MAX_NODES = 120` | deliberate UI safety budget, checked only after the complete local Pareto policy is built; the current maximum is 102 nodes and the mobile smoke renders that full slot without page-level horizontal overflow |
-| `DISPLAY_CARD_CAP = 5` | presentation-only initial disclosure budget; it changes no artifact, frontier, continuation, or model value, and `Show all` lazily creates the complete tree |
+| `DISPLAY_CARD_CAP = 5` | presentation-only maximum initial disclosure budget; it changes no artifact, frontier, continuation, or model value, never forces a below-floor card, and `Show all` lazily creates the complete tree |
 | `DISPLAY_BAND_COUNT = 3` | presentation-only coverage budget; band boundaries are recomputed from exact-distinct fork density on every artifact build and never typed |
+| `DISPLAY_SPREAD_CLASSES = 2` | presentation-only card/null states; the least-squares cut and numeric midpoint floor are recomputed from observed spreads every build |
 
 The old `SURV_FLOOR = 0.40`, p25 VONA-gap epsilon, and p25 domination band are
 removed. Reusing a typed room convention did not make the floor derived, and a

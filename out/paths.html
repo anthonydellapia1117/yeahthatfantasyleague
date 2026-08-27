@@ -42,9 +42,13 @@ a{color:var(--info);text-decoration:none}
 .filters button{background:var(--s2);border:1px solid var(--line);color:var(--ink2);
   border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
 .filters button.on{background:var(--info);border-color:var(--info);color:#fff}
-/* The initial surface is five decision cards. The complete tree is created only
-   after explicit disclosure, so hidden paths do not remain in the initial DOM. */
+/* The initial surface is capped at five separable decision cards. The complete
+   tree is created only after explicit disclosure, so hidden paths do not remain
+   in the initial DOM. */
 .priority-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.band-nulls{display:grid;gap:6px;margin:0 0 10px}
+.band-null{margin:0;background:var(--s2);border-left:3px solid var(--ink2);
+  border-radius:6px;padding:7px 9px;font-size:12px;color:var(--ink2)}
 .decision-card{background:var(--s3);border:1px solid var(--line);border-radius:10px;
   padding:11px;min-width:0}
 .decision-head{display:flex;gap:8px;align-items:baseline;justify-content:space-between;
@@ -161,7 +165,9 @@ function flattenGroups(root){
 function preparePresentation(){
   DISPLAY_SELECTION = T.provenance.display_selection;
   if (!DISPLAY_SELECTION || !DISPLAY_SELECTION.card_cap ||
-      !DISPLAY_SELECTION.bands || !DISPLAY_SELECTION.bands.length){
+      !DISPLAY_SELECTION.bands || !DISPLAY_SELECTION.bands.length ||
+      !DISPLAY_SELECTION.separation_floor ||
+      !Number.isFinite(DISPLAY_SELECTION.separation_floor.floor)){
     throw new Error("artifact is missing derived display-selection provenance");
   }
   GROUP_TREES = {};
@@ -253,7 +259,9 @@ function bandForRound(round){
 
 function selectPriorityForks(distinctForks){
   var ordered = distinctForks.slice().sort(priorityCompare);
-  var selected = [];
+  var floor = DISPLAY_SELECTION.separation_floor.floor;
+  var eligible = ordered.filter(function(g){ return g.frontierSpread >= floor; });
+  var selected = [], fallbacks = [];
   DISPLAY_SELECTION.bands.forEach(function(band){
     var winner = ordered.find(function(g){
       return g.round >= band.start_round && g.round <= band.end_round;
@@ -262,20 +270,31 @@ function selectPriorityForks(distinctForks){
       throw new Error("slot " + SLOT + " has no fork in derived " +
         band.label + " band");
     }
-    winner.presentationBand = band;
-    selected.push(winner);
+    if (winner.frontierSpread >= floor){
+      winner.presentationBand = band;
+      selected.push(winner);
+    } else {
+      fallbacks.push({band:band, winner:winner});
+    }
   });
-  ordered.forEach(function(g){
+  eligible.forEach(function(g){
     if (selected.length < DISPLAY_SELECTION.card_cap &&
         selected.indexOf(g) < 0){
       g.presentationBand = bandForRound(g.round);
       selected.push(g);
     }
   });
-  if (selected.length !== DISPLAY_SELECTION.card_cap){
-    throw new Error("slot " + SLOT + " cannot fill the display card cap");
-  }
-  return selected.sort(priorityCompare);
+  return {cards:selected.sort(priorityCompare), fallbacks:fallbacks};
+}
+
+function bandNullHtml(item){
+  var floor = DISPLAY_SELECTION.separation_floor.floor;
+  return '<p class="band-null" data-band="' + esc(item.band.label) +
+    '" data-best-spread="' + item.winner.frontierSpread.toFixed(12) +
+    '" data-floor="' + floor.toFixed(12) + '">No separable ' +
+    esc(item.band.label) + ' decision at this slot — best spread ' +
+    item.winner.frontierSpread.toFixed(3) + '; board floor ' +
+    floor.toFixed(3) + '.</p>';
 }
 
 function ledgerHtml(n){
@@ -382,7 +401,8 @@ function render(){
   var groups = flattenGroups(root);
   var forks = groups.filter(function(g){ return g.nodes.length > 1; });
   var distinctForks = aggregateExactDecisions(forks);
-  var priority = selectPriorityForks(distinctForks);
+  var selection = selectPriorityForks(distinctForks);
+  var priority = selection.cards, fallbacks = selection.fallbacks;
   var initialNodes = priority.reduce(function(a, g){ return a + g.nodes.length; }, 0);
   var representedForks = priority.reduce(function(a, g){
     return a + g.presentationOccurrences.length;
@@ -414,12 +434,17 @@ function render(){
         'never filters, ranks, branches, or changes the model, and uses none of ' +
         'the reserved verdict colors.</div>' +
       '<div class="coverage-note small"><b>Draft-depth coverage.</b> ' +
-        esc(DISPLAY_SELECTION.selection_rule) +
-        ". Derived bands this build, from aggregate exact-distinct supply: " +
+        "A band reserves its top-spread fork only when it clears the " +
+        "board-derived separation floor; global refill uses that same floor. " +
+        "Current floor: <span class=\"num\">" +
+        DISPLAY_SELECTION.separation_floor.floor.toFixed(3) + "</span>." +
+        " Derived bands this build, from aggregate exact-distinct supply: " +
         DISPLAY_SELECTION.bands.map(function(band){
           return esc(band.label) + " R" + band.start_round + "–R" +
             band.end_round + " (" + band.forks_n + " exact-distinct forks)";
         }).join("; ") + ".</div>" +
+      '<div class="band-nulls" aria-live="polite">' +
+        fallbacks.map(bandNullHtml).join("") + '</div>' +
       '<div class="priority-grid">' + priority.map(function(g, i){
         return decisionCardHtml(g, i + 1);
       }).join("") + '</div>' +
@@ -451,6 +476,13 @@ function render(){
       'one card; every breadcrumb remains disclosed and the complete tree stays ' +
       'unchanged. <b>Coverage selection.</b> ' +
       esc(DISPLAY_SELECTION.band_derivation) + ". " +
+      esc(DISPLAY_SELECTION.separation_floor.method) + ". Current class " +
+      "boundary: low max " +
+      DISPLAY_SELECTION.separation_floor.low_class.max.toFixed(3) +
+      ", high min " +
+      DISPLAY_SELECTION.separation_floor.high_class.min.toFixed(3) +
+      ", floor " +
+      DISPLAY_SELECTION.separation_floor.floor.toFixed(3) + ". " +
       esc(DISPLAY_SELECTION.selection_rule) + ". " +
       esc(DISPLAY_SELECTION.supply_diagnosis) +
       ' This selects only the initial cards; it never changes the artifact ' +

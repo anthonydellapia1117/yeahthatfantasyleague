@@ -40,8 +40,7 @@
   "display_selection": {
    "card_cap": 5,
    "coverage_band_count": 3,
-   "coverage_cards": 3,
-   "unrestricted_cards": 2,
+   "coverage_bands_considered": 3,
    "distinct_forks_n": 144,
    "raw_fork_occurrences_n": 152,
    "fork_counts_by_round": {
@@ -91,6 +90,34 @@
      }
     }
    },
+   "separation_floor": {
+    "classes_n": 2,
+    "method": "sort observed normalized frontier spreads, split them into two contiguous classes at the unequal-adjacent-value cut minimizing total within-class squared error, then use the midpoint between the low-class maximum and high-class minimum",
+    "floor": 0.8727868810662115,
+    "comparison": "spread >= floor clears; compare at full precision",
+    "low_class": {
+     "n": 92,
+     "min": 0.21807319251181143,
+     "max": 0.8548903015441399,
+     "mean": 0.5056404000079778
+    },
+    "high_class": {
+     "n": 221,
+     "min": 0.8906834605882831,
+     "max": 1.961717178477727,
+     "mean": 1.2512990063849816
+    },
+    "variance_explained": 0.7351315552567097,
+    "sample_unit": "all raw non-dominated alternatives; every alternative carries the normalized diameter of its local frontier occurrence",
+    "alternatives_n": 313,
+    "fork_occurrences_n": 152,
+    "distinct_forks_n": 144,
+    "distinct_candidate_check": {
+     "n": 144,
+     "floor": 0.8727868810662115,
+     "matches_alternative_weighted_boundary": true
+    }
+   },
    "bands": [
     {
      "index": 1,
@@ -115,8 +142,8 @@
     }
    ],
    "band_derivation": "recompute exact-distinct fork counts by round on every artifact build, then choose the contiguous three-band partition minimizing within-band squared count error across positive-count rounds; extend the final band through the display horizon so a zero-count terminal round cannot manufacture an empty coverage band",
-   "selection_rule": "select the highest normalized-frontier-spread fork from each derived band, then fill the two remaining cards with the highest-spread unselected forks globally; downstream reach breaks exact spread ties",
-   "slot_band_eligible_counts": {
+   "selection_rule": "for each derived band, reserve its highest normalized-frontier-spread fork only when it clears the computed separation floor; otherwise render an honest no-separable-decision line and return that capacity to global selection; fill up to the card cap only from unselected forks clearing the same floor, so a rejected winner cannot re-enter globally; downstream reach breaks exact spread ties",
+   "slot_band_fork_counts": {
     "1": {
      "early": 1,
      "middle": 2,
@@ -177,6 +204,192 @@
      "middle": 2,
      "late": 11
     }
+   },
+   "slot_band_outcomes": {
+    "1": {
+     "early": {
+      "winner_spread": 0.43374260655618113,
+      "clears": false
+     },
+     "middle": {
+      "winner_spread": 1.1906134552743117,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.7088173346866717,
+      "clears": true
+     }
+    },
+    "2": {
+     "early": {
+      "winner_spread": 0.499288872874284,
+      "clears": false
+     },
+     "middle": {
+      "winner_spread": 1.1868530271747773,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.6317325859564296,
+      "clears": true
+     }
+    },
+    "3": {
+     "early": {
+      "winner_spread": 0.6240280542958178,
+      "clears": false
+     },
+     "middle": {
+      "winner_spread": 1.1739190515503124,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.5479873221173464,
+      "clears": true
+     }
+    },
+    "4": {
+     "early": {
+      "winner_spread": 0.7517264610667642,
+      "clears": false
+     },
+     "middle": {
+      "winner_spread": 1.178660637213609,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.4585164674655582,
+      "clears": true
+     }
+    },
+    "5": {
+     "early": {
+      "winner_spread": 0.8548903015441399,
+      "clears": false
+     },
+     "middle": {
+      "winner_spread": 1.188042446032928,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.3647361774133229,
+      "clears": true
+     }
+    },
+    "6": {
+     "early": {
+      "winner_spread": 0.923891610841163,
+      "clears": true
+     },
+     "middle": {
+      "winner_spread": 1.201445878678835,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.268682815355588,
+      "clears": true
+     }
+    },
+    "7": {
+     "early": {
+      "winner_spread": 0.9560760551703786,
+      "clears": true
+     },
+     "middle": {
+      "winner_spread": 1.218148117406829,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.3687648081355752,
+      "clears": true
+     }
+    },
+    "8": {
+     "early": {
+      "winner_spread": 0.962030519686496,
+      "clears": true
+     },
+     "middle": {
+      "winner_spread": 1.237395794643058,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.4961018776783217,
+      "clears": true
+     }
+    },
+    "9": {
+     "early": {
+      "winner_spread": 0.9765195303312953,
+      "clears": true
+     },
+     "middle": {
+      "winner_spread": 1.2876135906618424,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.6214339142795116,
+      "clears": true
+     }
+    },
+    "10": {
+     "early": {
+      "winner_spread": 1.0728381026503777,
+      "clears": true
+     },
+     "middle": {
+      "winner_spread": 1.3259387149568949,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.7421354651482397,
+      "clears": true
+     }
+    },
+    "11": {
+     "early": {
+      "winner_spread": 1.0750430820007202,
+      "clears": true
+     },
+     "middle": {
+      "winner_spread": 1.3680508683682489,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.8561198619043102,
+      "clears": true
+     }
+    },
+    "12": {
+     "early": {
+      "winner_spread": 0.6684049430387946,
+      "clears": false
+     },
+     "middle": {
+      "winner_spread": 1.4138312861139728,
+      "clears": true
+     },
+     "late": {
+      "winner_spread": 1.961717178477727,
+      "clears": true
+     }
+    }
+   },
+   "bands_cleared_n": 30,
+   "bands_fallback_n": 6,
+   "eligible_distinct_forks_by_slot": {
+    "1": 7,
+    "2": 7,
+    "3": 6,
+    "4": 6,
+    "5": 6,
+    "6": 6,
+    "7": 5,
+    "8": 5,
+    "9": 11,
+    "10": 15,
+    "11": 15,
+    "12": 9
    },
    "supply_diagnosis": "Candidate supply is the larger observed driver of the late-heavy unconstrained spread surface: the fork-bearing rounds in the derived late band (R5, R6) contain 103/144 exact-distinct forks, versus 21/144 in the early band R1-R3 (a 4.90x count ratio). Wider later frontier spreads also contribute: mean normalized spread is 1.016 versus 0.757 (a 1.34x ratio). This diagnosis changes presentation selection only, never the Pareto model or artifact tree.",
    "terminal_round_check": {

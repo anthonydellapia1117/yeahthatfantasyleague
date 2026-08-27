@@ -1766,6 +1766,54 @@ const ok = (cond, name, detail) => {
       group.crumb = group.prior.length ? "AFTER " + group.prior.map(x =>
         x.pos + " " + x.name).join("  >  ") : "START OF SLOT";
     }
+    const deriveTwoClassFloor = observations => {
+      const ordered = observations.slice().sort((a, b) => a - b);
+      const prefix = [0], prefixSq = [0];
+      for (const value of ordered){
+        prefix.push(prefix[prefix.length - 1] + value);
+        prefixSq.push(prefixSq[prefixSq.length - 1] + value * value);
+      }
+      const cost = (start, end) => {
+        const n = end - start;
+        const sum = prefix[end] - prefix[start];
+        return Math.max(0, prefixSq[end] - prefixSq[start] - sum * sum / n);
+      };
+      let best = null;
+      for (let cut = 1; cut < ordered.length; cut++){
+        if (ordered[cut - 1] === ordered[cut]) continue;
+        const score = cost(0, cut) + cost(cut, ordered.length);
+        if (!best || score < best.score ||
+            (score === best.score && cut < best.cut)){
+          best = { score, cut };
+        }
+      }
+      if (!best) throw new Error("spread floor needs two distinct classes");
+      const low = ordered.slice(0, best.cut);
+      const high = ordered.slice(best.cut);
+      const summary = values => ({
+        n: values.length, min: values[0], max: values[values.length - 1],
+        mean: values.reduce((a, b) => a + b, 0) / values.length
+      });
+      const mean = ordered.reduce((a, b) => a + b, 0) / ordered.length;
+      const totalSse = ordered.reduce((a, value) =>
+        a + (value - mean) ** 2, 0);
+      const withinSse = [low, high].reduce((total, values) => {
+        const classMean = values.reduce((a, b) => a + b, 0) / values.length;
+        return total + values.reduce((a, value) =>
+          a + (value - classMean) ** 2, 0);
+      }, 0);
+      return {
+        floor: (low[low.length - 1] + high[0]) / 2,
+        low_class: summary(low), high_class: summary(high),
+        variance_explained: totalSse ? 1 - withinSse / totalSse : 1
+      };
+    };
+    const alternativeWeightedSpreads = allForks.flatMap(group =>
+      group.nodes.map(() => group.spread));
+    const computedFloor = deriveTwoClassFloor(alternativeWeightedSpreads);
+    const close = (left, right, tolerance = 1e-10) =>
+      Number.isFinite(left) && Number.isFinite(right) &&
+      Math.abs(left - right) <= tolerance;
     const canonical = value => {
       if (Array.isArray(value)) return "[" + value.map(canonical).join(",") + "]";
       if (value && typeof value === "object") return "{" +
@@ -1852,20 +1900,27 @@ const ok = (cond, name, detail) => {
       round >= band.start_round && round <= band.end_round);
     const priorityFor = slot => {
       const ordered = distinctBySlot[String(slot)].slice().sort(comparePriority);
-      const selected = computedBands.map(band => {
+      const eligible = ordered.filter(group =>
+        group.spread >= computedFloor.floor);
+      const selected = [], fallbacks = [];
+      for (const band of computedBands){
         const winner = ordered.find(group =>
           group.round >= band.start_round && group.round <= band.end_round);
-        winner.band = band;
-        return winner;
-      });
-      for (const group of ordered){
+        if (winner.spread >= computedFloor.floor){
+          winner.band = band;
+          selected.push(winner);
+        } else {
+          fallbacks.push({ band, winner });
+        }
+      }
+      for (const group of eligible){
         if (selected.length >= selectionProvenance.card_cap) break;
         if (!selected.includes(group)){
           group.band = bandFor(group.round);
           selected.push(group);
         }
       }
-      return selected.sort(comparePriority);
+      return { cards: selected.sort(comparePriority), fallbacks, eligible };
     };
     const renderedCards = async page => page.$$eval(".priority-card", cards =>
       cards.map(c => ({
@@ -1885,6 +1940,17 @@ const ok = (cond, name, detail) => {
             text: row.textContent };
         })
       })));
+    const renderedNulls = async page => page.$$eval(".band-null", lines =>
+      lines.map(line => {
+        const style = getComputedStyle(line);
+        return {
+          band: line.dataset.band,
+          spread: Number(line.dataset.bestSpread),
+          floor: Number(line.dataset.floor),
+          text: line.textContent.trim(),
+          colors: [style.color, style.borderLeftColor, style.backgroundColor]
+        };
+      }));
     const cardsMatch = (actual, expected) => actual.length === expected.length &&
       actual.every((a, i) => a.round === expected[i].round &&
         a.band === expected[i].band.label &&
@@ -1906,6 +1972,17 @@ const ok = (cond, name, detail) => {
             alt.visibleName.trim() === name && alt.availability === availability &&
             alt.text.includes(vona) && alt.text.includes(lineup);
         }));
+    const nullsMatch = (actual, expected) => actual.length === expected.length &&
+      actual.every((line, i) => {
+        const item = expected[i];
+        const expectedText = `No separable ${item.band.label} decision at this ` +
+          `slot — best spread ${item.winner.spread.toFixed(3)}; board floor ` +
+          `${selectionProvenance.separation_floor.floor.toFixed(3)}.`;
+        return line.band === item.band.label &&
+          close(line.spread, item.winner.spread) &&
+          close(line.floor, selectionProvenance.separation_floor.floor) &&
+          line.text === expectedText;
+      });
 
     ok(JSON.stringify(selectionProvenance.fork_counts_by_round) ===
        JSON.stringify(forkCounts) &&
@@ -1919,11 +1996,73 @@ const ok = (cond, name, detail) => {
       .map(([slot, groups]) => [slot, Object.fromEntries(computedBands.map(band =>
         [band.label, groups.filter(group => group.round >= band.start_round &&
           group.round <= band.end_round).length]))]));
-    ok(JSON.stringify(selectionProvenance.slot_band_eligible_counts) ===
+    ok(JSON.stringify(selectionProvenance.slot_band_fork_counts) ===
        JSON.stringify(computedSupport) &&
        Object.values(computedSupport).every(row =>
          Object.values(row).every(count => count > 0)),
-       "paths oracle: every slot can supply every independently derived band");
+       "paths oracle: every slot has a pre-floor fork in every derived band");
+    const floorMeta = selectionProvenance.separation_floor;
+    const classMatches = (reported, computed) =>
+      reported.n === computed.n && close(reported.min, computed.min) &&
+      close(reported.max, computed.max) && close(reported.mean, computed.mean);
+    ok(floorMeta.classes_n === 2 &&
+       floorMeta.alternatives_n === alternativeWeightedSpreads.length &&
+       floorMeta.alternatives_n === forkNodes.length &&
+       floorMeta.fork_occurrences_n === allForks.length &&
+       floorMeta.distinct_forks_n === Object.values(distinctBySlot).flat().length &&
+       /every alternative carries/.test(floorMeta.sample_unit) &&
+       /within-class squared error/.test(floorMeta.method) &&
+       /midpoint/.test(floorMeta.method) &&
+       floorMeta.comparison ===
+         "spread >= floor clears; compare at full precision",
+       "paths oracle: floor provenance names the 313 alternative-weighted population");
+    ok(close(floorMeta.floor, computedFloor.floor) &&
+       classMatches(floorMeta.low_class, computedFloor.low_class) &&
+       classMatches(floorMeta.high_class, computedFloor.high_class) &&
+       close(floorMeta.variance_explained, computedFloor.variance_explained) &&
+       floorMeta.low_class.max < floorMeta.floor &&
+       floorMeta.floor < floorMeta.high_class.min,
+       "paths oracle: artifact floor and class ranges match an independent two-class SSE split");
+    const distinctFloor = deriveTwoClassFloor(
+      Object.values(distinctBySlot).flat().map(group => group.spread));
+    const distinctCheck = floorMeta.distinct_candidate_check;
+    ok(distinctCheck.n === Object.values(distinctBySlot).flat().length &&
+       close(distinctCheck.floor, distinctFloor.floor) &&
+       distinctCheck.matches_alternative_weighted_boundary ===
+         close(distinctFloor.floor, computedFloor.floor, 1e-12),
+       "paths oracle: exact-distinct floor diagnostic is reported honestly");
+
+    const expectedOutcomes = {}, expectedEligible = {};
+    let expectedClears = 0, expectedFallbacks = 0;
+    for (const [slot, groups] of Object.entries(distinctBySlot)){
+      const ordered = groups.slice().sort(comparePriority);
+      expectedEligible[slot] = ordered.filter(group =>
+        group.spread >= computedFloor.floor).length;
+      expectedOutcomes[slot] = {};
+      for (const band of computedBands){
+        const winner = ordered.find(group =>
+          group.round >= band.start_round && group.round <= band.end_round);
+        const clears = winner.spread >= computedFloor.floor;
+        expectedClears += clears ? 1 : 0;
+        expectedFallbacks += clears ? 0 : 1;
+        expectedOutcomes[slot][band.label] = {
+          winner_spread: winner.spread, clears
+        };
+      }
+    }
+    const outcomesMatch = Object.keys(expectedOutcomes).every(slot =>
+      computedBands.every(band => {
+        const actual = selectionProvenance.slot_band_outcomes[slot][band.label];
+        const expected = expectedOutcomes[slot][band.label];
+        return actual.clears === expected.clears &&
+          close(actual.winner_spread, expected.winner_spread);
+      }));
+    ok(outcomesMatch &&
+       JSON.stringify(selectionProvenance.eligible_distinct_forks_by_slot) ===
+         JSON.stringify(expectedEligible) &&
+       selectionProvenance.bands_cleared_n === expectedClears &&
+       selectionProvenance.bands_fallback_n === expectedFallbacks,
+       "paths oracle: every slot-band outcome and refill pool recomputes at full precision");
     const terminalGroups = allGroups.filter(group => group.round === displayDepth);
     const terminal = selectionProvenance.terminal_round_check;
     ok(terminal.lookahead_round ===
@@ -1960,17 +2099,22 @@ const ok = (cond, name, detail) => {
     ok(/Slot 1 - picks/.test(body), "paths: renders a slot tree");
     const expected1 = priorityFor(1);
     const cards1 = await renderedCards(pg);
-    ok(cardsMatch(cards1, expected1),
-       "paths: five cards match independent band-constrained spread selection");
-    ok(new Set(cards1.map(card => card.band)).size === computedBands.length &&
-       computedBands.every(band => cards1.some(card => card.band === band.label)),
-       "paths: initial cards visibly cover every derived draft-depth band");
-    ok(new Set(expected1.map(localPayloadKey)).size === expected1.length,
+    const nulls1 = await renderedNulls(pg);
+    ok(cardsMatch(cards1, expected1.cards) &&
+       nullsMatch(nulls1, expected1.fallbacks),
+       "paths: cards and honest nulls match the conditional spread selector");
+    ok(expected1.fallbacks.every(item =>
+         !cards1.some(card => card.band === item.band.label)) &&
+       computedBands.filter(band => !expected1.fallbacks.some(item =>
+         item.band.label === band.label)).every(band =>
+         cards1.some(card => card.band === band.label)),
+       "paths: only floor-clearing bands reserve coverage cards");
+    ok(new Set(expected1.cards.map(localPayloadKey)).size === expected1.cards.length,
        "paths: exact repeated local decisions consume only one capped card");
-    const expected1Nodes = expected1.reduce((a, g) => a + g.nodes.length, 0);
-    ok(await pg.locator(".priority-card").count() === 5 &&
+    const expected1Nodes = expected1.cards.reduce((a, g) => a + g.nodes.length, 0);
+    ok(await pg.locator(".priority-card").count() === expected1.cards.length &&
        await pg.locator(".priority-grid .alt-row").count() === expected1Nodes,
-       "paths: initial DOM contains exactly five fork groups and their alternatives");
+       "paths: initial DOM contains only selected separable forks and alternatives");
     ok(await pg.locator("#fullTree .alt-row").count() === 0 &&
        await pg.locator("#fullTree .tree-group").count() === 0,
        "paths: complete tree is absent from the initial DOM");
@@ -1983,9 +2127,11 @@ const ok = (cond, name, detail) => {
     ok(await pg.getAttribute("#slots", "role") === "group" &&
        await pg.getAttribute("#slots", "aria-label") === "Draft slot" &&
        await pg.locator('#slots button[aria-pressed="true"]').count() === 1 &&
-       await pg.locator(".priority-card h3.decision-title").count() === 5,
+       await pg.locator(".priority-card h3.decision-title").count() ===
+         expected1.cards.length,
        "paths: slot control and decision cards expose accessible structure");
-    ok(await pg.locator(".priority-grid details.ledger").count() === 5,
+    ok(await pg.locator(".priority-grid details.ledger").count() ===
+         expected1.cards.length,
        "paths: each initial decision group has one closed ledger");
     ok(/dominated by/.test(await pg.locator("details.ledger").allTextContents()),
        "paths: dominated candidates name their exact witnesses on screen");
@@ -2010,6 +2156,8 @@ const ok = (cond, name, detail) => {
        body.includes("lineup SD " + gSd.toFixed(4)),
        "paths: normalization n and scales match the artifact, not typed values");
     ok(/Draft-depth coverage/.test(body) &&
+       body.includes("Current floor: " +
+         selectionProvenance.separation_floor.floor.toFixed(3)) &&
        /Derived bands this build, from aggregate exact-distinct supply/.test(body) &&
        body.includes(selectionProvenance.supply_diagnosis) &&
        computedBands.every(band => body.includes(
@@ -2023,27 +2171,61 @@ const ok = (cond, name, detail) => {
       { length: displayDepth }, (_x, i) => [i + 1, 0]));
     const oracleRoundCounts = Object.fromEntries(Array.from(
       { length: displayDepth }, (_x, i) => [i + 1, 0]));
-    const slotCoverageFailures = [];
+    const reservedVerdictColors = new Set([
+      "rgb(52, 211, 153)", "rgb(248, 113, 113)",
+      "rgb(251, 191, 36)", "rgb(96, 165, 250)",
+      "rgb(4, 120, 87)", "rgb(185, 28, 28)",
+      "rgb(180, 83, 9)", "rgb(15, 118, 110)"
+    ]);
+    const slotSelectionFailures = [], nullColorFailures = [];
+    let renderedFallbacks = 0, oracleFallbacks = 0, oracleCards = 0;
     for (const slot of Object.keys(indexed)){
       await pg.click(`#slots button[data-slot="${slot}"]`);
       await pg.waitForTimeout(20);
       const actual = await renderedCards(pg);
+      const actualNulls = await renderedNulls(pg);
       const expected = priorityFor(slot);
-      if (!cardsMatch(actual, expected) || actual.length !==
-          selectionProvenance.card_cap || computedBands.some(band =>
-            !actual.some(card => card.band === band.label))){
-        slotCoverageFailures.push(slot);
+      const expectedCardCount = Math.min(selectionProvenance.card_cap,
+        expected.eligible.length);
+      const bandsHonest = computedBands.every(band => {
+        const fallback = expected.fallbacks.find(item =>
+          item.band.label === band.label);
+        return fallback
+          ? !actual.some(card => card.band === band.label) &&
+            actualNulls.filter(line => line.band === band.label).length === 1
+          : actual.some(card => card.band === band.label) &&
+            !actualNulls.some(line => line.band === band.label);
+      });
+      if (!cardsMatch(actual, expected.cards) ||
+          !nullsMatch(actualNulls, expected.fallbacks) ||
+          actual.length !== expectedCardCount || !bandsHonest ||
+          actual.some(card => card.spread + 1e-10 < computedFloor.floor)){
+        slotSelectionFailures.push(slot);
       }
+      for (const line of actualNulls){
+        if (line.colors.some(color => reservedVerdictColors.has(color))){
+          nullColorFailures.push(slot + ":" + line.band + ":" +
+            line.colors.join("/"));
+        }
+      }
+      renderedFallbacks += actualNulls.length;
+      oracleFallbacks += expected.fallbacks.length;
+      oracleCards += expected.cards.length;
       actual.forEach(card => { renderedRoundCounts[card.round] += 1; });
-      expected.forEach(group => { oracleRoundCounts[group.round] += 1; });
+      expected.cards.forEach(group => { oracleRoundCounts[group.round] += 1; });
     }
-    ok(slotCoverageFailures.length === 0,
-       "paths: all twelve slots render one early, middle, and late card",
-       slotCoverageFailures.join(", "));
+    ok(slotSelectionFailures.length === 0 &&
+       renderedFallbacks === oracleFallbacks &&
+       oracleFallbacks === selectionProvenance.bands_fallback_n,
+       "paths: all twelve slots render conditional coverage and floor-filtered refill",
+       slotSelectionFailures.join(", "));
+    ok(nullColorFailures.length === 0,
+       "paths: rendered no-separable lines use no reserved verdict colors",
+       nullColorFailures.join(", "));
     ok(JSON.stringify(renderedRoundCounts) === JSON.stringify(oracleRoundCounts) &&
        Object.values(renderedRoundCounts).reduce((a, b) => a + b, 0) ===
-       selectionProvenance.card_cap * Object.keys(indexed).length,
-       "paths: all 60 rendered card rounds match the independent selector");
+         oracleCards,
+       "paths: every rendered card round matches the floor-filtered independent selector");
     await pg.click('#slots button[data-slot="1"]');
     await pg.waitForTimeout(20);
     // switching slots re-renders a different tree
@@ -2053,8 +2235,10 @@ const ok = (cond, name, detail) => {
     const t8 = await pg.textContent("#content");
     ok(/Slot 8 - picks/.test(t8) && t1 !== t8,
        "paths: the slot picker re-renders the tree");
-    ok(cardsMatch(await renderedCards(pg), priorityFor(8)),
-       "paths: slot switch recomputes the independent coverage selection");
+    const expected8 = priorityFor(8);
+    ok(cardsMatch(await renderedCards(pg), expected8.cards) &&
+       nullsMatch(await renderedNulls(pg), expected8.fallbacks),
+       "paths: slot switch recomputes conditional coverage and refill");
     ok(/Correlation caveat/.test(t8) && /UNKNOWN/.test(t8) &&
        /not identify player-level survival correlations/.test(t8) &&
        /Wilson 95%/.test(t8),
@@ -2087,9 +2271,11 @@ const ok = (cond, name, detail) => {
     await pg.click('#slots button[data-slot="10"]');
     await pg.waitForTimeout(100);
     const expected10 = priorityFor(10);
-    ok(cardsMatch(await renderedCards(pg), expected10),
-       "paths desktop: slot 10 matches the band-constrained spread selection");
-    ok(new Set(expected10.map(localPayloadKey)).size === expected10.length,
+    ok(cardsMatch(await renderedCards(pg), expected10.cards) &&
+       nullsMatch(await renderedNulls(pg), expected10.fallbacks),
+       "paths desktop: slot 10 matches conditional spread selection");
+    ok(new Set(expected10.cards.map(localPayloadKey)).size ===
+       expected10.cards.length,
        "paths desktop: slot 10 does not waste cards on exact path duplicates");
     const desktopHeight = await pg.evaluate(() => document.documentElement.scrollHeight);
     ok(desktopHeight <= 720 * 4,
@@ -2097,10 +2283,10 @@ const ok = (cond, name, detail) => {
        String(desktopHeight));
     await pg.setViewportSize({ width: 390, height: 844 });
     await pg.waitForTimeout(300);
-    ok(await pg.locator(".priority-card").count() === 5 &&
+    ok(await pg.locator(".priority-card").count() === expected10.cards.length &&
        await pg.locator(".priority-grid .alt-row").count() ===
-       expected10.reduce((a, g) => a + g.nodes.length, 0),
-       "paths mobile: slot 10 initially renders only five decision cards");
+       expected10.cards.reduce((a, g) => a + g.nodes.length, 0),
+       "paths mobile: slot 10 initially renders only selected separable cards");
     const mobileHeight = await pg.evaluate(() => document.documentElement.scrollHeight);
     ok(mobileHeight <= 844 * 5,
        "paths mobile: slot 10 initial surface stays within five screens",
@@ -2114,8 +2300,10 @@ const ok = (cond, name, detail) => {
        JSON.stringify(mobileWidth));
     await pg.click('#slots button[data-slot="12"]');
     await pg.waitForTimeout(100);
-    ok(cardsMatch(await renderedCards(pg), priorityFor(12)),
-       "paths mobile: slot 12 matches the independent coverage selection");
+    const expected12 = priorityFor(12);
+    ok(cardsMatch(await renderedCards(pg), expected12.cards) &&
+       nullsMatch(await renderedNulls(pg), expected12.fallbacks),
+       "paths mobile: slot 12 matches conditional coverage and refill");
     await pg.click('#slots button[data-slot="10"]');
     await pg.waitForTimeout(100);
     await pg.click("#showAll");

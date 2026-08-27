@@ -45,7 +45,6 @@ import os
 import statistics
 import sys
 from collections import Counter, defaultdict
-from fractions import Fraction
 from itertools import combinations
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -63,6 +62,7 @@ DEPTH = 7                    # = the seven skill starter slots
 MAX_NODES = 120              # render budget per slot, a UI constraint
 DISPLAY_CARD_CAP = 5         # approved initial planning-surface budget
 DISPLAY_BAND_COUNT = 3       # early / middle / late coverage slots
+DISPLAY_SPREAD_CLASSES = 2   # derived non-separable / separable presentation states
 
 
 def best_states(pool, prob):
@@ -195,6 +195,91 @@ def normalized_frontier_spread(nodes, vona_sd, gain_sd):
         for left, right in combinations(nodes, 2)), default=0.0)
 
 
+def minimum_sse_cuts(values, groups_n, allowed_cuts=None):
+    """Contiguous least-squares partition, with deterministic cut tie-breaking.
+
+    The same method derives both draft-depth bands and the presentation-only
+    spread floor. Values remain in their supplied order: round-count order for
+    depth bands, sorted numeric order for spread classes.
+    """
+    if groups_n < 1 or len(values) < groups_n:
+        raise ValueError(
+            f"cannot partition {len(values)} values into {groups_n} groups")
+
+    prefix = [0.0]
+    prefix_sq = [0.0]
+    for value in values:
+        prefix.append(prefix[-1] + value)
+        prefix_sq.append(prefix_sq[-1] + value * value)
+
+    def segment_cost(start, end):
+        n = end - start
+        total = prefix[end] - prefix[start]
+        squares = prefix_sq[end] - prefix_sq[start]
+        return max(0.0, squares - total * total / n)
+
+    cut_positions = (range(1, len(values)) if allowed_cuts is None
+                     else allowed_cuts)
+    best = None
+    for cuts in combinations(cut_positions, groups_n - 1):
+        marks = (0,) + cuts + (len(values),)
+        score = math.fsum(segment_cost(marks[i], marks[i + 1])
+                          for i in range(groups_n))
+        candidate = (score, cuts)
+        if best is None or candidate < best:
+            best = candidate
+    if best is None:
+        raise ValueError(
+            f"no valid {groups_n}-group partition for {len(values)} values")
+    return best[1]
+
+
+def derive_separation_floor(spreads):
+    """Board-derived boundary between low and separable frontier spreads.
+
+    The binary presentation state (card or honest null) supplies the two-class
+    structure. The numeric floor is never typed: it is the midpoint between
+    the adjacent classes in the minimum-within-class-SSE partition.
+    """
+    ordered = sorted(spreads)
+    # A presentation boundary must separate observed values, not split a run
+    # of identical spreads and then label equal observations differently.
+    distinct_cuts = [index for index in range(1, len(ordered))
+                     if ordered[index - 1] < ordered[index]]
+    cut, = minimum_sse_cuts(
+        ordered, DISPLAY_SPREAD_CLASSES, allowed_cuts=distinct_cuts)
+    low, high = ordered[:cut], ordered[cut:]
+    floor = (low[-1] + high[0]) / 2
+
+    def summary(values):
+        return {
+            "n": len(values),
+            "min": values[0],
+            "max": values[-1],
+            "mean": math.fsum(values) / len(values),
+        }
+
+    mean = math.fsum(ordered) / len(ordered)
+    total_sse = math.fsum((value - mean) ** 2 for value in ordered)
+    within_sse = math.fsum(
+        (value - math.fsum(group) / len(group)) ** 2
+        for group in (low, high) for value in group)
+    return {
+        "classes_n": DISPLAY_SPREAD_CLASSES,
+        "method": (
+            "sort observed normalized frontier spreads, split them into two "
+            "contiguous classes at the unequal-adjacent-value cut minimizing "
+            "total within-class squared error, then use the midpoint between "
+            "the low-class maximum and high-class minimum"),
+        "floor": floor,
+        "comparison": "spread >= floor clears; compare at full precision",
+        "low_class": summary(low),
+        "high_class": summary(high),
+        "variance_explained": (1 - within_sse / total_sse
+                               if total_sse else 1.0),
+    }
+
+
 def derive_display_bands(fork_counts, depth=DEPTH,
                          band_count=DISPLAY_BAND_COUNT):
     """Natural contiguous bands from exact-distinct fork density by round.
@@ -210,30 +295,19 @@ def derive_display_bands(fork_counts, depth=DEPTH,
         raise RuntimeError(
             f"display-band derivation needs {band_count} fork-bearing rounds; "
             f"artifact has {len(occupied)}")
-    groups_n = band_count
-
-    def segment_cost(rounds):
-        values = [fork_counts[r] for r in rounds]
-        return (sum(v * v for v in values)
-                - Fraction(sum(values) ** 2, len(values)))
-
-    best = None
-    for cuts in combinations(range(1, len(occupied)), groups_n - 1):
-        marks = (0,) + cuts + (len(occupied),)
-        segments = [occupied[marks[i]:marks[i + 1]]
-                    for i in range(groups_n)]
-        score = sum((segment_cost(segment) for segment in segments), Fraction())
-        candidate = (score, cuts, segments)
-        if best is None or candidate[:2] < best[:2]:
-            best = candidate
+    counts = [fork_counts[r] for r in occupied]
+    cuts = minimum_sse_cuts(counts, band_count)
+    marks = (0,) + cuts + (len(occupied),)
+    segments = [occupied[marks[i]:marks[i + 1]]
+                for i in range(band_count)]
 
     labels = ("early", "middle", "late")
     bands, start = [], 1
-    for index, segment in enumerate(best[2]):
-        end = depth if index == len(best[2]) - 1 else segment[-1]
+    for index, segment in enumerate(segments):
+        end = depth if index == len(segments) - 1 else segment[-1]
         bands.append({
             "index": index + 1,
-            "label": labels[index] if len(best[2]) == len(labels)
+            "label": labels[index] if len(segments) == len(labels)
             else f"band-{index + 1}",
             "start_round": start,
             "end_round": end,
@@ -247,7 +321,7 @@ def derive_display_bands(fork_counts, depth=DEPTH,
 def display_selection_provenance(slots):
     """Computed coverage policy and the evidence that motivated it."""
     if DISPLAY_CARD_CAP < DISPLAY_BAND_COUNT:
-        raise RuntimeError("display card cap cannot cover every derived band")
+        raise RuntimeError("display card cap cannot consider every derived band")
     distinct_by_slot = {slot: exact_distinct_forks(payload)
                         for slot, payload in slots.items()}
     fork_counts = Counter(
@@ -278,6 +352,56 @@ def display_selection_provenance(slots):
     gain_sd = population_sd(
         [node["decision_expected_lineup_gain_raw"]
          for node in fork_alternatives])
+    raw_fork_spreads = [
+        normalized_frontier_spread(nodes, vona_sd, gain_sd)
+        for nodes in all_forks]
+    alternative_weighted_spreads = [
+        spread for spread, nodes in zip(raw_fork_spreads, all_forks)
+        for _node in nodes]
+    separation_floor = derive_separation_floor(alternative_weighted_spreads)
+    separation_floor.update({
+        "sample_unit": (
+            "all raw non-dominated alternatives; every alternative carries "
+            "the normalized diameter of its local frontier occurrence"),
+        "alternatives_n": len(alternative_weighted_spreads),
+        "fork_occurrences_n": len(all_forks),
+        "distinct_forks_n": sum(fork_counts.values()),
+    })
+    distinct_spreads = [
+        normalized_frontier_spread(nodes, vona_sd, gain_sd)
+        for groups in distinct_by_slot.values() for nodes in groups]
+    distinct_floor = derive_separation_floor(distinct_spreads)
+    separation_floor["distinct_candidate_check"] = {
+        "n": len(distinct_spreads),
+        "floor": distinct_floor["floor"],
+        "matches_alternative_weighted_boundary": math.isclose(
+            distinct_floor["floor"], separation_floor["floor"],
+            abs_tol=1e-12),
+    }
+
+    band_outcomes = {}
+    eligible_by_slot = {}
+    cleared_n = fallback_n = 0
+    for slot, groups in distinct_by_slot.items():
+        scored = [(normalized_frontier_spread(nodes, vona_sd, gain_sd), nodes)
+                  for nodes in groups]
+        eligible_by_slot[slot] = sum(
+            spread >= separation_floor["floor"] for spread, _nodes in scored)
+        row = {}
+        for band in bands:
+            candidates = [
+                (spread, nodes) for spread, nodes in scored
+                if band["start_round"] <= nodes[0]["round"] <=
+                band["end_round"]]
+            winner_spread = max(spread for spread, _nodes in candidates)
+            clears = winner_spread >= separation_floor["floor"]
+            cleared_n += clears
+            fallback_n += not clears
+            row[band["label"]] = {
+                "winner_spread": winner_spread,
+                "clears": clears,
+            }
+        band_outcomes[slot] = row
     spreads_by_band = {}
     for band in bands:
         spreads = [normalized_frontier_spread(nodes, vona_sd, gain_sd)
@@ -321,8 +445,7 @@ def display_selection_provenance(slots):
     return {
         "card_cap": DISPLAY_CARD_CAP,
         "coverage_band_count": DISPLAY_BAND_COUNT,
-        "coverage_cards": len(bands),
-        "unrestricted_cards": DISPLAY_CARD_CAP - len(bands),
+        "coverage_bands_considered": len(bands),
         "distinct_forks_n": total,
         "raw_fork_occurrences_n": raw_forks_n,
         "fork_counts_by_round": {
@@ -339,6 +462,7 @@ def display_selection_provenance(slots):
             },
             "by_band": spreads_by_band,
         },
+        "separation_floor": separation_floor,
         "bands": bands,
         "band_derivation": (
             "recompute exact-distinct fork counts by round on every artifact "
@@ -347,11 +471,18 @@ def display_selection_provenance(slots):
             "extend the final band through the display horizon so a zero-count "
             "terminal round cannot manufacture an empty coverage band"),
         "selection_rule": (
-            "select the highest normalized-frontier-spread fork from each "
-            "derived band, then fill the two remaining cards with the highest-"
-            "spread unselected forks globally; downstream reach breaks exact "
+            "for each derived band, reserve its highest normalized-frontier-"
+            "spread fork only when it clears the computed separation floor; "
+            "otherwise render an honest no-separable-decision line and return "
+            "that capacity to global selection; fill up to the card cap only "
+            "from unselected forks clearing the same floor, so a rejected "
+            "winner cannot re-enter globally; downstream reach breaks exact "
             "spread ties"),
-        "slot_band_eligible_counts": coverage,
+        "slot_band_fork_counts": coverage,
+        "slot_band_outcomes": band_outcomes,
+        "bands_cleared_n": cleared_n,
+        "bands_fallback_n": fallback_n,
+        "eligible_distinct_forks_by_slot": eligible_by_slot,
         "supply_diagnosis": supply_diagnosis,
         "terminal_round_check": {
             "round": DEPTH,

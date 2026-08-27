@@ -27,6 +27,7 @@ prov, rules = tree["provenance"], tree["decision_rules"]
 
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from build_vona_tree import (best_states, derive_display_bands,
+                             derive_separation_floor,
                              display_selection_provenance,
                              exact_distinct_forks, iter_decision_groups,
                              normalized_frontier_spread, pareto_front,
@@ -74,17 +75,37 @@ ok("deliberately absent" in prov["bullish_on_nodes"],
 
 selection = prov["display_selection"]
 ok(selection["card_cap"] == 5
-   and selection["coverage_cards"] == selection["coverage_band_count"] == 3
-   and selection["unrestricted_cards"] == 2,
-   "artifact declares the approved three-coverage-plus-two-global card budget")
+   and selection["coverage_bands_considered"] ==
+   selection["coverage_band_count"] == 3,
+   "artifact declares the approved three-band coverage inside a five-card cap")
 ok("recompute exact-distinct fork counts" in selection["band_derivation"]
    and "positive-count rounds" in selection["band_derivation"]
    and "zero-count terminal round" in selection["band_derivation"],
    "artifact discloses data-derived bands and terminal-zero handling")
-ok("highest normalized-frontier-spread" in selection["selection_rule"]
-   and "remaining cards" in selection["selection_rule"]
+ok("computed separation floor" in selection["selection_rule"]
+   and "no-separable-decision line" in selection["selection_rule"]
+   and "cannot re-enter globally" in selection["selection_rule"]
    and "exact spread ties" in selection["selection_rule"],
-   "artifact discloses one-per-band selection with global fill and reach tie-break")
+   "artifact discloses conditional band selection and floor-filtered global fill")
+floor_meta = selection["separation_floor"]
+ok(floor_meta["classes_n"] == 2
+   and "within-class squared error" in floor_meta["method"]
+   and "midpoint" in floor_meta["method"]
+   and floor_meta["comparison"] ==
+   "spread >= floor clears; compare at full precision",
+   "artifact derives a two-class presentation floor without typing its value")
+toy_floor = derive_separation_floor([0.0, 0.0, 1.0, 1.0])
+ok(toy_floor["floor"] == 0.5
+   and toy_floor["low_class"]["n"] == 2
+   and toy_floor["high_class"]["n"] == 2,
+   "spread classes never split observations tied at the boundary")
+try:
+    derive_separation_floor([1.0, 1.0, 1.0])
+    degenerate_floor_rejected = False
+except ValueError:
+    degenerate_floor_rejected = True
+ok(degenerate_floor_rejected,
+   "an all-tied board fails loudly instead of inventing a card/null boundary")
 ok("Candidate supply is the larger observed driver" in
    selection["supply_diagnosis"]
    and "Wider later frontier spreads also contribute" in
@@ -421,10 +442,10 @@ for slot, groups in distinct_by_slot.items():
             for nodes in groups)
         for band in expected_bands
     }
-ok(selection["slot_band_eligible_counts"] == expected_support
+ok(selection["slot_band_fork_counts"] == expected_support
    and all(count > 0 for row in expected_support.values()
            for count in row.values()),
-   "every slot has an eligible exact-distinct fork in every derived band")
+   "every slot has an exact-distinct fork in every derived band before gating")
 
 raw_fork_groups = [
     nodes for payload in tree["slots"].values()
@@ -443,6 +464,72 @@ ok(norm["alternatives_n"] == len(raw_fork_nodes)
    and math.isclose(norm["lineup_gain_population_sd"], expected_gain_sd,
                     abs_tol=1e-12),
    "spread evidence normalizes over every raw frontier alternative")
+raw_fork_spreads = [
+    normalized_frontier_spread(nodes, expected_vona_sd, expected_gain_sd)
+    for nodes in raw_fork_groups
+]
+alternative_weighted_spreads = [
+    spread for spread, nodes in zip(raw_fork_spreads, raw_fork_groups)
+    for _node in nodes
+]
+expected_floor = derive_separation_floor(alternative_weighted_spreads)
+for key in ("classes_n", "method", "floor", "comparison", "low_class",
+            "high_class", "variance_explained"):
+    ok(floor_meta[key] == expected_floor[key],
+       f"separation floor {key} recomputes from all raw alternatives")
+ok(floor_meta["alternatives_n"] == len(raw_fork_nodes)
+   and floor_meta["fork_occurrences_n"] == len(raw_fork_groups)
+   and floor_meta["distinct_forks_n"] == selection["distinct_forks_n"]
+   and "every alternative carries" in floor_meta["sample_unit"],
+   "separation-floor provenance names and reconciles its sample units")
+distinct_spreads = [
+    normalized_frontier_spread(nodes, expected_vona_sd, expected_gain_sd)
+    for groups in distinct_by_slot.values() for nodes in groups
+]
+distinct_floor = derive_separation_floor(distinct_spreads)
+distinct_check = floor_meta["distinct_candidate_check"]
+ok(distinct_check["n"] == len(distinct_spreads)
+   and distinct_check["floor"] == distinct_floor["floor"]
+   and distinct_check["matches_alternative_weighted_boundary"] ==
+   math.isclose(distinct_floor["floor"], expected_floor["floor"],
+                abs_tol=1e-12),
+   "floor provenance reports the exact-distinct robustness check honestly")
+ok(floor_meta["low_class"]["max"] < floor_meta["floor"] <
+   floor_meta["high_class"]["min"]
+   and floor_meta["low_class"]["n"] + floor_meta["high_class"]["n"] ==
+   len(raw_fork_nodes),
+   "computed floor lies strictly inside the observed class boundary")
+
+expected_outcomes = {}
+expected_eligible = {}
+expected_cleared = expected_fallback = 0
+for slot, groups in distinct_by_slot.items():
+    scored = [(normalized_frontier_spread(nodes, expected_vona_sd,
+                                           expected_gain_sd), nodes)
+              for nodes in groups]
+    expected_eligible[slot] = sum(
+        spread >= expected_floor["floor"] for spread, _nodes in scored)
+    row = {}
+    for band in expected_bands:
+        candidates = [(spread, nodes) for spread, nodes in scored
+                      if band["start_round"] <= nodes[0]["round"] <=
+                      band["end_round"]]
+        spread = max(value for value, _nodes in candidates)
+        clears = spread >= expected_floor["floor"]
+        expected_cleared += clears
+        expected_fallback += not clears
+        row[band["label"]] = {
+            "winner_spread": spread,
+            "clears": clears,
+        }
+    expected_outcomes[slot] = row
+ok(selection["slot_band_outcomes"] == expected_outcomes
+   and selection["bands_cleared_n"] == expected_cleared
+   and selection["bands_fallback_n"] == expected_fallback,
+   "every slot-band clearance and honest fallback recomputes at full precision")
+ok(selection["eligible_distinct_forks_by_slot"] == expected_eligible
+   and all(count >= selection["card_cap"] for count in expected_eligible.values()),
+   "floor-filtered global refill can fill the current cap without a below-floor card")
 for band in expected_bands:
     values = [
         normalized_frontier_spread(nodes, expected_vona_sd, expected_gain_sd)
@@ -537,6 +624,14 @@ ok("selectPriorityForks" in page and "DISPLAY_SELECTION.bands" in page
    and "bandForRound" in page and "Draft-depth coverage" in page
    and "Coverage selection" in page and 'data-band="' in page,
    "paths page applies and labels artifact-derived draft-depth coverage")
+ok("separation_floor.floor" in page and "frontierSpread >= floor" in page
+   and "No separable " in page and "board floor " in page
+   and 'data-best-spread="' in page and 'data-floor="' in page,
+   "paths page gates every initial card and renders an auditable band null")
+ok("var eligible = ordered.filter" in page
+   and "eligible.forEach" in page
+   and "ordered.forEach" not in page,
+   "global refill cannot reintroduce a fork that failed the separation floor")
 ok("start_round" in page and "end_round" in page
    and not re.search(r"(?:round|R)\s*1\s*[-–]\s*3\s*/\s*4", page, re.I),
    "paths page consumes computed band boundaries instead of typing them")
@@ -566,6 +661,11 @@ reserved = {"#34d399", "#f87171", "#fbbf24", "#60a5fa",
             "#047857", "#b91c1c", "#b45309", "#0f766e"}
 ok(bool(avail_color) and avail_color.group(1).lower() not in reserved,
    "continuous availability scale uses none of the reserved verdict colors")
+null_rule = re.search(r"\.band-null\{([^}]*)\}", page)
+ok(bool(null_rule)
+   and not any(color in null_rule.group(1).lower() for color in reserved)
+   and "var(--ink2)" in null_rule.group(1),
+   "no-separable-decision treatment is neutral and uses no verdict color")
 
 if FAILS:
     print(f"\n{len(FAILS)} FAILURES")
