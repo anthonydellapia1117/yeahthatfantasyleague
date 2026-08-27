@@ -1,13 +1,14 @@
 {
  "provenance": {
-  "generated": "2026-08-26",
+  "generated": "2026-08-27",
   "engine_generated": "2026-08-26",
   "objective": "VONA(pos) = E[best available at this pick] - E[best available at my next pick], both survival-weighted over the whole positional pool",
   "survival": "frozen survival model called from src/engine_2026.py - the pre-draft convention every artifact uses; the adopted calibration applies to conditional survival in the LIVE room only, and after the one-frame fix this builder uses no conditional survival at all",
   "conditioning": "ONE frame: both expectations use unconditional survival from the same pre-draft information state. E[next] <= E[now] and VONA >= 0 are structural and guarded - the first build mixed frames and 28% of nodes went negative",
   "feasibility": "starter caps from the shared forward_policy layer (max simultaneous starters, flex from the observed allocation): no path may hold more of a position than the lineup can start",
   "depth": 7,
-  "depth_rationale": "structural: the starting lineup is exactly seven skill slots (QB RB RB WR WR TE FLEX), so depth 7 covers lineup construction completely and stops where the lineup is full - not a noise cutoff",
+  "value_lookahead_rounds": 8,
+  "depth_rationale": "structural: the starting lineup is exactly seven skill slots (QB RB RB WR WR TE FLEX), so seven displayed rounds cover lineup construction completely. Round 7 is valued against the owner's real round-8 pick; the tree never compares against nothing - not a noise cutoff",
   "branch_rule": "branch wherever the top options fall within the derived threshold, at ANY slot - never gated on slot number",
   "bullish_on_nodes": "deliberately absent - the tree is a decision surface and a marker nudges regardless of its label (finding N.1)",
   "deviations": [
@@ -25,14 +26,14 @@
    "3": 0.28,
    "4": 4.6,
    "5": 2.23,
-   "6": 4.65
+   "6": 3.3
   },
   "branch_eps_source": "p25 of the top-two VONA gaps this board produces at each depth: a fork fires when the gap is in the narrowest quartile of gaps actually observed",
   "prune_rule": "STRICT domination on lineup value from src/forward_policy.py (phantom-filled optimal starters), no tolerance parameter: a branch goes only when its best attainable lineup is worse than a sibling's worst. Raw VOR sums are NOT used - that objective was disproved by the M1 validation, which caught it stacking elite TEs",
   "max_nodes_per_slot": 80,
   "narrow_band": 7.8,
   "narrow_band_source": "p25 of the domination margins this board produces, in lineup points: a branch dominated by less than this is kept and flagged as a coin flip rather than silently decided",
-  "margins_observed": 59
+  "margins_observed": 67
  },
  "correlation": {
   "method": "same-position counts in each 12-pick window of the league's own draft history, observed variance vs the binomial variance implied by the same mean",
@@ -81,6 +82,7 @@
     {
      "round": 1,
      "pick": 1,
+     "next_pick": 24,
      "pos": "RB",
      "name": "Jahmyr Gibbs",
      "vor": 162.4,
@@ -98,6 +100,7 @@
       {
        "round": 2,
        "pick": 24,
+       "next_pick": 25,
        "pos": "RB",
        "name": "Jeremiyah Love",
        "vor": 42.8,
@@ -110,11 +113,12 @@
        "tier": 4,
        "tier_left": 11,
        "forced": false,
-       "why": "kept: dominated by only 5.6 lineup pts, inside the 7.8 narrow band - a real coin flip",
+       "why": "within 6.26 of the best option - a real fork",
        "children": [
         {
          "round": 3,
          "pick": 25,
+         "next_pick": 48,
          "pos": "TE",
          "name": "Brock Bowers",
          "vor": 91.0,
@@ -132,6 +136,7 @@
           {
            "round": 4,
            "pick": 48,
+           "next_pick": 49,
            "pos": "WR",
            "name": "Garrett Wilson",
            "vor": 38.7,
@@ -149,6 +154,7 @@
             {
              "round": 5,
              "pick": 49,
+             "next_pick": 72,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -166,6 +172,7 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
                "pos": "QB",
                "name": "Dak Prescott",
                "vor": 18.4,
@@ -183,19 +190,20 @@
                 {
                  "round": 7,
                  "pick": 73,
+                 "next_pick": 96,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.565,
-                 "vona": 27.46,
+                 "vona": 13.73,
                  "e_now": 27.46,
-                 "e_next": 0.0,
+                 "e_next": 13.74,
                  "tier": 5,
                  "tier_left": 11,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -207,6 +215,7 @@
           {
            "round": 4,
            "pick": 48,
+           "next_pick": 49,
            "pos": "QB",
            "name": "Drake Maye",
            "vor": 31.3,
@@ -224,6 +233,7 @@
             {
              "round": 5,
              "pick": 49,
+             "next_pick": 72,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -241,6 +251,7 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -258,19 +269,20 @@
                 {
                  "round": 7,
                  "pick": 73,
+                 "next_pick": 96,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.443,
-                 "vona": 25.37,
+                 "vona": 14.58,
                  "e_now": 25.37,
-                 "e_next": 0.0,
+                 "e_next": 10.78,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -282,6 +294,7 @@
           {
            "round": 4,
            "pick": 48,
+           "next_pick": 49,
            "pos": "RB",
            "name": "D'Andre Swift",
            "vor": 39.0,
@@ -299,6 +312,7 @@
             {
              "round": 5,
              "pick": 49,
+             "next_pick": 72,
              "pos": "WR",
              "name": "Garrett Wilson",
              "vor": 38.7,
@@ -316,6 +330,7 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
                "pos": "QB",
                "name": "Dak Prescott",
                "vor": 18.4,
@@ -333,19 +348,20 @@
                 {
                  "round": 7,
                  "pick": 73,
+                 "next_pick": 96,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.565,
-                 "vona": 27.46,
+                 "vona": 13.73,
                  "e_now": 27.46,
-                 "e_next": 0.0,
+                 "e_next": 13.74,
                  "tier": 5,
                  "tier_left": 11,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -355,6 +371,7 @@
             {
              "round": 5,
              "pick": 49,
+             "next_pick": 72,
              "pos": "QB",
              "name": "Drake Maye",
              "vor": 31.3,
@@ -372,6 +389,7 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -389,19 +407,20 @@
                 {
                  "round": 7,
                  "pick": 73,
+                 "next_pick": 96,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.443,
-                 "vona": 25.37,
+                 "vona": 14.58,
                  "e_now": 25.37,
-                 "e_next": 0.0,
+                 "e_next": 10.78,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -413,12 +432,12 @@
           }
          ]
         }
-       ],
-       "narrowly_dominated": 5.6
+       ]
       },
       {
        "round": 2,
        "pick": 24,
+       "next_pick": 25,
        "pos": "TE",
        "name": "Brock Bowers",
        "vor": 91.0,
@@ -436,6 +455,7 @@
         {
          "round": 3,
          "pick": 25,
+         "next_pick": 48,
          "pos": "WR",
          "name": "Nico Collins",
          "vor": 75.8,
@@ -453,6 +473,7 @@
           {
            "round": 4,
            "pick": 48,
+           "next_pick": 49,
            "pos": "WR",
            "name": "Garrett Wilson",
            "vor": 38.7,
@@ -470,6 +491,7 @@
             {
              "round": 5,
              "pick": 49,
+             "next_pick": 72,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -487,6 +509,46 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
+               "pos": "RB",
+               "name": "Jaylen Warren",
+               "vor": 1.6,
+               "adp": 72.0,
+               "pts": 170.6,
+               "p_available": 0.5,
+               "vona": 0.95,
+               "e_now": 9.28,
+               "e_next": 8.34,
+               "tier": 5,
+               "tier_left": 15,
+               "forced": false,
+               "why": "within 2.23 of the best option - a real fork",
+               "children": [
+                {
+                 "round": 7,
+                 "pick": 73,
+                 "next_pick": 96,
+                 "pos": "WR",
+                 "name": "Parker Washington",
+                 "vor": 26.2,
+                 "adp": 76.6,
+                 "pts": 212.4,
+                 "p_available": 0.565,
+                 "vona": 13.73,
+                 "e_now": 27.46,
+                 "e_next": 13.74,
+                 "tier": 5,
+                 "tier_left": 11,
+                 "forced": true,
+                 "why": "VONA gap 10.4 over QB; not a decision",
+                 "children": []
+                }
+               ]
+              },
+              {
+               "round": 6,
+               "pick": 72,
+               "next_pick": 73,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -504,19 +566,20 @@
                 {
                  "round": 7,
                  "pick": 73,
-                 "pos": "QB",
-                 "name": "Dak Prescott",
-                 "vor": 18.4,
-                 "adp": 78.1,
-                 "pts": 365.9,
-                 "p_available": 0.59,
-                 "vona": 18.37,
-                 "e_now": 18.37,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 21,
+                 "next_pick": 96,
+                 "pos": "RB",
+                 "name": "Jaylen Warren",
+                 "vor": 1.6,
+                 "adp": 72.0,
+                 "pts": 170.6,
+                 "p_available": 0.481,
+                 "vona": 13.23,
+                 "e_now": 8.34,
+                 "e_next": -4.9,
+                 "tier": 5,
+                 "tier_left": 14,
                  "forced": true,
-                 "why": "VONA gap 10.0 over RB; not a decision",
+                 "why": "VONA gap 9.9 over QB; not a decision",
                  "children": []
                 }
                ]
@@ -524,6 +587,7 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
                "pos": "QB",
                "name": "Dak Prescott",
                "vor": 18.4,
@@ -541,19 +605,20 @@
                 {
                  "round": 7,
                  "pick": 73,
+                 "next_pick": 96,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.565,
-                 "vona": 27.46,
+                 "vona": 13.73,
                  "e_now": 27.46,
-                 "e_next": 0.0,
+                 "e_next": 13.74,
                  "tier": 5,
                  "tier_left": 11,
                  "forced": true,
-                 "why": "VONA gap 19.1 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -565,6 +630,7 @@
           {
            "round": 4,
            "pick": 48,
+           "next_pick": 49,
            "pos": "QB",
            "name": "Drake Maye",
            "vor": 31.3,
@@ -582,6 +648,7 @@
             {
              "round": 5,
              "pick": 49,
+             "next_pick": 72,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -599,6 +666,7 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -616,19 +684,20 @@
                 {
                  "round": 7,
                  "pick": 73,
+                 "next_pick": 96,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.443,
-                 "vona": 25.37,
+                 "vona": 14.58,
                  "e_now": 25.37,
-                 "e_next": 0.0,
+                 "e_next": 10.78,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "VONA gap 17.0 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -636,6 +705,86 @@
              ]
             }
            ]
+          },
+          {
+           "round": 4,
+           "pick": 48,
+           "next_pick": 49,
+           "pos": "RB",
+           "name": "D'Andre Swift",
+           "vor": 39.0,
+           "adp": 55.8,
+           "pts": 208.0,
+           "p_available": 0.681,
+           "vona": 0.34,
+           "e_now": 38.28,
+           "e_next": 37.95,
+           "tier": 4,
+           "tier_left": 3,
+           "forced": false,
+           "why": "kept: dominated by only 0.4 lineup pts, inside the 7.8 narrow band - a real coin flip",
+           "children": [
+            {
+             "round": 5,
+             "pick": 49,
+             "next_pick": 72,
+             "pos": "RB",
+             "name": "David Montgomery",
+             "vor": 37.1,
+             "adp": 49.3,
+             "pts": 206.1,
+             "p_available": 0.508,
+             "vona": 26.1,
+             "e_now": 35.38,
+             "e_next": 9.28,
+             "tier": 4,
+             "tier_left": 2,
+             "forced": true,
+             "why": "VONA gap 13.9 over WR; not a decision",
+             "children": [
+              {
+               "round": 6,
+               "pick": 72,
+               "next_pick": 73,
+               "pos": "QB",
+               "name": "Dak Prescott",
+               "vor": 18.4,
+               "adp": 78.1,
+               "pts": 365.9,
+               "p_available": 0.607,
+               "vona": 0.21,
+               "e_now": 18.58,
+               "e_next": 18.37,
+               "tier": 2,
+               "tier_left": 21,
+               "forced": true,
+               "why": "fork collapsed - 1 sibling pruned as dominated",
+               "children": [
+                {
+                 "round": 7,
+                 "pick": 73,
+                 "next_pick": 96,
+                 "pos": "WR",
+                 "name": "Parker Washington",
+                 "vor": 26.2,
+                 "adp": 76.6,
+                 "pts": 212.4,
+                 "p_available": 0.565,
+                 "vona": 14.04,
+                 "e_now": 27.78,
+                 "e_next": 13.74,
+                 "tier": 5,
+                 "tier_left": 11,
+                 "forced": true,
+                 "why": "within 3.3 of the best option - a real fork",
+                 "children": []
+                }
+               ]
+              }
+             ]
+            }
+           ],
+           "narrowly_dominated": 0.4
           }
          ]
         }
@@ -644,6 +793,7 @@
       {
        "round": 2,
        "pick": 24,
+       "next_pick": 25,
        "pos": "QB",
        "name": "Josh Allen",
        "vor": 68.0,
@@ -661,6 +811,7 @@
         {
          "round": 3,
          "pick": 25,
+         "next_pick": 48,
          "pos": "TE",
          "name": "Brock Bowers",
          "vor": 91.0,
@@ -678,6 +829,7 @@
           {
            "round": 4,
            "pick": 48,
+           "next_pick": 49,
            "pos": "WR",
            "name": "Garrett Wilson",
            "vor": 38.7,
@@ -695,6 +847,7 @@
             {
              "round": 5,
              "pick": 49,
+             "next_pick": 72,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -712,6 +865,7 @@
               {
                "round": 6,
                "pick": 72,
+               "next_pick": 73,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -729,19 +883,20 @@
                 {
                  "round": 7,
                  "pick": 73,
+                 "next_pick": 96,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.443,
-                 "vona": 24.98,
+                 "vona": 14.2,
                  "e_now": 24.98,
-                 "e_next": 0.0,
+                 "e_next": 10.78,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "VONA gap 16.6 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -753,91 +908,16 @@
          ]
         }
        ]
-      },
-      {
-       "round": 2,
-       "pick": 24,
-       "pos": "WR",
-       "name": "Nico Collins",
-       "vor": 75.8,
-       "adp": 25.3,
-       "pts": 262.0,
-       "p_available": 0.559,
-       "vona": 1.23,
-       "e_now": 67.72,
-       "e_next": 66.49,
-       "tier": 3,
-       "tier_left": 1,
-       "forced": false,
-       "why": "within 6.26 of the best option - a real fork",
-       "children": [
-        {
-         "round": 3,
-         "pick": 25,
-         "pos": "TE",
-         "name": "Brock Bowers",
-         "vor": 91.0,
-         "adp": 23.6,
-         "pts": 253.5,
-         "p_available": 0.439,
-         "vona": 33.85,
-         "e_now": 72.62,
-         "e_next": 38.77,
-         "tier": 1,
-         "tier_left": 1,
-         "forced": true,
-         "why": "VONA gap 9.5 over RB; not a decision",
-         "children": [
-          {
-           "round": 4,
-           "pick": 48,
-           "pos": "WR",
-           "name": "Garrett Wilson",
-           "vor": 38.7,
-           "adp": 45.7,
-           "pts": 224.9,
-           "p_available": 0.437,
-           "vona": 0.44,
-           "e_now": 40.98,
-           "e_next": 40.53,
-           "tier": 5,
-           "tier_left": 21,
-           "forced": false,
-           "why": "within 0.28 of the best option - a real fork",
-           "children": [
-            {
-             "round": 5,
-             "pick": 49,
-             "pos": "RB",
-             "name": "D'Andre Swift",
-             "vor": 39.0,
-             "adp": 55.8,
-             "pts": 208.0,
-             "p_available": 0.659,
-             "vona": 23.77,
-             "e_now": 37.95,
-             "e_next": 14.18,
-             "tier": 4,
-             "tier_left": 3,
-             "forced": true,
-             "why": "VONA gap 11.7 over WR; not a decision",
-             "children": []
-            }
-           ]
-          }
-         ]
-        }
-       ]
       }
      ]
     }
    ],
    "nodes": 80,
-   "rendered_forks": 9,
-   "forks_collapsed_by_pruning": 9,
+   "rendered_forks": 7,
+   "forks_collapsed_by_pruning": 12,
    "pruned": {
-    "dominated": 11,
-    "budget": 5,
+    "dominated": 13,
+    "budget": 1,
     "narrow_kept": 3
    },
    "picks": [
@@ -848,6 +928,15 @@
     49,
     72,
     73
+   ],
+   "next_picks": [
+    24,
+    25,
+    48,
+    49,
+    72,
+    73,
+    96
    ]
   },
   "2": {
@@ -856,6 +945,7 @@
     {
      "round": 1,
      "pick": 2,
+     "next_pick": 23,
      "pos": "RB",
      "name": "Jahmyr Gibbs",
      "vor": 162.4,
@@ -873,6 +963,7 @@
       {
        "round": 2,
        "pick": 23,
+       "next_pick": 26,
        "pos": "TE",
        "name": "Brock Bowers",
        "vor": 91.0,
@@ -890,6 +981,7 @@
         {
          "round": 3,
          "pick": 26,
+         "next_pick": 47,
          "pos": "WR",
          "name": "Nico Collins",
          "vor": 75.8,
@@ -907,6 +999,7 @@
           {
            "round": 4,
            "pick": 47,
+           "next_pick": 50,
            "pos": "WR",
            "name": "Garrett Wilson",
            "vor": 38.7,
@@ -924,6 +1017,7 @@
             {
              "round": 5,
              "pick": 50,
+             "next_pick": 71,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -941,6 +1035,46 @@
               {
                "round": 6,
                "pick": 71,
+               "next_pick": 74,
+               "pos": "RB",
+               "name": "Jaylen Warren",
+               "vor": 1.6,
+               "adp": 72.0,
+               "pts": 170.6,
+               "p_available": 0.52,
+               "vona": 2.84,
+               "e_now": 10.28,
+               "e_next": 7.44,
+               "tier": 5,
+               "tier_left": 15,
+               "forced": false,
+               "why": "within 2.23 of the best option - a real fork",
+               "children": [
+                {
+                 "round": 7,
+                 "pick": 74,
+                 "next_pick": 95,
+                 "pos": "WR",
+                 "name": "Parker Washington",
+                 "vor": 26.2,
+                 "adp": 76.6,
+                 "pts": 212.4,
+                 "p_available": 0.547,
+                 "vona": 12.56,
+                 "e_now": 26.94,
+                 "e_next": 14.39,
+                 "tier": 5,
+                 "tier_left": 11,
+                 "forced": true,
+                 "why": "VONA gap 9.5 over QB; not a decision",
+                 "children": []
+                }
+               ]
+              },
+              {
+               "round": 6,
+               "pick": 71,
+               "next_pick": 74,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -958,19 +1092,20 @@
                 {
                  "round": 7,
                  "pick": 74,
-                 "pos": "QB",
-                 "name": "Dak Prescott",
-                 "vor": 18.4,
-                 "adp": 78.1,
-                 "pts": 365.9,
-                 "p_available": 0.573,
-                 "vona": 18.18,
-                 "e_now": 18.18,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 21,
+                 "next_pick": 95,
+                 "pos": "RB",
+                 "name": "Jaylen Warren",
+                 "vor": 1.6,
+                 "adp": 72.0,
+                 "pts": 170.6,
+                 "p_available": 0.461,
+                 "vona": 11.93,
+                 "e_now": 7.44,
+                 "e_next": -4.5,
+                 "tier": 5,
+                 "tier_left": 14,
                  "forced": true,
-                 "why": "VONA gap 10.7 over RB; not a decision",
+                 "why": "VONA gap 8.9 over QB; not a decision",
                  "children": []
                 }
                ]
@@ -978,6 +1113,7 @@
               {
                "round": 6,
                "pick": 71,
+               "next_pick": 74,
                "pos": "QB",
                "name": "Dak Prescott",
                "vor": 18.4,
@@ -995,19 +1131,20 @@
                 {
                  "round": 7,
                  "pick": 74,
+                 "next_pick": 95,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.547,
-                 "vona": 26.94,
+                 "vona": 12.56,
                  "e_now": 26.94,
-                 "e_next": 0.0,
+                 "e_next": 14.39,
                  "tier": 5,
                  "tier_left": 11,
                  "forced": true,
-                 "why": "VONA gap 19.5 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -1019,6 +1156,7 @@
           {
            "round": 4,
            "pick": 47,
+           "next_pick": 50,
            "pos": "QB",
            "name": "Drake Maye",
            "vor": 31.3,
@@ -1031,11 +1169,12 @@
            "tier": 2,
            "tier_left": 25,
            "forced": false,
-           "why": "kept: dominated by only 4.4 lineup pts, inside the 7.8 narrow band - a real coin flip",
+           "why": "within 0.28 of the best option - a real fork",
            "children": [
             {
              "round": 5,
              "pick": 50,
+             "next_pick": 71,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -1053,6 +1192,7 @@
               {
                "round": 6,
                "pick": 71,
+               "next_pick": 74,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -1070,27 +1210,27 @@
                 {
                  "round": 7,
                  "pick": 74,
+                 "next_pick": 95,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.423,
-                 "vona": 24.66,
+                 "vona": 13.32,
                  "e_now": 24.66,
-                 "e_next": 0.0,
+                 "e_next": 11.34,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "VONA gap 17.2 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
               }
              ]
             }
-           ],
-           "narrowly_dominated": 4.4
+           ]
           }
          ]
         }
@@ -1099,6 +1239,7 @@
       {
        "round": 2,
        "pick": 23,
+       "next_pick": 26,
        "pos": "QB",
        "name": "Josh Allen",
        "vor": 68.0,
@@ -1116,6 +1257,7 @@
         {
          "round": 3,
          "pick": 26,
+         "next_pick": 47,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -1133,6 +1275,7 @@
           {
            "round": 4,
            "pick": 47,
+           "next_pick": 50,
            "pos": "WR",
            "name": "Garrett Wilson",
            "vor": 38.7,
@@ -1150,6 +1293,7 @@
             {
              "round": 5,
              "pick": 50,
+             "next_pick": 71,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -1167,6 +1311,7 @@
               {
                "round": 6,
                "pick": 71,
+               "next_pick": 74,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -1184,19 +1329,20 @@
                 {
                  "round": 7,
                  "pick": 74,
+                 "next_pick": 95,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.423,
-                 "vona": 24.31,
+                 "vona": 12.98,
                  "e_now": 24.31,
-                 "e_next": 0.0,
+                 "e_next": 11.33,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "VONA gap 16.9 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -1212,6 +1358,7 @@
       {
        "round": 2,
        "pick": 23,
+       "next_pick": 26,
        "pos": "WR",
        "name": "Nico Collins",
        "vor": 75.8,
@@ -1229,6 +1376,7 @@
         {
          "round": 3,
          "pick": 26,
+         "next_pick": 47,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -1246,6 +1394,7 @@
           {
            "round": 4,
            "pick": 47,
+           "next_pick": 50,
            "pos": "WR",
            "name": "Garrett Wilson",
            "vor": 38.7,
@@ -1263,6 +1412,7 @@
             {
              "round": 5,
              "pick": 50,
+             "next_pick": 71,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -1280,6 +1430,46 @@
               {
                "round": 6,
                "pick": 71,
+               "next_pick": 74,
+               "pos": "RB",
+               "name": "Jaylen Warren",
+               "vor": 1.6,
+               "adp": 72.0,
+               "pts": 170.6,
+               "p_available": 0.52,
+               "vona": 2.84,
+               "e_now": 10.28,
+               "e_next": 7.44,
+               "tier": 5,
+               "tier_left": 15,
+               "forced": false,
+               "why": "within 2.23 of the best option - a real fork",
+               "children": [
+                {
+                 "round": 7,
+                 "pick": 74,
+                 "next_pick": 95,
+                 "pos": "WR",
+                 "name": "Parker Washington",
+                 "vor": 26.2,
+                 "adp": 76.6,
+                 "pts": 212.4,
+                 "p_available": 0.547,
+                 "vona": 12.56,
+                 "e_now": 26.94,
+                 "e_next": 14.39,
+                 "tier": 5,
+                 "tier_left": 11,
+                 "forced": true,
+                 "why": "VONA gap 9.5 over QB; not a decision",
+                 "children": []
+                }
+               ]
+              },
+              {
+               "round": 6,
+               "pick": 71,
+               "next_pick": 74,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -1297,19 +1487,20 @@
                 {
                  "round": 7,
                  "pick": 74,
-                 "pos": "QB",
-                 "name": "Dak Prescott",
-                 "vor": 18.4,
-                 "adp": 78.1,
-                 "pts": 365.9,
-                 "p_available": 0.573,
-                 "vona": 18.18,
-                 "e_now": 18.18,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 21,
+                 "next_pick": 95,
+                 "pos": "RB",
+                 "name": "Jaylen Warren",
+                 "vor": 1.6,
+                 "adp": 72.0,
+                 "pts": 170.6,
+                 "p_available": 0.461,
+                 "vona": 11.93,
+                 "e_now": 7.44,
+                 "e_next": -4.5,
+                 "tier": 5,
+                 "tier_left": 14,
                  "forced": true,
-                 "why": "VONA gap 10.7 over RB; not a decision",
+                 "why": "VONA gap 8.9 over QB; not a decision",
                  "children": []
                 }
                ]
@@ -1317,6 +1508,7 @@
               {
                "round": 6,
                "pick": 71,
+               "next_pick": 74,
                "pos": "QB",
                "name": "Dak Prescott",
                "vor": 18.4,
@@ -1334,19 +1526,20 @@
                 {
                  "round": 7,
                  "pick": 74,
+                 "next_pick": 95,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.547,
-                 "vona": 26.94,
+                 "vona": 12.56,
                  "e_now": 26.94,
-                 "e_next": 0.0,
+                 "e_next": 14.39,
                  "tier": 5,
                  "tier_left": 11,
                  "forced": true,
-                 "why": "VONA gap 19.5 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -1358,6 +1551,7 @@
           {
            "round": 4,
            "pick": 47,
+           "next_pick": 50,
            "pos": "QB",
            "name": "Drake Maye",
            "vor": 31.3,
@@ -1370,11 +1564,12 @@
            "tier": 2,
            "tier_left": 25,
            "forced": false,
-           "why": "kept: dominated by only 4.4 lineup pts, inside the 7.8 narrow band - a real coin flip",
+           "why": "within 0.28 of the best option - a real fork",
            "children": [
             {
              "round": 5,
              "pick": 50,
+             "next_pick": 71,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -1392,6 +1587,7 @@
               {
                "round": 6,
                "pick": 71,
+               "next_pick": 74,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -1409,27 +1605,27 @@
                 {
                  "round": 7,
                  "pick": 74,
+                 "next_pick": 95,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.423,
-                 "vona": 24.66,
+                 "vona": 13.32,
                  "e_now": 24.66,
-                 "e_next": 0.0,
+                 "e_next": 11.34,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "VONA gap 17.2 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
               }
              ]
             }
-           ],
-           "narrowly_dominated": 4.4
+           ]
           }
          ]
         }
@@ -1438,13 +1634,13 @@
      ]
     }
    ],
-   "nodes": 53,
+   "nodes": 58,
    "rendered_forks": 6,
-   "forks_collapsed_by_pruning": 4,
+   "forks_collapsed_by_pruning": 9,
    "pruned": {
-    "dominated": 7,
+    "dominated": 10,
     "budget": 0,
-    "narrow_kept": 3
+    "narrow_kept": 1
    },
    "picks": [
     2,
@@ -1454,6 +1650,15 @@
     50,
     71,
     74
+   ],
+   "next_picks": [
+    23,
+    26,
+    47,
+    50,
+    71,
+    74,
+    95
    ]
   },
   "3": {
@@ -1462,6 +1667,7 @@
     {
      "round": 1,
      "pick": 3,
+     "next_pick": 22,
      "pos": "RB",
      "name": "Jahmyr Gibbs",
      "vor": 162.4,
@@ -1479,6 +1685,7 @@
       {
        "round": 2,
        "pick": 22,
+       "next_pick": 27,
        "pos": "TE",
        "name": "Brock Bowers",
        "vor": 91.0,
@@ -1496,6 +1703,7 @@
         {
          "round": 3,
          "pick": 27,
+         "next_pick": 46,
          "pos": "WR",
          "name": "Nico Collins",
          "vor": 75.8,
@@ -1513,81 +1721,7 @@
           {
            "round": 4,
            "pick": 46,
-           "pos": "WR",
-           "name": "Zay Flowers",
-           "vor": 42.0,
-           "adp": 42.8,
-           "pts": 228.2,
-           "p_available": 0.407,
-           "vona": 2.23,
-           "e_now": 41.86,
-           "e_next": 39.63,
-           "tier": 5,
-           "tier_left": 22,
-           "forced": false,
-           "why": "within 0.28 of the best option - a real fork",
-           "children": [
-            {
-             "round": 5,
-             "pick": 51,
-             "pos": "RB",
-             "name": "D'Andre Swift",
-             "vor": 39.0,
-             "adp": 55.8,
-             "pts": 208.0,
-             "p_available": 0.614,
-             "vona": 20.37,
-             "e_now": 37.13,
-             "e_next": 16.75,
-             "tier": 4,
-             "tier_left": 3,
-             "forced": true,
-             "why": "VONA gap 11.0 over WR; not a decision",
-             "children": [
-              {
-               "round": 6,
-               "pick": 70,
-               "pos": "WR",
-               "name": "Parker Washington",
-               "vor": 26.2,
-               "adp": 76.6,
-               "pts": 212.4,
-               "p_available": 0.618,
-               "vona": 2.63,
-               "e_now": 29.16,
-               "e_next": 26.53,
-               "tier": 5,
-               "tier_left": 13,
-               "forced": true,
-               "why": "fork collapsed - 1 sibling pruned as dominated",
-               "children": [
-                {
-                 "round": 7,
-                 "pick": 75,
-                 "pos": "QB",
-                 "name": "Dak Prescott",
-                 "vor": 18.4,
-                 "adp": 78.1,
-                 "pts": 365.9,
-                 "p_available": 0.555,
-                 "vona": 17.99,
-                 "e_now": 17.99,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 21,
-                 "forced": true,
-                 "why": "VONA gap 11.4 over RB; not a decision",
-                 "children": []
-                }
-               ]
-              }
-             ]
-            }
-           ]
-          },
-          {
-           "round": 4,
-           "pick": 46,
+           "next_pick": 51,
            "pos": "QB",
            "name": "Drake Maye",
            "vor": 31.3,
@@ -1599,12 +1733,13 @@
            "e_next": 25.6,
            "tier": 2,
            "tier_left": 25,
-           "forced": false,
-           "why": "kept: dominated by only 7.7 lineup pts, inside the 7.8 narrow band - a real coin flip",
+           "forced": true,
+           "why": "fork collapsed - 1 sibling pruned as dominated",
            "children": [
             {
              "round": 5,
              "pick": 51,
+             "next_pick": 70,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -1622,6 +1757,7 @@
               {
                "round": 6,
                "pick": 70,
+               "next_pick": 75,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -1639,27 +1775,27 @@
                 {
                  "round": 7,
                  "pick": 75,
+                 "next_pick": 94,
                  "pos": "WR",
                  "name": "Christian Watson",
                  "vor": 21.4,
                  "adp": 70.1,
                  "pts": 207.6,
                  "p_available": 0.404,
-                 "vona": 23.95,
+                 "vona": 12.05,
                  "e_now": 23.95,
-                 "e_next": 0.0,
+                 "e_next": 11.9,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "VONA gap 17.4 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
               }
              ]
             }
-           ],
-           "narrowly_dominated": 7.7
+           ]
           }
          ]
         }
@@ -1668,13 +1804,13 @@
      ]
     }
    ],
-   "nodes": 23,
+   "nodes": 24,
    "rendered_forks": 1,
-   "forks_collapsed_by_pruning": 4,
+   "forks_collapsed_by_pruning": 5,
    "pruned": {
-    "dominated": 4,
+    "dominated": 5,
     "budget": 0,
-    "narrow_kept": 1
+    "narrow_kept": 0
    },
    "picks": [
     3,
@@ -1684,6 +1820,15 @@
     51,
     70,
     75
+   ],
+   "next_picks": [
+    22,
+    27,
+    46,
+    51,
+    70,
+    75,
+    94
    ]
   },
   "4": {
@@ -1692,6 +1837,7 @@
     {
      "round": 1,
      "pick": 4,
+     "next_pick": 21,
      "pos": "RB",
      "name": "Jahmyr Gibbs",
      "vor": 162.4,
@@ -1709,6 +1855,7 @@
       {
        "round": 2,
        "pick": 21,
+       "next_pick": 28,
        "pos": "RB",
        "name": "Derrick Henry",
        "vor": 77.9,
@@ -1726,6 +1873,7 @@
         {
          "round": 3,
          "pick": 28,
+         "next_pick": 45,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -1743,6 +1891,7 @@
           {
            "round": 4,
            "pick": 45,
+           "next_pick": 52,
            "pos": "WR",
            "name": "Zay Flowers",
            "vor": 42.0,
@@ -1760,6 +1909,7 @@
             {
              "round": 5,
              "pick": 52,
+             "next_pick": 69,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -1777,6 +1927,7 @@
               {
                "round": 6,
                "pick": 69,
+               "next_pick": 76,
                "pos": "QB",
                "name": "Dak Prescott",
                "vor": 18.4,
@@ -1794,19 +1945,20 @@
                 {
                  "round": 7,
                  "pick": 76,
+                 "next_pick": 93,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.511,
-                 "vona": 25.98,
+                 "vona": 10.3,
                  "e_now": 25.98,
-                 "e_next": 0.0,
+                 "e_next": 15.69,
                  "tier": 5,
                  "tier_left": 10,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -1838,6 +1990,15 @@
     52,
     69,
     76
+   ],
+   "next_picks": [
+    21,
+    28,
+    45,
+    52,
+    69,
+    76,
+    93
    ]
   },
   "5": {
@@ -1846,6 +2007,7 @@
     {
      "round": 1,
      "pick": 5,
+     "next_pick": 20,
      "pos": "RB",
      "name": "Christian McCaffrey",
      "vor": 122.0,
@@ -1863,6 +2025,7 @@
       {
        "round": 2,
        "pick": 20,
+       "next_pick": 29,
        "pos": "RB",
        "name": "Derrick Henry",
        "vor": 77.9,
@@ -1880,6 +2043,7 @@
         {
          "round": 3,
          "pick": 29,
+         "next_pick": 44,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -1897,6 +2061,7 @@
           {
            "round": 4,
            "pick": 44,
+           "next_pick": 53,
            "pos": "WR",
            "name": "Zay Flowers",
            "vor": 42.0,
@@ -1914,6 +2079,7 @@
             {
              "round": 5,
              "pick": 53,
+             "next_pick": 68,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -1931,6 +2097,7 @@
               {
                "round": 6,
                "pick": 68,
+               "next_pick": 77,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -1948,19 +2115,20 @@
                 {
                  "round": 7,
                  "pick": 77,
+                 "next_pick": 92,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.939,
-                 "vona": 22.44,
+                 "vona": 9.4,
                  "e_now": 22.44,
-                 "e_next": 0.0,
+                 "e_next": 13.04,
                  "tier": 5,
                  "tier_left": 9,
                  "forced": true,
-                 "why": "VONA gap 4.8 over QB; not a decision",
+                 "why": "VONA gap 7.4 over QB; not a decision",
                  "children": []
                 }
                ]
@@ -1992,6 +2160,15 @@
     53,
     68,
     77
+   ],
+   "next_picks": [
+    20,
+    29,
+    44,
+    53,
+    68,
+    77,
+    92
    ]
   },
   "6": {
@@ -2000,6 +2177,7 @@
     {
      "round": 1,
      "pick": 6,
+     "next_pick": 19,
      "pos": "RB",
      "name": "Christian McCaffrey",
      "vor": 122.0,
@@ -2017,6 +2195,7 @@
       {
        "round": 2,
        "pick": 19,
+       "next_pick": 30,
        "pos": "RB",
        "name": "Derrick Henry",
        "vor": 77.9,
@@ -2034,6 +2213,7 @@
         {
          "round": 3,
          "pick": 30,
+         "next_pick": 43,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -2051,6 +2231,7 @@
           {
            "round": 4,
            "pick": 43,
+           "next_pick": 54,
            "pos": "WR",
            "name": "Zay Flowers",
            "vor": 42.0,
@@ -2068,6 +2249,7 @@
             {
              "round": 5,
              "pick": 54,
+             "next_pick": 67,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -2085,6 +2267,7 @@
               {
                "round": 6,
                "pick": 67,
+               "next_pick": 78,
                "pos": "WR",
                "name": "Parker Washington",
                "vor": 26.2,
@@ -2102,19 +2285,20 @@
                 {
                  "round": 7,
                  "pick": 78,
-                 "pos": "QB",
-                 "name": "Dak Prescott",
-                 "vor": 18.4,
-                 "adp": 78.1,
-                 "pts": 365.9,
-                 "p_available": 0.502,
-                 "vona": 17.49,
-                 "e_now": 17.49,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 20,
+                 "next_pick": 91,
+                 "pos": "WR",
+                 "name": "Jayden Reed",
+                 "vor": 11.4,
+                 "adp": 114.4,
+                 "pts": 197.6,
+                 "p_available": 0.934,
+                 "vona": 8.15,
+                 "e_now": 21.77,
+                 "e_next": 13.61,
+                 "tier": 5,
+                 "tier_left": 9,
                  "forced": true,
-                 "why": "fork collapsed - 1 sibling pruned as dominated",
+                 "why": "VONA gap 6.4 over QB; not a decision",
                  "children": []
                 }
                ]
@@ -2130,11 +2314,11 @@
      ]
     }
    ],
-   "nodes": 8,
+   "nodes": 7,
    "rendered_forks": 0,
-   "forks_collapsed_by_pruning": 1,
+   "forks_collapsed_by_pruning": 0,
    "pruned": {
-    "dominated": 1,
+    "dominated": 0,
     "budget": 0,
     "narrow_kept": 0
    },
@@ -2146,6 +2330,15 @@
     54,
     67,
     78
+   ],
+   "next_picks": [
+    19,
+    30,
+    43,
+    54,
+    67,
+    78,
+    91
    ]
   },
   "7": {
@@ -2154,6 +2347,7 @@
     {
      "round": 1,
      "pick": 7,
+     "next_pick": 18,
      "pos": "RB",
      "name": "Jonathan Taylor",
      "vor": 103.3,
@@ -2171,6 +2365,7 @@
       {
        "round": 2,
        "pick": 18,
+       "next_pick": 31,
        "pos": "RB",
        "name": "Derrick Henry",
        "vor": 77.9,
@@ -2188,6 +2383,7 @@
         {
          "round": 3,
          "pick": 31,
+         "next_pick": 42,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -2205,6 +2401,7 @@
           {
            "round": 4,
            "pick": 42,
+           "next_pick": 55,
            "pos": "WR",
            "name": "Zay Flowers",
            "vor": 42.0,
@@ -2222,6 +2419,7 @@
             {
              "round": 5,
              "pick": 55,
+             "next_pick": 66,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -2239,6 +2437,7 @@
               {
                "round": 6,
                "pick": 66,
+               "next_pick": 79,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -2256,19 +2455,20 @@
                 {
                  "round": 7,
                  "pick": 79,
-                 "pos": "QB",
-                 "name": "Dak Prescott",
-                 "vor": 18.4,
-                 "adp": 78.1,
-                 "pts": 365.9,
-                 "p_available": 0.484,
-                 "vona": 17.34,
-                 "e_now": 17.34,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 20,
+                 "next_pick": 90,
+                 "pos": "WR",
+                 "name": "Parker Washington",
+                 "vor": 26.2,
+                 "adp": 76.6,
+                 "pts": 212.4,
+                 "p_available": 0.457,
+                 "vona": 5.47,
+                 "e_now": 21.99,
+                 "e_next": 16.52,
+                 "tier": 5,
+                 "tier_left": 9,
                  "forced": true,
-                 "why": "fork collapsed - 1 sibling pruned as dominated",
+                 "why": "VONA gap 4.0 over QB; not a decision",
                  "children": []
                 }
                ]
@@ -2284,11 +2484,11 @@
      ]
     }
    ],
-   "nodes": 8,
+   "nodes": 7,
    "rendered_forks": 0,
-   "forks_collapsed_by_pruning": 1,
+   "forks_collapsed_by_pruning": 0,
    "pruned": {
-    "dominated": 1,
+    "dominated": 0,
     "budget": 0,
     "narrow_kept": 0
    },
@@ -2300,6 +2500,15 @@
     55,
     66,
     79
+   ],
+   "next_picks": [
+    18,
+    31,
+    42,
+    55,
+    66,
+    79,
+    90
    ]
   },
   "8": {
@@ -2308,6 +2517,7 @@
     {
      "round": 1,
      "pick": 8,
+     "next_pick": 17,
      "pos": "RB",
      "name": "Jonathan Taylor",
      "vor": 103.3,
@@ -2325,6 +2535,7 @@
       {
        "round": 2,
        "pick": 17,
+       "next_pick": 32,
        "pos": "RB",
        "name": "Chase Brown",
        "vor": 86.2,
@@ -2342,6 +2553,7 @@
         {
          "round": 3,
          "pick": 32,
+         "next_pick": 41,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -2359,6 +2571,7 @@
           {
            "round": 4,
            "pick": 41,
+           "next_pick": 56,
            "pos": "WR",
            "name": "Zay Flowers",
            "vor": 42.0,
@@ -2376,6 +2589,7 @@
             {
              "round": 5,
              "pick": 56,
+             "next_pick": 65,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -2393,6 +2607,7 @@
               {
                "round": 6,
                "pick": 65,
+               "next_pick": 80,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -2410,19 +2625,20 @@
                 {
                  "round": 7,
                  "pick": 80,
-                 "pos": "QB",
-                 "name": "Dak Prescott",
-                 "vor": 18.4,
-                 "adp": 78.1,
-                 "pts": 365.9,
-                 "p_available": 0.466,
-                 "vona": 17.19,
-                 "e_now": 17.19,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 20,
+                 "next_pick": 89,
+                 "pos": "WR",
+                 "name": "Parker Washington",
+                 "vor": 26.2,
+                 "adp": 76.6,
+                 "pts": 212.4,
+                 "p_available": 0.439,
+                 "vona": 4.48,
+                 "e_now": 21.54,
+                 "e_next": 17.06,
+                 "tier": 5,
+                 "tier_left": 9,
                  "forced": true,
-                 "why": "fork collapsed - 1 sibling pruned as dominated",
+                 "why": "VONA gap 3.3 over QB; not a decision",
                  "children": []
                 }
                ]
@@ -2438,11 +2654,11 @@
      ]
     }
    ],
-   "nodes": 8,
+   "nodes": 7,
    "rendered_forks": 0,
-   "forks_collapsed_by_pruning": 1,
+   "forks_collapsed_by_pruning": 0,
    "pruned": {
-    "dominated": 1,
+    "dominated": 0,
     "budget": 0,
     "narrow_kept": 0
    },
@@ -2454,6 +2670,15 @@
     56,
     65,
     80
+   ],
+   "next_picks": [
+    17,
+    32,
+    41,
+    56,
+    65,
+    80,
+    89
    ]
   },
   "9": {
@@ -2462,6 +2687,7 @@
     {
      "round": 1,
      "pick": 9,
+     "next_pick": 16,
      "pos": "RB",
      "name": "James Cook",
      "vor": 91.8,
@@ -2479,6 +2705,7 @@
       {
        "round": 2,
        "pick": 16,
+       "next_pick": 33,
        "pos": "RB",
        "name": "Chase Brown",
        "vor": 86.2,
@@ -2496,6 +2723,7 @@
         {
          "round": 3,
          "pick": 33,
+         "next_pick": 40,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -2513,6 +2741,7 @@
           {
            "round": 4,
            "pick": 40,
+           "next_pick": 57,
            "pos": "WR",
            "name": "Zay Flowers",
            "vor": 42.0,
@@ -2530,6 +2759,7 @@
             {
              "round": 5,
              "pick": 57,
+             "next_pick": 64,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -2547,6 +2777,7 @@
               {
                "round": 6,
                "pick": 64,
+               "next_pick": 81,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -2564,15 +2795,16 @@
                 {
                  "round": 7,
                  "pick": 81,
+                 "next_pick": 88,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.449,
-                 "vona": 17.05,
+                 "vona": 0.91,
                  "e_now": 17.05,
-                 "e_next": 0.0,
+                 "e_next": 16.14,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
@@ -2591,6 +2823,7 @@
         {
          "round": 3,
          "pick": 33,
+         "next_pick": 40,
          "pos": "WR",
          "name": "Chris Olave",
          "vor": 49.7,
@@ -2608,6 +2841,7 @@
           {
            "round": 4,
            "pick": 40,
+           "next_pick": 57,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -2625,6 +2859,7 @@
             {
              "round": 5,
              "pick": 57,
+             "next_pick": 64,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -2642,6 +2877,7 @@
               {
                "round": 6,
                "pick": 64,
+               "next_pick": 81,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -2659,15 +2895,16 @@
                 {
                  "round": 7,
                  "pick": 81,
+                 "next_pick": 88,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.449,
-                 "vona": 17.05,
+                 "vona": 0.91,
                  "e_now": 17.05,
-                 "e_next": 0.0,
+                 "e_next": 16.14,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
@@ -2688,12 +2925,12 @@
     }
    ],
    "nodes": 40,
-   "rendered_forks": 6,
-   "forks_collapsed_by_pruning": 5,
+   "rendered_forks": 4,
+   "forks_collapsed_by_pruning": 7,
    "pruned": {
-    "dominated": 5,
+    "dominated": 7,
     "budget": 0,
-    "narrow_kept": 6
+    "narrow_kept": 4
    },
    "picks": [
     9,
@@ -2703,6 +2940,15 @@
     57,
     64,
     81
+   ],
+   "next_picks": [
+    16,
+    33,
+    40,
+    57,
+    64,
+    81,
+    88
    ]
   },
   "10": {
@@ -2711,6 +2957,7 @@
     {
      "round": 1,
      "pick": 10,
+     "next_pick": 15,
      "pos": "WR",
      "name": "CeeDee Lamb",
      "vor": 84.3,
@@ -2728,6 +2975,7 @@
       {
        "round": 2,
        "pick": 15,
+       "next_pick": 34,
        "pos": "RB",
        "name": "Chase Brown",
        "vor": 86.2,
@@ -2745,6 +2993,7 @@
         {
          "round": 3,
          "pick": 34,
+         "next_pick": 39,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -2762,6 +3011,7 @@
           {
            "round": 4,
            "pick": 39,
+           "next_pick": 58,
            "pos": "WR",
            "name": "DeVonta Smith",
            "vor": 43.0,
@@ -2779,6 +3029,7 @@
             {
              "round": 5,
              "pick": 58,
+             "next_pick": 63,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -2796,6 +3047,7 @@
               {
                "round": 6,
                "pick": 63,
+               "next_pick": 82,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -2813,19 +3065,20 @@
                 {
                  "round": 7,
                  "pick": 82,
+                 "next_pick": 87,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.403,
-                 "vona": 22.59,
+                 "vona": 3.08,
                  "e_now": 22.59,
-                 "e_next": 0.0,
+                 "e_next": 19.51,
                  "tier": 5,
                  "tier_left": 7,
                  "forced": true,
-                 "why": "VONA gap 5.7 over QB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -2835,6 +3088,7 @@
             {
              "round": 5,
              "pick": 58,
+             "next_pick": 63,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -2852,6 +3106,7 @@
               {
                "round": 6,
                "pick": 63,
+               "next_pick": 82,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -2869,19 +3124,20 @@
                 {
                  "round": 7,
                  "pick": 82,
+                 "next_pick": 87,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.431,
-                 "vona": 16.92,
+                 "vona": 0.65,
                  "e_now": 16.92,
-                 "e_next": 0.0,
+                 "e_next": 16.27,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
-                 "why": "VONA gap 14.0 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -2895,6 +3151,7 @@
         {
          "round": 3,
          "pick": 34,
+         "next_pick": 39,
          "pos": "WR",
          "name": "DeVonta Smith",
          "vor": 43.0,
@@ -2912,6 +3169,7 @@
           {
            "round": 4,
            "pick": 39,
+           "next_pick": 58,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -2929,6 +3187,7 @@
             {
              "round": 5,
              "pick": 58,
+             "next_pick": 63,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -2946,6 +3205,7 @@
               {
                "round": 6,
                "pick": 63,
+               "next_pick": 82,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -2963,19 +3223,20 @@
                 {
                  "round": 7,
                  "pick": 82,
+                 "next_pick": 87,
                  "pos": "WR",
                  "name": "Parker Washington",
                  "vor": 26.2,
                  "adp": 76.6,
                  "pts": 212.4,
                  "p_available": 0.403,
-                 "vona": 22.59,
+                 "vona": 3.08,
                  "e_now": 22.59,
-                 "e_next": 0.0,
+                 "e_next": 19.51,
                  "tier": 5,
                  "tier_left": 7,
                  "forced": true,
-                 "why": "VONA gap 5.7 over QB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -2985,6 +3246,7 @@
             {
              "round": 5,
              "pick": 58,
+             "next_pick": 63,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -3002,6 +3264,7 @@
               {
                "round": 6,
                "pick": 63,
+               "next_pick": 82,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3019,19 +3282,20 @@
                 {
                  "round": 7,
                  "pick": 82,
+                 "next_pick": 87,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.431,
-                 "vona": 16.92,
+                 "vona": 0.65,
                  "e_now": 16.92,
-                 "e_next": 0.0,
+                 "e_next": 16.27,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
-                 "why": "VONA gap 14.0 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -3047,11 +3311,11 @@
      ]
     }
    ],
-   "nodes": 24,
+   "nodes": 30,
    "rendered_forks": 3,
-   "forks_collapsed_by_pruning": 0,
+   "forks_collapsed_by_pruning": 6,
    "pruned": {
-    "dominated": 2,
+    "dominated": 8,
     "budget": 0,
     "narrow_kept": 0
    },
@@ -3063,6 +3327,15 @@
     58,
     63,
     82
+   ],
+   "next_picks": [
+    15,
+    34,
+    39,
+    58,
+    63,
+    82,
+    87
    ]
   },
   "11": {
@@ -3071,6 +3344,7 @@
     {
      "round": 1,
      "pick": 11,
+     "next_pick": 14,
      "pos": "WR",
      "name": "Nico Collins",
      "vor": 75.8,
@@ -3088,6 +3362,7 @@
       {
        "round": 2,
        "pick": 14,
+       "next_pick": 35,
        "pos": "RB",
        "name": "Chase Brown",
        "vor": 86.2,
@@ -3105,6 +3380,7 @@
         {
          "round": 3,
          "pick": 35,
+         "next_pick": 38,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -3122,6 +3398,7 @@
           {
            "round": 4,
            "pick": 38,
+           "next_pick": 59,
            "pos": "WR",
            "name": "DeVonta Smith",
            "vor": 43.0,
@@ -3139,6 +3416,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -3156,6 +3434,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3173,19 +3452,40 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.903,
-                 "vona": 21.98,
+                 "vona": 1.85,
                  "e_now": 21.98,
-                 "e_next": 0.0,
+                 "e_next": 20.14,
                  "tier": 5,
                  "tier_left": 6,
-                 "forced": true,
-                 "why": "VONA gap 5.2 over QB; not a decision",
+                 "forced": false,
+                 "why": "kept: dominated by only 7.0 lineup pts, inside the 7.8 narrow band - a real coin flip",
+                 "children": [],
+                 "narrowly_dominated": 7.0
+                },
+                {
+                 "round": 7,
+                 "pick": 83,
+                 "next_pick": 86,
+                 "pos": "QB",
+                 "name": "Dak Prescott",
+                 "vor": 18.4,
+                 "adp": 78.1,
+                 "pts": 365.9,
+                 "p_available": 0.414,
+                 "vona": 0.39,
+                 "e_now": 16.78,
+                 "e_next": 16.4,
+                 "tier": 2,
+                 "tier_left": 20,
+                 "forced": false,
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -3195,6 +3495,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -3212,6 +3513,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3229,19 +3531,20 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.414,
-                 "vona": 16.78,
+                 "vona": 0.39,
                  "e_now": 16.78,
-                 "e_next": 0.0,
+                 "e_next": 16.4,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
-                 "why": "VONA gap 14.6 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -3253,6 +3556,7 @@
           {
            "round": 4,
            "pick": 38,
+           "next_pick": 59,
            "pos": "RB",
            "name": "D'Andre Swift",
            "vor": 39.0,
@@ -3270,6 +3574,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "RB",
              "name": "Quinshon Judkins",
              "vor": 27.0,
@@ -3287,6 +3592,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -3304,15 +3610,16 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.414,
-                 "vona": 16.78,
+                 "vona": 0.39,
                  "e_now": 16.78,
-                 "e_next": 0.0,
+                 "e_next": 16.4,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
@@ -3326,6 +3633,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -3343,6 +3651,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3360,15 +3669,16 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.903,
-                 "vona": 20.16,
+                 "vona": 1.51,
                  "e_now": 20.16,
-                 "e_next": 0.0,
+                 "e_next": 18.65,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -3379,19 +3689,20 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.414,
-                 "vona": 16.78,
+                 "vona": 0.39,
                  "e_now": 16.78,
-                 "e_next": 0.0,
+                 "e_next": 16.4,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -3405,6 +3716,7 @@
         {
          "round": 3,
          "pick": 35,
+         "next_pick": 38,
          "pos": "QB",
          "name": "Drake Maye",
          "vor": 31.3,
@@ -3422,6 +3734,7 @@
           {
            "round": 4,
            "pick": 38,
+           "next_pick": 59,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -3439,6 +3752,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -3456,6 +3770,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3473,19 +3788,20 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.903,
-                 "vona": 21.98,
+                 "vona": 1.85,
                  "e_now": 21.98,
-                 "e_next": 0.0,
+                 "e_next": 20.14,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -3496,6 +3812,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -3513,6 +3830,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3530,19 +3848,20 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.903,
-                 "vona": 20.16,
+                 "vona": 1.51,
                  "e_now": 20.16,
-                 "e_next": 0.0,
+                 "e_next": 18.65,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": true,
-                 "why": "VONA gap 18.0 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -3562,6 +3881,7 @@
     {
      "round": 1,
      "pick": 11,
+     "next_pick": 14,
      "pos": "RB",
      "name": "James Cook",
      "vor": 91.8,
@@ -3579,6 +3899,7 @@
       {
        "round": 2,
        "pick": 14,
+       "next_pick": 35,
        "pos": "RB",
        "name": "Chase Brown",
        "vor": 86.2,
@@ -3596,6 +3917,7 @@
         {
          "round": 3,
          "pick": 35,
+         "next_pick": 38,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -3613,6 +3935,7 @@
           {
            "round": 4,
            "pick": 38,
+           "next_pick": 59,
            "pos": "WR",
            "name": "DeVonta Smith",
            "vor": 43.0,
@@ -3630,6 +3953,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -3647,6 +3971,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -3664,15 +3989,16 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.414,
-                 "vona": 16.78,
+                 "vona": 0.39,
                  "e_now": 16.78,
-                 "e_next": 0.0,
+                 "e_next": 16.4,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
@@ -3686,6 +4012,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -3703,6 +4030,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3720,15 +4048,16 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.903,
-                 "vona": 20.15,
+                 "vona": 1.51,
                  "e_now": 20.15,
-                 "e_next": 0.0,
+                 "e_next": 18.65,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -3739,19 +4068,20 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.414,
-                 "vona": 16.78,
+                 "vona": 0.39,
                  "e_now": 16.78,
-                 "e_next": 0.0,
+                 "e_next": 16.4,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -3765,6 +4095,7 @@
         {
          "round": 3,
          "pick": 35,
+         "next_pick": 38,
          "pos": "WR",
          "name": "DeVonta Smith",
          "vor": 43.0,
@@ -3782,6 +4113,7 @@
           {
            "round": 4,
            "pick": 38,
+           "next_pick": 59,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -3799,6 +4131,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -3816,6 +4149,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -3833,15 +4167,16 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.414,
-                 "vona": 16.78,
+                 "vona": 0.39,
                  "e_now": 16.78,
-                 "e_next": 0.0,
+                 "e_next": 16.4,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": true,
@@ -3855,6 +4190,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -3872,6 +4208,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -3889,15 +4226,16 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.903,
-                 "vona": 20.15,
+                 "vona": 1.51,
                  "e_now": 20.15,
-                 "e_next": 0.0,
+                 "e_next": 18.65,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -3908,19 +4246,20 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "QB",
                  "name": "Dak Prescott",
                  "vor": 18.4,
                  "adp": 78.1,
                  "pts": 365.9,
                  "p_available": 0.414,
-                 "vona": 16.78,
+                 "vona": 0.39,
                  "e_now": 16.78,
-                 "e_next": 0.0,
+                 "e_next": 16.4,
                  "tier": 2,
                  "tier_left": 20,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -3934,6 +4273,7 @@
         {
          "round": 3,
          "pick": 35,
+         "next_pick": 38,
          "pos": "QB",
          "name": "Drake Maye",
          "vor": 31.3,
@@ -3951,6 +4291,7 @@
           {
            "round": 4,
            "pick": 38,
+           "next_pick": 59,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -3968,6 +4309,7 @@
             {
              "round": 5,
              "pick": 59,
+             "next_pick": 62,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -3985,6 +4327,7 @@
               {
                "round": 6,
                "pick": 62,
+               "next_pick": 83,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -4002,19 +4345,20 @@
                 {
                  "round": 7,
                  "pick": 83,
+                 "next_pick": 86,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.903,
-                 "vona": 20.16,
+                 "vona": 1.51,
                  "e_now": 20.16,
-                 "e_next": 0.0,
+                 "e_next": 18.65,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4030,13 +4374,13 @@
      ]
     }
    ],
-   "nodes": 69,
-   "rendered_forks": 12,
-   "forks_collapsed_by_pruning": 4,
+   "nodes": 73,
+   "rendered_forks": 13,
+   "forks_collapsed_by_pruning": 7,
    "pruned": {
-    "dominated": 8,
+    "dominated": 11,
     "budget": 0,
-    "narrow_kept": 6
+    "narrow_kept": 7
    },
    "picks": [
     11,
@@ -4046,6 +4390,15 @@
     59,
     62,
     83
+   ],
+   "next_picks": [
+    14,
+    35,
+    38,
+    59,
+    62,
+    83,
+    86
    ]
   },
   "12": {
@@ -4054,6 +4407,7 @@
     {
      "round": 1,
      "pick": 12,
+     "next_pick": 13,
      "pos": "WR",
      "name": "Nico Collins",
      "vor": 75.8,
@@ -4071,6 +4425,7 @@
       {
        "round": 2,
        "pick": 13,
+       "next_pick": 36,
        "pos": "RB",
        "name": "De'Von Achane",
        "vor": 88.4,
@@ -4088,6 +4443,7 @@
         {
          "round": 3,
          "pick": 36,
+         "next_pick": 37,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -4105,6 +4461,7 @@
           {
            "round": 4,
            "pick": 37,
+           "next_pick": 60,
            "pos": "RB",
            "name": "D'Andre Swift",
            "vor": 39.0,
@@ -4122,6 +4479,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "RB",
              "name": "Bhayshul Tuten",
              "vor": 5.8,
@@ -4139,6 +4497,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -4156,15 +4515,16 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 19.66,
+                 "vona": 0.5,
                  "e_now": 19.66,
-                 "e_next": 0.0,
+                 "e_next": 19.16,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -4175,19 +4535,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4197,6 +4558,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -4214,6 +4576,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4231,15 +4594,16 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 19.66,
+                 "vona": 0.5,
                  "e_now": 19.66,
-                 "e_next": 0.0,
+                 "e_next": 19.16,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -4250,19 +4614,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4275,6 +4640,7 @@
           {
            "round": 4,
            "pick": 37,
+           "next_pick": 60,
            "pos": "WR",
            "name": "DeVonta Smith",
            "vor": 43.0,
@@ -4292,6 +4658,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -4309,6 +4676,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4326,19 +4694,40 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 21.37,
+                 "vona": 0.62,
                  "e_now": 21.37,
-                 "e_next": 0.0,
+                 "e_next": 20.76,
                  "tier": 5,
                  "tier_left": 6,
-                 "forced": true,
-                 "why": "VONA gap 4.7 over QB; not a decision",
+                 "forced": false,
+                 "why": "kept: dominated by only 4.3 lineup pts, inside the 7.8 narrow band - a real coin flip",
+                 "children": [],
+                 "narrowly_dominated": 4.3
+                },
+                {
+                 "round": 7,
+                 "pick": 84,
+                 "next_pick": 85,
+                 "pos": "QB",
+                 "name": "Brock Purdy",
+                 "vor": 15.7,
+                 "adp": 121.2,
+                 "pts": 363.2,
+                 "p_available": 0.934,
+                 "vona": 0.13,
+                 "e_now": 16.65,
+                 "e_next": 16.52,
+                 "tier": 2,
+                 "tier_left": 19,
+                 "forced": false,
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4348,6 +4737,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -4365,6 +4755,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4382,19 +4773,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": true,
-                 "why": "VONA gap 15.2 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -4408,6 +4800,7 @@
         {
          "round": 3,
          "pick": 36,
+         "next_pick": 37,
          "pos": "QB",
          "name": "Drake Maye",
          "vor": 31.3,
@@ -4425,6 +4818,7 @@
           {
            "round": 4,
            "pick": 37,
+           "next_pick": 60,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -4442,6 +4836,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -4459,6 +4854,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4476,19 +4872,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 21.37,
+                 "vona": 0.62,
                  "e_now": 21.37,
-                 "e_next": 0.0,
+                 "e_next": 20.76,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": true,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4499,6 +4896,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -4516,6 +4914,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4533,19 +4932,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 19.66,
+                 "vona": 0.5,
                  "e_now": 19.66,
-                 "e_next": 0.0,
+                 "e_next": 19.16,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": true,
-                 "why": "VONA gap 18.2 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -4560,6 +4960,7 @@
         {
          "round": 3,
          "pick": 36,
+         "next_pick": 37,
          "pos": "WR",
          "name": "DeVonta Smith",
          "vor": 43.0,
@@ -4577,6 +4978,7 @@
           {
            "round": 4,
            "pick": 37,
+           "next_pick": 60,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -4594,6 +4996,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -4611,6 +5014,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4628,19 +5032,40 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 21.37,
+                 "vona": 0.62,
                  "e_now": 21.37,
-                 "e_next": 0.0,
+                 "e_next": 20.76,
                  "tier": 5,
                  "tier_left": 6,
-                 "forced": true,
-                 "why": "VONA gap 4.7 over QB; not a decision",
+                 "forced": false,
+                 "why": "kept: dominated by only 4.3 lineup pts, inside the 7.8 narrow band - a real coin flip",
+                 "children": [],
+                 "narrowly_dominated": 4.3
+                },
+                {
+                 "round": 7,
+                 "pick": 84,
+                 "next_pick": 85,
+                 "pos": "QB",
+                 "name": "Brock Purdy",
+                 "vor": 15.7,
+                 "adp": 121.2,
+                 "pts": 363.2,
+                 "p_available": 0.934,
+                 "vona": 0.13,
+                 "e_now": 16.65,
+                 "e_next": 16.52,
+                 "tier": 2,
+                 "tier_left": 19,
+                 "forced": false,
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4650,6 +5075,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -4667,6 +5093,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4684,19 +5111,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": true,
-                 "why": "VONA gap 15.2 over RB; not a decision",
+                 "why": "fork collapsed - 1 sibling pruned as dominated",
                  "children": []
                 }
                ]
@@ -4710,6 +5138,7 @@
         {
          "round": 3,
          "pick": 36,
+         "next_pick": 37,
          "pos": "RB",
          "name": "D'Andre Swift",
          "vor": 39.0,
@@ -4727,6 +5156,7 @@
           {
            "round": 4,
            "pick": 37,
+           "next_pick": 60,
            "pos": "TE",
            "name": "Colston Loveland",
            "vor": 52.9,
@@ -4744,6 +5174,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "RB",
              "name": "Bhayshul Tuten",
              "vor": 5.8,
@@ -4761,6 +5192,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -4778,15 +5210,16 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 19.66,
+                 "vona": 0.5,
                  "e_now": 19.66,
-                 "e_next": 0.0,
+                 "e_next": 19.16,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -4797,19 +5230,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4819,6 +5253,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -4836,6 +5271,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -4853,15 +5289,16 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 19.66,
+                 "vona": 0.5,
                  "e_now": 19.66,
-                 "e_next": 0.0,
+                 "e_next": 19.16,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -4872,19 +5309,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -4903,6 +5341,7 @@
     {
      "round": 1,
      "pick": 12,
+     "next_pick": 13,
      "pos": "RB",
      "name": "De'Von Achane",
      "vor": 88.4,
@@ -4920,6 +5359,7 @@
       {
        "round": 2,
        "pick": 13,
+       "next_pick": 36,
        "pos": "RB",
        "name": "Chase Brown",
        "vor": 86.2,
@@ -4937,6 +5377,7 @@
         {
          "round": 3,
          "pick": 36,
+         "next_pick": 37,
          "pos": "TE",
          "name": "Colston Loveland",
          "vor": 52.9,
@@ -4948,12 +5389,13 @@
          "e_next": 49.74,
          "tier": 3,
          "tier_left": 3,
-         "forced": false,
-         "why": "within 2.08 of the best option - a real fork",
+         "forced": true,
+         "why": "fork collapsed - 1 sibling pruned as dominated",
          "children": [
           {
            "round": 4,
            "pick": 37,
+           "next_pick": 60,
            "pos": "WR",
            "name": "DeVonta Smith",
            "vor": 43.0,
@@ -4971,6 +5413,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "RB",
              "name": "D'Andre Swift",
              "vor": 39.0,
@@ -4988,6 +5431,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "WR",
                "name": "Mike Evans",
                "vor": 36.0,
@@ -5005,15 +5449,16 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": true,
@@ -5027,6 +5472,7 @@
             {
              "round": 5,
              "pick": 60,
+             "next_pick": 61,
              "pos": "WR",
              "name": "Mike Evans",
              "vor": 36.0,
@@ -5044,6 +5490,7 @@
               {
                "round": 6,
                "pick": 61,
+               "next_pick": 84,
                "pos": "RB",
                "name": "Bhayshul Tuten",
                "vor": 5.8,
@@ -5061,15 +5508,16 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "WR",
                  "name": "Jayden Reed",
                  "vor": 11.4,
                  "adp": 114.4,
                  "pts": 197.6,
                  "p_available": 0.895,
-                 "vona": 19.66,
+                 "vona": 0.5,
                  "e_now": 19.66,
-                 "e_next": 0.0,
+                 "e_next": 19.16,
                  "tier": 5,
                  "tier_left": 6,
                  "forced": false,
@@ -5080,113 +5528,20 @@
                 {
                  "round": 7,
                  "pick": 84,
+                 "next_pick": 85,
                  "pos": "QB",
                  "name": "Brock Purdy",
                  "vor": 15.7,
                  "adp": 121.2,
                  "pts": 363.2,
                  "p_available": 0.934,
-                 "vona": 16.65,
+                 "vona": 0.13,
                  "e_now": 16.65,
-                 "e_next": 0.0,
+                 "e_next": 16.52,
                  "tier": 2,
                  "tier_left": 19,
                  "forced": false,
-                 "why": "within 4.65 of the best option - a real fork",
-                 "children": []
-                }
-               ]
-              }
-             ]
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "round": 3,
-         "pick": 36,
-         "pos": "WR",
-         "name": "DeVonta Smith",
-         "vor": 43.0,
-         "adp": 36.4,
-         "pts": 229.2,
-         "p_available": 0.514,
-         "vona": 1.19,
-         "e_now": 50.75,
-         "e_next": 49.56,
-         "tier": 5,
-         "tier_left": 27,
-         "forced": false,
-         "why": "within 2.08 of the best option - a real fork",
-         "children": [
-          {
-           "round": 4,
-           "pick": 37,
-           "pos": "TE",
-           "name": "Colston Loveland",
-           "vor": 52.9,
-           "adp": 39.2,
-           "pts": 215.4,
-           "p_available": 0.57,
-           "vona": 21.2,
-           "e_now": 49.74,
-           "e_next": 28.54,
-           "tier": 3,
-           "tier_left": 3,
-           "forced": true,
-           "why": "VONA gap 6.8 over WR; not a decision",
-           "children": [
-            {
-             "round": 5,
-             "pick": 60,
-             "pos": "RB",
-             "name": "D'Andre Swift",
-             "vor": 39.0,
-             "adp": 55.8,
-             "pts": 208.0,
-             "p_available": 0.4,
-             "vona": 1.18,
-             "e_now": 29.88,
-             "e_next": 28.7,
-             "tier": 4,
-             "tier_left": 1,
-             "forced": true,
-             "why": "fork collapsed - 1 sibling pruned as dominated",
-             "children": [
-              {
-               "round": 6,
-               "pick": 61,
-               "pos": "WR",
-               "name": "Mike Evans",
-               "vor": 36.0,
-               "adp": 61.5,
-               "pts": 222.2,
-               "p_available": 0.511,
-               "vona": 12.93,
-               "e_now": 34.31,
-               "e_next": 21.37,
-               "tier": 5,
-               "tier_left": 16,
-               "forced": true,
-               "why": "VONA gap 7.9 over QB; not a decision",
-               "children": [
-                {
-                 "round": 7,
-                 "pick": 84,
-                 "pos": "QB",
-                 "name": "Brock Purdy",
-                 "vor": 15.7,
-                 "adp": 121.2,
-                 "pts": 363.2,
-                 "p_available": 0.934,
-                 "vona": 16.65,
-                 "e_now": 16.65,
-                 "e_next": 0.0,
-                 "tier": 2,
-                 "tier_left": 19,
-                 "forced": true,
-                 "why": "fork collapsed - 1 sibling pruned as dominated",
+                 "why": "within 3.3 of the best option - a real fork",
                  "children": []
                 }
                ]
@@ -5204,11 +5559,11 @@
    ],
    "nodes": 80,
    "rendered_forks": 16,
-   "forks_collapsed_by_pruning": 3,
+   "forks_collapsed_by_pruning": 7,
    "pruned": {
-    "dominated": 8,
-    "budget": 5,
-    "narrow_kept": 9
+    "dominated": 12,
+    "budget": 3,
+    "narrow_kept": 11
    },
    "picks": [
     12,
@@ -5218,6 +5573,15 @@
     60,
     61,
     84
+   ],
+   "next_picks": [
+    13,
+    36,
+    37,
+    60,
+    61,
+    84,
+    85
    ]
   }
  }

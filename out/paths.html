@@ -82,7 +82,8 @@ function nodeHtml(n){
   var coin = n.narrowly_dominated != null;
   return '<div class="tnode' + (fork ? " fork" : "") + '">' +
     '<div class="trow">' +
-      '<span class="tpick num">R' + n.round + " - pick " + n.pick + '</span>' +
+      '<span class="tpick num">R' + n.round + " - pick " + n.pick +
+        " to " + n.next_pick + '</span>' +
       '<span class="tpos">' + esc(n.pos) + '</span>' +
       '<span class="tname">' + esc(n.name) + '</span>' +
       '<span class="tnums num">VOR ' + n.vor.toFixed(0) +

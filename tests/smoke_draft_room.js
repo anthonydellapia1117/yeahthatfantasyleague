@@ -883,6 +883,9 @@ const ok = (cond, name, detail) => {
                      "ff-hub.html": "FINDINGS" };
     for (const [file, label] of Object.entries(ACTIVE)){
       const pg = await browser.newPage();
+      const shellErrors = [];
+      pg.on("pageerror", e => shellErrors.push(String(e)));
+      pg.on("console", m => { if (m.type() === "error") shellErrors.push(m.text()); });
       await pg.route("**/api.sleeper.app/**", r => r.abort());
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(800);
@@ -900,13 +903,114 @@ const ok = (cond, name, detail) => {
         ok(rv.armed > 0 && rv.shown > 0,
            "reveals arm and complete on the home page", JSON.stringify(rv));
       }
+      if (file === "ff-hub.html"){
+        const n1 = JSON.parse(fs.readFileSync(
+          path.resolve("out/data/bullish_vs_adp.json"), "utf8"));
+        await pg.waitForFunction(() =>
+          document.querySelector("#n1State").dataset.state !== "loading");
+        await pg.click('.tabs button[data-p="p5"]');
+        ok(await pg.locator("#n1State").getAttribute("data-state") === "ready",
+           "findings N.1: computed artifact reaches an explicit ready state");
+        ok(await pg.locator("#n1Results").isVisible(),
+           "findings N.1: reviewed result is visible after artifact load");
+        ok((await pg.textContent("#n1Text")).trim() === n1.verdict,
+           "findings N.1: verdict is rendered verbatim from the artifact");
+        const oneDecimal = v => (Math.round(v * 1000) / 10).toFixed(1);
+        const pct = v => oneDecimal(v) + "%";
+        const pp = v => (v >= 0 ? "+" : "") + oneDecimal(v);
+        const hit = side => side.n
+          ? `${side.hit12.k}/${side.n} (${pct(side.hit12.rate)})`
+          : "0 - not identifiable";
+        const lift = v => v
+          ? `${pp(v.diff)}pp [${pp(v.diff_ci95[0])}, ${pp(v.diff_ci95[1])}]`
+          : "not identifiable";
+        const labels = {"pos1-12":"Positional 1-12", "pos13-24":"Positional 13-24",
+                        "pos25-48":"Positional 25-48"};
+        const expectedRows = Object.entries(labels).map(([key, label]) => {
+          const b = n1.within_band[key];
+          return [label, hit(b.tagged), hit(b.untagged), lift(b.lift_hit12),
+                  b.lift_hit12 ? b.lift_hit12.p_two_sided.toFixed(3) : "-"];
+        });
+        const actualRows = await pg.$$eval("#n1Body tr", rows => rows.map(row =>
+          [...row.querySelectorAll("td")].map(td => td.textContent.trim())));
+        ok(JSON.stringify(actualRows) === JSON.stringify(expectedRows),
+           "findings N.1: every rendered band cell comes from the artifact",
+           JSON.stringify(actualRows));
+        const expectedConcentration =
+          `${pct(n1.concentration.share_in_top12_band)} of tags are in positional ADP 1-12. ` +
+          n1.concentration.note;
+        ok((await pg.textContent("#n1Concentration")).trim() === expectedConcentration,
+           "findings N.1: tag concentration and note come from the artifact");
+        const verdictLabel = n1.verdict.split(" - ")[0];
+        ok((await pg.locator("#n1Verdict").getAttribute("class")) === "tag" &&
+           (await pg.textContent("#n1Verdict")).trim() === verdictLabel,
+           "findings N.1: verdict uses the neutral tag scale");
+        ok((await pg.textContent("#n1Hero")).includes(verdictLabel),
+           "findings N.1: the hero states a verdict only after artifact success");
+      }
       // dark lock: these pages load under the default (light) OS preference
       // in this suite, and must render the dark family anyway
       ok(await pg.evaluate(() => getComputedStyle(document.body).backgroundColor)
          === "rgb(11, 17, 32)",
          `${file} renders dark under a light OS preference`);
+      if (file === "ff-hub.html")
+        ok(shellErrors.length === 0, `${file}: zero console errors`, shellErrors[0] || "");
       await pg.close();
     }
+    // N.1 failure is deliberately loud. A missing or rejected artifact may
+    // never leave a stale table visible or infer a replacement verdict.
+    const n1err = await browser.newPage();
+    const n1Errors = [];
+    n1err.on("pageerror", e => n1Errors.push(String(e)));
+    n1err.on("console", m => { if (m.type() === "error") n1Errors.push(m.text()); });
+    const malformedN1 = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_vs_adp.json"), "utf8"));
+    delete malformedN1.within_band["pos1-12"].tagged.hit12;
+    await n1err.route("**/data/bullish_vs_adp.json", r => r.fulfill({
+      status: 200, contentType: "application/json", body: JSON.stringify(malformedN1) }));
+    await n1err.goto(base + "/out/ff-hub.html");
+    await n1err.waitForFunction(() =>
+      document.querySelector("#n1State").dataset.state === "error");
+    await n1err.click('.tabs button[data-p="p5"]');
+    const n1Failure = await n1err.textContent("#n1State");
+    ok(/N\.1 unavailable \(unusable schema\)/.test(n1Failure) &&
+       /No verdict is inferred/.test(n1Failure),
+       "findings N.1: unusable artifact produces a visible no-inference error");
+    ok(await n1err.locator("#n1Results").isHidden(),
+       "findings N.1: rejected artifact cannot expose stale results");
+    const rejectedLabel = malformedN1.verdict.split(" - ")[0];
+    ok(!(await n1err.textContent("#n1Hero")).includes(rejectedLabel),
+       "findings N.1: rejected artifact cannot leak its verdict through the hero");
+    ok(n1Errors.length === 0, "findings N.1 error state: zero console errors",
+       n1Errors[0] || "");
+    await n1err.close();
+    // A non-2xx response is a different failure mechanism from malformed
+    // JSON. Chromium may log the expected failed resource, so this assertion
+    // watches uncaught page errors and the visible state instead.
+    const n1http = await browser.newPage();
+    const n1HttpPageErrors = [];
+    n1http.on("pageerror", e => n1HttpPageErrors.push(String(e)));
+    await n1http.route("**/data/bullish_vs_adp.json", r => r.fulfill({
+      status: 503, contentType: "text/plain", body: "temporarily unavailable" }));
+    await n1http.goto(base + "/out/ff-hub.html");
+    await n1http.waitForFunction(() =>
+      document.querySelector("#n1State").dataset.state === "error");
+    await n1http.click('.tabs button[data-p="p5"]');
+    const n1HttpFailure = await n1http.textContent("#n1State");
+    ok(/N\.1 unavailable \(HTTP 503\)/.test(n1HttpFailure) &&
+       /No verdict is inferred/.test(n1HttpFailure),
+       "findings N.1: HTTP failure produces a visible no-inference error");
+    ok(await n1http.locator("#n1Results").isHidden(),
+       "findings N.1: HTTP failure cannot expose stale results");
+    const committedN1 = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_vs_adp.json"), "utf8"));
+    const committedLabel = committedN1.verdict.split(" - ")[0];
+    ok(!(await n1http.textContent("#n1Hero")).includes(committedLabel),
+       "findings N.1: HTTP failure cannot leak the committed verdict");
+    ok(n1HttpPageErrors.length === 0,
+       "findings N.1 HTTP error state: zero uncaught page errors",
+       n1HttpPageErrors[0] || "");
+    await n1http.close();
     // drawer behavior at 390px
     const dw = await browser.newPage({ viewport: { width: 390, height: 844 } });
     await dw.route("**/api.sleeper.app/**", r => r.abort());
@@ -1638,6 +1742,12 @@ const ok = (cond, name, detail) => {
        "paths: the independence caveat and its direction are shown");
     ok(/Stated deviation/.test(t8),
        "paths: the spec deviations are disclosed on the page");
+    const terminalLookahead = await pg.$$eval(".tpick", els => {
+      const r7 = els.map(e => e.textContent.trim()).filter(t => /^R7\b/.test(t));
+      return r7.length > 0 && r7.every(t => /^R7 - pick \d+ to \d+$/.test(t));
+    });
+    ok(terminalLookahead,
+       "paths: every rendered round-7 node names its real round-8 lookahead");
     // every rendered node clears the survival floor the page states
     const floorOk = await pg.evaluate(() => {
       const nums = [...document.querySelectorAll(".tnums")]

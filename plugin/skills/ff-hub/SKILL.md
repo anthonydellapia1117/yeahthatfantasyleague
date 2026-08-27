@@ -41,7 +41,7 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 | Who is likely to take my target | Build survival odds from `out/picks.csv` positional timing by franchise |
 | Start-sit | `out/rb_startsit_decisions.csv` (176 named swaps, knowable-vs-hindsight verdicts) plus `out/lineup_efficiency.csv`. Read the 3E caveat below before advising |
 | Rebuild everything | `python3 src/ingest.py && python3 src/phase2_value.py && python3 src/phase3_lineup.py && python3 src/build_app_data.py` |
-| Open the dashboard | `open out/ff-hub.html` |
+| Open the dashboard | Serve the repo root with `python3 -m http.server 8000`, then open `http://127.0.0.1:8000/out/ff-hub.html`; N.1 loads a separate computed artifact and file-open must fail loudly |
 | Draft-day app | https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html - or `open out/draft_room.html` offline. Regenerate draft morning: `python3 src/engine_2026.py`, commit, push. Live mode carries the pick grade gear (presentation only, guarded), the ALSO CONSIDER panel on WAIT/COIN FLIP, the Grid screen (12x14 live board), and the Board screen (best-available overall + by position, drafted toggle) |
 | Record a conviction call (bull/bear) | Add a row to `data/my_board.csv` (schema + pre-registered scoring rule in its header), then `python3 src/engine_2026.py`. YOUR CALL chips appear beside model VOR; the ONLY decision it moves is a coin-flip tie-break toward bulls. Empty board = byte-identical output (guard 10) |
 | Look up one player (value, usage, market band) | `out/players.html#p=<name>` on Pages - every number tappable to its shard and source. K/DST carry the floor label |

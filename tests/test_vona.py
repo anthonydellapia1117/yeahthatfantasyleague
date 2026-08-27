@@ -27,6 +27,8 @@ prov, th = t["provenance"], t["thresholds"]
 
 # --- the approved decisions ---
 ok(prov["depth"] == 7, "depth is 7")
+ok(prov["value_lookahead_rounds"] == 8,
+   "seven displayed rounds are valued through the real round-8 owner pick")
 ok("seven skill slots" in prov["depth_rationale"]
    and "not a noise cutoff" in prov["depth_rationale"],
    "depth 7 carries its structural rationale, not a noise argument")
@@ -51,9 +53,18 @@ ok("conditioning" in prov and "ONE frame" in prov["conditioning"],
 ok("feasibility" in prov and "forward_policy" in prov["feasibility"],
    "starter feasibility comes from the shared layer, stated")
 sys.path.insert(0, os.path.join(ROOT, "src"))
+from build_vona_tree import vona_at
+from engine_2026 import snake_picks
 from forward_policy import starter_caps
 eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 CAPS = starter_caps(eng.get("flex_allocation", {}))
+try:
+    vona_at({"RB": [p for p in eng["players"] if p["pos"] == "RB"][:2]},
+            1, None)
+    rejected_missing_next = False
+except ValueError:
+    rejected_missing_next = True
+ok(rejected_missing_next, "runtime rejects a VONA call without a next owner pick")
 neg = []
 feas = []
 mono = []
@@ -91,12 +102,18 @@ ok(set(t["slots"].keys()) == {str(i) for i in range(1, 13)},
    "all twelve slots are rendered")
 branch_total = 0
 for slot, v in t["slots"].items():
-    ok(len(v["picks"]) == 7, f"slot {slot}: seven picks")
+    full_picks = snake_picks(int(slot))
+    ok(v["picks"] == full_picks[:7], f"slot {slot}: seven display picks")
+    ok(v["next_picks"] == full_picks[1:8],
+       f"slot {slot}: every display pick has its real next owner pick")
     branch_total += v["rendered_forks"]
 
     def walk(nodes, path, depth):
         for n in nodes:
             ok(n["round"] == depth, f"slot {slot}: node round matches its depth")
+            ok(n["pick"] == full_picks[depth - 1]
+               and n["next_pick"] == full_picks[depth],
+               f"slot {slot}: node uses real current and next owner picks")
             ok(n["pos"] in POSITIONS, f"slot {slot}: node position is a skill spot")
             ok(n["p_available"] >= th["surv_floor"],
                f"slot {slot}: every node clears the survival floor",
@@ -105,6 +122,9 @@ for slot, v in t["slots"].items():
                f"slot {slot}: no player repeats on a path", n["name"])
             ok("bullish" not in json.dumps(n).lower(),
                f"slot {slot}: no BULLISH marker on any node")
+            if depth == 7:
+                ok(not n.get("children"),
+                   f"slot {slot}: round 7 is valued to round 8 without rendering it")
             walk(n.get("children", []), path | {n["name"]}, depth + 1)
     walk(v["roots"], set(), 1)
     ok(all(k in v["pruned"] for k in ("dominated", "narrow_kept", "budget")),

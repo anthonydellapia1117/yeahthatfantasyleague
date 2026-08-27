@@ -7,9 +7,9 @@ take now: the "QB dropoff is shallow so wait, RB dropoff R3 to R5 is
 severe so do not" logic as a computed number.
 
 APPROVED DECISIONS (spec section 7):
-  depth 7      structural - the starting lineup is exactly seven skill
-               slots (QB RB RB WR WR TE FLEX), so the tree covers lineup
-               construction completely and stops where the lineup is full
+  depth 7      display horizon - the starting lineup is exactly seven skill
+               slots (QB RB RB WR WR TE FLEX). Round 7 is still valued
+               against the owner's real round-8 pick rather than zero
   branching    data-driven at EVERY slot, never gated on slot number; the
                threshold decides and the artifact reports the per-slot
                branch count so the shape is observable
@@ -77,6 +77,8 @@ def e_best(pool, prob):
 
 def vona_at(pool_by_pos, pick, nxt):
     """VONA per position at a pick, plus the best renderable player."""
+    if nxt is None:
+        raise ValueError(f"VONA at pick {pick} requires a real next owner pick")
     out = {}
     for pos, pool in pool_by_pos.items():
         if not pool:
@@ -91,14 +93,13 @@ def vona_at(pool_by_pos, pick, nxt):
         # With one frame, availability is monotone in the pick number and
         # VONA >= 0 holds structurally (asserted below and in the guards).
         now = e_best(pool, lambda p: survival(p["adp"], pick))
-        later = (e_best(pool, lambda p: survival(p["adp"], nxt))
-                 if nxt else 0.0)
+        later = e_best(pool, lambda p: survival(p["adp"], nxt))
         # In VOR units "everyone gone" IS replacement level (0), so for an
         # above-replacement pool availability is monotone in the pick number
         # and E[next] <= E[now]. A BELOW-replacement pool can legitimately
         # drift up toward 0 by waiting - negative VONA there reads "waiting
         # costs nothing, the position is below replacement," which is true.
-        if nxt is not None and now >= 0:
+        if now >= 0:
             assert later <= now + 1e-9, (pos, pick, nxt, now, later)
         # the player actually takeable here: best VOR still plausibly there
         cand = [p for p in pool if survival(p["adp"], pick) >= SURV_FLOOR]
@@ -149,7 +150,11 @@ def overdispersion(picks_path):
 def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
                caps):
     """Walk one slot's tree, branching only where the data says to."""
-    picks = snake_picks(slot)[:DEPTH]
+    full_picks = snake_picks(slot)
+    if len(full_picks) <= DEPTH:
+        raise ValueError(f"slot {slot} has no round-{DEPTH + 1} lookahead pick")
+    picks = full_picks[:DEPTH]
+    next_picks = full_picks[1:DEPTH + 1]
     nodes = {"count": 0}
     pos_of = {p["name"]: p["pos"] for p in players}
     pruned = {"dominated": 0, "budget": 0, "narrow_kept": 0}
@@ -169,7 +174,7 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
         if depth >= len(picks):
             return []
         pick = picks[depth]
-        nxt = picks[depth + 1] if depth + 1 < len(picks) else None
+        nxt = next_picks[depth]
         v = vona_at(pool_for(taken), pick, nxt)
         # ROSTER FEASIBILITY (review finding P1-B, the third occurrence of
         # this defect class): a position at its startable maximum for the
@@ -207,7 +212,8 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
                             if q.get("tier") == p.get("tier")
                             and survival(q["adp"], pick) >= SURV_FLOOR)
             node = {
-                "round": depth + 1, "pick": pick, "pos": pos,
+                "round": depth + 1, "pick": pick, "next_pick": nxt,
+                "pos": pos,
                 "name": p["name"], "vor": p["vor"], "adp": p["adp"],
                 "pts": p["pts"],
                 "p_available": round(s_now, 3),
@@ -287,7 +293,7 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
     return {"slot": slot, "roots": roots, "nodes": nodes["count"],
             "rendered_forks": branches["count"],
             "forks_collapsed_by_pruning": branches["collapsed"],
-            "pruned": pruned, "picks": picks}
+            "pruned": pruned, "picks": picks, "next_picks": next_picks}
 
 
 def main():
@@ -303,10 +309,12 @@ def main():
     # calibrated to the board rather than typed in.
     gaps = defaultdict(list)
     for slot in range(1, TEAMS + 1):
-        picks = snake_picks(slot)[:DEPTH]
+        full_picks = snake_picks(slot)
+        picks = full_picks[:DEPTH]
+        next_picks = full_picks[1:DEPTH + 1]
         taken = set()
         for depth, pick in enumerate(picks):
-            nxt = picks[depth + 1] if depth + 1 < len(picks) else None
+            nxt = next_picks[depth]
             by_pos = defaultdict(list)
             for p in players:
                 if p["name"] not in taken:
@@ -377,11 +385,14 @@ def main():
                             "observed allocation): no path may hold more of "
                             "a position than the lineup can start"),
             "depth": DEPTH,
+            "value_lookahead_rounds": DEPTH + 1,
             "depth_rationale": ("structural: the starting lineup is exactly "
                                 "seven skill slots (QB RB RB WR WR TE FLEX), "
-                                "so depth 7 covers lineup construction "
-                                "completely and stops where the lineup is "
-                                "full - not a noise cutoff"),
+                                "so seven displayed rounds cover lineup "
+                                "construction completely. Round 7 is valued "
+                                "against the owner's real round-8 pick; the "
+                                "tree never compares against nothing - not a "
+                                "noise cutoff"),
             "branch_rule": ("branch wherever the top options fall within the "
                             "derived threshold, at ANY slot - never gated on "
                             "slot number"),
