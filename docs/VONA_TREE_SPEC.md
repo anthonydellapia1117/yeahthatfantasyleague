@@ -103,9 +103,32 @@ Each player node shows only computed fields:
 - expected available players in the displayed tier and `P(any tier player)`;
 - the full feasible sibling decision ledger and modal continuation basis.
 
-The user-facing page exposes that ledger at every node, including dominated
-actions and their exact dominance witnesses; the aggregate action count is not a
-substitute for the underlying evidence.
+The user-facing page exposes one closed ledger per displayed decision group,
+including dominated actions and their exact dominance witnesses; siblings never
+repeat the same ledger. The initial surface is five fork cards. The complete tree
+is created in the DOM only after explicit `Show all` disclosure, while the
+committed artifact always retains every node and ledger.
+
+The five cards are ranked by **normalized frontier spread**, a presentation-only
+measure of what is at stake in the local tradeoff. For every fork, take the maximum
+pairwise Euclidean distance between its non-dominated actions after dividing VONA
+and expected lineup gain by their observed population standard deviations across
+all fork alternatives in the current artifact. The two coordinates therefore
+enter symmetrically; the ranking never selects an action or changes the Pareto
+frontier. Downstream decision reach breaks exact spread ties.
+
+The five-card cap ranks distinct local decision payloads, not repeated path
+instances. If every local node field and the complete feasible-action ledger are
+identical, occurrences reached through different modeled-tree breadcrumbs share
+one card. The card discloses every breadcrumb; differing local payloads are never
+collapsed, and the complete tree retains every modeled path occurrence. These
+remain coherent modal-state representative scenarios, not exact realized drafts.
+
+Every named alternative displays its literal availability percentage and a purple
+bar whose length varies linearly from 0% to 100%. There is no availability badge or
+threshold. The continuous availability scale is distinct from the reserved verdict
+colors and never filters, ranks, branches, or changes a model value. A modal
+replacement state remains an honest null with no invented percentage.
 
 The displayed identity is the modal player state from the full distribution. If
 the replacement state is modal, the node is an honest fallback-required state with
@@ -122,6 +145,7 @@ There are no statistical thresholds in the branch or render rules.
 |---|---|
 | `DEPTH = 7` | display and starter-construction horizon; round 8 remains the terminal value lookahead |
 | `MAX_NODES = 120` | deliberate UI safety budget, checked only after the complete local Pareto policy is built; the current maximum is 102 nodes and the mobile smoke renders that full slot without page-level horizontal overflow |
+| `DISPLAY_CARD_CAP = 5` | presentation-only initial disclosure budget; it changes no artifact, frontier, continuation, or model value, and `Show all` lazily creates the complete tree |
 
 The old `SURV_FLOOR = 0.40`, p25 VONA-gap epsilon, and p25 domination band are
 removed. Reusing a typed room convention did not make the floor derived, and a

@@ -13,6 +13,7 @@
   --bg:#0b1120; --s1:#101828; --s2:#161f30; --s3:#0d1424; --line:#1e2d44;
   --ink:#e8ecf1; --ink2:#7a8ba3; --ink3:#64748B;
   --go:#34D399; --stop:#F87171; --warn:#FBBF24; --info:#60A5FA;
+  --avail:#6d28d9; --avail-track:#ddd6fe;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -41,20 +42,37 @@ a{color:var(--info);text-decoration:none}
 .filters button{background:var(--s2);border:1px solid var(--line);color:var(--ink2);
   border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
 .filters button.on{background:var(--info);border-color:var(--info);color:#fff}
-/* the tree: indentation carries depth, a left rule carries lineage */
-.tnode{border-left:2px solid var(--line);padding:6px 0 0 12px;margin-left:2px}
-.tnode.fork{border-left-color:var(--info);border-left-width:3px}
-.trow{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:3px 0}
+/* The initial surface is five decision cards. The complete tree is created only
+   after explicit disclosure, so hidden paths do not remain in the initial DOM. */
+.priority-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.decision-card{background:var(--s3);border:1px solid var(--line);border-radius:10px;
+  padding:11px;min-width:0}
+.decision-head{display:flex;gap:8px;align-items:baseline;justify-content:space-between;
+  flex-wrap:wrap;margin-bottom:3px}
+.decision-title{font-size:15px;font-weight:800;margin:0}
+.spread{font-size:10px;color:var(--ink3)}
+.crumb{font-size:10px;color:var(--ink3);margin-bottom:7px;overflow-wrap:anywhere}
+.occurrences{font-size:10px;color:var(--ink3);margin:0 0 7px}
+.occurrences summary{cursor:pointer;color:var(--info);font-weight:700}
+.occurrences ul{margin:4px 0 0;padding-left:18px;overflow-wrap:anywhere}
+.alt-row{border-top:1px solid var(--line);padding:7px 0}
+.alt-row:first-of-type{border-top:0}
+.alt-main{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.alt-name{font-weight:800}
+.alt-main>.tnums{flex:1 1 100%;white-space:normal;overflow-wrap:anywhere}
 .tpick{font-size:10px;font-weight:700;color:var(--ink3);letter-spacing:.05em;
   min-width:74px}
-.tname{font-weight:700}
 .tpos{font-size:10px;font-weight:800;border:1px solid var(--line);border-radius:5px;
   padding:1px 5px;color:var(--ink2)}
 .tnums{font-size:11px;color:var(--ink3)}
 .tvona{font-weight:800}
-.tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.05em;
-  border:1px solid var(--info);color:var(--info);border-radius:5px;padding:1px 5px}
 .twhy{font-size:11px;color:var(--ink3);font-style:italic}
+.availability{display:grid;grid-template-columns:auto minmax(56px,1fr);align-items:center;
+  gap:7px;margin-top:4px;font-size:10px;color:var(--ink2)}
+.availability.fallback{display:block}
+.avail-track{height:5px;background:var(--avail-track);border-radius:999px;overflow:hidden}
+.avail-fill{display:block;height:100%;background:var(--avail);border-radius:inherit}
+.availability-note{border-left:3px solid var(--avail);padding-left:9px;margin:10px 0 12px}
 .ledger{margin:5px 0 4px;font-size:11px;color:var(--ink3)}
 .ledger summary{cursor:pointer;color:var(--info);font-weight:700}
 .ledger .tw{overflow-x:auto;margin-top:5px}
@@ -63,10 +81,24 @@ a{color:var(--info);text-decoration:none}
 .ledger td.num,.ledger th.num{text-align:right}
 .stat{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:0 0 10px}
 .stat b{color:var(--ink)}
+.disclosure{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.show-all{background:var(--s2);border:1px solid var(--line);color:var(--ink);
+  border-radius:8px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer}
+.full-tree{margin-top:10px}
+.method>summary{cursor:pointer;font-size:12px;font-weight:800;color:var(--ink2)}
+.method-body{margin-top:10px}
+/* In the disclosed tree, each sibling array is one group. The ledger appears
+   once for the group; descendant groups remain under the action that leads there. */
+.tree-group{border-left:2px solid var(--line);padding:7px 0 0 10px;margin-left:2px}
+.tree-group.fork{border-left-color:var(--info);border-left-width:3px}
+.tree-group-head{display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.tree-action{border-top:1px solid var(--line);padding-top:3px;margin-top:4px}
+.tree-action:first-of-type{border-top:0}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+@media(max-width:850px){.priority-grid{grid-template-columns:1fr}}
 @media(max-width:520px){
   .wrap{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
-  .card{padding:12px}.tnode{padding-left:8px}.tnums{white-space:normal}
+  .card{padding:12px}.tree-group{padding-left:7px}.tnums{white-space:normal}
 }
 </style>
 </head>
@@ -86,7 +118,124 @@ function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,
   function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 function pct(v){ return Math.round(v * 1000) / 10 + "%"; }
 function ci95(v){ return "[" + pct(v[0]) + ", " + pct(v[1]) + "]"; }
-var T = null, SLOT = 1;
+var T = null, SLOT = 1, NORMALIZATION = null, GROUP_TREES = {};
+var DISPLAY_CARD_CAP = 5;
+
+function populationSd(values){
+  if (!values.length) return 0;
+  var mean = values.reduce(function(a, b){ return a + b; }, 0) / values.length;
+  var variance = values.reduce(function(acc, v){
+    return acc + Math.pow(v - mean, 2);
+  }, 0) / values.length;
+  return Math.sqrt(variance);
+}
+
+function buildGroup(nodes, path){
+  if (!nodes || !nodes.length) return null;
+  var children = nodes.map(function(n){
+    var label = n.fallback_required ? "Fallback required" : n.name;
+    return buildGroup(n.children || [], path.concat([{pos:n.pos, name:label}]));
+  });
+  var liveChildren = children.filter(Boolean);
+  return {
+    nodes:nodes, children:children, path:path,
+    round:nodes[0].round, pick:nodes[0].pick, nextPick:nodes[0].next_pick,
+    groupReach:1 + liveChildren.reduce(function(a, g){ return a + g.groupReach; }, 0),
+    forkReach:(nodes.length > 1 ? 1 : 0) +
+      liveChildren.reduce(function(a, g){ return a + g.forkReach; }, 0),
+    nodeReach:nodes.length +
+      liveChildren.reduce(function(a, g){ return a + g.nodeReach; }, 0)
+  };
+}
+
+function flattenGroups(root){
+  if (!root) return [];
+  return [root].concat(root.children.filter(Boolean).reduce(function(acc, child){
+    return acc.concat(flattenGroups(child));
+  }, []));
+}
+
+function preparePresentation(){
+  GROUP_TREES = {};
+  var forkGroups = [];
+  Object.keys(T.slots).forEach(function(slot){
+    var root = buildGroup(T.slots[slot].roots, []);
+    GROUP_TREES[slot] = root;
+    forkGroups = forkGroups.concat(flattenGroups(root).filter(function(g){
+      return g.nodes.length > 1;
+    }));
+  });
+  var vona = [], gain = [];
+  forkGroups.forEach(function(g){
+    g.nodes.forEach(function(n){
+      vona.push(n.decision_vona_raw);
+      gain.push(n.decision_expected_lineup_gain_raw);
+    });
+  });
+  NORMALIZATION = {
+    n:vona.length,
+    vonaSd:populationSd(vona),
+    gainSd:populationSd(gain)
+  };
+  forkGroups.forEach(function(g){
+    var diameter = 0;
+    for (var i = 0; i < g.nodes.length; i += 1){
+      for (var j = i + 1; j < g.nodes.length; j += 1){
+        var dv = NORMALIZATION.vonaSd ?
+          (g.nodes[i].decision_vona_raw - g.nodes[j].decision_vona_raw) /
+            NORMALIZATION.vonaSd : 0;
+        var dg = NORMALIZATION.gainSd ?
+          (g.nodes[i].decision_expected_lineup_gain_raw -
+            g.nodes[j].decision_expected_lineup_gain_raw) /
+            NORMALIZATION.gainSd : 0;
+        diameter = Math.max(diameter, Math.sqrt(dv * dv + dg * dg));
+      }
+    }
+    g.frontierSpread = diameter;
+  });
+}
+
+function breadcrumb(g){
+  if (!g.path.length) return "START OF SLOT";
+  return "AFTER " + g.path.map(function(x){
+    return x.pos + " " + x.name;
+  }).join("  >  ");
+}
+
+function priorityCompare(a, b){
+  return b.frontierSpread - a.frontierSpread ||
+    b.groupReach - a.groupReach || b.forkReach - a.forkReach ||
+    b.nodeReach - a.nodeReach || a.round - b.round || a.pick - b.pick ||
+    breadcrumb(a).localeCompare(breadcrumb(b));
+}
+
+// Descendants and breadcrumbs describe how a local decision was reached, not
+// the local decision itself. Collapse a card only when every other artifact
+// field (including the complete decision ledger) is byte-equivalent.
+function localDecisionSignature(g){
+  return JSON.stringify(g.nodes.map(function(n){
+    var local = {};
+    Object.keys(n).sort().forEach(function(k){
+      if (k !== "children") local[k] = n[k];
+    });
+    return local;
+  }));
+}
+
+function aggregateExactDecisions(forks){
+  var bySignature = {};
+  forks.forEach(function(g){
+    var key = localDecisionSignature(g);
+    if (!bySignature[key]) bySignature[key] = [];
+    bySignature[key].push(g);
+  });
+  return Object.keys(bySignature).map(function(key){
+    var occurrences = bySignature[key].sort(priorityCompare);
+    var representative = occurrences[0];
+    representative.presentationOccurrences = occurrences;
+    return representative;
+  });
+}
 
 function ledgerHtml(n){
   var rows = (n.decision_set || []).map(function(a){
@@ -105,20 +254,31 @@ function ledgerHtml(n){
     "</tbody></table></div></details>";
 }
 
-function nodeHtml(n){
-  var fork = !n.forced;
+function availabilityHtml(n){
+  if (n.fallback_required){
+    return '<div class="availability fallback">Availability: no named player - ' +
+      'replacement is the modal state</div>';
+  }
+  var p = Math.max(0, Math.min(1, n.p_available));
+  return '<div class="availability" data-availability="' + p.toFixed(3) + '">' +
+    '<span>Available <b class="num">' + pct(p) + '</b></span>' +
+    '<span class="avail-track" aria-hidden="true"><span class="avail-fill" ' +
+      'style="width:' + (p * 100).toFixed(1) + '%"></span></span></div>';
+}
+
+function alternativeHtml(n){
   var fallback = !!n.fallback_required;
   var identity = fallback ? "Fallback required" : esc(n.name);
+  var identityRaw = fallback ? "Fallback required" : n.name;
   var market = fallback ? "replacement is modal" :
-    "ADP " + n.adp.toFixed(1) + " - there " + Math.round(n.p_available * 100) + "%";
+    "ADP " + n.adp.toFixed(1);
   var tier = fallback ? "" : " - tier " + (n.tier == null ? "-" : n.tier) +
     " (expected " + n.tier_expected_available.toFixed(1) + ")";
-  return '<div class="tnode' + (fork ? " fork" : "") + '">' +
-    '<div class="trow">' +
-      '<span class="tpick num">R' + n.round + " - pick " + n.pick +
-        " to " + n.next_pick + '</span>' +
+  return '<div class="alt-row" data-pos="' + esc(n.pos) + '" data-name="' +
+    esc(identityRaw) + '">' +
+    '<div class="alt-main">' +
       '<span class="tpos">' + esc(n.pos) + '</span>' +
-      '<span class="tname">' + identity + '</span>' +
+      '<span class="alt-name">' + identity + '</span>' +
       '<span class="tnums num">VOR ' + n.vor.toFixed(0) +
         " - " + market + tier +
         " - top state " + Math.round(n.p_modal_state * 100) + "%" +
@@ -127,35 +287,99 @@ function nodeHtml(n){
         (n.vona > 0 ? "+" : "") + n.vona.toFixed(1) +
         '</span> - lineup <span class="num">+' +
         n.expected_lineup_gain.toFixed(1) + '</span></span>' +
-      (fork ? '<span class="tag">FORK</span>' : "") +
     '</div>' +
     '<div class="twhy">' + esc(n.why) + '</div>' +
-    ledgerHtml(n) +
-    (n.children || []).map(nodeHtml).join("") +
-    '</div>';
+    availabilityHtml(n) + '</div>';
+}
+
+function decisionCardHtml(g, rank){
+  var occurrences = g.presentationOccurrences || [g];
+  var paths = occurrences.map(function(x){ return breadcrumb(x); });
+  var pathHtml = occurrences.length === 1 ?
+    '<div class="crumb">' + esc(paths[0]) + '</div>' :
+    '<div class="crumb">Representative path: ' + esc(paths[0]) + '</div>' +
+    '<details class="occurrences"><summary>Appears on ' + occurrences.length +
+      ' modeled tree paths</summary><ul>' + paths.map(function(p){
+        return '<li>' + esc(p) + '</li>';
+      }).join("") + '</ul></details>';
+  return '<article class="decision-card priority-card" data-spread="' +
+    g.frontierSpread.toFixed(12) + '" data-reach="' + (g.groupReach - 1) +
+    '" data-round="' + g.round + '" data-pick="' + g.pick +
+    '" data-next-pick="' + g.nextPick + '" data-actions="' + g.nodes.length +
+    '" data-path="' + esc(breadcrumb(g)) + '" data-occurrences="' +
+    occurrences.length + '">' +
+    '<div class="decision-head"><h3 class="decision-title">Decision ' + rank +
+      '</h3><span class="tpick num">R' + g.round + " - pick " + g.pick +
+      " to " + g.nextPick + '</span></div>' +
+    pathHtml +
+    '<div class="spread num">normalized frontier spread ' +
+      g.frontierSpread.toFixed(3) + ' - ' + (g.groupReach - 1) +
+      ' downstream groups</div>' +
+    g.nodes.map(alternativeHtml).join("") + ledgerHtml(g.nodes[0]) +
+    '</article>';
+}
+
+function fullGroupHtml(g){
+  var fork = g.nodes.length > 1;
+  var actions = g.nodes.map(function(n, i){
+    return '<div class="tree-action">' + alternativeHtml(n) +
+      (g.children[i] ? fullGroupHtml(g.children[i]) : "") + '</div>';
+  }).join("");
+  return '<section class="tree-group' + (fork ? " fork" : "") + '">' +
+    '<div class="tree-group-head"><span class="tpick num">R' + g.round +
+      " - pick " + g.pick + " to " + g.nextPick + '</span><b>' +
+      (fork ? g.nodes.length + "-way tradeoff" : "forced continuation") +
+      '</b></div>' + ledgerHtml(g.nodes[0]) + actions + '</section>';
 }
 
 function render(){
   var v = T.slots[String(SLOT)];
+  var root = GROUP_TREES[String(SLOT)];
+  var groups = flattenGroups(root);
+  var forks = groups.filter(function(g){ return g.nodes.length > 1; });
+  var distinctForks = aggregateExactDecisions(forks);
+  var priority = distinctForks.sort(priorityCompare).slice(0, DISPLAY_CARD_CAP);
+  var initialNodes = priority.reduce(function(a, g){ return a + g.nodes.length; }, 0);
+  var representedForks = priority.reduce(function(a, g){
+    return a + g.presentationOccurrences.length;
+  }, 0);
   var rules = T.decision_rules;
   var c = $("content");
-  var chips = '<div class="filters" id="slots">' +
+  var chips = '<div class="filters" id="slots" role="group" aria-label="Draft slot">' +
     Object.keys(T.slots).map(Number).sort(function(a, b){ return a - b; })
       .map(function(s){ return '<button data-slot="' + s + '"' +
+        ' aria-pressed="' + (s === SLOT ? "true" : "false") + '"' +
         (s === SLOT ? ' class="on"' : "") + ">" + s + "</button>"; }).join("") +
     '</div>';
   c.innerHTML = chips +
     '<div class="card">' +
       "<h2>Slot " + SLOT + " - picks " + v.picks.join(", ") + "</h2>" +
       '<div class="stat">' +
-        "<span><b>" + v.decision_groups + "</b> decision groups</span>" +
+        '<span><b id="initialForks">' + priority.length + " of " +
+          distinctForks.length + "</b> distinct tradeoffs shown</span>" +
+        '<span><b id="representedForks">' + representedForks + " of " +
+          v.rendered_forks + "</b> fork occurrences represented</span>" +
+        '<span><b id="initialNodes">' + initialNodes + " of " + v.nodes +
+          "</b> tree nodes shown initially</span>" +
+        "<span><b>" + v.decision_groups + "</b> full decision groups</span>" +
         "<span><b>" + v.evaluated_actions + "</b> feasible actions audited</span>" +
-        "<span><b>" + v.nodes + "</b> nodes rendered</span>" +
-        "<span><b>" + v.rendered_forks + "</b> model tradeoffs</span>" +
       '</div>' +
-      v.roots.map(nodeHtml).join("") +
+      '<div class="availability-note small"><b>Availability is a separate, ' +
+        'continuous presentation scale.</b> Every named alternative shows its ' +
+        'literal probability; purple bar length is linear from 0% to 100%. It ' +
+        'never filters, ranks, branches, or changes the model, and uses none of ' +
+        'the reserved verdict colors.</div>' +
+      '<div class="priority-grid">' + priority.map(function(g, i){
+        return decisionCardHtml(g, i + 1);
+      }).join("") + '</div>' +
+      '<div class="disclosure"><button class="show-all" id="showAll" ' +
+        'type="button" aria-expanded="false" aria-controls="fullTree">Show all ' +
+        v.decision_groups +
+        " decision groups / " + v.nodes + ' nodes</button>' +
+        '<div class="full-tree" id="fullTree"></div></div>' +
     '</div>' +
-    '<div class="card"><h2>How this is computed</h2>' +
+    '<details class="card method"><summary>Method, normalization, and model limitations</summary>' +
+    '<div class="method-body"><h2>How this is computed</h2>' +
       '<p class="small">' + esc(T.provenance.objective) + " " +
       esc(T.provenance.survival) + '</p>' +
       '<p class="small"><b>Depth ' + T.provenance.depth + ".</b> " +
@@ -166,6 +390,16 @@ function render(){
       " " + esc(rules.budget_behavior) + '</p>' +
       '<p class="small"><b>Rendering.</b> ' + esc(T.provenance.render_rule) +
       " " + esc(rules.render) + '</p>' +
+      '<p class="small"><b>Priority-card ranking.</b> The page computes the ' +
+      'maximum pairwise distance across each local Pareto frontier after ' +
+      'normalizing VONA and lineup gain by their observed population standard ' +
+      'deviations across all ' + NORMALIZATION.n + ' non-dominated alternatives ' +
+      '(VONA SD ' + NORMALIZATION.vonaSd.toFixed(4) + ', lineup SD ' +
+      NORMALIZATION.gainSd.toFixed(4) + '). Downstream decision reach breaks ' +
+      'exact spread ties. Exact local payloads reached by multiple paths share ' +
+      'one card; every breadcrumb remains disclosed and the complete tree stays ' +
+      'unchanged. This orders only the five initial cards; it never ' +
+      'changes the artifact or the Pareto model.</p>' +
       '<p class="small"><b>Correlation caveat.</b> ' +
       esc(T.correlation.what_breaks) + " " + esc(T.correlation.bias_direction) +
       " Descriptive adjacency: " +
@@ -180,11 +414,24 @@ function render(){
       " (" + esc(T.correlation.method) + ").</p>" +
       T.provenance.deviations.map(function(d){
         return '<p class="small"><b>Model disclosure.</b> ' + esc(d) + "</p>"; }).join("") +
-    '</div>';
+    '</div></details>';
   var sc = $("slots");
   sc.querySelectorAll("button").forEach(function(b){
     b.onclick = function(){ SLOT = Number(b.dataset.slot); render(); };
   });
+  var show = $("showAll"), full = $("fullTree");
+  show.onclick = function(){
+    var opening = show.getAttribute("aria-expanded") !== "true";
+    show.setAttribute("aria-expanded", opening ? "true" : "false");
+    if (opening){
+      full.innerHTML = fullGroupHtml(root);
+      show.textContent = "Hide complete tree";
+    } else {
+      full.innerHTML = "";
+      show.textContent = "Show all " + v.decision_groups +
+        " decision groups / " + v.nodes + " nodes";
+    }
+  };
 }
 
 fetch("data/vona_tree_2026.json", {cache:"no-store"}).then(function(r){
@@ -193,6 +440,7 @@ fetch("data/vona_tree_2026.json", {cache:"no-store"}).then(function(r){
 })
   .then(function(j){
     T = j;
+    preparePresentation();
     $("hdr").textContent = "the order is undrawn - pick a slot";
     $("foot").textContent = "generated " + j.provenance.generated +
       " from engine " + j.provenance.engine_generated +

@@ -1715,6 +1715,126 @@ const ok = (cond, name, detail) => {
   {
     const http = require("http");
     const fs = require("fs");
+    const vonaArtifact = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/vona_tree_2026.json"), "utf8"));
+
+    // Independent presentation oracle. It reads the committed artifact, not the
+    // page's groups, scores, ordering, or rendered text.
+    const indexed = {};
+    const allForks = [];
+    function indexGroup(nodes, prior){
+      if (!nodes || !nodes.length) return null;
+      const children = nodes.map(n => indexGroup(n.children || [], prior.concat([{
+        pos: n.pos, name: n.fallback_required ? "Fallback required" : n.name
+      }])));
+      const live = children.filter(Boolean);
+      const group = {
+        nodes, children, prior,
+        round: nodes[0].round, pick: nodes[0].pick, nextPick: nodes[0].next_pick,
+        groupReach: 1 + live.reduce((a, g) => a + g.groupReach, 0),
+        forkReach: (nodes.length > 1 ? 1 : 0) +
+          live.reduce((a, g) => a + g.forkReach, 0),
+        nodeReach: nodes.length + live.reduce((a, g) => a + g.nodeReach, 0)
+      };
+      if (nodes.length > 1) allForks.push(group);
+      return group;
+    }
+    for (const [slot, value] of Object.entries(vonaArtifact.slots)){
+      indexed[slot] = indexGroup(value.roots, []);
+    }
+    const forkNodes = allForks.flatMap(g => g.nodes);
+    const popSd = values => {
+      const mean = values.reduce((a, b) => a + b, 0) / values.length;
+      return Math.sqrt(values.reduce((a, v) => a + (v - mean) ** 2, 0) /
+        values.length);
+    };
+    const vSd = popSd(forkNodes.map(n => n.decision_vona_raw));
+    const gSd = popSd(forkNodes.map(n => n.decision_expected_lineup_gain_raw));
+    for (const group of allForks){
+      group.spread = 0;
+      for (let i = 0; i < group.nodes.length; i++){
+        for (let j = i + 1; j < group.nodes.length; j++){
+          const dv = (group.nodes[i].decision_vona_raw -
+            group.nodes[j].decision_vona_raw) / vSd;
+          const dg = (group.nodes[i].decision_expected_lineup_gain_raw -
+            group.nodes[j].decision_expected_lineup_gain_raw) / gSd;
+          group.spread = Math.max(group.spread, Math.hypot(dv, dg));
+        }
+      }
+      group.crumb = group.prior.length ? "AFTER " + group.prior.map(x =>
+        x.pos + " " + x.name).join("  >  ") : "START OF SLOT";
+    }
+    const canonical = value => {
+      if (Array.isArray(value)) return "[" + value.map(canonical).join(",") + "]";
+      if (value && typeof value === "object") return "{" +
+        Object.keys(value).sort().map(k => JSON.stringify(k) + ":" +
+          canonical(value[k])).join(",") + "}";
+      return JSON.stringify(value);
+    };
+    const localPayloadKey = group => canonical(group.nodes.map(node =>
+      Object.fromEntries(Object.entries(node).filter(([key]) => key !== "children"))));
+    const comparePriority = (a, b) => b.spread - a.spread ||
+      b.groupReach - a.groupReach || b.forkReach - a.forkReach ||
+      b.nodeReach - a.nodeReach || a.round - b.round || a.pick - b.pick ||
+      a.crumb.localeCompare(b.crumb);
+    const priorityFor = slot => {
+      const groups = [];
+      function walk(group){
+        if (!group) return;
+        if (group.nodes.length > 1) groups.push(group);
+        group.children.filter(Boolean).forEach(walk);
+      }
+      walk(indexed[String(slot)]);
+      const occurrences = new Map();
+      for (const group of groups){
+        const key = localPayloadKey(group);
+        if (!occurrences.has(key)) occurrences.set(key, []);
+        occurrences.get(key).push(group);
+      }
+      return [...occurrences.values()].map(paths => {
+        paths.sort(comparePriority);
+        paths[0].occurrences = paths;
+        return paths[0];
+      }).sort(comparePriority).slice(0, 5);
+    };
+    const renderedCards = async page => page.$$eval(".priority-card", cards =>
+      cards.map(c => ({
+        spread: Number(c.dataset.spread), round: Number(c.dataset.round),
+        pick: Number(c.dataset.pick), nextPick: Number(c.dataset.nextPick),
+        actions: Number(c.dataset.actions), path: c.dataset.path,
+        occurrences: Number(c.dataset.occurrences),
+        occurrencePaths: [...c.querySelectorAll(".occurrences li")]
+          .map(li => li.textContent.trim()),
+        alternatives: [...c.querySelectorAll(".alt-row")].map(row => {
+          const availability = row.querySelector(".availability");
+          return { pos: row.dataset.pos, name: row.dataset.name,
+            visibleName: (row.querySelector(".alt-name") || {}).textContent || "",
+            availability: availability && availability.hasAttribute("data-availability")
+              ? Number(availability.dataset.availability) : null,
+            text: row.textContent };
+        })
+      })));
+    const cardsMatch = (actual, expected) => actual.length === expected.length &&
+      actual.every((a, i) => a.round === expected[i].round &&
+        a.pick === expected[i].pick && a.nextPick === expected[i].nextPick &&
+        a.actions === expected[i].nodes.length && a.path === expected[i].crumb &&
+        a.occurrences === expected[i].occurrences.length &&
+        JSON.stringify(a.occurrencePaths) === JSON.stringify(
+          expected[i].occurrences.length > 1
+            ? expected[i].occurrences.map(g => g.crumb) : []) &&
+        Math.abs(a.spread - expected[i].spread) < 1e-10 &&
+        a.alternatives.length === expected[i].nodes.length &&
+        a.alternatives.every((alt, j) => {
+          const node = expected[i].nodes[j];
+          const name = node.fallback_required ? "Fallback required" : node.name;
+          const availability = node.fallback_required ? null : node.p_available;
+          const vona = "VONA " + (node.vona > 0 ? "+" : "") + node.vona.toFixed(1);
+          const lineup = "lineup +" + node.expected_lineup_gain.toFixed(1);
+          return alt.pos === node.pos && alt.name === name &&
+            alt.visibleName.trim() === name && alt.availability === availability &&
+            alt.text.includes(vona) && alt.text.includes(lineup);
+        }));
+
     const srv = http.createServer((req, res) => {
       const url = req.url.split("?")[0];
       // the browser probes /favicon.ico on its own; answering it keeps the
@@ -1738,17 +1858,54 @@ const ok = (cond, name, detail) => {
     await pg.waitForTimeout(900);
     const body = await pg.textContent("#content");
     ok(/Slot 1 - picks/.test(body), "paths: renders a slot tree");
-    ok(await pg.locator(".tnode").count() > 3, "paths: the tree has nodes");
+    const expected1 = priorityFor(1);
+    const cards1 = await renderedCards(pg);
+    ok(cardsMatch(cards1, expected1),
+       "paths: five cards match independent normalized-frontier-spread ranking");
+    ok(new Set(expected1.map(localPayloadKey)).size === expected1.length,
+       "paths: exact repeated local decisions consume only one capped card");
+    const expected1Nodes = expected1.reduce((a, g) => a + g.nodes.length, 0);
+    ok(await pg.locator(".priority-card").count() === 5 &&
+       await pg.locator(".priority-grid .alt-row").count() === expected1Nodes,
+       "paths: initial DOM contains exactly five fork groups and their alternatives");
+    ok(await pg.locator("#fullTree .alt-row").count() === 0 &&
+       await pg.locator("#fullTree .tree-group").count() === 0,
+       "paths: complete tree is absent from the initial DOM");
     ok(!/BULLISH|WATCH/.test(body),
        "paths: no BULLISH marker anywhere on the decision surface");
-    ok(/decision groups/.test(body) && /feasible actions audited/.test(body) &&
-       /model tradeoffs/.test(body),
-       "paths: decision, action, and fork accounting is on screen");
-    ok(await pg.locator("details.ledger").count() ===
-       await pg.locator(".tnode").count(),
-       "paths: every rendered node exposes its feasible-action ledger");
+    ok(/full decision groups/.test(body) && /feasible actions audited/.test(body) &&
+       /distinct tradeoffs shown/.test(body) && /fork occurrences represented/.test(body) &&
+       /tree nodes shown initially/.test(body),
+       "paths: initial and full artifact accounting are both on screen");
+    ok(await pg.getAttribute("#slots", "role") === "group" &&
+       await pg.getAttribute("#slots", "aria-label") === "Draft slot" &&
+       await pg.locator('#slots button[aria-pressed="true"]').count() === 1 &&
+       await pg.locator(".priority-card h3.decision-title").count() === 5,
+       "paths: slot control and decision cards expose accessible structure");
+    ok(await pg.locator(".priority-grid details.ledger").count() === 5,
+       "paths: each initial decision group has one closed ledger");
     ok(/dominated by/.test(await pg.locator("details.ledger").allTextContents()),
        "paths: dominated candidates name their exact witnesses on screen");
+    const avail = await pg.$$eval(".priority-grid .alt-row", rows => rows.map(row => {
+      const box = row.querySelector(".availability");
+      const p = box && box.dataset.availability;
+      const fill = row.querySelector(".avail-fill");
+      return { exists: !!box, fallback: p == null, p: Number(p),
+        text: box ? box.textContent : "",
+        width: fill ? Number.parseFloat(fill.style.width) : null };
+    }));
+    ok(avail.every(a => a.exists && (a.fallback ||
+       (a.text.includes((Math.round(a.p * 1000) / 10) + "%") &&
+        Math.abs(a.width - Math.round(a.p * 1000) / 10) < 1e-9))),
+       "paths: every alternative shows exact availability on a continuous bar");
+    ok(/continuous presentation scale/.test(body) && /linear from 0% to 100%/.test(body) &&
+       /uses none of the reserved verdict colors/.test(body) &&
+       !/LOW AVAILABILITY/.test(body),
+       "paths: availability is threshold-free and explicitly presentation-only");
+    ok(body.includes(forkNodes.length + " non-dominated alternatives") &&
+       body.includes("VONA SD " + vSd.toFixed(4)) &&
+       body.includes("lineup SD " + gSd.toFixed(4)),
+       "paths: normalization n and scales match the artifact, not typed values");
     ok(/undrawn/.test(await pg.textContent("#hdr")),
        "paths: slot-conditional, states the order is undrawn");
     // switching slots re-renders a different tree
@@ -1758,6 +1915,8 @@ const ok = (cond, name, detail) => {
     const t8 = await pg.textContent("#content");
     ok(/Slot 8 - picks/.test(t8) && t1 !== t8,
        "paths: the slot picker re-renders the tree");
+    ok(cardsMatch(await renderedCards(pg), priorityFor(8)),
+       "paths: slot switch recomputes the independent spread ranking");
     ok(/Correlation caveat/.test(t8) && /UNKNOWN/.test(t8) &&
        /not identify player-level survival correlations/.test(t8) &&
        /Wilson 95%/.test(t8),
@@ -1765,7 +1924,17 @@ const ok = (cond, name, detail) => {
     ok(/Model disclosure/.test(t8) && /representative scenario/.test(t8) &&
        /not a global draft optimization/.test(t8),
        "paths: the modal-continuation limitation is visible on the page");
-    const terminalLookahead = await pg.$$eval(".tpick", els => {
+    await pg.click("#showAll");
+    await pg.waitForTimeout(100);
+    ok(await pg.locator("#fullTree .tree-group").count() ===
+       vonaArtifact.slots["8"].decision_groups &&
+       await pg.locator("#fullTree .alt-row").count() ===
+       vonaArtifact.slots["8"].nodes,
+       "paths: Show all lazily creates the complete audited tree");
+    ok(await pg.locator("#fullTree details.ledger").count() ===
+       vonaArtifact.slots["8"].decision_groups,
+       "paths: disclosed tree renders one ledger per group, never per sibling");
+    const terminalLookahead = await pg.$$eval("#fullTree .tpick", els => {
       const r7 = els.map(e => e.textContent.trim()).filter(t => /^R7\b/.test(t));
       return r7.length > 0 && r7.every(t => /^R7 - pick \d+ to \d+$/.test(t));
     });
@@ -1773,20 +1942,56 @@ const ok = (cond, name, detail) => {
        "paths: every rendered round-7 node names its real round-8 lookahead");
     ok(!/at least 40%|minimum 40%|clears? (the )?survival floor/i.test(t8),
        "paths: no hardcoded survival floor remains on the page");
-    const vonaArtifact = JSON.parse(fs.readFileSync(
-      path.resolve("out/data/vona_tree_2026.json"), "utf8"));
-    await pg.setViewportSize({ width: 390, height: 844 });
+    await pg.click("#showAll");
+    ok(await pg.locator("#fullTree .tree-group").count() === 0,
+       "paths: hiding the disclosure removes the complete tree from the DOM");
+    await pg.setViewportSize({ width: 1280, height: 720 });
     await pg.click('#slots button[data-slot="10"]');
+    await pg.waitForTimeout(100);
+    const expected10 = priorityFor(10);
+    ok(cardsMatch(await renderedCards(pg), expected10),
+       "paths desktop: slot 10 keeps the five widest frontier spreads");
+    ok(new Set(expected10.map(localPayloadKey)).size === expected10.length,
+       "paths desktop: slot 10 does not waste cards on exact path duplicates");
+    const desktopHeight = await pg.evaluate(() => document.documentElement.scrollHeight);
+    ok(desktopHeight <= 720 * 4,
+       "paths desktop: slot 10 initial surface stays within four screens",
+       String(desktopHeight));
+    await pg.setViewportSize({ width: 390, height: 844 });
     await pg.waitForTimeout(300);
-    ok(await pg.locator(".tnode").count() === vonaArtifact.slots["10"].nodes,
-       "paths mobile: the largest current slot renders every audited node");
+    ok(await pg.locator(".priority-card").count() === 5 &&
+       await pg.locator(".priority-grid .alt-row").count() ===
+       expected10.reduce((a, g) => a + g.nodes.length, 0),
+       "paths mobile: slot 10 initially renders only five decision cards");
+    const mobileHeight = await pg.evaluate(() => document.documentElement.scrollHeight);
+    ok(mobileHeight <= 844 * 5,
+       "paths mobile: slot 10 initial surface stays within five screens",
+       String(mobileHeight));
     const mobileWidth = await pg.evaluate(() => ({
       scroll: document.documentElement.scrollWidth,
       client: document.documentElement.clientWidth
     }));
     ok(mobileWidth.scroll <= mobileWidth.client + 1,
-       "paths mobile: the complete tree has no page-level horizontal overflow",
+       "paths mobile: capped surface has no page-level horizontal overflow",
        JSON.stringify(mobileWidth));
+    await pg.click('#slots button[data-slot="12"]');
+    await pg.waitForTimeout(100);
+    ok(cardsMatch(await renderedCards(pg), priorityFor(12)),
+       "paths mobile: slot 12 matches the independent deduplicated spread ranking");
+    await pg.click('#slots button[data-slot="10"]');
+    await pg.waitForTimeout(100);
+    await pg.click("#showAll");
+    await pg.waitForTimeout(100);
+    ok(await pg.locator("#fullTree .alt-row").count() ===
+       vonaArtifact.slots["10"].nodes,
+       "paths mobile: complete slot 10 remains available after disclosure");
+    const fullMobileWidth = await pg.evaluate(() => ({
+      scroll: document.documentElement.scrollWidth,
+      client: document.documentElement.clientWidth
+    }));
+    ok(fullMobileWidth.scroll <= fullMobileWidth.client + 1,
+       "paths mobile: disclosed complete tree still has no horizontal overflow",
+       JSON.stringify(fullMobileWidth));
     ok(perr.length === 0, "paths: zero console errors", perr[0] || "");
     await pg.close();
     srv.close();

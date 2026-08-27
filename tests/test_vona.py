@@ -4,6 +4,7 @@ import csv
 import json
 import math
 import os
+import re
 import sys
 from collections import Counter, defaultdict
 
@@ -389,9 +390,9 @@ page = open(os.path.join(ROOT, "out", "paths.html")).read()
 ok('data-active="paths"' in page and "vona_tree_2026.json" in page,
    "paths page joins the nav and reads the artifact")
 ok("decision_groups" in page and "evaluated_actions" in page
-   and "model tradeoffs" in page and "decision_set" in page
+   and "distinct tradeoffs shown" in page and "decision_set" in page
    and "dominated_by" in page and "Decision ledger" in page,
-   "paths page renders each candidate ledger plus action and fork counts")
+   "paths page renders grouped candidate ledgers plus initial and full counts")
 ok("rules.continuation" in page and "what_breaks" in page
    and "repeat_rate" in page and "repeat_wilson95" in page
    and "marginal_wilson95" in page and "Wilson 95%" in page,
@@ -404,6 +405,42 @@ ok("BULLISH" not in page.upper().replace("BULLISH_ON_NODES", ""),
    "paths page renders no BULLISH marker")
 ok("Fallback required" in page and "Model disclosure" in page,
    "paths page renders the honest null and model disclosures")
+ok("DISPLAY_CARD_CAP = 5" in page and "priority-grid" in page
+   and "distinct tradeoffs shown" in page and "fork occurrences represented" in page
+   and "tree nodes shown initially" in page,
+   "paths page caps only its initial presentation at five fork cards")
+ok("populationSd" in page and "frontierSpread" in page
+   and "decision_vona_raw" in page
+   and "decision_expected_lineup_gain_raw" in page
+   and "maximum pairwise distance" in page
+   and "Downstream decision reach breaks" in page,
+   "priority cards rank objective-symmetric normalized frontier spread")
+ok("localDecisionSignature" in page and "aggregateExactDecisions" in page
+   and "presentationOccurrences" in page and "modeled tree paths" in page,
+   "five-card cap aggregates only exact repeated local payloads and discloses paths")
+ok('role="group" aria-label="Draft slot"' in page
+   and 'aria-pressed="' in page and '<h3 class="decision-title">' in page,
+   "paths priority surface exposes accessible controls and card headings")
+ok('aria-expanded="false"' in page and 'id="fullTree"></div>' in page
+   and "full.innerHTML = fullGroupHtml(root)" in page
+   and 'full.innerHTML = ""' in page,
+   "complete tree is absent initially, created on disclosure, and removed on hide")
+ok(page.count("ledgerHtml(g.nodes[0])") == 2
+   and "g.nodes.map(alternativeHtml)" in page,
+   "initial and disclosed groups each render one shared ledger, not one per sibling")
+ok('data-availability="' in page and "avail-fill" in page
+   and "literal probability" in page and "linear from 0% to 100%" in page
+   and "never filters, ranks, branches, or changes the model" in page,
+   "every named alternative gets an exact continuous availability scale")
+ok("LOW AVAILABILITY" not in page.upper()
+   and "SURVIVAL FLOOR" not in page.upper()
+   and not re.search(r"(?:below|under|less than)\s+40%", page, re.I),
+   "availability presentation contains no binary threshold or recycled floor")
+avail_color = re.search(r"--avail:\s*(#[0-9a-fA-F]{6})", page)
+reserved = {"#34d399", "#f87171", "#fbbf24", "#60a5fa",
+            "#047857", "#b91c1c", "#b45309", "#0f766e"}
+ok(bool(avail_color) and avail_color.group(1).lower() not in reserved,
+   "continuous availability scale uses none of the reserved verdict colors")
 
 if FAILS:
     print(f"\n{len(FAILS)} FAILURES")
