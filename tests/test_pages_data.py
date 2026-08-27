@@ -483,6 +483,53 @@ if os.path.exists(hp):
     ok("my_board" in hpage and "byte-identical" in hpage,
        "overlay card explains the empty-board guarantee")
 
+# 12b. FINDINGS N.1. The user-facing findings page consumes the reviewed
+#      BULLISH-vs-ADP artifact as its single source, fails visibly when that
+#      source is unavailable or malformed, and never copies the fixed verdict
+#      or its figures into a second static truth.
+ffp = os.path.join(ROOT, "out", "ff-hub.html")
+n1p = os.path.join(D, "bullish_vs_adp.json")
+ok(os.path.exists(ffp) and os.path.exists(n1p),
+   "ff-hub N.1 page and computed artifact both exist")
+if os.path.exists(ffp) and os.path.exists(n1p):
+    ffsrc = open(ffp).read()
+    n1 = json.load(open(n1p))
+    ok('data-p="p5"' in ffsrc and 'id="p5"' in ffsrc
+       and "N.1 BULLISH vs ADP" in ffsrc,
+       "ff-hub exposes N.1 as a dedicated findings tab")
+    ok("data/bullish_vs_adp.json" in ffsrc and "cache:'no-store'" in ffsrc,
+       "ff-hub reads the committed N.1 artifact without a browser cache")
+    ok("if (!r.ok)" in ffsrc and "unusable schema" in ffsrc,
+       "ff-hub rejects both HTTP failure and an unusable N.1 payload")
+    ok(all(k in ffsrc for k in
+           ("d.verdict", "d.within_band", "d.concentration",
+            "d.provenance.method", "d.provenance.limitation")),
+       "ff-hub renders verdict, cells, concentration, method, and limitation from the artifact")
+    ok('id="n1State" data-state="loading" aria-live="polite"' in ffsrc
+       and "data-state" in ffsrc and "No verdict is inferred in its absence" in ffsrc,
+       "ff-hub has visible loading and honest error states")
+    ok("computed artifact has not loaded yet" in ffsrc
+       and "no verdict is shown" in ffsrc and "$('#n1Hero').textContent" in ffsrc,
+       "ff-hub hero stays verdict-neutral until the artifact succeeds")
+    ok(all(token in ffsrc for token in
+           ("n1SideOk", "n1LiftOk", "n1BandOk", "provenance.generated",
+            "concentration.note", "hit12.ci95", "p_two_sided")),
+       "ff-hub validates every nested N.1 field it renders")
+    ok(n1["verdict"] not in ffsrc
+       and all(s not in ffsrc for s in
+               ("28/43", "133/257", "65.1%", "51.8%", "+13.4pp")),
+       "ff-hub does not duplicate the reviewed verdict or computed figures")
+    n1section = ffsrc[ffsrc.index('<section class="panel" id="p5"'):
+                      ffsrc.index("<footer>")]
+    ok('class="tag k"' not in n1section and 'class="tag l"' not in n1section,
+       "INCONCLUSIVE uses a neutral tag, not reserved verdict colors")
+    ok("eight original draft-day" in ffsrc.lower()
+       and "later BULLISH-vs-ADP test" in ffsrc,
+       "the original eight nulls stay distinct from the inconclusive N.1 test")
+    pages_workflow = open(os.path.join(ROOT, ".github", "workflows", "pages.yml")).read()
+    ok("cp out/data/*.json" in pages_workflow and "out/ff-hub.html" in pages_workflow,
+       "Pages deploys both the N.1 artifact family and its findings page")
+
 # 13. APP SHELL (Phase 1). One nav, five pages: nav.js is the single source
 #     of truth, every link target exists, every page includes it exactly once
 #     with a distinct active key, and on the draft room the include lives

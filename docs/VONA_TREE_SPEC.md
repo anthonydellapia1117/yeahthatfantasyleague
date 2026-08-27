@@ -50,13 +50,15 @@ do not" logic expressed as a number.
   elite WR are genuinely close. The artifact reports the threshold used
   and the branch count produced per slot, so the shape is observable
   rather than assumed.
-- **Depth:** rounds 1 through 7, on a STRUCTURAL boundary rather than a
+- **Display depth:** rounds 1 through 7, on a STRUCTURAL boundary rather than a
   noise argument. The starting lineup is exactly seven skill slots -
   QB, RB, RB, WR, WR, TE, FLEX - so depth 7 covers starting-lineup
   construction completely and stops where the lineup is full. K, DEF and
   bench depth are separate problems the board already handles; extending
   the tree past the lineup would add rounds whose decisions are not what
-  the tree is for.
+  the tree is for. This display boundary is not a value boundary: every
+  round-7 node computes `E[next]` at that owner's real round-8 pick. It never
+  substitutes zero merely because no round-8 child is rendered.
 - **Pruning:** cap total rendered nodes at `MAX_NODES`; prune dominated
   branches (a branch whose best leaf VONA is worse than another branch's
   worst leaf by more than `BRANCH_EPS`) and print the pruned count -
@@ -77,7 +79,8 @@ Each node shows, all computed:
   tag stays on the Players tab, where it is informational rather than
   prescriptive.
 - VONA at that node: what taking this position now saves versus waiting
-  for the next turn, in projected points
+  for the next turn, in projected points; the current and next owner picks
+  are both named, including the round-7 to round-8 lookahead
 - Tier state: which tier the player is in and how many of that tier
   remain above the survival floor at this pick
 
@@ -124,11 +127,13 @@ by hand.
 
 ## 7. Decisions, resolved
 
-- **D1 - depth: 7**, on a structural rationale rather than the
+- **D1 - display depth: 7**, on a structural rationale rather than the
   noise argument originally proposed. The starting lineup is exactly
   seven skill slots (QB, RB, RB, WR, WR, TE, FLEX), so depth 7 covers
   lineup construction completely and stops at a principled boundary
-  instead of an arbitrary one.
+  instead of an arbitrary one. Round 7 remains valued against the owner's
+  real round-8 pick; stopping the display never means comparing against
+  nothing.
 - **D2 - branching: data-driven at every slot**, neither of the two
   options proposed. No slot-number gating; the threshold decides, and
   the artifact reports the threshold and the per-slot branch count so

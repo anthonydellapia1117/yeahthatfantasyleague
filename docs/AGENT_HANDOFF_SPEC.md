@@ -216,8 +216,8 @@ done
 
 **Guard counts as of this writing** (a suite that suddenly runs fewer is a
 regression): survival 39, cvs 18, vor 50, baserates 70, archetypes 17, ceiling 14,
-bullish 29, ws2 63, mock 45, bullish_vs_adp 43, vona 1347, draft_vs_acquired 23,
-pages_data 277, run_gate 16, analysis 38 (33 on CI), smoke 326.
+bullish 29, ws2 63, mock 45, bullish_vs_adp 43, vona 1685, draft_vs_acquired 23,
+pages_data 289, run_gate 16, analysis 38 (33 on CI), smoke 343.
 
 **Rebuilding the analysis layer** needs the historical cache, which is NOT in the
 repo: `python3 src/fetch_history.py` (~156MB, nine families, `HISTORY` env var to
@@ -298,11 +298,10 @@ new evidence wastes a cycle.
 5. `fetch_history.py` before any analysis builder, on a fresh machine.
 
 **Do-not-modify:**
-- `out/ff-hub.html` - standing instruction from the original build order. It is the
-  retrospective dashboard for the 2013-2025 analysis; its "eight draft-day
-  hypotheses are null" table is that separate result, NOT the N.1 BULLISH finding
-  (a reviewer looked for N.1 there and could not find it - N.1 lives in
-  `docs/research/gemini_independent_assessment.md`).
+- The reviewed N.1 wording and figures. `out/ff-hub.html` now exposes N.1 as a
+  dedicated tab and loads `out/data/bullish_vs_adp.json` at runtime; it must not
+  copy or recompute the verdict. The original eight league-history hypotheses
+  remain a separate result.
 - The ten frozen math functions (R2).
 - `docs/CHAT_HISTORY_2026-08-11.md` - an archived record; leave its historical text
   alone even when purging language elsewhere.
@@ -362,15 +361,15 @@ there was a second and a third.
 | Item | State | Next action |
 |---|---|---|
 | **Archive PII in git HISTORY** | Removed from HEAD by the 2026-08-26 prune; still reachable in history at/before `bd8aff7`. Repo is public. | **Anthony's call, deferred to after the draft.** (a) accept, (b) `git filter-repo` + force-push (invalidates clones), (c) private repo - rejected for now, Pages would go dark. |
-| **Live browser-to-Sleeper path** | **VERIFIED 2026-08-26** by Anthony, against a real live draft - see §11. Automated coverage is still hermetic (all 326 smoke scenarios stub the API), so this is a human-verified path, not a regression-protected one. | Optional: a Playwright run against a live public mock would make it repeatable. Not required - the path is known good. |
+| **Live browser-to-Sleeper path** | **VERIFIED 2026-08-26** by Anthony against a real live draft - see §11. Automated browser smoke remains hermetic and stubs the Sleeper API, so this is a human-verified path, not a regression-protected one. | Optional: a Playwright run against a live public mock would make the verification repeatable. Not required - the path is known good. |
 | **Keeper status** | `use_keepers` is on for 2025-2026 but the 2025 draft had zero keeper picks and `keeper_results.csv` is 2 bytes. | OPEN QUESTION for the commissioner. **Do not resolve by inference.** |
 | **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. | A Routine runs `src/check_draft_order.py` every 2h and self-retires on the draw. The room collapses to the real seat automatically. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **Second normalizer** | `ingest._norm_player` lacks the diacritic fold. | One shared normalizer with a contract test. |
 | **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Honest on the card, but the largest exception to R1. | Backtest or keep labelled. |
 | **Optional-shard silent degradation** | `base_rates`/`ceiling`/archetypes/bullish fetch failures vanish columns with no notice. | Add a visible "unavailable" state + a smoke scenario. |
-| **12-team geometry inside DRAFT MODE** | **CONFIRMED IN PRODUCTION 2026-08-26**, no longer a prediction: the room rendered `rd11-14` band labels against a live 19-team draft, where those boundaries (36/72/120) are 12-team arithmetic. Cosmetic - it mislabels the sleeper bands, it does not affect ordering. | Derive the bands from `GEO`. Not draft-critical: the real league IS 12x14. |
-| **`ff-hub.html` N.1** | Confirmed absent by design. | None - documented in §6. |
+| **12-team geometry inside DRAFT MODE** | **CONFIRMED IN PRODUCTION 2026-08-26**, no longer a prediction: the room rendered `rd11-14` band labels against a live 19-team draft, where boundaries 36/72/120 are 12-team arithmetic. `sleeperListHtml` and `simBand` hardcode that geometry, so the labels are also wrong in a 10-team mock. Cosmetic - this mislabels sleeper bands; it does not affect ordering. | Derive both bands from `GEO`. Not draft-critical: the real league IS 12x14. |
+| **`ff-hub.html` N.1** | #53 verified N.1 absent on pre-#55 main and recorded that absence as deliberate (§6). #55 supersedes that state by publishing N.1 as a dedicated artifact-backed tab with honest loading and failure states. | Keep the reviewed artifact as the single source; do not duplicate its verdict in HTML. |
 
 ---
 
@@ -379,7 +378,7 @@ there was a second and a third.
 1. `python3 src/preflight_draft.py` if you touched anything draft-geometry-shaped.
 2. Full gate battery (§4). Every suite through `run_gate`, output to a file.
 3. `mathdiff` prints `MATH DIFF PROOF: EMPTY`.
-4. Smoke suite, 326 PASS.
+4. Smoke suite, 343 PASS.
 5. **Interrogate the values of any artifact you regenerated**, not just its schema
    (§1.2). What would be impossible in this data? Check for it.
 6. Ask of any new guard: what change would make this fail? (§8.4)

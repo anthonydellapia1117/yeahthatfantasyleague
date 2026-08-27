@@ -23,7 +23,7 @@ Thirteen seasons of **YeahThatFantasyLeague** turned into evidence: 2,339 draft 
 | File | What it is |
 |---|---|
 | `out/HANDOFF.md` | Distilled state. Read this first |
-| `out/ff-hub.html` | Self-contained dashboard, no backend. Open it |
+| `out/ff-hub.html` | Static dashboard. Serve the repo over HTTP so its N.1 artifact can load |
 | `docs/CHAT_HISTORY_*.md` | Full redacted build transcript |
 | `plugin/skills/ff-hub/` | Claude Code skill carrying the verified history |
 
@@ -49,7 +49,7 @@ python3 src/ingest.py          # Phase 1: ingest and reconcile, 52 assertions
 python3 src/phase2_value.py    # Phase 2: pick value and drafted-vs-acquired
 python3 src/phase3_lineup.py   # Phase 3A: lineup efficiency + positional gap
 python3 src/build_app_data.py  # dashboard data (app_data.json)
-open out/ff-hub.html
+python3 -m http.server 8000    # open http://127.0.0.1:8000/out/ff-hub.html
 ```
 
 ## Basis, stated once
