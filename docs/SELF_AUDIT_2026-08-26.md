@@ -62,18 +62,19 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 37 | N.1 written to a docs file, on no page in the app | **REVIEWER** | ~1 day | n/a | **DOC/ARTIFACT DIVERGENCE (2)** |
 | 38 | `paths.html` omitted from the Pages explicit copy list - live 404 | SELF-POST (deploy byte-compare) | ~1 hour | **yes, live** | **DEPLOY MANIFEST INCOMPLETENESS** |
 | 39 | Crosswalk normalizer did not fold diacritics (Estime / Estimé) | SELF-POST (diagnosing #35) | ~2 weeks | yes | **NAME-NORM (3)** |
+| 40 | V1 changelog reports 39 forks / 29 pruned / 15 coin flips, while the committed `04d3dd3` artifact records 53 / 49 / 28; counters include subtrees later removed by ancestor pruning | **REVIEWER** (PR #54 accounting) | since V1 shipped | n/a (repository record) | **DOC/ARTIFACT DIVERGENCE (3)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 8, and the honest number is probably worse.**
 
-Of the 39 entries: 4 are SELF-PRE (#25, #26, #27, #30) - about **10%**. Even those
+Of the 40 entries: 4 are SELF-PRE (#25, #26, #27, #30) - **10%**. Even those
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. None of
 the four is an instance of me noticing an error I had no prior reason to look for.
 
-The other categories: SELF-POST 11, GUARD 9, REVIEWER 14, ANTHONY 1.
+The other categories: SELF-POST 11, GUARD 9, REVIEWER 15, ANTHONY 1.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -82,7 +83,7 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Fourteen of 39 - the largest single share, and disproportionately the severe ones -
+Fifteen of 40 - the largest single share, and disproportionately the severe ones -
 came from outside review. Of the five defects that reached the live site and stayed
 there for more than a day (#19, #31, #34, #35, #39), **four were found by someone
 other than me.**
@@ -143,8 +144,16 @@ mistake (conditional where unconditional was needed) in new code, and the artifa
 advertised it - 28% of nodes had negative VONA, an impossibility - for as long as it
 took an outsider to look.
 
-**DOC/ARTIFACT DIVERGENCE - 2 occurrences (#4, #37).** A finding exists in a
-document and not where it is consumed.
+**DOC/ARTIFACT DIVERGENCE - 3 occurrences (#4, #37, #40).** The written record
+can be internally stale (#4), absent from its consuming surface (#37), or disagree
+with the committed artifact (#40). At `04d3dd3`, `CHANGELOG.md` reports 39
+rendered forks, 29 dominated branches pruned, and 15 coin flips.
+`out/data/vona_tree_2026.json` records 409 constructed nodes, 53 fork events, 49
+directly pruned roots, and 28 coin-flip events. Recursing the completed roots gives
+the actual visible surface: 259 nodes, 42 fork groups, and 21 visible coin-flip
+nodes. The counters were incremented before ancestor pruning, so removed descendants
+remained in the summaries. The correct fix is to compute visible node and fork
+counts recursively after pruning is complete.
 
 ### 1.4 Silent versus loud
 
@@ -156,7 +165,7 @@ caught quickly, most within hours, several before merge. **Not one loud failure 
 reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
-#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39. Sixteen of thirty-nine, and
+#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40. Seventeen of forty, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it
@@ -173,7 +182,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Fourteen finds, including four of the five long-lived live defects. The mechanism is
+Fifteen finds, including four of the five long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 
@@ -632,10 +641,17 @@ successful merge and the site would silently serve the previous build.
 - `out/draft_room.html` is ~2,400 lines of HTML, CSS and JS in one file, and it is
   the most defect-dense file in the repo by a wide margin. Splitting it is correct
   and **must not happen before the draft.**
-- The VONA guard emits **1,347 of the project's 2,089 non-browser checks** because it walks
-  every node of every path. That is one assertion repeated, not 1,347 kinds of
-  coverage: strip it and the real figure is 742. It inflates every coverage number
-  in this repo and should report "N paths checked" instead.
+- At `04d3dd3`, the VONA guard emits **1,347 of the project's 2,089 non-browser
+  checks**, but not because one assertion is repeated. Its 259 visible nodes receive
+  five direct checks each (1,295 executions); another 52 checks cover aggregate,
+  slot, and page properties. Report assertion executions together with structural
+  coverage rather than deleting the suite from the denominator.
+- **PR #54 PATHS render (`8a831a8`, held):** slot 10 renders 102 nodes and 26 fork
+  groups. At 1280×720 the page is 11,158 px high (15.5 viewports); at 390×844 it
+  is 19,908 px high (23.6 viewports), before any decision ledger is expanded. There
+  is no horizontal overflow and individual rows are legible, but the decision
+  surface is not. The full ledger can remain in the artifact; the initial page
+  needs a rendering cap and progressive disclosure.
 - `verify_yahoo.py` is ungated, needs an uncommitted `raw/yahoo/` input, and cannot
   run. It should be deleted or documented as historical.
 
@@ -674,7 +690,11 @@ their inputs, so **the reproducibility guarantee is the one thing CI never
 exercises.** The workflow now sets `GATE_ALLOW_SKIP=1` on that single step with the
 loss named at the call site, rather than the skip being invisible.
 
-One caveat on the headline number: `test_vona.py` contributes 1,347 of the 2,089
-because it walks every node of every path asserting the same three invariants. The
-count of *distinct* checks is closer to 742. Coverage figures from this repo should
-say so.
+One caveat on the headline number: at `04d3dd3`, `test_vona.py` contributes 1,347
+of 2,089 checks. The completed tree contains 259 visible nodes, and five direct
+assertions run on every node (1,295 checks). Negative VONA, roster feasibility, and
+E[next] monotonicity are instead accumulated while walking and asserted only three
+times total; they are among the remaining 52 slot/global/page checks. Therefore
+**742 is merely 2,089 minus the entire VONA suite, not an estimate of distinct
+coverage**, and the previous conclusion is withdrawn. Coverage reports should pair
+executed assertions with nodes walked and invariant families exercised.
