@@ -567,6 +567,29 @@ The cheapest real coverage: one Playwright run against a live Sleeper mock draft
 (publicly readable, already verified), asserting the clock tracks the real timer and
 picks appear. Anthony currently covers this manually.
 
+> **CORRECTION, 2026-08-27.** The paragraph above was true when written and is now
+> wrong on its headline claim. Anthony exercised the live path the same night, from
+> a real browser against live Sleeper draft `1388575351239606272` (19 teams):
+> `sleeper 200 - 106ms - data 43s old`, a clock counting off that draft's **120s**
+> `pick_timer` (proving the P0 fix is dynamic per draft, not a corrected constant),
+> seat 13 auto-detected, the format-mismatch bar firing on all three differences,
+> correct 19-team snake math, and every decision surface populated. Full record and
+> the two caveats: `docs/AGENT_HANDOFF_SPEC.md` §11.
+>
+> What still stands from the paragraph: the AUTOMATED coverage is unchanged - all
+> 326 scenarios remain hermetic, so this is a human-verified path rather than a
+> regression-protected one, and the settings verified (19/120s/2 flex) are not the
+> league's (12/60s/1 flex, drawn order). The "untested paths" list below is
+> unaffected.
+>
+> The same run confirmed P2-5 in production rather than by prediction: the room
+> rendered `rd11-14` band labels against that draft, those boundaries being 12-team
+> arithmetic. Cosmetic, not draft-critical.
+>
+> Left as written above rather than rewritten, because this document is a dated
+> record of what was known on 2026-08-26 and silently editing it would destroy the
+> thing it is for.
+
 **Untested paths that only fail in production:** a mid-draft Sleeper outage longer
 than the poll interval; a pick payload that shrinks (the new refusal path is smoke-
 tested, but not against a real cache); the wake-lock on a real phone; behaviour when
