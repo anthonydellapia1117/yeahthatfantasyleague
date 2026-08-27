@@ -1,7 +1,8 @@
-# Draft Path Tree (VONA) - APPROVED, decisions resolved
+# Draft Path Tree (VONA) - reviewed implementation contract
 
-Status: **approved to build.** The three open decisions were resolved by
-Anthony and are recorded in section 7; the body below reflects them.
+Status: **implemented and corrected after the 2026-08-26 cold review.** The
+terminal horizon, rendering rule, branching rule, and shared-FLEX feasibility
+below replace the original p25/floor specification.
 
 ## 1. The objective function
 
@@ -9,131 +10,191 @@ VONA - Value Over Next Available. At a node, for each position:
 
     VONA(pos) = E[best available at THIS pick] - E[best available at MY NEXT pick]
 
-The position with the largest expected loss is the one to take now. This
-is the "QB dropoff is shallow so wait, RB dropoff R3 to R5 is severe so
-do not" logic expressed as a number.
+The larger the expected loss from waiting, the more urgent the position. VONA is
+an opportunity-cost coordinate, not the whole draft objective. The tree pairs it
+with expected marginal starting-lineup gain and reports every action that is not
+locally dominated on those two coordinates.
 
-**How each term is computed, from existing repo machinery:**
+Both expectations use one pre-draft information frame and the same unconditional
+`survival(adp, pick)` function. The tree never mixes an unconditional current term
+with a player-specific conditional next term.
 
-- `E[best available at THIS pick]`: over players at that position with
-  `survival(adp, pick) >= FLOOR`, the survival-weighted expectation of
-  the best VOR still on the board. Concretely, order the position's pool
-  by VOR descending and take
-  `sum_i VOR_i * P(i available) * prod_{j<i} (1 - P(j available))` -
-  the expected VOR of the top survivor, not the top name's VOR.
-- `E[best available at MY NEXT pick]`: the same expectation computed with
-  `cond_survival(adp, next_pick, this_pick)` - the frozen, calibrated
-  conditional survival already used by the room's wait-or-reach verdict.
-  The math functions are the frozen five; the tree calls them, never
-  reimplements them.
-- Both terms are computed against the pool as the PATH left it: a node's
-  ancestors' picks are removed first, using `src/forward_policy.py` -
-  the same shared layer that fixed the duplicate-pick bug. A tree that
-  ignores its own path is the same defect one dimension up.
+For a VOR-descending positional pool, every positive-VOR player is a mutually
+exclusive top-survivor state:
+
+    P(player i is top) = P(i available) * product(P(higher-VOR j gone))
+
+The remaining probability is the replacement state and is worth zero. The
+expectation includes every positive-VOR player. There is no survival cutoff and no
+negative-VOR contribution.
+
+The independence assumption needed by that product is disclosed and measured
+with a descriptive same-position adjacency diagnostic from the league's own
+draft history. Each rate carries k, n, and a Wilson 95% interval. Adjacency does
+not identify player-level survival correlation or its bias direction, so it is a
+limitation, not a hidden correlation adjustment.
 
 ## 2. Structure
 
-- **Input:** draft slot 1-12, rendered slot-conditional (the order is
-  undrawn; the tab defaults to a slot picker exactly like the room's
-  pre-draft view).
-- **Root:** the round-1 pick at that slot. When one option dominates -
-  no rival within the branch threshold - render a SINGLE node and state
-  why ("VONA gap 34.1 pts over the next position; not a decision").
-- **Branch only at real decision points:** branch when two or more
-  positions' VONA values sit within `BRANCH_EPS` of each other. A fake
-  fork is worse than none.
-- **Parallel roots:** NOT gated on slot number. A slot cutoff would
-  hardcode an assumption the data should decide. The tree branches
-  wherever the top two options fall within the VONA threshold, at ANY
-  slot: slot 1 renders single-root naturally because one option
-  dominates, and slot 4 branches if the last elite RB and the first
-  elite WR are genuinely close. The artifact reports the threshold used
-  and the branch count produced per slot, so the shape is observable
-  rather than assumed.
-- **Depth:** rounds 1 through 7, on a STRUCTURAL boundary rather than a
-  noise argument. The starting lineup is exactly seven skill slots -
-  QB, RB, RB, WR, WR, TE, FLEX - so depth 7 covers starting-lineup
-  construction completely and stops where the lineup is full. K, DEF and
-  bench depth are separate problems the board already handles; extending
-  the tree past the lineup would add rounds whose decisions are not what
-  the tree is for.
-- **Pruning:** cap total rendered nodes at `MAX_NODES`; prune dominated
-  branches (a branch whose best leaf VONA is worse than another branch's
-  worst leaf by more than `BRANCH_EPS`) and print the pruned count -
-  "14 dominated branches pruned" - never silently.
+- **Input:** draft slot 1-12, rendered slot-conditional while the order is undrawn.
+- **Display depth:** rounds 1 through 7, the seven skill-starter decisions. This is
+  a display and roster-construction horizon, not a claim that value stops there.
+- **Value lookahead:** every displayed node has a real next owner pick. In
+  particular, round 7 is evaluated against the owner's round-8 pick. A terminal
+  node never silently substitutes `E[next] = 0`.
+- **Visible path state:** a modal-player event means that player is available and
+  every higher-VOR player at the position is gone. The continuation removes that
+  whole implied-gone set plus the drafted player. A modal replacement event
+  removes every positive-VOR player at that position. This is a coherent
+  representative scenario for reading a path, not an expectation over every
+  future chance branch. The tree makes no terminal-value pruning or
+  global-optimality claim from that modal transition.
+- **Roster feasibility:** a seven-pick leaf must match one exact composition from
+  `src/forward_policy.py`: the six fixed skill slots plus exactly one shared FLEX
+  assigned to a position with nonzero observed 2025 FLEX starts. RB, WR, and TE
+  all qualify; the source artifact reports 216 starts and Wilson intervals.
+  Independent per-position caps are insufficient because they can consume two
+  FLEX slots.
 
-## 3. Node contents
+Depth seven deliberately represents starter construction. The actual draft has
+14 rounds, so legal early-bench or delayed-QB/TE paths exist and are outside this
+surface. That is a deliberate scope limit, not a claim that those strategies are
+illegal.
 
-Each node shows, all computed:
+## 3. The local branch rule
 
-- Player, position, VOR, ADP
-- `P(available at this pick)` from the frozen survival model - the
-  "realistic yet optimistic" requirement. A node whose survival is below
-  `SURV_FLOOR` is not rendered at all.
-- NO BULLISH chip, not even display-only. The tree is a decision
-  surface, and a visual marker pulls the eye regardless of its label; at
-  93.5% top-band concentration (finding N.1) it would only re-mark
-  players the board already ranks highly. All nudge, no information. The
-  tag stays on the Players tab, where it is informational rather than
-  prescriptive.
-- VONA at that node: what taking this position now saves versus waiting
-  for the next turn, in projected points
-- Tier state: which tier the player is in and how many of that tier
-  remain above the survival floor at this pick
+There is no `BRANCH_EPS` and no percentile quota.
 
-## 4. Thresholds - all derived, none hand-picked
+For every feasible position, compute two coordinates:
 
-Every constant is computed from the same board the tree renders and
-labeled on the page with its derivation:
+1. VONA urgency.
+2. Expected marginal lineup gain over the same top-survivor distribution:
 
-| Constant | Derivation |
+       sum_state P(state) *
+         [phantom_lineup(roster + state) - phantom_lineup(roster)]
+
+The lineup function is the shared `forward_policy.phantom_lineup_pts` objective.
+The replacement state contributes zero.
+
+Render the Pareto frontier using the unrounded internal coordinates. An action is
+removed at the node only if another action is at least as good on both coordinates
+and strictly better on one. Multiple survivors are a local model tradeoff, not a
+claim of statistical closeness, statistical equivalence, global optimality, or a
+coin flip. One survivor is a forced node.
+
+Every feasible sibling, both raw decision coordinates, its Pareto status, and its
+exact dominance witnesses are serialized in `decision_set`. Display rounding is
+never an implicit epsilon. The visible policy is recomputed locally at each modal
+path state; it does not discard an action based on modal terminal lineup values.
+Exceeding the render budget fails the build loudly instead of silently dropping a
+path.
+
+## 4. Node contents
+
+Each player node shows only computed fields:
+
+- player, position, VOR, ADP, and projection;
+- current pick and the actual next owner pick used by VONA;
+- `P(available at this pick)`;
+- `P(this player is the top survivor)` and the probability no above-replacement
+  player remains;
+- VONA, `E[now]`, and `E[next]`;
+- expected marginal lineup gain;
+- expected available players in the displayed tier and `P(any tier player)`;
+- the full feasible sibling decision ledger and modal continuation basis.
+
+The user-facing page exposes one closed ledger per displayed decision group,
+including dominated actions and their exact dominance witnesses; siblings never
+repeat the same ledger. The initial surface is five fork cards. The complete tree
+is created in the DOM only after explicit `Show all` disclosure, while the
+committed artifact always retains every node and ledger.
+
+Cards are ranked by **normalized frontier spread**, a presentation-only measure of
+what is at stake in the local tradeoff. For every fork, take the maximum pairwise
+Euclidean distance between its non-dominated actions after dividing VONA and
+expected lineup gain by their observed population standard deviations across all
+fork alternatives in the current artifact. The two coordinates therefore enter
+symmetrically; the ranking never selects an action or changes the Pareto frontier.
+Downstream decision reach breaks exact spread ties.
+
+The five-card selection adds draft-depth coverage without changing that ranking.
+On every artifact build, exact-distinct fork counts by round are partitioned into
+three contiguous bands by the minimum-within-band-squared-error partition of the
+positive-support rounds. The final band extends through the display horizon, so a
+genuine zero-fork terminal round cannot manufacture an empty required band. The
+page selects the highest-spread fork in each computed band, then fills the two
+remaining cards from the highest-spread unselected forks globally. The builder
+fails loudly if any slot cannot contribute a card to every derived band. Computed
+boundaries, counts, per-slot support, the selection rule, and the observed reason
+for the coverage constraint are artifact provenance; no round boundary is typed
+into the page or model.
+
+The five-card cap ranks distinct local decision payloads, not repeated path
+instances. If every local node field and the complete feasible-action ledger are
+identical, occurrences reached through different modeled-tree breadcrumbs share
+one card. The card discloses every breadcrumb; differing local payloads are never
+collapsed, and the complete tree retains every modeled path occurrence. These
+remain coherent modal-state representative scenarios, not exact realized drafts.
+
+Every named alternative displays its literal availability percentage and a purple
+bar whose length varies linearly from 0% to 100%. There is no availability badge or
+threshold. The continuous availability scale is distinct from the reserved verdict
+colors and never filters, ranks, branches, or changes a model value. A modal
+replacement state remains an honest null with no invented percentage.
+
+The displayed identity is the modal player state from the full distribution. If
+the replacement state is modal, the node is an honest fallback-required state with
+no invented player name, ADP, or availability percentage.
+
+No BULLISH chip appears on a node. The tree is a decision surface, and finding N.1
+does not establish incremental value over ADP.
+
+## 5. Decision constants
+
+There are no statistical thresholds in the branch or render rules.
+
+| Constant | Meaning |
 |---|---|
-| `SURV_FLOOR` | the survival value at which the room already flags "going, going" (0.40, the existing shipped convention) - reused, not reinvented |
-| `BRANCH_EPS` | p25 of the absolute VONA gaps between the top two positions across all nodes at that depth - i.e. a branch fires when the gap is in the narrowest quartile of gaps actually observed |
-| `MAX_NODES` | render budget, not a statistical choice: stated as a UI constraint |
+| `DEPTH = 7` | display and starter-construction horizon; round 8 remains the terminal value lookahead |
+| `MAX_NODES = 120` | deliberate UI safety budget, checked only after the complete local Pareto policy is built; the current maximum is 102 nodes and the mobile smoke renders that full slot without page-level horizontal overflow |
+| `DISPLAY_CARD_CAP = 5` | presentation-only initial disclosure budget; it changes no artifact, frontier, continuation, or model value, and `Show all` lazily creates the complete tree |
+| `DISPLAY_BAND_COUNT = 3` | presentation-only coverage budget; band boundaries are recomputed from exact-distinct fork density on every artifact build and never typed |
 
-`BRANCH_EPS` is the one that matters and it is deliberately
-self-calibrating: it means "these options are close by the standard of
-this board", not "these options are within N points" where N was typed
-by hand.
+The old `SURV_FLOOR = 0.40`, p25 VONA-gap epsilon, and p25 domination band are
+removed. Reusing a typed room convention did not make the floor derived, and a
+quartile of gaps guaranteed relative branching even when the board contained no
+genuine decision boundary.
 
-## 5. What it must never do
+The 120-node budget is not a statistical cutoff and never changes which actions
+are selected. It is an accepted fail-loud coupling: a future live board above 120
+blocks the VONA build and therefore the linked refresh until the complete tree is
+reviewed on mobile and the UI budget is deliberately revised. It must never
+truncate a valid tree to make a build pass.
 
-- No hardcoded player names, no hand-authored paths, no narrative
-  branches. Every node comes from the artifacts.
-- No new survival math. The frozen five are called as-is; mathdiff must
-  stay EMPTY across this work.
-- If survival data cannot support a branch, the node says so rather than
-  inventing one.
-- The tree is a PLANNING surface, not a verdict path: like the
-  simulator and the BULLISH tag, it never feeds the room's live
-  recommendation.
+## 6. What it must never do
 
-## 6. Build plan (on approval)
+- No hardcoded player names or hand-authored paths.
+- No new survival math. The frozen functions are called as-is and mathdiff stays
+  EMPTY.
+- No conditional/unconditional frame mixing.
+- No independent multi-pick selection or local substitute for `forward_policy`.
+- No silent terminal zero, budget truncation, fallback player, or omitted feasible
+  sibling ledger.
+- No terminal pruning or global-optimality claim from a modal representative path.
+- No test that prescribes how many slots must fork. Honest forced trees are valid.
+- No BULLISH input to a live verdict or to this planning surface.
 
-1. `src/build_vona_tree.py` -> `out/data/vona_tree_2026.json`: all twelve
-   slots, computed offline so the page renders instantly and the numbers
-   are gate-checkable.
-2. `tests/test_vona.py`: no duplicate player on any path, every node
-   above the survival floor, thresholds present and derived, pruned
-   counts reported, tree depth honored, and a cross-check that the
-   forward-pick law holds along every path.
-3. New tab wired into `nav.js` and the smoke.
-4. Findings-page entry with whatever the tree reveals about where the
-   real decision points cluster.
+## 7. Build and verification
 
-## 7. Decisions, resolved
+1. Run `src/engine_2026.py`.
+2. Run `src/build_vona_tree.py` in the same pass.
+3. Run `tests/test_vona.py` through `tests/run_gate.sh`.
+4. Run `tests/mathdiff.py` through the mandated EMPTY-sentinel gate.
+5. Run the full browser smoke and inspect artifact values, especially every
+   round-7 `next_pick`, recomputed `e_next`, VONA identity, leaf composition, and
+   every decision-set witness.
 
-- **D1 - depth: 7**, on a structural rationale rather than the
-  noise argument originally proposed. The starting lineup is exactly
-  seven skill slots (QB, RB, RB, WR, WR, TE, FLEX), so depth 7 covers
-  lineup construction completely and stops at a principled boundary
-  instead of an arbitrary one.
-- **D2 - branching: data-driven at every slot**, neither of the two
-  options proposed. No slot-number gating; the threshold decides, and
-  the artifact reports the threshold and the per-slot branch count so
-  the resulting shape can be checked against the assumption it replaced.
-- **D3 - BULLISH on nodes: no chip at all**, not even display-only. A
-  marker on a decision surface nudges regardless of its label, and the
-  N.1 concentration means it would re-mark only what the board already
-  ranks highly.
+The committed artifact reports displayed picks, lookahead picks, solved and
+rendered node and decision-group counts, every feasible candidate and local
+dominance witness, exact starter targets, correlation evidence, and all model
+disclosures.

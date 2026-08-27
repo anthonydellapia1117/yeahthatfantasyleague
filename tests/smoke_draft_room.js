@@ -8,7 +8,20 @@
 // 3. Mocks a live draft (real order + picks) to assert Mode 2: seat detection,
 //    big-name answer, clock, conditional survival table.
 const { chromium } = require("playwright-core");
+const exists = require("fs").existsSync;
 const path = require("path");
+
+const CHROMIUM_CANDIDATES = [
+  process.env.PW_CHROMIUM,
+  "/opt/pw-browsers/chromium",
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
+].filter(Boolean);
+const CHROMIUM_PATH = CHROMIUM_CANDIDATES.find(exists);
+if (!CHROMIUM_PATH) {
+  throw new Error("No Chromium browser found. Set PW_CHROMIUM to an executable path. " +
+    "Checked: " + CHROMIUM_CANDIDATES.join(", "));
+}
 
 const FILE = "file://" + path.resolve(process.argv[2] || "out/draft_room.html");
 let failures = 0;
@@ -19,8 +32,9 @@ const ok = (cond, name, detail) => {
 
 (async () => {
   const browser = await chromium.launch({
-    // this image ships the browser at a fixed path; CI overrides it
-    executablePath: process.env.PW_CHROMIUM || "/opt/pw-browsers/chromium" });
+    // CI passes its downloaded browser. Local runs also recognize the
+    // container image and the standard macOS Chrome/Chromium locations.
+    executablePath: CHROMIUM_PATH });
 
   // ---- scenario 1: pre_draft, order not drawn (mocked - hermetic, no network)
   {
@@ -883,6 +897,9 @@ const ok = (cond, name, detail) => {
                      "ff-hub.html": "FINDINGS" };
     for (const [file, label] of Object.entries(ACTIVE)){
       const pg = await browser.newPage();
+      const shellErrors = [];
+      pg.on("pageerror", e => shellErrors.push(String(e)));
+      pg.on("console", m => { if (m.type() === "error") shellErrors.push(m.text()); });
       await pg.route("**/api.sleeper.app/**", r => r.abort());
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(800);
@@ -900,13 +917,114 @@ const ok = (cond, name, detail) => {
         ok(rv.armed > 0 && rv.shown > 0,
            "reveals arm and complete on the home page", JSON.stringify(rv));
       }
+      if (file === "ff-hub.html"){
+        const n1 = JSON.parse(fs.readFileSync(
+          path.resolve("out/data/bullish_vs_adp.json"), "utf8"));
+        await pg.waitForFunction(() =>
+          document.querySelector("#n1State").dataset.state !== "loading");
+        await pg.click('.tabs button[data-p="p5"]');
+        ok(await pg.locator("#n1State").getAttribute("data-state") === "ready",
+           "findings N.1: computed artifact reaches an explicit ready state");
+        ok(await pg.locator("#n1Results").isVisible(),
+           "findings N.1: reviewed result is visible after artifact load");
+        ok((await pg.textContent("#n1Text")).trim() === n1.verdict,
+           "findings N.1: verdict is rendered verbatim from the artifact");
+        const pct = v => (100 * v).toFixed(1) + "%";
+        const pp = v => (v >= 0 ? "+" : "") + (100 * v).toFixed(1);
+        const hit = side => side.n
+          ? `${side.hit12.k}/${side.n} (${pct(side.hit12.rate)})`
+          : "0 - not identifiable";
+        const lift = v => v
+          ? `${pp(v.diff)}pp [${pp(v.diff_ci95[0])}, ${pp(v.diff_ci95[1])}]`
+          : "not identifiable";
+        const labels = {"pos1-12":"Positional 1-12", "pos13-24":"Positional 13-24",
+                        "pos25-48":"Positional 25-48"};
+        const expectedRows = Object.entries(labels).map(([key, label]) => {
+          const b = n1.within_band[key];
+          return [label, hit(b.tagged), hit(b.untagged), lift(b.lift_hit12),
+                  b.lift_hit12 ? b.lift_hit12.p_two_sided.toFixed(3) : "-"];
+        });
+        const actualRows = await pg.$$eval("#n1Body tr", rows => rows.map(row =>
+          [...row.querySelectorAll("td")].map(td => td.textContent.trim())));
+        ok(JSON.stringify(actualRows) === JSON.stringify(expectedRows),
+           "findings N.1: every rendered band cell comes from the artifact",
+           JSON.stringify(actualRows));
+        const expectedConcentration =
+          `${pct(n1.concentration.share_in_top12_band)} of tags are in positional ADP 1-12. ` +
+          n1.concentration.note;
+        ok((await pg.textContent("#n1Concentration")).trim() === expectedConcentration,
+           "findings N.1: tag concentration and note come from the artifact");
+        const verdictLabel = n1.verdict.split(" - ")[0];
+        ok((await pg.locator("#n1Verdict").getAttribute("class")) === "tag" &&
+           (await pg.textContent("#n1Verdict")).trim() === verdictLabel,
+           "findings N.1: verdict uses the neutral tag scale");
+        ok((await pg.textContent("#n1Hero")).includes(verdictLabel),
+           "findings N.1: the hero states a verdict only after artifact success");
+      }
       // dark lock: these pages load under the default (light) OS preference
       // in this suite, and must render the dark family anyway
       ok(await pg.evaluate(() => getComputedStyle(document.body).backgroundColor)
          === "rgb(11, 17, 32)",
          `${file} renders dark under a light OS preference`);
+      if (file === "ff-hub.html")
+        ok(shellErrors.length === 0, `${file}: zero console errors`, shellErrors[0] || "");
       await pg.close();
     }
+    // N.1 failure is deliberately loud. A missing or rejected artifact may
+    // never leave a stale table visible or infer a replacement verdict.
+    const n1err = await browser.newPage();
+    const n1Errors = [];
+    n1err.on("pageerror", e => n1Errors.push(String(e)));
+    n1err.on("console", m => { if (m.type() === "error") n1Errors.push(m.text()); });
+    const malformedN1 = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_vs_adp.json"), "utf8"));
+    delete malformedN1.within_band["pos1-12"].tagged.hit12;
+    await n1err.route("**/data/bullish_vs_adp.json", r => r.fulfill({
+      status: 200, contentType: "application/json", body: JSON.stringify(malformedN1) }));
+    await n1err.goto(base + "/out/ff-hub.html");
+    await n1err.waitForFunction(() =>
+      document.querySelector("#n1State").dataset.state === "error");
+    await n1err.click('.tabs button[data-p="p5"]');
+    const n1Failure = await n1err.textContent("#n1State");
+    ok(/N\.1 unavailable \(unusable schema\)/.test(n1Failure) &&
+       /No verdict is inferred/.test(n1Failure),
+       "findings N.1: unusable artifact produces a visible no-inference error");
+    ok(await n1err.locator("#n1Results").isHidden(),
+       "findings N.1: rejected artifact cannot expose stale results");
+    const rejectedLabel = malformedN1.verdict.split(" - ")[0];
+    ok(!(await n1err.textContent("#n1Hero")).includes(rejectedLabel),
+       "findings N.1: rejected artifact cannot leak its verdict through the hero");
+    ok(n1Errors.length === 0, "findings N.1 error state: zero console errors",
+       n1Errors[0] || "");
+    await n1err.close();
+    // A non-2xx response is a different failure mechanism from malformed
+    // JSON. Chromium may log the expected failed resource, so this assertion
+    // watches uncaught page errors and the visible state instead of pretending
+    // the network request succeeded quietly.
+    const n1http = await browser.newPage();
+    const n1HttpPageErrors = [];
+    n1http.on("pageerror", e => n1HttpPageErrors.push(String(e)));
+    await n1http.route("**/data/bullish_vs_adp.json", r => r.fulfill({
+      status: 503, contentType: "text/plain", body: "temporarily unavailable" }));
+    await n1http.goto(base + "/out/ff-hub.html");
+    await n1http.waitForFunction(() =>
+      document.querySelector("#n1State").dataset.state === "error");
+    await n1http.click('.tabs button[data-p="p5"]');
+    const n1HttpFailure = await n1http.textContent("#n1State");
+    ok(/N\.1 unavailable \(HTTP 503\)/.test(n1HttpFailure) &&
+       /No verdict is inferred/.test(n1HttpFailure),
+       "findings N.1: HTTP failure produces a visible no-inference error");
+    ok(await n1http.locator("#n1Results").isHidden(),
+       "findings N.1: HTTP failure cannot expose stale results");
+    const committedN1 = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_vs_adp.json"), "utf8"));
+    const committedLabel = committedN1.verdict.split(" - ")[0];
+    ok(!(await n1http.textContent("#n1Hero")).includes(committedLabel),
+       "findings N.1: HTTP failure cannot leak the committed verdict");
+    ok(n1HttpPageErrors.length === 0,
+       "findings N.1 HTTP error state: zero uncaught page errors",
+       n1HttpPageErrors[0] || "");
+    await n1http.close();
     // drawer behavior at 390px
     const dw = await browser.newPage({ viewport: { width: 390, height: 844 } });
     await dw.route("**/api.sleeper.app/**", r => r.abort());
@@ -1597,6 +1715,226 @@ const ok = (cond, name, detail) => {
   {
     const http = require("http");
     const fs = require("fs");
+    const vonaArtifact = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/vona_tree_2026.json"), "utf8"));
+
+    // Independent presentation oracle. It reads the committed artifact, not the
+    // page's groups, scores, ordering, or rendered text.
+    const indexed = {};
+    const allGroups = [];
+    const allForks = [];
+    function indexGroup(nodes, prior){
+      if (!nodes || !nodes.length) return null;
+      const children = nodes.map(n => indexGroup(n.children || [], prior.concat([{
+        pos: n.pos, name: n.fallback_required ? "Fallback required" : n.name
+      }])));
+      const live = children.filter(Boolean);
+      const group = {
+        nodes, children, prior,
+        round: nodes[0].round, pick: nodes[0].pick, nextPick: nodes[0].next_pick,
+        groupReach: 1 + live.reduce((a, g) => a + g.groupReach, 0),
+        forkReach: (nodes.length > 1 ? 1 : 0) +
+          live.reduce((a, g) => a + g.forkReach, 0),
+        nodeReach: nodes.length + live.reduce((a, g) => a + g.nodeReach, 0)
+      };
+      allGroups.push(group);
+      if (nodes.length > 1) allForks.push(group);
+      return group;
+    }
+    for (const [slot, value] of Object.entries(vonaArtifact.slots)){
+      indexed[slot] = indexGroup(value.roots, []);
+    }
+    const forkNodes = allForks.flatMap(g => g.nodes);
+    const popSd = values => {
+      const mean = values.reduce((a, b) => a + b, 0) / values.length;
+      return Math.sqrt(values.reduce((a, v) => a + (v - mean) ** 2, 0) /
+        values.length);
+    };
+    const vSd = popSd(forkNodes.map(n => n.decision_vona_raw));
+    const gSd = popSd(forkNodes.map(n => n.decision_expected_lineup_gain_raw));
+    for (const group of allForks){
+      group.spread = 0;
+      for (let i = 0; i < group.nodes.length; i++){
+        for (let j = i + 1; j < group.nodes.length; j++){
+          const dv = (group.nodes[i].decision_vona_raw -
+            group.nodes[j].decision_vona_raw) / vSd;
+          const dg = (group.nodes[i].decision_expected_lineup_gain_raw -
+            group.nodes[j].decision_expected_lineup_gain_raw) / gSd;
+          group.spread = Math.max(group.spread, Math.hypot(dv, dg));
+        }
+      }
+      group.crumb = group.prior.length ? "AFTER " + group.prior.map(x =>
+        x.pos + " " + x.name).join("  >  ") : "START OF SLOT";
+    }
+    const canonical = value => {
+      if (Array.isArray(value)) return "[" + value.map(canonical).join(",") + "]";
+      if (value && typeof value === "object") return "{" +
+        Object.keys(value).sort().map(k => JSON.stringify(k) + ":" +
+          canonical(value[k])).join(",") + "}";
+      return JSON.stringify(value);
+    };
+    const localPayloadKey = group => canonical(group.nodes.map(node =>
+      Object.fromEntries(Object.entries(node).filter(([key]) => key !== "children"))));
+    const comparePriority = (a, b) => b.spread - a.spread ||
+      b.groupReach - a.groupReach || b.forkReach - a.forkReach ||
+      b.nodeReach - a.nodeReach || a.round - b.round || a.pick - b.pick ||
+      a.crumb.localeCompare(b.crumb);
+    const distinctFor = slot => {
+      const groups = [];
+      function walk(group){
+        if (!group) return;
+        if (group.nodes.length > 1) groups.push(group);
+        group.children.filter(Boolean).forEach(walk);
+      }
+      walk(indexed[String(slot)]);
+      const occurrences = new Map();
+      for (const group of groups){
+        const key = localPayloadKey(group);
+        if (!occurrences.has(key)) occurrences.set(key, []);
+        occurrences.get(key).push(group);
+      }
+      return [...occurrences.values()].map(paths => {
+        paths.sort(comparePriority);
+        paths[0].occurrences = paths;
+        return paths[0];
+      });
+    };
+    const displayDepth = vonaArtifact.provenance.depth;
+    const selectionProvenance = vonaArtifact.provenance.display_selection;
+    const distinctBySlot = Object.fromEntries(Object.keys(indexed).map(slot =>
+      [slot, distinctFor(slot)]));
+    const forkCounts = Object.fromEntries(Array.from(
+      { length: displayDepth }, (_x, i) => [i + 1, 0]));
+    Object.values(distinctBySlot).flat().forEach(group => {
+      forkCounts[group.round] += 1;
+    });
+    const chooseCuts = (positions, needed, start = 0, prior = []) => {
+      if (!needed) return [prior];
+      const out = [];
+      for (let i = start; i <= positions.length - needed; i++){
+        out.push(...chooseCuts(positions, needed - 1, i + 1,
+          prior.concat([positions[i]])));
+      }
+      return out;
+    };
+    const support = Object.keys(forkCounts).map(Number)
+      .filter(round => forkCounts[round] > 0);
+    const segmentCost = rounds => {
+      const values = rounds.map(round => forkCounts[round]);
+      const sum = values.reduce((a, b) => a + b, 0);
+      return values.reduce((a, value) => a + value * value, 0) -
+        sum * sum / values.length;
+    };
+    const cutOptions = chooseCuts(
+      Array.from({ length: support.length - 1 }, (_x, i) => i + 1),
+      selectionProvenance.coverage_band_count - 1);
+    const bandCandidates = cutOptions.map(cuts => {
+      const marks = [0].concat(cuts, [support.length]);
+      const segments = marks.slice(0, -1).map((start, i) =>
+        support.slice(start, marks[i + 1]));
+      return { cuts, segments,
+        score: segments.reduce((a, rounds) => a + segmentCost(rounds), 0) };
+    }).sort((a, b) => a.score - b.score ||
+      a.cuts.join(",").localeCompare(b.cuts.join(",")));
+    const labels = ["early", "middle", "late"];
+    let bandStart = 1;
+    const computedBands = bandCandidates[0].segments.map((rounds, i) => {
+      const end = i === bandCandidates[0].segments.length - 1
+        ? displayDepth : rounds[rounds.length - 1];
+      const band = { index: i + 1, label: labels[i],
+        start_round: bandStart, end_round: end,
+        forks_n: Array.from({ length: end - bandStart + 1 }, (_x, j) =>
+          forkCounts[bandStart + j]).reduce((a, b) => a + b, 0) };
+      bandStart = end + 1;
+      return band;
+    });
+    const bandFor = round => computedBands.find(band =>
+      round >= band.start_round && round <= band.end_round);
+    const priorityFor = slot => {
+      const ordered = distinctBySlot[String(slot)].slice().sort(comparePriority);
+      const selected = computedBands.map(band => {
+        const winner = ordered.find(group =>
+          group.round >= band.start_round && group.round <= band.end_round);
+        winner.band = band;
+        return winner;
+      });
+      for (const group of ordered){
+        if (selected.length >= selectionProvenance.card_cap) break;
+        if (!selected.includes(group)){
+          group.band = bandFor(group.round);
+          selected.push(group);
+        }
+      }
+      return selected.sort(comparePriority);
+    };
+    const renderedCards = async page => page.$$eval(".priority-card", cards =>
+      cards.map(c => ({
+        spread: Number(c.dataset.spread), round: Number(c.dataset.round),
+        band: c.dataset.band,
+        pick: Number(c.dataset.pick), nextPick: Number(c.dataset.nextPick),
+        actions: Number(c.dataset.actions), path: c.dataset.path,
+        occurrences: Number(c.dataset.occurrences),
+        occurrencePaths: [...c.querySelectorAll(".occurrences li")]
+          .map(li => li.textContent.trim()),
+        alternatives: [...c.querySelectorAll(".alt-row")].map(row => {
+          const availability = row.querySelector(".availability");
+          return { pos: row.dataset.pos, name: row.dataset.name,
+            visibleName: (row.querySelector(".alt-name") || {}).textContent || "",
+            availability: availability && availability.hasAttribute("data-availability")
+              ? Number(availability.dataset.availability) : null,
+            text: row.textContent };
+        })
+      })));
+    const cardsMatch = (actual, expected) => actual.length === expected.length &&
+      actual.every((a, i) => a.round === expected[i].round &&
+        a.band === expected[i].band.label &&
+        a.pick === expected[i].pick && a.nextPick === expected[i].nextPick &&
+        a.actions === expected[i].nodes.length && a.path === expected[i].crumb &&
+        a.occurrences === expected[i].occurrences.length &&
+        JSON.stringify(a.occurrencePaths) === JSON.stringify(
+          expected[i].occurrences.length > 1
+            ? expected[i].occurrences.map(g => g.crumb) : []) &&
+        Math.abs(a.spread - expected[i].spread) < 1e-10 &&
+        a.alternatives.length === expected[i].nodes.length &&
+        a.alternatives.every((alt, j) => {
+          const node = expected[i].nodes[j];
+          const name = node.fallback_required ? "Fallback required" : node.name;
+          const availability = node.fallback_required ? null : node.p_available;
+          const vona = "VONA " + (node.vona > 0 ? "+" : "") + node.vona.toFixed(1);
+          const lineup = "lineup +" + node.expected_lineup_gain.toFixed(1);
+          return alt.pos === node.pos && alt.name === name &&
+            alt.visibleName.trim() === name && alt.availability === availability &&
+            alt.text.includes(vona) && alt.text.includes(lineup);
+        }));
+
+    ok(JSON.stringify(selectionProvenance.fork_counts_by_round) ===
+       JSON.stringify(forkCounts) &&
+       selectionProvenance.distinct_forks_n ===
+       Object.values(distinctBySlot).flat().length &&
+       selectionProvenance.raw_fork_occurrences_n === allForks.length,
+       "paths oracle: artifact reconciles distinct round supply and raw forks");
+    ok(JSON.stringify(selectionProvenance.bands) === JSON.stringify(computedBands),
+       "paths oracle: artifact bands match an independent minimum-error partition");
+    const computedSupport = Object.fromEntries(Object.entries(distinctBySlot)
+      .map(([slot, groups]) => [slot, Object.fromEntries(computedBands.map(band =>
+        [band.label, groups.filter(group => group.round >= band.start_round &&
+          group.round <= band.end_round).length]))]));
+    ok(JSON.stringify(selectionProvenance.slot_band_eligible_counts) ===
+       JSON.stringify(computedSupport) &&
+       Object.values(computedSupport).every(row =>
+         Object.values(row).every(count => count > 0)),
+       "paths oracle: every slot can supply every independently derived band");
+    const terminalGroups = allGroups.filter(group => group.round === displayDepth);
+    const terminal = selectionProvenance.terminal_round_check;
+    ok(terminal.lookahead_round ===
+       vonaArtifact.provenance.value_lookahead_rounds &&
+       terminal.decision_groups_n === terminalGroups.length &&
+       terminal.forks_n === terminalGroups.filter(group =>
+         group.nodes.length > 1).length &&
+       terminalGroups.every(group => group.nodes.every(node =>
+         Number.isFinite(node.next_pick) && node.e_next > 0)),
+       "paths oracle: terminal zero forks use a real positive round-8 expectation");
+
     const srv = http.createServer((req, res) => {
       const url = req.url.split("?")[0];
       // the browser probes /favicon.ico on its own; answering it keeps the
@@ -1620,13 +1958,94 @@ const ok = (cond, name, detail) => {
     await pg.waitForTimeout(900);
     const body = await pg.textContent("#content");
     ok(/Slot 1 - picks/.test(body), "paths: renders a slot tree");
-    ok(await pg.locator(".tnode").count() > 3, "paths: the tree has nodes");
+    const expected1 = priorityFor(1);
+    const cards1 = await renderedCards(pg);
+    ok(cardsMatch(cards1, expected1),
+       "paths: five cards match independent band-constrained spread selection");
+    ok(new Set(cards1.map(card => card.band)).size === computedBands.length &&
+       computedBands.every(band => cards1.some(card => card.band === band.label)),
+       "paths: initial cards visibly cover every derived draft-depth band");
+    ok(new Set(expected1.map(localPayloadKey)).size === expected1.length,
+       "paths: exact repeated local decisions consume only one capped card");
+    const expected1Nodes = expected1.reduce((a, g) => a + g.nodes.length, 0);
+    ok(await pg.locator(".priority-card").count() === 5 &&
+       await pg.locator(".priority-grid .alt-row").count() === expected1Nodes,
+       "paths: initial DOM contains exactly five fork groups and their alternatives");
+    ok(await pg.locator("#fullTree .alt-row").count() === 0 &&
+       await pg.locator("#fullTree .tree-group").count() === 0,
+       "paths: complete tree is absent from the initial DOM");
     ok(!/BULLISH|WATCH/.test(body),
        "paths: no BULLISH marker anywhere on the decision surface");
-    ok(/real decision points/.test(body) && /pruned as dominated/.test(body),
-       "paths: fork and prune accounting is on screen, never silent");
+    ok(/full decision groups/.test(body) && /feasible actions audited/.test(body) &&
+       /distinct tradeoffs shown/.test(body) && /fork occurrences represented/.test(body) &&
+       /tree nodes shown initially/.test(body),
+       "paths: initial and full artifact accounting are both on screen");
+    ok(await pg.getAttribute("#slots", "role") === "group" &&
+       await pg.getAttribute("#slots", "aria-label") === "Draft slot" &&
+       await pg.locator('#slots button[aria-pressed="true"]').count() === 1 &&
+       await pg.locator(".priority-card h3.decision-title").count() === 5,
+       "paths: slot control and decision cards expose accessible structure");
+    ok(await pg.locator(".priority-grid details.ledger").count() === 5,
+       "paths: each initial decision group has one closed ledger");
+    ok(/dominated by/.test(await pg.locator("details.ledger").allTextContents()),
+       "paths: dominated candidates name their exact witnesses on screen");
+    const avail = await pg.$$eval(".priority-grid .alt-row", rows => rows.map(row => {
+      const box = row.querySelector(".availability");
+      const p = box && box.dataset.availability;
+      const fill = row.querySelector(".avail-fill");
+      return { exists: !!box, fallback: p == null, p: Number(p),
+        text: box ? box.textContent : "",
+        width: fill ? Number.parseFloat(fill.style.width) : null };
+    }));
+    ok(avail.every(a => a.exists && (a.fallback ||
+       (a.text.includes((Math.round(a.p * 1000) / 10) + "%") &&
+        Math.abs(a.width - Math.round(a.p * 1000) / 10) < 1e-9))),
+       "paths: every alternative shows exact availability on a continuous bar");
+    ok(/continuous presentation scale/.test(body) && /linear from 0% to 100%/.test(body) &&
+       /uses none of the reserved verdict colors/.test(body) &&
+       !/LOW AVAILABILITY/.test(body),
+       "paths: availability is threshold-free and explicitly presentation-only");
+    ok(body.includes(forkNodes.length + " non-dominated alternatives") &&
+       body.includes("VONA SD " + vSd.toFixed(4)) &&
+       body.includes("lineup SD " + gSd.toFixed(4)),
+       "paths: normalization n and scales match the artifact, not typed values");
+    ok(/Draft-depth coverage/.test(body) &&
+       /Derived bands this build, from aggregate exact-distinct supply/.test(body) &&
+       body.includes(selectionProvenance.supply_diagnosis) &&
+       computedBands.every(band => body.includes(
+         band.label + " R" + band.start_round + "–R" + band.end_round +
+         " (" + band.forks_n + " exact-distinct forks)")),
+       "paths: page explains computed bands and the supply-first diagnosis");
     ok(/undrawn/.test(await pg.textContent("#hdr")),
        "paths: slot-conditional, states the order is undrawn");
+
+    const renderedRoundCounts = Object.fromEntries(Array.from(
+      { length: displayDepth }, (_x, i) => [i + 1, 0]));
+    const oracleRoundCounts = Object.fromEntries(Array.from(
+      { length: displayDepth }, (_x, i) => [i + 1, 0]));
+    const slotCoverageFailures = [];
+    for (const slot of Object.keys(indexed)){
+      await pg.click(`#slots button[data-slot="${slot}"]`);
+      await pg.waitForTimeout(20);
+      const actual = await renderedCards(pg);
+      const expected = priorityFor(slot);
+      if (!cardsMatch(actual, expected) || actual.length !==
+          selectionProvenance.card_cap || computedBands.some(band =>
+            !actual.some(card => card.band === band.label))){
+        slotCoverageFailures.push(slot);
+      }
+      actual.forEach(card => { renderedRoundCounts[card.round] += 1; });
+      expected.forEach(group => { oracleRoundCounts[group.round] += 1; });
+    }
+    ok(slotCoverageFailures.length === 0,
+       "paths: all twelve slots render one early, middle, and late card",
+       slotCoverageFailures.join(", "));
+    ok(JSON.stringify(renderedRoundCounts) === JSON.stringify(oracleRoundCounts) &&
+       Object.values(renderedRoundCounts).reduce((a, b) => a + b, 0) ===
+       selectionProvenance.card_cap * Object.keys(indexed).length,
+       "paths: all 60 rendered card rounds match the independent selector");
+    await pg.click('#slots button[data-slot="1"]');
+    await pg.waitForTimeout(20);
     // switching slots re-renders a different tree
     const t1 = await pg.textContent("#content");
     await pg.click('#slots button[data-slot="8"]');
@@ -1634,18 +2053,83 @@ const ok = (cond, name, detail) => {
     const t8 = await pg.textContent("#content");
     ok(/Slot 8 - picks/.test(t8) && t1 !== t8,
        "paths: the slot picker re-renders the tree");
-    ok(/Correlation caveat/.test(t8) && /UNDERSTATES VONA/.test(t8),
-       "paths: the independence caveat and its direction are shown");
-    ok(/Stated deviation/.test(t8),
-       "paths: the spec deviations are disclosed on the page");
-    // every rendered node clears the survival floor the page states
-    const floorOk = await pg.evaluate(() => {
-      const nums = [...document.querySelectorAll(".tnums")]
-        .map(e => e.textContent.match(/there (\d+)%/))
-        .filter(Boolean).map(m => Number(m[1]));
-      return nums.length > 0 && nums.every(n => n >= 40);
+    ok(cardsMatch(await renderedCards(pg), priorityFor(8)),
+       "paths: slot switch recomputes the independent coverage selection");
+    ok(/Correlation caveat/.test(t8) && /UNKNOWN/.test(t8) &&
+       /not identify player-level survival correlations/.test(t8) &&
+       /Wilson 95%/.test(t8),
+       "paths: the correlation evidence carries n, Wilson intervals, and no inferred direction");
+    ok(/Model disclosure/.test(t8) && /representative scenario/.test(t8) &&
+       /not a global draft optimization/.test(t8),
+       "paths: the modal-continuation limitation is visible on the page");
+    await pg.click("#showAll");
+    await pg.waitForTimeout(100);
+    ok(await pg.locator("#fullTree .tree-group").count() ===
+       vonaArtifact.slots["8"].decision_groups &&
+       await pg.locator("#fullTree .alt-row").count() ===
+       vonaArtifact.slots["8"].nodes,
+       "paths: Show all lazily creates the complete audited tree");
+    ok(await pg.locator("#fullTree details.ledger").count() ===
+       vonaArtifact.slots["8"].decision_groups,
+       "paths: disclosed tree renders one ledger per group, never per sibling");
+    const terminalLookahead = await pg.$$eval("#fullTree .tpick", els => {
+      const r7 = els.map(e => e.textContent.trim()).filter(t => /^R7\b/.test(t));
+      return r7.length > 0 && r7.every(t => /^R7 - pick \d+ to \d+$/.test(t));
     });
-    ok(floorOk, "paths: every rendered node is at least 40% likely to be there");
+    ok(terminalLookahead,
+       "paths: every rendered round-7 node names its real round-8 lookahead");
+    ok(!/at least 40%|minimum 40%|clears? (the )?survival floor/i.test(t8),
+       "paths: no hardcoded survival floor remains on the page");
+    await pg.click("#showAll");
+    ok(await pg.locator("#fullTree .tree-group").count() === 0,
+       "paths: hiding the disclosure removes the complete tree from the DOM");
+    await pg.setViewportSize({ width: 1280, height: 720 });
+    await pg.click('#slots button[data-slot="10"]');
+    await pg.waitForTimeout(100);
+    const expected10 = priorityFor(10);
+    ok(cardsMatch(await renderedCards(pg), expected10),
+       "paths desktop: slot 10 matches the band-constrained spread selection");
+    ok(new Set(expected10.map(localPayloadKey)).size === expected10.length,
+       "paths desktop: slot 10 does not waste cards on exact path duplicates");
+    const desktopHeight = await pg.evaluate(() => document.documentElement.scrollHeight);
+    ok(desktopHeight <= 720 * 4,
+       "paths desktop: slot 10 initial surface stays within four screens",
+       String(desktopHeight));
+    await pg.setViewportSize({ width: 390, height: 844 });
+    await pg.waitForTimeout(300);
+    ok(await pg.locator(".priority-card").count() === 5 &&
+       await pg.locator(".priority-grid .alt-row").count() ===
+       expected10.reduce((a, g) => a + g.nodes.length, 0),
+       "paths mobile: slot 10 initially renders only five decision cards");
+    const mobileHeight = await pg.evaluate(() => document.documentElement.scrollHeight);
+    ok(mobileHeight <= 844 * 5,
+       "paths mobile: slot 10 initial surface stays within five screens",
+       String(mobileHeight));
+    const mobileWidth = await pg.evaluate(() => ({
+      scroll: document.documentElement.scrollWidth,
+      client: document.documentElement.clientWidth
+    }));
+    ok(mobileWidth.scroll <= mobileWidth.client + 1,
+       "paths mobile: capped surface has no page-level horizontal overflow",
+       JSON.stringify(mobileWidth));
+    await pg.click('#slots button[data-slot="12"]');
+    await pg.waitForTimeout(100);
+    ok(cardsMatch(await renderedCards(pg), priorityFor(12)),
+       "paths mobile: slot 12 matches the independent coverage selection");
+    await pg.click('#slots button[data-slot="10"]');
+    await pg.waitForTimeout(100);
+    await pg.click("#showAll");
+    await pg.waitForTimeout(100);
+    ok(await pg.locator("#fullTree .alt-row").count() ===
+       vonaArtifact.slots["10"].nodes,
+       "paths mobile: complete slot 10 remains available after disclosure");
+    const fullMobileWidth = await pg.evaluate(() => ({
+      scroll: document.documentElement.scrollWidth,
+      client: document.documentElement.clientWidth
+    }));
+    ok(fullMobileWidth.scroll <= fullMobileWidth.client + 1,
+       "paths mobile: disclosed complete tree still has no horizontal overflow",
+       JSON.stringify(fullMobileWidth));
     ok(perr.length === 0, "paths: zero console errors", perr[0] || "");
     await pg.close();
     srv.close();

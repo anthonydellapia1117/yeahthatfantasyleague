@@ -103,7 +103,7 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 |---|---|---|---|---|
 | 1 | 5 | Puka Nacua WR 126 (56%) | Christian McCaffrey RB 122 | WR tier empties before your next turn - take now, do not wait; Puka Nacua is Questionable - re-check draft morning |
 | 2 | 20 | Brock Bowers TE 91 (66%) | Derrick Henry RB 78 | TE tier empties before your next turn - take now, do not wait |
-| 3 | 29 | Chris Olave WR 50 (56%) | Colston Loveland TE 53 | COIN FLIP with DeVonta Smith - break toward ceiling; Chris Olave is Questionable - re-check draft morning |
+| 3 | 29 | Chris Olave WR 50 (56%) | Colston Loveland TE 53 | COIN FLIP with DeVonta Smith - break toward ceiling |
 | 4 | 44 | D'Andre Swift RB 39 (76%) | Garrett Wilson WR 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Travis Etienne - break toward ceiling |
 | 5 | 53 | Mike Evans WR 36 (68%) | Sam LaPorta TE 34 | Mike Evans is Questionable - re-check draft morning |
 | 6 | 68 | Dak Prescott QB 18 (67%) | Parker Washington WR 26 | QB-urgent seats: John Juliano (rd 4.8, n 3.6), Mike Long (rd 5.0, n 3.1), Phil Baldino (rd 5.2, n 5.0) |
@@ -122,7 +122,7 @@ Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,03
 |---|---|---|---|---|
 | 1 | 6 | Jonathan Taylor RB 103 (65%) | Jaxon Smith-Njigba WR 98 | RB tier empties before your next turn - take now, do not wait |
 | 2 | 19 | Brock Bowers TE 91 (70%) | Derrick Henry RB 78 | TE tier empties before your next turn - take now, do not wait |
-| 3 | 30 | Chris Olave WR 50 (52%) | Colston Loveland TE 53 | COIN FLIP with DeVonta Smith - break toward ceiling; Chris Olave is Questionable - re-check draft morning |
+| 3 | 30 | Chris Olave WR 50 (52%) | Colston Loveland TE 53 | COIN FLIP with DeVonta Smith - break toward ceiling |
 | 4 | 43 | D'Andre Swift RB 39 (78%) | Garrett Wilson WR 39 | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Travis Etienne - break toward ceiling |
 | 5 | 54 | Mike Evans WR 36 (66%) | Sam LaPorta TE 34 | Mike Evans is Questionable - re-check draft morning |
 | 6 | 67 | Parker Washington WR 26 (67%) | Dak Prescott QB 18 | COIN FLIP with Christian Watson - break toward ceiling |

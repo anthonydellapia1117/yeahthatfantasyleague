@@ -15,49 +15,74 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-26 by Claude (this session, ending - Anthony's Fable 5 budget is exhausted until 08-31) |
-| **Next agent** | **Codex.** Read `docs/AGENT_HANDOFF_SPEC.md` FIRST, sections 1 and 2 before touching anything. |
-| **Branch** | `claude/chat-migration-desktop-ruannr`, based on `main` |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - byte-verified against `main` as of `49e3ea9` |
-| **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. A Routine checks every 2h and self-retires on the draw. |
+| **Last touched** | 2026-08-26 by Codex. Implementation commit `5f2ae32`; this handoff is the final branch commit. |
+| **Next agent** | Review the PR from `codex/fix-vona-tree-findings-n1`. If it merges, verify the deployed artifacts with the bounded cache-busted proof in `docs/DRAFT_MORNING.md`. |
+| **Branch** | `codex/fix-vona-tree-findings-n1`, based on `origin/main` at `04d3dd3` |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - still serves `main`; this branch was not deployed or merged in this session. |
+| **Draft order** | UNDRAWN as of 2026-08-27 02:08Z. Sleeper returned `pre_draft`, `draft_order: null`, and the identity placeholder for `slot_to_roster_id`. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 
 ### What was done in the last session
 
-1. **P0** - the pick clock (hardcoded 120s against a real 60s `pick_timer`, anchored
-   to poll-detection). Server-anchored or honestly absent. Merged, deployed.
-2. **P1 A/B/C/F** - VONA one-frame conditioning (28% of nodes had negative VONA),
-   VONA starter feasibility via the shared `forward_policy` layer, room response
-   validity vs freshness, and the BULLISH-vs-ADP verdict changed from an unsound
-   automated rule to reviewed reported text. Merged (#51), deployed.
-3. **P2** - pages-data cron verified dead for 4 days (8 of 14 scheduled runs failed);
-   root-caused to a crosswalk guard and a missing diacritic fold; fixed, and the
-   alert moved to the published artifact (`src/check_publication.py`).
-4. **Self-audit** - `docs/SELF_AUDIT_2026-08-26.md`. 39 defects classified; 4 caught
-   pre-commit (~10%); five recurring classes; a predicted-defect hunt that found
-   the items below.
-5. **Archive prune** - the repo is public and member finance/profile data was
-   tracked under a duplicate root that defeated the `.gitignore` rule. 165 files
-   deleted, roots collapsed to one, nothing functional changed (verified
-   byte-for-byte).
-6. **Draft-critical fixes** - geometry preflight; the VONA tree now rebuilds with
-   the engine it derives from; skipped guards now fail the gate.
-7. **`fetch_history.py` extended** from four data families to nine. The five it did
-   not know about had no URL recorded anywhere, which left the C5 BULLISH inputs
-   unreproducible by anyone. All five URLs verified byte-identical to the cache.
+1. **Round-7 VONA now has a real counterfactual.** The page still displays rounds
+   1-7, but the builder consumes owner picks through round 8. All 173 round-7 nodes
+   compare now against the real round-8 owner pick; `nxt=None` is rejected.
+2. **The hardcoded `SURV_FLOOR=0.40` is gone.** Expected-next value uses the full
+   positive-VOR top-survivor distribution plus an explicit replacement state.
+   Expected-now and expected-next remain in one unconditional frame, with zero
+   negative-VONA nodes in the current artifact.
+3. **The endogenous p25 branch rule is gone.** Each node evaluates every feasible
+   position and derives its fork set from the local full-precision Pareto frontier
+   over VONA urgency and expected marginal starting-lineup gain. The artifact and
+   page expose every candidate, raw coordinates, exact dominance witnesses, and
+   whether a forced action came from feasibility or Pareto dominance.
+4. **State transitions are coherent and auditable.** A representative top-survivor
+   continuation removes all higher-VOR players implied gone; replacement removes
+   every positive-VOR player at that position. Shared forward policy enforces the
+   exact QB/RB/RB/WR/WR/TE/FLEX starter geometry. The continuation is explicitly
+   labelled representative, not a global stochastic optimum.
+5. **N.1 is now on the user-facing findings page.** `out/ff-hub.html` fetches and
+   validates `out/data/bullish_vs_adp.json`, renders the reviewed INCONCLUSIVE
+   verdict and concentration evidence, remains verdict-neutral before load, and
+   fails visibly without inferring a verdict on HTTP or schema failure.
+6. **The coupled build was run in one pass.** It refreshed the engine, CVS, VONA,
+   draft room, decision cards, and three live source-age shards. Chris Olave's
+   injury field changed from `Questionable` to empty, two derivative warnings were
+   removed, slot 5 `gap_lift` moved from 0.982 to 0.983, and the survival reference
+   had 20 small floating-point updates. These are deliberate live-input changes,
+   not hand edits.
+7. **Verification is green.** All project suites used `sh tests/run_gate.sh`;
+   `tests/test_run_gate.py` separately reported 16 PASS. Counts were survival 39,
+   CVS 18, VOR 50, base rates 70, archetypes 17, ceiling 14,
+   BULLISH 29, WS2 63, mock 45, BULLISH-vs-ADP 43, VONA 17,702, draft-vs-acquired
+   23, pages-data 289, and browser smoke 347 across 26 hermetic scenarios. The
+   frozen-math proof is empty. Analysis ran 33 checks with 5 history-cache checks
+   explicitly skipped. JSON, Python, JavaScript, workflow YAML, and diff checks
+   also passed. An independent audit traversed all 443 decision groups and 604
+   nodes with no state-ledger or frontier mismatch.
 
 ### In flight / nothing blocked
 
-Nothing is half-finished. Every change above is committed, gated, and either merged
-or on the branch with a green battery.
+Nothing is half-finished in the branch. Implementation is committed at `5f2ae32`
+and the branch is ready for review. It has not been merged or deployed. After a
+merge, the remaining release action is the bounded deployed-artifact proof in
+`docs/DRAFT_MORNING.md`.
 
-### The three things the next agent most needs to know
+### The five things the next agent most needs to know
 
-1. **`docs/AGENT_HANDOFF_SPEC.md` §1** - the three failure modes that produced this
-   project's live defects. More useful than the module map.
-2. **The live browser-to-Sleeper path has never been tested.** 326 smoke scenarios,
-   all hermetic. It is the draft-night path. Anthony tests it manually.
-3. **PII is out of HEAD but still in git history.** Retention is Anthony's call,
+1. **The VONA tree is a representative local policy, not a global stochastic
+   optimizer.** Depth 7 is a deliberate starter-construction horizon. Early bench
+   drafting and delayed starter completion are outside this tree's claim.
+2. **Player survival is still modeled independently.** The within-season adjacency
+   diagnostic reports both k/n rates and Wilson 95% intervals, but does not support
+   a correlation correction. The page labels the resulting bias direction UNKNOWN.
+3. **`MAX_NODES=120` is a deliberate UI safety budget.** The current maximum is 102.
+   A future breach fails loudly and blocks the coupled refresh until the mobile UI
+   is reviewed; it must never silently truncate the tree.
+4. **The live browser-to-real-Sleeper path has never been tested.** The 347 browser
+   checks are hermetic. The five history-cache analysis checks also could not run
+   locally, so those two areas remain unverified by this branch.
+5. **PII is out of HEAD but still in git history.** Retention is Anthony's call,
    deferred to after the draft. Do not act on it unilaterally.
 
 ---
@@ -273,8 +298,9 @@ Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_
 Six gated phases per docs/DRAFT_ROOM_BUILD_ORDER.md: broadcast-grade design
 system, live pick-clock mode (duration from draft settings), sixteen features (roster-need-aware
 recommendation first), the quarantined league-mate simulator, GitHub Pages
-deployment via the gh-pages workflow, and this review. Draft-morning flow:
-`python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push`.
+deployment via the gh-pages workflow, and this review. Draft-morning flow is the
+full coupled build and gate in `docs/DRAFT_MORNING.md`; never refresh the engine
+alone. Work on a branch, open a PR, and never push the refresh directly to main.
 The survival math is frozen: 21 Python guards + the smoke suite with 42 JS
 parity anchors + the calibration benchmark gate every merge.
 

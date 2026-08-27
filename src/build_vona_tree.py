@@ -6,32 +6,33 @@ MY NEXT pick]. The position with the largest expected loss is the one to
 take now: the "QB dropoff is shallow so wait, RB dropoff R3 to R5 is
 severe so do not" logic as a computed number.
 
-APPROVED DECISIONS (spec section 7):
-  depth 7      structural - the starting lineup is exactly seven skill
-               slots (QB RB RB WR WR TE FLEX), so the tree covers lineup
-               construction completely and stops where the lineup is full
-  branching    data-driven at EVERY slot, never gated on slot number; the
-               threshold decides and the artifact reports the per-slot
-               branch count so the shape is observable
+REVIEWED DECISIONS (spec section 7):
+  depth 7      display horizon - the tree renders the seven skill-starter
+               decisions, but round 7 is valued against the real round-8
+               owner pick; the optimization never compares against nothing
+  branching    Pareto non-dominance at EVERY slot: preserve every action not
+               locally dominated on VONA urgency and expected marginal lineup
+               gain. Full-precision local coordinates, no percentile quota and
+               no typed epsilon
   no BULLISH   the tree is a decision surface; a marker nudges regardless
                of its label (finding N.1)
 
-TWO DELIBERATE DEVIATIONS FROM THE SPEC TEXT, both stated here and in the
-artifact rather than made silently:
+MODEL DISCLOSURES, stated here and in the artifact rather than made silently:
 
-  1. The expectation runs over the WHOLE positional pool, not only players
-     above the survival floor. Truncating the sum at the floor would bias
-     E[best available] downward at exactly the picks where a high-VOR
-     player is unlikely-but-possible. The floor is a RENDERING rule - no
-     node is drawn for a player below it - which is what "realistic yet
-     optimistic" asks for. Applying it to the math too would be a
-     different, worse thing.
+  1. The expectation runs over every ABOVE-REPLACEMENT player in the
+     positional pool. Replacement is the explicit zero-value state. There
+     is no survival cutoff: the displayed state is the modal top-survivor
+     outcome from the same distribution. When replacement is modal, the node
+     says fallback required instead of assigning an invented player.
   2. Survival is modeled INDEPENDENTLY across players because that is
-     what the frozen functions provide. Real drafts run in positional
-     bursts, so same-position survival is positively correlated. The
-     builder measures that overdispersion from this league's own 2,339
-     picks and reports it with the direction of the bias, rather than
-     leaving the assumption unexamined. See "correlation" in the output.
+     what the frozen functions provide. The builder reports descriptive
+     same-position adjacency from this league's own 2,339 picks with k,
+     n, and Wilson intervals. It does not call that player correlation or
+     claim a bias direction. See "correlation" in the output.
+  3. Expected decision coordinates integrate every current player state,
+     but the visible continuation follows the modal state as a representative
+     scenario. It is not a stochastic terminal expectation or a global draft
+     optimization, so no terminal-value pruning is performed.
 
 Run: python3 src/build_vona_tree.py
 Output: out/data/vona_tree_2026.json
@@ -39,10 +40,13 @@ Output: out/data/vona_tree_2026.json
 import csv
 import datetime
 import json
+import math
 import os
 import statistics
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
+from fractions import Fraction
+from itertools import combinations
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
@@ -50,33 +54,41 @@ sys.path.insert(0, ROOT)
 
 # the frozen survival model is CALLED, never reimplemented
 from engine_2026 import survival, snake_picks, TEAMS  # noqa: E402
-from forward_policy import phantom_lineup_pts, starter_caps  # noqa: E402
+from forward_policy import (phantom_lineup_pts, starter_path_feasible,
+                            starter_targets)  # noqa: E402
 
 OUT = os.path.join(ROOT, "out", "data", "vona_tree_2026.json")
 SKILL = ("QB", "RB", "WR", "TE")
 DEPTH = 7                    # = the seven skill starter slots
-SURV_FLOOR = 0.40            # the room's shipped "going, going" threshold
-MAX_NODES = 80               # render budget per slot, a UI constraint
+MAX_NODES = 120              # render budget per slot, a UI constraint
+DISPLAY_CARD_CAP = 5         # approved initial planning-surface budget
+DISPLAY_BAND_COUNT = 3       # early / middle / late coverage slots
 
 
-def e_best(pool, prob):
-    """Survival-weighted expected VOR of the top surviving player.
+def best_states(pool, prob):
+    """Distribution of the best above-replacement survivor.
 
-    sum_i VOR_i * P(i available) * prod_{j<i} (1 - P(j available)), the pool
-    ordered by VOR descending. Runs over the WHOLE pool (deviation 1).
+    The pool is VOR-descending. Each player state carries
+    P(player is available AND every higher-VOR player is gone). The residual
+    probability is the replacement state, worth exactly zero. No probability
+    cutoff truncates either the expectation or the displayed distribution.
     """
-    total, gone = 0.0, 1.0
+    expected, none, states = 0.0, 1.0, []
     for p in pool:
-        pr = prob(p)
-        total += p["vor"] * pr * gone
-        gone *= (1 - pr)
-        if gone < 1e-6:
+        if p["vor"] <= 0:
             break
-    return total
+        pr = prob(p)
+        p_top = none * pr
+        states.append((p, p_top))
+        expected += p["vor"] * p_top
+        none *= (1 - pr)
+    return expected, states, none
 
 
 def vona_at(pool_by_pos, pick, nxt):
-    """VONA per position at a pick, plus the best renderable player."""
+    """VONA per position at a pick, plus its modal top-survivor player."""
+    if nxt is None:
+        raise ValueError(f"VONA at pick {pick} requires a real next owner pick")
     out = {}
     for pos, pool in pool_by_pos.items():
         if not pool:
@@ -90,34 +102,289 @@ def vona_at(pool_by_pos, pick, nxt):
         # best available that RISES as the pool shrinks is impossible.
         # With one frame, availability is monotone in the pick number and
         # VONA >= 0 holds structurally (asserted below and in the guards).
-        now = e_best(pool, lambda p: survival(p["adp"], pick))
-        later = (e_best(pool, lambda p: survival(p["adp"], nxt))
-                 if nxt else 0.0)
-        # In VOR units "everyone gone" IS replacement level (0), so for an
-        # above-replacement pool availability is monotone in the pick number
-        # and E[next] <= E[now]. A BELOW-replacement pool can legitimately
-        # drift up toward 0 by waiting - negative VONA there reads "waiting
-        # costs nothing, the position is below replacement," which is true.
-        if nxt is not None and now >= 0:
-            assert later <= now + 1e-9, (pos, pick, nxt, now, later)
-        # the player actually takeable here: best VOR still plausibly there
-        cand = [p for p in pool if survival(p["adp"], pick) >= SURV_FLOOR]
-        if not cand:
-            continue
-        out[pos] = {"vona": round(now - later, 2),
-                    "e_now": round(now, 2), "e_next": round(later, 2),
-                    "player": cand[0]}
+        now, states, p_none = best_states(
+            pool, lambda p: survival(p["adp"], pick))
+        later, _later_states, _later_none = best_states(
+            pool, lambda p: survival(p["adp"], nxt))
+        assert later <= now + 1e-9, (pos, pick, nxt, now, later)
+        player, p_top = (max(states, key=lambda item: (item[1], item[0]["vor"]))
+                         if states else (None, 0.0))
+        replacement_modal = p_none >= p_top
+        e_now = round(now, 2)
+        e_next = round(later, 2)
+        out[pos] = {"vona_raw": now - later,
+                    "e_now_raw": now, "e_next_raw": later,
+                    "vona": round(e_now - e_next, 2),
+                    "e_now": e_now, "e_next": e_next,
+                    "player": None if replacement_modal else player,
+                    "states": states,
+                    "p_top_survivor": p_top,
+                    "p_no_above_replacement": p_none,
+                    "p_modal_state": p_none if replacement_modal else p_top,
+                    "replacement_modal": replacement_modal}
     return out
 
 
-def overdispersion(picks_path):
-    """Do same-position picks cluster beyond independent draws?
+def dominates(left, right):
+    """Exact internal dominance; display rounding never enters decisions."""
+    return (left["vona_raw"] >= right["vona_raw"]
+            and left["expected_lineup_gain_raw"] >=
+            right["expected_lineup_gain_raw"]
+            and (left["vona_raw"] > right["vona_raw"]
+                 or left["expected_lineup_gain_raw"] >
+                 right["expected_lineup_gain_raw"]))
 
-    For each window of TEAMS consecutive picks in the league's own draft
-    history, count each position. Compare the observed variance of those
-    counts against the binomial variance implied by the same mean. A ratio
-    above 1 means runs cluster - the independence assumption understates
-    how often a whole position tier vanishes between turns.
+
+def pareto_front(actions):
+    """Return actions not dominated on both urgency and lineup gain."""
+    front = []
+    for action in actions:
+        if not any(dominates(other, action)
+                   for other in actions if other is not action):
+            front.append(action)
+    return sorted(front, key=lambda a: (-a["vona_raw"],
+                                       -a["expected_lineup_gain_raw"], a["pos"]))
+
+
+def iter_decision_groups(nodes):
+    """Yield each sibling array once; descendants remain path-specific."""
+    if not nodes:
+        return
+    yield nodes
+    for node in nodes:
+        yield from iter_decision_groups(node.get("children", []))
+
+
+def local_decision_signature(nodes):
+    """Exact local payload identity used by the five-card presentation.
+
+    Children encode how the representative path continues. They do not change
+    the local decision. Every other node field, including the complete feasible
+    decision ledger, must match before path occurrences can share one card.
+    """
+    local = [{k: v for k, v in node.items() if k != "children"}
+             for node in nodes]
+    return json.dumps(local, sort_keys=True, separators=(",", ":"),
+                      ensure_ascii=False)
+
+
+def exact_distinct_forks(slot_payload):
+    """One representative per exact local fork payload within a slot."""
+    seen = {}
+    for nodes in iter_decision_groups(slot_payload["roots"]):
+        if len(nodes) <= 1:
+            continue
+        seen.setdefault(local_decision_signature(nodes), nodes)
+    return list(seen.values())
+
+
+def population_sd(values):
+    """Population SD used to place both presentation coordinates on one scale."""
+    mean = sum(values) / len(values)
+    return math.sqrt(sum((value - mean) ** 2 for value in values) / len(values))
+
+
+def normalized_frontier_spread(nodes, vona_sd, gain_sd):
+    """Maximum pairwise distance on the normalized local Pareto frontier."""
+    return max((math.hypot(
+        (left["decision_vona_raw"] - right["decision_vona_raw"]) / vona_sd
+        if vona_sd else 0.0,
+        (left["decision_expected_lineup_gain_raw"]
+         - right["decision_expected_lineup_gain_raw"]) / gain_sd
+        if gain_sd else 0.0)
+        for left, right in combinations(nodes, 2)), default=0.0)
+
+
+def derive_display_bands(fork_counts, depth=DEPTH,
+                         band_count=DISPLAY_BAND_COUNT):
+    """Natural contiguous bands from exact-distinct fork density by round.
+
+    Partition the positive-count round sequence into the approved number of
+    ordered presentation bands by minimizing within-band squared error in fork
+    counts (a one-dimensional Jenks/least-squares partition). Zero-count rounds
+    cannot win a card, so they do not create their own cluster; the final band
+    extends through the display horizon and records those zeroes explicitly.
+    """
+    occupied = [r for r in range(1, depth + 1) if fork_counts.get(r, 0) > 0]
+    if len(occupied) < band_count:
+        raise RuntimeError(
+            f"display-band derivation needs {band_count} fork-bearing rounds; "
+            f"artifact has {len(occupied)}")
+    groups_n = band_count
+
+    def segment_cost(rounds):
+        values = [fork_counts[r] for r in rounds]
+        return (sum(v * v for v in values)
+                - Fraction(sum(values) ** 2, len(values)))
+
+    best = None
+    for cuts in combinations(range(1, len(occupied)), groups_n - 1):
+        marks = (0,) + cuts + (len(occupied),)
+        segments = [occupied[marks[i]:marks[i + 1]]
+                    for i in range(groups_n)]
+        score = sum((segment_cost(segment) for segment in segments), Fraction())
+        candidate = (score, cuts, segments)
+        if best is None or candidate[:2] < best[:2]:
+            best = candidate
+
+    labels = ("early", "middle", "late")
+    bands, start = [], 1
+    for index, segment in enumerate(best[2]):
+        end = depth if index == len(best[2]) - 1 else segment[-1]
+        bands.append({
+            "index": index + 1,
+            "label": labels[index] if len(best[2]) == len(labels)
+            else f"band-{index + 1}",
+            "start_round": start,
+            "end_round": end,
+            "forks_n": sum(fork_counts.get(r, 0)
+                           for r in range(start, end + 1)),
+        })
+        start = end + 1
+    return bands
+
+
+def display_selection_provenance(slots):
+    """Computed coverage policy and the evidence that motivated it."""
+    if DISPLAY_CARD_CAP < DISPLAY_BAND_COUNT:
+        raise RuntimeError("display card cap cannot cover every derived band")
+    distinct_by_slot = {slot: exact_distinct_forks(payload)
+                        for slot, payload in slots.items()}
+    fork_counts = Counter(
+        nodes[0]["round"]
+        for groups in distinct_by_slot.values() for nodes in groups)
+    bands = derive_display_bands(fork_counts)
+
+    coverage = {}
+    for slot, groups in distinct_by_slot.items():
+        row = {}
+        for band in bands:
+            count = sum(band["start_round"] <= nodes[0]["round"] <=
+                        band["end_round"] for nodes in groups)
+            row[band["label"]] = count
+            if count == 0:
+                raise RuntimeError(
+                    f"slot {slot} has no exact-distinct fork in derived "
+                    f"{band['label']} band R{band['start_round']}-"
+                    f"R{band['end_round']}")
+        coverage[slot] = row
+
+    all_groups = [nodes for payload in slots.values()
+                  for nodes in iter_decision_groups(payload["roots"])]
+    all_forks = [nodes for nodes in all_groups if len(nodes) > 1]
+    fork_alternatives = [node for nodes in all_forks for node in nodes]
+    vona_sd = population_sd(
+        [node["decision_vona_raw"] for node in fork_alternatives])
+    gain_sd = population_sd(
+        [node["decision_expected_lineup_gain_raw"]
+         for node in fork_alternatives])
+    spreads_by_band = {}
+    for band in bands:
+        spreads = [normalized_frontier_spread(nodes, vona_sd, gain_sd)
+                   for groups in distinct_by_slot.values() for nodes in groups
+                   if band["start_round"] <= nodes[0]["round"] <=
+                   band["end_round"]]
+        spreads_by_band[band["label"]] = {
+            "n": len(spreads),
+            "mean": sum(spreads) / len(spreads),
+            "median": statistics.median(spreads),
+            "max": max(spreads),
+        }
+    terminal = [nodes for nodes in all_groups
+                if nodes and nodes[0]["round"] == DEPTH]
+    terminal_multi = sum(len(nodes[0].get("decision_set", [])) > 1
+                         for nodes in terminal)
+    raw_forks_n = len(all_forks)
+    total = sum(fork_counts.values())
+    early, late = bands[0], bands[-1]
+    early_spread = spreads_by_band[early["label"]]
+    late_spread = spreads_by_band[late["label"]]
+    late_support = [r for r in range(late["start_round"],
+                                     late["end_round"] + 1)
+                    if fork_counts.get(r, 0) > 0]
+    late_support_text = ", ".join(f"R{r}" for r in late_support)
+    supply_ratio = late["forks_n"] / early["forks_n"]
+    mean_spread_ratio = late_spread["mean"] / early_spread["mean"]
+    supply_diagnosis = (
+        f"Candidate supply is the larger observed driver of the late-heavy "
+        f"unconstrained spread surface: the fork-bearing rounds in the "
+        f"derived {late['label']} band ({late_support_text}) contain "
+        f"{late['forks_n']}/{total} exact-distinct forks, versus "
+        f"{early['forks_n']}/{total} in the {early['label']} band "
+        f"R{early['start_round']}-R{early['end_round']} (a {supply_ratio:.2f}x "
+        f"count ratio). Wider later frontier spreads also contribute: mean "
+        f"normalized spread is {late_spread['mean']:.3f} versus "
+        f"{early_spread['mean']:.3f} (a {mean_spread_ratio:.2f}x ratio). "
+        f"This diagnosis changes presentation selection only, never the "
+        f"Pareto model or artifact tree.")
+
+    return {
+        "card_cap": DISPLAY_CARD_CAP,
+        "coverage_band_count": DISPLAY_BAND_COUNT,
+        "coverage_cards": len(bands),
+        "unrestricted_cards": DISPLAY_CARD_CAP - len(bands),
+        "distinct_forks_n": total,
+        "raw_fork_occurrences_n": raw_forks_n,
+        "fork_counts_by_round": {
+            str(r): fork_counts.get(r, 0) for r in range(1, DEPTH + 1)},
+        "occupied_rounds": [r for r in range(1, DEPTH + 1)
+                            if fork_counts.get(r, 0) > 0],
+        "zero_fork_rounds": [r for r in range(1, DEPTH + 1)
+                             if fork_counts.get(r, 0) == 0],
+        "spread_evidence": {
+            "normalization": {
+                "alternatives_n": len(fork_alternatives),
+                "vona_population_sd": vona_sd,
+                "lineup_gain_population_sd": gain_sd,
+            },
+            "by_band": spreads_by_band,
+        },
+        "bands": bands,
+        "band_derivation": (
+            "recompute exact-distinct fork counts by round on every artifact "
+            "build, then choose the contiguous three-band partition minimizing "
+            "within-band squared count error across positive-count rounds; "
+            "extend the final band through the display horizon so a zero-count "
+            "terminal round cannot manufacture an empty coverage band"),
+        "selection_rule": (
+            "select the highest normalized-frontier-spread fork from each "
+            "derived band, then fill the two remaining cards with the highest-"
+            "spread unselected forks globally; downstream reach breaks exact "
+            "spread ties"),
+        "slot_band_eligible_counts": coverage,
+        "supply_diagnosis": supply_diagnosis,
+        "terminal_round_check": {
+            "round": DEPTH,
+            "lookahead_round": DEPTH + 1,
+            "decision_groups_n": len(terminal),
+            "forks_n": sum(len(nodes) > 1 for nodes in terminal),
+            "multi_action_ledgers_n": terminal_multi,
+            "result": (
+                "genuine Pareto result after real next-pick lookahead; zero "
+                "forks is not the removed compare-against-zero defect"),
+        },
+    }
+
+
+def wilson(k, n, z=1.96):
+    """Wilson interval for a computed proportion."""
+    if n == 0:
+        return [None, None]
+    p = k / n
+    d = 1 + z * z / n
+    center = (p + z * z / (2 * n)) / d
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return [round(center - half, 4), round(center + half, 4)]
+
+
+def correlation_diagnostic(picks_path):
+    """Descriptive same-position adjacency, never a correlation estimate.
+
+    For each position, compare P(next pick has the same position | current
+    pick has that position) with that position's marginal share among all
+    within-season next picks. Counts and Wilson intervals are published.
+    Adjacent pairs are not independent and this cannot identify joint player
+    survival, so the result is a disclosure, not an adjustment or verdict.
     """
     seq = defaultdict(list)
     for r in csv.DictReader(open(picks_path)):
@@ -125,169 +392,215 @@ def overdispersion(picks_path):
             seq[r["season"]].append(r["pos"])
         except KeyError:
             continue
-    counts = defaultdict(list)
-    W = TEAMS
-    for _s, positions in seq.items():
-        for i in range(0, len(positions) - W, W):
-            win = positions[i:i + W]
-            for pos in SKILL:
-                counts[pos].append(win.count(pos))
     out = {}
-    for pos, vals in counts.items():
-        if len(vals) < 8:
-            continue
-        m = statistics.mean(vals)
-        var = statistics.variance(vals)
-        binom = m * (1 - m / W)          # Binomial(W, m/W) variance
-        out[pos] = {"windows": len(vals), "mean_per_window": round(m, 3),
-                    "observed_var": round(var, 3),
-                    "binomial_var": round(binom, 3),
-                    "ratio": round(var / binom, 3) if binom > 0 else None}
+    for pos in SKILL:
+        contexts = repeats = base_n = base_k = 0
+        for positions in seq.values():
+            for current, nxt in zip(positions, positions[1:]):
+                base_n += 1
+                base_k += nxt == pos
+                if current == pos:
+                    contexts += 1
+                    repeats += nxt == pos
+        repeat_rate = repeats / contexts if contexts else None
+        base_rate = base_k / base_n if base_n else None
+        out[pos] = {
+            "seasons": len(seq),
+            "repeat_contexts_n": contexts,
+            "same_position_next_k": repeats,
+            "repeat_rate": round(repeat_rate, 4) if repeat_rate is not None else None,
+            "repeat_wilson95": wilson(repeats, contexts),
+            "marginal_next_n": base_n,
+            "marginal_next_k": base_k,
+            "marginal_rate": round(base_rate, 4) if base_rate is not None else None,
+            "marginal_wilson95": wilson(base_k, base_n),
+            "repeat_vs_marginal_ratio": (
+                round(repeat_rate / base_rate, 3)
+                if repeat_rate is not None and base_rate else None),
+        }
     return out
 
 
-def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
-               caps):
-    """Walk one slot's tree, branching only where the data says to."""
-    picks = snake_picks(slot)[:DEPTH]
-    nodes = {"count": 0}
-    pos_of = {p["name"]: p["pos"] for p in players}
-    pruned = {"dominated": 0, "budget": 0, "narrow_kept": 0}
-    branches = {"count": 0, "collapsed": 0}
+def build_slot(slot, players, baselines, flex_positions):
+    """Build a local expected-value policy with auditable candidate sets."""
+    full_picks = snake_picks(slot)
+    if len(full_picks) <= DEPTH:
+        raise ValueError(f"slot {slot} has no round-{DEPTH + 1} lookahead pick")
+    picks = full_picks[:DEPTH]
+    next_picks = full_picks[1:DEPTH + 1]
+    metrics = {"decision_groups": 0, "evaluated_actions": 0}
 
-    def pool_for(taken):
+    def pool_for(unavailable):
         by_pos = defaultdict(list)
         for p in players:
-            if p["name"] in taken:
+            if p["name"] in unavailable:
                 continue
             by_pos[p["pos"]].append(p)
         for pos in by_pos:
             by_pos[pos].sort(key=lambda x: -x["vor"])
         return by_pos
 
-    def walk(depth, taken, roster):
-        if depth >= len(picks):
+    def expected_gain(states, roster):
+        base = phantom_lineup_pts(roster, baselines)
+        return sum(
+            p_top * (phantom_lineup_pts(
+                roster + [{"name": p["name"], "pos": p["pos"],
+                           "pts": p["pts"]}], baselines) - base)
+            for p, p_top in states)
+
+    def walk(depth, unavailable, roster):
+        if depth >= DEPTH:
             return []
-        pick = picks[depth]
-        nxt = picks[depth + 1] if depth + 1 < len(picks) else None
-        v = vona_at(pool_for(taken), pick, nxt)
-        # ROSTER FEASIBILITY (review finding P1-B, the third occurrence of
-        # this defect class): a position at its startable maximum for the
-        # path so far is not a choice. Caps come from the shared
-        # forward_policy layer, derived from the league's own observed flex
-        # allocation - never typed here.
-        counts = {}
-        for name in taken:
-            p_pos = pos_of.get(name)
-            counts[p_pos] = counts.get(p_pos, 0) + 1
-        v = {pos: d for pos, d in v.items()
-             if counts.get(pos, 0) < caps.get(pos, 99)}
-        if not v:
-            return []
-        ranked = sorted(v.items(), key=lambda kv: -kv[1]["vona"])
-        eps = eps_by_depth.get(depth, 0.0)
-        # BRANCH RULE: every position whose VONA is within eps of the best.
-        # No slot gating - the threshold alone decides, at any slot.
-        chosen = [ranked[0]]
-        for pos, d in ranked[1:]:
-            if ranked[0][1]["vona"] - d["vona"] <= eps:
-                chosen.append((pos, d))
-        if len(chosen) > 1:
-            branches["count"] += 1
-        base_roster = roster
-        made = []
-        for pos, d in chosen:
-            if nodes["count"] >= MAX_NODES:
-                pruned["budget"] += 1
+        pick, nxt = picks[depth], next_picks[depth]
+        pool = pool_for(unavailable)
+        v = vona_at(pool, pick, nxt)
+        counts = defaultdict(int)
+        for player in roster:
+            counts[player["pos"]] += 1
+        metrics["decision_groups"] += 1
+
+        actions = []
+        for pos, d in v.items():
+            proposed = dict(counts)
+            proposed[pos] = proposed.get(pos, 0) + 1
+            remaining = DEPTH - depth - 1
+            if not starter_path_feasible(proposed, remaining, flex_positions):
                 continue
-            nodes["count"] += 1
+            actions.append({"pos": pos, "vona_raw": d["vona_raw"],
+                            "expected_lineup_gain_raw": expected_gain(
+                                d["states"], roster),
+                            "detail": d})
+        metrics["evaluated_actions"] += len(actions)
+        chosen = pareto_front(actions)
+        if not chosen:
+            raise RuntimeError(
+                f"slot {slot} round {depth + 1}: no feasible modal action; "
+                f"roster={dict(counts)}, modal_positions={sorted(v)}")
+
+        front_positions = {a["pos"] for a in chosen}
+        decision_set = []
+        for candidate in sorted(actions, key=lambda a: a["pos"]):
+            decision_set.append({
+                "pos": candidate["pos"],
+                "vona": candidate["detail"]["vona"],
+                "vona_raw": candidate["vona_raw"],
+                "expected_lineup_gain": round(
+                    candidate["expected_lineup_gain_raw"], 4),
+                "expected_lineup_gain_raw":
+                    candidate["expected_lineup_gain_raw"],
+                "pareto": candidate["pos"] in front_positions,
+                "dominated_by": sorted(
+                    other["pos"] for other in actions
+                    if other is not candidate and dominates(other, candidate)),
+            })
+
+        made = []
+        for action in chosen:
+            pos, d = action["pos"], action["detail"]
             p = d["player"]
-            s_now = survival(p["adp"], pick)
-            tier_left = sum(1 for q in pool_for(taken)[pos]
-                            if q.get("tier") == p.get("tier")
-                            and survival(q["adp"], pick) >= SURV_FLOOR)
+            fallback = p is None
+            s_now = None if fallback else survival(p["adp"], pick)
+            tier_pool = ([] if fallback else
+                         [q for q in pool[pos]
+                          if q["vor"] > 0 and q.get("tier") == p.get("tier")])
+            tier_expected = sum(survival(q["adp"], pick) for q in tier_pool)
+            tier_none = 1.0
+            for q in tier_pool:
+                tier_none *= 1 - survival(q["adp"], pick)
+            display_name = None if fallback else p["name"]
+            roster_name = (f"replacement:{pos}:round{depth + 1}"
+                           if fallback else p["name"])
+            picked = {"name": roster_name, "pos": pos,
+                      "pts": baselines[pos] if fallback else p["pts"]}
+            next_roster = roster + [picked]
+            state_players = [q for q, _prob in d["states"]]
+            if fallback:
+                # The replacement state means every positive-VOR player at
+                # this position was already gone at the current pick.
+                modal_gone = [q["name"] for q in state_players]
+                continuation_removed = modal_gone
+            else:
+                selected_index = next(
+                    i for i, q in enumerate(state_players)
+                    if q["name"] == p["name"])
+                # "p is top survivor" jointly means p is available and every
+                # higher-VOR state is gone. Preserve that whole event in the
+                # representative continuation, then also remove our drafted p.
+                modal_gone = [q["name"] for q in state_players[:selected_index]]
+                continuation_removed = modal_gone + [p["name"]]
+            next_unavailable = unavailable | set(continuation_removed)
+            children = walk(depth + 1, next_unavailable, next_roster)
+            fork = len(chosen) > 1
+            if fork:
+                decision_reason = (
+                    f"Pareto tradeoff: {d['vona']:.1f} VONA pts and "
+                    f"{action['expected_lineup_gain_raw']:.1f} expected lineup pts")
+                force_basis = None
+            elif len(actions) == 1:
+                decision_reason = (
+                    "Feasibility-forced: the only action that can complete one "
+                    "supported seven-starter composition")
+                force_basis = "feasibility"
+            else:
+                decision_reason = (
+                    "Pareto-dominant on VONA urgency and expected lineup gain")
+                force_basis = "pareto-dominance"
+            if fallback:
+                decision_reason = (
+                    "Replacement is the modal state - fallback required; " +
+                    decision_reason)
             node = {
-                "round": depth + 1, "pick": pick, "pos": pos,
-                "name": p["name"], "vor": p["vor"], "adp": p["adp"],
-                "pts": p["pts"],
-                "p_available": round(s_now, 3),
-                "vona": d["vona"], "e_now": d["e_now"], "e_next": d["e_next"],
-                "tier": p.get("tier"), "tier_left": tier_left,
-                "forced": len(chosen) == 1,
-                "why": (f"VONA gap {round(ranked[0][1]['vona'] - ranked[1][1]['vona'], 1)}"
-                        f" over {ranked[1][0]}; not a decision"
-                        if len(chosen) == 1 and len(ranked) > 1
-                        else f"within {eps} of the best option - a real fork"),
-                "children": walk(depth + 1, taken | {p["name"]},
-                                 roster + [{"name": p["name"], "pos": pos,
-                                            "pts": p["pts"]}]),
+                "round": depth + 1, "pick": pick, "next_pick": nxt,
+                "pos": pos, "name": display_name,
+                "fallback_required": fallback,
+                "vor": 0.0 if fallback else p["vor"],
+                "adp": None if fallback else p["adp"],
+                "pts": baselines[pos] if fallback else p["pts"],
+                "p_available": None if fallback else round(s_now, 3),
+                "p_top_survivor": round(d["p_top_survivor"], 3),
+                "p_no_above_replacement": round(d["p_no_above_replacement"], 3),
+                "p_modal_state": round(d["p_modal_state"], 3),
+                "vona": d["vona"], "e_now": d["e_now"],
+                "e_next": d["e_next"],
+                "decision_vona_raw": action["vona_raw"],
+                "expected_lineup_gain": round(
+                    action["expected_lineup_gain_raw"], 4),
+                "decision_expected_lineup_gain_raw":
+                    action["expected_lineup_gain_raw"],
+                "tier": None if fallback else p.get("tier"),
+                "tier_expected_available": round(tier_expected, 2),
+                "tier_p_any": round(1 - tier_none, 3),
+                "forced": not fork,
+                "force_basis": force_basis,
+                "why": decision_reason,
+                "modal_state_gone": modal_gone,
+                "continuation_removed": continuation_removed,
+                "continuation_basis": (
+                    "coherent modal-state representative path"),
+                "decision_set": decision_set,
+                "children": children,
             }
-            stats["vona_by_depth"][depth].append(d["vona"])
             made.append(node)
-        # PRUNE dominated siblings. The comparison runs on LINEUP VALUE from
-        # the shared forward_policy - phantom-filled optimal starters for the
-        # roster a path builds - not on a raw VOR sum. Summing VOR is the
-        # objective the M1 validation already disproved: it prices a
-        # duplicate at starter value, so a VOR-sum prune would rate a path
-        # that stacks one position above a path that fills the lineup.
-        # Domination is STRICT and needs no tolerance: a branch is dominated
-        # only when its best attainable lineup is worse than a sibling's
-        # worst attainable lineup.
-        if len(made) > 1:
-            def paths(n, acc):
-                roster = acc + [{"name": n["name"], "pos": n["pos"],
-                                 "pts": n["pts"]}]
-                if not n["children"]:
-                    return [phantom_lineup_pts(roster, baselines)]
-                out = []
-                for c in n["children"]:
-                    out += paths(c, roster)
-                return out
-
-            def best(n):
-                return max(paths(n, base_roster))
-
-            def worst(n):
-                return min(paths(n, base_roster))
-            keep = []
-            for n in made:
-                margin = min((worst(o) - best(n) for o in made if o is not n),
-                             default=float("-inf"))
-                if margin > 0:
-                    stats["margins"].append(margin)
-                # A hairline domination is not a decision the board has made
-                # for you. Branches dominated by less than NARROW_BAND are
-                # kept and flagged; the band is derived the same way the
-                # branch threshold is - p25 of the domination margins this
-                # board actually produces - so "narrow" means narrow by the
-                # standard of this board, not a typed-in number.
-                if margin > narrow_band:
-                    pruned["dominated"] += 1
-                else:
-                    if margin > 0:
-                        n["narrowly_dominated"] = round(margin, 2)
-                        n["why"] = (f"kept: dominated by only {margin:.1f} "
-                                    f"lineup pts, inside the {narrow_band:.1f} "
-                                    f"narrow band - a real coin flip")
-                        pruned["narrow_kept"] += 1
-                    keep.append(n)
-            cut = len(made) - len(keep)
-            made = keep or made
-            # a fork whose siblings were all pruned is not a fork on screen:
-            # relabel it rather than leaving a marker with nothing to compare
-            if cut and len(made) == 1:
-                made[0]["forced"] = True
-                made[0]["why"] = (f"fork collapsed - {cut} sibling"
-                                  f"{'s' if cut > 1 else ''} pruned as dominated")
-                branches["count"] -= 1
-                branches["collapsed"] += 1
         return made
 
     roots = walk(0, frozenset(), [])
-    return {"slot": slot, "roots": roots, "nodes": nodes["count"],
-            "rendered_forks": branches["count"],
-            "forks_collapsed_by_pruning": branches["collapsed"],
-            "pruned": pruned, "picks": picks}
+
+    def count_nodes(nodes):
+        return sum(1 + count_nodes(node["children"]) for node in nodes)
+
+    def count_forks(nodes):
+        return ((1 if len(nodes) > 1 else 0) +
+                sum(count_forks(node["children"]) for node in nodes))
+
+    rendered = count_nodes(roots)
+    if rendered > MAX_NODES:
+        raise RuntimeError(
+            f"slot {slot} needs {rendered} rendered nodes, above UI budget {MAX_NODES}")
+    return {"slot": slot, "roots": roots, "nodes": rendered,
+            "decision_groups": metrics["decision_groups"],
+            "evaluated_actions": metrics["evaluated_actions"],
+            "rendered_forks": count_forks(roots),
+            "picks": picks, "next_picks": next_picks}
 
 
 def main():
@@ -296,63 +609,21 @@ def main():
                if p["pos"] in SKILL and p.get("adp", 999) < 900]
     players.sort(key=lambda p: -p["vor"])
 
-    caps = starter_caps(eng.get("flex_allocation", {}))
+    flex_usage = json.load(open(os.path.join(
+        ROOT, "out", "data", "flex_usage_2025.json")))
+    flex_positions = tuple(
+        pos for pos in SKILL if flex_usage.get("counts", {}).get(pos, 0) > 0)
+    targets = starter_targets(flex_positions)
+    if not targets:
+        raise RuntimeError("league flex data supports no seven-starter composition")
 
-    # PASS 1: greedy walk per slot to observe the VONA gaps this board
-    # actually produces at each depth, so the branch threshold is
-    # calibrated to the board rather than typed in.
-    gaps = defaultdict(list)
-    for slot in range(1, TEAMS + 1):
-        picks = snake_picks(slot)[:DEPTH]
-        taken = set()
-        for depth, pick in enumerate(picks):
-            nxt = picks[depth + 1] if depth + 1 < len(picks) else None
-            by_pos = defaultdict(list)
-            for p in players:
-                if p["name"] not in taken:
-                    by_pos[p["pos"]].append(p)
-            for pos in by_pos:
-                by_pos[pos].sort(key=lambda x: -x["vor"])
-            v = vona_at(by_pos, pick, nxt)
-            cnt = {}
-            for nm in taken:
-                pp = next((q["pos"] for q in players if q["name"] == nm), None)
-                cnt[pp] = cnt.get(pp, 0) + 1
-            v = {pos: d for pos, d in v.items()
-                 if cnt.get(pos, 0) < caps.get(pos, 99)}
-            if len(v) < 2:
-                break
-            ranked = sorted(v.items(), key=lambda kv: -kv[1]["vona"])
-            gaps[depth].append(ranked[0][1]["vona"] - ranked[1][1]["vona"])
-            taken.add(ranked[0][1]["player"]["name"])
-
-    def p25(vals):
-        vals = sorted(vals)
-        if not vals:
-            return 0.0
-        i = max(0, min(len(vals) - 1, int(round(0.25 * (len(vals) - 1)))))
-        return round(vals[i], 2)
-
-    eps_by_depth = {d: p25(v) for d, v in gaps.items()}
-
-    # PASS 2a: build once with the narrow band wide open, purely to observe
-    # the domination margins this board produces. PASS 2b rebuilds with the
-    # band set to their p25.
-    probe = {"vona_by_depth": defaultdict(list), "margins": []}
-    for slot in range(1, TEAMS + 1):
-        build_slot(slot, players, eps_by_depth, probe, eng["baselines"],
-                   float("inf"), caps)
-    narrow_band = p25(probe["margins"]) if probe["margins"] else 0.0
-
-    # PASS 2b: build for real
-    stats = {"vona_by_depth": defaultdict(list), "margins": []}
     slots = {}
     for slot in range(1, TEAMS + 1):
-        slots[str(slot)] = build_slot(slot, players, eps_by_depth, stats,
-                                      eng["baselines"], narrow_band, caps)
+        slots[str(slot)] = build_slot(
+            slot, players, eng["baselines"], flex_positions)
 
-    corr = overdispersion(os.path.join(ROOT, "out", "picks.csv"))
-    clustered = [p for p, d in corr.items() if d["ratio"] and d["ratio"] > 1.0]
+    corr = correlation_diagnostic(os.path.join(ROOT, "out", "picks.csv"))
+    display_selection = display_selection_provenance(slots)
 
     out = {
         "provenance": {
@@ -360,7 +631,8 @@ def main():
             "engine_generated": eng["generated"],
             "objective": ("VONA(pos) = E[best available at this pick] - "
                           "E[best available at my next pick], both survival-"
-                          "weighted over the whole positional pool"),
+                          "weighted over the above-replacement positional pool; "
+                          "replacement is the explicit zero-value state"),
             "survival": ("frozen survival model called from "
                          "src/engine_2026.py - the pre-draft convention every "
                          "artifact uses; the adopted calibration applies to "
@@ -372,91 +644,117 @@ def main():
                              "state. E[next] <= E[now] and VONA >= 0 are "
                              "structural and guarded - the first build mixed "
                              "frames and 28% of nodes went negative"),
-            "feasibility": ("starter caps from the shared forward_policy "
-                            "layer (max simultaneous starters, flex from the "
-                            "observed allocation): no path may hold more of "
-                            "a position than the lineup can start"),
+            "feasibility": ("exact seven-skill-starter compositions from the "
+                            "shared forward_policy layer: six fixed skill "
+                            "slots plus exactly one shared FLEX. Eligible "
+                            "positions come from nonzero observed 2025 FLEX "
+                            "starts, including TE; counts and Wilson intervals "
+                            "live in out/data/flex_usage_2025.json"),
+            "starter_targets": targets,
+            "flex_positions": list(flex_positions),
+            "flex_usage_n": flex_usage["provenance"]["n"],
             "depth": DEPTH,
-            "depth_rationale": ("structural: the starting lineup is exactly "
-                                "seven skill slots (QB RB RB WR WR TE FLEX), "
-                                "so depth 7 covers lineup construction "
-                                "completely and stops where the lineup is "
-                                "full - not a noise cutoff"),
-            "branch_rule": ("branch wherever the top options fall within the "
-                            "derived threshold, at ANY slot - never gated on "
-                            "slot number"),
+            "value_lookahead_rounds": DEPTH + 1,
+            "depth_rationale": ("display horizon: render the seven skill-"
+                                "starter decisions, but value every node "
+                                "against the owner's real next pick. The "
+                                "round-7 node therefore looks to round 8; it "
+                                "never compares against nothing"),
+            "branch_rule": ("at any slot, render the Pareto frontier on two "
+                            "computed objectives: VONA urgency and expected "
+                            "marginal lineup gain over the same top-survivor "
+                            "distribution. Decisions use unrounded coordinates "
+                            "and every feasible sibling is published in the "
+                            "node's decision_set ledger. A fork is a local "
+                            "model tradeoff, not a percentile quota or a "
+                            "statistical coin flip"),
+            "render_rule": ("no survival cutoff: display the modal player "
+                            "state from the full above-replacement top-survivor "
+                            "distribution; if replacement is modal, show a "
+                            "fallback-required honest null instead of naming "
+                            "an invented player"),
+            "display_selection": display_selection,
             "bullish_on_nodes": ("deliberately absent - the tree is a "
                                  "decision surface and a marker nudges "
                                  "regardless of its label (finding N.1)"),
             "deviations": [
-                ("the expectation runs over the whole positional pool, not "
-                 "only players above the survival floor: truncating would "
-                 "bias E[best available] downward. The floor is a RENDERING "
-                 "rule - no node is drawn below it"),
+                ("the expectation runs over every above-replacement player "
+                 "with replacement as the zero-value residual state; no "
+                 "survival floor truncates the expectation or display"),
                 ("survival is independent across players because that is what "
-                 "the frozen model provides; the correlation block below "
-                 "measures the real clustering and states the bias direction"),
+                 "the frozen model provides; the correlation block below is "
+                 "a descriptive adjacency diagnostic, not an adjustment"),
+                ("each visible continuation follows the modal player state as "
+                 "a representative scenario. Expected coordinates integrate "
+                 "all current player states, but the visible path is not an "
+                 "expectation over future chance branches and is not a global "
+                 "draft optimization"),
+                ("depth seven intentionally constructs the seven skill "
+                 "starters. Legal early-bench or delayed-starter strategies "
+                 "exist in the 14-round draft but are outside this surface"),
             ],
         },
-        "thresholds": {
-            "surv_floor": SURV_FLOOR,
-            "surv_floor_source": ("the room's shipped 'going, going' "
-                                  "threshold - reused, not reinvented"),
-            "branch_eps_by_depth": eps_by_depth,
-            "branch_eps_source": ("p25 of the top-two VONA gaps this board "
-                                  "produces at each depth: a fork fires when "
-                                  "the gap is in the narrowest quartile of "
-                                  "gaps actually observed"),
-            "prune_rule": ("STRICT domination on lineup value from "
-                           "src/forward_policy.py (phantom-filled optimal "
-                           "starters), no tolerance parameter: a branch goes "
-                           "only when its best attainable lineup is worse "
-                           "than a sibling's worst. Raw VOR sums are NOT used "
-                           "- that objective was disproved by the M1 "
-                           "validation, which caught it stacking elite TEs"),
+        "decision_rules": {
+            "render": ("modal top-survivor identity among all positive-VOR "
+                       "player states, with replacement/no-player competing "
+                       "as an explicit fallback state; no probability threshold"),
+            "branch": ("Pareto non-dominance on VONA and expected marginal "
+                       "lineup gain using full-precision internal coordinates; "
+                       "every candidate and exact dominance witness is "
+                       "serialized in decision_set; no epsilon, percentile, "
+                       "or forced quota"),
+            "continuation": ("roll the modal top-survivor identity into the "
+                             "next visible node as a representative scenario, "
+                             "also removing every higher-VOR player whose "
+                             "absence defines that state; a replacement state "
+                             "removes every positive-VOR player at the position. "
+                             "Do not use modal terminal values to prune or claim "
+                             "global optimality"),
             "max_nodes_per_slot": MAX_NODES,
-            "narrow_band": narrow_band,
-            "narrow_band_source": ("p25 of the domination margins this board "
-                                   "produces, in lineup points: a branch "
-                                   "dominated by less than this is kept and "
-                                   "flagged as a coin flip rather than "
-                                   "silently decided"),
-            "margins_observed": len(probe["margins"]),
+            "budget_behavior": ("finish the complete local Pareto policy "
+                                "before checking the UI budget; exceedance "
+                                "fails the build instead of silently dropping "
+                                "a path"),
         },
         "correlation": {
-            "method": ("same-position counts in each 12-pick window of the "
-                       "league's own draft history, observed variance vs the "
-                       "binomial variance implied by the same mean"),
+            "method": ("within each season, compare the computed same-position "
+                       "next-pick rate with that position's marginal share "
+                       "among all next picks; publish k, n, and Wilson 95% "
+                       "intervals for both proportions"),
             "by_pos": corr,
-            "clustered_positions": clustered,
+            "what_breaks": ("the product used for top-survivor states is no "
+                            "longer the joint distribution when player "
+                            "availabilities are correlated, so state "
+                            "probabilities, E[now], E[next], and VONA are not "
+                            "jointly calibrated"),
             "bias_direction": (
-                "ratios above 1 mean same-position picks cluster in runs. "
-                "Independent survival then UNDERSTATES the chance that a "
-                "whole position tier is gone by the next turn, which "
-                "OVERSTATES E[best available next] and therefore UNDERSTATES "
-                "VONA - the tree is biased toward WAIT, not toward reaching. "
-                "Read a marginal WAIT at a clustered position as closer to a "
-                "coin flip than the number suggests."),
+                "UNKNOWN. Positive or negative player-level dependence can "
+                "move the expected maximum in either direction. The adjacency "
+                "rates are descriptive evidence of draft runs, but they do "
+                "not identify player-level survival correlations or the sign "
+                "of VONA bias; overlapping pairs also make Wilson intervals "
+                "descriptive rather than a formal test."),
         },
         "slots": slots,
     }
     json.dump(out, open(OUT, "w"), indent=1)
     print(f"wrote {OUT}")
-    print("branch eps by depth:", eps_by_depth)
-    print(f"narrow band: {narrow_band} lineup pts "
-          f"(from {len(probe['margins'])} observed margins)")
+    print("branch rule: local Pareto(VONA, expected lineup gain), full precision")
+    print("display bands: " + ", ".join(
+        f"{band['label']} R{band['start_round']}-R{band['end_round']} "
+        f"({band['forks_n']} exact-distinct forks)"
+        for band in display_selection["bands"]))
     for pos, d in sorted(corr.items()):
-        print(f"  overdispersion {pos}: {d['ratio']} "
-              f"(obs {d['observed_var']} vs binom {d['binomial_var']}, "
-              f"n={d['windows']})")
+        print(f"  adjacency {pos}: {d['repeat_rate']:.3f} repeat vs "
+              f"{d['marginal_rate']:.3f} marginal "
+              f"(k/n={d['same_position_next_k']}/"
+              f"{d['repeat_contexts_n']})")
     for s in range(1, TEAMS + 1):
         v = slots[str(s)]
         print(f"  slot {s:>2}: {v['nodes']:>3} nodes, "
-              f"{v['rendered_forks']} rendered forks "
-              f"(+{v['forks_collapsed_by_pruning']} collapsed), "
-              f"{v['pruned']['dominated']} dominated pruned, "
-              f"{v['pruned']['narrow_kept']} narrow kept, "
-              f"{v['pruned']['budget']} over budget")
+              f"{v['decision_groups']} decision groups, "
+              f"{v['evaluated_actions']} actions evaluated, "
+              f"{v['rendered_forks']} rendered forks")
 
 
 if __name__ == "__main__":

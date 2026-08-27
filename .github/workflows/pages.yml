@@ -3,7 +3,9 @@
 # which needs no admin API call - the artifact-based configure-pages
 # enablement failed with "Resource not accessible by integration" because
 # the Actions token cannot CREATE a Pages site, only push branches.
-# Draft-morning flow: python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push
+# This workflow deploys only. The draft-morning build contract lives in
+# docs/DRAFT_MORNING.md: engine, CVS inputs, CVS, and VONA are rebuilt in one
+# pass and every gate succeeds before a branch PR reaches main.
 name: pages
 on:
   push:
