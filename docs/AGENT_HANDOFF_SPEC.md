@@ -362,14 +362,14 @@ there was a second and a third.
 | Item | State | Next action |
 |---|---|---|
 | **Archive PII in git HISTORY** | Removed from HEAD by the 2026-08-26 prune; still reachable in history at/before `bd8aff7`. Repo is public. | **Anthony's call, deferred to after the draft.** (a) accept, (b) `git filter-repo` + force-push (invalidates clones), (c) private repo - rejected for now, Pages would go dark. |
-| **Live browser-to-Sleeper path** | **NEVER EXERCISED.** All 326 smoke scenarios are hermetic - they stub the Sleeper API. No test has ever driven a real browser against the real API. | Anthony tests it himself on the deployed page. This is the single largest untested surface and it is the draft-night one. |
+| **Live browser-to-Sleeper path** | **VERIFIED 2026-08-26** by Anthony, against a real live draft - see §11. Automated coverage is still hermetic (all 326 smoke scenarios stub the API), so this is a human-verified path, not a regression-protected one. | Optional: a Playwright run against a live public mock would make it repeatable. Not required - the path is known good. |
 | **Keeper status** | `use_keepers` is on for 2025-2026 but the 2025 draft had zero keeper picks and `keeper_results.csv` is 2 bytes. | OPEN QUESTION for the commissioner. **Do not resolve by inference.** |
 | **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. | A Routine runs `src/check_draft_order.py` every 2h and self-retires on the draw. The room collapses to the real seat automatically. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **Second normalizer** | `ingest._norm_player` lacks the diacritic fold. | One shared normalizer with a contract test. |
 | **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Honest on the card, but the largest exception to R1. | Backtest or keep labelled. |
 | **Optional-shard silent degradation** | `base_rates`/`ceiling`/archetypes/bullish fetch failures vanish columns with no notice. | Add a visible "unavailable" state + a smoke scenario. |
-| **12-team geometry inside DRAFT MODE** | `sleeperListHtml` bands and `simBand` labels are hardcoded 12x14; wrong in a 10-team mock. | Derive from `GEO`. |
+| **12-team geometry inside DRAFT MODE** | **CONFIRMED IN PRODUCTION 2026-08-26**, no longer a prediction: the room rendered `rd11-14` band labels against a live 19-team draft, where those boundaries (36/72/120) are 12-team arithmetic. Cosmetic - it mislabels the sleeper bands, it does not affect ordering. | Derive the bands from `GEO`. Not draft-critical: the real league IS 12x14. |
 | **`ff-hub.html` N.1** | Confirmed absent by design. | None - documented in §6. |
 
 ---
@@ -386,3 +386,41 @@ there was a second and a third.
 7. Ask of any new feature: how would this look if it were broken? (§1.4)
 8. Rebuilt the engine? Rebuild `build_vona_tree.py` in the same pass.
 9. After merge, byte-compare the deployed files. The live site IS the build.
+
+---
+
+## 11. THE LIVE PATH RUN - what has actually been verified against real Sleeper
+
+**2026-08-26, by Anthony, from a real browser against the deployed room in DRAFT
+MODE, pointed at a live in-progress Sleeper draft: `1388575351239606272`, 19 teams.**
+
+This matters more than any hermetic scenario, and it is worth reading before you
+trust the smoke suite. Every clock, freshness and DRAFT MODE guarantee in this repo
+is otherwise proven against a fixture that behaves the way its author assumed
+Sleeper behaves - failure mode §1.1 in its purest form. This run is the only
+evidence that the assumption was right.
+
+Observed:
+
+| Surface | Observed | What it proves |
+|---|---|---|
+| connection line | `sleeper 200 - 106ms - data 43s old` | P1-C: source age is displayed separately from fetch latency, and the real API does return a usably-aged payload |
+| clock | `1:09`, counting off the **loaded draft's 120s `pick_timer`** | **The P0 fix is dynamic, not a corrected constant.** A room that had merely swapped 120 for 60 would have shown the wrong number here. This is the single most valuable observation in the run |
+| seat | `13`, auto-detected from `draft_order`, shown for confirmation | the three-state seat logic resolves against real data, and does not guess |
+| format-mismatch bar | fired on teams 19 vs 12, flex 2 vs 1, clock 120 vs 60 | the mismatch is labelled rather than silently recomputed, as specified |
+| snake math | `UP IN 8 PICKS - your pick 13 ... then pick 26 (13 later)` | correct 19-team snake geometry from `GEO`, derived from the loaded draft |
+| survival table, tier cliffs, pick engine, best-available | all rendered live | the decision surfaces populate from a real feed |
+
+**Caveat 1 - the settings verified are not the league's settings.** This was 19
+teams / 120s / 2 flex. The real league is **12 teams / 60s / 1 flex, with a drawn
+order**. The code paths are exercised; those exact values are not. In particular
+nothing has yet run against a drawn order for roster 7, because the order is still
+undrawn.
+
+**Caveat 2 - the board warned that its values do not transfer, and they did not.**
+Anthony used it for player ordering only. That is the correct use and the correct
+behavior: the format-mismatch bar exists precisely so the numbers are not trusted
+across formats.
+
+**What this run also found:** the `rd11-14` band-label defect above, observed live
+rather than predicted.

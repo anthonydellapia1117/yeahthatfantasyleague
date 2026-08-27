@@ -15,12 +15,13 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-26 by Claude (this session, ending - Anthony's Fable 5 budget is exhausted until 08-31) |
+| **Last touched** | 2026-08-27 by Claude - docs-only correction recording the verified live path. Codex is concurrently working four review findings (round-7 VONA against zero, hardcoded `SURV_FLOOR`, the p25 branch rule, N.1 missing from `ff-hub.html`); **one writer per item, do not touch those.** |
 | **Next agent** | **Codex.** Read `docs/AGENT_HANDOFF_SPEC.md` FIRST, sections 1 and 2 before touching anything. |
 | **Branch** | `claude/chat-migration-desktop-ruannr`, based on `main` |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - byte-verified against `main` as of `49e3ea9` |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - byte-verified against `main` as of `04d3dd3` |
 | **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
+| **Live path** | VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272` (19 teams) - see `AGENT_HANDOFF_SPEC.md` §11 |
 
 ### What was done in the last session
 
@@ -55,8 +56,15 @@ or on the branch with a green battery.
 
 1. **`docs/AGENT_HANDOFF_SPEC.md` §1** - the three failure modes that produced this
    project's live defects. More useful than the module map.
-2. **The live browser-to-Sleeper path has never been tested.** 326 smoke scenarios,
-   all hermetic. It is the draft-night path. Anthony tests it manually.
+2. **The live browser-to-Sleeper path IS VERIFIED** - Anthony ran the deployed room
+   in DRAFT MODE against a live 19-team Sleeper draft (`1388575351239606272`) on
+   2026-08-26. The clock counted off that draft's **120s** `pick_timer`, which
+   proves the P0 fix reads the server per draft rather than having swapped one
+   constant for another. Seat auto-detected to 13, the format-mismatch bar fired
+   on all three differences, 19-team snake math correct, every decision surface
+   populated. Full detail and the two caveats in `AGENT_HANDOFF_SPEC.md` §11 -
+   short version: verified at 19 teams/120s/2 flex, **not** at the league's real
+   12/60s/1 flex with a drawn order, and automated coverage is still hermetic.
 3. **PII is out of HEAD but still in git history.** Retention is Anthony's call,
    deferred to after the draft. Do not act on it unilaterally.
 
