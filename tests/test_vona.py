@@ -7,6 +7,8 @@ structural, branching stays data-driven at every slot, no BULLISH marker
 appears on a node, and every threshold stays derived rather than typed.
 """
 import json
+import contextlib
+import io
 import os
 import sys
 
@@ -53,7 +55,7 @@ ok("conditioning" in prov and "ONE frame" in prov["conditioning"],
 ok("feasibility" in prov and "forward_policy" in prov["feasibility"],
    "starter feasibility comes from the shared layer, stated")
 sys.path.insert(0, os.path.join(ROOT, "src"))
-from build_vona_tree import vona_at
+from build_vona_tree import main as build_vona, vona_at
 from engine_2026 import snake_picks
 from forward_policy import starter_caps
 eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
@@ -148,6 +150,26 @@ ok("bias_direction" in pg, "the page surfaces the correlation caveat")
 ok("deviations" in pg, "the page surfaces the stated deviations")
 nav = open(os.path.join(ROOT, "out", "nav.js")).read()
 ok('"paths.html"' in nav, "nav carries the PATHS tab")
+
+# Exact current-input proof at the shared publication boundary. Generation dates
+# are useful display provenance but can collide when an engine moves twice in a
+# day; the rebuilt object is the authoritative dependency check.
+_artifact = os.path.join(D, "vona_tree_2026.json")
+_orig = open(_artifact, "rb").read()
+try:
+    with contextlib.redirect_stdout(io.StringIO()):
+        build_vona()
+    _rebuilt = json.load(open(_artifact))
+finally:
+    with open(_artifact, "wb") as _fh:
+        _fh.write(_orig)
+_expected, _actual = dict(t), dict(_rebuilt)
+_expected["provenance"] = dict(_expected["provenance"])
+_actual["provenance"] = dict(_actual["provenance"])
+_expected["provenance"].pop("generated", None)
+_actual["provenance"].pop("generated", None)
+ok(_expected == _actual,
+   "VONA artifact rebuilds exactly from the current engine and league history")
 
 if FAILS:
     print(f"\n{len(FAILS)} FAILURES")

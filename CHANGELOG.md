@@ -1,12 +1,87 @@
 # Changelog
 
+## P2-3 recurrence: pages-data refreshed a CVS input without its board (2026-08-27)
+
+The daily `pages-data` commit `46ae1ca` refreshed `depth_charts.json` (as-of
+2026-08-27) without rebuilding `out/cvs.json`. The existing CVS determinism guard
+caught the mismatch during PR #54's rebase: a clean rebuild changed 80 of 190
+player records and the RB/TE Walter reference points. The payload still looked
+valid, and its old `generated` date matched the old engine date, so the room's
+date comparison could not identify the actual dependency failure.
+
+This is P2-3 in a second producer: the earlier repair coupled engine -> VONA in
+`draft-refresh.yml`, but the same rule was never applied to pages-data -> CVS.
+It is the fourth silent-staleness incident overall. The lightweight general
+control is now split by failure class: this producer rebuilds its mapped chain,
+the shared Pages boundary reruns the existing registered linkage and invariant
+guards, and the external publication watcher still detects a producer or deploy
+that never runs. This is not universal dependency discovery: several builders do
+not declare machine-readable inputs, and not every engine consumer carries lineage.
+The durable fix is a dependency manifest/DAG plus content digests enforced once at
+publication; that is recorded rather than built eleven days before the draft.
+The same audit found two pure-stdlib engine consumers missing from
+`draft-refresh.yml`: `mock_drafts_2026.json` and the teaser's allowed player set.
+Tomorrow's scheduled run would have stopped loudly when the engine date moved but
+the registered mock date did not, while an unchanged teaser subset could have
+remained silently stale. Both now rebuild in the engine transaction before their
+guards. Rebuilding mock also exposed 14 stale tier values hidden by a same-day
+engine-date collision; mock and VONA now have exact rebuild proofs at the shared
+publication boundary, rather than treating a date match as payload identity.
+
+One bounded edge remains explicit rather than hidden: BULLISH reads engine injury
+state but carries no engine lineage, and rebuilding its full input chain needs the
+156 MB HISTORY cache. The current Zay Flowers correction proves that this artifact
+had lagged an Aug-26 engine update. `pages-data` now repairs it daily two hours after
+`draft-refresh`; adding HISTORY to the 25-minute draft-morning job or separating a
+small injury overlay belongs in the future dependency-manifest work, not this
+hotfix. Walter resolution similarly records guide SHA but not the ADP snapshot it
+used; this run re-resolved it and staged the resulting conflict ledger.
+The daily workflow now rebuilds CVS after its shards, runs the exact deterministic
+CVS proof and the declared downstream invariant suites through `run_gate.sh`, and
+stages the shards, Walter resolution, and dependent artifacts atomically. The
+shared Pages workflow repeats those invariant guards before it assembles anything,
+so a manual merge violating the checked CVS/linkage and structural invariants is
+refused at publication too. These guards are not claimed as dependency discovery
+or byte-reconstruction proofs for every artifact; CVS is the artifact with that
+exact deterministic proof within the shard-derived chain. The registered VONA and
+mock artifacts have separate exact rebuild proofs against the engine.
+
+CVS now records `engine_generated` separately from its own build date. The room and
+build guard compare that engine generation date against the shipped engine;
+rebuilding CVS a day later from new depth charts no longer creates a false mismatch.
+This is the same date-level linkage the room already used, now made explicit and
+build-gated; it is not an exact payload digest.
+
+The dependency audit also found real HISTORY-bound consumers: archetypes reads
+ADP/crosswalk/depth/usage, and the BULLISH input/tag chain reads
+crosswalk/depth/usage. An initial proposal to exclude them was falsified by the
+full gate: the refreshed ADP put Jonah Coleman outside the 168-pick draft while
+the stale archetype artifact still tagged him. The workflow therefore restores
+the existing reproducible 156 MB history cache, completes it with
+`fetch_history.py`, refreshes the unversioned live `games.csv`, re-resolves the
+Walter guide against current ADP, and rebuilds Archetypes, BULLISH inputs, and
+BULLISH tags in the same transaction. Vegas provenance comes from the source
+file's UTC modification date instead of claiming every cached file was pulled on
+the build date. Their invariant guards run both before the cron commit and again
+at the shared publication boundary.
+
+A second silent edge was verified while tracing publication: a push made with a
+workflow's `GITHUB_TOKEN` does not trigger `pages.yml`'s `push` event. Therefore
+neither this Aug-27 mismatch nor the continuous main-only gap opened Aug 21 and
+refreshed Aug 22 reached the live site. During the earlier interval, Pages remained
+on its Aug-19 deployment with Aug-17 depth data until the rebuilt Aug-26 deployment.
+Both producer workflows now dispatch `pages.yml` explicitly after a successful
+push; the external publication watcher remains the independent proof that the
+deploy actually landed.
+
 ## P2: the pages-data cron was failing silently - verified, fixed, and watched at the publication (2026-08-26)
 
-VERIFIED: the reported numbers are exact. The pages-data workflow's
+VERIFIED: the workflow-run numbers below are exact. The pages-data workflow's
 first 15 runs are 1 manual dispatch (green) and 14 scheduled runs, 8 of
 them failures - Aug 16, 18, 19, 20, then 23 through 26, the last four
-consecutive. The live site served Aug-22 data for four days and nothing
-alerted: the third silent-cron incident.
+consecutive. The workflow failed to refresh main; Pages did not serve the Aug-22
+payload. It remained on the Aug-19 deployment with Aug-17 depth data for
+6d 6h 58m 40s, and nothing alerted: the third silent-cron incident.
 
 CAUSE, from the failed runs' own logs: one guard - "draftable players
 match at >=98%" - over the ADP < 250 window. Sleeper's preseason pool

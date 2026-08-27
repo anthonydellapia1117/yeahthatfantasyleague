@@ -1624,14 +1624,15 @@ function renderPickEngine(alive, cur, myNext, R){
   const band = margin === null ? null
     : margin >= PE.HI ? "HIGH" : margin >= PE.MED ? "MEDIUM" : "LOW";
   const w = pick.c.walter;
-  const stale = CVS.generated !== E.generated;
+  const cvsEngine = CVS.engine_generated || CVS.generated;
+  const stale = cvsEngine !== E.generated;
   const costWait = margin === null ? null : (1 - pick.surv) * margin;
   const fitLine = pick.s.need >= PE.NEED
     ? `fills your open ${pick.p.pos} slot`
     : pick.s.need > 0 ? "base slots full - takes the open flex"
     : "depth - no open slot filled";
   body.innerHTML = `
-    ${stale ? `<p class="small">cvs.json generated ${esc(CVS.generated)} but the engine is ${esc(E.generated)} - mismatched boards. Rebuild both before trusting this card.</p>` : ""}
+    ${stale ? `<p class="small">cvs.json was built from engine ${esc(cvsEngine)} but the shipped engine is ${esc(E.generated)} - mismatched boards. Rebuild both before trusting this card.</p>` : ""}
     ${wl ? "" : '<p class="small">WALTER LAYER OFF (live toggle, set on the big board) - pure model scores.</p>'}
     <div class="rname">${esc(pick.p.name)} <span class="num">${pick.s.total.toFixed(1)}</span>
       <span class="tag">${band ? "confidence " + band : "no alternate on the CVS board"}</span>

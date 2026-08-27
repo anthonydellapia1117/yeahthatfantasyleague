@@ -35,7 +35,9 @@ rehearsal's `real` times.
 | 3 | `python3 src/build_cvs_inputs.py` | 2.0 s | nflverse volatility, TD rates, 2026 SOS |
 | 4 | `python3 src/build_cvs.py` | 0.3 s | the CVS board payload |
 | 4a | `python3 src/build_vona_tree.py` | 1.0 s | the PATHS tree - derives from the engine payload, so it MUST be rebuilt with it; the page guards fail if it falls behind |
-| 4b | `python3 tests/test_run_gate.py` | 0.3 s | gate-runner self-test: proves the masking shapes (pipe, compound wrapper, exit-0 liar) are caught |
+| 4b | `python3 src/mock_draft.py` | 0.2 s | deterministic mock validation - carries `engine_generated` and must move with the engine |
+| 4c | `python3 src/build_teaser.py` | 0.1 s | regenerates the teaser's allowed player subset from the live board |
+| 4d | `python3 tests/test_run_gate.py` | 0.3 s | gate-runner self-test: proves the masking shapes (pipe, compound wrapper, exit-0 liar) are caught |
 | 5 | `sh tests/run_gate.sh python3 tests/test_survival.py` | 0.6 s | 37 frozen-behavior guards |
 | 6 | `GATE_SENTINEL="MATH DIFF PROOF: EMPTY" sh tests/run_gate.sh python3 tests/mathdiff.py` | 0.1 s | ten function bodies byte-identical to origin/main |
 | 7 | `sh tests/run_gate.sh python3 tests/test_cvs.py` | 0.1 s | anchor law, cap, signals, determinism |
@@ -123,7 +125,9 @@ dry run three weeks out) and 2026-09-08 (draft morning).
 LAYER 1 - `.github/workflows/draft-refresh.yml`. The machine that does
 the work. Cron-fired on those two dates, it runs steps 2 through 10 of
 the sequence above on a GitHub runner and commits to main only if every
-gate passes; the push fires `pages.yml`, which is what deploys. A red
+gate passes; after the push it explicitly dispatches `pages.yml`, which is what
+deploys. A workflow-token push cannot trigger another workflow's push event, so
+the dispatch is guarded rather than assumed. A red
 gate means no commit, so the last verified build keeps serving. It needs
 no container, no session, and no API keys. `workflow_dispatch` runs it on
 demand with a `dry_run` input that defaults to true - every gate runs,

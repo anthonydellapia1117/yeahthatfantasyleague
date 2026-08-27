@@ -10,27 +10,71 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      HISTORY: /tmp/ytfl-history
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install --quiet pyarrow
+      - name: Restore reproducible history cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/ytfl-history
+          key: ytfl-history-${{ runner.os }}-${{ hashFiles('src/fetch_history.py') }}
+      - name: Complete history cache
+        # Versioned files stay cached; games.csv is a live schedule/lines file.
+        run: python3 src/fetch_history.py --refresh-live
       - name: Build page-data shards
         run: python3 src/build_pages_data.py
-      - name: Guard tests
-        run: python3 tests/test_pages_data.py
+      # Downstream chain. Walter resolves guide players against the refreshed
+      # ADP shard, then CVS consumes those resolved tags as well as page shards.
+      - name: Re-resolve Walter guide against current ADP
+        run: python3 src/parse_walter.py
+      - name: Rebuild CVS board
+        run: python3 src/build_cvs.py
+      - name: Rebuild archetypes
+        run: python3 src/build_archetypes.py
+      - name: Rebuild BULLISH inputs
+        run: python3 src/build_bullish_inputs.py
+      - name: Rebuild BULLISH tags
+        run: python3 src/build_bullish.py
+      - name: CVS deterministic rebuild guards
+        run: sh tests/run_gate.sh python3 tests/test_cvs.py
+      - name: Archetype invariant guards
+        run: sh tests/run_gate.sh python3 tests/test_archetypes.py
+      - name: BULLISH invariant guards
+        run: sh tests/run_gate.sh python3 tests/test_bullish.py
+      - name: Page and data guards
+        run: sh tests/run_gate.sh python3 tests/test_pages_data.py
       - name: Commit and push
+        id: commit
         run: |
           git config user.name "pages-data-cron"
           git config user.email "actions@users.noreply.github.com"
-          git add out/data/
-          git commit -m "pages-data: daily refresh $(date -u +%F)" || echo "no changes beyond heartbeat"
+          git add out/data/ out/cvs.json data/walter/
+          if git diff --cached --quiet; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            echo "no payload changes"
+            exit 0
+          fi
+          git commit -m "pages-data: daily refresh $(date -u +%F)"
           git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+      # A push authenticated with GITHUB_TOKEN does not trigger another
+      # workflow's push event. workflow_dispatch is the documented exception,
+      # so publish the commit explicitly instead of assuming pages.yml fired.
+      - name: Dispatch Pages deployment
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main
       - name: Summary
         run: |
           echo "## Shard sizes" >> "$GITHUB_STEP_SUMMARY"

@@ -164,7 +164,9 @@ on the live site, not whether a job ran. *Why:* three silent-cron incidents;
 
 **R11. Provenance on every artifact.** Every `out/data/*.json` carries a
 `provenance` block with generation date, sources, method, and stated limitations.
-Anything engine-derived carries `engine_generated`, and a guard asserts it matches.
+Artifacts that declare engine linkage use the engine generation date as
+`engine_generated`, and a guard asserts that date matches the shipped engine. This
+is a registered set, not automatic dependency discovery or a content digest.
 
 **R12. Never quote a pooled rate when the strata are unbalanced.** *Why:* 93.5% of
 BULLISH tags land in one ADP band, so the pooled comparison measures the market.
@@ -215,9 +217,9 @@ done
 ```
 
 **Guard counts as of this writing** (a suite that suddenly runs fewer is a
-regression): survival 39, cvs 18, vor 50, baserates 70, archetypes 17, ceiling 14,
-bullish 29, ws2 63, mock 45, bullish_vs_adp 43, vona 1685, draft_vs_acquired 23,
-pages_data 289, run_gate 16, analysis 38 (33 on CI), smoke 343.
+regression): survival 39, cvs 19, vor 50, baserates 70, archetypes 17, ceiling 14,
+bullish 31, ws2 63, mock 46, bullish_vs_adp 43, vona 1686, draft_vs_acquired 23,
+pages_data 302, run_gate 16, analysis 38 (33 on CI), smoke 343.
 
 **Rebuilding the analysis layer** needs the historical cache, which is NOT in the
 repo: `python3 src/fetch_history.py` (~156MB, nine families, `HISTORY` env var to
@@ -273,14 +275,20 @@ new evidence wastes a cycle.
 **Coupling that is not obvious:**
 - `engine_2026.json` is **embedded** in `draft_room.html`, not fetched. Rebuilding
   the engine rewrites that HTML between its sentinel markers.
-- `cvs.json` and the engine must share a `generated` date; the room warns on
-  mismatch (`draft_room.html:~1627`). Only cvs has this warning.
+- `cvs.json` records both its own `generated` date and the `engine_generated`
+  date it consumed. The room and build guard compare the latter to the shipped
+  engine (`draft_room.html:~1627`); independent CVS/engine build dates are no
+  longer conflated. This is date-level linkage, not a payload digest.
 - `vona_tree_2026.json` and `mock_drafts_2026.json` record `engine_generated`; a
-  page guard now asserts it matches. No other artifact records its engine.
+  page guard now asserts it matches. CVS now carries the same lineage fact at
+  top level; no other artifact records its engine.
 - `pages.yml` deploys an **explicit HTML file list** plus `out/data/*.json` by
   wildcard. A new page must be added to that list or it 404s live - this bit once
   (`paths.html`). Guard 8c checks nav-linked pages; a non-nav-linked page would
   still slip.
+- Producer workflows explicitly dispatch `pages.yml` after pushing. A push made
+  with their `GITHUB_TOKEN` does not fire another workflow's push trigger; the
+  Pages workflow repeats the declared downstream invariant guards before assembly.
 - `nav.js` is the single source for navigation and the kicker style. Seven items.
 - The engine must NOT import from the pages-data layer; guard N1 enforces it.
 
@@ -294,8 +302,13 @@ new evidence wastes a cycle.
 1. `engine_2026.py` before `build_cvs.py` (CVS reads the payload).
 2. `build_cvs_inputs.py` before `build_cvs.py`.
 3. `build_vona_tree.py` AFTER `engine_2026.py`, always in the same pass.
-4. `ingest.py` before `phase2_value.py` before `phase3_lineup.py`.
-5. `fetch_history.py` before any analysis builder, on a fresh machine.
+4. `mock_draft.py` and `build_teaser.py` AFTER `engine_2026.py`, always in the
+   same pass; both read the engine directly.
+5. `ingest.py` before `phase2_value.py` before `phase3_lineup.py`.
+6. `fetch_history.py --refresh-live` before automated analysis builds: versioned
+   history stays cached while unversioned `games.csv` is fetched each run.
+7. `parse_walter.py` after `build_pages_data.py` and before `build_cvs.py`: Walter
+   player/team resolution reads refreshed ADP and CVS consumes those tags.
 
 **Do-not-modify:**
 - The reviewed N.1 wording and figures. `out/ff-hub.html` now exposes N.1 as a

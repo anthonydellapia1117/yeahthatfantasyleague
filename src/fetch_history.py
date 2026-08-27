@@ -46,10 +46,15 @@ pull will differ from the cached copy by a few bytes as later games are
 scored. That is expected; it is not a reproducibility failure, but any
 recomputation of a games.csv-derived number should state its pull date.
 
-Idempotent: files already present (and non-trivial in size) are kept.
-Run: python3 src/fetch_history.py            # default cache path
+Idempotent by default: files already present (and non-trivial in size) are kept.
+The daily producer passes --refresh-live so the one unversioned input, games.csv,
+is fetched again while the versioned 156 MB cache remains reusable.
+
+Run: python3 src/fetch_history.py                    # complete cache only
+     python3 src/fetch_history.py --refresh-live     # also refresh games.csv
      HISTORY=/somewhere python3 src/fetch_history.py
 """
+import argparse
 import gzip
 import os
 import sys
@@ -59,21 +64,35 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_recency import HISTORY
 
 
-def fetch(url, dest, gz=False):
-    if os.path.exists(dest) and os.path.getsize(dest) > 1000:
+def fetch(url, dest, gz=False, refresh=False, required_prefix=None):
+    if not refresh and os.path.exists(dest) and os.path.getsize(dest) > 1000:
         return "have"
+    tmp = dest + ".tmp"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "ytfl-hub"})
         raw = urllib.request.urlopen(req, timeout=180).read()
         if gz:
             raw = gzip.decompress(raw)
-        open(dest, "wb").write(raw)
+        if len(raw) <= 1000:
+            raise ValueError(f"response too small ({len(raw)} bytes)")
+        if required_prefix and not raw.startswith(required_prefix):
+            raise ValueError("response does not have the expected file header")
+        with open(tmp, "wb") as fh:
+            fh.write(raw)
+        os.replace(tmp, dest)
         return "ok"
     except Exception as e:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
         return f"FAIL {e}"
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--refresh-live", action="store_true",
+        help="re-fetch unversioned games.csv while retaining versioned cache files")
+    args = parser.parse_args()
     os.makedirs(HISTORY, exist_ok=True)
     results = []
     for y in range(2013, 2026):
@@ -108,10 +127,14 @@ def main():
              f"{NV}/pbp_participation/pbp_participation_2025.parquet"),
             ("ftn_2025.parquet", f"{NV}/ftn_charting/ftn_charting_2025.parquet"),
             ("advrush_2025.parquet",
-             f"{NV}/pfr_advstats/advstats_week_rush_2025.parquet"),
-            # live file, not a versioned release - see the note in the docstring
-            ("games.csv", "http://www.habitatring.com/games.csv")):
+             f"{NV}/pfr_advstats/advstats_week_rush_2025.parquet")):
         results.append((local, fetch(url, os.path.join(HISTORY, local))))
+    # Live file, not a versioned release. The producer opts into refreshing it;
+    # reproducibility runs retain the cache they were pointed at.
+    results.append(("games.csv", fetch(
+        "http://www.habitatring.com/games.csv",
+        os.path.join(HISTORY, "games.csv"), refresh=args.refresh_live,
+        required_prefix=b"game_id,season,game_type,week,")))
 
     bad = [(f, r) for f, r in results if r.startswith("FAIL")]
     for f, r in results:

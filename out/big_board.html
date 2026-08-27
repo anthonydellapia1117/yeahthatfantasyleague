@@ -613,7 +613,7 @@ function renderKdef(){
 function renderFoot(){
   const c = D.cvs;
   document.getElementById("foot").innerHTML =
-    `<b>Provenance (guard N2)</b> - cvs generated ${esc(c.generated)} - engine ${esc(D.eng.generated)}
+    `<b>Provenance (guard N2)</b> - cvs generated ${esc(c.generated)} - built from engine ${esc(c.engine_generated || c.generated)} - shipped engine ${esc(D.eng.generated)}
      - walter source sha ${esc(c.walter_source_sha256.slice(0, 12))} - weights from data/cvs_weights.json
      (z_point_scale ${c.config.z_point_scale}, walter cap ${c.config.walter_cap_pct}%,
      walter_enabled ${c.config.walter_enabled}). The anchor law and the cap are unit-tested at every merge.`;

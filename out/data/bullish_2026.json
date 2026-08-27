@@ -1,7 +1,7 @@
 {
  "provenance": {
-  "generated": "2026-08-26",
-  "computed_at": "2026-08-26T13:38:31+00:00",
+  "generated": "2026-08-27",
+  "computed_at": "2026-08-27T22:24:53+00:00",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -208,7 +208,7 @@
   }
  },
  "delta": {
-  "previous": null,
+  "previous": "2026-08-26",
   "gained": [],
   "lost": [],
   "status_changed": []
@@ -231,7 +231,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -253,7 +253,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -275,7 +275,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -297,7 +297,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -319,7 +319,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -339,7 +339,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -359,7 +359,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -379,7 +379,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -399,7 +399,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -421,7 +421,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -438,7 +438,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -456,7 +456,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -478,7 +478,7 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -500,7 +500,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -517,10 +517,12 @@
     "opportunity": 0.9,
     "route_participation": 1.0
    },
-   "reasons": [],
+   "reasons": [
+    "questionable - flagged, no demotion"
+   ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -542,7 +544,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -564,7 +566,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -583,7 +585,7 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -603,7 +605,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -623,7 +625,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -643,7 +645,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -661,7 +663,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -679,7 +681,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -696,7 +698,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -713,7 +715,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -733,7 +735,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -753,7 +755,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -773,7 +775,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -791,7 +793,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -812,7 +814,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -830,7 +832,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -848,7 +850,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -867,7 +869,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   },
   {
@@ -887,7 +889,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-26T13:38:31+00:00",
+   "computed_at": "2026-08-27T22:24:53+00:00",
    "ttl_hours": 72
   }
  ]

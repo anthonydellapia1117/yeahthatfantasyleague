@@ -429,6 +429,11 @@ def main():
 
     payload = {
         "generated": datetime.date.today().isoformat(),
+        # Build date and engine-generation provenance are different facts. CVS can be
+        # rebuilt after a depth-chart refresh without rebuilding the engine;
+        # recording the engine date separately lets the room compare the
+        # dependency's generation date instead of assuming both jobs ran together.
+        "engine_generated": eng["generated"],
         "config": cfg,
         "walter_reference_points": walter_refs,
         "walter_source_sha256": wsha,

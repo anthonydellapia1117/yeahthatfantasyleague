@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-26",
+  "generated": "2026-08-27",
   "engine_generated": "2026-08-26",
   "method": "deterministic snake sim from the committed engine payload; our seat scores candidates by optimal-lineup improvement over replacement-level phantoms (engine baselines), VOR tie-break; eleven ADP seats; comparison runs: naive max-VOR and ADP chalk",
   "finding": "naive max-VOR drafts duplicate elite TEs early (slots 6 and 12) because raw VOR prices a duplicate at starter value; the marginal policy corrects it and the live room's roster-need line is the same guard in interactive form",
@@ -33,7 +33,7 @@
      "adp": 25.3,
      "vor": 75.8,
      "pts": 262.0,
-     "tier": 2
+     "tier": 3
     },
     {
      "round": 3,
@@ -43,7 +43,7 @@
      "adp": 23.6,
      "vor": 59.5,
      "pts": 245.7,
-     "tier": 2
+     "tier": 4
     },
     {
      "round": 4,
@@ -63,7 +63,7 @@
      "adp": 47.7,
      "vor": 38.6,
      "pts": 201.1,
-     "tier": 4
+     "tier": 3
     },
     {
      "round": 6,
@@ -73,7 +73,7 @@
      "adp": 76.6,
      "vor": 26.2,
      "pts": 212.4,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 7,
@@ -113,7 +113,7 @@
      "adp": 129.2,
      "vor": 0.0,
      "pts": 162.5,
-     "tier": 5
+     "tier": 4
     },
     {
      "round": 11,
@@ -334,7 +334,7 @@
      "adp": 30.4,
      "vor": 49.7,
      "pts": 235.9,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 4,
@@ -354,7 +354,7 @@
      "adp": 61.5,
      "vor": 36.0,
      "pts": 222.2,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 6,
@@ -364,7 +364,7 @@
      "adp": 76.6,
      "vor": 26.2,
      "pts": 212.4,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 7,
@@ -414,7 +414,7 @@
      "adp": 151.8,
      "vor": -1.5,
      "pts": 161.0,
-     "tier": 5
+     "tier": 4
     },
     {
      "round": 12,
@@ -625,7 +625,7 @@
      "adp": 36.4,
      "vor": 43.0,
      "pts": 229.2,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 4,
@@ -635,7 +635,7 @@
      "adp": 42.8,
      "vor": 42.0,
      "pts": 228.2,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 5,
@@ -645,7 +645,7 @@
      "adp": 61.5,
      "vor": 36.0,
      "pts": 222.2,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 6,
@@ -685,7 +685,7 @@
      "adp": 114.4,
      "vor": 11.4,
      "pts": 197.6,
-     "tier": 2
+     "tier": 5
     },
     {
      "round": 10,
@@ -705,7 +705,7 @@
      "adp": 151.8,
      "vor": -1.5,
      "pts": 161.0,
-     "tier": 5
+     "tier": 4
     },
     {
      "round": 12,

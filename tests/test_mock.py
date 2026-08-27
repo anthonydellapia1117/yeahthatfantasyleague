@@ -5,6 +5,9 @@ Validates out/data/mock_drafts_2026.json (committed; the builder reads the
 committed engine payload and picks archive, no network).
 """
 import json
+import contextlib
+import importlib.util
+import io
 import os
 import sys
 
@@ -58,6 +61,31 @@ for slot, s in m["slots"].items():
 for slot, s in m["slots"].items():
     ok(s["board_minus_chalk"] > 0,
        f"slot {slot}: board policy beats ADP chalk on projected starters")
+
+# Exact current-input proof. A same-day engine rebuild once left 14 tier values
+# stale while engine_generated still matched by date, so date equality alone is
+# not a sufficient oracle. Rebuild, compare, and restore the committed bytes.
+sys.path.insert(0, os.path.join(ROOT, "src"))
+_spec = importlib.util.spec_from_file_location(
+    "ytfl_mock_builder", os.path.join(ROOT, "src", "mock_draft.py"))
+_builder = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_builder)
+_artifact = os.path.join(D, "mock_drafts_2026.json")
+_orig = open(_artifact, "rb").read()
+try:
+    with contextlib.redirect_stdout(io.StringIO()):
+        _builder.main()
+    _rebuilt = json.load(open(_artifact))
+finally:
+    with open(_artifact, "wb") as _fh:
+        _fh.write(_orig)
+_expected, _actual = dict(m), dict(_rebuilt)
+_expected["provenance"] = dict(_expected["provenance"])
+_actual["provenance"] = dict(_actual["provenance"])
+_expected["provenance"].pop("generated", None)
+_actual["provenance"].pop("generated", None)
+ok(_expected == _actual,
+   "mock artifact rebuilds exactly from the current engine and picks")
 
 if FAILS:
     print(f"\n{len(FAILS)} FAILURES")

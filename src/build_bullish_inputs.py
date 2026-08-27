@@ -63,6 +63,10 @@ def pctile(vals, q):
 
 
 def main():
+    games_path = os.path.join(HISTORY, "games.csv")
+    games_pulled = datetime.datetime.fromtimestamp(
+        os.path.getmtime(games_path), tz=datetime.timezone.utc).date().isoformat()
+
     # ---- pbp: dropbacks, targets, receiving yards, receiver ids, TDs/points
     pbp = pq.read_table(
         os.path.join(HISTORY, "pbp_2025.parquet"),
@@ -151,7 +155,7 @@ def main():
 
     # ---- Week-1 2026 implied totals (the clean 16/16 coverage window)
     implied = {}
-    with open(os.path.join(HISTORY, "games.csv")) as fh:
+    with open(games_path) as fh:
         for r in csv.DictReader(fh):
             if r["season"] == "2026" and r["week"] == "1" and r.get("total_line"):
                 tl, sp = float(r["total_line"]), float(r["spread_line"] or 0)
@@ -166,7 +170,7 @@ def main():
     # pbp scores. Simpler and stated: use total offensive TDs / total implied-
     # style points = TDs / (sum of team final scores from schedules 2025).
     pts_2025 = defaultdict(int)
-    with open(os.path.join(HISTORY, "games.csv")) as fh:
+    with open(games_path) as fh:
         for r in csv.DictReader(fh):
             if r["season"] == "2025" and r["game_type"] == "REG" and r.get("home_score"):
                 pts_2025[r["home_team"]] += int(float(r["home_score"]))
@@ -356,7 +360,7 @@ def main():
             "generated": datetime.date.today().isoformat(),
             "vegas": {"source": "nflverse schedules, Week-1 2026 closing lines "
                                 "(16/16 games - the only complete coverage "
-                                "window)", "pulled": datetime.date.today().isoformat()},
+                                "window)", "pulled": games_pulled},
             "td_per_point": {"value": td_per_point,
                              "basis": "2025 offensive TDs / 2025 points scored"},
             "roles": "inside-5 share and YMS are 2025-role priors and say so",

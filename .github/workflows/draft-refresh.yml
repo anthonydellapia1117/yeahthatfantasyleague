@@ -2,8 +2,8 @@
 # 10:00 UTC = 6:00 AM Eastern (EDT) on the two dates Anthony asked for:
 # 08-28 (dry run, three weeks out) and 09-08 (draft morning itself).
 # Every step is a gate. The commit only happens if all of them pass, so a
-# red run leaves the last verified build serving. Pushing to main fires
-# pages.yml, which is what actually deploys the site.
+# red run leaves the last verified build serving. After a successful push,
+# pages.yml is dispatched explicitly and deploys the site.
 name: draft-refresh
 on:
   schedule:
@@ -18,6 +18,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: draft-refresh
@@ -75,6 +76,12 @@ jobs:
       # run if this is ever skipped and the tree falls behind the engine.
       - name: Rebuild VONA path tree
         run: python3 src/build_vona_tree.py
+      # Both outputs read the engine payload directly. The mock carries
+      # engine_generated; the teaser's allowed names track the live board.
+      - name: Rebuild mock-draft validation
+        run: python3 src/mock_draft.py
+      - name: Rebuild teaser
+        run: python3 src/build_teaser.py
 
       # steps 5-9: the python gates, every one through run_gate.sh, which
       # demands exit 0 AND the ALL PASS sentinel together (the exit-code-
@@ -156,19 +163,29 @@ jobs:
           git diff --stat -- out/ >> "$GITHUB_STEP_SUMMARY" || true
 
       # step 11: ship. Every gate above is green by now, so this commit is
-      # the build. pages.yml deploys it on push to main.
+      # the build. The explicit dispatch below deploys it; a GITHUB_TOKEN push
+      # does not trigger another workflow's push event.
       - name: Commit and push
+        id: commit
         if: github.event_name == 'schedule' || inputs.dry_run == false
         run: |
           git config user.name "draft-refresh"
           git config user.email "actions@users.noreply.github.com"
           git add out/
           if git diff --cached --quiet; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
             echo "no payload changes - nothing to ship"
             exit 0
           fi
           git commit -m "draft refresh: live inputs $(date -u +%F)"
           git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch Pages deployment
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main
 
       - name: Dry run notice
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run
