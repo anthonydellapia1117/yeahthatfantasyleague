@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 spec = importlib.util.spec_from_file_location("eng", os.path.join(ROOT, "src", "engine_2026.py"))
 eng = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(eng)
+from draft_order import _complete_slot_map
 
 fails = []
 
@@ -374,6 +375,68 @@ ok(_identity == {"drawn": False, "slot": None,
                   "source": "identity_placeholder"},
    "identity slot map means order undrawn, not owner in roster-id seat",
    str(_identity))
+_unknown_teams_partial = eng.resolve_owner_slot(
+    {"status": "pre_draft", "draft_order": None,
+     "slot_to_roster_id": {"1": 2, "2": 3}},
+    _uid, 2, None)
+ok(_unknown_teams_partial == {
+       "drawn": True, "slot": None, "source": "team_count_unavailable"},
+   "unknown team count cannot turn a partial unique map into a resolved seat",
+   str(_unknown_teams_partial))
+ok(_complete_slot_map({"1": 2, "2": 3}, None) is None,
+   "complete-permutation helper rejects unique partial maps without team count")
+try:
+    eng.resolve_owner_slot(
+        {"status": "pre_draft", "draft_order": {_uid: 1}}, _uid, _rid)
+    _omitted_team_count_rejected = False
+except TypeError:
+    _omitted_team_count_rejected = True
+ok(_omitted_team_count_rejected,
+   "owner-slot resolver requires its team-count contract explicitly")
+for _invalid_teams in (None, 0, -1, True, 12.9, "12", float("inf")):
+    try:
+        _invalid_team_result = eng.resolve_owner_slot(
+            {"status": "pre_draft", "draft_order": {_uid: 1},
+             "slot_to_roster_id": {str(s): s for s in range(1, 13)}},
+            _uid, _rid, _invalid_teams)
+    except Exception as exc:
+        _invalid_team_result = {"exception": type(exc).__name__}
+    ok(_invalid_team_result == {
+           "drawn": True, "slot": None,
+           "source": "team_count_unavailable"},
+       f"invalid team count {_invalid_teams!r} fails closed",
+       str(_invalid_team_result))
+_unknown_teams_complete = eng.resolve_owner_slot(
+    {"status": "pre_draft", "draft_order": None,
+     "slot_to_roster_id": {
+         str(s): (3 if s == 7 else _rid if s == 3 else s)
+         for s in range(1, 13)}},
+    _uid, _rid, None)
+ok(_unknown_teams_complete == {
+       "drawn": True, "slot": None, "source": "team_count_unavailable"},
+   "unknown team count refuses even a plausible full-looking slot map",
+   str(_unknown_teams_complete))
+_unknown_teams_order = eng.resolve_owner_slot(
+    {"status": "pre_draft", "draft_order": {_uid: 3},
+     "slot_to_roster_id": None},
+    _uid, _rid, None)
+ok(_unknown_teams_order == {
+       "drawn": True, "slot": None, "source": "team_count_unavailable"},
+   "unknown team count cannot validate a draft_order slot either",
+   str(_unknown_teams_order))
+for _invalid_slot in (True, 3.5, float("inf")):
+    _invalid_slot_result = eng.resolve_owner_slot(
+        {"status": "drafting", "draft_order": {_uid: _invalid_slot},
+         "slot_to_roster_id": None},
+        _uid, _rid, 12)
+    ok(_invalid_slot_result == {
+           "drawn": True, "slot": None, "source": "drawn_unresolved"},
+       f"malformed draft_order slot {_invalid_slot!r} fails closed",
+       str(_invalid_slot_result))
+_boolean_roster_map = {str(s): s for s in range(1, 13)}
+_boolean_roster_map["1"] = True
+ok(_complete_slot_map(_boolean_roster_map, 12) is None,
+   "boolean roster id cannot masquerade as slot-map value 1")
 try:
     eng.derive_overlay_pick_basis({
         "draft_order": {"somebody-else": 4},

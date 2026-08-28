@@ -8,34 +8,42 @@ draft slot merely because both happen to be 7 today.
 
 
 def _int(value):
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, float) and not value.is_integer():
+        return None
     try:
         return int(value)
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OverflowError):
         return None
+
+
+def _team_count(value):
+    """Return a usable league size only when the caller supplied it exactly."""
+    return value if type(value) is int and value > 0 else None
 
 
 def _valid_slot(value, teams):
+    team_count = _team_count(teams)
     slot = _int(value)
-    if slot is None or slot < 1:
+    if slot is None or team_count is None or slot < 1:
         return None
-    if teams is not None and slot > int(teams):
+    if slot > team_count:
         return None
     return slot
 
 
 def _complete_slot_map(slot_map, teams):
     """Return integer pairs only for a complete roster/slot permutation."""
+    team_count = _team_count(teams)
+    if team_count is None:
+        return None
     if not isinstance(slot_map, dict) or not slot_map:
         return None
     pairs = [(_int(k), _int(v)) for k, v in slot_map.items()]
     if any(k is None or v is None for k, v in pairs):
         return None
-    if teams is None:
-        keys = [k for k, _v in pairs]
-        values = [v for _k, v in pairs]
-        return pairs if (len(set(keys)) == len(keys) and
-                         len(set(values)) == len(values)) else None
-    expected = set(range(1, int(teams) + 1))
+    expected = set(range(1, team_count + 1))
     if ({k for k, _v in pairs} != expected or
             {v for _k, v in pairs} != expected or
             len(pairs) != len(expected)):
@@ -43,7 +51,7 @@ def _complete_slot_map(slot_map, teams):
     return pairs
 
 
-def resolve_owner_slot(draft, user_id, roster_id, teams=None):
+def resolve_owner_slot(draft, user_id, roster_id, teams):
     """Return draw state, resolved slot, and the evidence used.
 
     A drawn-but-unresolvable payload is deliberately distinct from an undrawn
@@ -51,16 +59,24 @@ def resolve_owner_slot(draft, user_id, roster_id, teams=None):
     on the former; the latter can safely preserve all slot hypotheses.
     """
     draft = draft if isinstance(draft, dict) else {}
+    team_count = _team_count(teams)
+    if team_count is None:
+        # Completeness and slot bounds are unknowable without the league size.
+        # Treat this as unsafe evidence even when a map looks permutation-like:
+        # a partial unique map is exactly the plausible-wrong-seat failure this
+        # resolver exists to prevent.
+        return {"drawn": True, "slot": None,
+                "source": "team_count_unavailable"}
     order = draft.get("draft_order") or {}
     slot_map = draft.get("slot_to_roster_id") or {}
     status = draft.get("status")
 
     raw = order.get(str(user_id)) if isinstance(order, dict) else None
-    slot = _valid_slot(raw, teams)
+    slot = _valid_slot(raw, team_count)
     if slot is not None:
         return {"drawn": True, "slot": slot, "source": "draft_order"}
 
-    pairs = _complete_slot_map(slot_map, teams)
+    pairs = _complete_slot_map(slot_map, team_count)
     identity = bool(pairs) and all(k == v for k, v in pairs)
     if pairs:
         if not identity:
