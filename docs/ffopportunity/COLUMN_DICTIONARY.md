@@ -118,8 +118,11 @@ Team-level variants use _team suffix (e.g. receptions_exp_team = team total expe
 ### bullish_te_2020_2025.csv
 | Column | BULLISH Criterion | Description |
 |---|---|---|
-| route_participation_proxy | Route participation | receptions_exp (best available proxy - no raw route counts in ffopportunity) |
 | receiving_market_share | Receiving market share | rec_yards_gained_exp / team_rec_yards_gained_exp |
+
+Route participation is unavailable in ffopportunity. `receptions_exp` is
+expected receptions, not a route proxy, so the former mislabeled alias is not
+carried in this extract.
 
 ### bullish_gap_signal_2020_2025.csv
 | Column | Description |

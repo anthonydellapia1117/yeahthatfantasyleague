@@ -1092,7 +1092,7 @@ if os.path.exists(ffp) and os.path.exists(n1p):
        "ff-hub validates every nested N.1 field it renders")
     ok(n1["verdict"] not in ffsrc
        and all(s not in ffsrc for s in
-               ("28/43", "133/257", "65.1%", "51.8%", "+13.4pp")),
+               ("22/35", "86/164", "62.9%", "52.4%", "+10.4pp", "p=0.261")),
        "ff-hub does not duplicate the reviewed verdict or computed figures")
     n1section = ffsrc[ffsrc.index('<section class="panel" id="p5"'):
                       ffsrc.index("<footer>")]
@@ -1499,6 +1499,7 @@ with tempfile.TemporaryDirectory() as _td:
 # that mismatch visible instead of presenting old values as current.
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from engine_lineage import (content_sha256 as _engine_sha,
+                            file_content_sha256 as _file_sha,
                             is_valid as _engine_valid,
                             json_content_sha256 as _json_sha)
 _eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
@@ -1543,10 +1544,13 @@ _source_payloads = {
     "depth_charts.json": json.load(open(os.path.join(D, "depth_charts.json"))),
     "crosswalk.json": json.load(open(os.path.join(D, "crosswalk.json"))),
 }
+_source_digests = {name: _json_sha(payload)
+                   for name, payload in _source_payloads.items()}
+_source_digests["docs/ffopportunity/schedule_2026.csv"] = _file_sha(
+    os.path.join(ROOT, "docs", "ffopportunity", "schedule_2026.csv"))
 _source_manifest = _bull_inputs.get("provenance", {}).get(
     "input_content_sha256", {})
-ok(_source_manifest == {name: _json_sha(payload)
-                        for name, payload in _source_payloads.items()},
+ok(_source_manifest == _source_digests,
    "BULLISH inputs match every committed source payload they consumed")
 ok(_display_lag["bullish_2026.json"]["provenance"].get(
        "inputs_content_sha256") == _json_sha(_bull_inputs),

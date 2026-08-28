@@ -117,6 +117,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
   <div><div class="kick">YeahThatFantasyLeague</div><h1>YTFL Players 2026</h1></div>
 </header>
 <div id="banner" class="banner" hidden></div>
+<div id="bull-status" class="small" hidden></div>
 <div id="content"><p class="small">loading shards...</p></div>
 <footer id="foot"></footer>
 </div>
@@ -198,6 +199,7 @@ async function boot(){
     // page renders identically without them, and neither gates boot
     try { D.arch = await get("data/archetypes_2026.json"); } catch (e) { D.arch = null; }
     try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
+    renderBullStatus();
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -225,6 +227,14 @@ async function boot(){
   renderFoot();
   route();
   window.addEventListener("hashchange", route);
+}
+
+function renderBullStatus(){
+  const el = document.getElementById("bull-status");
+  const note = D.bull && D.bull.te_gate_suspension &&
+    D.bull.te_gate_suspension.display_note;
+  el.hidden = !note;
+  el.textContent = note || "";
 }
 
 function renderFoot(){

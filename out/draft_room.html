@@ -279,6 +279,7 @@ button.tag{appearance:none;-webkit-appearance:none;background:var(--s2)}
   </header>
   <div id="banner" class="banner" hidden></div>
   <div id="mockbar" class="banner" hidden></div>
+  <div id="bull-status" class="small" hidden></div>
   <details class="dmopen" id="dm-open"><summary>DRAFT MODE - practice on a Sleeper mock</summary>
     <div class="small">Create a mock in Sleeper, paste its draft id (the long number in the
       lobby URL), and load. The board stays priced for the real league; any format
@@ -1607,6 +1608,10 @@ async function loadBullish(){
     if (r.ok){
       BULL = await r.json();
       BULL._byId = rowsByPlayerId(BULL.tags);
+      const status = document.getElementById("bull-status");
+      const note = BULL.te_gate_suspension && BULL.te_gate_suspension.display_note;
+      status.hidden = !note;
+      status.textContent = note || "";
       if (LiveState.lastRender && LiveState.els) LiveState.lastRender();
     }
   } catch (e) { /* absent is a supported state */ }

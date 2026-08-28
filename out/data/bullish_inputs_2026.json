@@ -1,18 +1,231 @@
 {
  "provenance": {
   "generated": "2026-08-28",
-  "engine_generated": "2026-08-26",
-  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
+  "engine_generated": "2026-08-28",
+  "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
   "input_content_sha256": {
-   "ceiling_2026.json": "876bf5c2eb0941b9d0a997d326db445478279b2ee17d23acc006ba2d2872ca84",
+   "ceiling_2026.json": "3bbcae99126f89fc9774efb98857be43fd47a9d43d3a15026c47d1c063b8f40c",
    "usage_2025.json": "795d27bbab685a1970c336e5005e391be6cab21a42a083c0e792e887dabf1e58",
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
    "depth_charts.json": "b5a14a0768cf0ca2875d501964d8dbb71cdccb239d5e4e8d47f2a7f7245da4f6",
-   "crosswalk.json": "63dab2e88225e8522d8cb0fac7e14ad5b621b9753bdf576563cfaafb7e58f4c4"
+   "crosswalk.json": "63dab2e88225e8522d8cb0fac7e14ad5b621b9753bdf576563cfaafb7e58f4c4",
+   "docs/ffopportunity/schedule_2026.csv": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6"
   },
   "vegas": {
-   "source": "nflverse schedules, Week-1 2026 closing lines (16/16 games - the only complete coverage window)",
-   "pulled": "2026-08-28"
+   "week1_rb": {
+    "source": "nflverse HISTORY games.csv, Week-1 2026 lines",
+    "pulled": "2026-08-28",
+    "games": 16,
+    "consumers": [
+     "RB.expected_td_equity"
+    ]
+   },
+   "forward": {
+    "source": "docs/ffopportunity/schedule_2026.csv",
+    "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+    "season": 2026,
+    "derivation": "maximal contiguous prefix from week 1 where every scheduled game has total_line and spread_line",
+    "spread_convention": "positive spread_line means home favored; home=total/2+spread/2, away=total/2-spread/2",
+    "weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "first_week": 1,
+    "last_week": 6,
+    "games": 93,
+    "team_games": 186,
+    "teams": 32,
+    "full_schedule_games": 272,
+    "regular_season_games_per_team": 17,
+    "team_game_counts": {
+     "ARI": 6,
+     "ATL": 6,
+     "BAL": 6,
+     "BUF": 6,
+     "CAR": 5,
+     "CHI": 6,
+     "CIN": 5,
+     "CLE": 6,
+     "DAL": 6,
+     "DEN": 6,
+     "DET": 5,
+     "GB": 6,
+     "HOU": 6,
+     "IND": 6,
+     "JAX": 6,
+     "KC": 5,
+     "LAR": 6,
+     "LAC": 6,
+     "LV": 6,
+     "MIA": 5,
+     "MIN": 5,
+     "NE": 6,
+     "NO": 6,
+     "NYG": 6,
+     "NYJ": 6,
+     "PHI": 6,
+     "PIT": 6,
+     "SEA": 6,
+     "SF": 6,
+     "TB": 6,
+     "TEN": 6,
+     "WAS": 6
+    },
+    "coverage": [
+     {
+      "week": 1,
+      "priced_games": 16,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": true
+     },
+     {
+      "week": 2,
+      "priced_games": 16,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": true
+     },
+     {
+      "week": 3,
+      "priced_games": 16,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": true
+     },
+     {
+      "week": 4,
+      "priced_games": 16,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": true
+     },
+     {
+      "week": 5,
+      "priced_games": 15,
+      "scheduled_games": 15,
+      "partial_line_games": 0,
+      "complete": true
+     },
+     {
+      "week": 6,
+      "priced_games": 14,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": true
+     },
+     {
+      "week": 7,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 8,
+      "priced_games": 0,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 9,
+      "priced_games": 1,
+      "scheduled_games": 15,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 10,
+      "priced_games": 1,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 11,
+      "priced_games": 1,
+      "scheduled_games": 13,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 12,
+      "priced_games": 5,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 13,
+      "priced_games": 0,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 14,
+      "priced_games": 0,
+      "scheduled_games": 15,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 15,
+      "priced_games": 0,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 16,
+      "priced_games": 4,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 17,
+      "priced_games": 0,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": false
+     },
+     {
+      "week": 18,
+      "priced_games": 0,
+      "scheduled_games": 16,
+      "partial_line_games": 0,
+      "complete": false
+     }
+    ],
+    "next_partial_week": {
+     "week": 7,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    "top_five_teams": [
+     "LAR",
+     "DET",
+     "BAL",
+     "BUF",
+     "SF"
+    ],
+    "top_five_tie_policy": "higher mean, then canonical team code",
+    "consumers": [
+     "QB.environment",
+     "WR.opportunity"
+    ],
+    "excluded_consumers": [
+     "RB.expected_td_equity"
+    ]
+   }
   },
   "td_per_point": {
    "value": 0.1055,
@@ -90,6 +303,40 @@
    "KC": 2.4,
    "DEN": 2.08
   },
+  "forward_implied_total": {
+   "ARI": 18.17,
+   "ATL": 21.17,
+   "BAL": 26.67,
+   "BUF": 25.83,
+   "CAR": 20.95,
+   "CHI": 24.83,
+   "CIN": 25.55,
+   "CLE": 18.5,
+   "DAL": 25.46,
+   "DEN": 21.33,
+   "DET": 26.75,
+   "GB": 25.17,
+   "HOU": 23.08,
+   "IND": 22.92,
+   "JAX": 22.75,
+   "KC": 24.95,
+   "LAR": 27.0,
+   "LAC": 23.92,
+   "LV": 19.33,
+   "MIA": 18.95,
+   "MIN": 22.9,
+   "NE": 23.71,
+   "NO": 21.62,
+   "NYG": 23.33,
+   "NYJ": 18.29,
+   "PHI": 23.83,
+   "PIT": 22.12,
+   "SEA": 24.83,
+   "SF": 25.83,
+   "TB": 23.58,
+   "TEN": 20.33,
+   "WAS": 23.25
+  },
   "line_ybc_2025": {
    "PHI": 2.642,
    "DAL": 2.658,
@@ -128,59 +375,116 @@
  "thresholds": {
   "wr_tprr": {
    "n": 51,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "finite observed values",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 0.2273,
    "p75": 0.2581,
    "p80": 0.2597
   },
   "wr_yprr": {
    "n": 51,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "finite observed values",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 1.84,
    "p75": 2.241,
    "p80": 2.332
   },
   "wr_first_read": {
    "n": 51,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "finite observed values",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 0.2206,
    "p75": 0.2836,
    "p80": 0.2875
   },
   "rb_targets_pg": {
    "n": 46,
+   "zero_n": 0,
+   "excluded_unobserved_n": 3,
+   "observation_rule": "finite observed values",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 2.89,
    "p75": 3.5,
    "p80": 3.68
   },
   "rb_inside5": {
    "n": 46,
+   "zero_n": 1,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "2025 inside-five sample has n > 0; k=0 is observed",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 0.381,
    "p75": 0.5,
    "p80": 0.6061
   },
+  "rb_backfield_share": {
+   "n": 46,
+   "zero_n": 0,
+   "excluded_unobserved_n": 3,
+   "observation_rule": "2025 usage row exists for the canonical player and the current-team observed RB carry total is at least 100; observed zero is included, absence is null",
+   "percentile_method": "nearest index: round(q * (n - 1))",
+   "p50": 0.506,
+   "p75": 0.7342,
+   "p80": 0.7632,
+   "p50_method": "upper middle observation for even n; preserved stage-2 convention"
+  },
   "team_line_ybc": {
    "n": 32,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "finite observed values",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 2.54,
    "p75": 2.697,
    "p80": 2.756
   },
-  "te_route_part": {
+  "on_field_dropback_share_reference": {
    "n": 19,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "2025 TE population with at least 100 observed on-field team dropbacks; pass-block snaps count",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 0.7192,
    "p75": 0.842,
    "p80": 0.842
   },
   "qb_rush_ypg": {
    "n": 19,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "finite observed values",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 23.58,
    "p75": 32.65,
    "p80": 32.65
   },
   "implied_total": {
    "n": 32,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "finite observed values",
+   "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 22.5,
    "p75": 24.0,
    "p80": 25.5
   },
-  "note": "qualification floors: WR/TE routes-proxy >= 150/100, QB 150+ attempts, RB with 2025 usage; proxies count pass-block snaps as routes (stated weakness), so thresholds are percentiles of OUR distribution, never PFF-unit imports"
+  "forward_implied_total": {
+   "n": 32,
+   "zero_n": 0,
+   "excluded_unobserved_n": 0,
+   "observation_rule": "all canonical teams in the maximal fully priced horizon",
+   "percentile_method": "nearest index: round(q * (n - 1))",
+   "p50": 23.33,
+   "p75": 24.95,
+   "p80": 25.46
+  },
+  "note": "qualification floors: WR/TE routes-proxy >= 150/100, QB 150+ attempts, RB with 2025 usage; proxies count pass-block snaps as on-field dropbacks (stated weakness), so thresholds are percentiles of OUR distribution, never PFF-unit imports"
  },
  "qb_gap": {
   "definition": "top-12 QB season finishes 2016-2025 (n=120), rushing class = rush yds/g >= that season's p75 among 8+ game QBs; season TOTAL points under each scoring",
@@ -223,7 +527,7 @@
   {
    "name": "Jahmyr Gibbs",
    "pos": "RB",
-   "adp": 1.6,
+   "adp": 1.3,
    "team_2026": "DET",
    "implied_total": 27.75,
    "implied_tds": 2.93,
@@ -236,9 +540,10 @@
     "n": 440
    },
    "yprr_proxy": 1.393,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 440,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 27,
@@ -252,12 +557,17 @@
     "n": 27,
     "basis": "2025 role on DET"
    },
-   "backfield_share": 0.655
+   "backfield_share": 0.655,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 243,
+    "team_carries": 371
+   }
   },
   {
    "name": "Bijan Robinson",
    "pos": "RB",
-   "adp": 2.5,
+   "adp": 2.2,
    "team_2026": "ATL",
    "implied_total": 19.25,
    "implied_tds": 2.03,
@@ -270,9 +580,10 @@
     "n": 508
    },
    "yprr_proxy": 1.614,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 508,
-    "n": 586
+    "n": 586,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 27,
@@ -286,27 +597,34 @@
     "n": 24,
     "basis": "2025 role on ATL"
    },
-   "backfield_share": 0.7513
+   "backfield_share": 0.7513,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 287,
+    "team_carries": 382
+   }
   },
   {
    "name": "Puka Nacua",
    "pos": "WR",
-   "adp": 4.7,
+   "adp": 4.1,
    "team_2026": "LA",
    "implied_total": 26.0,
    "implied_tds": 2.74,
    "team_line_ybc": 2.811,
    "gp_rate_2yr": 0.7941,
    "exp_missed": 3.5,
+   "forward_implied_total": 27.0,
    "routes_proxy": 467,
    "tprr_proxy": {
     "k": 166,
     "n": 467
    },
    "yprr_proxy": 3.672,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 467,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 118,
@@ -319,22 +637,24 @@
   {
    "name": "Ja'Marr Chase",
    "pos": "WR",
-   "adp": 3.0,
+   "adp": 3.6,
    "team_2026": "CIN",
    "implied_total": 27.0,
    "implied_tds": 2.85,
    "team_line_ybc": 2.412,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
+   "forward_implied_total": 25.55,
    "routes_proxy": 630,
    "tprr_proxy": {
     "k": 185,
     "n": 630
    },
    "yprr_proxy": 2.241,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 630,
-    "n": 691
+    "n": 691,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 121,
@@ -347,7 +667,7 @@
   {
    "name": "Christian McCaffrey",
    "pos": "RB",
-   "adp": 5.0,
+   "adp": 5.2,
    "team_2026": "SF",
    "implied_total": 22.5,
    "implied_tds": 2.37,
@@ -360,9 +680,10 @@
     "n": 559
    },
    "yprr_proxy": 1.617,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 559,
-    "n": 629
+    "n": 629,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 41,
@@ -376,12 +697,17 @@
     "n": 26,
     "basis": "2025 role on SF"
    },
-   "backfield_share": 1.0
+   "backfield_share": 1.0,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 337,
+    "team_carries": 337
+   }
   },
   {
    "name": "Jonathan Taylor",
    "pos": "RB",
-   "adp": 7.1,
+   "adp": 7.2,
    "team_2026": "IND",
    "implied_total": 22.5,
    "implied_tds": 2.37,
@@ -394,9 +720,10 @@
     "n": 486
    },
    "yprr_proxy": 0.778,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 486,
-    "n": 605
+    "n": 605,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 9,
@@ -410,27 +737,34 @@
     "n": 36,
     "basis": "2025 role on IND"
    },
-   "backfield_share": 1.0
+   "backfield_share": 1.0,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 323,
+    "team_carries": 323
+   }
   },
   {
    "name": "Jaxon Smith-Njigba",
    "pos": "WR",
-   "adp": 6.4,
+   "adp": 6.6,
    "team_2026": "SEA",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.477,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 24.83,
    "routes_proxy": 485,
    "tprr_proxy": {
     "k": 163,
     "n": 485
    },
    "yprr_proxy": 3.697,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 485,
-    "n": 520
+    "n": 520,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 132,
@@ -443,22 +777,24 @@
   {
    "name": "Amon-Ra St. Brown",
    "pos": "WR",
-   "adp": 7.1,
+   "adp": 8.9,
    "team_2026": "DET",
    "implied_total": 27.75,
    "implied_tds": 2.93,
    "team_line_ybc": 2.923,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 26.75,
    "routes_proxy": 566,
    "tprr_proxy": {
     "k": 172,
     "n": 566
    },
    "yprr_proxy": 2.475,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 566,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 141,
@@ -471,7 +807,7 @@
   {
    "name": "James Cook",
    "pos": "RB",
-   "adp": 10.1,
+   "adp": 10.8,
    "team_2026": "BUF",
    "implied_total": 23.0,
    "implied_tds": 2.43,
@@ -484,9 +820,10 @@
     "n": 279
    },
    "yprr_proxy": 1.043,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 279,
-    "n": 593
+    "n": 593,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 13,
@@ -500,12 +837,17 @@
     "n": 43,
     "basis": "2025 role on BUF"
    },
-   "backfield_share": 0.7632
+   "backfield_share": 0.7632,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 348,
+    "team_carries": 456
+   }
   },
   {
    "name": "Brock Bowers",
    "pos": "TE",
-   "adp": 23.6,
+   "adp": 23.0,
    "team_2026": "LV",
    "implied_total": 22.0,
    "implied_tds": 2.32,
@@ -518,9 +860,10 @@
     "n": 411
    },
    "yprr_proxy": 1.655,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 411,
-    "n": 600
+    "n": 600,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 71,
@@ -534,7 +877,7 @@
   {
    "name": "De'Von Achane",
    "pos": "RB",
-   "adp": 12.3,
+   "adp": 12.8,
    "team_2026": "MIA",
    "implied_total": 18.5,
    "implied_tds": 1.95,
@@ -547,9 +890,10 @@
     "n": 392
    },
    "yprr_proxy": 1.227,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 392,
-    "n": 533
+    "n": 533,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 19,
@@ -563,12 +907,17 @@
     "n": 16,
     "basis": "2025 role on MIA"
    },
-   "backfield_share": 0.6296
+   "backfield_share": 0.6296,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 238,
+    "team_carries": 378
+   }
   },
   {
    "name": "Chase Brown",
    "pos": "RB",
-   "adp": 15.7,
+   "adp": 16.1,
    "team_2026": "CIN",
    "implied_total": 27.0,
    "implied_tds": 2.85,
@@ -581,9 +930,10 @@
     "n": 449
    },
    "yprr_proxy": 0.922,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 449,
-    "n": 691
+    "n": 691,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 17,
@@ -597,27 +947,34 @@
     "n": 20,
     "basis": "2025 role on CIN"
    },
-   "backfield_share": 0.7342
+   "backfield_share": 0.7342,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 232,
+    "team_carries": 316
+   }
   },
   {
    "name": "CeeDee Lamb",
    "pos": "WR",
-   "adp": 9.0,
+   "adp": 8.2,
    "team_2026": "DAL",
    "implied_total": 25.5,
    "implied_tds": 2.69,
    "team_line_ybc": 2.658,
    "gp_rate_2yr": 0.8235,
    "exp_missed": 3.0,
+   "forward_implied_total": 25.46,
    "routes_proxy": 452,
    "tprr_proxy": {
     "k": 117,
     "n": 452
    },
    "yprr_proxy": 2.383,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 452,
-    "n": 684
+    "n": 684,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 95,
@@ -630,7 +987,7 @@
   {
    "name": "Derrick Henry",
    "pos": "RB",
-   "adp": 20.5,
+   "adp": 20.9,
    "team_2026": "BAL",
    "implied_total": 26.0,
    "implied_tds": 2.74,
@@ -643,9 +1000,10 @@
     "n": 195
    },
    "yprr_proxy": 0.769,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 195,
-    "n": 503
+    "n": 503,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 2,
@@ -659,12 +1017,17 @@
     "n": 32,
     "basis": "2025 role on BAL"
    },
-   "backfield_share": 0.9247
+   "backfield_share": 0.9247,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 307,
+    "team_carries": 332
+   }
   },
   {
    "name": "Saquon Barkley",
    "pos": "RB",
-   "adp": 13.0,
+   "adp": 13.4,
    "team_2026": "PHI",
    "implied_total": 25.5,
    "implied_tds": 2.69,
@@ -677,9 +1040,10 @@
     "n": 415
    },
    "yprr_proxy": 0.658,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 415,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 7,
@@ -693,27 +1057,34 @@
     "n": 33,
     "basis": "2025 role on PHI"
    },
-   "backfield_share": 0.7907
+   "backfield_share": 0.7907,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 306,
+    "team_carries": 387
+   }
   },
   {
    "name": "Nico Collins",
    "pos": "WR",
-   "adp": 25.3,
+   "adp": 25.4,
    "team_2026": "HOU",
    "implied_total": 21.5,
    "implied_tds": 2.27,
    "team_line_ybc": 2.099,
    "gp_rate_2yr": 0.7941,
    "exp_missed": 3.5,
+   "forward_implied_total": 23.08,
    "routes_proxy": 479,
    "tprr_proxy": {
     "k": 121,
     "n": 479
    },
    "yprr_proxy": 2.332,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 479,
-    "n": 648
+    "n": 648,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 98,
@@ -726,7 +1097,7 @@
   {
    "name": "Kenneth Walker",
    "pos": "RB",
-   "adp": 19.7,
+   "adp": 19.3,
    "team_2026": "KC",
    "implied_total": 22.75,
    "implied_tds": 2.4,
@@ -739,9 +1110,10 @@
     "n": 227
    },
    "yprr_proxy": 1.242,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 227,
-    "n": 520
+    "n": 520,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 6,
@@ -755,12 +1127,17 @@
     "n": 30,
     "basis": "2025 role on SEA"
    },
-   "backfield_share": 0.7647
+   "backfield_share": 0.7647,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 286,
+    "team_carries": 374
+   }
   },
   {
    "name": "Omarion Hampton",
    "pos": "RB",
-   "adp": 15.5,
+   "adp": 15.4,
    "team_2026": "LAC",
    "implied_total": 28.5,
    "implied_tds": 3.01,
@@ -773,9 +1150,10 @@
     "n": 219
    },
    "yprr_proxy": 0.877,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 219,
-    "n": 681
+    "n": 681,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 4,
@@ -789,12 +1167,17 @@
     "n": 21,
     "basis": "2025 role on LAC"
    },
-   "backfield_share": 0.3197
+   "backfield_share": 0.3197,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 125,
+    "team_carries": 391
+   }
   },
   {
    "name": "Trey McBride",
    "pos": "TE",
-   "adp": 21.5,
+   "adp": 21.0,
    "team_2026": "ARI",
    "implied_total": 18.0,
    "implied_tds": 1.9,
@@ -807,9 +1190,10 @@
     "n": 705
    },
    "yprr_proxy": 1.757,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 705,
-    "n": 748
+    "n": 748,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 112,
@@ -823,22 +1207,24 @@
   {
    "name": "Josh Allen",
    "pos": "QB",
-   "adp": 22.8,
+   "adp": 22.1,
    "team_2026": "BUF",
    "implied_total": 23.0,
    "implied_tds": 2.43,
    "team_line_ybc": 2.905,
    "gp_rate_2yr": 0.9412,
    "exp_missed": 1.0,
+   "forward_implied_total": 25.83,
    "routes_proxy": 554,
    "tprr_proxy": {
     "k": 0,
     "n": 554
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 554,
-    "n": 593
+    "n": 593,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -852,7 +1238,7 @@
   {
    "name": "Ashton Jeanty",
    "pos": "RB",
-   "adp": 14.7,
+   "adp": 14.1,
    "team_2026": "LV",
    "implied_total": 22.0,
    "implied_tds": 2.32,
@@ -865,9 +1251,10 @@
     "n": 441
    },
    "yprr_proxy": 0.785,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 441,
-    "n": 600
+    "n": 600,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 12,
@@ -881,27 +1268,34 @@
     "n": 13,
     "basis": "2025 role on LV"
    },
-   "backfield_share": 0.9603
+   "backfield_share": 0.9603,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 266,
+    "team_carries": 277
+   }
   },
   {
    "name": "Justin Jefferson",
    "pos": "WR",
-   "adp": 11.4,
+   "adp": 11.0,
    "team_2026": "MIN",
    "implied_total": 23.5,
    "implied_tds": 2.48,
    "team_line_ybc": 2.441,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 22.9,
    "routes_proxy": 553,
    "tprr_proxy": {
     "k": 142,
     "n": 553
    },
    "yprr_proxy": 1.895,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 553,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 98,
@@ -914,22 +1308,24 @@
   {
    "name": "Drake London",
    "pos": "WR",
-   "adp": 17.4,
+   "adp": 17.3,
    "team_2026": "ATL",
    "implied_total": 19.25,
    "implied_tds": 2.03,
    "team_line_ybc": 2.522,
    "gp_rate_2yr": 0.8529,
    "exp_missed": 2.5,
+   "forward_implied_total": 21.17,
    "routes_proxy": 394,
    "tprr_proxy": {
     "k": 113,
     "n": 394
    },
    "yprr_proxy": 2.332,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 394,
-    "n": 586
+    "n": 586,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 92,
@@ -942,22 +1338,24 @@
   {
    "name": "A.J. Brown",
    "pos": "WR",
-   "adp": 18.8,
+   "adp": 17.5,
    "team_2026": "NE",
    "implied_total": 20.5,
    "implied_tds": 2.16,
    "team_line_ybc": 2.561,
    "gp_rate_2yr": 0.8235,
    "exp_missed": 3.0,
+   "forward_implied_total": 23.71,
    "routes_proxy": 480,
    "tprr_proxy": {
     "k": 121,
     "n": 480
    },
    "yprr_proxy": 2.09,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 480,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 103,
@@ -970,22 +1368,24 @@
   {
    "name": "George Pickens",
    "pos": "WR",
-   "adp": 23.6,
+   "adp": 24.7,
    "team_2026": "DAL",
    "implied_total": 25.5,
    "implied_tds": 2.69,
    "team_line_ybc": 2.658,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 25.46,
    "routes_proxy": 608,
    "tprr_proxy": {
     "k": 138,
     "n": 608
    },
    "yprr_proxy": 2.35,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 608,
-    "n": 684
+    "n": 684,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 114,
@@ -998,7 +1398,7 @@
   {
    "name": "Colston Loveland",
    "pos": "TE",
-   "adp": 39.2,
+   "adp": 40.9,
    "team_2026": "CHI",
    "implied_total": 25.0,
    "implied_tds": 2.64,
@@ -1011,9 +1411,10 @@
     "n": 407
    },
    "yprr_proxy": 1.752,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 407,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 56,
@@ -1027,22 +1428,24 @@
   {
    "name": "Malik Nabers",
    "pos": "WR",
-   "adp": 28.6,
+   "adp": 28.2,
    "team_2026": "NYG",
    "implied_total": 23.0,
    "implied_tds": 2.43,
    "team_line_ybc": 2.714,
    "gp_rate_2yr": 0.5588,
    "exp_missed": 7.5,
+   "forward_implied_total": 23.33,
    "routes_proxy": 134,
    "tprr_proxy": {
     "k": 35,
     "n": 134
    },
    "yprr_proxy": 2.022,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 134,
-    "n": 627
+    "n": 627,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 30,
@@ -1055,22 +1458,24 @@
   {
    "name": "Chris Olave",
    "pos": "WR",
-   "adp": 30.4,
+   "adp": 30.8,
    "team_2026": "NO",
    "implied_total": 20.75,
    "implied_tds": 2.19,
    "team_line_ybc": 2.057,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
+   "forward_implied_total": 21.62,
    "routes_proxy": 582,
    "tprr_proxy": {
     "k": 156,
     "n": 582
    },
    "yprr_proxy": 1.998,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 582,
-    "n": 671
+    "n": 671,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 119,
@@ -1083,22 +1488,24 @@
   {
    "name": "Rashee Rice",
    "pos": "WR",
-   "adp": 27.3,
+   "adp": 26.9,
    "team_2026": "KC",
    "implied_total": 22.75,
    "implied_tds": 2.4,
    "team_line_ybc": 2.756,
    "gp_rate_2yr": 0.3529,
    "exp_missed": 11.0,
+   "forward_implied_total": 24.95,
    "routes_proxy": 266,
    "tprr_proxy": {
     "k": 79,
     "n": 266
    },
    "yprr_proxy": 2.147,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 266,
-    "n": 689
+    "n": 689,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 38,
@@ -1111,22 +1518,24 @@
   {
    "name": "DeVonta Smith",
    "pos": "WR",
-   "adp": 36.4,
+   "adp": 35.3,
    "team_2026": "PHI",
    "implied_total": 25.5,
    "implied_tds": 2.69,
    "team_line_ybc": 2.642,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 23.83,
    "routes_proxy": 520,
    "tprr_proxy": {
     "k": 114,
     "n": 520
    },
    "yprr_proxy": 1.938,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 520,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 85,
@@ -1145,13 +1554,12 @@
    "implied_tds": 1.9,
    "team_line_ybc": 2.593,
    "gp_rate_2yr": null,
-   "exp_missed": null,
-   "backfield_share": 0.0
+   "exp_missed": null
   },
   {
    "name": "Breece Hall",
    "pos": "RB",
-   "adp": 33.1,
+   "adp": 33.9,
    "team_2026": "NYJ",
    "implied_total": 17.75,
    "implied_tds": 1.87,
@@ -1164,9 +1572,10 @@
     "n": 331
    },
    "yprr_proxy": 1.057,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 331,
-    "n": 613
+    "n": 613,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 8,
@@ -1180,27 +1589,34 @@
     "n": 12,
     "basis": "2025 role on NYJ"
    },
-   "backfield_share": 0.7666
+   "backfield_share": 0.7666,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 243,
+    "team_carries": 317
+   }
   },
   {
    "name": "Zay Flowers",
    "pos": "WR",
-   "adp": 42.8,
+   "adp": 42.0,
    "team_2026": "BAL",
    "implied_total": 26.0,
    "implied_tds": 2.74,
    "team_line_ybc": 3.219,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 26.67,
    "routes_proxy": 478,
    "tprr_proxy": {
     "k": 119,
     "n": 478
    },
    "yprr_proxy": 2.533,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 478,
-    "n": 503
+    "n": 503,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 69,
@@ -1213,22 +1629,24 @@
   {
    "name": "Ladd McConkey",
    "pos": "WR",
-   "adp": 38.9,
+   "adp": 38.3,
    "team_2026": "LAC",
    "implied_total": 28.5,
    "implied_tds": 3.01,
    "team_line_ybc": 2.672,
    "gp_rate_2yr": 0.9412,
    "exp_missed": 1.0,
+   "forward_implied_total": 23.92,
    "routes_proxy": 563,
    "tprr_proxy": {
     "k": 106,
     "n": 563
    },
    "yprr_proxy": 1.401,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 563,
-    "n": 681
+    "n": 681,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 63,
@@ -1241,7 +1659,7 @@
   {
    "name": "Kyren Williams",
    "pos": "RB",
-   "adp": 29.7,
+   "adp": 29.2,
    "team_2026": "LA",
    "implied_total": 26.0,
    "implied_tds": 2.74,
@@ -1254,9 +1672,10 @@
     "n": 455
    },
    "yprr_proxy": 0.618,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 455,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 10,
@@ -1270,12 +1689,17 @@
     "n": 34,
     "basis": "2025 role on LA"
    },
-   "backfield_share": 0.6392
+   "backfield_share": 0.6392,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 303,
+    "team_carries": 474
+   }
   },
   {
    "name": "D'Andre Swift",
    "pos": "RB",
-   "adp": 55.8,
+   "adp": 55.1,
    "team_2026": "CHI",
    "implied_total": 25.0,
    "implied_tds": 2.64,
@@ -1288,9 +1712,10 @@
     "n": 347
    },
    "yprr_proxy": 0.836,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 347,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 6,
@@ -1304,12 +1729,17 @@
     "n": 28,
     "basis": "2025 role on CHI"
    },
-   "backfield_share": 0.573
+   "backfield_share": 0.573,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 255,
+    "team_carries": 445
+   }
   },
   {
    "name": "Travis Etienne",
    "pos": "RB",
-   "adp": 44.1,
+   "adp": 44.9,
    "team_2026": "NO",
    "implied_total": 20.75,
    "implied_tds": 2.19,
@@ -1322,9 +1752,10 @@
     "n": 349
    },
    "yprr_proxy": 0.837,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 349,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 10,
@@ -1338,27 +1769,34 @@
     "n": 34,
     "basis": "2025 role on JAX"
    },
-   "backfield_share": 0.49
+   "backfield_share": 0.49,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 270,
+    "team_carries": 551
+   }
   },
   {
    "name": "Garrett Wilson",
    "pos": "WR",
-   "adp": 45.7,
+   "adp": 44.6,
    "team_2026": "NYJ",
    "implied_total": 17.75,
    "implied_tds": 1.87,
    "team_line_ybc": 2.899,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
+   "forward_implied_total": 18.29,
    "routes_proxy": 226,
    "tprr_proxy": {
     "k": 60,
     "n": 226
    },
    "yprr_proxy": 1.748,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 226,
-    "n": 613
+    "n": 613,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 46,
@@ -1371,7 +1809,7 @@
   {
    "name": "Tyler Warren",
    "pos": "TE",
-   "adp": 47.7,
+   "adp": 47.2,
    "team_2026": "IND",
    "implied_total": 22.5,
    "implied_tds": 2.37,
@@ -1384,9 +1822,10 @@
     "n": 541
    },
    "yprr_proxy": 1.51,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 541,
-    "n": 605
+    "n": 605,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 82,
@@ -1400,7 +1839,7 @@
   {
    "name": "Javonte Williams",
    "pos": "RB",
-   "adp": 35.0,
+   "adp": 35.5,
    "team_2026": "DAL",
    "implied_total": 25.5,
    "implied_tds": 2.69,
@@ -1413,9 +1852,10 @@
     "n": 453
    },
    "yprr_proxy": 0.302,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 453,
-    "n": 684
+    "n": 684,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 7,
@@ -1429,27 +1869,34 @@
     "n": 33,
     "basis": "2025 role on DAL"
    },
-   "backfield_share": 0.7262
+   "backfield_share": 0.7262,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 252,
+    "team_carries": 347
+   }
   },
   {
    "name": "Tee Higgins",
    "pos": "WR",
-   "adp": 34.3,
+   "adp": 34.0,
    "team_2026": "CIN",
    "implied_total": 27.0,
    "implied_tds": 2.85,
    "team_line_ybc": 2.412,
    "gp_rate_2yr": 0.7941,
    "exp_missed": 3.5,
+   "forward_implied_total": 25.55,
    "routes_proxy": 526,
    "tprr_proxy": {
     "k": 99,
     "n": 526
    },
    "yprr_proxy": 1.608,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 526,
-    "n": 691
+    "n": 691,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 89,
@@ -1462,22 +1909,24 @@
   {
    "name": "Emeka Egbuka",
    "pos": "WR",
-   "adp": 39.4,
+   "adp": 39.7,
    "team_2026": "TB",
    "implied_total": 23.5,
    "implied_tds": 2.48,
    "team_line_ybc": 2.697,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 23.58,
    "routes_proxy": 535,
    "tprr_proxy": {
     "k": 128,
     "n": 535
    },
    "yprr_proxy": 1.753,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 535,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 92,
@@ -1503,9 +1952,10 @@
     "n": 225
    },
    "yprr_proxy": 0.853,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 225,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 3,
@@ -1519,27 +1969,34 @@
     "n": 27,
     "basis": "2025 role on DET"
    },
-   "backfield_share": 0.3674
+   "backfield_share": 0.3674,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 158,
+    "team_carries": 430
+   }
   },
   {
    "name": "Tetairoa McMillan",
    "pos": "WR",
-   "adp": 37.8,
+   "adp": 37.5,
    "team_2026": "CAR",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.49,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 20.95,
    "routes_proxy": 547,
    "tprr_proxy": {
     "k": 122,
     "n": 547
    },
    "yprr_proxy": 1.852,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 547,
-    "n": 585
+    "n": 585,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 98,
@@ -1552,22 +2009,24 @@
   {
    "name": "Mike Evans",
    "pos": "WR",
-   "adp": 61.5,
+   "adp": 61.4,
    "team_2026": "SF",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.349,
    "gp_rate_2yr": 0.6471,
    "exp_missed": 6.0,
+   "forward_implied_total": 25.83,
    "routes_proxy": 229,
    "tprr_proxy": {
     "k": 62,
     "n": 229
    },
    "yprr_proxy": 1.607,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 229,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 53,
@@ -1580,22 +2039,24 @@
   {
    "name": "Jaylen Waddle",
    "pos": "WR",
-   "adp": 46.2,
+   "adp": 46.6,
    "team_2026": "DEN",
    "implied_total": 19.75,
    "implied_tds": 2.08,
    "team_line_ybc": 2.592,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 21.33,
    "routes_proxy": 406,
    "tprr_proxy": {
     "k": 100,
     "n": 406
    },
    "yprr_proxy": 2.241,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 406,
-    "n": 533
+    "n": 533,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 84,
@@ -1608,7 +2069,7 @@
   {
    "name": "Sam LaPorta",
    "pos": "TE",
-   "adp": 59.1,
+   "adp": 59.0,
    "team_2026": "DET",
    "implied_total": 27.75,
    "implied_tds": 2.93,
@@ -1621,9 +2082,10 @@
     "n": 275
    },
    "yprr_proxy": 1.778,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 275,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 28,
@@ -1637,7 +2099,7 @@
   {
    "name": "Josh Jacobs",
    "pos": "RB",
-   "adp": 31.0,
+   "adp": 31.4,
    "team_2026": "GB",
    "implied_total": 22.0,
    "implied_tds": 2.32,
@@ -1650,9 +2112,10 @@
     "n": 266
    },
    "yprr_proxy": 1.06,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 266,
-    "n": 554
+    "n": 554,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 3,
@@ -1666,27 +2129,34 @@
     "n": 27,
     "basis": "2025 role on GB"
    },
-   "backfield_share": 0.9004
+   "backfield_share": 0.9004,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 253,
+    "team_carries": 281
+   }
   },
   {
    "name": "Lamar Jackson",
    "pos": "QB",
-   "adp": 31.2,
+   "adp": 32.8,
    "team_2026": "BAL",
    "implied_total": 26.0,
    "implied_tds": 2.74,
    "team_line_ybc": 3.219,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 26.67,
    "routes_proxy": 369,
    "tprr_proxy": {
     "k": 0,
     "n": 369
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 369,
-    "n": 503
+    "n": 503,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -1713,9 +2183,10 @@
     "n": 151
    },
    "yprr_proxy": 1.371,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 151,
-    "n": 627
+    "n": 627,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 7,
@@ -1729,27 +2200,34 @@
     "n": 31,
     "basis": "2025 role on NYG"
    },
-   "backfield_share": 0.2457
+   "backfield_share": 0.2457,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 101,
+    "team_carries": 411
+   }
   },
   {
    "name": "Drake Maye",
    "pos": "QB",
-   "adp": 47.1,
+   "adp": 48.3,
    "team_2026": "NE",
    "implied_total": 20.5,
    "implied_tds": 2.16,
    "team_line_ybc": 2.561,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 23.71,
    "routes_proxy": 602,
    "tprr_proxy": {
     "k": 1,
     "n": 602
    },
    "yprr_proxy": 0.003,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 602,
-    "n": 614
+    "n": 614,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -1763,7 +2241,7 @@
   {
    "name": "Bucky Irving",
    "pos": "RB",
-   "adp": 41.3,
+   "adp": 41.6,
    "team_2026": "TB",
    "implied_total": 23.5,
    "implied_tds": 2.48,
@@ -1776,9 +2254,10 @@
     "n": 213
    },
    "yprr_proxy": 1.3,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 213,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 7,
@@ -1792,27 +2271,34 @@
     "n": 22,
     "basis": "2025 role on TB"
    },
-   "backfield_share": 0.4565
+   "backfield_share": 0.4565,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 173,
+    "team_carries": 379
+   }
   },
   {
    "name": "Terry McLaurin",
    "pos": "WR",
-   "adp": 55.3,
+   "adp": 56.1,
    "team_2026": "WAS",
    "implied_total": 21.0,
    "implied_tds": 2.22,
    "team_line_ybc": 2.512,
    "gp_rate_2yr": 0.7941,
    "exp_missed": 3.5,
+   "forward_implied_total": 23.25,
    "routes_proxy": 260,
    "tprr_proxy": {
     "k": 60,
     "n": 260
    },
    "yprr_proxy": 2.238,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 260,
-    "n": 568
+    "n": 568,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 48,
@@ -1825,7 +2311,7 @@
   {
    "name": "Quinshon Judkins",
    "pos": "RB",
-   "adp": 54.9,
+   "adp": 53.6,
    "team_2026": "CLE",
    "implied_total": 16.5,
    "implied_tds": 1.74,
@@ -1838,9 +2324,10 @@
     "n": 187
    },
    "yprr_proxy": 0.914,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 187,
-    "n": 641
+    "n": 641,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 4,
@@ -1854,27 +2341,34 @@
     "n": 24,
     "basis": "2025 role on CLE"
    },
-   "backfield_share": 0.7143
+   "backfield_share": 0.7143,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 230,
+    "team_carries": 322
+   }
   },
   {
    "name": "Parker Washington",
    "pos": "WR",
-   "adp": 76.6,
+   "adp": 76.0,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.219,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 22.75,
    "routes_proxy": 408,
    "tprr_proxy": {
     "k": 97,
     "n": 408
    },
    "yprr_proxy": 2.076,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 408,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 71,
@@ -1887,22 +2381,24 @@
   {
    "name": "Joe Burrow",
    "pos": "QB",
-   "adp": 51.7,
+   "adp": 51.6,
    "team_2026": "CIN",
    "implied_total": 27.0,
    "implied_tds": 2.85,
    "team_line_ybc": 2.412,
    "gp_rate_2yr": 0.7353,
    "exp_missed": 4.5,
+   "forward_implied_total": 25.55,
    "routes_proxy": 286,
    "tprr_proxy": {
     "k": 0,
     "n": 286
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 286,
-    "n": 691
+    "n": 691,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -1916,22 +2412,24 @@
   {
    "name": "Luther Burden",
    "pos": "WR",
-   "adp": 52.8,
+   "adp": 52.7,
    "team_2026": "CHI",
    "implied_total": 25.0,
    "implied_tds": 2.64,
    "team_line_ybc": 3.309,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 24.83,
    "routes_proxy": 242,
    "tprr_proxy": {
     "k": 60,
     "n": 242
    },
    "yprr_proxy": 2.694,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 242,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 34,
@@ -1944,22 +2442,24 @@
   {
    "name": "Rome Odunze",
    "pos": "WR",
-   "adp": 65.8,
+   "adp": 65.1,
    "team_2026": "CHI",
    "implied_total": 25.0,
    "implied_tds": 2.64,
    "team_line_ybc": 3.309,
    "gp_rate_2yr": 0.8529,
    "exp_missed": 2.5,
+   "forward_implied_total": 24.83,
    "routes_proxy": 412,
    "tprr_proxy": {
     "k": 91,
     "n": 412
    },
    "yprr_proxy": 1.604,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 412,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 64,
@@ -1972,22 +2472,24 @@
   {
    "name": "Christian Watson",
    "pos": "WR",
-   "adp": 70.1,
+   "adp": 70.9,
    "team_2026": "GB",
    "implied_total": 22.0,
    "implied_tds": 2.32,
    "team_line_ybc": 2.325,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
+   "forward_implied_total": 25.17,
    "routes_proxy": 242,
    "tprr_proxy": {
     "k": 55,
     "n": 242
    },
    "yprr_proxy": 2.525,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 242,
-    "n": 554
+    "n": 554,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 46,
@@ -2000,22 +2502,24 @@
   {
    "name": "Jameson Williams",
    "pos": "WR",
-   "adp": 58.4,
+   "adp": 58.5,
    "team_2026": "DET",
    "implied_total": 27.75,
    "implied_tds": 2.93,
    "team_line_ybc": 2.923,
    "gp_rate_2yr": 0.9412,
    "exp_missed": 1.0,
+   "forward_implied_total": 26.75,
    "routes_proxy": 596,
    "tprr_proxy": {
     "k": 102,
     "n": 596
    },
    "yprr_proxy": 1.861,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 596,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 77,
@@ -2028,22 +2532,24 @@
   {
    "name": "Dak Prescott",
    "pos": "QB",
-   "adp": 78.1,
+   "adp": 78.4,
    "team_2026": "DAL",
    "implied_total": 25.5,
    "implied_tds": 2.69,
    "team_line_ybc": 2.658,
    "gp_rate_2yr": 0.7353,
    "exp_missed": 4.5,
+   "forward_implied_total": 25.46,
    "routes_proxy": 657,
    "tprr_proxy": {
     "k": 0,
     "n": 657
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 657,
-    "n": 684
+    "n": 684,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2057,7 +2563,7 @@
   {
    "name": "Harold Fannin",
    "pos": "TE",
-   "adp": 68.5,
+   "adp": 68.7,
    "team_2026": "CLE",
    "implied_total": 16.5,
    "implied_tds": 1.74,
@@ -2070,9 +2576,10 @@
     "n": 461
    },
    "yprr_proxy": 1.586,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 461,
-    "n": 641
+    "n": 641,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 66,
@@ -2093,15 +2600,17 @@
    "team_line_ybc": 2.349,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
+   "forward_implied_total": 25.83,
    "routes_proxy": 317,
    "tprr_proxy": {
     "k": 0,
     "n": 317
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 317,
-    "n": 629
+    "n": 629,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2115,7 +2624,7 @@
   {
    "name": "Tucker Kraft",
    "pos": "TE",
-   "adp": 63.8,
+   "adp": 62.8,
    "team_2026": "GB",
    "implied_total": 22.0,
    "implied_tds": 2.32,
@@ -2128,9 +2637,10 @@
     "n": 237
    },
    "yprr_proxy": 2.063,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 237,
-    "n": 554
+    "n": 554,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 26,
@@ -2144,22 +2654,24 @@
   {
    "name": "Jayden Reed",
    "pos": "WR",
-   "adp": 114.4,
+   "adp": 112.1,
    "team_2026": "GB",
    "implied_total": 22.0,
    "implied_tds": 2.32,
    "team_line_ybc": 2.325,
    "gp_rate_2yr": 0.6471,
    "exp_missed": 6.0,
+   "forward_implied_total": 25.17,
    "routes_proxy": 112,
    "tprr_proxy": {
     "k": 22,
     "n": 112
    },
    "yprr_proxy": 1.848,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 112,
-    "n": 554
+    "n": 554,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 10,
@@ -2172,22 +2684,24 @@
   {
    "name": "Brian Thomas",
    "pos": "WR",
-   "adp": 73.3,
+   "adp": 73.9,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.219,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 22.75,
    "routes_proxy": 468,
    "tprr_proxy": {
     "k": 91,
     "n": 468
    },
    "yprr_proxy": 1.511,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 468,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 76,
@@ -2200,7 +2714,7 @@
   {
    "name": "Kyle Pitts",
    "pos": "TE",
-   "adp": 69.0,
+   "adp": 69.1,
    "team_2026": "ATL",
    "implied_total": 19.25,
    "implied_tds": 2.03,
@@ -2213,9 +2727,10 @@
     "n": 560
    },
    "yprr_proxy": 1.657,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 560,
-    "n": 586
+    "n": 586,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 68,
@@ -2242,9 +2757,10 @@
     "n": 600
    },
    "yprr_proxy": 1.418,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 600,
-    "n": 689
+    "n": 689,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 63,
@@ -2258,22 +2774,24 @@
   {
    "name": "Trevor Lawrence",
    "pos": "QB",
-   "adp": 100.9,
+   "adp": 100.4,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.219,
    "gp_rate_2yr": 0.7941,
    "exp_missed": 3.5,
+   "forward_implied_total": 22.75,
    "routes_proxy": 643,
    "tprr_proxy": {
     "k": 0,
     "n": 643
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 643,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2287,22 +2805,24 @@
   {
    "name": "Caleb Williams",
    "pos": "QB",
-   "adp": 71.3,
+   "adp": 71.9,
    "team_2026": "CHI",
    "implied_total": 25.0,
    "implied_tds": 2.64,
    "team_line_ybc": 3.309,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 24.83,
    "routes_proxy": 640,
    "tprr_proxy": {
     "k": 2,
     "n": 640
    },
    "yprr_proxy": 0.034,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 640,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2316,7 +2836,7 @@
   {
    "name": "George Kittle",
    "pos": "TE",
-   "adp": 91.2,
+   "adp": 89.9,
    "team_2026": "SF",
    "implied_total": 22.5,
    "implied_tds": 2.37,
@@ -2329,9 +2849,10 @@
     "n": 317
    },
    "yprr_proxy": 1.981,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 317,
-    "n": 629
+    "n": 629,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 45,
@@ -2352,15 +2873,17 @@
    "team_line_ybc": 2.811,
    "gp_rate_2yr": 0.8235,
    "exp_missed": 3.0,
+   "forward_implied_total": 27.0,
    "routes_proxy": 408,
    "tprr_proxy": {
     "k": 114,
     "n": 408
    },
    "yprr_proxy": 1.934,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 408,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 86,
@@ -2373,7 +2896,7 @@
   {
    "name": "Bhayshul Tuten",
    "pos": "RB",
-   "adp": 62.6,
+   "adp": 62.2,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
@@ -2386,9 +2909,10 @@
     "n": 100
    },
    "yprr_proxy": 0.79,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 100,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 5,
@@ -2402,27 +2926,34 @@
     "n": 34,
     "basis": "2025 role on JAX"
    },
-   "backfield_share": 0.3671
+   "backfield_share": 0.3671,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 87,
+    "team_carries": 237
+   }
   },
   {
    "name": "Jalen Hurts",
    "pos": "QB",
-   "adp": 60.9,
+   "adp": 60.6,
    "team_2026": "PHI",
    "implied_total": 25.5,
    "implied_tds": 2.69,
    "team_line_ybc": 2.642,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 23.83,
    "routes_proxy": 526,
    "tprr_proxy": {
     "k": 0,
     "n": 526
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 526,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2436,22 +2967,24 @@
   {
    "name": "Jayden Daniels",
    "pos": "QB",
-   "adp": 63.8,
+   "adp": 64.9,
    "team_2026": "WAS",
    "implied_total": 21.0,
    "implied_tds": 2.22,
    "team_line_ybc": 2.512,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
+   "forward_implied_total": 23.25,
    "routes_proxy": 243,
    "tprr_proxy": {
     "k": 0,
     "n": 243
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 243,
-    "n": 568
+    "n": 568,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2465,7 +2998,7 @@
   {
    "name": "TreVeyon Henderson",
    "pos": "RB",
-   "adp": 53.8,
+   "adp": 53.2,
    "team_2026": "NE",
    "implied_total": 20.5,
    "implied_tds": 2.16,
@@ -2478,9 +3011,10 @@
     "n": 273
    },
    "yprr_proxy": 0.81,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 273,
-    "n": 614
+    "n": 614,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 6,
@@ -2494,12 +3028,17 @@
     "n": 29,
     "basis": "2025 role on NE"
    },
-   "backfield_share": 0.506
+   "backfield_share": 0.506,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 210,
+    "team_carries": 415
+   }
   },
   {
    "name": "Jaylen Warren",
    "pos": "RB",
-   "adp": 72.0,
+   "adp": 71.8,
    "team_2026": "PIT",
    "implied_total": 22.25,
    "implied_tds": 2.35,
@@ -2512,9 +3051,10 @@
     "n": 242
    },
    "yprr_proxy": 1.376,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 242,
-    "n": 593
+    "n": 593,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 7,
@@ -2528,12 +3068,17 @@
     "n": 29,
     "basis": "2025 role on PIT"
    },
-   "backfield_share": 0.4806
+   "backfield_share": 0.4806,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 223,
+    "team_carries": 464
+   }
   },
   {
    "name": "Dalton Kincaid",
    "pos": "TE",
-   "adp": 89.4,
+   "adp": 87.7,
    "team_2026": "BUF",
    "implied_total": 23.0,
    "implied_tds": 2.43,
@@ -2546,9 +3091,10 @@
     "n": 206
    },
    "yprr_proxy": 2.772,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 206,
-    "n": 593
+    "n": 593,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 26,
@@ -2562,34 +3108,35 @@
   {
    "name": "Jadarian Price",
    "pos": "RB",
-   "adp": 67.7,
+   "adp": 67.5,
    "team_2026": "SEA",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.477,
    "gp_rate_2yr": null,
-   "exp_missed": null,
-   "backfield_share": 0.0
+   "exp_missed": null
   },
   {
    "name": "Bo Nix",
    "pos": "QB",
-   "adp": 119.9,
+   "adp": 120.7,
    "team_2026": "DEN",
    "implied_total": 19.75,
    "implied_tds": 2.08,
    "team_line_ybc": 2.592,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 21.33,
    "routes_proxy": 676,
    "tprr_proxy": {
     "k": 1,
     "n": 676
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 676,
-    "n": 676
+    "n": 676,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 1,
@@ -2603,22 +3150,24 @@
   {
    "name": "Justin Herbert",
    "pos": "QB",
-   "adp": 82.9,
+   "adp": 82.8,
    "team_2026": "LAC",
    "implied_total": 28.5,
    "implied_tds": 3.01,
    "team_line_ybc": 2.672,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
+   "forward_implied_total": 23.92,
    "routes_proxy": 615,
    "tprr_proxy": {
     "k": 0,
     "n": 615
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 615,
-    "n": 681
+    "n": 681,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2632,7 +3181,7 @@
   {
    "name": "Rhamondre Stevenson",
    "pos": "RB",
-   "adp": 81.8,
+   "adp": 80.6,
    "team_2026": "NE",
    "implied_total": 20.5,
    "implied_tds": 2.16,
@@ -2645,9 +3194,10 @@
     "n": 341
    },
    "yprr_proxy": 1.012,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 341,
-    "n": 614
+    "n": 614,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 8,
@@ -2661,27 +3211,34 @@
     "n": 29,
     "basis": "2025 role on NE"
    },
-   "backfield_share": 0.453
+   "backfield_share": 0.453,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 188,
+    "team_carries": 415
+   }
   },
   {
    "name": "Marvin Harrison",
    "pos": "WR",
-   "adp": 75.5,
+   "adp": 75.3,
    "team_2026": "ARI",
    "implied_total": 18.0,
    "implied_tds": 1.9,
    "team_line_ybc": 2.593,
    "gp_rate_2yr": 0.8529,
    "exp_missed": 2.5,
+   "forward_implied_total": 18.17,
    "routes_proxy": 383,
    "tprr_proxy": {
     "k": 74,
     "n": 383
    },
    "yprr_proxy": 1.587,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 383,
-    "n": 748
+    "n": 748,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 59,
@@ -2694,7 +3251,7 @@
   {
    "name": "Mark Andrews",
    "pos": "TE",
-   "adp": 129.2,
+   "adp": 129.9,
    "team_2026": "BAL",
    "implied_total": 26.0,
    "implied_tds": 2.74,
@@ -2707,9 +3264,10 @@
     "n": 363
    },
    "yprr_proxy": 1.163,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 363,
-    "n": 503
+    "n": 503,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 45,
@@ -2723,7 +3281,7 @@
   {
    "name": "Brenton Strange",
    "pos": "TE",
-   "adp": 151.8,
+   "adp": 152.6,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
@@ -2736,9 +3294,10 @@
     "n": 342
    },
    "yprr_proxy": 1.579,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 342,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 33,
@@ -2752,7 +3311,7 @@
   {
    "name": "Jake Ferguson",
    "pos": "TE",
-   "adp": 98.2,
+   "adp": 98.6,
    "team_2026": "DAL",
    "implied_total": 25.5,
    "implied_tds": 2.69,
@@ -2765,9 +3324,10 @@
     "n": 531
    },
    "yprr_proxy": 1.13,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 531,
-    "n": 684
+    "n": 684,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 58,
@@ -2781,22 +3341,24 @@
   {
    "name": "Patrick Mahomes",
    "pos": "QB",
-   "adp": 106.3,
+   "adp": 107.1,
    "team_2026": "KC",
    "implied_total": 22.75,
    "implied_tds": 2.4,
    "team_line_ybc": 2.756,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 24.95,
    "routes_proxy": 589,
    "tprr_proxy": {
     "k": 1,
     "n": 589
    },
    "yprr_proxy": -0.017,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 589,
-    "n": 689
+    "n": 689,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2810,22 +3372,24 @@
   {
    "name": "DK Metcalf",
    "pos": "WR",
-   "adp": 74.7,
+   "adp": 74.9,
    "team_2026": "PIT",
    "implied_total": 22.25,
    "implied_tds": 2.35,
    "team_line_ybc": 2.285,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 22.12,
    "routes_proxy": 462,
    "tprr_proxy": {
     "k": 99,
     "n": 462
    },
    "yprr_proxy": 1.84,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 462,
-    "n": 593
+    "n": 593,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 74,
@@ -2838,22 +3402,24 @@
   {
    "name": "Matthew Stafford",
    "pos": "QB",
-   "adp": 95.4,
+   "adp": 96.2,
    "team_2026": "LA",
    "implied_total": 26.0,
    "implied_tds": 2.74,
    "team_line_ybc": 2.811,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
+   "forward_implied_total": 27.0,
    "routes_proxy": 624,
    "tprr_proxy": {
     "k": 0,
     "n": 624
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 624,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2867,22 +3433,24 @@
   {
    "name": "Jared Goff",
    "pos": "QB",
-   "adp": 133.8,
+   "adp": 133.3,
    "team_2026": "DET",
    "implied_total": 27.75,
    "implied_tds": 2.93,
    "team_line_ybc": 2.923,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 26.75,
    "routes_proxy": 622,
    "tprr_proxy": {
     "k": 0,
     "n": 622
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 622,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2896,7 +3464,7 @@
   {
    "name": "Isaiah Likely",
    "pos": "TE",
-   "adp": 109.9,
+   "adp": 109.0,
    "team_2026": "NYG",
    "implied_total": 23.0,
    "implied_tds": 2.43,
@@ -2909,9 +3477,10 @@
     "n": 251
    },
    "yprr_proxy": 1.223,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 251,
-    "n": 503
+    "n": 503,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 20,
@@ -2925,22 +3494,24 @@
   {
    "name": "Jaxson Dart",
    "pos": "QB",
-   "adp": 90.6,
+   "adp": 91.8,
    "team_2026": "NYG",
    "implied_total": 23.0,
    "implied_tds": 2.43,
    "team_line_ybc": 2.714,
    "gp_rate_2yr": 0.8235,
    "exp_missed": 3.0,
+   "forward_implied_total": 23.33,
    "routes_proxy": 415,
    "tprr_proxy": {
     "k": 0,
     "n": 415
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 415,
-    "n": 627
+    "n": 627,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -2954,22 +3525,24 @@
   {
    "name": "DJ Moore",
    "pos": "WR",
-   "adp": 57.9,
+   "adp": 57.1,
    "team_2026": "BUF",
    "implied_total": 23.0,
    "implied_tds": 2.43,
    "team_line_ybc": 2.905,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 25.83,
    "routes_proxy": 559,
    "tprr_proxy": {
     "k": 85,
     "n": 559
    },
    "yprr_proxy": 1.193,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 559,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 45,
@@ -2982,7 +3555,7 @@
   {
    "name": "T.J. Hockenson",
    "pos": "TE",
-   "adp": 164.0,
+   "adp": 164.7,
    "team_2026": "MIN",
    "implied_total": 23.5,
    "implied_tds": 2.48,
@@ -2995,9 +3568,10 @@
     "n": 450
    },
    "yprr_proxy": 0.973,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 450,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 30,
@@ -3011,7 +3585,7 @@
   {
    "name": "Rico Dowdle",
    "pos": "RB",
-   "adp": 85.3,
+   "adp": 85.0,
    "team_2026": "PIT",
    "implied_total": 22.25,
    "implied_tds": 2.35,
@@ -3024,9 +3598,10 @@
     "n": 296
    },
    "yprr_proxy": 1.003,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 296,
-    "n": 585
+    "n": 585,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 6,
@@ -3040,27 +3615,34 @@
     "n": 14,
     "basis": "2025 role on CAR"
    },
-   "backfield_share": 0.5194
+   "backfield_share": 0.5194,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 241,
+    "team_carries": 464
+   }
   },
   {
    "name": "Alec Pierce",
    "pos": "WR",
-   "adp": 101.0,
+   "adp": 101.1,
    "team_2026": "IND",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.48,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 22.92,
    "routes_proxy": 475,
    "tprr_proxy": {
     "k": 84,
     "n": 475
    },
    "yprr_proxy": 2.112,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 475,
-    "n": 605
+    "n": 605,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 75,
@@ -3086,9 +3668,10 @@
     "n": 147
    },
    "yprr_proxy": 0.252,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 147,
-    "n": 676
+    "n": 676,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 2,
@@ -3102,12 +3685,17 @@
     "n": 21,
     "basis": "2025 role on DEN"
    },
-   "backfield_share": 0.4113
+   "backfield_share": 0.4113,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 153,
+    "team_carries": 372
+   }
   },
   {
    "name": "Tony Pollard",
    "pos": "RB",
-   "adp": 84.8,
+   "adp": 84.3,
    "team_2026": "TEN",
    "implied_total": 20.75,
    "implied_tds": 2.19,
@@ -3120,9 +3708,10 @@
     "n": 364
    },
    "yprr_proxy": 0.566,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 364,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 6,
@@ -3136,23 +3725,29 @@
     "n": 12,
     "basis": "2025 role on TEN"
    },
-   "backfield_share": 0.5961
+   "backfield_share": 0.5961,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 242,
+    "team_carries": 406
+   }
   },
   {
    "name": "Carnell Tate",
    "pos": "WR",
-   "adp": 66.3,
+   "adp": 66.9,
    "team_2026": "TEN",
    "implied_total": 20.75,
    "implied_tds": 2.19,
    "team_line_ybc": 2.54,
    "gp_rate_2yr": null,
-   "exp_missed": null
+   "exp_missed": null,
+   "forward_implied_total": 20.33
   },
   {
    "name": "Hunter Henry",
    "pos": "TE",
-   "adp": 138.3,
+   "adp": 139.8,
    "team_2026": "NE",
    "implied_total": 20.5,
    "implied_tds": 2.16,
@@ -3165,9 +3760,10 @@
     "n": 517
    },
    "yprr_proxy": 1.485,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 517,
-    "n": 614
+    "n": 614,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 59,
@@ -3181,22 +3777,24 @@
   {
    "name": "Courtland Sutton",
    "pos": "WR",
-   "adp": 79.2,
+   "adp": 80.0,
    "team_2026": "DEN",
    "implied_total": 19.75,
    "implied_tds": 2.08,
    "team_line_ybc": 2.592,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
+   "forward_implied_total": 21.33,
    "routes_proxy": 624,
    "tprr_proxy": {
     "k": 125,
     "n": 624
    },
    "yprr_proxy": 1.63,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 624,
-    "n": 676
+    "n": 676,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 85,
@@ -3209,22 +3807,24 @@
   {
    "name": "Chris Godwin",
    "pos": "WR",
-   "adp": 95.8,
+   "adp": 95.4,
    "team_2026": "TB",
    "implied_total": 23.5,
    "implied_tds": 2.48,
    "team_line_ybc": 2.697,
    "gp_rate_2yr": 0.4706,
    "exp_missed": 9.0,
+   "forward_implied_total": 23.58,
    "routes_proxy": 267,
    "tprr_proxy": {
     "k": 52,
     "n": 267
    },
    "yprr_proxy": 1.348,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 267,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 33,
@@ -3237,22 +3837,24 @@
   {
    "name": "Josh Downs",
    "pos": "WR",
-   "adp": 107.1,
+   "adp": 107.5,
    "team_2026": "IND",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.48,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 22.92,
    "routes_proxy": 341,
    "tprr_proxy": {
     "k": 88,
     "n": 341
    },
    "yprr_proxy": 1.639,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 341,
-    "n": 605
+    "n": 605,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 72,
@@ -3265,19 +3867,18 @@
   {
    "name": "Jonathon Brooks",
    "pos": "RB",
-   "adp": 108.1,
+   "adp": 106.9,
    "team_2026": "CAR",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.49,
    "gp_rate_2yr": 0.0882,
-   "exp_missed": 15.5,
-   "backfield_share": 0.0
+   "exp_missed": 15.5
   },
   {
    "name": "Kyle Monangai",
    "pos": "RB",
-   "adp": 99.4,
+   "adp": 98.1,
    "team_2026": "CHI",
    "implied_total": 25.0,
    "implied_tds": 2.64,
@@ -3290,9 +3891,10 @@
     "n": 264
    },
    "yprr_proxy": 0.621,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 264,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 2,
@@ -3306,27 +3908,34 @@
     "n": 28,
     "basis": "2025 role on CHI"
    },
-   "backfield_share": 0.427
+   "backfield_share": 0.427,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 190,
+    "team_carries": 445
+   }
   },
   {
    "name": "Jordan Addison",
    "pos": "WR",
-   "adp": 103.1,
+   "adp": 104.5,
    "team_2026": "MIN",
    "implied_total": 23.5,
    "implied_tds": 2.48,
    "team_line_ybc": 2.441,
    "gp_rate_2yr": 0.8529,
    "exp_missed": 2.5,
+   "forward_implied_total": 22.9,
    "routes_proxy": 443,
    "tprr_proxy": {
     "k": 79,
     "n": 443
    },
    "yprr_proxy": 1.377,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 443,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 60,
@@ -3339,22 +3948,24 @@
   {
    "name": "Jordan Love",
    "pos": "QB",
-   "adp": 148.8,
+   "adp": 149.5,
    "team_2026": "GB",
    "implied_total": 22.0,
    "implied_tds": 2.32,
    "team_line_ybc": 2.325,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 25.17,
    "routes_proxy": 485,
    "tprr_proxy": {
     "k": 0,
     "n": 485
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 485,
-    "n": 554
+    "n": 554,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -3368,7 +3979,7 @@
   {
    "name": "Jordan Mason",
    "pos": "RB",
-   "adp": 117.9,
+   "adp": 116.9,
    "team_2026": "MIN",
    "implied_total": 23.5,
    "implied_tds": 2.48,
@@ -3381,9 +3992,10 @@
     "n": 221
    },
    "yprr_proxy": 0.231,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 221,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 2,
@@ -3397,27 +4009,34 @@
     "n": 15,
     "basis": "2025 role on MIN"
    },
-   "backfield_share": 0.4923
+   "backfield_share": 0.4923,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 159,
+    "team_carries": 323
+   }
   },
   {
    "name": "Michael Pittman",
    "pos": "WR",
-   "adp": 102.5,
+   "adp": 102.3,
    "team_2026": "PIT",
    "implied_total": 22.25,
    "implied_tds": 2.35,
    "team_line_ybc": 2.285,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
+   "forward_implied_total": 22.12,
    "routes_proxy": 539,
    "tprr_proxy": {
     "k": 114,
     "n": 539
    },
    "yprr_proxy": 1.471,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 539,
-    "n": 605
+    "n": 605,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 88,
@@ -3430,22 +4049,24 @@
   {
    "name": "Khalil Shakir",
    "pos": "WR",
-   "adp": 140.8,
+   "adp": 141.9,
    "team_2026": "BUF",
    "implied_total": 23.0,
    "implied_tds": 2.43,
    "team_line_ybc": 2.905,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 25.83,
    "routes_proxy": 385,
    "tprr_proxy": {
     "k": 97,
     "n": 385
    },
    "yprr_proxy": 1.782,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 385,
-    "n": 593
+    "n": 593,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 45,
@@ -3458,22 +4079,24 @@
   {
    "name": "Wan'Dale Robinson",
    "pos": "WR",
-   "adp": 116.2,
+   "adp": 116.7,
    "team_2026": "TEN",
    "implied_total": 20.75,
    "implied_tds": 2.19,
    "team_line_ybc": 2.54,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
+   "forward_implied_total": 20.33,
    "routes_proxy": 543,
    "tprr_proxy": {
     "k": 141,
     "n": 543
    },
    "yprr_proxy": 1.867,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 543,
-    "n": 627
+    "n": 627,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 89,
@@ -3486,22 +4109,24 @@
   {
    "name": "Matthew Golden",
    "pos": "WR",
-   "adp": 127.9,
+   "adp": 127.3,
    "team_2026": "GB",
    "implied_total": 22.0,
    "implied_tds": 2.32,
    "team_line_ybc": 2.325,
    "gp_rate_2yr": 0.8235,
    "exp_missed": 3.0,
+   "forward_implied_total": 25.17,
    "routes_proxy": 268,
    "tprr_proxy": {
     "k": 44,
     "n": 268
    },
    "yprr_proxy": 1.347,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 268,
-    "n": 554
+    "n": 554,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 31,
@@ -3527,9 +4152,10 @@
     "n": 351
    },
    "yprr_proxy": 1.385,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 351,
-    "n": 593
+    "n": 593,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 22,
@@ -3543,27 +4169,34 @@
     "n": 29,
     "basis": "2025 role on PIT"
    },
-   "backfield_share": 0.3166
+   "backfield_share": 0.3166,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 120,
+    "team_carries": 379
+   }
   },
   {
    "name": "Jakobi Meyers",
    "pos": "WR",
-   "adp": 110.1,
+   "adp": 113.4,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.219,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 22.75,
    "routes_proxy": 527,
    "tprr_proxy": {
     "k": 110,
     "n": 527
    },
    "yprr_proxy": 1.584,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 527,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 87,
@@ -3576,33 +4209,36 @@
   {
    "name": "Makai Lemon",
    "pos": "WR",
-   "adp": 87.8,
+   "adp": 86.5,
    "team_2026": "PHI",
    "implied_total": 25.5,
    "implied_tds": 2.69,
    "team_line_ybc": 2.642,
    "gp_rate_2yr": null,
-   "exp_missed": null
+   "exp_missed": null,
+   "forward_implied_total": 23.83
   },
   {
    "name": "Michael Wilson",
    "pos": "WR",
-   "adp": 83.8,
+   "adp": 83.6,
    "team_2026": "ARI",
    "implied_total": 18.0,
    "implied_tds": 1.9,
    "team_line_ybc": 2.593,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
+   "forward_implied_total": 18.17,
    "routes_proxy": 633,
    "tprr_proxy": {
     "k": 127,
     "n": 633
    },
    "yprr_proxy": 1.589,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 633,
-    "n": 748
+    "n": 748,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 101,
@@ -3615,22 +4251,24 @@
   {
    "name": "Jalen Coker",
    "pos": "WR",
-   "adp": 144.0,
+   "adp": 145.7,
    "team_2026": "CAR",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.49,
    "gp_rate_2yr": 0.6471,
    "exp_missed": 6.0,
+   "forward_implied_total": 20.95,
    "routes_proxy": 289,
    "tprr_proxy": {
     "k": 45,
     "n": 289
    },
    "yprr_proxy": 1.363,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 289,
-    "n": 585
+    "n": 585,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 32,
@@ -3641,24 +4279,57 @@
    "rush_ypg": 0.0
   },
   {
+   "name": "Kyler Murray",
+   "pos": "QB",
+   "adp": 159.0,
+   "team_2026": "MIN",
+   "implied_total": 23.5,
+   "implied_tds": 2.48,
+   "team_line_ybc": 2.441,
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "forward_implied_total": 22.9,
+   "routes_proxy": 193,
+   "tprr_proxy": {
+    "k": 0,
+    "n": 193
+   },
+   "yprr_proxy": 0.0,
+   "on_field_dropback_share": {
+    "k": 193,
+    "n": 748,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
+   },
+   "first_read": {
+    "k": 0,
+    "n": 357
+   },
+   "targets_pg": 0.0,
+   "carries_pg": 5.8,
+   "rush_ypg": 34.6,
+   "epa_per_att": 0.0355
+  },
+  {
    "name": "Baker Mayfield",
    "pos": "QB",
-   "adp": 141.3,
+   "adp": 143.7,
    "team_2026": "TB",
    "implied_total": 23.5,
    "implied_tds": 2.48,
    "team_line_ybc": 2.697,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
+   "forward_implied_total": 23.58,
    "routes_proxy": 626,
    "tprr_proxy": {
     "k": 0,
     "n": 626
    },
    "yprr_proxy": 0.0,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 626,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -3672,7 +4343,7 @@
   {
    "name": "Oronde Gadsden",
    "pos": "TE",
-   "adp": 127.8,
+   "adp": 128.1,
    "team_2026": "LAC",
    "implied_total": 28.5,
    "implied_tds": 3.01,
@@ -3685,9 +4356,10 @@
     "n": 417
    },
    "yprr_proxy": 1.592,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 417,
-    "n": 681
+    "n": 681,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 41,
@@ -3701,7 +4373,7 @@
   {
    "name": "Chuba Hubbard",
    "pos": "RB",
-   "adp": 77.8,
+   "adp": 77.6,
    "team_2026": "CAR",
    "implied_total": 22.5,
    "implied_tds": 2.37,
@@ -3714,9 +4386,10 @@
     "n": 266
    },
    "yprr_proxy": 0.838,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 266,
-    "n": 585
+    "n": 585,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 12,
@@ -3730,27 +4403,34 @@
     "n": 14,
     "basis": "2025 role on CAR"
    },
-   "backfield_share": 0.875
+   "backfield_share": 0.875,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 147,
+    "team_carries": 168
+   }
   },
   {
    "name": "Quentin Johnston",
    "pos": "WR",
-   "adp": 113.9,
+   "adp": 114.8,
    "team_2026": "LAC",
    "implied_total": 28.5,
    "implied_tds": 3.01,
    "team_line_ybc": 2.672,
    "gp_rate_2yr": 0.8235,
    "exp_missed": 3.0,
+   "forward_implied_total": 23.92,
    "routes_proxy": 487,
    "tprr_proxy": {
     "k": 84,
     "n": 487
    },
    "yprr_proxy": 1.509,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 487,
-    "n": 681
+    "n": 681,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 64,
@@ -3763,22 +4443,24 @@
   {
    "name": "Xavier Worthy",
    "pos": "WR",
-   "adp": 139.2,
+   "adp": 140.4,
    "team_2026": "KC",
    "implied_total": 22.75,
    "implied_tds": 2.4,
    "team_line_ybc": 2.756,
    "gp_rate_2yr": 0.8824,
    "exp_missed": 2.0,
+   "forward_implied_total": 24.95,
    "routes_proxy": 418,
    "tprr_proxy": {
     "k": 73,
     "n": 418
    },
    "yprr_proxy": 1.273,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 418,
-    "n": 689
+    "n": 689,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 50,
@@ -3791,7 +4473,7 @@
   {
    "name": "RJ Harvey",
    "pos": "RB",
-   "adp": 79.9,
+   "adp": 79.5,
    "team_2026": "DEN",
    "implied_total": 19.75,
    "implied_tds": 2.08,
@@ -3804,9 +4486,10 @@
     "n": 290
    },
    "yprr_proxy": 1.228,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 290,
-    "n": 676
+    "n": 676,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 15,
@@ -3820,27 +4503,34 @@
     "n": 21,
     "basis": "2025 role on DEN"
    },
-   "backfield_share": 0.4435
+   "backfield_share": 0.4435,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 165,
+    "team_carries": 372
+   }
   },
   {
    "name": "Romeo Doubs",
    "pos": "WR",
-   "adp": 132.8,
+   "adp": 132.4,
    "team_2026": "NE",
    "implied_total": 20.5,
    "implied_tds": 2.16,
    "team_line_ybc": 2.561,
    "gp_rate_2yr": 0.8529,
    "exp_missed": 2.5,
+   "forward_implied_total": 23.71,
    "routes_proxy": 412,
    "tprr_proxy": {
     "k": 86,
     "n": 412
    },
    "yprr_proxy": 1.757,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 412,
-    "n": 554
+    "n": 554,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 62,
@@ -3853,7 +4543,7 @@
   {
    "name": "Dallas Goedert",
    "pos": "TE",
-   "adp": 123.1,
+   "adp": 123.0,
    "team_2026": "PHI",
    "implied_total": 25.5,
    "implied_tds": 2.69,
@@ -3866,9 +4556,10 @@
     "n": 446
    },
    "yprr_proxy": 1.325,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 446,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 50,
@@ -3882,22 +4573,24 @@
   {
    "name": "Stefon Diggs",
    "pos": "WR",
-   "adp": 111.3,
+   "adp": 110.9,
    "team_2026": "WAS",
    "implied_total": 21.0,
    "implied_tds": 2.22,
    "team_line_ybc": 2.512,
    "gp_rate_2yr": 0.7353,
    "exp_missed": 4.5,
+   "forward_implied_total": 23.25,
    "routes_proxy": 413,
    "tprr_proxy": {
     "k": 102,
     "n": 413
    },
    "yprr_proxy": 2.453,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 413,
-    "n": 614
+    "n": 614,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 73,
@@ -3910,33 +4603,36 @@
   {
    "name": "KC Concepcion",
    "pos": "WR",
-   "adp": 122.9,
+   "adp": 122.4,
    "team_2026": "CLE",
    "implied_total": 16.5,
    "implied_tds": 1.74,
    "team_line_ybc": 1.808,
    "gp_rate_2yr": null,
-   "exp_missed": null
+   "exp_missed": null,
+   "forward_implied_total": 18.5
   },
   {
    "name": "Deebo Samuel",
    "pos": "WR",
-   "adp": 137.2,
+   "adp": 138.0,
    "team_2026": "SF",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.349,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
+   "forward_implied_total": 25.83,
    "routes_proxy": 436,
    "tprr_proxy": {
     "k": 100,
     "n": 436
    },
    "yprr_proxy": 1.667,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 436,
-    "n": 568
+    "n": 568,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 44,
@@ -3947,38 +4643,9 @@
    "rush_ypg": 4.69
   },
   {
-   "name": "Kyler Murray",
-   "pos": "QB",
-   "adp": 159.5,
-   "team_2026": "MIN",
-   "implied_total": 23.5,
-   "implied_tds": 2.48,
-   "team_line_ybc": 2.441,
-   "gp_rate_2yr": 0.6471,
-   "exp_missed": 6.0,
-   "routes_proxy": 193,
-   "tprr_proxy": {
-    "k": 0,
-    "n": 193
-   },
-   "yprr_proxy": 0.0,
-   "route_part": {
-    "k": 193,
-    "n": 748
-   },
-   "first_read": {
-    "k": 0,
-    "n": 357
-   },
-   "targets_pg": 0.0,
-   "carries_pg": 5.8,
-   "rush_ypg": 34.6,
-   "epa_per_att": 0.0355
-  },
-  {
    "name": "Aaron Jones",
    "pos": "RB",
-   "adp": 124.9,
+   "adp": 124.2,
    "team_2026": "MIN",
    "implied_total": 23.5,
    "implied_tds": 2.48,
@@ -3991,9 +4658,10 @@
     "n": 212
    },
    "yprr_proxy": 0.939,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 212,
-    "n": 575
+    "n": 575,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 8,
@@ -4007,12 +4675,17 @@
     "n": 15,
     "basis": "2025 role on MIN"
    },
-   "backfield_share": 0.4087
+   "backfield_share": 0.4087,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 132,
+    "team_carries": 323
+   }
   },
   {
    "name": "Blake Corum",
    "pos": "RB",
-   "adp": 103.8,
+   "adp": 103.6,
    "team_2026": "LA",
    "implied_total": 26.0,
    "implied_tds": 2.74,
@@ -4025,9 +4698,10 @@
     "n": 167
    },
    "yprr_proxy": 0.216,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 167,
-    "n": 624
+    "n": 624,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -4041,12 +4715,17 @@
     "n": 34,
     "basis": "2025 role on LA"
    },
-   "backfield_share": 0.3608
+   "backfield_share": 0.3608,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 171,
+    "team_carries": 474
+   }
   },
   {
    "name": "Chris Rodriguez",
    "pos": "RB",
-   "adp": 142.3,
+   "adp": 142.1,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
@@ -4059,9 +4738,10 @@
     "n": 109
    },
    "yprr_proxy": 0.275,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 109,
-    "n": 568
+    "n": 568,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 0,
@@ -4075,12 +4755,17 @@
     "n": 37,
     "basis": "2025 role on WAS"
    },
-   "backfield_share": 0.4726
+   "backfield_share": 0.4726,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 112,
+    "team_carries": 237
+   }
   },
   {
    "name": "Rachaad White",
    "pos": "RB",
-   "adp": 131.7,
+   "adp": 131.3,
    "team_2026": "WAS",
    "implied_total": 21.0,
    "implied_tds": 2.22,
@@ -4093,9 +4778,10 @@
     "n": 378
    },
    "yprr_proxy": 0.577,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 378,
-    "n": 644
+    "n": 644,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 2,
@@ -4109,12 +4795,17 @@
     "n": 22,
     "basis": "2025 role on TB"
    },
-   "backfield_share": 0.3761
+   "backfield_share": 0.3761,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 132,
+    "team_carries": 351
+   }
   },
   {
    "name": "Jacory Croskey-Merritt",
    "pos": "RB",
-   "adp": 115.7,
+   "adp": 115.1,
    "team_2026": "WAS",
    "implied_total": 21.0,
    "implied_tds": 2.22,
@@ -4127,9 +4818,10 @@
     "n": 173
    },
    "yprr_proxy": 0.393,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 173,
-    "n": 568
+    "n": 568,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 2,
@@ -4143,27 +4835,34 @@
     "n": 37,
     "basis": "2025 role on WAS"
    },
-   "backfield_share": 0.4986
+   "backfield_share": 0.4986,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 175,
+    "team_carries": 351
+   }
   },
   {
    "name": "Rashid Shaheed",
    "pos": "WR",
-   "adp": 147.6,
+   "adp": 148.4,
    "team_2026": "SEA",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.477,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
+   "forward_implied_total": 24.83,
    "routes_proxy": 480,
    "tprr_proxy": {
     "k": 92,
     "n": 480
    },
    "yprr_proxy": 1.431,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 480,
-    "n": 520
+    "n": 520,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 63,
@@ -4176,18 +4875,19 @@
   {
    "name": "Denzel Boston",
    "pos": "WR",
-   "adp": 165.5,
+   "adp": 165.0,
    "team_2026": "CLE",
    "implied_total": 16.5,
    "implied_tds": 1.74,
    "team_line_ybc": 1.808,
    "gp_rate_2yr": null,
-   "exp_missed": null
+   "exp_missed": null,
+   "forward_implied_total": 18.5
   },
   {
    "name": "Tyjae Spears",
    "pos": "RB",
-   "adp": 166.0,
+   "adp": 166.2,
    "team_2026": "TEN",
    "implied_total": 20.75,
    "implied_tds": 2.19,
@@ -4200,9 +4900,10 @@
     "n": 266
    },
    "yprr_proxy": 0.992,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 266,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 5,
@@ -4216,12 +4917,17 @@
     "n": 12,
     "basis": "2025 role on TEN"
    },
-   "backfield_share": 0.1773
+   "backfield_share": 0.1773,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 72,
+    "team_carries": 406
+   }
   },
   {
    "name": "Tyrone Tracy",
    "pos": "RB",
-   "adp": 163.7,
+   "adp": 163.5,
    "team_2026": "NYG",
    "implied_total": 23.0,
    "implied_tds": 2.43,
@@ -4234,9 +4940,10 @@
     "n": 322
    },
    "yprr_proxy": 0.894,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 322,
-    "n": 627
+    "n": 627,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 9,
@@ -4250,23 +4957,29 @@
     "n": 31,
     "basis": "2025 role on NYG"
    },
-   "backfield_share": 0.4282
+   "backfield_share": 0.4282,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 176,
+    "team_carries": 411
+   }
   },
   {
    "name": "De'Zhaun Stribling",
    "pos": "WR",
-   "adp": 156.2,
+   "adp": 137.0,
    "team_2026": "SF",
    "implied_total": 22.5,
    "implied_tds": 2.37,
    "team_line_ybc": 2.349,
    "gp_rate_2yr": null,
-   "exp_missed": null
+   "exp_missed": null,
+   "forward_implied_total": 25.83
   },
   {
    "name": "Kenyon Sadiq",
    "pos": "TE",
-   "adp": 151.0,
+   "adp": 152.3,
    "team_2026": "NYJ",
    "implied_total": 17.75,
    "implied_tds": 1.87,
@@ -4277,29 +4990,31 @@
   {
    "name": "Jordyn Tyson",
    "pos": "WR",
-   "adp": 86.1,
+   "adp": 89.0,
    "team_2026": "NO",
    "implied_total": 20.75,
    "implied_tds": 2.19,
    "team_line_ybc": 2.057,
    "gp_rate_2yr": null,
-   "exp_missed": null
+   "exp_missed": null,
+   "forward_implied_total": 21.62
   },
   {
    "name": "Ja'Kobi Lane",
    "pos": "WR",
-   "adp": 157.2,
+   "adp": 157.5,
    "team_2026": "BAL",
    "implied_total": 26.0,
    "implied_tds": 2.74,
    "team_line_ybc": 3.219,
    "gp_rate_2yr": null,
-   "exp_missed": null
+   "exp_missed": null,
+   "forward_implied_total": 26.67
   },
   {
    "name": "Woody Marks",
    "pos": "RB",
-   "adp": 159.1,
+   "adp": 160.5,
    "team_2026": "HOU",
    "implied_total": 21.5,
    "implied_tds": 2.27,
@@ -4312,9 +5027,10 @@
     "n": 321
    },
    "yprr_proxy": 0.648,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 321,
-    "n": 648
+    "n": 648,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 8,
@@ -4328,27 +5044,34 @@
     "n": 25,
     "basis": "2025 role on HOU"
    },
-   "backfield_share": 0.5326
+   "backfield_share": 0.5326,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 229,
+    "team_carries": 430
+   }
   },
   {
    "name": "Travis Hunter",
    "pos": "WR",
-   "adp": 167.4,
+   "adp": 167.2,
    "team_2026": "JAX",
    "implied_total": 24.0,
    "implied_tds": 2.53,
    "team_line_ybc": 2.219,
    "gp_rate_2yr": null,
    "exp_missed": null,
+   "forward_implied_total": 22.75,
    "routes_proxy": 223,
    "tprr_proxy": {
     "k": 45,
     "n": 223
    },
    "yprr_proxy": 1.336,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 223,
-    "n": 646
+    "n": 646,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 24,
@@ -4359,43 +5082,9 @@
    "rush_ypg": 0.0
   },
   {
-   "name": "Brian Robinson",
-   "pos": "RB",
-   "adp": 154.1,
-   "team_2026": "ATL",
-   "implied_total": 19.25,
-   "implied_tds": 2.03,
-   "team_line_ybc": 2.522,
-   "gp_rate_2yr": 0.9118,
-   "exp_missed": 1.5,
-   "routes_proxy": 71,
-   "tprr_proxy": {
-    "k": 12,
-    "n": 71
-   },
-   "yprr_proxy": 0.352,
-   "route_part": {
-    "k": 71,
-    "n": 629
-   },
-   "first_read": {
-    "k": 1,
-    "n": 347
-   },
-   "targets_pg": 0.68,
-   "carries_pg": 5.0,
-   "rush_ypg": 21.26,
-   "inside5_share": {
-    "k": 2,
-    "n": 26,
-    "basis": "2025 role on SF"
-   },
-   "backfield_share": 0.2487
-  },
-  {
    "name": "Tyler Allgeier",
    "pos": "RB",
-   "adp": 145.6,
+   "adp": 146.7,
    "team_2026": "ARI",
    "implied_total": 18.0,
    "implied_tds": 1.9,
@@ -4408,9 +5097,10 @@
     "n": 137
    },
    "yprr_proxy": 0.701,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 137,
-    "n": 586
+    "n": 586,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 3,
@@ -4424,12 +5114,57 @@
     "n": 24,
     "basis": "2025 role on ATL"
    },
-   "backfield_share": 0.5
+   "backfield_share": 0.5,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 143,
+    "team_carries": 286
+   }
+  },
+  {
+   "name": "Brian Robinson",
+   "pos": "RB",
+   "adp": 155.4,
+   "team_2026": "ATL",
+   "implied_total": 19.25,
+   "implied_tds": 2.03,
+   "team_line_ybc": 2.522,
+   "gp_rate_2yr": 0.9118,
+   "exp_missed": 1.5,
+   "routes_proxy": 71,
+   "tprr_proxy": {
+    "k": 12,
+    "n": 71
+   },
+   "yprr_proxy": 0.352,
+   "on_field_dropback_share": {
+    "k": 71,
+    "n": 629,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
+   },
+   "first_read": {
+    "k": 1,
+    "n": 347
+   },
+   "targets_pg": 0.68,
+   "carries_pg": 5.0,
+   "rush_ypg": 21.26,
+   "inside5_share": {
+    "k": 2,
+    "n": 26,
+    "basis": "2025 role on SF"
+   },
+   "backfield_share": 0.2487,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 95,
+    "team_carries": 382
+   }
   },
   {
    "name": "Zach Charbonnet",
    "pos": "RB",
-   "adp": 146.0,
+   "adp": 147.1,
    "team_2026": "SEA",
    "implied_total": 24.0,
    "implied_tds": 2.53,
@@ -4442,9 +5177,10 @@
     "n": 256
    },
    "yprr_proxy": 0.562,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 256,
-    "n": 520
+    "n": 520,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 2,
@@ -4458,24 +5194,17 @@
     "n": 30,
     "basis": "2025 role on SEA"
    },
-   "backfield_share": 0.5526
-  },
-  {
-   "name": "Jonah Coleman",
-   "pos": "RB",
-   "adp": 167.3,
-   "team_2026": "DEN",
-   "implied_total": 19.75,
-   "implied_tds": 2.08,
-   "team_line_ybc": 2.592,
-   "gp_rate_2yr": null,
-   "exp_missed": null,
-   "backfield_share": 0.0
+   "backfield_share": 0.5526,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 189,
+    "team_carries": 342
+   }
   },
   {
    "name": "Alvin Kamara",
    "pos": "RB",
-   "adp": 162.5,
+   "adp": 161.3,
    "team_2026": "NO",
    "implied_total": 20.75,
    "implied_tds": 2.19,
@@ -4488,9 +5217,10 @@
     "n": 280
    },
    "yprr_proxy": 0.664,
-   "route_part": {
+   "on_field_dropback_share": {
     "k": 280,
-    "n": 671
+    "n": 671,
+    "basis": "2025 regular-season team dropbacks with the player listed on offense; pass-block snaps are included"
    },
    "first_read": {
     "k": 8,
@@ -4504,7 +5234,12 @@
     "n": 17,
     "basis": "2025 role on NO"
    },
-   "backfield_share": 0.2377
+   "backfield_share": 0.2377,
+   "backfield_share_sample": {
+    "season": 2025,
+    "player_carries": 131,
+    "team_carries": 551
+   }
   }
  ]
 }

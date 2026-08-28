@@ -32,13 +32,17 @@ import os
 from collections import defaultdict
 
 from analyze_recency import HISTORY
-from engine_lineage import json_content_sha256, require as require_engine_digest
+from engine_lineage import (file_content_sha256, json_content_sha256,
+                            require as require_engine_digest)
 from player_names import PlayerIdentityResolver
+from team_codes import canonical_team
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 IN = os.path.join(D, "bullish_inputs_2026.json")
 OUT = os.path.join(D, "bullish_2026.json")
+FORWARD_SCHEDULE_REL = "docs/ffopportunity/schedule_2026.csv"
+FORWARD_SCHEDULE = os.path.join(ROOT, FORWARD_SCHEDULE_REL)
 
 BULLISH_P = 0.60
 WATCH_P = 0.35
@@ -105,6 +109,7 @@ def main():
         )
     usage_art = json.load(open(os.path.join(D, "usage_2025.json")))
     usage = usage_art["players"]
+    usage_by_gsis = {u["gsis_id"]: u for u in usage}
     goalline_art = json.load(open(os.path.join(D, "goalline_2025.json")))
     ceiling_art = json.load(open(os.path.join(D, "ceiling_2026.json")))
     depth_art = json.load(open(os.path.join(D, "depth_charts.json")))
@@ -116,6 +121,7 @@ def main():
         "goalline_2025.json": json_content_sha256(goalline_art),
         "depth_charts.json": json_content_sha256(depth_art),
         "crosswalk.json": json_content_sha256(xwalk),
+        FORWARD_SCHEDULE_REL: file_content_sha256(FORWARD_SCHEDULE),
     }
     declared_inputs = inp.get("provenance", {}).get("input_content_sha256", {})
     for name, digest in current_inputs.items():
@@ -150,13 +156,20 @@ def main():
     av_vals = sorted(adj_vac.values())
     av_p75 = av_vals[int(round(0.75 * (len(av_vals) - 1)))] if av_vals else 0
 
-    implied = inp["teams"]["implied_total"]
-    top5_implied = set(sorted(implied, key=lambda t: -implied[t])[:5])
+    forward_implied = inp["teams"]["forward_implied_total"]
+    top5_forward_implied = set(sorted(
+        forward_implied, key=lambda t: (-forward_implied[t], t))[:5])
+    week1_implied = inp["teams"]["implied_total"]
+    # This reproduces the pre-forward consumer exactly for a permanent,
+    # same-build activation ledger; it does not feed the live tags.
+    top5_week1_implied = set(sorted(
+        week1_implied, key=lambda t: -week1_implied[t])[:5])
 
     # expected-TD equity distribution (RBs with both inputs)
     eq_vals = []
     for e in inp["players"]:
-        if e["pos"] == "RB" and e.get("implied_tds") and e.get("inside5_share"):
+        if (e["pos"] == "RB" and e.get("implied_tds") is not None and
+                e.get("inside5_share")):
             s = e["inside5_share"]
             eq_vals.append(e["implied_tds"] * s["k"] / s["n"])
     eq_vals.sort()
@@ -166,9 +179,7 @@ def main():
     gp_vals = sorted(e["gp_rate_2yr"] for e in inp["players"]
                      if e.get("gp_rate_2yr") is not None)
     gp_p50 = gp_vals[len(gp_vals) // 2] if gp_vals else 0.85
-    bf_vals = sorted(e["backfield_share"] for e in inp["players"]
-                     if e.get("backfield_share") is not None)
-    bf_p50 = bf_vals[len(bf_vals) // 2] if bf_vals else 0.5
+    bf_p50 = thr["rb_backfield_share"]["p50"]
 
     prospect = xwalk["prospect"]
     gsis_of = xwalk["matched"]
@@ -178,79 +189,16 @@ def main():
     run_at = datetime.datetime.now(datetime.timezone.utc)
     computed_at = run_at.isoformat(timespec="seconds")
     tags = []
-    for e in inp["players"]:
-        pos, name = e["pos"], e["name"]
-        identity = engine_identity.resolve(name, position=pos).record
-        sleeper_id = str(identity.get("sleeper_id") or "") if identity else ""
-        gsis_id = gsis_of.get(sleeper_id)
-        crit = {}
-        if pos == "RB":
-            if e.get("targets_pg") is not None:
-                crit["receiving_volume"] = p_soft(
-                    e["targets_pg"], thr["rb_targets_pg"]["p75"], band("rb_targets_pg"))
-            if e.get("implied_tds") and e.get("inside5_share"):
-                s = e["inside5_share"]
-                crit["expected_td_equity"] = p_soft(
-                    e["implied_tds"] * s["k"] / s["n"], eq_p75, eq_band)
-            if e.get("team_line_ybc") is not None:
-                crit["line_quality"] = p_soft(
-                    e["team_line_ybc"], thr["team_line_ybc"]["p50"], band("team_line_ybc"))
-            if e.get("gp_rate_2yr") is not None:
-                crit["availability"] = p_soft(e["gp_rate_2yr"], gp_p50, 0.06)
-            if e.get("backfield_share") is not None:
-                crit["backfield_command"] = p_soft(e["backfield_share"], bf_p50, 0.1)
-            need, total = 4, 5
-        elif pos == "WR":
-            if e.get("tprr_proxy"):
-                crit["target_earning"] = p_prop(
-                    e["tprr_proxy"]["k"], e["tprr_proxy"]["n"], thr["wr_tprr"]["p80"])
-            if e.get("yprr_proxy") is not None and e.get("routes_proxy", 0) >= 150:
-                crit["yprr"] = p_soft(e["yprr_proxy"], thr["wr_yprr"]["p80"],
-                                      band("wr_yprr"))
-            if e.get("first_read"):
-                crit["first_read"] = p_prop(
-                    e["first_read"]["k"], e["first_read"]["n"],
-                    thr["wr_first_read"]["p75"])
-            t26 = e.get("team_2026")
-            vac_ok = adj_vac.get(t26, 0) >= av_p75
-            primary_top5 = t26 in top5_implied and depth_rank.get(gsis_id) == 1
-            crit["opportunity"] = 0.9 if (vac_ok or primary_top5) else 0.2
-            if e.get("route_part"):
-                crit["route_participation"] = p_prop(
-                    e["route_part"]["k"], e["route_part"]["n"],
-                    thr["te_route_part"]["p50"])
-            need, total = 4, 5
-        elif pos == "QB":
-            if e.get("rush_ypg") is not None:
-                crit["rushing"] = p_soft(e["rush_ypg"], thr["qb_rush_ypg"]["p75"],
-                                         band("qb_rush_ypg"))
-            if e.get("implied_total") is not None:
-                crit["environment"] = p_soft(e["implied_total"],
-                                             thr["implied_total"]["p75"],
-                                             band("implied_total"))
-            if e.get("epa_per_att") is not None:
-                crit["efficiency"] = p_soft(e["epa_per_att"], 0.10, 0.05)
-            need, total = 2, 3
-        else:  # TE
-            if e.get("route_part"):
-                crit["route_participation"] = p_prop(
-                    e["route_part"]["k"], e["route_part"]["n"],
-                    thr["te_route_part"]["p75"])
-            t26 = e.get("team_2026")
-            mates = [x for x in inp["players"] if x.get("team_2026") == t26
-                     and x.get("yms_2025") is not None]
-            mates.sort(key=lambda x: -x["yms_2025"])
-            my_rank = next((i for i, x in enumerate(mates, 1) if x is e),
-                           None)
-            if e.get("yms_2025") is not None and my_rank:
-                crit["market_share"] = 0.9 if my_rank <= 2 else 0.2
-            need, total = 2, 2
+    legacy_non_te_tags = []
+    te_shadow_tags = []
+    te_market_probability_counts = defaultdict(int)
+    te_grouping_mismatches = []
 
+    def classify(crit, need, total, pos, sleeper_id):
         ps = [p for p in crit.values() if p is not None]
         missing = total - len(ps)
-        # a criterion with no input cannot silently count as met
+        # A criterion with no input cannot silently count as met.
         p_gate = p_at_least(ps, need) if len(ps) >= need else 0.0
-
         status = None
         reasons = []
         if p_gate >= BULLISH_P:
@@ -259,12 +207,11 @@ def main():
             status = "WATCH"
             reasons.append("near-miss: gate probability in the watch band")
         if status is None:
-            continue
+            return None, p_gate, reasons
         if missing:
             reasons.append(f"{missing} criterion input(s) unavailable - counted "
                            f"as not met, never guessed")
 
-        # event taxonomy on CURRENT injury status (critique S5 severity table)
         inj = (injury_by_sleeper.get(sleeper_id) or "").lower()
         if inj in ("ir", "out", "pup", "nfi", "sus"):
             status = "SUSPENDED"
@@ -280,25 +227,230 @@ def main():
                                "re-evaluate at final report")
             else:
                 reasons.append("questionable - flagged, no demotion")
+        return status, p_gate, reasons
+
+    def tag_record(e, sleeper_id, status, p_gate, need, total, crit,
+                   reasons, cap_tb):
+        return {
+            "name": e["name"], "pos": e["pos"],
+            "sleeper_id": sleeper_id or None, "adp": e["adp"],
+            "status": status, "score": round(p_gate * 100, 1),
+            "gate": f"P(>= {need} of {total})",
+            "criteria": dict(crit), "reasons": list(reasons),
+            "capital_tiebreak": cap_tb,
+            "source": "bullish_inputs_2026.json",
+            "computed_at": computed_at, "ttl_hours": 72,
+        }
+
+    for e in inp["players"]:
+        pos, name = e["pos"], e["name"]
+        identity = engine_identity.resolve(name, position=pos).record
+        sleeper_id = str(identity.get("sleeper_id") or "") if identity else ""
+        gsis_id = gsis_of.get(sleeper_id)
+        crit = {}
+        legacy_crit = None
+        if pos == "RB":
+            if e.get("targets_pg") is not None:
+                crit["receiving_volume"] = p_soft(
+                    e["targets_pg"], thr["rb_targets_pg"]["p75"], band("rb_targets_pg"))
+            if e.get("implied_tds") is not None and e.get("inside5_share"):
+                s = e["inside5_share"]
+                crit["expected_td_equity"] = p_soft(
+                    e["implied_tds"] * s["k"] / s["n"], eq_p75, eq_band)
+            if e.get("team_line_ybc") is not None:
+                crit["line_quality"] = p_soft(
+                    e["team_line_ybc"], thr["team_line_ybc"]["p50"], band("team_line_ybc"))
+            if e.get("gp_rate_2yr") is not None:
+                crit["availability"] = p_soft(e["gp_rate_2yr"], gp_p50, 0.06)
+            if e.get("backfield_share") is not None:
+                crit["backfield_command"] = p_soft(e["backfield_share"], bf_p50, 0.1)
+            need, total = 4, 5
+            legacy_crit = dict(crit)
+        elif pos == "WR":
+            if e.get("tprr_proxy"):
+                crit["target_earning"] = p_prop(
+                    e["tprr_proxy"]["k"], e["tprr_proxy"]["n"], thr["wr_tprr"]["p80"])
+            if e.get("yprr_proxy") is not None and e.get("routes_proxy", 0) >= 150:
+                crit["yprr"] = p_soft(e["yprr_proxy"], thr["wr_yprr"]["p80"],
+                                      band("wr_yprr"))
+            if e.get("first_read"):
+                crit["first_read"] = p_prop(
+                    e["first_read"]["k"], e["first_read"]["n"],
+                    thr["wr_first_read"]["p75"])
+            t26 = e.get("team_2026")
+            vac_ok = adj_vac.get(t26, 0) >= av_p75
+            primary_top5 = (canonical_team(t26) in top5_forward_implied and
+                            depth_rank.get(gsis_id) == 1)
+            crit["opportunity"] = 0.9 if (vac_ok or primary_top5) else 0.2
+            if e.get("on_field_dropback_share"):
+                crit["on_field_dropback_presence"] = p_prop(
+                    e["on_field_dropback_share"]["k"],
+                    e["on_field_dropback_share"]["n"],
+                    thr["on_field_dropback_share_reference"]["p50"])
+            need, total = 4, 5
+            legacy_crit = dict(crit)
+            legacy_primary_top5 = (t26 in top5_week1_implied and
+                                   depth_rank.get(gsis_id) == 1)
+            legacy_crit["opportunity"] = (
+                0.9 if (vac_ok or legacy_primary_top5) else 0.2)
+        elif pos == "QB":
+            if e.get("rush_ypg") is not None:
+                crit["rushing"] = p_soft(e["rush_ypg"], thr["qb_rush_ypg"]["p75"],
+                                         band("qb_rush_ypg"))
+            if e.get("forward_implied_total") is not None:
+                crit["environment"] = p_soft(
+                    e["forward_implied_total"],
+                    thr["forward_implied_total"]["p75"],
+                    band("forward_implied_total"))
+            if e.get("epa_per_att") is not None:
+                crit["efficiency"] = p_soft(e["epa_per_att"], 0.10, 0.05)
+            need, total = 2, 3
+            legacy_crit = dict(crit)
+            if e.get("implied_total") is not None:
+                legacy_crit["environment"] = p_soft(
+                    e["implied_total"], thr["implied_total"]["p75"],
+                    band("implied_total"))
+            else:
+                legacy_crit.pop("environment", None)
+        else:  # TE
+            if e.get("on_field_dropback_share"):
+                crit["on_field_dropback_presence"] = p_prop(
+                    e["on_field_dropback_share"]["k"],
+                    e["on_field_dropback_share"]["n"],
+                    thr["on_field_dropback_share_reference"]["p75"])
+            t26 = e.get("team_2026")
+            mates = [x for x in inp["players"] if x.get("team_2026") == t26
+                     and x.get("yms_2025") is not None]
+            mates.sort(key=lambda x: -x["yms_2025"])
+            my_rank = next((i for i, x in enumerate(mates, 1) if x is e),
+                           None)
+            if e.get("yms_2025") is not None and my_rank:
+                crit["market_share"] = 0.9 if my_rank <= 2 else 0.2
+                te_market_probability_counts[str(crit["market_share"])] += 1
+                share_team = (usage_by_gsis.get(gsis_id) or {}).get("team")
+                if share_team and canonical_team(share_team) != canonical_team(t26):
+                    te_grouping_mismatches.append({
+                        "name": name,
+                        "sleeper_id": sleeper_id or None,
+                        "share_season": 2025,
+                        "share_team": canonical_team(share_team),
+                        "share_value": e["yms_2025"],
+                        "rank_group_team": canonical_team(t26),
+                        "rank_group_size": len(mates),
+                        "assigned_probability": crit["market_share"],
+                    })
+            need, total = 2, 2
 
         cap_tb = None
         pr = prospect.get(sleeper_id)
         if pr and pr.get("draft_year") in (2025, 2026) and pr.get("draft_round"):
             cap_tb = f"NFL R{pr['draft_round']} {pr['draft_year']} (years-1-2 tiebreak only)"
+        status, p_gate, reasons = classify(
+            crit, need, total, pos, sleeper_id)
+        if status is not None:
+            tag = tag_record(e, sleeper_id, status, p_gate, need, total,
+                             crit, reasons, cap_tb)
+            if pos == "TE":
+                te_shadow_tags.append(tag)
+            else:
+                tags.append(tag)
 
-        tags.append({
-            "name": name, "pos": pos, "sleeper_id": sleeper_id or None,
-            "adp": e["adp"],
-            "status": status,
-            "score": round(p_gate * 100, 1),
-            "gate": f"P(>= {need} of {total})",
-            "criteria": {k: v for k, v in crit.items()},
-            "reasons": reasons,
-            "capital_tiebreak": cap_tb,
-            "source": "bullish_inputs_2026.json",
-            "computed_at": computed_at,
-            "ttl_hours": 72,
-        })
+        if legacy_crit is not None:
+            legacy_status, legacy_gate, legacy_reasons = classify(
+                legacy_crit, need, total, pos, sleeper_id)
+            if legacy_status is not None:
+                legacy_non_te_tags.append(tag_record(
+                    e, sleeper_id, legacy_status, legacy_gate, need, total,
+                    legacy_crit, legacy_reasons, cap_tb))
+
+    te_players = [e for e in inp["players"] if e["pos"] == "TE"]
+    te_gate_suspension = {
+        "status": "SUSPENDED",
+        "display_policy": ("All TE rows are omitted from tags; pages render no "
+                           "per-player TE BULLISH, WATCH, or SUSPENDED chip."),
+        "display_note": ("TE BULLISH/WATCH tags are suspended: the former 2-of-2 "
+                         "gate had one varying input."),
+        "reason_codes": [
+            "route_input_is_on_field_dropbacks_not_routes",
+            "market_share_criterion_is_constant",
+            "historical_share_grouped_by_current_team",
+        ],
+        "effective_test_before_suspension": (
+            "P(2025 on-field dropback share >= TE p75) multiplied by 0.9 for "
+            "every veteran TE; the advertised 2-of-2 gate had one varying criterion."),
+        "evidence": {
+            "draftable_tes": len(te_players),
+            "veterans_with_both_inputs": sum(
+                e.get("on_field_dropback_share") is not None and
+                e.get("yms_2025") is not None
+                for e in te_players),
+            "market_share_probability_counts": {
+                "0.9": te_market_probability_counts.get("0.9", 0),
+                "0.2": te_market_probability_counts.get("0.2", 0),
+            },
+            "route_basis": ("Player membership in offense_players on 2025 "
+                            "regular-season team dropbacks; pass-block snaps are "
+                            "included and this is not routes run."),
+            "historical_share_current_team_mismatches": te_grouping_mismatches,
+        },
+        "omitted_tags": sorted(te_shadow_tags, key=lambda t: (t["adp"], t["name"])),
+        "resume_requires": [
+            "A genuine routes-run input",
+            ("A non-vacuous receiving-share criterion using a complete and "
+             "season-consistent team universe"),
+            "A reviewed rerun of N.1 after a repaired TE matrix is reintroduced",
+        ],
+    }
+
+    def tag_key(tag):
+        return f"{tag['name']}|{tag['pos']}"
+
+    legacy_by_key = {tag_key(tag): tag for tag in legacy_non_te_tags}
+    live_by_key = {tag_key(tag): tag for tag in tags}
+    common_keys = sorted(set(legacy_by_key) & set(live_by_key))
+    rb_legacy = [tag for tag in legacy_non_te_tags if tag["pos"] == "RB"]
+    rb_live = [tag for tag in tags if tag["pos"] == "RB"]
+    if rb_legacy != rb_live:
+        raise ValueError(
+            "forward Vegas changed an RB tag; QB/WR-only isolation failed")
+    forward_vegas_activation = {
+        "status": "ACTIVATED",
+        "scope": ["QB.environment", "WR.opportunity"],
+        "baseline": {
+            "source": "nflverse HISTORY games.csv, Week-1 2026 lines",
+            "threshold": "implied_total",
+        },
+        "replacement": inp["provenance"]["vegas"]["forward"],
+        "gained": sorted(set(live_by_key) - set(legacy_by_key)),
+        "lost": sorted(set(legacy_by_key) - set(live_by_key)),
+        "status_changed": [
+            {"player": key,
+             "before": legacy_by_key[key]["status"],
+             "after": live_by_key[key]["status"]}
+            for key in common_keys
+            if legacy_by_key[key]["status"] != live_by_key[key]["status"]
+        ],
+        "score_changed": [
+            {"player": key,
+             "before": legacy_by_key[key]["score"],
+             "after": live_by_key[key]["score"]}
+            for key in common_keys
+            if legacy_by_key[key]["score"] != live_by_key[key]["score"]
+        ],
+        "rb_invariance": {
+            "before_count": len(rb_legacy),
+            "after_count": len(rb_live),
+            "tag_records_identical": True,
+        },
+        "n1_after_activation": {
+            "scope": "RB/WR historical proxy; does not validate the live matrix",
+            "verdict": "INCONCLUSIVE",
+            "top_adp_band": "22/35 (62.9%) vs 86/164 (52.4%)",
+            "difference_pp": 10.4,
+            "ci95_pp": [-7.3, 28.2],
+            "p_two_sided": 0.261,
+        },
+    }
 
     # ---- ADP-edge accountability
     pos_adp_rank = {}
@@ -415,9 +567,14 @@ def main():
                                     "like p<0.05; every metric threshold is a "
                                     "computed percentile in bullish_inputs"},
             "ttl": "72h revalidation - the room degrades BULLISH to WATCH past it",
+            "forward_vegas": inp["provenance"]["vegas"]["forward"],
+            "te_tags": ("suspended; see top-level te_gate_suspension for the "
+                        "computed shadow ledger and evidence"),
         },
         "adp_edge": edge,
         "te_scarcity_adjudication": te_adj,
+        "te_gate_suspension": te_gate_suspension,
+        "forward_vegas_activation": forward_vegas_activation,
         "qb_gap": inp["qb_gap"],
         "delta": delta,
         "tags": tags,

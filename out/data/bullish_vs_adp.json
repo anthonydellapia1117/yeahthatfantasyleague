@@ -1,74 +1,73 @@
 {
  "provenance": {
-  "generated": "2026-08-27",
+  "generated": "2026-08-28",
   "question": "does the tag add information ADP does not already carry? Phase A: the fantasy-ADP gate makes the tag a confirmation device by construction unless it shows within-band lift",
   "method": "per season 2017-2025, rebuild the opportunity + efficiency spine from the PRIOR season (per-game touches >= pool p75 and points per touch >= pool p75, thresholds recomputed per season and position), then compare tagged vs untagged hit rates WITHIN each preseason ADP band",
   "scoring": "league-exact (full PPR, 6-pt pass TD)",
   "limitation": "PROXY for the shipped 2026 matrix: route participation, first-read share, inside-5 equity, implied totals and line quality have no clean per-season history in this cache. What is tested is the opportunity+efficiency spine common to every criterion set - a lift is evidence for the spine, not proof of the full matrix; a null is evidence against it",
   "positions": [
    "RB",
-   "WR",
-   "TE"
+   "WR"
   ],
   "seasons": "2017-2025"
  },
  "within_band": {
   "pos1-12": {
    "tagged": {
-    "n": 43,
+    "n": 35,
     "hit12": {
-     "k": 28,
-     "rate": 0.6512,
+     "k": 22,
+     "rate": 0.6286,
      "ci95": [
-      0.5017,
-      0.7758
+      0.4634,
+      0.7683
      ]
     },
     "hit24": {
-     "k": 34,
-     "rate": 0.7907,
+     "k": 27,
+     "rate": 0.7714,
      "ci95": [
-      0.6479,
-      0.8858
+      0.6098,
+      0.8793
      ]
     }
    },
    "untagged": {
-    "n": 257,
+    "n": 164,
     "hit12": {
-     "k": 133,
-     "rate": 0.5175,
+     "k": 86,
+     "rate": 0.5244,
      "ci95": [
-      0.4566,
-      0.5779
+      0.4483,
+      0.5994
      ]
     },
     "hit24": {
-     "k": 189,
-     "rate": 0.7354,
+     "k": 120,
+     "rate": 0.7317,
      "ci95": [
-      0.6783,
-      0.7856
+      0.6592,
+      0.7936
      ]
     }
    },
    "lift_hit12": {
-    "diff": 0.1337,
+    "diff": 0.1042,
     "diff_ci95": [
-     -0.0213,
-     0.2887
+     -0.0732,
+     0.2816
     ],
-    "z": 1.627,
-    "p_two_sided": 0.1038
+    "z": 1.123,
+    "p_two_sided": 0.2614
    },
    "lift_hit24": {
-    "diff": 0.0553,
+    "diff": 0.0397,
     "diff_ci95": [
-     -0.0777,
-     0.1883
+     -0.115,
+     0.1945
     ],
-    "z": 0.768,
-    "p_two_sided": 0.4423
+    "z": 0.486,
+    "p_two_sided": 0.6273
    }
   },
   "pos13-24": {
@@ -92,41 +91,41 @@
     }
    },
    "untagged": {
-    "n": 238,
+    "n": 184,
     "hit12": {
-     "k": 56,
-     "rate": 0.2353,
+     "k": 39,
+     "rate": 0.212,
      "ci95": [
-      0.1859,
-      0.2931
+      0.1591,
+      0.2766
      ]
     },
     "hit24": {
-     "k": 134,
-     "rate": 0.563,
+     "k": 97,
+     "rate": 0.5272,
      "ci95": [
-      0.4995,
-      0.6245
+      0.4552,
+      0.598
      ]
     }
    },
    "lift_hit12": {
-    "diff": 0.098,
+    "diff": 0.1214,
     "diff_ci95": [
-     -0.4381,
-     0.6342
+     -0.4153,
+     0.6581
     ],
-    "z": 0.397,
-    "p_two_sided": 0.6913
+    "z": 0.509,
+    "p_two_sided": 0.6111
    },
    "lift_hit24": {
-    "diff": 0.1036,
+    "diff": 0.1395,
     "diff_ci95": [
-     -0.4335,
-     0.6408
+     -0.3988,
+     0.6778
     ],
-    "z": 0.36,
-    "p_two_sided": 0.719
+    "z": 0.48,
+    "p_two_sided": 0.6311
    }
   },
   "pos25-48": {
@@ -144,21 +143,21 @@
     }
    },
    "untagged": {
-    "n": 340,
+    "n": 339,
     "hit12": {
      "k": 35,
-     "rate": 0.1029,
+     "rate": 0.1032,
      "ci95": [
-      0.075,
-      0.1398
+      0.0752,
+      0.1402
      ]
     },
     "hit24": {
-     "k": 85,
-     "rate": 0.25,
+     "k": 84,
+     "rate": 0.2478,
      "ci95": [
-      0.2069,
-      0.2986
+      0.2048,
+      0.2964
      ]
     }
    },
@@ -168,90 +167,91 @@
  },
  "pooled": {
   "tagged": {
-   "n": 46,
+   "n": 38,
    "hit12": {
-    "k": 29,
-    "rate": 0.6304,
+    "k": 23,
+    "rate": 0.6053,
     "ci95": [
-     0.486,
-     0.7548
+     0.4472,
+     0.744
     ]
    },
    "hit24": {
-    "k": 36,
-    "rate": 0.7826,
+    "k": 29,
+    "rate": 0.7632,
     "ci95": [
-     0.6443,
-     0.8774
+     0.6079,
+     0.8701
     ]
    }
   },
   "untagged": {
-   "n": 835,
+   "n": 687,
    "hit12": {
-    "k": 224,
-    "rate": 0.2683,
+    "k": 160,
+    "rate": 0.2329,
     "ci95": [
-     0.2393,
-     0.2993
+     0.2028,
+     0.2659
     ]
    },
    "hit24": {
-    "k": 408,
-    "rate": 0.4886,
+    "k": 301,
+    "rate": 0.4381,
     "ci95": [
-     0.4548,
-     0.5225
+     0.4015,
+     0.4755
     ]
    }
   },
   "lift_hit12": {
-   "diff": 0.3622,
+   "diff": 0.3724,
    "diff_ci95": [
-    0.2195,
-    0.5049
+    0.2138,
+    0.531
    ],
-   "z": 5.285,
+   "z": 5.144,
    "p_two_sided": 0.0
   },
   "lift_hit24": {
-   "diff": 0.294,
+   "diff": 0.325,
    "diff_ci95": [
-    0.1701,
-    0.4179
+    0.1848,
+    0.4652
    ],
-   "z": 3.882,
+   "z": 3.916,
    "p_two_sided": 0.0001
   }
  },
- "verdict": "INCONCLUSIVE - incremental value over ADP is unresolved in the only band with usable overlap. Among positional ADP ranks 1-12, tagged players finished top-12 in 28/43 cases (65.1%) vs 133/257 (51.8%), +13.4pp, 95% CI [-2.1, +28.9]. That interval permits slight harm and useful lift alike. Only three tags occur at ranks 13-24 and none at 25-48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tag stays display-only pending a continuous-ADP, season-held-out test.",
- "verdict_basis": "reported, fixed by review 2026-08-26 - not computed. The prior three-state automation was removed as unsound: a post-hoc minimum-detectable-effect comparison is not an equivalence test, the significance branch searched six cells without multiplicity control, and its BEATS label was sign-blind. Every figure the verdict cites is cross-checked against the computed cells at build time; a mismatch fails the build for re-review instead of regenerating the text",
+ "verdict": "INCONCLUSIVE \u2014 incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. That interval permits harm and useful lift alike. Only three tags occur at ranks 13-24 and none at 25-48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.",
+ "verdict_basis": "reported, fixed by review 2026-08-28 - not computed. Removing the non-discriminating TE matrix reduced the point estimate and widened the interval; it did not rescue the result. That points to the ADP gate rather than one criterion. The prior three-state automation was removed as unsound: a post-hoc minimum-detectable-effect comparison is not an equivalence test, the significance branch searched six cells without multiplicity control, and its BEATS label was sign-blind. Every figure the verdict cites is cross-checked against the computed cells at build time; a mismatch fails the build for re-review instead of regenerating the text",
  "verdict_cites": {
   "pos1-12 tagged k/n": [
-   28,
-   43
+   22,
+   35
   ],
-  "pos1-12 tagged rate pct": 65.1,
+  "pos1-12 tagged rate pct": 62.9,
   "pos1-12 untagged k/n": [
-   133,
-   257
+   86,
+   164
   ],
-  "pos1-12 untagged rate pct": 51.8,
-  "pos1-12 diff pp": 13.4,
+  "pos1-12 untagged rate pct": 52.4,
+  "pos1-12 diff pp": 10.4,
   "pos1-12 diff ci95 pp": [
-   -2.1,
-   28.9
+   -7.3,
+   28.2
   ],
+  "pos1-12 p two-sided": 0.261,
   "pos13-24 tagged n": 3,
   "pos25-48 tagged n": 0
  },
  "concentration": {
   "tagged_by_band": {
-   "pos1-12": 43,
+   "pos1-12": 35,
    "pos13-24": 3,
    "pos25-48": 0
   },
-  "share_in_top12_band": 0.9348,
+  "share_in_top12_band": 0.9211,
   "note": "the pooled tagged-vs-untagged gap is dominated by this concentration - it measures ADP, not the tag. Only the within-band rows above test the tag itself"
  }
 }

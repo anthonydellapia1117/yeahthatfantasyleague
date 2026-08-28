@@ -14,7 +14,7 @@ it is the least important part of this document.
 
 These are not general advice. They are the mechanisms behind the defects that
 actually reached this project's live site, derived in `docs/SELF_AUDIT_2026-08-26.md`
-from all 42 recorded entries. An outside reviewer found sixteen of them, including
+from all 50 recorded entries. An outside reviewer found twenty-four of them, including
 four of the five that shipped and stayed. This section is why.
 
 ### 1.1 "I verify against my own intent rather than the source of truth"
@@ -64,7 +64,7 @@ cannot name the computation or the API field behind a number, it is unverified.
 
 ### 1.4 The corollary that ties them together
 
-Nineteen of the 42 defects were **silent** - the system looked healthy and was
+Twenty-six of the 50 defects were **silent** - the system looked healthy and was
 wrong - and the silent set contains **every defect that reached the live site and
 stayed**. Loud failures were always caught within hours and none ever reached
 Anthony. This project does not have a bug-finding problem; it has a silence
@@ -176,12 +176,18 @@ digest the exact inputs payload, so two children of the same engine cannot colli
 Keep `engine_generated` for human display, never as the linkage oracle. This is an
 explicit registry, not automatic dependency discovery.
 
-**R12. Never quote a pooled rate when the strata are unbalanced.** *Why:* 93.5% of
+**R12. Never quote a pooled rate when the strata are unbalanced.** *Why:* 92.1% of
 BULLISH tags land in one ADP band, so the pooled comparison measures the market.
 
 **R13. Commit convention.** Author `Anthony DellaPia <anthonydellapia@gmail.com>`.
 Hyphens, not em dashes. No emojis. No model identifiers in anything pushed. Use
 `git -c core.hooksPath=/dev/null commit`.
+
+**R14. Absence is not zero.** A zero enters a percentile population only when a
+canonical identity and source row or denominator establish that it was observed.
+Missing observations are null and excluded, with the excluded count carried in
+provenance. *Why:* four absent RB usage rows were coerced to zero and changed the
+live BULLISH backfield threshold while the artifact remained plausible.
 
 ---
 
@@ -232,10 +238,11 @@ done
 ```
 
 **Guard counts as of this writing** (a suite that suddenly runs fewer is a
-regression): survival 54, cvs 20, vor 50, baserates 70, archetypes 17, ceiling 16,
-bullish 40 (41 in pages-data strict mode), ws2 63, mock 47,
-bullish_vs_adp 43, vona 1211, draft_vs_acquired 23, pages_data 350, run_gate 16,
-analysis 38 (33 on CI), smoke 355.
+regression): survival 70, cvs 22, vor 50, baserates 70, archetypes 17, ceiling 16,
+bullish 79, ws2 63, mock 47, bullish_vs_adp 45, vona 1211,
+draft_vs_acquired 23, pages_data 363, run_gate 16, analysis 38, smoke 363.
+The analysis count means all five cache-backed determinism reruns executed; a
+skip is not equivalent coverage.
 
 **Rebuilding the analysis layer** needs the historical cache, which is NOT in the
 repo: `python3 src/fetch_history.py` (~156MB, nine families, `HISTORY` env var to
@@ -258,8 +265,9 @@ new evidence wastes a cycle.
 | **INTERP sd - ADOPTED, do not replace casually** | 12-bin piecewise linear. Beats the step 12 of 13 seasons, two-sided p=0.0034 - the only significant comparison in the backtest. A calibration benchmark guard now blocks any sd change that predicts worse out of sample. |
 | **Reverting to raw VOR sums for multi-pick objectives** | Disproved by the M1 mock validation: raw VOR prices a duplicate at starter value, so it drafts three elite TEs. Use lineup value from `forward_policy`. |
 | **Automating the BULLISH-vs-ADP verdict** | A three-state rule (BEATS/UNDERPOWERED/NULL) computed from six cells plus a post-hoc minimum-detectable-effect search. Unsound three ways: post-hoc MDE is not an equivalence test, six cells with no multiplicity control, and the BEATS branch was sign-blind. The verdict is now REPORTED text, fixed by review, with the builder cross-checking every cited figure against the computed cells. |
-| **Calling the BULLISH-vs-ADP result NULL** | It is INCONCLUSIVE. +13.4pp with a 95% CI of [-2.1, +28.9] permits slight harm and useful lift alike. |
-| **Quoting the pooled BULLISH tagged-vs-untagged rate** | 63.0% vs 26.8% looks decisive and measures ADP: 93.5% of tags land in the pos1-12 band. |
+| **Calling the BULLISH-vs-ADP result NULL** | It is INCONCLUSIVE. In the current RB/WR scope, +10.4pp with a 95% CI of [-7.3, +28.2], p=0.261, permits harm and useful lift alike. |
+| **Quoting the pooled BULLISH tagged-vs-untagged rate** | It measures ADP: 92.1% of RB/WR tags land in the pos1-12 band. |
+| **Shipping the former TE 2-of-2 gate** | Its market-share input was 0.9 for all 19 eligible veterans, while the other input counted pass-block-inclusive on-field dropbacks. Isaiah Likely's BAL-2025 share was also ranked in his NYG-2026 group. TE rows are suspended and omitted until two genuine, season-consistent criteria exist and N.1 is rerun. |
 | **Durability fade as a draft signal** | Dropped under a pre-registered rule after investigation. |
 | **Recency-bias coefficient** | No effect found, therefore not used. |
 | **Injury-market inefficiency** | None established; one candidate flagged, nothing shipped. |
@@ -309,6 +317,12 @@ new evidence wastes a cycle.
   Pages workflow repeats the declared downstream invariant guards before assembly.
 - `nav.js` is the single source for navigation and the kicker style. Seven items.
 - The engine must NOT import from the pages-data layer; guard N1 enforces it.
+- BULLISH keeps two Vegas sources separate. HISTORY `games.csv` Week 1 feeds only
+  RB expected-TD equity. `docs/ffopportunity/schedule_2026.csv` supplies a
+  dynamically derived, fully priced contiguous horizon to QB environment and WR
+  opportunity only. The artifact states the weeks, priced/scheduled game counts,
+  32-team reconciliation, top-five environments, source digest, and activation
+  delta. Do not mechanically replace the Week-1 dictionary; that would move RBs.
 
 **Analysis layer** (needs the `HISTORY` cache; not on the draft-night path):
 `ingest.py`, `phase2_value.py`, `phase3_lineup.py`, `phase3_remainder.py`,
@@ -327,6 +341,10 @@ new evidence wastes a cycle.
    history stays cached while unversioned `games.csv` is fetched each run.
 7. `parse_walter.py` after `build_pages_data.py` and before `build_cvs.py`: Walter
    player/team resolution reads refreshed ADP and CVS consumes those tags.
+8. For a new forward-Vegas source: validate the complete 32-team schedule, derive
+   the contiguous priced horizon, shadow the QB/WR delta, rerun the reviewed N.1
+   test, then activate only the approved consumers. Never consume an unverified
+   derived CSV when the raw schedule is committed.
 
 **Do-not-modify:**
 - The reviewed N.1 wording and figures. `out/ff-hub.html` now exposes N.1 as a
@@ -361,23 +379,25 @@ new evidence wastes a cycle.
   keeps the scheduled workflow alive past GitHub's 60-day inactivity disable.
 - **Three artifacts differ by 0.01 across Python builds** (`points_left_per_week`),
   a documented round-half jitter. Not a bug; do not chase it.
+- **Correct generator code is not evidence that its artifact was regenerated.**
+  Compare the committed schema/content with a fresh output. The corrected R source
+  and stale RB CSV disagreed while both looked individually plausible.
 
 ---
 
 ## 8. WATCH FOR THESE DEFECT CLASSES
 
-The five that recurred, from `docs/SELF_AUDIT_2026-08-26.md` §1.3. In every case
+The recurring classes from `docs/SELF_AUDIT_2026-08-26.md` §1.3. In every case
 the first fix was applied at a call site instead of as a shared rule, which is why
 there was a second and a third.
 
 1. **Multi-pick independence (4 occurrences).** Any new consumer that picks more
    than once must route through `forward_policy`. Nothing mechanically prevents a
    new one from re-implementing selection inline.
-2. **Name normalization (3).** Suffixes, then father/son collisions, then
-   diacritics. **There are still two independent normalizers** -
-   `ingest._norm_player` and `build_pages_data.norm_name` - and the diacritic fold
-   is only in the second. The tests assert a match *rate* against today's data, not
-   the normalizer's *contract*, so each repair patches a symptom.
+2. **Name normalization (5).** Suffixes, father/son collisions, diacritics,
+   divergent implementations, then Unicode quote variants. Python now has one
+   blind comparison key plus one collision-aware resolver; browser copies are held
+   to its contract corpus by parity tests. Do not add a local normalizer.
 3. **Silent cron / stale publication (4).** Alert on the published artifact.
 4. **Fail-open guards / controls (5).** A failed poll that falls through, a guard
    that builds evidence and never asserts, a wrapper that swallows an exit code, a
@@ -385,9 +405,13 @@ there was a second and a third.
    same-day builds. Ask of
    every new guard: *what change would make this fail?* If you cannot answer, it is
    decoration.
-5. **Doc/artifact divergence (3).** A written result can be stale, absent from its
-   consuming surface, or counted before pruning changes the rendered artifact.
-   Verify the artifact and the live page, not the changelog claim.
+5. **Doc/artifact divergence (4).** A written result can be stale, absent from its
+   consuming surface, counted before pruning changes the rendered artifact, or
+   describe corrected source whose committed output was never regenerated. Verify
+   source, artifact, and live page together.
+6. **Missing observation as zero (1 live instance).** Require source evidence for
+   zero and carry excluded-null counts. The sweep found other current percentile
+   populations clean; Bucky Irving's observed 0-of-n remains valid.
 
 ---
 
@@ -401,7 +425,8 @@ there was a second and a third.
 | **Draft order** | UNDRAWN as of 2026-08-28 04:06Z: `draft_order` is null and `slot_to_roster_id` is the identity placeholder. Sleeper now supplies `start_time=1788912025000` (2026-09-08 15:20 UTC / 11:20 AM ET). | A Routine runs `src/check_draft_order.py` every 2h and self-retires on the draw. The room collapses to the real seat automatically. The engine overlay now uses the same canonical resolver and preserves all twelve pick windows until a real seat exists. |
 | **Conviction-overlay seat provenance** | **RESOLVED in the post-#60 engine PR.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. A pre-fix audit classified all 63 textual bare-`7` matches under `src/`: 2 roster-id references, 5 draft-slot references (including the defective lookup and heading), and 56 unrelated round bounds, pick anchors, thresholds, dates, claims, or formatting values. | `src/draft_order.py` makes `draft_order[user_id]` primary and accepts the `slot_to_roster_id` fallback only as a complete permutation; the complete identity map is explicitly undrawn only while status is `pre_draft`. Started/malformed/drawn-but-unresolvable payloads fail loud. Undrawn or visibly unavailable builds assume no seat and retain all twelve survival windows. Keep the synthetic non-7, resolver-precedence, partial-map, and duplicate-map guards. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
-| **Second normalizer** | `ingest._norm_player` lacks the diacritic fold. | One shared normalizer with a contract test. |
+| **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
+| **Stale R position exports** | The corrected TE writer now produces 6,730 valid rows and no fake route alias. The committed RB/WR exports still retain 2,530 NA-subsetting junk rows; RB also retains `target_volume` despite corrected source saying otherwise. Python consumes none of these files. | Regenerate and independently compare before any use. Do not treat corrected script text as artifact evidence. |
 | **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Honest on the card, but the largest exception to R1. | Backtest or keep labelled. |
 | **Optional-shard silent degradation** | `base_rates`/`ceiling`/archetypes/bullish fetch failures vanish columns with no notice. | Add a visible "unavailable" state + a smoke scenario. |
 | **12-team geometry inside DRAFT MODE** | **CONFIRMED IN PRODUCTION 2026-08-26**, no longer a prediction: the room rendered `rd11-14` band labels against a live 19-team draft, where boundaries 36/72/120 are 12-team arithmetic. `sleeperListHtml` and `simBand` hardcode that geometry, so the labels are also wrong in a 10-team mock. Cosmetic - this mislabels sleeper bands; it does not affect ordering. | Derive both bands from `GEO`. Not draft-critical: the real league IS 12x14. |

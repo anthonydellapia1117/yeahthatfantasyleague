@@ -48,14 +48,15 @@ for band, v in a["within_band"].items():
 # This copy is the guard's own record of what was reviewed; the builder
 # holds an independent copy. Either drifting from the other fails here.
 FIXED_VERDICT = (
-    "INCONCLUSIVE - incremental value over ADP is unresolved in the only "
-    "band with usable overlap. Among positional ADP ranks 1-12, tagged "
-    "players finished top-12 in 28/43 cases (65.1%) vs 133/257 (51.8%), "
-    "+13.4pp, 95% CI [-2.1, +28.9]. That interval permits slight harm and "
-    "useful lift alike. Only three tags occur at ranks 13-24 and none at "
-    "25-48, so those regions are not identifiable. Coarse bands do not "
-    "adjust for exact ADP, position, season, or repeated players. Tag "
-    "stays display-only pending a continuous-ADP, season-held-out test.")
+    "INCONCLUSIVE — incremental value over ADP remains unresolved in the "
+    "RB/WR scope after suspending the non-discriminating TE matrix. Among "
+    "positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases "
+    "(62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. "
+    "That interval permits harm and useful lift alike. Only three tags occur "
+    "at ranks 13-24 and none at 25-48, so those regions are not identifiable. "
+    "Coarse bands do not adjust for exact ADP, position, season, or repeated "
+    "players. Tags stay display-only pending continuous-ADP, season-held-out "
+    "testing.")
 ok(a["verdict"] == FIXED_VERDICT,
    "the verdict is the reviewed INCONCLUSIVE text, byte-identical")
 ok(a["verdict"].startswith("INCONCLUSIVE"), "the verdict reads INCONCLUSIVE")
@@ -83,19 +84,22 @@ top = a["within_band"]["pos1-12"]
 tk, tn = top["tagged"]["hit12"]["k"], top["tagged"]["n"]
 uk, un = top["untagged"]["hit12"]["k"], top["untagged"]["n"]
 l12 = top["lift_hit12"]
-ok((tk, tn) == (28, 43), "verdict cite 28/43 matches the computed tagged cell")
-ok((uk, un) == (133, 257),
-   "verdict cite 133/257 matches the computed untagged cell")
-ok(round(100.0 * tk / tn, 1) == 65.1, "verdict cite 65.1% recomputes")
-ok(round(100.0 * uk / un, 1) == 51.8, "verdict cite 51.8% recomputes")
-ok(round(l12["diff"] * 100, 1) == 13.4, "verdict cite +13.4pp recomputes")
-ok([round(x * 100, 1) for x in l12["diff_ci95"]] == [-2.1, 28.9],
-   "verdict cite CI [-2.1, +28.9] recomputes")
+ok((tk, tn) == (22, 35), "verdict cite 22/35 matches the computed tagged cell")
+ok((uk, un) == (86, 164),
+   "verdict cite 86/164 matches the computed untagged cell")
+ok(round(100.0 * tk / tn, 1) == 62.9, "verdict cite 62.9% recomputes")
+ok(round(100.0 * uk / un, 1) == 52.4, "verdict cite 52.4% recomputes")
+ok(round(l12["diff"] * 100, 1) == 10.4, "verdict cite +10.4pp recomputes")
+ok([round(x * 100, 1) for x in l12["diff_ci95"]] == [-7.3, 28.2],
+   "verdict cite CI [-7.3, +28.2] recomputes")
+ok(round(l12["p_two_sided"], 3) == 0.261,
+   "verdict cite p=0.261 recomputes")
 ok(a["within_band"]["pos13-24"]["tagged"]["n"] == 3,
    "verdict cite 'three tags at ranks 13-24' matches the cell")
 ok(a["within_band"]["pos25-48"]["tagged"]["n"] == 0,
    "verdict cite 'none at 25-48' matches the cell")
-for k in ("28/43", "65.1%", "133/257", "51.8%", "+13.4pp", "[-2.1, +28.9]"):
+for k in ("22/35", "62.9%", "86/164", "52.4%", "+10.4pp",
+          "[-7.3, +28.2]", "p=0.261"):
     ok(k in a["verdict"], f"the verdict text actually cites {k}")
 ok("verdict_cites" in a, "the cited-figure ledger ships on the artifact")
 

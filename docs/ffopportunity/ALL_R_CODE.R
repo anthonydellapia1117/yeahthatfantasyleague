@@ -157,7 +157,30 @@ wk %>%
   ) %>%
   write_csv(file.path(OUT, "bullish_rb_2020_2025.csv"))
 
-cat("regenerated: vegas_2026_forward, bullish_qb, bullish_rb\n")
+# =============================================================================
+# [FIX 6] bullish_te — no fake route field and no base-R NA-subsetting rows
+# =============================================================================
+wk %>%
+  filter(position == "TE", !is.na(player_id), player_id != "") %>%
+  group_by(season, posteam, week) %>%
+  mutate(
+    team_rec_yds_exp = sum(num(rec_yards_gained_exp), na.rm = TRUE),
+    receiving_market_share = ifelse(
+      team_rec_yds_exp > 0,
+      num(rec_yards_gained_exp) / team_rec_yds_exp,
+      NA_real_)
+  ) %>%
+  ungroup() %>%
+  select(season, week, player_id, full_name, position, posteam,
+         receptions, receptions_exp, rec_attempt, rec_air_yards,
+         rec_yards_gained, rec_yards_gained_exp,
+         rec_touchdown, rec_touchdown_exp,
+         total_fantasy_points, total_fantasy_points_exp,
+         total_fantasy_points_diff, total_touchdown_diff,
+         team_rec_yds_exp, receiving_market_share) %>%
+  write_csv(file.path(OUT, "bullish_te_2020_2025.csv"))
+
+cat("regenerated: vegas_2026_forward, bullish_qb, bullish_rb, bullish_te\n")
 
 # =============================================================================
 # UNCHANGED AND STILL VALID (no defects found)

@@ -980,7 +980,7 @@ function currentRosterLabels(){
           n1.concentration.note;
         ok((await pg.textContent("#n1Concentration")).trim() === expectedConcentration,
            "findings N.1: tag concentration and note come from the artifact");
-        const verdictLabel = n1.verdict.split(" - ")[0];
+        const verdictLabel = n1.verdict.split(/\s[—-]\s/)[0];
         ok((await pg.locator("#n1Verdict").getAttribute("class")) === "tag" &&
            (await pg.textContent("#n1Verdict")).trim() === verdictLabel,
            "findings N.1: verdict uses the neutral tag scale");
@@ -994,6 +994,47 @@ function currentRosterLabels(){
          `${file} renders dark under a light OS preference`);
       if (file === "ff-hub.html")
         ok(shellErrors.length === 0, `${file}: zero console errors`, shellErrors[0] || "");
+      await pg.close();
+    }
+    // TE matrix honesty: the artifact omits per-player rows but every surface
+    // states why. This remains separate from stale/missing optional-shard tests.
+    const bullArtifact = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_2026.json"), "utf8"));
+    const teSusp = bullArtifact.te_gate_suspension;
+    const omittedTe = teSusp.omitted_tags[0];
+    const nonTe = bullArtifact.tags.find(t => t.status === "BULLISH");
+    for (const file of ["big_board.html", "players.html", "draft_room.html"]){
+      const pg = await browser.newPage();
+      await pg.route("**/api.sleeper.app/**", r => r.abort());
+      await pg.goto(base + "/out/" + file);
+      await pg.waitForTimeout(file === "draft_room.html" ? 2500 : 1000);
+      ok((await pg.textContent("#bull-status")).trim() === teSusp.display_note &&
+         await pg.locator("#bull-status").isVisible(),
+         `${file}: TE tag suspension is visible and artifact-driven`);
+      if (file === "big_board.html"){
+        const teRow = pg.locator(`#board a[href*="${omittedTe.sleeper_id}"]`).locator("xpath=ancestor::div[contains(@class,'brow')]");
+        const nonTeRow = pg.locator(`#board a[href*="${nonTe.sleeper_id}"]`).locator("xpath=ancestor::div[contains(@class,'brow')]");
+        ok(await teRow.count() === 1 &&
+           !/BULLISH|WATCH|SUSPENDED/.test(await teRow.textContent()) &&
+           /BULLISH/.test(await nonTeRow.textContent()),
+           "big board: omitted TE has no tag while a valid non-TE tag remains");
+      } else if (file === "players.html"){
+        const teRow = pg.locator(`#pgrid a[href*="${omittedTe.sleeper_id}"]`).locator("xpath=ancestor::div[contains(@class,'idxrow')]");
+        const nonTeRow = pg.locator(`#pgrid a[href*="${nonTe.sleeper_id}"]`).locator("xpath=ancestor::div[contains(@class,'idxrow')]");
+        const bothBeginVisible = await teRow.count() === 1 && await nonTeRow.count() === 1;
+        await pg.click('#pfilt button[data-pf="bull"]');
+        await pg.waitForTimeout(100);
+        ok(bothBeginVisible && await teRow.count() === 0 && await nonTeRow.count() === 1,
+           "players: tagged-only filter omits the suspended TE and keeps a valid non-TE");
+      } else {
+        const chips = await pg.evaluate(({teId, nonTeId}) => {
+          const te = E.players.find(p => String(p.sleeper_id || "") === teId);
+          const other = E.players.find(p => String(p.sleeper_id || "") === nonTeId);
+          return {te: bullChip(te), other: bullChip(other)};
+        }, {teId: String(omittedTe.sleeper_id), nonTeId: String(nonTe.sleeper_id)});
+        ok(chips.te === "" && /BULLISH/.test(chips.other),
+           "draft room: omitted TE has no chip while a valid non-TE chip remains");
+      }
       await pg.close();
     }
     // N.1 failure is deliberately loud. A missing or rejected artifact may
@@ -1017,7 +1058,7 @@ function currentRosterLabels(){
        "findings N.1: unusable artifact produces a visible no-inference error");
     ok(await n1err.locator("#n1Results").isHidden(),
        "findings N.1: rejected artifact cannot expose stale results");
-    const rejectedLabel = malformedN1.verdict.split(" - ")[0];
+    const rejectedLabel = malformedN1.verdict.split(/\s[—-]\s/)[0];
     ok(!(await n1err.textContent("#n1Hero")).includes(rejectedLabel),
        "findings N.1: rejected artifact cannot leak its verdict through the hero");
     ok(n1Errors.length === 0, "findings N.1 error state: zero console errors",
@@ -1043,7 +1084,7 @@ function currentRosterLabels(){
        "findings N.1: HTTP failure cannot expose stale results");
     const committedN1 = JSON.parse(fs.readFileSync(
       path.resolve("out/data/bullish_vs_adp.json"), "utf8"));
-    const committedLabel = committedN1.verdict.split(" - ")[0];
+    const committedLabel = committedN1.verdict.split(/\s[—-]\s/)[0];
     ok(!(await n1http.textContent("#n1Hero")).includes(committedLabel),
        "findings N.1: HTTP failure cannot leak the committed verdict");
     ok(n1HttpPageErrors.length === 0,

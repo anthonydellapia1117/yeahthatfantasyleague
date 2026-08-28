@@ -54,17 +54,21 @@ from player_names import nflverse_roster_identity
 # data moves, the run fails loudly so a stale verdict is never
 # republished; the text itself only changes by review, never by code.
 VERDICT = (
-    "INCONCLUSIVE - incremental value over ADP is unresolved in the only "
-    "band with usable overlap. Among positional ADP ranks 1-12, tagged "
-    "players finished top-12 in 28/43 cases (65.1%) vs 133/257 (51.8%), "
-    "+13.4pp, 95% CI [-2.1, +28.9]. That interval permits slight harm and "
-    "useful lift alike. Only three tags occur at ranks 13-24 and none at "
-    "25-48, so those regions are not identifiable. Coarse bands do not "
-    "adjust for exact ADP, position, season, or repeated players. Tag "
-    "stays display-only pending a continuous-ADP, season-held-out test.")
+    "INCONCLUSIVE — incremental value over ADP remains unresolved in the "
+    "RB/WR scope after suspending the non-discriminating TE matrix. Among "
+    "positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases "
+    "(62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. "
+    "That interval permits harm and useful lift alike. Only three tags occur "
+    "at ranks 13-24 and none at 25-48, so those regions are not identifiable. "
+    "Coarse bands do not adjust for exact ADP, position, season, or repeated "
+    "players. Tags stay display-only pending continuous-ADP, season-held-out "
+    "testing.")
 
 VERDICT_BASIS = (
-    "reported, fixed by review 2026-08-26 - not computed. The prior "
+    "reported, fixed by review 2026-08-28 - not computed. Removing the "
+    "non-discriminating TE matrix reduced the point estimate and widened the "
+    "interval; it did not rescue the result. That points to the ADP gate rather "
+    "than one criterion. The prior "
     "three-state automation was removed as unsound: a post-hoc minimum-"
     "detectable-effect comparison is not an equivalence test, the "
     "significance branch searched six cells without multiplicity "
@@ -77,12 +81,13 @@ VERDICT_BASIS = (
 # cross_check() recomputes each from the cells and refuses to publish on
 # any mismatch
 VERDICT_CITES = {
-    "pos1-12 tagged k/n": (28, 43),
-    "pos1-12 tagged rate pct": 65.1,
-    "pos1-12 untagged k/n": (133, 257),
-    "pos1-12 untagged rate pct": 51.8,
-    "pos1-12 diff pp": 13.4,
-    "pos1-12 diff ci95 pp": (-2.1, 28.9),
+    "pos1-12 tagged k/n": (22, 35),
+    "pos1-12 tagged rate pct": 62.9,
+    "pos1-12 untagged k/n": (86, 164),
+    "pos1-12 untagged rate pct": 52.4,
+    "pos1-12 diff pp": 10.4,
+    "pos1-12 diff ci95 pp": (-7.3, 28.2),
+    "pos1-12 p two-sided": 0.261,
     "pos13-24 tagged n": 3,
     "pos25-48 tagged n": 0,
 }
@@ -90,7 +95,7 @@ VERDICT_CITES = {
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "data", "bullish_vs_adp.json")
 YEARS = list(range(2017, 2026))
-POSITIONS = ("RB", "WR", "TE")          # the tag's own skill scope
+POSITIONS = ("RB", "WR")                # live tag scope after TE suspension
 BANDS = [(1, 12, "pos1-12"), (13, 24, "pos13-24"), (25, 48, "pos25-48")]
 
 W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
@@ -290,6 +295,7 @@ def main():
         "pos1-12 diff ci95 pp": (round(l12["diff_ci95"][0] * 100, 1),
                                  round(l12["diff_ci95"][1] * 100, 1))
         if l12 else None,
+        "pos1-12 p two-sided": round(l12["p_two_sided"], 3) if l12 else None,
         "pos13-24 tagged n": within["pos13-24"]["tagged"]["n"],
         "pos25-48 tagged n": within["pos25-48"]["tagged"]["n"],
     }
