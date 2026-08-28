@@ -32,6 +32,7 @@ import statistics
 
 from engine_lineage import require as require_engine_digest
 from player_names import PlayerIdentityResolver
+from team_codes import canonical_team
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out")
@@ -64,12 +65,14 @@ def main():
     crosswalk = jload(os.path.join(D, "crosswalk.json"))["matched"]
     usage = {u["gsis_id"]: u
              for u in jload(os.path.join(D, "usage_2025.json"))["players"]}
-    proe = {t["team"]: t["proe_2025"] for t in jload(os.path.join(D, "team_proe_2025.json"))["teams"]}
+    proe = {canonical_team(t["team"]): t["proe_2025"]
+            for t in jload(os.path.join(D, "team_proe_2025.json"))["teams"]}
     vol = {v["gsis_id"]: v
            for v in jload(os.path.join(D, "volatility_2025.json"))["players"]}
     tdr = {t["gsis_id"]: t
            for t in jload(os.path.join(D, "td_rates_2025.json"))["players"]}
-    sos = {t["team"]: t for t in jload(os.path.join(D, "sos_2026.json"))["teams"]}
+    sos = {canonical_team(t["team"]): t
+           for t in jload(os.path.join(D, "sos_2026.json"))["teams"]}
     depth = {}
     for e in jload(os.path.join(D, "depth_charts.json"))["entries"]:
         # The depth source's ``gsis_id`` is not consistently an nflverse id
@@ -78,10 +81,11 @@ def main():
         # the pre-consolidation join did.
         resolved = identity.resolve(e["player"], position=e["pos"])
         if resolved.record is not None:
-            depth[(resolved.record["sleeper_id"], e["team"])] = e["rank"]
+            depth[(resolved.record["sleeper_id"],
+                   canonical_team(e["team"]))] = e["rank"]
     callers = {}
     for r in csv.DictReader(open(os.path.join(ROOT, "data", "playcallers.csv"))):
-        callers[r["team"]] = r
+        callers[canonical_team(r["team"])] = r
     wtags = jload(os.path.join(ROOT, "data", "walter", "tags.json"))["data"]
     wfigs = jload(os.path.join(ROOT, "data", "walter", "walter_figures.json"))["data"]
     wchange = jload(os.path.join(ROOT, "data", "walter", "changelog.json"))["data"]["by_player"]
@@ -133,16 +137,17 @@ def main():
                     opp = (u.get("pass_att") or 0) / u["weeks"] if u.get("pass_att") else None
                 else:
                     opp = u.get("wopr_mean")
-            tc = proe.get(p.get("team"))
+            team = canonical_team(p.get("team"))
+            tc = proe.get(team)
             if tc is not None and pos == "RB":
                 tc = -tc
-            cal = callers.get(p.get("team"))
+            cal = callers.get(team)
             coach = None
             if cal:
                 coach = -1.0 if str(cal.get("first_time", "0")) in ("1", "True", "true") else 0.0
-            slot = depth.get((sleeper_id, p.get("team") or ""))
+            slot = depth.get((sleeper_id, team or ""))
             surr = -(slot - 1) if slot else None
-            srow = sos.get(p.get("team"))
+            srow = sos.get(team)
             sched = srow.get(f"sos_{pos.lower()}") if srow else None
             return {"baseline_projection": p["vor"], "opportunity": opp,
                     "team_context": tc, "coaching_scheme": coach,
@@ -238,7 +243,7 @@ def main():
 
             evid = [t for t in wt if t["class"] == "evidence"]
             v = vol.get(gsis_id)
-            srow2 = sos.get(p.get("team"))
+            srow2 = sos.get(canonical_team(p.get("team")))
             wk1517 = srow2.get(f"sos_{pos.lower()}_wk15_17") if srow2 else None
             wk1517_rank = srow2.get(f"sos_{pos.lower()}_wk15_17_rank") if srow2 else None
             players_out.append({

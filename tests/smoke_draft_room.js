@@ -851,6 +851,11 @@ function currentRosterLabels(){
        "team page: value-ordered depth grid keeps official slot as metadata");
     ok((ttxt.match(/computation:/g) || []).length >= 4,
        "team page: every instrument carries its computation note");
+    await tpg.goto(base + "/out/teams.html#t=LAR");
+    await tpg.waitForTimeout(600);
+    const lartxt = await tpg.textContent("#content");
+    ok(/LAR/.test(lartxt) && /2025 PROE/.test(lartxt) && /Puka Nacua/.test(lartxt),
+       "team page: LAR route joins nflverse LA PROE and depth evidence");
     // a team OUTSIDE the curated 19 must say so, not assert continuity
     await tpg.goto(base + "/out/teams.html#t=KC");
     await tpg.waitForTimeout(600);

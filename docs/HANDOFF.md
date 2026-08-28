@@ -15,22 +15,24 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-28 by Codex - post-#62 triage fixes the draft-room red/beep boundary, BULLISH UTC provenance, payload-dependent collision tests, digest-mismatch diagnosis, and transient Sleeper display-name assertions. This baton is updated with the work. |
-| **Next agent** | Wait for Anthony's review of `codex/fix-post-merge-triage`. After it lands, Anthony will resend the BULLISH input-assessment brief. Keep #54 OPEN, ON HOLD, and untouched until the real draft order is drawn and Anthony reviews PATHS for his actual slot. |
-| **Branch** | `codex/fix-post-merge-triage`, review PR from this tested branch, based on `main` at `05bd8d1` (#62 plus eight `docs/ffopportunity/` data commits) |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #62 deployment byte-verified 48/48 against app commit `dd7d381`; all seven surfaces returned 200; publication and geometry preflight were green. Eight newer main commits add only `docs/ffopportunity/` inputs and do not change the deployed 48-file app surface. The current branch is not live pending review. |
-| **Draft order** | UNDRAWN as of 2026-08-28 08:27Z (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
+| **Last touched** | 2026-08-28 by Codex - canonicalized provider team codes at Python and browser join boundaries so Rams data keyed `LA` populates the app's canonical `LAR` team. Rebuilt CVS and added source-derived and browser regression guards. |
+| **Next agent** | Wait for Anthony's review of `codex/fix-team-code-aliases`. After this small live-defect PR, assess TE-gate honesty, then independently verify the reported junk rows and sweep every percentile population before any forward-Vegas shadow work. Keep #54 OPEN, ON HOLD, and untouched. |
+| **Branch** | `codex/fix-team-code-aliases`, based on `main` at `abb7a4e`; review and merge only through its PR |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #63 is merged and live at app commit `efd379e`; its deploy was byte-verified 48/48, all seven surfaces returned 200, and publication and geometry preflight were green. Later main commits add only unreferenced `docs/ffopportunity/` analysis files. The team-alias branch is not live pending review. |
+| **Draft order** | UNDRAWN as of 2026-08-28 (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
 
 ### What was done in the last session
 
-1. **#53 and #55 through #62 are merged; #62 is live.** #53 records the human
+1. **#53 and #55 through #63 are merged; #63 is live.** #53 records the human
    live-path exercise and its limits. #55 fixed the round-7 VONA lookahead by
    comparing against real round 8 and published the reviewed N.1
-   **INCONCLUSIVE** finding on `ff-hub.html`. #62 is `main` at `dd7d381`; Pages is
-   48/48 byte-identical, all seven surfaces return 200, and the live site is
-   healthy. Do not confuse an unmerged fix with a stale deployment.
+   **INCONCLUSIVE** finding on `ff-hub.html`. #63 made the red paint and beep share
+   one boundary, fixed BULLISH UTC provenance, replaced data-dependent collision
+   assumptions with deterministic fixtures, corrected digest-mismatch diagnosis,
+   and removed transient team-name assertions. Its Pages deployment is 48/48
+   byte-identical and healthy. Do not confuse an unmerged fix with a stale deploy.
 2. **#58 consolidated player identity.** One Python comparison key plus the
    collision-aware identity resolver replaced fourteen Python definitions; four
    browser copies are held to Python by corpus parity. Replay survival pairs fell
@@ -52,30 +54,36 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    same-day mutation fixtures prove the guard bites. Strict artifacts fail closed;
    BULLISH/ceiling remain display-only and visibly stale during the intentional
    06:00-08:00 lag instead of burdening the draft-morning workflow with HISTORY.
-5. **The current triage branch closes four merged-review residuals.** One UTC
-   instant now supplies BULLISH `generated`, provenance `computed_at`, and every
-   tag timestamp; the rebuilt artifact changes only those 36 timestamp/date
-   leaves, while tag math and delta stay identical. FFC/identity live scans are
-   vacuous-safe and deterministic Harrison/D.J. fixtures keep collision behavior
-   non-vacuous. A CVS/engine digest mismatch now says `Artifacts out of sync;
-   board blocked` rather than diagnosing the network. Tests derive mutable Sleeper
-   handles/team names from the payload; franchise/roster identity remains stable.
-6. **Full battery green on this branch.** Gate-runner self-test plus the fourteen
-   gated suites ran 16/70/20/50/70/17/16/41/63/47/43/1211/23/353/38 checks.
-   The five analysis determinism reruns executed from the complete HISTORY cache:
-   38 guards, zero skips. Browser smoke ran 356; `MATH DIFF PROOF: EMPTY` for all
-   ten frozen function bodies.
+5. **The current branch fixes the live LA/LAR wrong-answer defect without rewriting
+   provider shards.** One canonical Python helper maps `LA->LAR`, `JAC->JAX`,
+   `WSH->WAS`, and `ARZ->ARI`; every changed Python consumer imports it. Matching
+   browser boundary logic now lets the team and room pages join provider-native
+   `LA` rows to canonical `LAR`. Before the fix, all six Rams on the CVS board had
+   null team context and surrounding talent, the room omitted the Rams PROE chip,
+   and `teams.html#t=LAR` fell back. Source-derived guards cover all four team-keyed
+   shards and browser smoke exercises the LAR route. BULLISH tags and the engine/VOR
+   payload are unchanged.
+6. **Full battery green on the alias branch before a clean docs-only rebase.** The
+   gate-runner self-test plus fourteen gated suites ran
+   16/70/22/50/70/17/16/41/63/47/43/1211/23/357/38 checks. All five analysis
+   determinism reruns executed from the complete HISTORY cache: 38 guards, zero
+   skips. Browser smoke ran 357; `MATH DIFF PROOF: EMPTY` for all ten frozen
+   function bodies. The rebase added only unreferenced `docs/ffopportunity/` files;
+   executable and test bytes did not move.
 
 ### In flight / nothing blocked
 
-The current post-#62 triage branch is green and awaits Anthony's review; it must not
+The current team-code alias branch is green and awaits Anthony's review; it must not
 merge without that review. PR #54 remains OPEN, ON HOLD, and untouched at remote
 head `4bd541e`; GitHub currently reports it conflicting with `main`. Its PATHS
 policy is still the data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the
 conditional spread floor. Do not rebase, resolve, or merge it until the order is
-drawn and Anthony asks to inspect his actual slot. The new `docs/ffopportunity/`
-dataset is present on main for the queued BULLISH input assessment; do not start
-that assessment until Anthony sends its brief.
+drawn and Anthony asks to inspect his actual slot. The `docs/ffopportunity/` R export
+is an analysis source, not app truth: the app's Week-1 Vegas sign was already
+correct, and the shipped QB table did not inherit the R file's `-2` interception
+error. Do not consume regenerated local exports. After this PR, follow Anthony's
+sequence: TE-gate honesty, contaminated-percentile verification/sweep, then corrected
+forward Vegas from raw schedule data in shadow only.
 
 ### The three things the next agent most needs to know
 

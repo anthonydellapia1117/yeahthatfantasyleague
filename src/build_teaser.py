@@ -25,6 +25,7 @@ import json
 import os
 
 from engine_lineage import require as require_engine_digest
+from team_codes import CANONICAL_NFL_TEAMS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "teaser")
@@ -198,10 +199,7 @@ def build():
         page("YTFL Draft Room 2026", "draft", dr, engine_digest))
 
     # TEAMS - the 32 tiles (public NFL info); every instrument locked
-    teams32 = ["ARI","ATL","BAL","BUF","CAR","CHI","CIN","CLE","DAL","DEN","DET","GB",
-               "HOU","IND","JAX","KC","LA","LAC","LV","MIA","MIN","NE","NO","NYG",
-               "NYJ","PHI","PIT","SEA","SF","TB","TEN","WAS"]
-    tiles = "".join(f"<span>{t}</span>" for t in teams32)
+    tiles = "".join(f"<span>{t}</span>" for t in CANONICAL_NFL_TEAMS)
     tm = f"""
 <div class="card"><h2>All 32 teams</h2><div class="tgrid">{tiles}</div></div>
 {locked_card("Play caller - curated, source-cited", 2)}
