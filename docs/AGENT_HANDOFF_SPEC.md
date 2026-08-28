@@ -399,6 +399,13 @@ new evidence wastes a cycle.
 - **Correct generator code is not evidence that its artifact was regenerated.**
   Compare the committed schema/content with a fresh output. The corrected R source
   and stale RB CSV disagreed while both looked individually plausible.
+- **Committed CSVs are LF; programmatic regeneration reformats every line.**
+  Python's `csv.writer` emits CRLF by default, so rewriting a file to change one
+  header turns a 1-line diff into 193 insertions and 193 deletions. The data hash
+  still matches, so it reads as harmless in review while burying the actual change.
+  For a header-only edit use a targeted `sed '1s/old/new/'` (or pass
+  `lineterminator="\n"` when a full rewrite is genuinely required), then confirm
+  with `git diff --stat` that only the intended lines moved.
 
 ---
 
