@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-28 by Codex - excluded absent RB observations from the live BULLISH percentile, suspended the vacuous TE matrix with visible provenance, reran N.1 in its honest RB/WR scope, and activated raw-schedule forward Vegas only for QB environment and WR opportunity. |
-| **Next agent** | Wait for Anthony's review of `codex/bullish-input-integrity`; do not merge it unilaterally. Keep #54 OPEN, ON HOLD, and untouched. After this branch is resolved, follow the remaining `docs/ffopportunity/FFOPPORTUNITY_HANDOFF.md` integration order, preserving the display/shadow/offline/do-not-wire boundaries. |
-| **Branch** | `codex/bullish-input-integrity`, based on `main` at `242ae6b` (#65); review and merge only through its PR |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #65 is merged and live at `242ae6b`; the Pages run was green, all 48 deployed files were byte-identical, all seven surfaces returned 200, `PAGES DATA FRESH - published 2026-08-28T02:16Z (9h ago)`, and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. The BULLISH input-integrity branch is not live pending review. |
+| **Last touched** | 2026-08-28 by Codex - made the forward-Vegas horizon updateable and attributable before its first stale build: daily validated snapshot sync, content-linked transition events, fail-closed contraction, current-code same-build deltas, and visible Home/Draft Room provenance. |
+| **Next agent** | PR #66 is approved for squash merge; the current agent owns its Pages byte verification and publication/preflight checks. If interrupted before that report, finish those checks rather than assuming the merge is live. Keep #54 OPEN, ON HOLD, and untouched. Then follow the remaining `docs/ffopportunity/FFOPPORTUNITY_HANDOFF.md` integration order, preserving the display/shadow/offline/do-not-wire boundaries. |
+| **Branch** | `codex/bullish-input-integrity`, based on `main` at `242ae6b` (#65), PR #66; implementation head includes the refresh-and-attribution amendment and is approved for merge |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #65 is the last verified deployment while this baton is written. PR #66 must not be called live until Pages bytes match main and both publication checks pass. |
 | **Draft order** | UNDRAWN as last checked 2026-08-28 (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -99,7 +99,7 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    interval from 31.0pp to 35.5pp; it did not rescue the result. The approved
    verdict is artifact-backed on `ff-hub.html`, and all tags remain display-only.
 9. **Forward Vegas is live only in the two approved consumers.** The builder reads
-   raw `schedule_2026.csv`, validates 272 regular-season games / 32 canonical teams
+   the committed `schedule_2026.csv` snapshot, validates 272 regular-season games / 32 canonical teams
    / 17 games per team, verifies the home-spread sign independently, and derives
    the maximal contiguous fully priced horizon every build. Current scope is Weeks
    1-6, 93 games, 186 team-games; Week 7 is 7/14 priced. The top environments are
@@ -108,8 +108,20 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    Mahomes promotes to BULLISH and Ja'Marr Chase demotes to WATCH. The replacement
    feeds only QB environment and WR opportunity. All ten RB tag records are
    object-identical in the same-build counterfactual because RB expected-TD equity
-   remains on its separate Week-1 source. The horizon, priced-game counts, source
-   SHA, and activation delta are permanent provenance.
+   remains on its separate Week-1 source. Daily pages-data now refreshes live
+   `games.csv`, validates and atomically snapshots its 2026 rows before any
+   consumer, and stages the snapshot plus metadata with every derivative. Current
+   provenance is `UNCHANGED`, Weeks 1-6, 93 games / 186 team-games, pulled
+   `2026-08-28T13:40:39+00:00`; raw source bytes moved but the decision-input digest
+   did not. `HORIZON_EXTENDED`, `REPRICED`, `CONTRACTED`, and `UNCHANGED` are
+   separately attributed; contraction fails before replacing either snapshot file.
+   Home and Draft Room expose the current and last material event. A synthetic
+   Week-7 completion fires `HORIZON_EXTENDED` at 93 -> 107 games / 186 -> 214
+   team-games. The consumer independently rederives transition metadata, requires
+   two finite canonical 32-team maps, keeps model-only movement out of the
+   schedule-only delta, and rejects ambiguous mixed material frames.
+   This is silent-staleness occurrence five and the first one found prospectively:
+   the update path of a new feature was audited before that feature could freeze.
 10. **Source-quality defects are recorded separately from app truth.** The
    lucky-player penalty reproduces from the contaminated all-week file but changes
    materially in the clean regular-season control. The R forward-Vegas export has
@@ -118,11 +130,11 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    committed CSV still carries `target_volume` and 2,530 junk rows. Reproducible
    arithmetic, corrected source, and regenerated artifact bytes are three distinct
    claims.
-11. **Full battery green on the current branch.** The
+11. **Full battery green on the amended current branch.** The
    gate-runner self-test plus fourteen gated suites ran
-   16/70/22/50/70/17/16/79/63/47/45/1211/23/363/38 checks (2,130 total). All five analysis
+   16/70/22/50/70/17/16/89/63/47/48/1211/23/366/38 checks (2,146 total). All five analysis
    determinism reruns executed from the complete HISTORY cache: 38 guards, zero
-   skips. Browser smoke ran 363; `MATH DIFF PROOF: EMPTY` for all ten frozen
+   skips. Browser smoke ran 365; `MATH DIFF PROOF: EMPTY` for all ten frozen
    function bodies. The ceiling artifact was rebuilt against #65's exact engine
    lineage before the BULLISH chain: weekly replacements are unchanged; 140 ADPs
    moved with the fresh engine, and only Kyler Murray and Tyler Allgeier moved in
@@ -130,8 +142,8 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 ### In flight / nothing blocked
 
-The current BULLISH input-integrity branch is green and awaits Anthony's review; it
-must not merge without that review. PR #54 remains OPEN, ON HOLD, and untouched at
+The current BULLISH input-integrity branch is green and Anthony approved its merge;
+the merge/deploy verification remains owned by the current agent. PR #54 remains OPEN, ON HOLD, and untouched at
 remote head `4bd541e`; its mergeability is currently unresolved against moving
 `main`. Its PATHS
 policy is still the data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the
