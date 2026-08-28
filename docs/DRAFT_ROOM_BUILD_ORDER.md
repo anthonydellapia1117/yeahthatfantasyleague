@@ -1,5 +1,9 @@
 # Draft Room v2 - Master Build Order
 
+> **Historical build record, not an operational runbook.** The mapped lineage
+> chain in `docs/DRAFT_MORNING.md` supersedes every engine-only rebuild or ship
+> instruction below. Do not execute this document top to bottom.
+
 **For the Claude Code Web session. Execute top to bottom. All git work is yours: branch, commit, PR, merge on green. Anthony merges and pushes nothing. Report at each gate.**
 
 Draft is 2026-09-08. This order was assembled from three research streams: a feature inventory of FantasyPros Draft Wizard, Draft Sharks War Room, WalterPicks, PlayerProfiler, RotoBaller, DraftKick, and Footballguys Draft Dominator; a design pass for broadcast-grade live sports UI; and a gap audit of this repo mapping every candidate feature to the exact data source that powers it. Their data is paid and untouchable. Their feature concepts, rebuilt on our verified data, are the target - and one feature none of them have (opponents who are the actual league mates, modelled from 13 seasons) is the edge.
@@ -79,7 +83,10 @@ No commercial tool has this: **mock drafts where the 11 opponents are the actual
 ## PHASE 5 - Ship it as a real app
 
 1. **Enable GitHub Pages** on main via the API (repo is public, Pages is off). Serve the repo root; the app lands at `https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html`. Add a root `index.html` that redirects there.
-2. **Draft-morning flow** becomes: `python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push` - Pages redeploys in about a minute. Document it in README. The local file remains the offline fallback; note both in the app footer.
+2. **Superseded operational note:** the original engine-only ship command is no
+   longer valid. Use the mapped `.github/workflows/draft-refresh.yml` chain in
+   `docs/DRAFT_MORNING.md`; strict engine derivatives must rebuild together. The
+   local file remains the offline fallback; note both in the app footer.
 3. **Verify the live URL** loads on mobile viewport, passes the smoke suite pointed at the deployed page, and that Sleeper CORS works from the Pages origin (it is `*`, but verify, do not assume).
 
 **Gate 5**: the URL, loading, with a screenshot from a 390px viewport.

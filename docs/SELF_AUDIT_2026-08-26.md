@@ -36,15 +36,15 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 11 | Lift ratios against near-zero base rates (DEF 4.30x on a 0.005 share) | GUARD (same run) | hours | yes | ratio-of-noise |
 | 12 | The power-law sd **lost its own out-of-sample backtest** to the step it replaced | SELF-POST (survival audit) | ~1 day | yes | **ADOPTED WITHOUT OUT-OF-SAMPLE TEST** |
 | 13 | JS `1-erf` saturates to hard 0 past z~6 while Python `erfc` keeps mass | SELF-POST (survival audit) | since first room | yes | **TWO-SURFACES (2)** |
-| 14 | A single failed poll permanently replaced the live UI with the pre-draft view, under a forfeit clock | REVIEWER (gated v2 review) | within the v2 diff | no (caught pre-merge) | **FAIL-OPEN ERROR HANDLING** |
-| 15 | Quarantine guard 8 built its leak list and **never asserted it** | REVIEWER (gated v2 review) | since written | no (pre-merge) | **FAIL-OPEN GUARD (1)** |
+| 14 | A single failed poll permanently replaced the live UI with the pre-draft view, under a forfeit clock | REVIEWER (gated v2 review) | within the v2 diff | no (caught pre-merge) | **FAIL-OPEN CONTROL (1)** |
+| 15 | Quarantine guard 8 built its leak list and **never asserted it** | REVIEWER (gated v2 review) | since written | no (pre-merge) | **FAIL-OPEN GUARD (2)** |
 | 16 | Nine further v2 defects (sim survival credit, mid-draft sim seeding, roster_id coercion, snake mapping triplicated, etc.) | REVIEWER (gated v2 review) | within the diff | no | mixed |
 | 17 | Walter multiplier inverted judgment for the 29 negative-CVS players | REVIEWER (red-team, post-merge #28) | ~1 day | yes | **UNTESTED SIGN DOMAIN** |
 | 18 | On your own clock the pick engine computed survival to the current pick (trivially 100%), zeroing scarcity | REVIEWER (red-team) | ~1 day | yes | **DEGENERATE-CASE ASSUMPTION** |
 | 19 | Depth charts 9 days stale against a 7-day guard; shards had not rebuilt since 08-17 | GUARD (during a refresh) | ~8 days | yes | **SILENT CRON (1)** |
 | 20 | Crosswalk collapsed Marvin Harrison onto Marvin Harrison Jr. | GUARD (98% floor) | ~1 day | yes | **NAME-NORM (2)** |
 | 21 | Two tests hardcoded one day's data and failed on correct behavior | GUARD | ~1 week | n/a | data-dependent test |
-| 22 | Test wrapper exit-code masking: a pipe/compound wrapper returned 0 around a crashing suite - **a false green was committed** | REVIEWER (PR #48 blocker, relayed by Anthony) | unknown, >=1 commit | yes | **FAIL-OPEN GUARD (2)** |
+| 22 | Test wrapper exit-code masking: a pipe/compound wrapper returned 0 around a crashing suite - **a false green was committed** | REVIEWER (PR #48 blocker, relayed by Anthony) | unknown, >=1 commit | yes | **FAIL-OPEN GUARD (3)** |
 | 23 | Same WR recommended at picks 24 and 25 across a snake turn | **ANTHONY** (visually, live) | since forward cards | yes | **MULTI-PICK INDEPENDENCE (1)** |
 | 24 | Naive max-VOR drafts duplicate elite TEs early | GUARD (M1 mock validation, built to catch this) | since first engine | yes | **MULTI-PICK INDEPENDENCE (2)** |
 | 25 | VONA prune summed raw VOR - the objective M1 had already disproved | **SELF-PRE** (mid-build) | 0 | no | **MULTI-PICK INDEPENDENCE (3)** |
@@ -57,24 +57,26 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 32 | VONA conditioning mismatch: E[now] unconditional vs E[next] conditional, 28% of nodes negative | **REVIEWER** | since the tree shipped | yes | **CONDITIONING FRAME (2)** |
 | 33 | VONA ignored roster feasibility (three early TEs on a path) | **REVIEWER** | since the tree shipped | yes | **MULTI-PICK INDEPENDENCE (4)** |
 | 34 | Room validated that Sleeper *answered*, not that the answer was *usable*; a shared cache served 118s-old picks read as fresh | **REVIEWER** | since first room | yes | **FAIL-OPEN FETCH** |
-| 35 | pages-data cron: 8 of 14 scheduled runs failed, last four consecutively; live site served 4-day-old data | **REVIEWER** | 4 days (this incident) | **yes, live** | **SILENT CRON (2)** |
+| 35 | pages-data cron: 8 of 14 scheduled runs failed, last four consecutively; live site served Aug-17 depth data for 6d 6h 58m 40s | **REVIEWER** | 6d 6h 58m 40s | **yes, live** | **SILENT CRON (2)** |
 | 36 | BULLISH verdict automation statistically unsound (post-hoc MDE as equivalence test, six cells no multiplicity, sign-blind BEATS) | **REVIEWER** | ~1 day | yes | **AUTOMATING A JUDGMENT** |
 | 37 | N.1 written to a docs file, on no page in the app | **REVIEWER** | ~1 day | n/a | **DOC/ARTIFACT DIVERGENCE (2)** |
 | 38 | `paths.html` omitted from the Pages explicit copy list - live 404 | SELF-POST (deploy byte-compare) | ~1 hour | **yes, live** | **DEPLOY MANIFEST INCOMPLETENESS** |
 | 39 | Crosswalk normalizer did not fold diacritics (Estime / Estimé) | SELF-POST (diagnosing #35) | ~2 weeks | yes | **NAME-NORM (3)** |
 | 40 | V1 changelog reports 39 forks / 29 pruned / 15 coin flips, while the committed `04d3dd3` artifact records 53 / 49 / 28; counters include subtrees later removed by ancestor pruning | **REVIEWER** (PR #54 accounting) | since V1 shipped | n/a (repository record) | **DOC/ARTIFACT DIVERGENCE (3)** |
+| 41 | pages-data refreshed `depth_charts.json` without rebuilding CVS; a correct rebuild moved 80/190 player records and two Walter reference scales | **REVIEWER** (PR #54 rebase) | ~2 hours | no - the token-authored commit never deployed | **SILENT CRON (4)** |
+| 42 | Same-day engine and mock builds shared one date, so the linkage guard passed while 14 mock tier values were stale | **REVIEWER** (#56 dependency audit) | ~1 day | yes (deployed artifact) | **FAIL-OPEN GUARD (5)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
-**Roughly 1 in 8, and the honest number is probably worse.**
+**Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 40 entries: 4 are SELF-PRE (#25, #26, #27, #30) - **10%**. Even those
+Of the 42 entries: 4 are SELF-PRE (#25, #26, #27, #30) - **9.5%**. Even those
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. None of
 the four is an instance of me noticing an error I had no prior reason to look for.
 
-The other categories: SELF-POST 11, GUARD 9, REVIEWER 15, ANTHONY 1.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 16, ANTHONY 1.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -83,7 +85,7 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Fifteen of 40 - the largest single share, and disproportionately the severe ones -
+Sixteen of 42 - the largest single share, and disproportionately the severe ones -
 came from outside review. Of the five defects that reached the live site and stayed
 there for more than a day (#19, #31, #34, #35, #39), **four were found by someone
 other than me.**
@@ -118,23 +120,29 @@ repair is a patch to the symptom. Worse, there are **two** independent normalize
 fixed in only one of them. (Confirmed this session: the diacritic fold exists in
 `build_pages_data.py` and not in `src/ingest.py`.)
 
-**SILENT CRON / STALE PUBLICATION - 3 occurrences (#19, #35, and the pre-#19
-shard staleness it exposed).**
+**SILENT CRON / STALE PUBLICATION - 4 occurrences (#19, #35, #41, and the
+pre-#19 shard staleness it exposed).**
 **Why it did not generalize:** after #19 the fix was a *guard inside the job* (a
 7-day as-of check). That makes the job fail loudly - but a failing job is exactly
 the state nobody was watching. The monitoring was pointed at the machine, not at the
 deliverable. Only P2 (this session) moved the check to the published artifact on the
-live site. That fix is one day old and unproven.
+live site. Even then, #41 recurred in a second producer because the downstream
+rebuild rule was copied into one workflow rather than enforced at the shared
+publication boundary. The measured publication exposure behind #35 was not the
+four-day shorthand first recorded: Pages served Aug-17 depth data for exactly
+**6d 6h 58m 40s**.
 
-**FAIL-OPEN GUARD - 3 occurrences (#15, #22, and the SKIP hole found in Part 2
-below).**
-A guard that constructs its evidence and never asserts (#15); a wrapper that returns
-0 around a crash (#22); a suite that prints ALL PASS having skipped a third of
-itself (Part 2, P2-1). **Why it did not generalize:** #22's fix (`run_gate.sh`) is
-excellent for the shape it targets - exit codes and sentinels. But it validates the
-*envelope*, never the *content*: it cannot tell whether the guards inside actually
-ran. The class is "a check that cannot fail," and only two of its three instances
-were addressed.
+**FAIL-OPEN GUARD / CONTROL - 5 occurrences (#14, #15, #22, the SKIP hole in
+Part 2, and #42).**
+A failed poll dropped permanently into fallback (#14); a guard constructed evidence
+and never asserted it (#15); a wrapper returned 0 around a crash (#22); a suite
+printed ALL PASS after skipping a third of itself (Part 2, P2-1); and a linkage
+guard compared date-only strings that necessarily collide for two same-day builds
+(#42). **Why it did not generalize:** #22's fix (`run_gate.sh`) is excellent for
+the shape it targets - exit codes and sentinels. But it validates the *envelope*,
+never the *content*. The class is "a check that cannot fail in the state it exists
+to detect." Engine linkage now uses a self-verifying canonical content digest,
+and a same-day mutation fixture proves the digest changes while the date does not.
 
 **CONDITIONING FRAME - 2 occurrences (#8, #32).** Mixing conditional and
 unconditional survival in one expression, four months apart, in two different
@@ -165,14 +173,16 @@ caught quickly, most within hours, several before merge. **Not one loud failure 
 reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
-#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40. Seventeen of forty, and
+#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42. Nineteen of
+forty-two, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it
 has a silence problem.** When something fails loudly the existing machinery catches
 it fast. The defects that survive are, without exception, the ones that produce a
 plausible-looking output: a clock that counts down (just wrong), a page that renders
-(from 4-day-old data), a guard that passes (having asserted nothing), a tree of
+(through a 6d 6h 58m 40s stale-publication interval), a guard that passes (having
+asserted nothing), a tree of
 recommendations (28% of which are mathematically impossible), a 200 OK (carrying a
 two-minute-old cache).
 
@@ -182,7 +192,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Fifteen finds, including four of the five long-lived live defects. The mechanism is
+Sixteen finds, including four of the five long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 
@@ -346,7 +356,7 @@ context this handoff is meant to preserve.
 
 **P2-1. `run_gate.sh` cannot tell a fully-run suite from a half-skipped one.**
 RESOLVED 2026-08-26 - see the measured coverage below.
-FAIL-OPEN GUARD, occurrence 3.
+FAIL-OPEN GUARD, occurrence 4.
 
 Confirmed by execution:
 ```
@@ -360,7 +370,7 @@ both hold. So the workflow step named "Analysis guards" is green on a suite that
 not run its guards.
 
 - Severity: MEDIUM. No known defect is hiding behind it; the point is that one could
-  be, indefinitely, and this is the third instance of the class.
+  be, indefinitely, and this is the fourth instance of the class.
 - Draft-critical: indirectly - it is a draft-morning gate.
 - Cheapest fix: have each suite print `RAN n GUARDS` and have `run_gate.sh` fail if
   a `SKIP` appears without `GATE_ALLOW_SKIP=1`.
@@ -399,24 +409,24 @@ draft. The *engine* is not.)
   draft-refresh workflow.
 
 **P2-3. The draft-morning workflow rebuilds the engine but not the artifacts derived
-from it, and no guard notices the divergence.** RESOLVED 2026-08-26: the workflow
-rebuilds the tree, and a page guard asserts every artifact carrying
-`engine_generated` matches the engine shipping beside it.
+from it, and no guard notices the divergence.** RESOLVED 2026-08-27: the workflows
+rebuild their mapped downstream chains, and the shared publication guard verifies
+canonical engine-content digests rather than calendar dates.
 
-`draft-refresh.yml` rebuilds exactly three things: `engine_2026.py`,
-`build_cvs_inputs.py`, `build_cvs.py`. It does **not** rebuild
+At discovery, `draft-refresh.yml` rebuilt exactly three things: `engine_2026.py`,
+`build_cvs_inputs.py`, `build_cvs.py`. It did **not** rebuild
 `vona_tree_2026.json`, `mock_drafts_2026.json`, `archetypes_2026.json`,
 `ceiling_2026.json`, `bullish_2026.json`, or `base_rates.json`.
 
-A previous refresh moved 259 ADP values. So on draft morning the board refreshes and
-the PATHS tab does not - it will render a decision tree built against yesterday's
-board, on a nav-linked page, on draft night.
+A previous refresh moved 259 ADP values. At discovery, a draft-morning board refresh
+therefore would have left PATHS on yesterday's engine while still rendering it as a
+nav-linked decision surface.
 
-Confirmed: only 2 of 30 artifacts record `engine_generated` at all
+At discovery, only 2 of 30 artifacts recorded `engine_generated` at all
 (`vona_tree`, `mock_drafts`). `test_mock.py` asserts the key **exists**; nothing
 asserts it **matches**. `paths.html` displays the tree's own recorded engine date but
-never fetches `engine_2026.json`, so the mismatch is invisible on the page. The only
-staleness warning that exists anywhere is `draft_room.html:1627`, for cvs-vs-engine.
+never fetched `engine_2026.json`, so the mismatch was invisible on the page. The
+only warning then was in the draft room, for CVS versus engine.
 
 Confirmed cost of the fix: `python3 src/build_vona_tree.py` takes **1.0s**, needs no
 network and no `HISTORY`, and is byte-deterministic (zero diff on rebuild). The
@@ -425,9 +435,26 @@ P2-U2, and which is *why* they were left out, a reason recorded nowhere.
 
 - Severity: **MEDIUM-HIGH.**
 - Draft-critical: **yes** for PATHS.
-- Cheapest fix: add `build_vona_tree.py` to the workflow (1 second) and add a guard
-  asserting `tree.provenance.engine_generated == engine.generated`. For the
-  HISTORY-bound artifacts, surface the age on the page rather than pretending.
+- Implemented fix: `draft-refresh` rebuilds CVS, VONA, mock, decision cards, the
+  embedded room payload, and all five teaser pages from one engine object.
+  `pages-data` rebuilds every declared shard consumer before an atomic commit.
+  The engine carries a SHA-256 over canonical JSON with only the digest field
+  omitted; six direct JSON derivatives record that digest. CVS, VONA, and mock are
+  strict and refuse a mismatch. Ceiling and BULLISH are HISTORY-bound display
+  layers: their lineage may lag the 06:00 engine until the 08:00 pages-data run,
+  but the UI hides or neutralizes the stale state rather than presenting it as
+  current. BULLISH inputs digest each committed source payload, tags digest the
+  exact inputs payload, and pages-data runs a strict current-engine repair guard;
+  two same-engine children therefore cannot hide a skipped rebuild. BULLISH was
+  deliberately not added to the 25-minute draft-morning job: doing so would add
+  pyarrow, a 156 MB cache, 59 cached source files, and a live games endpoint to the
+  decision-critical path for a display-only tag.
+- The same-day fixture is the essential regression: change an engine field while
+  leaving `generated` unchanged and the digest must differ. The old date guard
+  could not fail that test. On the pre-#56 snapshot it hid 14 stale mock tier
+  values; BULLISH separately carried one stale Zay Flowers injury reason with no
+  lineage oracle. In an isolated rebuild from base `da78b0c`, **0 substantive
+  mismatches across all 13 direct, embedded, and static engine derivatives**.
 
 **P2-4. Optional-shard fetch failures degrade silently.**
 On `big_board.html`, `base_rates.json` / `ceiling_2026.json` / archetypes / bullish

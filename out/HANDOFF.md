@@ -213,9 +213,10 @@ Never backfill a pick, roster, transaction, or result. Never merge manager ident
 Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html
 (local `out/draft_room.html` is the offline fallback; same embedded model).
 Six gated phases per docs/DRAFT_ROOM_BUILD_ORDER.md: broadcast-grade design
-system, two-minute-clock live mode, sixteen features (roster-need-aware
+system, live pick-clock mode (duration from draft settings), sixteen features (roster-need-aware
 recommendation first), the quarantined league-mate simulator, GitHub Pages
-deployment via the gh-pages workflow, and this review. Draft-morning flow:
-`python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push`.
-The survival math is frozen: 21 Python guards + the smoke suite with 42 JS
+deployment via the gh-pages workflow, and this review. Draft-morning production
+uses the mapped, gated `.github/workflows/draft-refresh.yml` chain in
+`docs/DRAFT_MORNING.md`; an engine-only commit is invalid.
+The survival math is frozen: 41 Python guards + the smoke suite with 42 JS
 parity anchors + the calibration benchmark gate every merge.

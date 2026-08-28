@@ -33,14 +33,10 @@ Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_
 (add it to the phone home screen - it installs like an app). The local file
 `out/draft_room.html` is the offline fallback; both carry the same embedded model.
 
-Draft-morning flow:
-
-```bash
-python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push
-```
-
-GitHub Pages redeploys in about a minute. Projections, ADP, and injury
-statuses move daily - regenerate the morning of 2026-09-08.
+Draft-morning flow is the mapped, gated `.github/workflows/draft-refresh.yml`
+chain documented in `docs/DRAFT_MORNING.md`. Never rebuild and ship the engine
+alone: CVS, VONA, mock, teaser, decision cards, and the embedded room payload must
+carry the same content digest. GitHub Pages redeploys after the verified chain.
 
 ## Rebuild
 

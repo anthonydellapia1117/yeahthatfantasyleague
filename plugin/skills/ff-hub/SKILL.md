@@ -34,7 +34,7 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 
 | Ask | Do this |
 |---|---|
-| **2026 draft, any pick-level question** | `python3 src/engine_2026.py --slot N`. Opponent-aware decision cards, survival odds fitted to 2,039 of this league's picks. **Regenerate the same day** - projections, ADP, and injury statuses churn daily |
+| **2026 draft, any pick-level question** | Read the committed engine and decision cards. If freshness is required, run the complete `.github/workflows/draft-refresh.yml` / `docs/DRAFT_MORNING.md` chain, then read the rebuilt artifacts. Never regenerate or ship the engine alone. Opponent-aware decision cards use survival odds fitted to 2,039 of this league's picks |
 | Raw board, tiers, wait-or-reach | `python3 draft_board.py <league_id>`, or the `ff-hub` MCP tools. Superseded by the engine for 2026 |
 | "What do champions do?" | `out/HANDOFF.md` headline plus `out/lineup_efficiency.csv`. Lead with the null result |
 | Manager tendencies | `out/picks.csv` grouped by franchise-era, never by franchise alone |
@@ -42,12 +42,12 @@ If a question assumes champions share a draft pattern, say so plainly and give t
 | Start-sit | `out/rb_startsit_decisions.csv` (176 named swaps, knowable-vs-hindsight verdicts) plus `out/lineup_efficiency.csv`. Read the 3E caveat below before advising |
 | Rebuild everything | `python3 src/ingest.py && python3 src/phase2_value.py && python3 src/phase3_lineup.py && python3 src/build_app_data.py` |
 | Open the dashboard | Serve the repo root with `python3 -m http.server 8000`, then open `http://127.0.0.1:8000/out/ff-hub.html`; N.1 loads a separate computed artifact and file-open must fail loudly |
-| Draft-day app | https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html - or `open out/draft_room.html` offline. Regenerate draft morning: `python3 src/engine_2026.py`, commit, push. Live mode carries the pick grade gear (presentation only, guarded), the ALSO CONSIDER panel on WAIT/COIN FLIP, the Grid screen (12x14 live board), and the Board screen (best-available overall + by position, drafted toggle) |
-| Record a conviction call (bull/bear) | Add a row to `data/my_board.csv` (schema + pre-registered scoring rule in its header), then `python3 src/engine_2026.py`. YOUR CALL chips appear beside model VOR; the ONLY decision it moves is a coin-flip tie-break toward bulls. Empty board = byte-identical output (guard 10) |
+| Draft-day app | https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_room.html - or `open out/draft_room.html` offline. Regenerate with `.github/workflows/draft-refresh.yml` / `docs/DRAFT_MORNING.md`; never ship the engine without its strict derivatives. Live mode carries the pick grade gear (presentation only, guarded), the ALSO CONSIDER panel on WAIT/COIN FLIP, the Grid screen (12x14 live board), and the Board screen (best-available overall + by position, drafted toggle) |
+| Record a conviction call (bull/bear) | Add a row to `data/my_board.csv` (schema + pre-registered scoring rule in its header), then run the complete mapped refresh chain in `.github/workflows/draft-refresh.yml` / `docs/DRAFT_MORNING.md`. YOUR CALL chips appear beside model VOR; the ONLY decision it moves is a coin-flip tie-break toward bulls. Empty board = byte-identical output (guard 10) |
 | Look up one player (value, usage, market band) | `out/players.html#p=<name>` on Pages - every number tappable to its shard and source. K/DST carry the floor label |
 | Team context (caller, vacated usage, depth) | `out/teams.html#t=<abbr>` - curated play-caller rows only (19 teams; others say so), PROE display-only per N1, vacated = size of the hole, not a landing spot |
 | The action board (staleness, countdown, trending) | `out/home.html` - shard ages, overlay completeness, attributed trending adds. If a shard shows stale, check the pages-data cron before trusting a page |
-| Share a link that gives nothing away | `out/teaser/` - the watermarked build: countdown, 12 player names, the hook line, everything else redacted AT BUILD TIME (view-source clean, leak guard in tests). Regenerate with `python3 src/build_teaser.py` after the engine |
+| Share a link that gives nothing away | `out/teaser/` - the watermarked build: countdown, 12 player names, the hook line, everything else redacted AT BUILD TIME (view-source clean, leak guard in tests). It is rebuilt inside the complete mapped draft-refresh chain; never refresh or ship it as a substitute for that chain |
 | The big board (pre-draft master list) | `out/big_board.html` - VOR order with tier cliffs; every factor (market band, bye, 2025 workload, depth slot, play-caller, PROE) is a labelled evidence chip beside the number, never inside it. The ledger on the page states what is not wired (SOS/competition) and why. Never add a hidden composite - the folds were tested and failed |
 
 ## Anthony's position, stated once
