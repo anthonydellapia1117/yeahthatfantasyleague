@@ -227,7 +227,7 @@ Everything below was probed from this session on 2026-08-13 unless marked otherw
 | nflverse injuries continuity | nflreadr docs say the source died after 2024, yet a complete 2025 file exists (6,068 rows, weeks 1-22 - conflict flagged). 2026 in-season reliability unknown | Treat injuries as at-risk; degrade to "no data" gracefully |
 | Undocumented endpoints | Sleeper projections/ADP (#3), ESPN (#9) can change without notice | FFC ADP as documented fallback; nflverse mirrors for ESPN-derived data; staleness badges everywhere |
 | Sleeper licensing note | docs.sleeper.com says commercial use requires a licensing discussion | This is a private single-league tool, not a commercial product; note kept for the record |
-| K/DEF projections | Feed omits 21 scoring keys this league pays - projections are floors | Existing engine note stands; label on any K/DEF surface |
+| K/DEF projections | 21 configured league keys (19 nonzero) are absent verbatim; DEF TD components also use four unaliased feed names - projections are floors | Existing engine note stands; label on any K/DEF surface. A future alias layer must be position-aware and refuse component/canonical double-counting |
 
 ---
 
@@ -299,7 +299,7 @@ Research-level findings only (the design spec is deferred by choice). Patterns f
 | Lineup efficiency is a lead, not a finding: champions 89.75% vs field 88.44%, permutation p=0.078, n=13. Discipline (fewer swaps) recovers roughly 10 pts/season; 65% of lost RB points were hindsight spikes | Unchanged. In-season surfaces stay a later phase by design |
 | Opponent tendencies: real (r=+0.813, p<0.00002) and banned from probabilities (48,399-prediction backtest, p=0.99). Display and simulator only, SIM-badged | Unchanged, and extended: NFL team situation intel obeys the same law - display and overlay-evidence only, probability placement never, unless a backtest earns it |
 | Survival model: league-fitted 12-bin pick-error curve, beat both rivals out of sample (12/13 seasons, p=0.0034), guarded by 22 tests + 42-anchor parity suite | Unchanged. The undocumented-endpoint risk on its ADP input now has a documented fallback (FFC) on the record |
-| K/DEF projections are floors (feed omits 21 scoring keys) | Unchanged; label required on any K/DEF surface |
+| K/DEF projections are floors (21 configured keys absent verbatim, 19 nonzero; DEF TD components also use four unaliased names) | Unchanged; label required on any K/DEF surface |
 | Yahoo-era (2013-2024) point totals are bonus-exclusive, understated ~5%, ratios unaffected | Noted wherever era totals appear |
 
 ---

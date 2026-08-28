@@ -301,8 +301,108 @@ ok(_r2.get("coin_break", {}).get("toward") == _bull
 _brow = next(c for c in m2["my_board"] if c["call"] == "BULL")
 ok(_brow["matched"] and all(
     0.0 <= s <= 1.0 and abs(s - round(eng.survival(_brow["adp"], k), 3)) < 1e-9
-    for k, s in _brow["survival_to_my_picks"]),
-   "bull survival-to-my-picks recomputes exactly from the frozen survival()")
+    for picks in _brow["survival_to_slots"].values() for k, s in picks),
+   "bull survival-to-slot-picks recomputes exactly from frozen survival()")
+
+# 10e. Owner draft slot is identity, not roster_id. The real league's stable
+#      roster_id happens to be 7, so a slot-7 implementation looks correct until
+#      the draw lands anywhere else. Drive a synthetic slot-3 draw and prove the
+#      overlay follows those pick windows. Before the draw, no seat may be
+#      assumed: all twelve slot windows must remain available in the artifact.
+_slot3 = copy.deepcopy(m0)
+_slot3["overlay_pick_basis"] = {
+    "status": "drawn", "slot": 3, "source": "draft_order",
+    "coverage": "all_slots",
+}
+_slot3 = eng.apply_overlay(_slot3, _calls)
+_slot3_bull = next(c for c in _slot3["my_board"] if c["call"] == "BULL")
+_slot3_expected = [r["pick"] for r in _slot3["slots"]["3"]][:4]
+ok([k for k, _s in _slot3_bull["survival_to_my_picks"]] == _slot3_expected,
+   "overlay follows a drawn non-7 draft slot",
+   f"expected {_slot3_expected}, got "
+   f"{[k for k, _s in _slot3_bull['survival_to_my_picks']]}")
+ok("Survival to picks (slot 3)" in eng.render_markdown(_slot3) and
+   "Draft-order source: draft_order; owner slot 3" in
+   eng.render_markdown(_slot3),
+   "drawn overlay labels the resolved seat and its evidence")
+
+_undrawn = copy.deepcopy(m0)
+_undrawn["overlay_pick_basis"] = {
+    "status": "undrawn", "slot": None, "source": "identity_placeholder",
+    "coverage": "all_slots",
+}
+_undrawn = eng.apply_overlay(_undrawn, _calls)
+_undrawn_bull = next(c for c in _undrawn["my_board"] if c["call"] == "BULL")
+ok(set(_undrawn_bull.get("survival_to_slots", {})) ==
+   {str(s) for s in range(1, m0["league"]["teams"] + 1)} and
+   "survival_to_my_picks" not in _undrawn_bull,
+   "undrawn overlay assumes no seat and carries all twelve slot windows",
+   f"keys {sorted(_undrawn_bull.get('survival_to_slots', {}))}")
+ok("no seat is assumed" in eng.render_markdown(_undrawn) and
+   "all 12 slots precomputed; no owner slot assumed" in
+   eng.render_markdown(_undrawn),
+   "undrawn rendering labels the all-slot coverage instead of a default")
+_unavailable = copy.deepcopy(_undrawn)
+_unavailable["overlay_pick_basis"] = {
+    "status": "unavailable", "slot": None,
+    "source": "draft_endpoint_unavailable", "coverage": "all_slots",
+}
+ok("endpoint was unavailable" in eng.render_markdown(_unavailable),
+   "draft-order endpoint failure is visible in the generated decision cards")
+
+_uid, _rid = m0["league"]["anthony_user_id"], m0["league"]["anthony_roster_id"]
+_primary = eng.resolve_owner_slot(
+    {"status": "pre_draft", "draft_order": {_uid: 11},
+     "slot_to_roster_id": {"3": _rid}},
+    _uid, _rid, 12)
+ok(_primary == {"drawn": True, "slot": 11, "source": "draft_order"},
+   "draft_order user mapping outranks a conflicting slot map", str(_primary))
+_fallback = eng.resolve_owner_slot(
+    {"status": "pre_draft", "draft_order": None,
+     "slot_to_roster_id": {
+         str(s): (3 if s == 7 else _rid if s == 3 else s)
+         for s in range(1, 13)}},
+    _uid, _rid, 12)
+ok(_fallback == {"drawn": True, "slot": 3,
+                  "source": "slot_to_roster_id"},
+   "non-identity slot map resolves by roster identity", str(_fallback))
+_identity = eng.resolve_owner_slot(
+    {"status": "pre_draft", "draft_order": None,
+     "slot_to_roster_id": {str(s): s for s in range(1, 13)}},
+    _uid, _rid, 12)
+ok(_identity == {"drawn": False, "slot": None,
+                  "source": "identity_placeholder"},
+   "identity slot map means order undrawn, not owner in roster-id seat",
+   str(_identity))
+try:
+    eng.derive_overlay_pick_basis({
+        "draft_order": {"somebody-else": 4},
+        "slot_to_roster_id": {"2": 99, "7": 98},
+    })
+    _unresolved_loud = False
+except RuntimeError:
+    _unresolved_loud = True
+ok(_unresolved_loud,
+   "drawn-but-unresolvable owner slot fails before artifact generation")
+for _bad_draft, _label in [
+    ({"status": "drafting", "draft_order": None,
+      "slot_to_roster_id": None}, "started draft with missing order data"),
+    ({"status": "pre_draft", "draft_order": None,
+      "slot_to_roster_id": {"1": 1}}, "partial identity map"),
+    ({"status": "pre_draft", "draft_order": None,
+      "slot_to_roster_id": {str(s): (7 if s in (2, 3) else s)
+                             for s in range(1, 13)}},
+     "duplicate roster assignment"),
+]:
+    try:
+        eng.derive_overlay_pick_basis(_bad_draft)
+        _bad_loud = False
+    except RuntimeError:
+        _bad_loud = True
+    ok(_bad_loud, f"{_label} fails loud instead of choosing a plausible seat")
+_overlay_source = inspect.getsource(eng.apply_overlay)
+ok(".get(7)" not in _overlay_source and "slot-7" not in _overlay_source,
+   "overlay contains no seat-7 lookup or claim")
 m3 = copy.deepcopy(m2)
 m3.pop("my_board")
 for rounds in m3["slots"].values():

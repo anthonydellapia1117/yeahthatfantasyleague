@@ -38,7 +38,7 @@ rehearsal's `real` times.
 | 4b | `python3 src/mock_draft.py` | 0.2 s | deterministic mock validation - carries the exact engine content digest and must move with the engine |
 | 4c | `python3 src/build_teaser.py` | 0.1 s | regenerates the teaser's allowed player subset from the live board |
 | 4d | `python3 tests/test_run_gate.py` | 0.3 s | gate-runner self-test: proves the masking shapes (pipe, compound wrapper, exit-0 liar) are caught |
-| 5 | `sh tests/run_gate.sh python3 tests/test_survival.py` | 0.6 s | 41 frozen-behavior guards |
+| 5 | `sh tests/run_gate.sh python3 tests/test_survival.py` | 0.6 s | 54 survival, overlay-isolation, and owner-seat guards |
 | 6 | `GATE_SENTINEL="MATH DIFF PROOF: EMPTY" sh tests/run_gate.sh python3 tests/mathdiff.py` | 0.1 s | ten function bodies byte-identical to origin/main |
 | 7 | `sh tests/run_gate.sh python3 tests/test_cvs.py` | 0.1 s | anchor law, cap, signals, determinism |
 | 7b | `sh tests/run_gate.sh python3 tests/test_vor.py` | 0.1 s | exact scoring, derived flex allocation, derived tiers |

@@ -24,8 +24,9 @@ Honesty constraints, per the audit and the null results:
 - The projection feed carries NO variance measure, so "upside tilt" is
   implemented as flagging within-tier ties as coin flips for the owner
   to break toward ceiling - not as a fabricated variance stat.
-- K and DEF projections are FLOORS - the feed omits 21 scoring keys this
-  league pays. Carried on every surface that shows them.
+- K and DEF projections are FLOORS - 21 configured scoring keys (19 nonzero)
+  are absent verbatim, and DEF touchdown components use four unaliased feed
+  names. Carried on every surface that shows them.
 - Probabilities carry their inputs. Thin priors are named as thin.
 - K and DEF in the last two rounds. Not modelled beyond that.
 
@@ -47,6 +48,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from forward_policy import pick_marginal, roster_caps  # noqa: E402
 from engine_lineage import stamp as stamp_engine  # noqa: E402
 from player_names import PlayerIdentityResolver, comparison_key  # noqa: E402
+from draft_order import resolve_owner_slot  # noqa: E402
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -55,6 +57,7 @@ import draft_board as db
 LEAGUE = "1389378429505241088"
 DRAFT = "1389378429505241089"
 ANTHONY_USER_ID = "345197760305307648"
+ANTHONY_ROSTER_ID = 7
 TEAMS = 12
 ROUNDS = 14
 SKILL = ("QB", "RB", "WR", "TE")
@@ -202,6 +205,22 @@ def calibrated_cond_survival(adp, to_pick, from_pick):
 def snake_picks(slot):
     return [(r - 1) * TEAMS + (slot if r % 2 == 1 else TEAMS + 1 - slot)
             for r in range(1, ROUNDS + 1)]
+
+
+def derive_overlay_pick_basis(draft):
+    """Provenance for conviction-overlay pick windows from one draft payload."""
+    resolved = resolve_owner_slot(
+        draft, ANTHONY_USER_ID, ANTHONY_ROSTER_ID, TEAMS)
+    if resolved["drawn"] and resolved["slot"] is None:
+        raise RuntimeError(
+            "draft order is drawn but Anthony's slot is not resolvable")
+    return {
+        "status": "drawn" if resolved["drawn"] else "undrawn",
+        "slot": resolved["slot"], "source": resolved["source"],
+        # All slots stay in the populated overlay even after the draw. The
+        # selected alias is convenience, not the only surviving evidence.
+        "coverage": "all_slots",
+    }
 
 
 def load_opponents():
@@ -456,13 +475,30 @@ def build_model():
                 "floor": r["pos"] in ("K", "DEF")}
                for r in rows if r["adp"] < 900 or r["vor"] > 0]
 
+    # Seat provenance for the conviction overlay. Before the draw, Sleeper's
+    # slot map is the identity placeholder; roster_id 7 is identity, not seat.
+    # Preserve every slot hypothesis rather than silently treating those two
+    # integers as interchangeable. A drawn but unresolvable order is fatal: a
+    # wrong selected slot would produce plausible, incorrect survival numbers.
+    try:
+        draft = db.get(f"https://api.sleeper.app/v1/draft/{DRAFT}")
+    except Exception as exc:  # preserve all hypotheses, but never hide the outage
+        print(f"WARNING: draft-order endpoint unavailable: {exc}",
+              file=sys.stderr)
+        overlay_pick_basis = {
+            "status": "unavailable", "slot": None,
+            "source": "draft_endpoint_unavailable", "coverage": "all_slots",
+        }
+    else:
+        overlay_pick_basis = derive_overlay_pick_basis(draft)
+
     return {
         "generated": datetime.date.today().isoformat(),
         "league": {"id": LEAGUE, "draft_id": DRAFT, "name": lg["name"],
                    "teams": TEAMS, "rounds": ROUNDS,
                    "draft_date": "2026-09-08",
                    "anthony_user_id": ANTHONY_USER_ID,
-                   "anthony_roster_id": 7,
+                   "anthony_roster_id": ANTHONY_ROSTER_ID,
                    "scoring": "full PPR, 6-pt pass TD",
                    "starters": " ".join(lg["slots"])},
         "baselines": {p: baseline[p] for p in baseline},
@@ -472,6 +508,7 @@ def build_model():
         # the old assumed 50/50 RB/WR split is gone
         "flex_allocation": lg.get("flex_alloc", {}),
         "flex_source": lg.get("flex_source", ""),
+        "overlay_pick_basis": overlay_pick_basis,
         "adp_sd_curve": [[round(a, 2), round(s, 4)] for a, s in ADP_SD_CURVE],
         "survival_calibration": SURVIVAL_CALIBRATION,
         "survival_calibration_enabled": SURVIVAL_CALIBRATION_ENABLED,
@@ -496,9 +533,10 @@ def build_model():
                         "empirical ADP bins from 2,039 of this league's own picks "
                         "2013-2025; adopted over the power law per "
                         "docs/AUDIT_SURVIVAL_2026-08-12.md"),
-        "kdef_note": ("K and DEF projections are FLOORS - the Sleeper feed "
-                      "omits 21 scoring keys this league pays, including all "
-                      "sub-40 FG brackets and pts_allow brackets"),
+        "kdef_note": ("K and DEF projections are FLOORS - 21 configured "
+                      "league keys (19 nonzero) are absent verbatim; DEF TD "
+                      "components use unaliased feed keys def_fum_td, "
+                      "def_kr_td, pass_int_td, and pr_td"),
         "rosters": [{"roster_id": r["roster_id"], "handle": r["handle"],
                      # Sleeper team name, display only; null when the manager
                      # never set one. `franchise` stays the history join key.
@@ -562,15 +600,21 @@ def apply_overlay(m, calls):
     """Pure transform. Empty board -> m returned untouched (guarded byte-identity).
 
     Populated board -> adds m["my_board"] (display data + survival of each bull
-    to each slot-7 pick, computed WITH the frozen survival(), never into it)
+    to every slot's picks, computed WITH the frozen survival(), never into it)
     and stamps coin_break on rounds where a bull sits in an existing coin flip.
     Verdicts, primaries, and every survival number are never rewritten.
     """
     if not calls:
         return m
     resolver = PlayerIdentityResolver(m["players"])
-    my_picks = [r["pick"] for r in
-                (m["slots"].get(7) or m["slots"].get("7") or [])][:4]
+    basis = m.get("overlay_pick_basis") or {}
+    selected_slot = basis.get("slot")
+    slot_picks = {
+        str(slot): [r["pick"] for r in
+                    (m["slots"].get(slot) or
+                     m["slots"].get(str(slot)) or [])][:4]
+        for slot in range(1, int(m["league"]["teams"]) + 1)
+    }
     board = []
     bulls = set()
     for c in calls:
@@ -583,8 +627,14 @@ def apply_overlay(m, calls):
                           "tier": p["tier"]})
             if c["call"] == "BULL":
                 bulls.add(p["name"])
-                entry["survival_to_my_picks"] = [
-                    [k, round(survival(p["adp"], k), 3)] for k in my_picks]
+                entry["survival_to_slots"] = {
+                    slot: [[k, round(survival(p["adp"], k), 3)]
+                           for k in picks]
+                    for slot, picks in slot_picks.items()
+                }
+                if selected_slot is not None:
+                    entry["survival_to_my_picks"] = entry[
+                        "survival_to_slots"][str(selected_slot)]
         board.append(entry)
     m["my_board"] = board
     date_of = {c["player"]: c["date"] for c in calls if c["call"] == "BULL"}
@@ -686,8 +736,23 @@ def render_markdown(m):
             "in its header. The model's primary stays the wait-or-reach "
             "subject; the only decision the overlay touches is the coin-flip "
             "tie-break toward bulls.")
+        basis = m.get("overlay_pick_basis") or {}
+        selected_slot = basis.get("slot")
+        if basis.get("status") == "unavailable":
+            say("Draft-order endpoint was unavailable at build time; no seat "
+                "is assumed. Survival windows for all twelve slots are retained "
+                "in the JSON artifact.")
+        elif selected_slot is None:
+            say("Draft order is not resolved; no seat is assumed. Survival "
+                "windows for all twelve slots are retained in the JSON artifact.")
+        else:
+            say(f"Draft-order source: {basis.get('source')}; owner slot "
+                f"{selected_slot}. All twelve slot windows remain in the JSON.")
         say("")
-        say("| Player | Call | Move | Survival to picks (slot 7) | Reason (source, date) |")
+        survival_head = (f"Survival to picks (slot {selected_slot})"
+                         if selected_slot is not None
+                         else "Survival coverage")
+        say(f"| Player | Call | Move | {survival_head} | Reason (source, date) |")
         say("|---|---|---|---|---|")
         for c in m["my_board"]:
             if not c["matched"]:
@@ -695,8 +760,13 @@ def render_markdown(m):
                     f"UNMATCHED - not in the projection feed | "
                     f"{c['reason']} ({c['source']}, {c['date']}) |")
                 continue
-            sv = (", ".join(f"{k}: {s:.0%}" for k, s in c["survival_to_my_picks"])
-                  if c.get("survival_to_my_picks") else "-")
+            if c.get("survival_to_my_picks"):
+                sv = ", ".join(f"{k}: {s:.0%}"
+                               for k, s in c["survival_to_my_picks"])
+            elif c.get("survival_to_slots"):
+                sv = "all 12 slots precomputed; no owner slot assumed"
+            else:
+                sv = "-"
             say(f"| {c['player']} | {c['call']} | {c['move'] or '-'} | {sv} | "
                 f"{c['reason']} ({c['source']}, {c['date']}) |")
         say("")
