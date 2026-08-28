@@ -1,8 +1,8 @@
 {
  "provenance": {
-  "generated": "2026-08-27",
-  "engine_generated": "2026-08-26",
-  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
+  "generated": "2026-08-28",
+  "engine_generated": "2026-08-28",
+  "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
   "method": "deterministic snake sim from the committed engine payload; our seat scores candidates by optimal-lineup improvement over replacement-level phantoms (engine baselines), VOR tie-break; eleven ADP seats; comparison runs: naive max-VOR and ADP chalk",
   "finding": "naive max-VOR drafts duplicate elite TEs early (slots 6 and 12) because raw VOR prices a duplicate at starter value; the marginal policy corrects it and the live room's roster-need line is the same guard in interactive form",
   "kdef_window": {
@@ -21,7 +21,7 @@
      "overall": 1,
      "name": "Jahmyr Gibbs",
      "pos": "RB",
-     "adp": 1.6,
+     "adp": 1.3,
      "vor": 162.4,
      "pts": 331.4,
      "tier": 1
@@ -31,7 +31,7 @@
      "overall": 24,
      "name": "Nico Collins",
      "pos": "WR",
-     "adp": 25.3,
+     "adp": 25.4,
      "vor": 75.8,
      "pts": 262.0,
      "tier": 3
@@ -41,7 +41,7 @@
      "overall": 25,
      "name": "George Pickens",
      "pos": "WR",
-     "adp": 23.6,
+     "adp": 24.7,
      "vor": 59.5,
      "pts": 245.7,
      "tier": 4
@@ -51,7 +51,7 @@
      "overall": 48,
      "name": "D'Andre Swift",
      "pos": "RB",
-     "adp": 55.8,
+     "adp": 55.1,
      "vor": 39.0,
      "pts": 208.0,
      "tier": 4
@@ -59,46 +59,36 @@
     {
      "round": 5,
      "overall": 49,
-     "name": "Tyler Warren",
-     "pos": "TE",
-     "adp": 47.7,
-     "vor": 38.6,
-     "pts": 201.1,
-     "tier": 3
+     "name": "Mike Evans",
+     "pos": "WR",
+     "adp": 61.4,
+     "vor": 36.0,
+     "pts": 222.2,
+     "tier": 5
     },
     {
      "round": 6,
      "overall": 72,
-     "name": "Parker Washington",
-     "pos": "WR",
-     "adp": 76.6,
-     "vor": 26.2,
-     "pts": 212.4,
-     "tier": 5
-    },
-    {
-     "round": 7,
-     "overall": 73,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 87.8,
+     "adp": 88.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
     },
     {
-     "round": 8,
-     "overall": 96,
-     "name": "Brock Purdy",
+     "round": 7,
+     "overall": 73,
+     "name": "Dak Prescott",
      "pos": "QB",
-     "adp": 121.2,
-     "vor": 15.7,
-     "pts": 363.2,
+     "adp": 78.4,
+     "vor": 18.4,
+     "pts": 365.9,
      "tier": 2
     },
     {
-     "round": 9,
-     "overall": 97,
+     "round": 8,
+     "overall": 96,
      "name": "Brandon Aubrey",
      "pos": "K",
      "adp": 93.6,
@@ -107,11 +97,21 @@
      "tier": null
     },
     {
+     "round": 9,
+     "overall": 97,
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "adp": 121.2,
+     "vor": 15.7,
+     "pts": 363.2,
+     "tier": 2
+    },
+    {
      "round": 10,
      "overall": 120,
      "name": "Mark Andrews",
      "pos": "TE",
-     "adp": 129.2,
+     "adp": 129.9,
      "vor": 0.0,
      "pts": 162.5,
      "tier": 4
@@ -119,19 +119,19 @@
     {
      "round": 11,
      "overall": 121,
-     "name": "Jared Goff",
-     "pos": "QB",
-     "adp": 133.8,
-     "vor": -4.0,
-     "pts": 343.5,
-     "tier": 2
+     "name": "Brenton Strange",
+     "pos": "TE",
+     "adp": 152.6,
+     "vor": -1.5,
+     "pts": 161.0,
+     "tier": 4
     },
     {
      "round": 12,
      "overall": 144,
      "name": "Jalen Coker",
      "pos": "WR",
-     "adp": 144.0,
+     "adp": 145.7,
      "vor": -20.3,
      "pts": 165.9,
      "tier": null
@@ -139,30 +139,30 @@
     {
      "round": 13,
      "overall": 145,
-     "name": "Tyjae Spears",
+     "name": "Chris Rodriguez",
      "pos": "RB",
-     "adp": 166.0,
-     "vor": -54.4,
-     "pts": 114.6,
-     "tier": null
+     "adp": 142.1,
+     "vor": -36.5,
+     "pts": 132.5,
+     "tier": 5
     },
     {
      "round": 14,
      "overall": 168,
-     "name": "Tyrone Tracy",
+     "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 163.7,
-     "vor": -57.7,
-     "pts": 111.3,
+     "adp": 166.2,
+     "vor": -54.4,
+     "pts": 114.6,
      "tier": null
     }
    ],
    "starters": [
     {
      "slot": "QB",
-     "name": "Brock Purdy",
+     "name": "Dak Prescott",
      "pos": "QB",
-     "pts": 363.2
+     "pts": 365.9
     },
     {
      "slot": "RB",
@@ -190,15 +190,15 @@
     },
     {
      "slot": "TE",
-     "name": "Tyler Warren",
+     "name": "Mark Andrews",
      "pos": "TE",
-     "pts": 201.1
+     "pts": 162.5
     },
     {
      "slot": "FLEX",
-     "name": "Parker Washington",
+     "name": "Mike Evans",
      "pos": "WR",
-     "pts": 212.4
+     "pts": 222.2
     },
     {
      "slot": "K",
@@ -213,11 +213,11 @@
      "pts": 116.0
     }
    ],
-   "starter_pts_board": 2055.8,
-   "starter_pts_naive_vor": 2055.8,
-   "starter_pts_adp_chalk": 2004.1,
-   "board_minus_chalk": 51.7,
-   "board_minus_naive": 0.0,
+   "starter_pts_board": 2029.7,
+   "starter_pts_naive_vor": 2017.2,
+   "starter_pts_adp_chalk": 1988.9,
+   "board_minus_chalk": 40.8,
+   "board_minus_naive": 12.5,
    "naive_vor_picks": [
     {
      "round": 1,
@@ -241,8 +241,8 @@
     },
     {
      "round": 5,
-     "name": "Tyler Warren",
-     "pos": "TE"
+     "name": "David Montgomery",
+     "pos": "RB"
     },
     {
      "round": 6,
@@ -293,10 +293,10 @@
    "position_counts": {
     "RB": 4,
     "WR": 4,
-    "TE": 2,
     "DEF": 1,
     "QB": 2,
-    "K": 1
+    "K": 1,
+    "TE": 2
    },
    "sanity": {
     "picks": true,
@@ -312,7 +312,7 @@
      "overall": 6,
      "name": "Jonathan Taylor",
      "pos": "RB",
-     "adp": 7.1,
+     "adp": 7.2,
      "vor": 103.3,
      "pts": 272.3,
      "tier": 3
@@ -322,7 +322,7 @@
      "overall": 19,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.6,
+     "adp": 23.0,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -332,7 +332,7 @@
      "overall": 30,
      "name": "Chris Olave",
      "pos": "WR",
-     "adp": 30.4,
+     "adp": 30.8,
      "vor": 49.7,
      "pts": 235.9,
      "tier": 5
@@ -342,7 +342,7 @@
      "overall": 43,
      "name": "D'Andre Swift",
      "pos": "RB",
-     "adp": 55.8,
+     "adp": 55.1,
      "vor": 39.0,
      "pts": 208.0,
      "tier": 4
@@ -352,7 +352,7 @@
      "overall": 54,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 61.5,
+     "adp": 61.4,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -362,7 +362,7 @@
      "overall": 67,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 76.6,
+     "adp": 76.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -372,7 +372,7 @@
      "overall": 78,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 87.8,
+     "adp": 88.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -402,7 +402,7 @@
      "overall": 115,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 119.9,
+     "adp": 120.7,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -412,7 +412,7 @@
      "overall": 126,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 151.8,
+     "adp": 152.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -422,7 +422,7 @@
      "overall": 139,
      "name": "Jalen Coker",
      "pos": "WR",
-     "adp": 144.0,
+     "adp": 145.7,
      "vor": -20.3,
      "pts": 165.9,
      "tier": null
@@ -432,7 +432,7 @@
      "overall": 150,
      "name": "Chris Rodriguez",
      "pos": "RB",
-     "adp": 142.3,
+     "adp": 142.1,
      "vor": -36.5,
      "pts": 132.5,
      "tier": 5
@@ -442,7 +442,7 @@
      "overall": 163,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 166.0,
+     "adp": 166.2,
      "vor": -54.4,
      "pts": 114.6,
      "tier": null
@@ -506,8 +506,8 @@
    ],
    "starter_pts_board": 1999.5,
    "starter_pts_naive_vor": 1979.0,
-   "starter_pts_adp_chalk": 1903.0,
-   "board_minus_chalk": 96.5,
+   "starter_pts_adp_chalk": 1908.0,
+   "board_minus_chalk": 91.5,
    "board_minus_naive": 20.5,
    "naive_vor_picks": [
     {
@@ -603,7 +603,7 @@
      "overall": 12,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.6,
+     "adp": 23.0,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -613,7 +613,7 @@
      "overall": 13,
      "name": "De'Von Achane",
      "pos": "RB",
-     "adp": 12.3,
+     "adp": 12.8,
      "vor": 88.4,
      "pts": 257.4,
      "tier": 3
@@ -621,19 +621,19 @@
     {
      "round": 3,
      "overall": 36,
-     "name": "DeVonta Smith",
+     "name": "Zay Flowers",
      "pos": "WR",
-     "adp": 36.4,
-     "vor": 43.0,
-     "pts": 229.2,
+     "adp": 42.0,
+     "vor": 42.0,
+     "pts": 228.2,
      "tier": 5
     },
     {
      "round": 4,
      "overall": 37,
-     "name": "Zay Flowers",
+     "name": "Ladd McConkey",
      "pos": "WR",
-     "adp": 42.8,
+     "adp": 38.3,
      "vor": 42.0,
      "pts": 228.2,
      "tier": 5
@@ -643,7 +643,7 @@
      "overall": 60,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 61.5,
+     "adp": 61.4,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -653,7 +653,7 @@
      "overall": 61,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 87.8,
+     "adp": 88.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -683,7 +683,7 @@
      "overall": 108,
      "name": "Jayden Reed",
      "pos": "WR",
-     "adp": 114.4,
+     "adp": 112.1,
      "vor": 11.4,
      "pts": 197.6,
      "tier": 5
@@ -693,7 +693,7 @@
      "overall": 109,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 119.9,
+     "adp": 120.7,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -703,7 +703,7 @@
      "overall": 132,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 151.8,
+     "adp": 152.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -713,7 +713,7 @@
      "overall": 133,
      "name": "Chris Rodriguez",
      "pos": "RB",
-     "adp": 142.3,
+     "adp": 142.1,
      "vor": -36.5,
      "pts": 132.5,
      "tier": 5
@@ -723,7 +723,7 @@
      "overall": 156,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 166.0,
+     "adp": 166.2,
      "vor": -54.4,
      "pts": 114.6,
      "tier": null
@@ -733,7 +733,7 @@
      "overall": 157,
      "name": "Tyrone Tracy",
      "pos": "RB",
-     "adp": 163.7,
+     "adp": 163.5,
      "vor": -57.7,
      "pts": 111.3,
      "tier": null
@@ -760,13 +760,13 @@
     },
     {
      "slot": "WR",
-     "name": "DeVonta Smith",
+     "name": "Zay Flowers",
      "pos": "WR",
-     "pts": 229.2
+     "pts": 228.2
     },
     {
      "slot": "WR",
-     "name": "Zay Flowers",
+     "name": "Ladd McConkey",
      "pos": "WR",
      "pts": 228.2
     },
@@ -795,10 +795,10 @@
      "pts": 116.0
     }
    ],
-   "starter_pts_board": 1918.2,
-   "starter_pts_naive_vor": 1905.4,
-   "starter_pts_adp_chalk": 1847.2,
-   "board_minus_chalk": 71.0,
+   "starter_pts_board": 1917.2,
+   "starter_pts_naive_vor": 1904.4,
+   "starter_pts_adp_chalk": 1831.3,
+   "board_minus_chalk": 85.9,
    "board_minus_naive": 12.8,
    "naive_vor_picks": [
     {
@@ -818,7 +818,7 @@
     },
     {
      "round": 4,
-     "name": "DeVonta Smith",
+     "name": "Zay Flowers",
      "pos": "WR"
     },
     {

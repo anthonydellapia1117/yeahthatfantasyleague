@@ -2852,7 +2852,7 @@
  "provenance": {
   "source": "nflverse schedules (2026) x nflverse stats_player_week 2025 (CC-BY-4.0)",
   "url": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
-  "fetched_at": "2026-08-26T17:14:40Z",
+  "fetched_at": "2026-08-28T04:28:32Z",
   "basis": "2025 REG PPR points allowed per game by each defense to each position, averaged over each team's 2026 opponents; weeks 15-17 slice separate; rank 1 = most points allowed = easiest. Prior-season defense predicts weakly - this factor carries a low default weight and says so"
  }
 }

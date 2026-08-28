@@ -17,6 +17,21 @@ const ok = (cond, name, detail) => {
   if (!cond) failures++;
 };
 
+// Keep explicit fresh and stale fixtures: DRAFT_MORNING.md permits an optional-layer lineage lag, so checkout timing must never choose the smoke oracle.
+function freshDisplayLayers(){
+  const fs = require("fs");
+  const engineDigest = JSON.parse(fs.readFileSync(
+    path.resolve("out/engine_2026.json"), "utf8")).content_sha256;
+  const layers = {};
+  for (const name of ["bullish_2026.json", "ceiling_2026.json"]){
+    const data = JSON.parse(fs.readFileSync(
+      path.resolve("out/data", name), "utf8"));
+    data.provenance.engine_content_sha256 = engineDigest;
+    layers["/out/data/" + name] = Buffer.from(JSON.stringify(data));
+  }
+  return layers;
+}
+
 (async () => {
   const browser = await chromium.launch({
     // this image ships the browser at a fixed path; CI overrides it
@@ -688,9 +703,15 @@ const ok = (cond, name, detail) => {
     const http = require("http");
     const fs = require("fs");
     const root = path.resolve(".");
+    const freshLayers = freshDisplayLayers();
     const srv = http.createServer((req, res) => {
       if (req.url === "/favicon.ico"){ res.writeHead(204); return res.end(); }
-      const f = path.join(root, decodeURIComponent(req.url.split("?")[0].replace(/^\//, "")));
+      const urlPath = decodeURIComponent(req.url.split("?")[0]);
+      if (freshLayers[urlPath]){
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(freshLayers[urlPath]);
+      }
+      const f = path.join(root, urlPath.replace(/^\//, ""));
       try {
         const body = fs.readFileSync(f);
         res.writeHead(200, { "content-type": f.endsWith(".json") ? "application/json"
@@ -1087,9 +1108,15 @@ const ok = (cond, name, detail) => {
     const http = require("http");
     const fs = require("fs");
     const root = path.resolve(".");
+    const freshLayers = freshDisplayLayers();
     const srv = http.createServer((req, res) => {
       if (req.url === "/favicon.ico"){ res.writeHead(204); return res.end(); }
-      const f = path.join(root, decodeURIComponent(req.url.split("?")[0].replace(/^\//, "")));
+      const urlPath = decodeURIComponent(req.url.split("?")[0]);
+      if (freshLayers[urlPath]){
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(freshLayers[urlPath]);
+      }
+      const f = path.join(root, urlPath.replace(/^\//, ""));
       try {
         res.writeHead(200, { "content-type": f.endsWith(".json") ? "application/json"
           : f.endsWith(".html") ? "text/html"

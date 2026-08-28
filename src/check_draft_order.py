@@ -14,6 +14,9 @@ Prints exactly one status line for the alert Routine to act on:
   DRAFT ORDER DRAWN - Anthony has slot <N>
   DRAFT ORDER DRAWN - Anthony's slot not resolvable (see payload)
 
+The unresolved drawn state exits nonzero after printing its payload. It is an
+alert condition, not a successful draw that the Routine may retire on.
+
 It also runs the geometry preflight (src/preflight_draft.py) on every tick,
 because this script already polls the draft every two hours and the preflight
 needs no extra request budget to be worth having. The preflight is SILENT ON
@@ -35,6 +38,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from preflight_draft import check as preflight_check
+from draft_order import resolve_owner_slot
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -51,35 +55,25 @@ def main():
     with urllib.request.urlopen(url, timeout=30) as r:
         draft = json.load(r)
 
-    # draft_order going non-null is the primary signal (review note: the
-    # cleaner test); the non-identity slot map stays as the cheap secondary
-    # in case Sleeper publishes the draw without the per-user mapping
-    order = draft.get("draft_order") or {}
-    slot_map = draft.get("slot_to_roster_id") or {}
-    identity = bool(slot_map) and all(
-        int(v) == int(k) for k, v in slot_map.items())
-    real_map = slot_map if slot_map and not identity else None
-    drawn = bool(order) or real_map is not None
+    resolved = resolve_owner_slot(
+        draft, lg["anthony_user_id"], lg["anthony_roster_id"], lg["teams"])
 
-    if not drawn:
+    if not resolved["drawn"]:
         print(f"DRAFT ORDER UNDRAWN (status {draft.get('status')})")
         if not pre_ok:
             sys.exit(1)
         return
 
-    slot = order.get(str(lg["anthony_user_id"]))
-    if slot is None and real_map:
-        for s, rid in real_map.items():
-            if int(rid) == int(lg["anthony_roster_id"]):
-                slot = int(s)
-                break
+    slot = resolved["slot"]
     if slot is not None:
         print(f"DRAFT ORDER DRAWN - Anthony has slot {slot}")
     else:
         print("DRAFT ORDER DRAWN - Anthony's slot not resolvable "
               "(see payload)")
-        print(json.dumps({"draft_order": order,
-                          "slot_to_roster_id": slot_map}))
+        print(json.dumps({"draft_order": draft.get("draft_order") or {},
+                          "slot_to_roster_id":
+                              draft.get("slot_to_roster_id") or {}}))
+        sys.exit(1)
     if not pre_ok:
         sys.exit(1)
 
