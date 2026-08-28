@@ -31,6 +31,7 @@ import re
 import sys
 
 from player_names import PlayerIdentityResolver, search_key
+from team_codes import canonical_team
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GUIDE = os.path.join(ROOT, "data", "Walter Ai-2026_Advanced_Fantasy_Guide.md")
@@ -38,9 +39,6 @@ OUTDIR = os.path.join(ROOT, "data", "walter")
 ADP = os.path.join(ROOT, "out", "data", "adp.json")
 
 FUZZY_THRESHOLD = 0.90
-
-# guide team codes -> shard team codes (adp.json uses LAR for the Rams)
-TEAM_ALIAS = {"JAC": "JAX", "WSH": "WAS", "ARZ": "ARI"}
 
 # common-nickname resolution pass, applied in norm space before fuzzy match
 NICKNAMES = {"cameron": "cam", "christopher": "chris", "michael": "mike",
@@ -141,7 +139,7 @@ def parse(src_text):
     def check_team(row, guide_team, l0, section):
         if not row.get("resolved") or not guide_team:
             return
-        g = TEAM_ALIAS.get(guide_team, guide_team)
+        g = canonical_team(guide_team)
         live = row.get("team_live") or ""
         if g and live and g != live:
             conflicts.append({

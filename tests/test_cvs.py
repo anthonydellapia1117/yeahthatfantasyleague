@@ -16,6 +16,9 @@ spec = importlib.util.spec_from_file_location(
 cvsmod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cvsmod)
 
+from player_names import PlayerIdentityResolver
+from team_codes import canonical_team
+
 fails = []
 
 
@@ -37,6 +40,52 @@ ok(C.get("engine_content_sha256") == E.get("content_sha256") and
    f"engine says {E.get('content_sha256')}")
 ok(C.get("engine_generated") == E.get("generated"),
    "CVS retains the human-readable engine generation date")
+
+# Cross-provider team joins: nflverse currently calls the Rams LA while the
+# Sleeper engine calls them LAR. Compare every joined factor to the source
+# payload after canonicalization so no club can silently lose covered weight.
+_proe_source = json.load(open(os.path.join(ROOT, "out", "data",
+                                           "team_proe_2025.json")))
+_proe = {canonical_team(row["team"]): row["proe_2025"]
+         for row in _proe_source["teams"]}
+_team_context_bad = []
+for _player in players:
+    _factor = next(f for f in _player["factors"]
+                   if f["factor"] == "team_context")
+    _expected = _proe.get(canonical_team(_player.get("team")))
+    if _expected is not None and _player["pos"] == "RB":
+        _expected = -_expected
+    if _expected is not None and (_factor["raw"] is None or
+                                  abs(_factor["raw"] - _expected) > 0.001):
+        _team_context_bad.append(_player["name"])
+ok(not _team_context_bad,
+   "team-context joins cover every CVS player after provider-code canonicalization",
+   "; ".join(_team_context_bad[:8]))
+
+_depth_source = json.load(open(os.path.join(ROOT, "out", "data",
+                                            "depth_charts.json")))
+_identity = PlayerIdentityResolver(E["players"])
+_depth_expected = {}
+for _entry in _depth_source["entries"]:
+    _resolved = _identity.resolve(_entry["player"], position=_entry["pos"])
+    if _resolved.record is not None:
+        _depth_expected[(_resolved.record["sleeper_id"],
+                         canonical_team(_entry["team"]))] = _entry["rank"]
+_depth_bad = []
+_depth_checked = 0
+for _player in players:
+    _rank = _depth_expected.get((_player["sleeper_id"],
+                                 canonical_team(_player.get("team"))))
+    if _rank is None:
+        continue
+    _depth_checked += 1
+    _factor = next(f for f in _player["factors"]
+                   if f["factor"] == "surrounding_talent")
+    if _factor["raw"] != -(_rank - 1):
+        _depth_bad.append(_player["name"])
+ok(_depth_checked > 0 and not _depth_bad,
+   "depth-chart joins preserve surrounding-talent evidence across team aliases",
+   f"checked {_depth_checked}; bad {_depth_bad[:8]}")
 
 # 1. z-score unit behavior: mean 0, unit spread, None passthrough, degenerate
 zs = cvsmod.zscores([1.0, 2.0, 3.0, None, 4.0])

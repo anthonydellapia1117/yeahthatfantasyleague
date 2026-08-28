@@ -101,6 +101,8 @@ const norm = playerComparisonKey;
 // a survival number, or a verdict - the engine never reads this layer.
 const D = { engine: null, pc: null, proe: null, dc: null, usage: null,
             xwalk: null, prov: null };
+const canonTeam = team => ({LA:"LAR",JAC:"JAX",WSH:"WAS",ARZ:"ARI"})[
+  String(team || "").toUpperCase()] || String(team || "").toUpperCase();
 function uniqueEngineByName(name, pos){
   const key = norm(name);
   const hits = D.engine.players.filter(p => norm(p.name) === key && (!pos || p.pos === pos));
@@ -147,8 +149,10 @@ async function boot(){
     document.getElementById("content").innerHTML = "";
     return;
   }
-  D.pcByTeam = Object.fromEntries(D.pc.callers.map(c => [c.team, c]));
-  D.proeByTeam = Object.fromEntries(D.proe.teams.map(t => [t.team, t]));
+  D.pcByTeam = Object.fromEntries(D.pc.callers.map(c => [canonTeam(c.team), c]));
+  D.proeByTeam = Object.fromEntries(D.proe.teams.map(t => [canonTeam(t.team), t]));
+  D.dc.entries = D.dc.entries.map(e => ({...e, team: canonTeam(e.team)}));
+  D.usage.players = D.usage.players.map(u => ({...u, team: canonTeam(u.team)}));
   D.engByGsis = {};
   const ambiguousGsis = new Set();
   for (const p of D.engine.players){
@@ -159,7 +163,7 @@ async function boot(){
   for (const gsis of ambiguousGsis) delete D.engByGsis[gsis];
   D.ambiguousGsis = ambiguousGsis;
   D.usageByGsis = Object.fromEntries(D.usage.players.map(u => [u.gsis_id, u]));
-  D.teams = [...new Set(D.dc.entries.map(e => e.team))].sort();
+  D.teams = [...new Set(D.dc.entries.map(e => canonTeam(e.team)))].sort();
   renderFoot();
   route();
   window.addEventListener("hashchange", route);
@@ -219,7 +223,7 @@ function vacated(team){
 function renderTeam(team){
   const pc = D.pcByTeam[team];
   const pr = D.proeByTeam[team];
-  const watch = (D.pc.watch || []).filter(w => (w.team || "") === team);
+  const watch = (D.pc.watch || []).filter(w => canonTeam(w.team) === team);
   const depth = skillDepth(team);
   const { departed, arrivals } = vacated(team);
 

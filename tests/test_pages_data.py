@@ -22,6 +22,8 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 from player_names import (PlayerIdentityResolver, comparison_key,
                           nflverse_roster_identity)
 from build_pages_data import merge_ffc_market
+from team_codes import (CANONICAL_NFL_TEAMS, TEAM_CODE_ALIASES,
+                        canonical_team)
 
 fails = []
 
@@ -41,6 +43,42 @@ def load(shard):
 
 SHARDS = ["adp", "crosswalk", "reconciliation", "depth_charts", "usage_2025",
           "team_proe_2025", "playcallers", "provenance"]
+
+# Provider team codes are a join contract, not source-specific folklore.
+_team_alias_contract = {"LA": "LAR", "JAC": "JAX",
+                        "WSH": "WAS", "ARZ": "ARI"}
+ok(TEAM_CODE_ALIASES == _team_alias_contract and
+   all(canonical_team(source) == target
+       for source, target in _team_alias_contract.items()) and
+   all(canonical_team(team) == team for team in CANONICAL_NFL_TEAMS),
+   "team-code contract maps provider aliases and is idempotent on all 32 clubs")
+_team_sources = {
+    "depth": {canonical_team(row["team"])
+              for row in load("depth_charts")["entries"]},
+    "usage": {canonical_team(row["team"])
+              for row in load("usage_2025")["players"]},
+    "PROE": {canonical_team(row["team"])
+             for row in load("team_proe_2025")["teams"]},
+    "SOS": {canonical_team(row["team"])
+            for row in json.load(open(os.path.join(D, "sos_2026.json")))["teams"]},
+}
+_canonical_team_set = set(CANONICAL_NFL_TEAMS)
+_bad_team_sets = {name: sorted(teams ^ _canonical_team_set)
+                  for name, teams in _team_sources.items()
+                  if teams != _canonical_team_set}
+ok(not _bad_team_sets,
+   "all team-keyed shards reconcile to the same canonical 32-team vocabulary",
+   str(_bad_team_sets))
+_python_alias_consumers = {
+    "build_cvs.py": open(os.path.join(ROOT, "src", "build_cvs.py")).read(),
+    "build_cvs_inputs.py": open(os.path.join(ROOT, "src", "build_cvs_inputs.py")).read(),
+    "parse_walter.py": open(os.path.join(ROOT, "src", "parse_walter.py")).read(),
+}
+ok(all("from team_codes import" in source
+       for source in _python_alias_consumers.values()) and
+   "TEAM_ALIAS" not in _python_alias_consumers["parse_walter.py"] and
+   "ALIAS =" not in _python_alias_consumers["build_cvs_inputs.py"],
+   "Python team-code consumers import the canonical contract instead of duplicating maps")
 
 # 1. Every shard exists and carries provenance (guard N2)
 for s in SHARDS:
@@ -651,6 +689,12 @@ if os.path.exists(tp_page):
     ok("Provenance (guard N2)" in tpage, "team page provenance footer present")
     ok("not zero" in tpage and "Nothing on this page is estimated" in tpage,
        "team page declares absent data absent")
+    _room_team_source = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+    _js_team_map = 'LA:"LAR",JAC:"JAX",WSH:"WAS",ARZ:"ARI"'
+    ok(_js_team_map in tpage and _js_team_map in _room_team_source and
+       "[canonTeam(t.team), t]" in tpage and
+       "[canonTeam(x.team), x.proe_2025]" in _room_team_source,
+       "browser team-code boundaries mirror the Python alias contract")
 
 # 11b. BIG BOARD (CVS). The rank is the anchor law and nothing else; the cap
 #      and kill-switch are stated on the page; all seven signals carry three

@@ -26,6 +26,8 @@ import os
 import statistics
 import urllib.request
 
+from team_codes import canonical_team
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "data")
 
@@ -33,14 +35,6 @@ SPW_URL = ("https://github.com/nflverse/nflverse-data/releases/download/"
            "stats_player/stats_player_week_2025.csv.gz")
 SCHED_URL = ("https://github.com/nflverse/nflverse-data/releases/download/"
              "schedules/games.csv")
-
-# nflverse team codes -> this repo's adp.json codes
-ALIAS = {"LA": "LAR"}
-
-
-def canon(team):
-    return ALIAS.get(team, team)
-
 
 def fetch(url):
     req = urllib.request.Request(url, headers={"User-Agent": "ytfl-hub"})
@@ -151,7 +145,7 @@ def main():
         pos = r["position_group"]
         if pos not in ("QB", "RB", "WR", "TE"):
             continue
-        d = canon(r["opponent_team"])
+        d = canonical_team(r["opponent_team"])
         try:
             allowed[(d, pos)] = allowed.get((d, pos), 0.0) + float(
                 r["fantasy_points_ppr"] or 0)
@@ -166,7 +160,8 @@ def main():
         if g["season"] != "2026" or g["game_type"] != "REG":
             continue
         wk = int(g["week"])
-        home, away = canon(g["home_team"]), canon(g["away_team"])
+        home = canonical_team(g["home_team"])
+        away = canonical_team(g["away_team"])
         opps_2026.setdefault(home, []).append((wk, away))
         opps_2026.setdefault(away, []).append((wk, home))
     teams = sorted(opps_2026)

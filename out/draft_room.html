@@ -1944,14 +1944,18 @@ function gearSvg(g){
 // Anthony's judgement, structurally outside the grade (N1). Loaded best-effort;
 // file:// or missing shards degrade to no chips.
 const Intel = { playcallers: null, proe: null, adpBand: null };
+const canonTeam = team => ({LA:"LAR",JAC:"JAX",WSH:"WAS",ARZ:"ARI"})[
+  String(team || "").toUpperCase()] || String(team || "").toUpperCase();
 async function loadIntel(){
   try {
     const base = "data/";
     const [pc, pr, adp] = await Promise.all(
       ["playcallers.json", "team_proe_2025.json", "adp.json"].map(f =>
         fetch(base + f).then(r => r.json()).catch(() => null)));
-    if (pc) Intel.playcallers = Object.fromEntries(pc.callers.map(c => [c.team, c]));
-    if (pr) Intel.proe = Object.fromEntries(pr.teams.map(x => [x.team, x.proe_2025]));
+    if (pc) Intel.playcallers = Object.fromEntries(
+      pc.callers.map(c => [canonTeam(c.team), c]));
+    if (pr) Intel.proe = Object.fromEntries(
+      pr.teams.map(x => [canonTeam(x.team), x.proe_2025]));
     if (adp && adp.players) Intel.adpBand = Object.fromEntries(
       adp.players.map(x => [String(x.player_id), x]));
     LiveState.lastRender && LiveState.lastRender();
