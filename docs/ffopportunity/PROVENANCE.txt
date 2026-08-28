@@ -1,0 +1,6 @@
+exported: 2026-08-28T07:38:04Z
+ffopportunity: 0.1.2
+R: R version 4.6.1 (2026-06-24)
+source: https://github.com/ffverse/ffopportunity
+license: models and data CC BY-SA 4.0; R code GPL-3
+seasons: 2020-2025  weekly_rows: 36063  season_rows: 3789
