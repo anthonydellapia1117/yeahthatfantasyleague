@@ -50,6 +50,7 @@ import random
 from collections import defaultdict
 
 import analyze_recency as base
+from player_names import nflverse_roster_identity
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "data", "injury_market.json")
@@ -113,15 +114,28 @@ def build_sample():
         prior, n_weeks = totals[Y - 1]
         realized, _ = totals[Y]
         desig = designations(Y - 1)
-        ffc = {}
-        for p in json.load(open(os.path.join(base.HISTORY, f"ffc_ppr_{Y}.json")))["players"]:
-            if p["position"] in SKILL:
-                ffc[(base.norm(p["name"]), p["position"])] = float(p["adp"])
         yr = [r for r in picks if int(r["season"]) == Y]
+        ffc = {}
+        with open(os.path.join(base.HISTORY, f"roster_{Y}.csv")) as roster_fh, \
+             open(os.path.join(base.HISTORY, f"spw_{Y}.csv")) as stats_fh:
+            identity = nflverse_roster_identity(
+                csv.DictReader(roster_fh), positions=SKILL,
+                stat_rows=csv.DictReader(stats_fh), alias_rows=yr)
+        for p in json.load(open(os.path.join(base.HISTORY, f"ffc_ppr_{Y}.json")))["players"]:
+            if p["position"] not in SKILL:
+                continue
+            resolved = identity.resolve(
+                p["name"], position=p["position"],
+                prefer_latest_draft_year=True)
+            if resolved.record is not None:
+                ffc[(resolved.record["gsis_id"], p["position"])] = float(p["adp"])
         rookies = no_adp = 0
         rows = []
         for r in yr:
-            adp = ffc.get((base.norm(r["player_name"]), r["pos"]))
+            # Keep the ADP cohort aligned with the archive position used by
+            # the model's position dummy; identity-across-position belongs in
+            # availability analyses, not this positional regression.
+            adp = ffc.get((r["player_id"], r["pos"]))
             if adp is None:
                 no_adp += 1
                 continue

@@ -14,6 +14,8 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 FAILS = []
+sys.path.insert(0, os.path.join(ROOT, "src"))
+from player_names import search_key
 
 
 def ok(cond, label):
@@ -81,15 +83,9 @@ rb1_2025 = next(r["rb1"] for r in late if r["year"] == 2025)
 arch = json.load(open(os.path.join(D, "archetypes_2026.json")))
 
 
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
-
-
 tagged = [p["name"] for p in arch["players"]
           if any(t["tag"] == "rb1_curse" for t in p["tags"])]
-ok(len(tagged) == 1 and norm(tagged[0]) == rb1_2025,
+ok(len(tagged) == 1 and search_key(tagged[0]) == rb1_2025,
    "the C3 rb1_curse tag sits on the league-scored 2025 RB1 this audit "
    "computes")
 

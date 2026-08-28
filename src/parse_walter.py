@@ -30,6 +30,8 @@ import os
 import re
 import sys
 
+from player_names import PlayerIdentityResolver, search_key
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GUIDE = os.path.join(ROOT, "data", "Walter Ai-2026_Advanced_Fantasy_Guide.md")
 OUTDIR = os.path.join(ROOT, "data", "walter")
@@ -46,40 +48,42 @@ NICKNAMES = {"cameron": "cam", "christopher": "chris", "michael": "mike",
              "jonathon": "jonathan"}
 
 
-def norm(s):
-    s = re.sub(r"[.'’]", "", str(s).lower())
-    s = re.sub(r"\s+(jr|sr|ii|iii|iv|v)$", "", s.strip())
-    return re.sub(r"\s+", " ", s)
-
-
 def load_players():
     adp = json.load(open(ADP))
-    by_norm = {}
+    identity = PlayerIdentityResolver(adp["players"])
+    by_search = {}
     for p in adp["players"]:
-        by_norm.setdefault(norm(p["name"]), p)
-    return adp, by_norm
+        by_search.setdefault(search_key(p["name"]), []).append(p)
+    # Prose attribution and fuzzy matching must not silently pick one player
+    # from a collision bucket.  Ambiguous search keys stay out of this view.
+    unique_search = {key: records[0] for key, records in by_search.items()
+                     if len(records) == 1}
+    return adp, identity, unique_search
 
 
 class Resolver:
-    def __init__(self, by_norm):
-        self.by_norm = by_norm
-        self.keys = list(by_norm)
+    def __init__(self, identity, by_search):
+        self.identity = identity
+        self.by_search = by_search
+        self.keys = list(by_search)
         self.unresolved = []
 
     def resolve(self, raw, context=""):
-        n = norm(raw)
-        if n in self.by_norm:
-            return self.by_norm[n], "exact"
+        exact = self.identity.resolve(raw)
+        if exact.record is not None:
+            return exact.record, "exact"
         # nickname pass: swap the first token for its common short form
+        n = search_key(raw)
         parts = n.split(" ", 1)
         if len(parts) == 2 and parts[0] in NICKNAMES:
             nick = NICKNAMES[parts[0]] + " " + parts[1]
-            if nick in self.by_norm:
-                return self.by_norm[nick], f"nickname:{nick}"
+            resolved = self.identity.resolve(nick)
+            if resolved.record is not None:
+                return resolved.record, f"nickname:{nick}"
         # fuzzy - stdlib ratio against the normalized universe
         best = difflib.get_close_matches(n, self.keys, n=1, cutoff=FUZZY_THRESHOLD)
         if best:
-            return self.by_norm[best[0]], f"fuzzy:{best[0]}"
+            return self.by_search[best[0]], f"fuzzy:{best[0]}"
         self.unresolved.append({"name_raw": raw, "context": context})
         return None, None
 
@@ -97,8 +101,8 @@ def first_sentences(text, limit=520):
 def parse(src_text):
     lines = src_text.split("\n")
     tags, structural, figures, conflicts = [], [], [], []
-    adp, by_norm = load_players()
-    res = Resolver(by_norm)
+    adp, identity, by_search = load_players()
+    res = Resolver(identity, by_search)
 
     # -- locate top-level sections: "# 8. My Targets" etc.
     sections = []
@@ -300,7 +304,7 @@ def parse(src_text):
             words = cand.split()
             if not (2 <= len(words) <= 3):
                 continue
-            if norm(cand) not in by_norm:
+            if search_key(cand) not in by_search:
                 continue    # inline pass: only exact player names, no fuzz
             sent = first_sentences(ln, 300)
             add_tag(cand, "situation_change", "evidence", sent,
@@ -348,7 +352,7 @@ def parse(src_text):
             for bm in re.finditer(r"\*\*([^*]+)\*\*", ln):
                 for cand in re.split(r",| and ", bm.group(1)):
                     cand = cand.strip()
-                    if norm(cand) in by_norm:
+                    if search_key(cand) in by_search:
                         add_tag(cand, "target", "judgment",
                                 first_sentences(ln, 300), s8start + i,
                                 s8start + i, "My Targets", "inferred")
@@ -395,20 +399,20 @@ def parse(src_text):
             # a heading that names a player sets the block context; any other
             # heading AT ANY LEVEL clears it so context never leaks across
             # sections
-            block_player = by_norm.get(norm(hm.group(1)))
+            block_player = by_search.get(search_key(hm.group(1)))
         if not any(pt.search(ln) for pt, _ in GLOBAL_FIGS):
             continue
         # sentence scope: a line can name several players with a figure each;
         # attribution order: unique name in the sentence, then the enclosing
         # headed block, then a unique name on the line - else skip as ambiguous
-        line_named = [p for key, p in by_norm.items()
+        line_named = [p for key, p in by_search.items()
                       if len(p["name"]) > 7 and p["name"] in ln.replace("**", "")]
         line_ids = {p["player_id"] for p in line_named}
         for sent in re.split(r"(?<=[.!?])\s+", ln):
             if HISTORICAL.search(sent):
                 continue
             clean = sent.replace("**", "")
-            named = [p for key, p in by_norm.items()
+            named = [p for key, p in by_search.items()
                      if len(p["name"]) > 7 and p["name"] in clean]
             ids = {p["player_id"] for p in named}
             owner = named[0] if len(ids) == 1 else None
@@ -451,22 +455,22 @@ def parse(src_text):
             direction = "neutral"
         else:
             direction = "neutral"
-        nb = norm(body)
+        nb = search_key(body)
         def present(p):
-            return re.search(r"(?<![a-z0-9])" + re.escape(norm(p["name"]))
+            return re.search(r"(?<![a-z0-9])" + re.escape(search_key(p["name"]))
                              + r"s?(?![a-z0-9])", nb)
         subj = re.match(r"(?:Added|Removed) (.+?) (?:to|from|as)", body) or \
                re.match(r"Updated (?:the )?(.+?) writeup", body)
         named = []
         if subj:
             for cand in re.split(r",| and ", subj.group(1)):
-                pp = by_norm.get(norm(cand.strip()))
+                pp = by_search.get(search_key(cand.strip()))
                 if pp:
                     named.append((pp["name"], direction))
         if not named:
             # no resolvable subject: fall back to mentions, direction from the
             # verb in a +-70 char window around each name
-            for key, pp in by_norm.items():
+            for key, pp in by_search.items():
                 m2 = present(pp)
                 if not m2:
                     continue

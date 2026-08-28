@@ -40,13 +40,13 @@ import csv
 import json
 import math
 import os
-import re
 import sys
 import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from forward_policy import pick_marginal, roster_caps  # noqa: E402
 from engine_lineage import stamp as stamp_engine  # noqa: E402
+from player_names import PlayerIdentityResolver, comparison_key  # noqa: E402
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -539,12 +539,6 @@ def build_model():
 MY_BOARD_PATH = "data/my_board.csv"
 
 
-def _norm_name(s):
-    # mirrors the JS norm() so both surfaces match calls the same way
-    s = re.sub(r"[.']", "", str(s).lower())
-    return re.sub(r"\s+(jr|sr|ii|iii|iv|v)$", "", s).strip()
-
-
 def load_my_board(path=MY_BOARD_PATH):
     if not os.path.exists(path):
         return []
@@ -574,17 +568,18 @@ def apply_overlay(m, calls):
     """
     if not calls:
         return m
-    by_norm = {_norm_name(p["name"]): p for p in m["players"]}
+    resolver = PlayerIdentityResolver(m["players"])
     my_picks = [r["pick"] for r in
                 (m["slots"].get(7) or m["slots"].get("7") or [])][:4]
     board = []
     bulls = set()
     for c in calls:
-        p = by_norm.get(_norm_name(c["player"]))
+        p = resolver.resolve(c["player"]).record
         entry = dict(c)
         entry["matched"] = bool(p)
         if p:
-            entry.update({"pos": p["pos"], "adp": p["adp"], "vor": p["vor"],
+            entry.update({"sleeper_id": p["sleeper_id"], "pos": p["pos"],
+                          "adp": p["adp"], "vor": p["vor"],
                           "tier": p["tier"]})
             if c["call"] == "BULL":
                 bulls.add(p["name"])
@@ -608,7 +603,7 @@ def apply_overlay(m, calls):
                 r["coin_break"] = {"toward": toward,
                                    "call_date": next(
                                        (d for pl, d in date_of.items()
-                                        if _norm_name(pl) == _norm_name(toward)),
+                                        if comparison_key(pl) == comparison_key(toward)),
                                        "")}
     return m
 # ======== OVERLAY-END ========

@@ -39,7 +39,6 @@ from collections import defaultdict
 
 from analyze_recency import HISTORY
 from engine_lineage import require as require_engine_digest
-
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 OUT = os.path.join(D, "ceiling_2026.json")
@@ -54,21 +53,14 @@ W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
      "receiving_fumbles_lost": -2.0, "special_teams_tds": 6.0}
 
 
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
-
-
 def weekly_points(year):
-    """(name|pos, week) -> league-scored points, REG."""
+    """(gsis id, position, week) -> league-scored points, REG."""
     pts = defaultdict(float)
     with open(os.path.join(HISTORY, f"spw_{year}.csv")) as fh:
         for r in csv.DictReader(fh):
             if r.get("season_type") != "REG" or r.get("position") not in POSITIONS:
                 continue
-            key = (norm(r["player_display_name"]) + "|" + r["position"],
-                   int(r["week"]))
+            key = (r["player_id"], r["position"], int(r["week"]))
             for col, w in W.items():
                 v = r.get(col)
                 if v:
@@ -85,14 +77,15 @@ def main():
     baselines = eng["baselines"]
     draftable = [p for p in eng["players"]
                  if p["adp"] <= 14 * 12 and p["pos"] in POSITIONS]
+    gsis_of = json.load(open(os.path.join(D, "crosswalk.json")))["matched"]
 
     wp25 = weekly_points(2025)
     wp24 = weekly_points(2024)
 
     # per-week positional top-12 cutoffs, computed from the week itself
     by_week = defaultdict(list)          # (pos, week) -> scores
-    for (key, week), v in wp25.items():
-        by_week[(key.split("|")[1], week)].append(v)
+    for (_gsis_id, pos, week), v in wp25.items():
+        by_week[(pos, week)].append(v)
     cutoff = {}
     for (pos, week), scores in by_week.items():
         scores.sort(reverse=True)
@@ -101,18 +94,18 @@ def main():
 
     # per-player weekly series
     series25 = defaultdict(list)
-    for (key, week), v in wp25.items():
-        series25[key].append((week, v))
+    for (gsis_id, _pos, week), v in wp25.items():
+        series25[gsis_id].append((week, v))
     games24 = defaultdict(int)
-    for (key, _w), _v in wp24.items():
-        games24[key] += 1
+    for (gsis_id, _pos, _week), _v in wp24.items():
+        games24[gsis_id] += 1
 
     players = []
     for p in draftable:
-        key = norm(p["name"]) + "|" + p["pos"]
-        weeks = sorted(series25.get(key, []))
+        gsis_id = gsis_of.get(str(p.get("sleeper_id") or ""))
+        weeks = sorted(series25.get(gsis_id, []))
         g25 = len(weeks)
-        g24 = games24.get(key, 0)
+        g24 = games24.get(gsis_id, 0)
         entry = {"name": p["name"], "pos": p["pos"], "adp": p["adp"],
                  "proj": p["pts"]}
         if weeks:

@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-19",
+ "generated": "2026-08-27",
  "design": "one-step deviation at actual board states; no counterfactual opponents simulated; K/DEF excluded from value scoring",
  "not_replayable_stated": [
   "engine's live projection feed (no archive)",
@@ -10,142 +10,142 @@
   "n_picks": 169,
   "mean_realized_pts": {
    "actual": 173.19,
-   "adp_best": 137.55,
-   "replay_vor": 180.26
+   "adp_best": 150.11,
+   "replay_vor": 179.03
   },
   "deltas_per_pick": {
    "actual_minus_adp_best": {
-    "mean": 35.64,
+    "mean": 23.08,
     "ci95": [
-     4.02,
-     69.44
+     -0.44,
+     46.88
     ]
    },
    "actual_minus_replay_vor": {
-    "mean": -7.07,
+    "mean": -5.84,
     "ci95": [
-     -47.22,
-     32.17
+     -46.15,
+     33.2
     ]
    },
    "replay_vor_minus_adp_best": {
-    "mean": 42.71,
+    "mean": 28.92,
     "ci95": [
-     8.3,
-     76.89
+     -7.18,
+     67.15
     ]
    }
   },
   "proxy_caveat": "replay_vor prices players by PRIOR-SEASON points only - a far weaker projection than the engine's live feed, and it values every rookie at zero. This bounds the replay from below; it does not measure the 2026 engine."
  },
  "part2_survival_calibration": {
-  "n_pairs": 17068,
-  "base_rate": 0.8967,
-  "brier": 0.0745,
-  "brier_always_base_rate": 0.0926,
-  "skill_vs_base_rate": 0.196,
+  "n_pairs": 16949,
+  "base_rate": 0.8947,
+  "brier": 0.071,
+  "brier_always_base_rate": 0.0942,
+  "skill_vs_base_rate": 0.2466,
   "low_bucket_lt50": {
-   "n": 1845,
-   "predicted_mean": 0.282,
-   "observed": 0.507
+   "n": 1760,
+   "predicted_mean": 0.29,
+   "observed": 0.478
   },
   "reliability_by_decile": [
    {
     "bucket": "0.0-0.1",
-    "n": 327,
-    "predicted_mean": 0.028,
-    "observed": 0.327
+    "n": 280,
+    "predicted_mean": 0.031,
+    "observed": 0.211
    },
    {
     "bucket": "0.1-0.2",
-    "n": 233,
+    "n": 220,
     "predicted_mean": 0.155,
-    "observed": 0.412
+    "observed": 0.368
    },
    {
     "bucket": "0.2-0.3",
-    "n": 305,
+    "n": 296,
     "predicted_mean": 0.255,
-    "observed": 0.475
+    "observed": 0.456
    },
    {
     "bucket": "0.3-0.4",
-    "n": 460,
+    "n": 452,
     "predicted_mean": 0.353,
-    "observed": 0.55
+    "observed": 0.535
    },
    {
     "bucket": "0.4-0.5",
-    "n": 520,
+    "n": 512,
     "predicted_mean": 0.453,
-    "observed": 0.642
+    "observed": 0.633
    },
    {
     "bucket": "0.5-0.6",
-    "n": 769,
-    "predicted_mean": 0.552,
-    "observed": 0.684
+    "n": 763,
+    "predicted_mean": 0.553,
+    "observed": 0.676
    },
    {
     "bucket": "0.6-0.7",
-    "n": 977,
+    "n": 971,
     "predicted_mean": 0.653,
-    "observed": 0.77
+    "observed": 0.763
    },
    {
     "bucket": "0.7-0.8",
-    "n": 1230,
+    "n": 1224,
     "predicted_mean": 0.751,
-    "observed": 0.853
+    "observed": 0.85
    },
    {
     "bucket": "0.8-0.9",
-    "n": 1761,
+    "n": 1754,
     "predicted_mean": 0.853,
     "observed": 0.931
    },
    {
     "bucket": "0.9-1.0",
-    "n": 10486,
+    "n": 10477,
     "predicted_mean": 0.982,
     "observed": 0.992
    }
   ],
   "by_era": {
    "2013-2018": {
-    "n_pairs": 7559,
-    "base_rate": 0.8935,
-    "brier": 0.0818,
-    "brier_always_base_rate": 0.0952,
-    "skill_vs_base_rate": 0.1408,
+    "n_pairs": 7457,
+    "base_rate": 0.89,
+    "brier": 0.0749,
+    "brier_always_base_rate": 0.0979,
+    "skill_vs_base_rate": 0.2351,
     "low_bucket_lt50": {
-     "n": 998,
-     "predicted_mean": 0.267,
-     "observed": 0.536
+     "n": 927,
+     "predicted_mean": 0.278,
+     "observed": 0.493
     }
    },
    "2019-2022": {
-    "n_pairs": 5055,
-    "base_rate": 0.8908,
-    "brier": 0.0721,
-    "brier_always_base_rate": 0.0973,
-    "skill_vs_base_rate": 0.2589,
+    "n_pairs": 5044,
+    "base_rate": 0.8902,
+    "brier": 0.071,
+    "brier_always_base_rate": 0.0978,
+    "skill_vs_base_rate": 0.2735,
     "low_bucket_lt50": {
-     "n": 518,
-     "predicted_mean": 0.289,
-     "observed": 0.45
+     "n": 510,
+     "predicted_mean": 0.291,
+     "observed": 0.439
     }
    },
    "2023-2025": {
-    "n_pairs": 4454,
-    "base_rate": 0.9088,
-    "brier": 0.0648,
-    "brier_always_base_rate": 0.0828,
-    "skill_vs_base_rate": 0.2178,
+    "n_pairs": 4448,
+    "base_rate": 0.9078,
+    "brier": 0.0643,
+    "brier_always_base_rate": 0.0837,
+    "skill_vs_base_rate": 0.2313,
     "low_bucket_lt50": {
-     "n": 329,
-     "predicted_mean": 0.32,
-     "observed": 0.508
+     "n": 323,
+     "predicted_mean": 0.319,
+     "observed": 0.495
     }
    }
   },
@@ -156,37 +156,37 @@
    "my_picks": 16,
    "my_skill_picks": 12,
    "value_rows": 12,
-   "universe": 180
+   "universe": 178
   },
   "2014": {
    "my_picks": 16,
    "my_skill_picks": 13,
    "value_rows": 13,
-   "universe": 184
+   "universe": 181
   },
   "2015": {
    "my_picks": 15,
    "my_skill_picks": 13,
    "value_rows": 13,
-   "universe": 183
+   "universe": 179
   },
   "2016": {
    "my_picks": 15,
    "my_skill_picks": 13,
    "value_rows": 13,
-   "universe": 173
+   "universe": 170
   },
   "2017": {
    "my_picks": 15,
    "my_skill_picks": 13,
    "value_rows": 13,
-   "universe": 173
+   "universe": 171
   },
   "2018": {
    "my_picks": 15,
    "my_skill_picks": 13,
    "value_rows": 13,
-   "universe": 179
+   "universe": 177
   },
   "2019": {
    "my_picks": 15,
@@ -204,25 +204,25 @@
    "my_picks": 15,
    "my_skill_picks": 13,
    "value_rows": 13,
-   "universe": 191
+   "universe": 190
   },
   "2022": {
    "my_picks": 15,
    "my_skill_picks": 13,
    "value_rows": 13,
-   "universe": 162
+   "universe": 160
   },
   "2023": {
    "my_picks": 15,
    "my_skill_picks": 14,
    "value_rows": 14,
-   "universe": 188
+   "universe": 185
   },
   "2024": {
    "my_picks": 14,
    "my_skill_picks": 14,
    "value_rows": 14,
-   "universe": 181
+   "universe": 179
   },
   "2025": {
    "my_picks": 14,

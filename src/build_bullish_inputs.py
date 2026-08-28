@@ -32,6 +32,7 @@ import pyarrow.parquet as pq
 
 from analyze_recency import HISTORY
 from engine_lineage import json_content_sha256, require as require_engine_digest
+from player_names import PlayerIdentityResolver
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
@@ -45,12 +46,6 @@ W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
      "sack_fumbles_lost": -2.0, "rushing_fumbles_lost": -2.0,
      "receiving_fumbles_lost": -2.0, "special_teams_tds": 6.0}
 W4 = dict(W, passing_tds=4.0)            # the counterfactual for the QB gap
-
-
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
 
 
 def pctile(vals, q):
@@ -203,11 +198,9 @@ def main():
         "crosswalk.json": json_content_sha256(xwalk),
     }
 
-    u_by_key = {norm(u["name"]) + "|" + u["pos"]: u for u in usage}
-    ceil_by_key = {norm(p["name"]) + "|" + p["pos"]: p for p in ceil_art["players"]}
-    team_now = {}
-    for e in depth:
-        team_now[norm(e["player"]) + "|" + e["pos"]] = e["team"]
+    usage_by_gsis = {u["gsis_id"]: u for u in usage}
+    ceiling_identity = PlayerIdentityResolver(ceil_art["players"])
+    team_now = {e["gsis_id"]: e["team"] for e in depth}
     gsis_of = xwalk["matched"]           # sleeper id -> gsis id
     # goalline player table is keyed by gsis id
     goal_p = goal["player_2025"]
@@ -218,11 +211,11 @@ def main():
     for u in usage:
         team_rec[u["team"]] += u["rec_yards"]
     team_rb_car = defaultdict(list)
-    for key, t in team_now.items():
-        if key.endswith("|RB"):
-            u = u_by_key.get(key)
+    for e in depth:
+        if e["pos"] == "RB":
+            u = usage_by_gsis.get(e["gsis_id"])
             if u:
-                team_rb_car[t].append((key, u["carries"]))
+                team_rb_car[e["team"]].append((e["gsis_id"], u["carries"]))
 
     # QB epa/att from spw
     qb_epa = defaultdict(lambda: [0.0, 0])
@@ -230,7 +223,7 @@ def main():
         for r in csv.DictReader(fh):
             if r.get("season_type") != "REG" or r.get("position") != "QB":
                 continue
-            key = norm(r["player_display_name"]) + "|QB"
+            key = r["player_id"]
             try:
                 qb_epa[key][0] += float(r.get("passing_epa") or 0)
                 qb_epa[key][1] += float(r.get("attempts") or 0)
@@ -242,12 +235,12 @@ def main():
 
     players = []
     for p in draftable:
-        key = norm(p["name"]) + "|" + p["pos"]
         sid = str(p.get("sleeper_id") or "")
         gid = gsis_of.get(sid)
-        u = u_by_key.get(key)
-        cl = ceil_by_key.get(key, {})
-        team26 = team_now.get(key) or p.get("team")
+        u = usage_by_gsis.get(gid)
+        ceiling_result = ceiling_identity.resolve(p["name"], position=p["pos"])
+        cl = ceiling_result.record or {}
+        team26 = team_now.get(gid) or p.get("team")
         e = {"name": p["name"], "pos": p["pos"], "adp": p["adp"],
              "team_2026": team26,
              "implied_total": implied.get(team26),
@@ -281,11 +274,11 @@ def main():
                                       "basis": f"2025 role on {g25team}"}
         if p["pos"] == "RB" and team26 in team_rb_car:
             tot = sum(c for _, c in team_rb_car[team26])
-            own = dict(team_rb_car[team26]).get(key, 0)
+            own = dict(team_rb_car[team26]).get(gid, 0)
             if tot >= 100:
                 e["backfield_share"] = round(own / tot, 4)
-        if p["pos"] == "QB" and key in qb_epa and qb_epa[key][1] >= 150:
-            e["epa_per_att"] = round(qb_epa[key][0] / qb_epa[key][1], 4)
+        if p["pos"] == "QB" and gid in qb_epa and qb_epa[gid][1] >= 150:
+            e["epa_per_att"] = round(qb_epa[gid][0] / qb_epa[gid][1], 4)
         players.append(e)
 
     # ---- thresholds: percentiles of qualifying distributions
@@ -322,7 +315,7 @@ def main():
             for r in csv.DictReader(fh):
                 if r.get("season_type") != "REG" or r.get("position") != "QB":
                     continue
-                key = norm(r["player_display_name"])
+                key = r["player_id"]
                 a = agg[key]
                 a["g"] += 1
                 for col, w in weights.items():

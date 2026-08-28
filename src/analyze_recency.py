@@ -44,8 +44,9 @@ import json
 import math
 import os
 import random
-import re
 from collections import defaultdict
+
+from player_names import nflverse_roster_identity
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HISTORY = os.environ.get("HISTORY",
@@ -57,12 +58,6 @@ SKILL = ("QB", "RB", "WR", "TE")
 SEASONS = range(2013, 2026)
 SEED = 20260819
 DRAWS = 10000
-
-
-def norm(s):
-    s = re.sub(r"[.'’]", "", str(s).lower())
-    s = re.sub(r"\s+(jr|sr|ii|iii|iv|v)$", "", s.strip())
-    return re.sub(r"\s+", " ", s)
 
 
 def prior_season(y):
@@ -129,11 +124,21 @@ def main():
     coverage = {}
     for Y in SEASONS:
         prior, late_from = prior_season(Y - 1)
-        ffc = {}
-        for p in json.load(open(os.path.join(HISTORY, f"ffc_ppr_{Y}.json")))["players"]:
-            if p["position"] in SKILL:
-                ffc[(norm(p["name"]), p["position"])] = float(p["adp"])
         yr = [r for r in picks if int(r["season"]) == Y]
+        ffc = {}
+        with open(os.path.join(HISTORY, f"roster_{Y}.csv")) as roster_fh, \
+             open(os.path.join(HISTORY, f"spw_{Y}.csv")) as stats_fh:
+            identity = nflverse_roster_identity(
+                csv.DictReader(roster_fh), positions=SKILL,
+                stat_rows=csv.DictReader(stats_fh), alias_rows=yr)
+        for p in json.load(open(os.path.join(HISTORY, f"ffc_ppr_{Y}.json")))["players"]:
+            if p["position"] not in SKILL:
+                continue
+            resolved = identity.resolve(
+                p["name"], position=p["position"],
+                prefer_latest_draft_year=True)
+            if resolved.record is not None:
+                ffc[(resolved.record["gsis_id"], p["position"])] = float(p["adp"])
         rookies = no_adp = 0
         rows = []
         for r in yr:
@@ -141,7 +146,10 @@ def main():
             if not pr or pr["games"] < 1:
                 rookies += 1
                 continue
-            adp = ffc.get((norm(r["player_name"]), r["pos"]))
+            # This regression's position dummy and market control must refer
+            # to the same cohort. Stable identity may cross positions; this
+            # analysis deliberately does not.
+            adp = ffc.get((r["player_id"], r["pos"]))
             if adp is None:
                 no_adp += 1
                 continue

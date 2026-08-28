@@ -10,6 +10,7 @@
 <meta name="theme-color" content="#0b1120">
 <meta name="color-scheme" content="dark">
 <link rel="apple-touch-icon" href="icon-180.png">
+<script src="player_names.js"></script>
 <script src="nav.js" data-active="draft" defer></script>
 <title>YTFL Draft Room 2026</title>
 <style>
@@ -427,8 +428,64 @@ window.__calCondSurvival = calCondSurvival;
 window.__survival = survival;
 window.__sdFor = sdFor;
 const pct = (p) => Math.round(p * 100) + "%";
-const norm = (s) => String(s).toLowerCase().replace(/[.']/g, "")
-  .replace(/\s+(jr|sr|ii|iii|iv|v)$/,"").trim();
+const norm = playerComparisonKey;
+
+// Names are comparison/search keys only. Every live identity join uses the
+// Sleeper id carried by both the engine and the picks feed. A legacy name
+// fallback is accepted only when name + position identifies exactly one
+// engine player; collisions fail closed instead of becoming last-wins maps.
+const PLAYER_BY_ID = {}, PLAYER_BY_NAME_POS = {};
+function playerId(p){ return p && p.sleeper_id != null ? String(p.sleeper_id) : ""; }
+function namePosKey(name, pos){ return norm(name) + "|" + (pos || ""); }
+for (const p of E.players || []){
+  const id = playerId(p);
+  if (id) PLAYER_BY_ID[id] = p;
+  const key = namePosKey(p.name, p.pos);
+  (PLAYER_BY_NAME_POS[key] = PLAYER_BY_NAME_POS[key] || []).push(p);
+}
+function uniquePlayerByName(name, pos){
+  if (pos){
+    const hits = PLAYER_BY_NAME_POS[namePosKey(name, pos)] || [];
+    return hits.length === 1 ? hits[0] : null;
+  }
+  const key = norm(name);
+  const hits = E.players.filter(p => norm(p.name) === key);
+  return hits.length === 1 ? hits[0] : null;
+}
+function pickPlayerId(pick){
+  const direct = pick && pick.player_id != null ? String(pick.player_id) : "";
+  if (direct) return direct;
+  const md = pick && pick.metadata || {};
+  const p = uniquePlayerByName((md.first_name || "") + " " + (md.last_name || ""),
+                               md.position || "");
+  return playerId(p);
+}
+function playerForPick(pick){
+  const id = pickPlayerId(pick);
+  return id ? (PLAYER_BY_ID[id] || null) : null;
+}
+function overrideLabel(p){ return p.name + " [" + p.pos + "]"; }
+function playerFromInput(value){
+  const text = String(value || "").trim();
+  let hits = E.players.filter(p => overrideLabel(p).toLowerCase() === text.toLowerCase());
+  if (hits.length === 1) return hits[0];
+  hits = E.players.filter(p => p.name.toLowerCase() === text.toLowerCase());
+  if (hits.length === 1) return hits[0];
+  const key = norm(text);
+  hits = E.players.filter(p => norm(p.name) === key);
+  return hits.length === 1 ? hits[0] : null;
+}
+function rowsByPlayerId(rows){
+  const out = {}, collisions = new Set();
+  for (const row of rows || []){
+    const p = uniquePlayerByName(row.name, row.pos);
+    const id = playerId(p);
+    if (!id) continue;
+    if (out[id]) collisions.add(id); else out[id] = row;
+  }
+  for (const id of collisions) delete out[id];
+  return out;
+}
 
 // ======== ORDERHYP-BEGIN ========
 // Draft-order hypothesis (pre-draft only). Sleeper's lobby shows no draw
@@ -830,12 +887,11 @@ function buildLiveDom(){
   $("f-ovr-in").addEventListener("input", e => {
     const q = norm(e.target.value);
     $("f-ovr-list").innerHTML = !q ? "" : E.players.filter(p => norm(p.name).includes(q)).slice(0, 8)
-      .map(p => `<option value="${esc(p.name)}">`).join("");
+      .map(p => `<option value="${esc(overrideLabel(p))}">`).join("");
   });
   $("f-ovr-go").addEventListener("click", () => {
-    const n = $("f-ovr-in").value.trim();
-    const p = E.players.find(x => x.name.toLowerCase() === n.toLowerCase());
-    if (p){ overrides.add(norm(p.name) + "|" + p.pos); store.set("ytfl_overrides", [...overrides]);
+    const p = playerFromInput($("f-ovr-in").value);
+    if (p){ overrides.add(playerId(p)); store.set("ytfl_overrides", [...overrides]);
             $("f-ovr-in").value = ""; LiveState.lastRender && LiveState.lastRender(); }
   });
   $("f-ovr-clear").addEventListener("click", () => {
@@ -889,9 +945,9 @@ function buildLiveDom(){
   $("recs-q").addEventListener("input", e => {
     const q = norm(e.target.value);
     $("recs-list").innerHTML = !q ? "" : E.players.filter(p => norm(p.name).includes(q)).slice(0, 8)
-      .map(p => `<option value="${esc(p.name)}">`).join("");
-    const hit = E.players.find(p => p.name.toLowerCase() === e.target.value.trim().toLowerCase());
-    RecState.searched = hit ? hit.name : null;
+      .map(p => `<option value="${esc(overrideLabel(p))}">`).join("");
+    const hit = playerFromInput(e.target.value);
+    RecState.searched = hit ? playerId(hit) : null;
     if (hit || !e.target.value) LiveState.lastRender && LiveState.lastRender();
   });
   $("recs-clear").addEventListener("click", () => {
@@ -922,10 +978,7 @@ function buildLiveDom(){
       SimState.running = true;
       $("f-sim-out").innerHTML = '<p class="small">simulating...</p>';
       setTimeout(() => {
-        const goneNow = new Set(LiveState.picks.map(p => {
-          const md = p.metadata || {};
-          return norm((md.first_name || "") + " " + (md.last_name || "")) + "|" + (md.position || "");
-        }));
+        const goneNow = new Set(LiveState.picks.map(pickPlayerId).filter(Boolean));
         for (const o of overrides) goneNow.add(o);
         const seedR = myRoster();
         const r = runSims(n, LiveState.mySlot, LiveState.lastSlotMap || {},
@@ -986,12 +1039,9 @@ function renderLive(draft, newPick){
   LiveState.lastRender = () => renderLive(draft, false);
   LiveState.lastSlotMap = draft.slot_to_roster_id || {};
   const L = LiveState.els;
-  const gone = new Set(LiveState.picks.map(p => {
-    const md = p.metadata || {};
-    return norm((md.first_name || "") + " " + (md.last_name || "")) + "|" + (md.position || "");
-  }));
+  const gone = new Set(LiveState.picks.map(pickPlayerId).filter(Boolean));
   for (const o of overrides) gone.add(o);          // feature 10: manual corrections
-  const alive = E.players.filter(p => !gone.has(norm(p.name) + "|" + p.pos));
+  const alive = E.players.filter(p => !gone.has(playerId(p)));
   const cur = LiveState.picks.length + 1;
   const rd = Math.ceil(cur / GEO.teams);
   const slotOnClock = slotOfOverall(cur);
@@ -1107,7 +1157,7 @@ function renderLive(draft, newPick){
   // to pick cur is trivially 1 and scarcity vanishes at decision time.
   const peNext = (isMe ? mineAll[1] : mineAll[0]) || cur + 2 * GEO.teams;
   renderPickEngine(alive, cur, peNext, LiveState.mySlot ? R2 : null);
-  const aliveSet2 = new Set(alive.map(p => p.name));
+  const aliveSet2 = new Set(alive.map(playerId));
   renderGrid(draft);
   renderValueBoard(aliveSet2);
 }
@@ -1158,8 +1208,26 @@ const store = {
   get(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } },
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
 };
-let overrides = new Set(store.get("ytfl_overrides", []));         // feature 10
-let queue = store.get("ytfl_queue", []);                          // feature 9
+function migratePlayerRefs(values, legacyHasPosition){
+  const out = [];
+  for (const raw of values || []){
+    const value = String(raw);
+    if (PLAYER_BY_ID[value]) { out.push(value); continue; }
+    let p = null;
+    if (legacyHasPosition && value.includes("|")){
+      const cut = value.lastIndexOf("|");
+      const hits = PLAYER_BY_NAME_POS[namePosKey(value.slice(0, cut), value.slice(cut + 1))] || [];
+      p = hits.length === 1 ? hits[0] : null;
+    } else p = uniquePlayerByName(value, null);
+    const id = playerId(p);
+    if (id) out.push(id);
+  }
+  return [...new Set(out)];
+}
+let overrides = new Set(migratePlayerRefs(store.get("ytfl_overrides", []), true)); // feature 10
+let queue = migratePlayerRefs(store.get("ytfl_queue", []), false);                 // feature 9
+store.set("ytfl_overrides", [...overrides]);
+store.set("ytfl_queue", queue);
 let trendMap = null;                                              // feature 13
 
 function slotOfOverall(n){
@@ -1167,15 +1235,12 @@ function slotOfOverall(n){
   const i = n - (rd - 1) * GEO.teams;
   return rd % 2 === 1 ? i : GEO.teams + 1 - i;
 }
-function pickKey(md){ return norm((md.first_name || "") + " " + (md.last_name || "")) + "|" + (md.position || ""); }
-function playerByKey(key){ return E.players.find(p => norm(p.name) + "|" + p.pos === key); }
-
 // feature 1: my roster from the live feed + what it still needs
 function myRoster(){
   const mine = [];
   LiveState.picks.forEach((p, i) => {
     if (LiveState.mySlot && slotOfOverall(i + 1) === LiveState.mySlot)
-      mine.push({ overall: i + 1, md: p.metadata || {} });
+      mine.push({ overall: i + 1, pick: p, md: p.metadata || {} });
   });
   const count = { QB: 0, RB: 0, WR: 0, TE: 0, K: 0, DEF: 0 };
   mine.forEach(m => { if (count[m.md.position] !== undefined) count[m.md.position]++; });
@@ -1381,7 +1446,7 @@ function renderFeatures(draft, alive, cur, myNextList){
   const tick = LiveState.picks.slice(-14).reverse().map((p, idx) => {
     const md = p.metadata || {};
     const overall = LiveState.picks.length - idx;
-    const pl = playerByKey(pickKey(md));
+    const pl = playerForPick(p);
     let tag = "";
     if (pl && pl.adp < 900){
       const d = overall - pl.adp;
@@ -1394,16 +1459,16 @@ function renderFeatures(draft, alive, cur, myNextList){
   L["lv-ticker"].innerHTML = tick || '<p class="small">no picks yet</p>';
 
   // 9. queue with survival, crossed off when taken
-  const goneNames = new Set(alive.map(p => p.name));   // alive set - anything NOT in it is gone
-  L["f-queue"].innerHTML = (queue.length ? queue.map(name => {
-    const p = E.players.find(x => x.name === name);
+  const aliveIds = new Set(alive.map(playerId));       // stable Sleeper identities
+  L["f-queue"].innerHTML = (queue.length ? queue.map(id => {
+    const p = PLAYER_BY_ID[id];
     if (!p) return "";
-    const isGone = !goneNames.has(name);
+    const isGone = !aliveIds.has(id);
     const s = isGone ? 0 : calCondSurvival(p.adp, myNext, cur);
-    return `<div class="${isGone ? "queue-gone" : ""}">${esc(name)} ${p.pos}
+    return `<div class="${isGone ? "queue-gone" : ""}">${esc(p.name)} ${p.pos}
       ${isGone ? "- taken" : `- VOR <span class="num">${p.vor.toFixed(0)}</span> - <span class="num">${pct(s)}</span> lasts to ${myNext}`}
       ${trendBadge(p)}
-      <button class="star on" data-q="${esc(name)}" title="remove">x</button></div>`;
+      <button class="star on" data-q="${esc(id)}" title="remove">x</button></div>`;
   }).join("") : '<p class="small">no targets queued - star players in the board below</p>');
   L["f-queue"].querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => {
     queue = queue.filter(n => n !== b.dataset.q);
@@ -1425,7 +1490,7 @@ function renderBoard(alive, cur, myNextList){
     .filter(p => !BoardState.pos || p.pos === BoardState.pos)
     .filter(p => !BoardState.q || norm(p.name).includes(norm(BoardState.q)))
     .sort((a, b) => b.vor - a.vor).slice(0, 120);
-  const aliveSet = new Set(alive.map(p => p.name));
+  const aliveSet = new Set(alive.map(playerId));
   const target = myNextList[Math.min(BoardState.horizon, myNextList.length - 1)] || cur + 24;
   let lastTier = null, h = "";
   for (const p of rows){
@@ -1433,11 +1498,12 @@ function renderBoard(alive, cur, myNextList){
       lastTier = p.tier;
       if (BoardState.pos) h += `<div class="kicker" style="margin-top:8px">tier ${p.tier ?? "-"}</div>`;
     }
-    const gone = !aliveSet.has(p.name);
+    const id = playerId(p);
+    const gone = !aliveSet.has(id);
     const s = gone ? 0 : calCondSurvival(p.adp, target, cur);
-    const starred = queue.includes(p.name);
+    const starred = queue.includes(id);
     h += `<div class="${gone ? "queue-gone" : ""}"${gone ? "" : sigAttr(p)} style="padding:3px 0">
-      <button class="star ${starred ? "on" : ""}" data-star="${esc(p.name)}">${starred ? "★" : "☆"}</button>
+      <button class="star ${starred ? "on" : ""}" data-star="${esc(id)}">${starred ? "★" : "☆"}</button>
       ${esc(p.name)} ${p.pos} ${esc(p.team)} - VOR <span class="num">${p.vor.toFixed(0)}</span>
       - ADP <span class="num">${p.adp < 900 ? p.adp.toFixed(1) : "-"}</span>
       ${p.floor ? '<span class="floor">floor</span>' : ""}${injBadge(p)}
@@ -1446,8 +1512,8 @@ function renderBoard(alive, cur, myNextList){
   }
   L["f-board"].innerHTML = h ? sigLegend() + h : '<p class="small">no matches</p>';
   L["f-board"].querySelectorAll("[data-star]").forEach(b => b.addEventListener("click", () => {
-    const n = b.dataset.star;
-    queue = queue.includes(n) ? queue.filter(x => x !== n) : queue.concat([n]);
+    const id = b.dataset.star;
+    queue = queue.includes(id) ? queue.filter(x => x !== id) : queue.concat([id]);
     store.set("ytfl_queue", queue);
     LiveState.lastRender && LiveState.lastRender();
   }));
@@ -1508,6 +1574,7 @@ async function loadBullish(){
     const r = await fetch("data/bullish_2026.json");
     if (r.ok){
       BULL = await r.json();
+      BULL._byId = rowsByPlayerId(BULL.tags);
       if (LiveState.lastRender && LiveState.els) LiveState.lastRender();
     }
   } catch (e) { /* absent is a supported state */ }
@@ -1526,7 +1593,7 @@ function bullChip(p){
     const title = `BULLISH tags stale versus current board; age ${ageH.toFixed(0)}h`;
     return `<span class="sig" style="color:var(--ink3);border-color:var(--ink3)" title="${esc(title)}">TAGS STALE ${ageH.toFixed(0)}h</span>`;
   }
-  const t = BULL.tags.find(x => x.name === p.name && x.pos === p.pos);
+  const t = BULL._byId && BULL._byId[playerId(p)];
   if (!t) return "";
   const ageH = Math.max(0, (Date.now() - Date.parse(t.computed_at)) / 3600000);
   let st = t.status, stale = "";
@@ -1550,9 +1617,10 @@ function cvsFor(p){
   if (!CVS) return null;
   if (!CVS._idx){
     CVS._idx = {};
-    for (const c of CVS.players) CVS._idx[norm(c.name) + "|" + c.pos] = c;
+    for (const c of CVS.players) if (c.sleeper_id != null)
+      CVS._idx[String(c.sleeper_id)] = c;
   }
-  return CVS._idx[norm(p.name) + "|" + p.pos] || null;
+  return CVS._idx[playerId(p)] || null;
 }
 // P(the whole tier is gone by my next pick), same independence approximation
 // as the tier-cliff strip and labelled the same way where displayed
@@ -1736,7 +1804,7 @@ function buildRecap(){
   const lines = ["# Draft recap - " + new Date().toISOString().slice(0, 10), ""];
   lines.push("## My roster (seat " + LiveState.mySlot + ")", "");
   for (const m of R.mine){
-    const pl = playerByKey(pickKey(m.md));
+    const pl = playerForPick(m.pick);
     const d = pl && pl.adp < 900 ? (m.overall - pl.adp) : null;
     lines.push(`- pick ${m.overall}: ${(m.md.first_name || "") + " " + (m.md.last_name || "")} ${m.md.position}` +
       (d !== null ? ` (${d >= 0 ? "+" : ""}${d.toFixed(0)} vs ADP)` : ""));
@@ -1852,7 +1920,8 @@ async function loadIntel(){
         fetch(base + f).then(r => r.json()).catch(() => null)));
     if (pc) Intel.playcallers = Object.fromEntries(pc.callers.map(c => [c.team, c]));
     if (pr) Intel.proe = Object.fromEntries(pr.teams.map(x => [x.team, x.proe_2025]));
-    if (adp && adp.players) Intel.adpBand = Object.fromEntries(adp.players.map(x => [norm(x.name), x]));
+    if (adp && adp.players) Intel.adpBand = Object.fromEntries(
+      adp.players.map(x => [String(x.player_id), x]));
     LiveState.lastRender && LiveState.lastRender();
   } catch (e) { /* chips are optional context */ }
 }
@@ -1863,7 +1932,7 @@ function evidenceChips(p){
   const proe = Intel.proe && Intel.proe[p.team];
   if (proe !== undefined && proe !== null)
     out.push(`<span class="evc">${esc(p.team)} PROE 2025: <span class="num">${proe > 0 ? "+" : ""}${proe}</span></span>`);
-  const band = Intel.adpBand && Intel.adpBand[norm(p.name)];
+  const band = Intel.adpBand && Intel.adpBand[playerId(p)];
   if (band && band.high !== undefined)
     out.push(`<span class="evc">market range <span class="num">${band.high}-${band.low}</span> (FFC band, ADP <span class="num">${band.adp_ffc}</span>)</span>`);
   return out.length ? `<div class="chips-ev">${out.join("")}</div>` : "";
@@ -1879,10 +1948,15 @@ const Overlay = { map: null };
 function overlayInit(){
   if (!E.my_board) return;
   Overlay.map = {};
-  for (const c of E.my_board) if (c.matched) Overlay.map[norm(c.player)] = c;
+  for (const c of E.my_board) if (c.matched){
+    const direct = c.sleeper_id != null ? PLAYER_BY_ID[String(c.sleeper_id)] : null;
+    const p = direct || uniquePlayerByName(c.player, c.pos);
+    const id = playerId(p);
+    if (id) Overlay.map[id] = c;
+  }
 }
 function yourCallChip(p){
-  const c = Overlay.map && Overlay.map[norm(p.name)];
+  const c = Overlay.map && Overlay.map[playerId(p)];
   if (!c) return "";
   return `<span class="yc ${c.call === "BULL" ? "bull" : "bear"}" title="${esc(c.reason)} (${esc(c.source)}${c.date ? ", " + esc(c.date) : ""})">YOUR CALL - ${c.call}${c.move ? " " + esc(c.move) : ""}</span>`;
 }
@@ -1890,7 +1964,7 @@ function flipBreakText(cands){
   // tie-break toward bulls. cands[0] is the model primary and REMAINS the
   // subject - this returns advice text only, it can never swap the subject.
   const bull = Overlay.map && cands.find(p => {
-    const c = Overlay.map[norm(p.name)]; return c && c.call === "BULL"; });
+    const c = Overlay.map[playerId(p)]; return c && c.call === "BULL"; });
   return bull ? `break toward your call - ${esc(bull.name)}` : "break toward ceiling";
 }
 function tierResort(list){
@@ -1898,7 +1972,7 @@ function tierResort(list){
   // same-tier run, bulls rise to the top of the tier and bears sink to the
   // bottom. VOR order is untouched everywhere else.
   if (!Overlay.map) return list;
-  const bias = p => { const c = Overlay.map[norm(p.name)];
+  const bias = p => { const c = Overlay.map[playerId(p)];
                       return c ? (c.call === "BULL" ? -1 : 1) : 0; };
   const out = [];
   let i = 0;
@@ -1934,14 +2008,14 @@ function renderRecs(alive, cur, myNext, R, primary, verdict, hasCoin){
     .sort((a, b) => b.g - a.g);
   const cards = pool.slice(0, RecState.count);
   if (RecState.searched){
-    const sp = E.players.find(x => x.name === RecState.searched);
+    const sp = PLAYER_BY_ID[RecState.searched];
     // a searched player may already be drafted - never show him a survival
     // number (the calibration lifts the degenerate near-zero to bin 0's
     // empirical rate, which would read as a live 27% for a taken player)
-    if (sp && !cards.some(c => c.p.name === sp.name))
+    if (sp && !cards.some(c => playerId(c.p) === playerId(sp)))
       cards.push({ p: sp, g: pickGrade(sp, gradeCtx(sp, alive, cur, myNext, R)),
                    searched: true,
-                   taken: !alive.some(x => x.name === sp.name && x.pos === sp.pos) });
+                   taken: !alive.some(x => playerId(x) === playerId(sp)) });
   }
   L["recs-cards"].innerHTML = sigLegend() + cards.map(c => `
     <div class="rec"${c.taken ? "" : sigAttr(c.p)}><div>
@@ -1980,7 +2054,7 @@ function renderGrid(draft){
 function renderValueBoard(aliveSet){
   const L = LiveState.els;
   const rows = (list) => list.map(p => {
-    const gone = !aliveSet.has(p.name);
+    const gone = !aliveSet.has(playerId(p));
     if (gone && BoardV.remove) return "";
     return `<div class="vrow${gone ? " gone" : ""}"${gone ? "" : sigAttr(p)}><span class="vr-n">${esc(p.name)}
       ${p.floor ? '<span class="floor">floor</span>' : ""}${injBadge(p)}${gone ? "" : sigBadge(p)}${yourCallChip(p)}</span>
@@ -1989,7 +2063,7 @@ function renderValueBoard(aliveSet){
   const sorted = E.players.slice().sort((a, b) => b.vor - a.vor);
   const overall = [];
   for (const p of sorted){
-    if (BoardV.remove && !aliveSet.has(p.name)) continue;
+    if (BoardV.remove && !aliveSet.has(playerId(p))) continue;
     overall.push(p);
     if (overall.length >= BoardV.topN) break;
   }
@@ -2001,7 +2075,7 @@ function renderValueBoard(aliveSet){
     const pool = tierResort(sorted.filter(p => members.includes(p.pos)));
     const take = [];
     for (const p of pool){
-      if (BoardV.remove && !aliveSet.has(p.name)) continue;
+      if (BoardV.remove && !aliveSet.has(playerId(p))) continue;
       take.push(p);
       if (take.length >= BoardV.posN) break;
     }
@@ -2036,13 +2110,13 @@ function simBand(rd){ return rd <= 3 ? "rd1-3" : rd <= 6 ? "rd4-6" : rd <= 10 ? 
 function runSims(n, mySlot, slotMap, goneKeys, startOverall, seedCounts){
   const t0 = performance.now();
   const players = E.players.filter(p => p.adp < 900)
-    .filter(p => !goneKeys || !goneKeys.has(norm(p.name) + "|" + p.pos))
+    .filter(p => !goneKeys || !goneKeys.has(playerId(p)))
     .slice().sort((a, b) => a.adp - b.adp);
   const myPickSet = new Set(myPicks(mySlot).filter(k => k >= (startOverall || 1)));
-  const targetAlive = {};       // name -> {pick -> aliveCount}
+  const targetAlive = {};       // Sleeper id -> {pick -> aliveCount}
   const myRosterCounts = [];    // per sim: {QB: n, ...}
   const tierBreak = { QB: [], RB: [], WR: [], TE: [] };
-  const watch = new Set(queue.concat(E.players.filter(p => p.vor > 30).map(p => p.name)));
+  const watch = new Set(queue.concat(E.players.filter(p => p.vor > 30).map(playerId)));
 
   for (let s = 0; s < n; s++){
     const alive = players.slice();
@@ -2089,11 +2163,12 @@ function runSims(n, mySlot, slotMap, goneKeys, startOverall, seedCounts){
         pickIdx = alive.indexOf(cands[bi]);
       }
       const taken = alive.splice(pickIdx, 1)[0];
-      if (watch.has(taken.name) && myPickSet.size){
+      const takenId = playerId(taken);
+      if (watch.has(takenId) && myPickSet.size){
         // record aliveness AT each of my picks: a target is alive at pick k if
         // it is taken at or after k
         for (const k of myPickSet) if (overall >= k){
-          const ta = targetAlive[taken.name] = targetAlive[taken.name] || {};
+          const ta = targetAlive[takenId] = targetAlive[takenId] || {};
           ta[k] = (ta[k] || 0) + 1;
         }
       }
@@ -2104,15 +2179,16 @@ function runSims(n, mySlot, slotMap, goneKeys, startOverall, seedCounts){
     }
     // review finding 3: a watched player who goes UNDRAFTED survived to every
     // one of my picks - credit him, or late sleepers read as near-0%
-    for (const p of alive) if (watch.has(p.name))
+    for (const p of alive) if (watch.has(playerId(p)))
       for (const k of myPickSet){
-        const ta = targetAlive[p.name] = targetAlive[p.name] || {};
+        const id = playerId(p);
+        const ta = targetAlive[id] = targetAlive[id] || {};
         ta[k] = (ta[k] || 0) + 1;
       }
     myRosterCounts.push(counts);
   }
   const ms = performance.now() - t0;
-  const nOf = (name, k) => ((targetAlive[name] || {})[k] || 0);
+  const nOf = (id, k) => ((targetAlive[id] || {})[k] || 0);
   return { n, ms, myRosterCounts, nOf, tierBreak, targets: [...watch] };
 }
 
@@ -2127,11 +2203,11 @@ function renderSimResults(r, mySlot){
   h += `<div class="kicker" style="margin-top:8px">targets surviving to my picks (share of sims)</div>
     <table><tr><th>Player</th>${mine.map(k => `<th>pk ${k}</th>`).join("")}</tr>`;
   const rows = r.targets
-    .map(name => ({ name, p: E.players.find(x => x.name === name) }))
+    .map(id => ({ id, p: PLAYER_BY_ID[id] }))
     .filter(x => x.p).sort((a, b) => b.p.vor - a.p.vor).slice(0, 12);
   for (const x of rows){
-    h += `<tr><td>${esc(x.name)} ${x.p.pos}</td>` +
-      mine.map(k => `<td class="num">${Math.round(100 * r.nOf(x.name, k) / r.n)}%</td>`).join("") + `</tr>`;
+    h += `<tr><td>${esc(x.p.name)} ${x.p.pos}</td>` +
+      mine.map(k => `<td class="num">${Math.round(100 * r.nOf(x.id, k) / r.n)}%</td>`).join("") + `</tr>`;
   }
   h += `</table>`;
   h += `<div class="kicker" style="margin-top:8px">where tier 1 typically breaks</div>` +

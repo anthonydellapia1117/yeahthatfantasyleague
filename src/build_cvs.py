@@ -28,22 +28,16 @@ import csv
 import datetime
 import json
 import os
-import re
 import statistics
 
 from engine_lineage import require as require_engine_digest
+from player_names import PlayerIdentityResolver
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out")
 D = os.path.join(OUT, "data")
 
 SKILL = ("QB", "RB", "WR", "TE")
-
-
-def norm(s):
-    s = re.sub(r"[.'’]", "", str(s).lower())
-    s = re.sub(r"\s+(jr|sr|ii|iii|iv|v)$", "", s.strip())
-    return re.sub(r"\s+", " ", s)
 
 
 def jload(path):
@@ -66,14 +60,25 @@ def main():
     cfg = jload(os.path.join(ROOT, "data", "cvs_weights.json"))
     eng = jload(os.path.join(OUT, "engine_2026.json"))
     engine_digest = require_engine_digest(eng)
-    usage = {norm(u["name"]): u for u in jload(os.path.join(D, "usage_2025.json"))["players"]}
+    identity = PlayerIdentityResolver(eng["players"])
+    crosswalk = jload(os.path.join(D, "crosswalk.json"))["matched"]
+    usage = {u["gsis_id"]: u
+             for u in jload(os.path.join(D, "usage_2025.json"))["players"]}
     proe = {t["team"]: t["proe_2025"] for t in jload(os.path.join(D, "team_proe_2025.json"))["teams"]}
-    vol = {norm(v["name"]): v for v in jload(os.path.join(D, "volatility_2025.json"))["players"]}
-    tdr = {norm(t["name"]): t for t in jload(os.path.join(D, "td_rates_2025.json"))["players"]}
+    vol = {v["gsis_id"]: v
+           for v in jload(os.path.join(D, "volatility_2025.json"))["players"]}
+    tdr = {t["gsis_id"]: t
+           for t in jload(os.path.join(D, "td_rates_2025.json"))["players"]}
     sos = {t["team"]: t for t in jload(os.path.join(D, "sos_2026.json"))["teams"]}
     depth = {}
     for e in jload(os.path.join(D, "depth_charts.json"))["entries"]:
-        depth[(norm(e["player"]), e["team"])] = e["rank"]
+        # The depth source's ``gsis_id`` is not consistently an nflverse id
+        # (some rows carry provider-local ESPN ids). Resolve its name/position
+        # against the Sleeper engine bucket, then keep team as a check just as
+        # the pre-consolidation join did.
+        resolved = identity.resolve(e["player"], position=e["pos"])
+        if resolved.record is not None:
+            depth[(resolved.record["sleeper_id"], e["team"])] = e["rank"]
     callers = {}
     for r in csv.DictReader(open(os.path.join(ROOT, "data", "playcallers.csv"))):
         callers[r["team"]] = r
@@ -87,16 +92,18 @@ def main():
         rows = [ln for ln in open(bpath) if not ln.lstrip().startswith("#")]
         for r in csv.DictReader(rows):
             if (r.get("player") or "").strip() and (r.get("call") or "").strip().upper() in ("BULL", "BEAR"):
-                board[norm(r["player"])] = r["call"].strip().upper()
+                resolved = identity.resolve(r["player"])
+                if resolved.record is not None:
+                    board[resolved.record["sleeper_id"]] = r["call"].strip().upper()
 
     tags_by_player = {}
     for t in wtags:
         if t.get("resolved"):
-            tags_by_player.setdefault(norm(t["player"]), []).append(t)
+            tags_by_player.setdefault(t["player_id"], []).append(t)
     figs_by_player = {}
     for f in wfigs:
         if f.get("player"):
-            figs_by_player.setdefault(norm(f["player"]), []).append(
+            figs_by_player.setdefault(f["player_id"], []).append(
                 {k: f[k] for k in ("kind", "value", "line", "quote")})
 
     W = cfg["factor_weights"]
@@ -115,8 +122,9 @@ def main():
             adp_pos_rank[(p["name"], pos)] = i + 1
 
         def raws(p):
-            n = norm(p["name"])
-            u = usage.get(n)
+            sleeper_id = p.get("sleeper_id", "")
+            gsis_id = crosswalk.get(sleeper_id)
+            u = usage.get(gsis_id)
             opp = None
             if u and u.get("weeks"):
                 if pos == "RB":
@@ -132,7 +140,7 @@ def main():
             coach = None
             if cal:
                 coach = -1.0 if str(cal.get("first_time", "0")) in ("1", "True", "true") else 0.0
-            slot = depth.get((n, p.get("team") or ""))
+            slot = depth.get((sleeper_id, p.get("team") or ""))
             surr = -(slot - 1) if slot else None
             srow = sos.get(p.get("team"))
             sched = srow.get(f"sos_{pos.lower()}") if srow else None
@@ -167,7 +175,8 @@ def main():
         walter_refs[pos] = round(walter_ref, 2)
 
         for idx, p in enumerate(pool):
-            n = norm(p["name"])
+            sleeper_id = p.get("sleeper_id", "")
+            gsis_id = crosswalk.get(sleeper_id)
             factors = []
             present = [f for f in W if f != "baseline_projection"
                        and zcols[f][idx] is not None]
@@ -196,7 +205,7 @@ def main():
             confidence = round((W["baseline_projection"] + w_present) / wsum_all, 3)
 
             # ---- Walter judgment layer (capped)
-            wt = tags_by_player.get(n, [])
+            wt = tags_by_player.get(sleeper_id, [])
             applied, proposed_pct = [], 0.0
             if cfg["walter_enabled"]:
                 for t in wt:
@@ -228,7 +237,7 @@ def main():
             cvs = cvs_base + walter_delta
 
             evid = [t for t in wt if t["class"] == "evidence"]
-            v = vol.get(n)
+            v = vol.get(gsis_id)
             srow2 = sos.get(p.get("team"))
             wk1517 = srow2.get(f"sos_{pos.lower()}_wk15_17") if srow2 else None
             wk1517_rank = srow2.get(f"sos_{pos.lower()}_wk15_17_rank") if srow2 else None
@@ -253,9 +262,9 @@ def main():
                                          "quote": t["quote"][:240],
                                          "lines": f"L{t['line_start']}-{t['line_end']}"}
                                         for t in evid],
-                           "figures": figs_by_player.get(n, []),
+                           "figures": figs_by_player.get(sleeper_id, []),
                            "revision": wchange.get(p["name"])},
-                "personal": board.get(n),
+                "personal": board.get(sleeper_id),
             })
 
     # ---- ranks (cross-position: VOR-anchored CVS is points-comparable).
@@ -405,7 +414,7 @@ def main():
     for t in wtags:
         if t["tag"] != "regression_candidate" or not t.get("resolved"):
             continue
-        ours = tdr.get(norm(t["player"]))
+        ours = tdr.get(crosswalk.get(t.get("player_id")))
         model_says = None
         if ours:
             model_says = ("high_outlier" if ours.get("outlier") == "high" else

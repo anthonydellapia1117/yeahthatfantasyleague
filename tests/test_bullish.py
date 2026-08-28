@@ -97,6 +97,13 @@ for key in ("league_6pt", "counterfactual_4pt"):
 # 3. tags: statuses legal, scores match, criteria in [0,1], reasons on
 #    demotions, TTL and timestamps present
 LEGAL = {"BULLISH", "WATCH", "SUSPENDED", "REVOKED"}
+engine_for_ids = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+engine_ids = {str(p.get("sleeper_id") or "")
+              for p in engine_for_ids["players"]}
+tag_ids = [str(t.get("sleeper_id") or "") for t in d["tags"]]
+ok(all(tag_ids) and len(tag_ids) == len(set(tag_ids)) and
+   set(tag_ids).issubset(engine_ids),
+   "every BULLISH tag carries one unique canonical Sleeper identity")
 for t in d["tags"]:
     if t["status"] not in LEGAL:
         ok(False, f"legal status for {t['name']}", t["status"])
@@ -141,6 +148,9 @@ bp = open(os.path.join(ROOT, "out", "big_board.html")).read()
 drp = open(os.path.join(ROOT, "out", "draft_room.html")).read()
 ok("bullishChip" in bp and 'get("data/bullish_2026.json")' in bp,
    "board chip wired with optional load")
+ok("bullishTag" in bp and "x.name === p.name" not in bp and
+   "x.pos === p.pos" not in bp,
+   "big board joins BULLISH tags by Sleeper identity, never raw name")
 ok("bullChip" in drp and 'fetch("data/bullish_2026.json")' in drp,
    "room chip wired with optional load")
 ok("never" in drp[drp.index("C5 BULLISH layer"):drp.index("C5 BULLISH layer") + 300]

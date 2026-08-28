@@ -4,7 +4,7 @@
   "engine_generated": "2026-08-26",
   "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
   "input_content_sha256": {
-   "ceiling_2026.json": "628b7e2ebd5bfd1d6f9ba5e4f6049db7a2d10e0914d313a2d4c6008049bdf75a",
+   "ceiling_2026.json": "876bf5c2eb0941b9d0a997d326db445478279b2ee17d23acc006ba2d2872ca84",
    "usage_2025.json": "795d27bbab685a1970c336e5005e391be6cab21a42a083c0e792e887dabf1e58",
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
    "depth_charts.json": "b5a14a0768cf0ca2875d501964d8dbb71cdccb239d5e4e8d47f2a7f7245da4f6",
@@ -12,7 +12,7 @@
   },
   "vegas": {
    "source": "nflverse schedules, Week-1 2026 closing lines (16/16 games - the only complete coverage window)",
-   "pulled": "2026-08-27"
+   "pulled": "2026-08-28"
   },
   "td_per_point": {
    "value": 0.1055,
@@ -1338,7 +1338,7 @@
     "n": 34,
     "basis": "2025 role on JAX"
    },
-   "backfield_share": 0.5347
+   "backfield_share": 0.49
   },
   {
    "name": "Garrett Wilson",
@@ -4353,7 +4353,10 @@
    "first_read": {
     "k": 24,
     "n": 367
-   }
+   },
+   "targets_pg": 6.43,
+   "carries_pg": 0.14,
+   "rush_ypg": 0.0
   },
   {
    "name": "Brian Robinson",
@@ -4501,7 +4504,7 @@
     "n": 17,
     "basis": "2025 role on NO"
    },
-   "backfield_share": 0.2594
+   "backfield_share": 0.2377
   }
  ]
 }

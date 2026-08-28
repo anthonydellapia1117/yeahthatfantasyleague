@@ -45,9 +45,11 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
-import analyze_recency as base           # norm, zscore, HISTORY
+import analyze_recency as base           # zscore, HISTORY
 import analyze_injury as inj             # season_totals
 import engine_2026 as eng                # FROZEN survival - read-only import
+from player_names import (PlayerIdentityResolver, comparison_key,
+                          nflverse_roster_identity)
 
 OUT = os.path.join(ROOT, "out", "data", "replay_backtest.json")
 SKILL = ("QB", "RB", "WR", "TE")
@@ -69,55 +71,96 @@ def main():
     for Y in SEASONS:
         prior, _ = totals[Y - 1]
         realized, _ = totals[Y]
-        # prior-season points by normalized name+pos, for FFC rows without gsis
-        prior_by_name = {}
-        with open(os.path.join(base.HISTORY, f"spw_{Y-1}.csv")) as fh:
-            for r in csv.DictReader(fh):
-                if r["season_type"] == "REG" and r["position_group"] in SKILL:
-                    prior_by_name[(base.norm(r["player_display_name"]),
-                                   r["position_group"])] = r["player_id"]
-        realized_by_name = {}
-        with open(os.path.join(base.HISTORY, f"spw_{Y}.csv")) as fh:
-            for r in csv.DictReader(fh):
-                if r["season_type"] == "REG" and r["position_group"] in SKILL:
-                    realized_by_name[(base.norm(r["player_display_name"]),
-                                      r["position_group"])] = r["player_id"]
-
         yr = sorted([r for r in picks if int(r["season"]) == Y],
                     key=lambda r: int(r["overall"]))
-        taken_by = {}                       # norm name+pos -> overall taken
+        with open(os.path.join(base.HISTORY, f"roster_{Y}.csv")) as roster_fh, \
+             open(os.path.join(base.HISTORY, f"spw_{Y}.csv")) as stats_fh:
+            identity = nflverse_roster_identity(
+                csv.DictReader(roster_fh), positions=SKILL,
+                stat_rows=csv.DictReader(stats_fh), alias_rows=yr)
+        stable_pick_id = {}
         for r in yr:
-            taken_by[(base.norm(r["player_name"]), r["pos"])] = int(r["overall"])
+            if r["pos"] not in SKILL:
+                continue
+            resolved = identity.resolve(
+                r["player_name"], position=r["pos"],
+                prefer_latest_draft_year=True)
+            # Rookie archive rows can carry an ESPN fallback id.  Prefer the
+            # roster's GSIS identity when name+position resolves uniquely.
+            stable_pick_id[int(r["overall"])] = (
+                (resolved.record or {}).get("gsis_id") or r.get("player_id") or "")
+        pick_identity = PlayerIdentityResolver([
+            {"name": r["player_name"], "pos": r["pos"],
+             "gsis_id": stable_pick_id[int(r["overall"])]}
+            for r in yr if r["pos"] in SKILL and r.get("player_id")])
+        taken_by = {}                       # stable identity -> overall taken
+        for r in yr:
+            if r["pos"] not in SKILL:
+                continue
+            player_id = stable_pick_id.get(int(r["overall"]), "")
+            if not player_id:
+                resolved = identity.resolve(
+                    r["player_name"], position=r["pos"],
+                    prefer_latest_draft_year=True)
+                player_id = (resolved.record or {}).get("gsis_id", "")
+            if player_id:
+                taken_by[player_id] = int(r["overall"])
 
         # the draft universe: FFC list + everyone actually drafted
-        universe = {}                       # (nname, pos) -> {adp, proj, realized}
-        for p in json.load(open(os.path.join(base.HISTORY, f"ffc_ppr_{Y}.json")))["players"]:
+        universe = {}                       # stable id -> value record
+        ffc_players = json.load(open(os.path.join(
+            base.HISTORY, f"ffc_ppr_{Y}.json")))["players"]
+        for ffc_index, p in enumerate(ffc_players):
             if p["position"] not in SKILL:
                 continue
-            key = (base.norm(p["name"]), p["position"])
-            pid = prior_by_name.get(key)
-            rid = realized_by_name.get(key)
+            resolved = identity.resolve(
+                p["name"], position=p["position"],
+                prefer_latest_draft_year=True)
+            player_id = (resolved.record or {}).get("gsis_id")
+            if not player_id:
+                # League picks carry a stable id even when the season roster
+                # snapshot lacks the market spelling.  This fallback is still
+                # bucketed and fail-closed, never a last-write name map.
+                player_id = (pick_identity.resolve(
+                    p["name"], position=p["position"]).record or {}).get(
+                        "gsis_id")
+            # Unresolved market entries still belong in survival calibration,
+            # but must never collapse onto one another or onto a draft pick.
+            key = player_id or (
+                f"unresolved:{p['position']}:{ffc_index}:"
+                f"{comparison_key(p['name'])}")
             universe[key] = {
+                "pos": p["position"],
                 "adp": float(p["adp"]),
-                "proj": prior[pid]["pts"] if pid and pid in prior else 0.0,
-                "realized": realized[rid]["pts"] if rid and rid in realized else 0.0,
+                "proj": prior[player_id]["pts"]
+                if player_id and player_id in prior else 0.0,
+                "realized": realized[player_id]["pts"]
+                if player_id and player_id in realized else 0.0,
             }
         for r in yr:
             if r["pos"] not in SKILL:
                 continue
-            key = (base.norm(r["player_name"]), r["pos"])
+            key = stable_pick_id.get(int(r["overall"]), "")
+            if not key:
+                resolved = identity.resolve(
+                    r["player_name"], position=r["pos"],
+                    prefer_latest_draft_year=True)
+                key = (resolved.record or {}).get("gsis_id", "")
+            if not key:
+                continue
             if key not in universe:
-                pid = r["player_id"]
                 universe[key] = {
+                    "pos": r["pos"],
                     "adp": 999.0,
-                    "proj": prior[pid]["pts"] if pid in prior else 0.0,
-                    "realized": realized[pid]["pts"] if pid in realized else 0.0,
+                    "proj": prior[key]["pts"] if key in prior else 0.0,
+                    "realized": realized[key]["pts"] if key in realized else 0.0,
                 }
 
         # replacement level per position over this year's universe
         vor_base = {}
         for pos in SKILL:
-            pool = sorted((v["proj"] for (n, p), v in universe.items() if p == pos),
+            pool = sorted((v["proj"] for v in universe.values()
+                           if v["pos"] == pos),
                           reverse=True)
             n = REPLACEMENT[pos]
             vor_base[pos] = pool[n - 1] if len(pool) >= n else 0.0
@@ -130,12 +173,18 @@ def main():
             k = int(r["overall"])
             avail = {key: v for key, v in universe.items()
                      if taken_by.get(key, 10**9) >= k}
-            akey = (base.norm(r["player_name"]), r["pos"])
+            akey = stable_pick_id.get(int(r["overall"]), "")
+            if not akey:
+                resolved = identity.resolve(
+                    r["player_name"], position=r["pos"],
+                    prefer_latest_draft_year=True)
+                akey = (resolved.record or {}).get("gsis_id", "")
             if akey not in avail:
                 continue                     # attribution mismatch; skip, counted
             adp_best = min(avail.items(), key=lambda kv: kv[1]["adp"])
             vor_best = max(avail.items(),
-                           key=lambda kv: kv[1]["proj"] - vor_base[kv[0][1]])
+                           key=lambda kv: kv[1]["proj"] -
+                           vor_base[kv[1]["pos"]])
             value_rows.append({
                 "season": Y, "overall": k, "player": r["player_name"],
                 "actual": universe[akey]["realized"],

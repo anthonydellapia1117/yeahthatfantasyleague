@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-26",
+  "generated": "2026-08-27",
   "scoring": "league-exact (6-pt pass TD, full PPR, -2 fumbles)",
   "window": "2016-2025 REG unless a block states otherwise",
   "adp_source": "FantasyFootballCalculator PPR, 12-team, late-preseason snapshot per year",
@@ -396,7 +396,7 @@
      },
      {
       "year": 2018,
-      "name": "juju smith-schuster",
+      "name": "juju smith schuster",
       "preseason_rank": 18
      },
      {
@@ -496,7 +496,7 @@
      },
      {
       "year": 2022,
-      "name": "amon-ra st brown",
+      "name": "amon ra st brown",
       "preseason_rank": 31
      },
      {
@@ -546,7 +546,7 @@
      },
      {
       "year": 2024,
-      "name": "jaxon smith-njigba",
+      "name": "jaxon smith njigba",
       "preseason_rank": 41
      },
      {

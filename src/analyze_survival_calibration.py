@@ -46,6 +46,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import analyze_recency as base
+from player_names import comparison_key, nflverse_roster_identity
 import engine_2026 as eng                 # frozen - read-only
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -65,12 +66,66 @@ def load_years():
     for Y in SEASONS:
         yr = sorted([r for r in picks if int(r["season"]) == Y],
                     key=lambda r: int(r["overall"]))
-        taken_by = {(base.norm(r["player_name"]), r["pos"]): int(r["overall"])
-                    for r in yr}
+        with open(os.path.join(base.HISTORY, f"roster_{Y}.csv")) as roster_fh, \
+             open(os.path.join(base.HISTORY, f"spw_{Y}.csv")) as stats_fh:
+            identity = nflverse_roster_identity(
+                csv.DictReader(roster_fh), positions=SKILL,
+                stat_rows=csv.DictReader(stats_fh), alias_rows=yr)
+
+        def stable_id(name, pos, provider_id=""):
+            resolved = identity.resolve(
+                name, position=pos, prefer_latest_draft_year=True)
+            if resolved.record is not None:
+                return resolved.record["gsis_id"]
+            if provider_id.startswith("00-"):
+                return provider_id
+            return None
+
+        ffc_rows = [p for p in
+                    json.load(open(os.path.join(
+                        base.HISTORY, f"ffc_ppr_{Y}.json")))["players"]
+                    if p["position"] in SKILL]
+        pick_ids = [stable_id(r["player_name"], r["pos"],
+                              r.get("player_id", "")) for r in yr]
+        ffc_ids = [stable_id(p["name"], p["position"])
+                   for p in ffc_rows]
+
+        # A spelling fallback is allowed only as a one-to-one comparison join.
+        # If either provider has two unresolved people in the same lossy bucket,
+        # give every row a provider-local key so neither a dict overwrite nor a
+        # false identity can occur.
+        pick_fallbacks = {}
+        ffc_fallbacks = {}
+        for index, (row, gsis_id) in enumerate(zip(yr, pick_ids)):
+            if gsis_id is None:
+                key = (row["pos"], comparison_key(row["player_name"]))
+                pick_fallbacks.setdefault(key, []).append(index)
+        for index, (row, gsis_id) in enumerate(zip(ffc_rows, ffc_ids)):
+            if gsis_id is None:
+                key = (row["position"], comparison_key(row["name"]))
+                ffc_fallbacks.setdefault(key, []).append(index)
+
+        def fallback_key(kind, index, key):
+            if len(pick_fallbacks.get(key, ())) == 1 and \
+               len(ffc_fallbacks.get(key, ())) == 1:
+                return f"unresolved:unique:{key[0]}:{key[1]}"
+            return f"unresolved:{kind}:{Y}:{index}:{key[0]}:{key[1]}"
+
+        taken_by = {}
+        for index, (row, gsis_id) in enumerate(zip(yr, pick_ids)):
+            key = (row["pos"], comparison_key(row["player_name"]))
+            player_id = gsis_id or fallback_key("pick", index, key)
+            if player_id in taken_by:
+                raise ValueError(f"duplicate draft identity {Y}: {player_id}")
+            taken_by[player_id] = int(row["overall"])
+
         ffc = {}
-        for p in json.load(open(os.path.join(base.HISTORY, f"ffc_ppr_{Y}.json")))["players"]:
-            if p["position"] in SKILL:
-                ffc[(base.norm(p["name"]), p["position"])] = float(p["adp"])
+        for index, (row, gsis_id) in enumerate(zip(ffc_rows, ffc_ids)):
+            key = (row["position"], comparison_key(row["name"]))
+            player_id = gsis_id or fallback_key("ffc", index, key)
+            if player_id in ffc:
+                raise ValueError(f"duplicate FFC identity {Y}: {player_id}")
+            ffc[player_id] = float(row["adp"])
         mine = sorted(int(r["overall"]) for r in yr if r["member_name"] == ME)
         years[Y] = {"ffc": ffc, "taken_by": taken_by, "mine": mine,
                     "last_pick": int(yr[-1]["overall"])}

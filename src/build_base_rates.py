@@ -33,6 +33,7 @@ import re
 from collections import defaultdict
 
 from analyze_recency import HISTORY
+from player_names import PlayerIdentityResolver
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "data", "base_rates.json")
@@ -66,12 +67,6 @@ W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
      "special_teams_tds": 6.0}
 
 
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
-
-
 def wilson(k, n, z=1.96):
     if n == 0:
         return (0.0, 0.0)
@@ -83,15 +78,17 @@ def wilson(k, n, z=1.96):
 
 
 def season_finishes(year):
-    """name|pos -> positional finish rank by league-exact season total (REG)."""
+    """Return positional ranks by gsis id plus a fail-closed name resolver."""
     totals = defaultdict(float)
     pos_of = {}
+    name_of = {}
     with open(os.path.join(HISTORY, f"spw_{year}.csv")) as fh:
         for r in csv.DictReader(fh):
             if r.get("season_type") != "REG" or r.get("position") not in POSITIONS:
                 continue
-            key = norm(r["player_display_name"]) + "|" + r["position"]
+            key = r["player_id"]
             pos_of[key] = r["position"]
+            name_of[key] = r["player_display_name"]
             for col, w in W.items():
                 v = r.get(col)
                 if v:
@@ -107,7 +104,10 @@ def season_finishes(year):
         lst.sort(reverse=True)
         for i, (_, key) in enumerate(lst, 1):
             ranks[key] = i
-    return ranks
+    resolver = PlayerIdentityResolver([
+        {"name": name_of[key], "pos": pos_of[key], "gsis_id": key}
+        for key in totals])
+    return ranks, resolver
 
 
 def band_of(rank, bands):
@@ -124,7 +124,7 @@ def main():
                     for b in ROUND_BANDS} for p in POSITIONS}
     joined = unjoined = lg_joined = lg_unjoined = 0
 
-    league_picks = defaultdict(list)   # season -> [(name|pos, round)]
+    league_picks = defaultdict(list)   # season -> [(name, pos, round)]
     coverage = defaultdict(lambda: {"picks": 0, "franchises": set()})
     for r in csv.DictReader(open(PICKS)):
         try:
@@ -135,10 +135,10 @@ def main():
             coverage[season]["picks"] += 1
             coverage[season]["franchises"].add(r.get("member_name"))
         if season in SEASONS and r.get("pos") in POSITIONS:
-            league_picks[season].append((norm(r["player_name"]) + "|" + r["pos"], rnd))
+            league_picks[season].append((r["player_name"], r["pos"], rnd))
 
     for year in MARKET_SEASONS:
-        finishes = season_finishes(year)
+        finishes, identity = season_finishes(year)
         ffc = json.load(open(os.path.join(HISTORY, f"ffc_ppr_{year}.json")))
         players = ffc["players"] if isinstance(ffc, dict) else ffc
         by_pos = defaultdict(list)
@@ -151,8 +151,9 @@ def main():
                 band = band_of(i, BANDS)
                 if band is None:
                     continue
-                key = norm(p["name"]) + "|" + pos
-                fin = finishes.get(key)
+                resolved = identity.resolve(p["name"], position=pos)
+                fin = finishes.get(resolved.record["gsis_id"]) \
+                    if resolved.record is not None else None
                 if fin is None:
                     unjoined += 1     # drafted, produced zero recorded points
                     fin = 10 ** 6     # counts as the deepest possible bust
@@ -174,14 +175,15 @@ def main():
         picks = league_picks.get(year, [])
         if not picks:
             continue
-        finishes = season_finishes(year)
+        finishes, identity = season_finishes(year)
         eras_of = [e for e, yrs in ERAS.items() if year in yrs]
-        for key, rnd in picks:
+        for name, pos, rnd in picks:
             band = band_of(rnd, ROUND_BANDS)
-            pos = key.split("|")[1]
             if band is None:
                 continue
-            fin = finishes.get(key)
+            resolved = identity.resolve(name, position=pos)
+            fin = finishes.get(resolved.record["gsis_id"]) \
+                if resolved.record is not None else None
             if fin is None:
                 lg_unjoined += 1
                 fin = 10 ** 6

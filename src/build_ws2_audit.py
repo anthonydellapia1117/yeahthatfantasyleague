@@ -36,6 +36,7 @@ import os
 from collections import defaultdict
 
 from analyze_recency import HISTORY
+from player_names import nflverse_roster_identity, search_key
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
@@ -124,12 +125,6 @@ CLAIMS = {
 }
 
 
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
-
-
 def wilson(k, n):
     if n == 0:
         return None
@@ -154,7 +149,7 @@ def two_prop_z(k1, n1, k2, n2):
 
 
 def season_stats(year):
-    """name|pos -> {pts, games, rush_yds, rush_tds, team} league-scored, REG."""
+    """gsis id -> identity plus league-scored season totals, REG."""
     agg = {}
     with open(os.path.join(HISTORY, f"spw_{year}.csv")) as fh:
         for r in csv.DictReader(fh):
@@ -163,9 +158,12 @@ def season_stats(year):
             pos = r.get("position")
             if pos not in ("QB", "RB", "WR", "TE"):
                 continue
-            key = norm(r["player_display_name"]) + "|" + pos
-            e = agg.setdefault(key, {"pts": 0.0, "games": 0, "rush_yds": 0.0,
-                                     "rush_tds": 0, "team": ""})
+            key = r["player_id"]
+            e = agg.setdefault(key, {"name": search_key(r["player_display_name"]),
+                                     "pos": pos,
+                                     "pts": 0.0, "games": 0,
+                                     "rush_yds": 0.0, "rush_tds": 0,
+                                     "team": ""})
             pts = 0.0
             for col, w in W.items():
                 v = r.get(col)
@@ -195,18 +193,27 @@ def season_stats(year):
 
 
 def ffc_ranks(year):
-    """pos -> [norm names in positional ADP order]."""
+    """position -> stable ids in positional ADP order (None if unresolved)."""
     data = json.load(open(os.path.join(HISTORY, f"ffc_ppr_{year}.json")))
+    with open(os.path.join(HISTORY, f"roster_{year}.csv")) as roster_fh, \
+         open(os.path.join(HISTORY, f"spw_{year}.csv")) as stats_fh:
+        identity = nflverse_roster_identity(
+            csv.DictReader(roster_fh), positions=("QB", "RB", "WR", "TE"),
+            stat_rows=csv.DictReader(stats_fh))
     by_pos = defaultdict(list)
     for p in sorted(data["players"], key=lambda x: x["adp"]):
         if p["position"] in ("QB", "RB", "WR", "TE"):
-            by_pos[p["position"]].append(norm(p["name"]))
+            result = identity.resolve(
+                p["name"], position=p["position"],
+                prefer_latest_draft_year=True)
+            by_pos[p["position"]].append(
+                result.record["gsis_id"] if result.record is not None else None)
     return by_pos
 
 
 def finish_rank(stats, pos, key, basis="pts"):
     pool = sorted((v[basis], k) for k, v in stats.items()
-                  if k.endswith("|" + pos))
+                  if v["pos"] == pos)
     pool.reverse()
     for i, (_, k) in enumerate(pool, 1):
         if k == key:
@@ -215,7 +222,7 @@ def finish_rank(stats, pos, key, basis="pts"):
 
 
 def top_by_total(stats, pos, n):
-    pool = [(v["pts"], k, v) for k, v in stats.items() if k.endswith("|" + pos)]
+    pool = [(v["pts"], k, v) for k, v in stats.items() if v["pos"] == pos]
     pool.sort(reverse=True)
     return pool[:n]
 
@@ -236,7 +243,7 @@ def main():
             games = []
             for name in adp[y][pos][:12]:
                 n += 1
-                key = name + "|" + pos
+                key = name
                 if key not in stats[y]:
                     unjoined[f"{pos}_{y}"] += 1
                     continue           # no season row: counts as a miss
@@ -290,9 +297,9 @@ def main():
     declines = comparable = 0
     for y in YEARS[:-1]:
         pts, key, v = top_by_total(stats[y], "RB", 1)[0]
-        name = key.split("|")[0]
         nxt = stats[y + 1].get(key)
-        row = {"year": y, "rb1": name, "ppg": round(pts / v["games"], 2),
+        row = {"year": y, "rb1": v["name"],
+               "ppg": round(pts / v["games"], 2),
                "games": v["games"]}
         if nxt and nxt["games"] > 0:
             row["next_ppg"] = round(nxt["pts"] / nxt["games"], 2)
@@ -328,7 +335,7 @@ def main():
     gaps = []
     for y in YEARS:
         pool = [(v["pts"] / v["games"], k) for k, v in stats[y].items()
-                if k.endswith("|RB") and v["games"] >= 8]
+                if v["pos"] == "RB" and v["games"] >= 8]
         pool.sort(reverse=True)
         gaps.append({"year": y, "rb1_ppg": round(pool[0][0], 2),
                      "rb12_ppg": round(pool[11][0], 2),
@@ -358,14 +365,13 @@ def main():
     outside = 0
     for y in YEARS:
         _, key, _v = top_by_total(stats[y], "RB", 1)[0]
-        name = key.split("|")[0]
         try:
-            rank = adp[y]["RB"].index(name) + 1
+            rank = adp[y]["RB"].index(key) + 1
         except ValueError:
             rank = None
         is_out = rank is None or rank > 24
         outside += is_out
-        late_rows.append({"year": y, "rb1": name, "preseason_rank": rank,
+        late_rows.append({"year": y, "rb1": _v["name"], "preseason_rank": rank,
                           "outside_top24": is_out})
     rb1_late = {
         "claim": CLAIMS["overall_rb1_late"],
@@ -390,12 +396,12 @@ def main():
         for _, key, _v in top_by_total(stats[y], "WR", 12):
             if key in seen_wr1:
                 continue
-            name = key.split("|")[0]
             try:
-                rank = adp[y]["WR"].index(name) + 1
+                rank = adp[y]["WR"].index(key) + 1
             except ValueError:
                 rank = None
-            ft_rows.append({"year": y, "name": name, "preseason_rank": rank})
+            ft_rows.append({"year": y, "name": _v["name"],
+                            "preseason_rank": rank})
         for _, key, _v in top_by_total(stats[y], "WR", 12):
             seen_wr1.add(key)
     n_ft = len(ft_rows)
@@ -439,7 +445,7 @@ def main():
         meets = (v["rush_yds"] >= CLAIMS["qb1_rush"]["yds_threshold"]
                  and v["rush_tds"] >= CLAIMS["qb1_rush"]["tds_threshold"])
         ok_years += meets
-        qb_rows.append({"year": y, "qb1": key.split("|")[0],
+        qb_rows.append({"year": y, "qb1": v["name"],
                         "rush_yds": round(v["rush_yds"], 1),
                         "rush_tds": v["rush_tds"],
                         "meets_cited_floor": meets})
@@ -476,7 +482,7 @@ def main():
         for y in YEARS:
             for name in adp[y]["RB"][lo - 1:hi]:
                 n += 1
-                key = name + "|RB"
+                key = name
                 if key not in stats[y]:
                     continue
                 fr = finish_rank(stats[y], "RB", key)
@@ -523,7 +529,7 @@ def main():
                 playoff_teams.update((h, a))
     ts_rows = []
     for _, key, v in top_by_total(stats[2025], "RB", 12):
-        ts_rows.append({"name": key.split("|")[0], "team": v["team"],
+        ts_rows.append({"name": v["name"], "team": v["team"],
                         "wins": wins.get(v["team"], 0.0),
                         "playoffs": v["team"] in playoff_teams})
     n_po = sum(1 for r in ts_rows if r["playoffs"])

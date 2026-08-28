@@ -1,7 +1,7 @@
 {
- "generated": "2026-08-19",
+ "generated": "2026-08-27",
  "model": "ln(overall) ~ z(late4) + z(full) + ln(ffc_adp) + pos dummies",
- "n": 1677,
+ "n": 1686,
  "seasons": [
   2013,
   2014,
@@ -17,23 +17,23 @@
   2024,
   2025
  ],
- "b_late": 0.00021,
+ "b_late": -0.00022,
  "b_late_ci95_season_bootstrap": [
-  -0.02026,
-  0.01782
+  -0.02081,
+  0.01761
  ],
- "b_full": -0.04845,
- "b_ln_adp": 0.98505,
+ "b_full": -0.04853,
+ "b_ln_adp": 0.9853,
  "distinguishable_from_zero": false,
  "direction": "none_established",
- "picks_moved_at_median_selection_per_sd": 0.01,
+ "picks_moved_at_median_selection_per_sd": -0.02,
  "usage_rule": "USE only if distinguishable_from_zero is true - no effect size, no usage (commission)",
  "coverage_by_year": {
   "2013": {
    "picks": 160,
-   "used": 132,
+   "used": 133,
    "rookies_excluded": 12,
-   "no_ffc_adp": 16,
+   "no_ffc_adp": 15,
    "late_window_from_wk": 14
   },
   "2014": {
@@ -45,9 +45,9 @@
   },
   "2015": {
    "picks": 155,
-   "used": 129,
+   "used": 130,
    "rookies_excluded": 17,
-   "no_ffc_adp": 9,
+   "no_ffc_adp": 8,
    "late_window_from_wk": 14
   },
   "2016": {
@@ -87,30 +87,30 @@
   },
   "2021": {
    "picks": 153,
-   "used": 131,
+   "used": 132,
    "rookies_excluded": 15,
-   "no_ffc_adp": 7,
+   "no_ffc_adp": 6,
    "late_window_from_wk": 14
   },
   "2022": {
    "picks": 152,
-   "used": 119,
+   "used": 121,
    "rookies_excluded": 19,
-   "no_ffc_adp": 14,
+   "no_ffc_adp": 12,
    "late_window_from_wk": 15
   },
   "2023": {
    "picks": 155,
-   "used": 129,
+   "used": 132,
    "rookies_excluded": 18,
-   "no_ffc_adp": 8,
+   "no_ffc_adp": 5,
    "late_window_from_wk": 15
   },
   "2024": {
    "picks": 147,
-   "used": 127,
+   "used": 128,
    "rookies_excluded": 17,
-   "no_ffc_adp": 3,
+   "no_ffc_adp": 2,
    "late_window_from_wk": 15
   },
   "2025": {
