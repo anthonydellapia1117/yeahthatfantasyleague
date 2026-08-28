@@ -526,8 +526,9 @@ ok('"?cb=" + Date.now()' in _room and '"/picks?cb=" + Date.now()' in _room,
    "P1-C: both draft fetches are cache-busted per poll")
 ok("Array.isArray(picks)" in _room,
    "P1-C: picks must be an array before the board renders from them")
-ok("picks.length < LiveState.lastPickCount" in _room,
-   "P1-C: an older cached board is refused - the room never moves backwards")
+ok("picks.length < LiveState.lastPickCount" in _room and
+   "LiveState.pendingShrink" in _room and "picksSnapshotKey" in _room,
+   "P1-C: one-off shrink is held; an identical confirming snapshot can recover visibly")
 ok("data \" + Math.max" in _room or "- data " in _room,
    "P1-C: source age renders beside fetch time")
 ok("e.httpStatus" in _room and "badSchema" in _room,

@@ -1938,6 +1938,267 @@ const ok = (cond, name, detail) => {
     await page.close();
   }
 
+  // ---- scenario 23: EVERY LIVE TIME SIGNAL SCALES WITH THE DRAFT TIMER.
+  // These are driven through Sleeper-shaped responses and the public DOM. The
+  // room's closure state stays private; browser time is fixed only so class
+  // boundaries cannot wobble while the assertions run.
+  {
+    const FIXED_NOW = 1800000000000;
+    const ANTHONY = "345197760305307648";
+    const draftPayload = (timer, lastPicked, extra = {}) => ({
+      status: "drafting",
+      settings: { teams: 12, rounds: 14, pick_timer: timer },
+      last_picked: lastPicked,
+      draft_order: { [ANTHONY]: 7 },
+      slot_to_roster_id: null,
+      ...extra,
+    });
+    const pick = (pickNo, playerId, firstName, lastName, position) => ({
+      pick_no: pickNo,
+      player_id: playerId,
+      draft_slot: pickNo,
+      roster_id: pickNo,
+      round: 1,
+      metadata: { first_name: firstName, last_name: lastName, position },
+    });
+    const parseClock = text => {
+      const m = String(text).trim().match(/^(\d+):(\d\d)$/);
+      return m ? Number(m[1]) * 60 + Number(m[2]) : -1;
+    };
+    const clockSnapshot = async (timer, remaining) => {
+      const page = await browser.newPage();
+      await page.addInitScript(now => { Date.now = () => now; }, FIXED_NOW);
+      await page.route("**/v1/draft/*/picks*", r => r.fulfill({
+        contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: "[]",
+      }));
+      await page.route("**/v1/draft/*", r => {
+        if (r.request().url().includes("/picks")) return r.fallback();
+        r.fulfill({
+          contentType: "application/json",
+          headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify(draftPayload(
+            timer, FIXED_NOW - (1 - remaining) * timer * 1000)),
+        });
+      });
+      await page.goto(FILE);
+      await page.waitForFunction(() =>
+        document.querySelector("#clock")?.textContent.trim() !== "-:--");
+      const state = await page.$eval("#clock", el => ({
+        text: el.textContent.trim(),
+        amber: el.classList.contains("amber"),
+        red: el.classList.contains("red"),
+        blink: el.classList.contains("blink"),
+        classes: el.className,
+      }));
+      await page.close();
+      return state;
+    };
+    const triggerVisibleRefresh = async page => {
+      await page.bringToFront();
+      await Promise.all([
+        page.waitForResponse(r => /\/picks\?cb=/.test(r.url())),
+        page.evaluate(() => document.dispatchEvent(new Event("visibilitychange"))),
+      ]);
+      await page.waitForTimeout(250);
+    };
+
+    // 23a: the amber phase must be reachable at 40% remaining for both the
+    // league's 60-second clock and the 120-second mock used in prior tests.
+    const amberResults = [];
+    for (const timer of [60, 120]){
+      const s = await clockSnapshot(timer, 0.40);
+      amberResults.push({ timer, ...s });
+    }
+    ok(amberResults.every(s => s.amber && !s.red && !s.blink),
+       "timer scaling: amber is reachable at 40% remaining for 60s and 120s",
+       amberResults.map(s => `${s.timer}s=${s.text} [${s.classes}]`).join("; "));
+
+    // 23b: a newer draft timestamp may not restart the clock unless the
+    // picks board reaches the same snapshot. A failed picks fetch must hold
+    // the coherent clock or surface the mismatch visibly.
+    {
+      const page = await browser.newPage();
+      await page.addInitScript(now => { Date.now = () => now; }, FIXED_NOW);
+      let draftCalls = 0, pickCalls = 0;
+      const stablePicks = [pick(1, "p1", "Jahmyr", "Gibbs", "RB")];
+      await page.route("**/v1/draft/*/picks*", r => {
+        pickCalls++;
+        if (pickCalls === 1) return r.fulfill({
+          contentType: "application/json",
+          headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify(stablePicks),
+        });
+        return pickCalls === 2 ? r.fulfill({
+            status: 500,
+            contentType: "application/json",
+            headers: { "access-control-allow-origin": "*" },
+            body: JSON.stringify({ error: "fixture picks failure" }),
+          }) : r.fulfill({
+            contentType: "application/json",
+            headers: { "access-control-allow-origin": "*" },
+            body: JSON.stringify(stablePicks),
+          });
+      });
+      await page.route("**/v1/draft/*", r => {
+        if (r.request().url().includes("/picks")) return r.fallback();
+        draftCalls++;
+        r.fulfill({
+          contentType: "application/json",
+          headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify(draftPayload(60,
+            draftCalls === 1 ? FIXED_NOW - 20000 : FIXED_NOW)),
+        });
+      });
+      await page.goto(FILE);
+      await page.waitForFunction(() => /PICK 2/.test(
+        document.querySelector("#lv-kick")?.textContent || ""));
+      await page.waitForFunction(() =>
+        document.querySelector("#clock")?.textContent.trim() !== "-:--");
+      const beforePick = (await page.textContent("#lv-kick")).trim();
+      const beforeClock = parseClock(await page.textContent("#clock"));
+      await triggerVisibleRefresh(page);
+      await page.waitForTimeout(1000);
+      const failedPick = (await page.textContent("#lv-kick")).trim();
+      const failedClock = parseClock(await page.textContent("#clock"));
+      const failedVisible = [
+        await page.textContent("#conn"),
+        await page.textContent("#lv-fresh"),
+        await page.locator("#banner").isVisible() ? await page.textContent("#banner") : "",
+      ].join(" ");
+      const failedWarned = /desync|out of sync|clock.*board|feed mismatch|picks (failed|unavailable)|last coherent state/i
+        .test(failedVisible);
+      // A 200 carrying the still-old picks array is also incoherent with the
+      // newer draft anchor. This catches cache skew, not only loud failure.
+      await triggerVisibleRefresh(page);
+      await page.waitForTimeout(1000);
+      const stalePick = (await page.textContent("#lv-kick")).trim();
+      const staleClock = parseClock(await page.textContent("#clock"));
+      const staleVisible = [
+        await page.textContent("#conn"),
+        await page.textContent("#lv-fresh"),
+        await page.locator("#banner").isVisible() ? await page.textContent("#banner") : "",
+      ].join(" ");
+      const staleWarned = /desync|out of sync|clock.*board|feed mismatch|feeds disagree|mismatched.*snapshot/i
+        .test(staleVisible);
+      ok(failedPick === beforePick && failedClock <= beforeClock && failedWarned &&
+         stalePick === beforePick && staleClock <= beforeClock && staleWarned,
+         "paired feed: no fresh countdown over a stale picks board",
+         `500: ${beforePick}/${beforeClock}s -> ${failedPick}/${failedClock}s warning=${failedWarned}; ` +
+         `stale 200: ${stalePick}/${staleClock}s warning=${staleWarned}`);
+      await page.close();
+    }
+
+    // 23c: N -> N-1 -> N-1 models commissioner undo followed by a confirming
+    // poll. The third poll proves a smaller board cannot remain trapped behind
+    // the old high-water mark forever.
+    {
+      const page = await browser.newPage();
+      await page.addInitScript(now => { Date.now = () => now; }, FIXED_NOW);
+      let draftCalls = 0, pickCalls = 0;
+      const three = [
+        pick(1, "p1", "Jahmyr", "Gibbs", "RB"),
+        pick(2, "p2", "Bijan", "Robinson", "RB"),
+        pick(3, "p3", "Ja'Marr", "Chase", "WR"),
+      ];
+      const two = three.slice(0, 2);
+      await page.route("**/v1/draft/*/picks*", r => {
+        pickCalls++;
+        r.fulfill({
+          contentType: "application/json",
+          headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify(pickCalls === 1 || pickCalls >= 4 ? three : two),
+        });
+      });
+      await page.route("**/v1/draft/*", r => {
+        if (r.request().url().includes("/picks")) return r.fallback();
+        draftCalls++;
+        r.fulfill({
+          contentType: "application/json",
+          headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify(draftPayload(60,
+            draftCalls === 1 ? FIXED_NOW - 5000 : FIXED_NOW)),
+        });
+      });
+      await page.goto(FILE);
+      await page.waitForFunction(() => /PICK 4/.test(
+        document.querySelector("#lv-kick")?.textContent || ""));
+      await triggerVisibleRefresh(page);
+      await triggerVisibleRefresh(page);
+      const recoveredKick = (await page.textContent("#lv-kick")).trim();
+      // A fourth poll serves the exact pre-undo N snapshot with the confirmed
+      // undo anchor. It must not silently resurrect the removed pick.
+      await triggerVisibleRefresh(page);
+      const replayKick = (await page.textContent("#lv-kick")).trim();
+      const replayVisible = [
+        await page.textContent("#conn"),
+        await page.locator("#banner").isVisible() ? await page.textContent("#banner") : "",
+      ].join(" ");
+      ok(/PICK 3/.test(recoveredKick) && /PICK 3/.test(replayKick) &&
+         /pre-undo|resurfaced|recovered.*board.*held/i.test(replayVisible),
+         "commissioner undo: the confirming third poll recovers the N-1 board",
+         `third=${recoveredKick}; replay=${replayKick}; ${(await page.textContent("#conn")).trim()}`);
+      await page.close();
+    }
+
+    // 23d: 24 seconds is a different fraction of a 60s and a 120s window.
+    // Advance Date.now only; the public one-second ticker updates the dot.
+    const freshResults = [];
+    for (const timer of [60, 120]){
+      const page = await browser.newPage();
+      await page.addInitScript(now => { Date.now = () => now; }, FIXED_NOW);
+      await page.route("**/v1/draft/*/picks*", r => r.fulfill({
+        contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" }, body: "[]",
+      }));
+      await page.route("**/v1/draft/*", r => {
+        if (r.request().url().includes("/picks")) return r.fallback();
+        r.fulfill({
+          contentType: "application/json",
+          headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify(draftPayload(timer, FIXED_NOW - 5000)),
+        });
+      });
+      await page.goto(FILE);
+      await page.waitForFunction(() =>
+        document.querySelector("#lv-dot")?.classList.contains("ok"));
+      await page.evaluate(now => { Date.now = () => now + 24000; }, FIXED_NOW);
+      await page.waitForTimeout(1100);
+      freshResults.push(await page.$eval("#lv-dot", (dot, timer) => ({
+        timer,
+        ok: dot.classList.contains("ok"),
+        warn: dot.classList.contains("warn"),
+        bad: dot.classList.contains("bad"),
+        label: document.querySelector("#lv-fresh")?.textContent.trim() || "",
+      }), timer));
+      await page.close();
+    }
+    const fresh60 = freshResults.find(x => x.timer === 60);
+    const fresh120 = freshResults.find(x => x.timer === 120);
+    ok(!fresh60.ok && fresh60.label !== "current" && !fresh120.bad,
+       "freshness scaling: a 24s-old poll is not green on 60s, but is not stale on 120s",
+       freshResults.map(x => `${x.timer}s=${x.label}`).join("; "));
+
+    // 23e: contract test across timer lengths. The old 120s visual stages
+    // scale proportionally: 40% amber, 15% red-only, 5% blinking red.
+    const stageFailures = [];
+    for (const timer of [30, 60, 90, 120]){
+      const amber = await clockSnapshot(timer, 0.40);
+      const red = await clockSnapshot(timer, 0.15);
+      const blink = await clockSnapshot(timer, 0.05);
+      if (!(amber.amber && !amber.red && !amber.blink))
+        stageFailures.push(`${timer}s@40%=${amber.classes}`);
+      if (!(red.red && !red.amber && !red.blink))
+        stageFailures.push(`${timer}s@15%=${red.classes}`);
+      if (!(blink.red && blink.blink && !blink.amber))
+        stageFailures.push(`${timer}s@5%=${blink.classes}`);
+    }
+    ok(stageFailures.length === 0,
+       "timer contract: 40% amber, 15% red, 5% blinking red at 30/60/90/120s",
+       stageFailures.join("; "));
+  }
+
   await browser.close();
   console.log(failures === 0 ? "\nALL PASS" : `\n${failures} FAILURES`);
   process.exit(failures === 0 ? 0 : 1);

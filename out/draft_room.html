@@ -703,8 +703,11 @@ function renderPre(activeSlot){
 
 // ---- Mode 2: live draft
 const LiveState = { picks: [], mySlot: null, timer: null, lastPickCount: -1,
-                    lastPollOk: 0, wasMe: false, warned30: false,
+                    lastPollOk: 0, wasMe: false, warnedUrgent: false,
                     pickTimer: null, lastPicked: null,
+                    pendingShrink: null, shrinkRecovery: null,
+                    recoveryWarning: "", syncProblem: "",
+                    refreshing: false, refreshAgain: false,
                     els: null, lastName: "" };
 
 // ======== UPNEXT-BEGIN ========
@@ -757,6 +760,12 @@ function myPicks(slot){
   for (let r = 1; r <= GEO.rounds; r++)
     out.push((r - 1) * GEO.teams + (r % 2 === 1 ? slot : GEO.teams + 1 - slot));
   return out;
+}
+
+function setLiveMode(){
+  $("mode").textContent = (MOCK_MODE ? "DRAFT MODE - MOCK LIVE" : "MODE 2 - LIVE") +
+    (LiveState.mySlot ? " - you are seat " + LiveState.mySlot : "");
+  $("mode").classList.add("live");
 }
 
 // One-time DOM build for the fixed answer stack. Every poll after this patches
@@ -867,7 +876,11 @@ function buildLiveDom(){
     `<button data-slot="${i + 1}">${i + 1}</button>`).join("");
   sp.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
     LiveState.mySlot = Number(b.dataset.slot);
-    refresh();
+    // Seat choice is local operator state, not a feed mutation. Repaint the
+    // last coherent snapshot immediately instead of waiting for another pair
+    // of network responses (or letting poll latency eat the confirmation).
+    setLiveMode();
+    LiveState.lastRender && LiveState.lastRender();
   }));
   $("seatbar").hidden = true;
   // feature wiring, once
@@ -998,7 +1011,8 @@ function setName(el, text){
 }
 
 // Short beep, generated - no audio assets. Fires when Anthony goes on the clock
-// and again at 30 seconds. Requires a prior user gesture on iOS; degrade silently.
+// and again at the timer-derived red stage. Requires a prior user gesture on iOS;
+// degrade silently.
 let audioCtx = null;
 function beep(freq){
   try {
@@ -1064,7 +1078,7 @@ function renderLive(draft, newPick){
   if (newPick){
     L["lv"].classList.remove("flash"); void L["lv"].offsetWidth; L["lv"].classList.add("flash");
   }
-  if (isMe && !LiveState.wasMe){ beep(880); LiveState.warned30 = false; }
+  if (isMe && !LiveState.wasMe){ beep(880); LiveState.warnedUrgent = false; }
   LiveState.wasMe = isMe;
   flashTitle(isMe);
 
@@ -1162,6 +1176,13 @@ function renderLive(draft, newPick){
   renderValueBoard(aliveSet2);
 }
 
+// Preserve the room's original 120-second visual stages as proportions of
+// whatever timer Sleeper actually supplies: 60/30/10 becomes 1/2, 1/4, 1/12.
+// Freshness reuses the first two boundaries, so no fixed second count can be
+// silently calibrated to the wrong league clock again.
+function clockThresholds(timer){
+  return { amber: timer / 2, red: timer / 4, blink: timer / 12 };
+}
 function tickClock(){
   const el = LiveState.els && LiveState.els["clock"];
   if (!el) return;
@@ -1177,25 +1198,35 @@ function tickClock(){
       : "clock unavailable - use Sleeper";
   } else {
     const left = Math.max(0, Math.ceil((lp + t * 1000 - Date.now()) / 1000));
+    const thresholds = clockThresholds(t);
     el.textContent = left > 0
       ? Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0")
       : "0:00";
-    el.classList.toggle("amber", left < t / 2 && left >= 30);
-    el.classList.toggle("red", left < 30);
-    el.classList.toggle("blink", left < 10 && left > 0);
+    el.classList.toggle("amber", left < thresholds.amber && left >= thresholds.red);
+    el.classList.toggle("red", left < thresholds.red);
+    el.classList.toggle("blink", left < thresholds.blink && left > 0);
     if (rule) rule.textContent = left > 0
       ? `clock ${t}s per pick (draft settings), anchored to Sleeper's last-pick timestamp - forfeit on expiry (rule 3.2)`
       : "clock expired by Sleeper's own timestamps - check Sleeper";
-    if (LiveState.wasMe && left <= 30 && left > 0 && !LiveState.warned30){
-      LiveState.warned30 = true; beep(1200);
+    if (LiveState.wasMe && left <= thresholds.red && left > 0 && !LiveState.warnedUrgent){
+      LiveState.warnedUrgent = true; beep(1200);
     }
   }
   // freshness dot - on a live clock the user must know the number is current
   const age = (Date.now() - LiveState.lastPollOk) / 1000;
   const dot = LiveState.els["lv-dot"], fresh = LiveState.els["lv-fresh"];
   if (dot){
-    dot.className = "dot " + (age < 25 ? "ok" : age < 60 ? "warn" : "bad");
-    fresh.textContent = age < 25 ? "current" : age < 60 ? "reconnecting" : "stale " + Math.round(age) + "s";
+    const thresholds = t ? clockThresholds(t) : null;
+    if (LiveState.syncProblem || !thresholds){
+      dot.className = "dot bad";
+      fresh.textContent = LiveState.syncProblem || "feed unavailable";
+    } else {
+      dot.className = "dot " +
+        (age < thresholds.red ? "ok" : age < thresholds.amber ? "warn" : "bad");
+      fresh.textContent = age < thresholds.red ? "current"
+        : age < thresholds.amber ? "reconnecting"
+        : "stale " + Math.round(age) + "s";
+    }
   }
 }
 
@@ -2345,70 +2376,101 @@ function connLine(ok, detail){
   el.textContent = detail;
   el.className = "conn" + (ok ? "" : " bad");
 }
-async function refresh(){
-  let draft;
+const LIVE_POLL_SECONDS = 5;
+const IDLE_POLL_SECONDS = 60;
+function bannerLine(text, error){
+  const el = $("banner");
+  el.hidden = false;
+  el.className = "banner" + (error ? " err" : "");
+  el.textContent = text;
+}
+function fetchFailure(source, e){
+  return e.timedOut ? source + " TIMEOUT after " + e.rtt + "ms"
+    : e.httpStatus ? source + " HTTP " + e.httpStatus + " - " + e.rtt + "ms"
+    : e.badSchema ? source + " returned an unusable payload"
+    : source + " FAILED after " + (e.rtt == null ? "?" : e.rtt) + "ms";
+}
+function successLine(draft, draftFetch, picksFetch){
+  const srcTs = Number(draft.last_message_time || draft.last_picked || 0);
+  return "sleeper 200 - " + draftFetch.rtt + "ms" +
+    (picksFetch ? " draft / " + picksFetch.rtt + "ms picks" : "") +
+    (srcTs ? " - data " + Math.max(0, Math.round((Date.now() - srcTs) / 1000)) + "s old" : "");
+}
+function pickSnapshotKey(p, index){
+  const md = p.metadata || {};
+  return JSON.stringify([
+    p.pick_no == null ? index + 1 : p.pick_no,
+    p.player_id == null ? "" : String(p.player_id),
+    p.draft_slot == null ? "" : String(p.draft_slot),
+    p.roster_id == null ? (p.picked_by == null ? "" : String(p.picked_by)) : String(p.roster_id),
+    md.first_name || "", md.last_name || "", md.position || "",
+  ]);
+}
+function picksSnapshotKey(picks){
+  return picks.map(pickSnapshotKey).join("\n");
+}
+function isPickPrefix(shorter, longer){
+  return shorter.length <= longer.length && shorter.every((p, i) =>
+    pickSnapshotKey(p, i) === pickSnapshotKey(longer[i], i));
+}
+function applyDraftSnapshot(draft, seat){
+  if (draft.settings && draft.settings.teams){
+    GEO.teams = Number(draft.settings.teams);
+    GEO.rounds = Number(draft.settings.rounds) || GEO.rounds;
+  }
+  LiveState.pickTimer = (draft.settings && Number(draft.settings.pick_timer)) || null;
+  LiveState.lastPicked = draft.last_picked ? Number(draft.last_picked) : null;
+  if (seat) LiveState.mySlot = seat;
+  if (MOCK_MODE) renderMockBar(draft);
+}
+async function refreshOnce(){
+  // Both cache-busted feeds start in the same refresh turn. The draft failure
+  // path remains independently loud, while live state is committed only after
+  // the picks response reaches the same coherent poll.
+  const draftTask = timedFetch(API + "?cb=" + Date.now());
+  const picksTask = timedFetch(API + "/picks?cb=" + Date.now())
+    .then(tp => ({ tp }), error => ({ error }));
+  let draft, t;
   try {
     // cache-bust every poll: Sleeper responses ride shared caches (an
     // observed cache age of 118s is two full pick cycles at a 60s timer),
     // and a resolved fetch is NOT the same thing as current data
-    const t = await timedFetch(API + "?cb=" + Date.now());
+    t = await draftTask;
     if (!t.r.ok){
       const e = new Error("http " + t.status);
       e.rtt = t.rtt; e.httpStatus = t.status; throw e;
     }
-    draft = await t.r.json();
+    try { draft = await t.r.json(); }
+    catch (e){ e.rtt = t.rtt; e.badSchema = true; throw e; }
     // error JSON parses successfully too - validate the shape before
     // treating it as a draft
     if (!draft || typeof draft !== "object" || typeof draft.status !== "string"){
       const e = new Error("bad draft schema");
       e.rtt = t.rtt; e.badSchema = true; throw e;
     }
-    // FETCH time and SOURCE time are different facts: the header shows
-    // both, so a fresh fetch of stale data reads as exactly that
-    const srcTs = Number(draft.last_message_time || draft.last_picked || 0);
-    connLine(true, "sleeper 200 - " + t.rtt + "ms" +
-      (srcTs ? " - data " + Math.max(0, Math.round((Date.now() - srcTs) / 1000)) + "s old" : ""));
-    $("banner").hidden = true;
   } catch (e){
-    connLine(false, e.timedOut ? "sleeper TIMEOUT after " + e.rtt + "ms"
-      : e.httpStatus ? "sleeper HTTP " + e.httpStatus + " - " + e.rtt + "ms"
-      : e.badSchema ? "sleeper returned an unusable payload - showing last good state"
-      : "sleeper FAILED after " + (e.rtt || "?") + "ms");
-    $("banner").hidden = false;
-    $("banner").className = "banner err";
-    $("banner").textContent = "Sleeper unreachable - showing embedded pre-draft model, generated " +
-      E.generated + ". Numbers may be stale.";
+    LiveState.syncProblem = "feed unavailable";
+    connLine(false, fetchFailure("sleeper", e));
+    bannerLine("Sleeper unreachable - showing embedded pre-draft model, generated " +
+      E.generated + ". Numbers may be stale.", true);
     $("mode").textContent = LiveState.els ? "OFFLINE - LAST LIVE STATE" : "OFFLINE - PRE-DRAFT MODEL";
     // never replace a live DOM because one poll failed - the freshness dot
     // already says the numbers are stale (review finding 1)
     if (!LiveState.els && !document.querySelector(".rowcard"))
       renderPre(E.league.anthony_roster_id || 7);
-    schedule(LiveState.els ? 10 : 60);
+    schedule(LiveState.els ? LIVE_POLL_SECONDS : IDLE_POLL_SECONDS);
     return;
   }
-  // geometry follows the loaded draft (identical to the league config for
-  // the real draft; a mock's teams/rounds can differ and the snake math
-  // must respect them)
-  if (draft.settings && draft.settings.teams){
-    GEO.teams = Number(draft.settings.teams);
-    GEO.rounds = Number(draft.settings.rounds) || GEO.rounds;
-  }
-  // THE CLOCK IS SERVER-ANCHORED OR ABSENT. pick_timer is the draft's own
-  // duration (the real league runs 60s; mocks vary), last_picked is
-  // Sleeper's epoch-ms stamp of the previous pick. The old clock hardcoded
-  // 120s and started when POLLING NOTICED a pick - double the real window
-  // plus poll latency, silently. Never again: no server duration + anchor,
-  // no number.
-  LiveState.pickTimer = (draft.settings && Number(draft.settings.pick_timer)) || null;
-  LiveState.lastPicked = draft.last_picked ? Number(draft.last_picked) : null;
-  if (MOCK_MODE) renderMockBar(draft);
   const live = draft.status === "drafting" || draft.status === "complete" ||
                ((MOCK_MODE ? !!(draft.draft_order &&
                  Object.keys(draft.draft_order).length) : isRealOrder(draft))
                 && draft.status !== "pre_draft");
   const seat = MOCK_MODE ? mockSeatSlot(draft) : detectSeat(draft);
-  if (seat) LiveState.mySlot = seat;
   if (!live){
+    applyDraftSnapshot(draft, seat);
+    LiveState.syncProblem = "";
+    connLine(true, successLine(draft, t, null));
+    $("banner").hidden = true;
     // ORDERHYP: record Sleeper's draw the moment it exists; if it just
     // appeared over a rendered hypothesis, re-render so the live source
     // visibly wins. Never in DRAFT MODE - a mock's slot map is noise, not
@@ -2432,39 +2494,168 @@ async function refresh(){
     } else if (!document.querySelector(".rowcard")){
       renderPre(MOCK_MODE ? (LiveState.mySlot || 7) : 7); // documented seat last year; all 12 chips available
     }
-    schedule(MOCK_MODE ? 10 : 60);
+    schedule(MOCK_MODE ? 10 : IDLE_POLL_SECONDS);
     return;
   }
-  // LIVE
-  $("mode").textContent = (MOCK_MODE ? "DRAFT MODE - MOCK LIVE" : "MODE 2 - LIVE") +
-    (LiveState.mySlot ? " - you are seat " + LiveState.mySlot : "");
-  $("mode").classList.add("live");
-  if (!LiveState.els) keepAwake();
+  // LIVE. The clock, board, recommendations, and up-next strip are one
+  // snapshot. Stage both responses and mutate none of them until both pass.
+  let picks, tp;
   try {
-    const tp = await timedFetch(API + "/picks?cb=" + Date.now());
-    if (!tp.r.ok) throw new Error("picks http " + tp.status);
-    const picks = await tp.r.json();
-    if (!Array.isArray(picks)) throw new Error("picks not an array");
-    if (picks.length < LiveState.lastPickCount){
-      // a shared cache served an OLDER board than the one already
-      // rendered - the room never moves backwards; keep the last good
-      // state and say why
-      connLine(false, "stale picks ignored (" + picks.length + " < " +
-        LiveState.lastPickCount + ")");
-      schedule(draft.status === "drafting" ? 10 : 60);
+    const pr = await picksTask;
+    if (pr.error) throw pr.error;
+    tp = pr.tp;
+    if (!tp.r.ok){
+      const e = new Error("picks http " + tp.status);
+      e.rtt = tp.rtt; e.httpStatus = tp.status; throw e;
+    }
+    try { picks = await tp.r.json(); }
+    catch (e){ e.rtt = tp.rtt; e.badSchema = true; throw e; }
+    if (!Array.isArray(picks)){
+      const e = new Error("picks not an array");
+      e.rtt = tp.rtt; e.badSchema = true; throw e;
+    }
+  } catch (e){
+    LiveState.syncProblem = "feed mismatch";
+    connLine(false, fetchFailure("picks", e) + " - clock and board held");
+    bannerLine("Picks failed while the draft feed advanced. Clock, board, recommendations, and up-next remain at the last coherent state; verify Sleeper.", true);
+    if (!LiveState.els && !document.querySelector(".rowcard"))
+      renderPre(E.league.anthony_roster_id || 7);
+    schedule(LIVE_POLL_SECONDS);
+    return;
+  }
+
+  const incomingPicksKey = picksSnapshotKey(picks);
+  const incomingLastPicked = draft.last_picked ? Number(draft.last_picked) : null;
+  const committedPicksKey = picksSnapshotKey(LiveState.picks);
+  const haveCommittedPair = LiveState.lastPickCount >= 0;
+  const shrinking = picks.length < LiveState.lastPickCount;
+
+  // After an undo recovery, an old pre-undo cache can reappear with the
+  // larger array. It is not a new pick unless the draft anchor is newer than
+  // the confirmed smaller state; otherwise resurrecting it would silently
+  // put the removed player back on the board.
+  const recovered = LiveState.shrinkRecovery;
+  if (recovered && picks.length === recovered.oldCount &&
+      incomingPicksKey === recovered.oldPicks){
+    const recoveryAnchors = [recovered.oldLastPicked, recovered.newLastPicked]
+      .filter(Number.isFinite);
+    const demonstrablyNew = incomingLastPicked != null && recoveryAnchors.length === 2 &&
+      incomingLastPicked > Math.max(...recoveryAnchors);
+    if (!demonstrablyNew){
+      LiveState.syncProblem = "stale pre-undo board";
+      connLine(false, "pre-undo picks cache resurfaced - recovered board held");
+      bannerLine("A pre-undo picks snapshot resurfaced without a newer last-pick timestamp. The recovered smaller board remains in place; verify Sleeper.", false);
+      schedule(LIVE_POLL_SECONDS);
       return;
     }
-    LiveState.lastPollOk = Date.now();
-    const newPick = picks.length !== LiveState.lastPickCount && LiveState.lastPickCount >= 0;
-    if (picks.length !== LiveState.lastPickCount){
-      LiveState.lastPickCount = picks.length;
-      // the clock is anchored to draft.last_picked, never to the moment
-      // polling happened to notice the pick
+  }
+
+  // HTTP 200 does not prove the two cache-backed endpoints agree. Away from
+  // the explicit shrink-confirmation path, a changed anchor and unchanged
+  // picks (or changed picks and unchanged anchor) is a one-sided state. Hold
+  // the prior pair visibly until both sides move together.
+  if (haveCommittedPair && !shrinking){
+    const anchorChanged = incomingLastPicked !== LiveState.lastPicked;
+    const picksChanged = incomingPicksKey !== committedPicksKey;
+    if (anchorChanged !== picksChanged){
+      LiveState.syncProblem = "feed mismatch";
+      connLine(false, "draft/picks feeds disagree - clock and board held");
+      bannerLine("Sleeper returned mismatched draft and picks snapshots. Clock, board, recommendations, and up-next remain at the last coherent state while the room retries.", true);
+      schedule(LIVE_POLL_SECONDS);
+      return;
     }
-    LiveState.picks = picks;
-    renderLive(draft, newPick);
-  } catch (e){ /* keep last render; the freshness dot goes amber then red */ }
-  schedule(draft.status === "drafting" ? 10 : 60);
+  }
+
+  let recoveredShrink = false;
+  if (shrinking){
+    const candidate = {
+      picks: incomingPicksKey,
+      lastPicked: incomingLastPicked,
+      prefix: isPickPrefix(picks, LiveState.picks),
+      from: LiveState.lastPickCount,
+      to: picks.length,
+      priorPicks: committedPicksKey,
+      priorLastPicked: LiveState.lastPicked,
+    };
+    const prior = LiveState.pendingShrink;
+    const confirmed = prior && prior.picks === candidate.picks &&
+      prior.lastPicked === candidate.lastPicked;
+    if (!confirmed){
+      LiveState.pendingShrink = candidate;
+      LiveState.syncProblem = "confirming smaller board";
+      connLine(false, "possible undo/feed rollback (" + candidate.from + " -> " +
+        candidate.to + ") - clock and board held while confirming");
+      bannerLine("Possible commissioner undo or stale cache: picks shrank from " +
+        candidate.from + " to " + candidate.to + ". The prior clock and board are held until one more identical poll confirms it.", false);
+      schedule(LIVE_POLL_SECONDS);
+      return;
+    }
+    recoveredShrink = true;
+    LiveState.pendingShrink = null;
+    LiveState.shrinkRecovery = {
+      oldCount: prior.from,
+      oldPicks: prior.priorPicks,
+      oldLastPicked: prior.priorLastPicked,
+      newPicks: candidate.picks,
+      newLastPicked: candidate.lastPicked,
+    };
+    LiveState.recoveryWarning = "Draft board shrink confirmed on two polls (" +
+      candidate.from + " -> " + candidate.to + ")" +
+      (candidate.prefix ? " with the earlier picks unchanged" : " with changed pick data") +
+      "; recovered to the smaller board. Verify the undo in Sleeper.";
+  } else {
+    LiveState.pendingShrink = null;
+    if (picks.length > LiveState.lastPickCount){
+      LiveState.recoveryWarning = "";
+      LiveState.shrinkRecovery = null;
+    }
+  }
+
+  const oldCount = LiveState.lastPickCount;
+  const newPick = picks.length > oldCount && oldCount >= 0;
+  applyDraftSnapshot(draft, seat);
+  LiveState.lastPollOk = Date.now();
+  LiveState.lastPickCount = picks.length;
+  LiveState.picks = picks;
+  LiveState.syncProblem = "";
+  setLiveMode();
+  if (!LiveState.els) keepAwake();
+  renderLive(draft, newPick);
+  if (LiveState.recoveryWarning){
+    connLine(false, recoveredShrink ? "smaller board confirmed - recovered" :
+      "smaller board recovery remains in effect");
+    bannerLine(LiveState.recoveryWarning, false);
+  } else {
+    connLine(true, successLine(draft, t, tp));
+    $("banner").hidden = true;
+  }
+  schedule(draft.status === "drafting" ? LIVE_POLL_SECONDS : IDLE_POLL_SECONDS);
+}
+async function refresh(){
+  // Focus-return and the scheduled poll may arrive together. Only one pair
+  // may commit at a time; queue one immediate refresh instead of allowing an
+  // older response to overwrite a newer coherent snapshot.
+  if (LiveState.refreshing){
+    LiveState.refreshAgain = true;
+    return;
+  }
+  LiveState.refreshing = true;
+  clearTimeout(LiveState.timer);
+  LiveState.timer = null;
+  try {
+    await refreshOnce();
+  } catch (e){
+    LiveState.syncProblem = "refresh failed";
+    connLine(false, "room refresh FAILED - clock and board held");
+    bannerLine("Draft-room refresh failed unexpectedly. The last coherent clock and board remain visible; verify Sleeper.", true);
+    schedule(LiveState.els ? LIVE_POLL_SECONDS : IDLE_POLL_SECONDS);
+  } finally {
+    LiveState.refreshing = false;
+    if (LiveState.refreshAgain){
+      LiveState.refreshAgain = false;
+      schedule(0);
+    }
+  }
 }
 function schedule(sec){
   clearTimeout(LiveState.timer);
