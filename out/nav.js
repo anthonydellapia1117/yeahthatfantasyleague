@@ -1,4 +1,4 @@
-// YTFL hub app shell - one nav, five pages, single source of truth.
+// YTFL hub app shell - one nav, one source of truth for every page link.
 // Each page includes: <script src="nav.js" data-active="<key>" defer></script>
 // placed OUTSIDE the draft room's ENGINE-DATA sentinels so engine
 // regeneration can never touch it. Chrome only: this file renders links and
@@ -14,6 +14,7 @@
     ["players",  "PLAYERS",    "players.html"],
     ["paths",    "PATHS",      "paths.html"],
     ["teams",    "TEAMS",      "teams.html"],
+    ["cheat",    "CHEAT SHEET","cheatsheet.html"],
     ["findings", "FINDINGS",   "ff-hub.html"],
     ["hub",      "HUB",        "home.html"]
   ];
