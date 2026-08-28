@@ -15,11 +15,11 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-28 by Codex - made the forward-Vegas horizon updateable and attributable before its first stale build: daily validated snapshot sync, content-linked transition events, fail-closed contraction, current-code same-build deltas, and visible Home/Draft Room provenance. |
-| **Next agent** | PR #66 is approved for squash merge; the current agent owns its Pages byte verification and publication/preflight checks. If interrupted before that report, finish those checks rather than assuming the merge is live. Keep #54 OPEN, ON HOLD, and untouched. Then follow the remaining `docs/ffopportunity/FFOPPORTUNITY_HANDOFF.md` integration order, preserving the display/shadow/offline/do-not-wire boundaries. |
-| **Branch** | `codex/bullish-input-integrity`, based on `main` at `242ae6b` (#65), PR #66; implementation head includes the refresh-and-attribution amendment and is approved for merge |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #65 is the last verified deployment while this baton is written. PR #66 must not be called live until Pages bytes match main and both publication checks pass. |
-| **Draft order** | UNDRAWN as last checked 2026-08-28 (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
+| **Last touched** | 2026-08-28 by Codex - repaired the RB `backfield_command` denominator: all-week 2025 carries stay on historical teams, an untrimmed split player-team ledger supplies complete denominators, and a same-build three-frame attribution separates regrouping from source completeness/granularity. |
+| **Next agent** | Review the PR from `codex/rb-historical-backfield`; do not merge it without Anthony's approval. Keep #54 OPEN, ON HOLD, and untouched. After this PR, continue in the approved order: rename `team_targets`/`targets_pg` with validation; audit the four remaining R mislabels; assess (do not build) vacated carries against ADP and the shared rookie gap; keep team supply shadow/display-only. |
+| **Branch** | `codex/rb-historical-backfield`, based on `main` at `024c6ec` (#66); implementation is green and ready for review, not merged |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #66 is merged and was verified live in the preceding cycle. The RB historical-denominator repair is branch-only until its PR is reviewed and merged. |
+| **Draft order** | UNDRAWN as checked 2026-08-28 16:37 UTC (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
 
@@ -130,36 +130,52 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    committed CSV still carries `target_volume` and 2,530 junk rows. Reproducible
    arithmetic, corrected source, and regenerated artifact bytes are three distinct
    claims.
-11. **Full battery green on the amended current branch.** The
-   gate-runner self-test plus fourteen gated suites ran
-   16/70/22/50/70/17/16/89/63/47/48/1211/23/366/38 checks (2,146 total). All five analysis
-   determinism reruns executed from the complete HISTORY cache: 38 guards, zero
-   skips. Browser smoke ran 365; `MATH DIFF PROOF: EMPTY` for all ten frozen
-   function bodies. The ceiling artifact was rebuilt against #65's exact engine
-   lineage before the BULLISH chain: weekly replacements are unchanged; 140 ADPs
-   moved with the fresh engine, and only Kyler Murray and Tyler Allgeier moved in
-   projection/availability-adjusted projection.
+11. **The RB historical-team denominator repair is isolated and attributable.**
+   `usage_2025.json` now carries an untrimmed 161-row / 154-identity player-team
+   carry ledger over all 32 teams and 12,399 carries, with REG+POST explicit. The
+   exact nflverse parquet bytes and canonical ledger digest are pinned. The live
+   population remains 46 observed + 3 honest nulls; p50/p75/p80 move from the
+   retired current-roster frame's 0.5060/0.7342/0.7632 to
+   0.5072/0.6538/0.6946. Forty-three RB inputs and 13 full gate scores move, but
+   tag membership and status do not; Gibbs is the only displayed score change,
+   84.0 to 69.0. The same-build attribution assigns 12 score moves to historical
+   regrouping and three to replacing the trimmed/coalesced source with the
+   untrimmed split ledger. All 16 non-RB tag records are object-identical in that
+   counterfactual. Montgomery is on HOU in the current depth chart; his 158 carries
+   correctly remain in DET's 2025 denominator.
+12. **Full battery green on the RB branch.** The gate-runner self-test plus
+   fourteen gated suites ran
+   16/70/22/50/70/17/16/105/63/47/48/1211/23/366/38 checks (2,162 total).
+   Every cache-backed analysis determinism check executed: 38 guards, zero skips.
+   Browser smoke ran 365; `MATH DIFF PROOF: EMPTY` for all ten frozen function
+   bodies. `src/preflight_draft.py` remains green at 12 teams / 60 seconds / one
+   flex, but that is configuration validation, not a live drawn-order room test.
 
 ### In flight / nothing blocked
 
-The current BULLISH input-integrity branch is green and Anthony approved its merge;
-the merge/deploy verification remains owned by the current agent. PR #54 remains OPEN, ON HOLD, and untouched at
-remote head `4bd541e`; its mergeability is currently unresolved against moving
-`main`. Its PATHS
+The RB historical-denominator branch is green and its PR awaits Anthony's review;
+do not merge it unilaterally. PR #54 remains OPEN, ON HOLD, and untouched at remote
+head `4bd541e`; its mergeability is currently unresolved against moving `main`. Its PATHS
 policy is still the data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the
 conditional spread floor. Do not rebase, resolve, or merge it until the order is
 drawn and Anthony asks to inspect his actual slot. The `docs/ffopportunity/` R export
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already
 correct, and the shipped QB table did not inherit the R file's `-2` interception
 error. Do not consume unreviewed local regenerated exports. The forward-Vegas and
-TE items named in the old queue are complete on this branch; do not repeat them.
+TE items are complete on main; do not repeat them. The next approved work is the
+`team_targets`/`targets_pg` rename and validation, then the four-mislabel audit.
+Vacated carries is assessment-only after those: quantify every backfield, test its
+ADP relationship and incremental value, and handle the rookie/no-prior-NFL-sample
+gap jointly with `adj_vac` before proposing any wiring.
 
 ### The three things the next agent most needs to know
 
-1. **Do not replace content checks with timestamps, presence checks, or today's
-   payload.** Human dates are provenance, never identity. Strict consumers fail
-   closed; display-only lag is visibly neutral. Behavioral laws need deterministic
-   fixtures even when a live integration scan is retained.
+1. **Historical command and future vacancy are separate questions.** The repaired
+   RB input answers the existing all-week 2025 share basis consistently; it does
+   not claim that a departure such as Montgomery's is a 2026 opportunity signal.
+   Keep prior production on prior teams, then model departures/arrivals separately.
+   A carry signal is rejected if it merely restates ADP, and the rookie gap in
+   `adj_vac` must not be copied into it.
 2. **The browser-to-Sleeper live path is only partially verified.** Anthony ran the
    deployed room against a real 19-team Sleeper draft (`1388575351239606272`) on
    2026-08-26. It proved server-derived geometry at 19 teams / 120s / 2 flex, seat
