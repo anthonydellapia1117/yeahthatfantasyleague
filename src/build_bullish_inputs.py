@@ -365,7 +365,8 @@ def main():
 
     out = {
         "provenance": {
-            "generated": datetime.date.today().isoformat(),
+            "generated": datetime.datetime.now(
+                datetime.timezone.utc).date().isoformat(),
             "engine_generated": eng["generated"],
             "engine_content_sha256": engine_digest,
             "input_content_sha256": input_content_sha256,
