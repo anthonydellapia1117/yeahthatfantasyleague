@@ -65,18 +65,19 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 40 | V1 changelog reports 39 forks / 29 pruned / 15 coin flips, while the committed `04d3dd3` artifact records 53 / 49 / 28; counters include subtrees later removed by ancestor pruning | **REVIEWER** (PR #54 accounting) | since V1 shipped | n/a (repository record) | **DOC/ARTIFACT DIVERGENCE (3)** |
 | 41 | pages-data refreshed `depth_charts.json` without rebuilding CVS; a correct rebuild moved 80/190 player records and two Walter reference scales | **REVIEWER** (PR #54 rebase) | ~2 hours | no - the token-authored commit never deployed | **SILENT CRON (4)** |
 | 42 | Same-day engine and mock builds shared one date, so the linkage guard passed while 14 mock tier values were stale | **REVIEWER** (#56 dependency audit) | ~1 day | yes (deployed artifact) | **FAIL-OPEN GUARD (5)** |
+| 43 | `LA/LAR` mismatch nulled both CVS context factors for every Ram; weight redistribution kept the live board plausible | **REVIEWER** (team-code audit) | since CVS factor launch | yes | **OPTIONAL DEGRADATION (4)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 42 entries: 4 are SELF-PRE (#25, #26, #27, #30) - **9.5%**. Even those
+Of the 43 entries: 4 are SELF-PRE (#25, #26, #27, #30) - **9.3%**. Even those
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. None of
 the four is an instance of me noticing an error I had no prior reason to look for.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 16, ANTHONY 1.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 17, ANTHONY 1.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -85,7 +86,7 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Sixteen of 42 - the largest single share, and disproportionately the severe ones -
+Seventeen of 43 - the largest single share, and disproportionately the severe ones -
 came from outside review. Of the five defects that reached the live site and stayed
 there for more than a day (#19, #31, #34, #35, #39), **four were found by someone
 other than me.**
@@ -197,8 +198,8 @@ caught quickly, most within hours, several before merge. **Not one loud failure 
 reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
-#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42. Nineteen of
-forty-two, and
+#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43.
+Twenty of forty-three, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it
@@ -216,7 +217,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Sixteen finds, including four of the five long-lived live defects. The mechanism is
+Seventeen finds, including four of the five long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 
@@ -488,6 +489,20 @@ On `big_board.html`, `base_rates.json` / `ceiling_2026.json` / archetypes / bull
 are fetched in bare `try { ... } catch (e) { D.x = null; }` blocks. Critical shards
 correctly `throw` and show a banner; the optional ones vanish without a word. If a
 shard 404s in production, columns disappear and the page looks fine.
+
+**Fourth confirmed instance, 2026-08-28 (#64): valid nulls hid a failed
+cross-provider join.** nflverse keyed the Rams as `LA`; Sleeper and the engine used
+`LAR`. All six Rams on the live CVS board therefore rendered with both
+`team_context` and `surrounding_talent` null, confidence `0.65` instead of `0.83`,
+and no visible error. The room separately omitted the Rams PROE chip and the team
+page's canonical `#t=LAR` route fell back to the index. Restoring the missing
+evidence moved **187 CVS values and 23 ranks** through positional z-score
+recalculation; Kyren Williams moved **-3.03 CVS**, the largest absolute change.
+This is the same optional-degradation shape as a table disappearing: a genuine
+pipeline failure was rendered as ordinary absence. #64 canonicalized team codes at
+provider boundaries. The follow-up guard discovers every committed output JSON/CSV
+and fails if any NFL team-code field cannot resolve through the shared alias map,
+so the invariant covers the next provider spelling rather than only `LA/LAR`.
 
 - Severity: LOW-MEDIUM. Same silence class; small blast radius.
 - Draft-critical: no.

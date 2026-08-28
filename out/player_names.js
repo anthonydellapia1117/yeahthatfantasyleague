@@ -7,7 +7,7 @@
 
   function playerComparisonKey(name){
     if (typeof name !== "string") throw new TypeError("player name must be a string");
-    var parts = name.normalize("NFKD")
+    var parts = name.replace(/['\u2019\u02bc`\u00b4\u2018]/gu, "'").normalize("NFKD")
       .replace(/\p{M}/gu, "")
       .toLowerCase()
       .replace(/\p{Dash_Punctuation}/gu, " ")

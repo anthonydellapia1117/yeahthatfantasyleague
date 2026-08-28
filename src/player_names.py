@@ -22,13 +22,24 @@ import unicodedata
 
 GENERATIONAL_SUFFIXES = frozenset(("jr", "sr", "ii", "iii", "iv", "v"))
 
+# Source feeds have used, or can export, several visually apostrophe-like
+# characters in player names.  Two are Unicode punctuation and were already
+# removed by the category fold below; U+02BC is a letter and U+0060/U+00B4 are
+# symbols, so relying on category alone leaves a source-dependent join key.
+# Translate the whole contract before NFKD (U+00B4 otherwise decomposes into a
+# space plus combining mark, which changes search_key tokenization).
+APOSTROPHE_VARIANTS = ("'", "\u2019", "\u02bc", "`", "\u00b4", "\u2018")
+_APOSTROPHE_TRANSLATION = str.maketrans(
+    {variant: "'" for variant in APOSTROPHE_VARIANTS})
+
 
 def _comparison_parts(name):
     if not isinstance(name, str):
         raise TypeError("player name must be a string")
 
     chars = []
-    for char in unicodedata.normalize("NFKD", name):
+    for char in unicodedata.normalize(
+            "NFKD", name.translate(_APOSTROPHE_TRANSLATION)):
         category = unicodedata.category(char)
         if category.startswith("M"):
             continue
