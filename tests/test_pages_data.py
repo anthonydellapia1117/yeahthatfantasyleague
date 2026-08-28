@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Guards N2 + page-data schema for the expansion shards (Phase A).
 
-Runs WITHOUT network: operates only on committed out/data/*.json.
+Runs WITHOUT network: operates only on committed repository files.
 Run: python3 tests/test_pages_data.py
 """
 import ast
+import csv
 import datetime
 import copy
 import importlib.util
@@ -20,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from player_names import (PlayerIdentityResolver, comparison_key,
-                          nflverse_roster_identity)
+                          nflverse_roster_identity, search_key)
 from build_pages_data import merge_ffc_market
 from team_codes import (CANONICAL_NFL_TEAMS, TEAM_CODE_ALIASES,
                         canonical_team)
@@ -79,6 +80,117 @@ ok(all("from team_codes import" in source
    "TEAM_ALIAS" not in _python_alias_consumers["parse_walter.py"] and
    "ALIAS =" not in _python_alias_consumers["build_cvs_inputs.py"],
    "Python team-code consumers import the canonical contract instead of duplicating maps")
+
+# Every NFL team-code field in every committed output artifact must resolve to
+# the app's canonical 32-team vocabulary.  This is deliberately discovered from
+# git rather than maintained as a file list: a newly committed JSON/CSV artifact
+# joins the guard automatically.  `FA` is an explicit non-team state, not an NFL
+# code.  Fantasy `team_id`, `team_name`, and numeric `teams` fields are not codes.
+_team_code_fields = {
+    "team", "nfl_team", "home_team", "away_team", "recent_team",
+    "opponent_team", "player_team", "team_live", "draft_club",
+    "team_abbr", "team_code", "posteam", "defteam",
+}
+_non_team_sentinels = {"FA"}
+
+
+def _is_team_code_field(field):
+    lowered = field.lower()
+    return (lowered in _team_code_fields or
+            re.fullmatch(r"team_\d{4}", lowered) is not None)
+
+
+def _unresolved_team_codes(value, path="$"):
+    issues = []
+    if isinstance(value, dict):
+        # Several artifacts use team codes as keys rather than leaves. Detect
+        # the domain from its resolved-key majority, so a future typo such as
+        # LAX is checked instead of disappearing merely because it is unknown.
+        code_like_keys = [
+            key for key in value
+            if isinstance(key, str) and re.fullmatch(r"[A-Za-z]{2,4}", key)
+        ]
+        resolved_keys = [
+            key for key in code_like_keys
+            if canonical_team(key) in _canonical_team_set
+        ]
+        if len(code_like_keys) >= 4 and \
+           len(resolved_keys) / len(code_like_keys) >= 0.75:
+            for key in code_like_keys:
+                if canonical_team(key) not in _canonical_team_set:
+                    issues.append((f"{path}.<key>", key))
+        for field, child in value.items():
+            child_path = f"{path}.{field}"
+            if _is_team_code_field(field) and not isinstance(child, (dict, list)):
+                if child in (None, ""):
+                    continue
+                if not isinstance(child, str):
+                    issues.append((child_path, repr(child)))
+                    continue
+                code = child.strip().upper()
+                if code not in _non_team_sentinels and \
+                   canonical_team(code) not in _canonical_team_set:
+                    issues.append((child_path, child))
+            issues.extend(_unresolved_team_codes(child, child_path))
+    elif isinstance(value, list):
+        # SOS and similar artifacts encode opponents as [team, value] pairs.
+        pair_codes = [
+            child[0] for child in value
+            if isinstance(child, list) and len(child) >= 2 and
+            isinstance(child[0], str) and
+            re.fullmatch(r"[A-Za-z]{2,4}", child[0])
+        ]
+        pair_resolved = [
+            code for code in pair_codes
+            if canonical_team(code) in _canonical_team_set
+        ]
+        if len(pair_codes) >= 4 and \
+           len(pair_resolved) / len(pair_codes) >= 0.75:
+            for index, code in enumerate(pair_codes):
+                if canonical_team(code) not in _canonical_team_set:
+                    issues.append((f"{path}[{index}][0]", code))
+        for index, child in enumerate(value):
+            issues.extend(_unresolved_team_codes(child, f"{path}[{index}]"))
+    return issues
+
+
+_tracked_out = subprocess.run(
+    ["git", "ls-files", "-z", "--", "out"], cwd=ROOT,
+    text=True, capture_output=True, check=True).stdout.split("\0")
+_tracked_json = sorted(path for path in _tracked_out if path.endswith(".json"))
+_tracked_csv = sorted(path for path in _tracked_out if path.endswith(".csv"))
+_artifact_team_issues = []
+for _rel in _tracked_json:
+    with open(os.path.join(ROOT, _rel)) as _handle:
+        _payload = json.load(_handle)
+    _artifact_team_issues.extend(
+        (_rel + path[1:], code)
+        for path, code in _unresolved_team_codes(_payload))
+for _rel in _tracked_csv:
+    with open(os.path.join(ROOT, _rel), newline="") as _handle:
+        for _row_index, _row in enumerate(csv.DictReader(_handle), start=2):
+            for _field, _value in _row.items():
+                if not _is_team_code_field(_field) or _value in (None, ""):
+                    continue
+                _code = _value.strip().upper()
+                if _code not in _non_team_sentinels and \
+                   canonical_team(_code) not in _canonical_team_set:
+                    _artifact_team_issues.append(
+                        (f"{_rel}:{_row_index}:{_field}", _value))
+ok(not _artifact_team_issues and bool(_tracked_json),
+   "every team code in every committed output artifact resolves canonically",
+   str(_artifact_team_issues[:20]))
+ok(_unresolved_team_codes({"players": [{"team": "XYZ"}]}) ==
+   [("$.players[0].team", "XYZ")] and
+   not _unresolved_team_codes({"players": [{"team": "LA"}, {"team": "FA"}]}),
+   "artifact team-code guard rejects an unknown code but accepts aliases and FA")
+_team_domain_mutant = {
+    "by_team": {"ARI": 1, "ATL": 2, "BAL": 3, "LAX": 4},
+    "opponents": [["ARI", 1], ["ATL", 2], ["BAL", 3], ["LAX", 4]],
+}
+ok(_unresolved_team_codes(_team_domain_mutant) ==
+   [("$.by_team.<key>", "LAX"), ("$.opponents[3][0]", "LAX")],
+   "artifact team-code guard covers mapping keys and unlabelled pair domains")
 
 # 1. Every shard exists and carries provenance (guard N2)
 for s in SHARDS:
@@ -195,6 +307,17 @@ _equivalent_names = [
     ("Jaxon Smith-Njigba", "Jaxon Smith Njigba", "JaxonSmithNjigba"),
     ("Amon-Ra St. Brown", "Amon Ra St Brown", "AmonRaStBrown"),
 ]
+_apostrophe_variants = (
+    ("U+0027 APOSTROPHE", "'"),
+    ("U+2019 RIGHT SINGLE QUOTATION MARK", "\u2019"),
+    ("U+02BC MODIFIER LETTER APOSTROPHE", "\u02bc"),
+    ("U+0060 GRAVE ACCENT", "`"),
+    ("U+00B4 ACUTE ACCENT", "\u00b4"),
+    ("U+2018 LEFT SINGLE QUOTATION MARK", "\u2018"),
+)
+_apostrophe_names = tuple(
+    f"Wan{variant}Dale Robinson" for _label, variant in _apostrophe_variants)
+_equivalent_names.append(_apostrophe_names + ("WanDale Robinson",))
 _suffix_forms = tuple(f"Example Player {suffix}"
                       for suffix in ("Jr", "Sr", "II", "III", "IV", "V"))
 _equivalent_names.append(("Example Player",) + _suffix_forms)
@@ -205,6 +328,17 @@ for _group in _equivalent_names:
        str(sorted(_keys)))
 ok(comparison_key("Joshua Alexander") != comparison_key("Josh Alexander"),
    "comparison key does not invent nickname equivalence")
+ok({search_key(name) for name in _apostrophe_names + ("WanDale Robinson",)} ==
+   {"wandale robinson"},
+   "search key folds every named apostrophe/quote contract variant",
+   str([(label, search_key(f"Wan{variant}Dale Robinson"))
+        for label, variant in _apostrophe_variants]))
+_apostrophe_identity = PlayerIdentityResolver([
+    {"name": "Wan'Dale Robinson", "pos": "WR", "id": "wandale"},
+])
+ok(all(_apostrophe_identity.resolve(name, position="WR").record["id"] ==
+       "wandale" for name in _apostrophe_names),
+   "identity resolver accepts every apostrophe/quote contract variant")
 _alias_identity = PlayerIdentityResolver([
     {"name": "Kenneth Gainwell", "aliases": ["Kenny Gainwell"],
      "pos": "RB", "id": "gainwell"},

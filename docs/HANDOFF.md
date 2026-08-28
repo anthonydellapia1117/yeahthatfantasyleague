@@ -15,24 +15,25 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-28 by Codex - canonicalized provider team codes at Python and browser join boundaries so Rams data keyed `LA` populates the app's canonical `LAR` team. Rebuilt CVS and added source-derived and browser regression guards. |
-| **Next agent** | Wait for Anthony's review of `codex/fix-team-code-aliases`. After this small live-defect PR, assess TE-gate honesty, then independently verify the reported junk rows and sweep every percentile population before any forward-Vegas shadow work. Keep #54 OPEN, ON HOLD, and untouched. |
-| **Branch** | `codex/fix-team-code-aliases`, based on `main` at `abb7a4e`; review and merge only through its PR |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #63 is merged and live at app commit `efd379e`; its deploy was byte-verified 48/48, all seven surfaces returned 200, and publication and geometry preflight were green. Later main commits add only unreferenced `docs/ffopportunity/` analysis files. The team-alias branch is not live pending review. |
+| **Last touched** | 2026-08-28 by Codex - defined the full player-name apostrophe/quote contract in Python and browser code, routed Walter's capture boundary through it, added a repository-discovered output team-code guard, and recorded the Rams silent-null incident as defect #43. |
+| **Next agent** | Wait for Anthony's review of `codex/unicode-team-contract`. After it lands, assess TE-gate honesty, then independently verify the reported QB junk rows and sweep every percentile population before any forward-Vegas shadow work. Keep #54 OPEN, ON HOLD, and untouched. |
+| **Branch** | `codex/unicode-team-contract`, based on `main` at `39b8ac2` (#64); review and merge only through its PR |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #64 is merged and live at `39b8ac2`; the Pages run was green, all 48 deployed files were byte-identical, all seven surfaces returned 200, `PAGES DATA FRESH - published 2026-08-28T02:16Z (9h ago)`, and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. The Unicode/team-contract branch is not live pending review. |
 | **Draft order** | UNDRAWN as of 2026-08-28 (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
 
 ### What was done in the last session
 
-1. **#53 and #55 through #63 are merged; #63 is live.** #53 records the human
+1. **#53 and #55 through #64 are merged; #64 is live.** #53 records the human
    live-path exercise and its limits. #55 fixed the round-7 VONA lookahead by
    comparing against real round 8 and published the reviewed N.1
    **INCONCLUSIVE** finding on `ff-hub.html`. #63 made the red paint and beep share
    one boundary, fixed BULLISH UTC provenance, replaced data-dependent collision
    assumptions with deterministic fixtures, corrected digest-mismatch diagnosis,
-   and removed transient team-name assertions. Its Pages deployment is 48/48
-   byte-identical and healthy. Do not confuse an unmerged fix with a stale deploy.
+   and removed transient team-name assertions. #64 fixed the live `LA/LAR` joins.
+   Its Pages deployment is 48/48 byte-identical and healthy. Do not confuse an
+   unmerged fix with a stale deploy.
 2. **#58 consolidated player identity.** One Python comparison key plus the
    collision-aware identity resolver replaced fourteen Python definitions; four
    browser copies are held to Python by corpus parity. Replay survival pairs fell
@@ -46,15 +47,15 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    amber/red/blink stages scale with `pick_timer`. #61 resolves the BULLISH overlay
    from a complete drawn-order permutation, preserves all twelve pre-draw windows,
    and fails loudly on unresolved drawn state. #62 removed the unsafe optional
-   `teams=None` resolver interface. The current branch additionally makes red
-   paint and the urgent beep consume one `redStage` predicate.
+   `teams=None` resolver interface. #63 made red paint and the urgent beep consume
+   one `redStage` predicate.
 4. **#56-#57 closed the daily dependency and same-day lineage gaps.** pages-data
    rebuilds every declared downstream consumer after shard refresh. Engine
    derivatives link by a canonical whole-payload SHA-256 rather than a date, and
    same-day mutation fixtures prove the guard bites. Strict artifacts fail closed;
    BULLISH/ceiling remain display-only and visibly stale during the intentional
    06:00-08:00 lag instead of burdening the draft-morning workflow with HISTORY.
-5. **The current branch fixes the live LA/LAR wrong-answer defect without rewriting
+5. **#64 fixed the live LA/LAR wrong-answer defect without rewriting
    provider shards.** One canonical Python helper maps `LA->LAR`, `JAC->JAX`,
    `WSH->WAS`, and `ARZ->ARI`; every changed Python consumer imports it. Matching
    browser boundary logic now lets the team and room pages join provider-native
@@ -63,17 +64,27 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    and `teams.html#t=LAR` fell back. Source-derived guards cover all four team-keyed
    shards and browser smoke exercises the LAR route. BULLISH tags and the engine/VOR
    payload are unchanged.
-6. **Full battery green on the alias branch before a clean docs-only rebase.** The
+6. **The current follow-up defines quote and output-team contracts.** U+2019 was
+   already folded and the claimed Wan'Dale loss did not reproduce. Exhaustive
+   committed-source inventory found ten real U+2019 player-name uses, zero U+02BC,
+   U+00B4, or U+2018 uses, and zero U+0060 backticks embedded in a player name.
+   Current main nevertheless fails U+02BC and U+0060 comparison and splits the
+   U+00B4 search token. One pre-NFKD fold now covers ASCII plus U+2019, U+02BC,
+   U+0060, U+00B4, and U+2018 in Python and JavaScript while exact-name collision
+   evidence remains untouched. Walter's capture regex imports the same contract.
+   A dynamic guard scans every committed output JSON/CSV, including scalar fields,
+   code-keyed maps, and unlabelled pair domains; unknown codes fail while aliases
+   and the explicit `FA` non-team state pass.
+7. **Full battery green on the current branch.** The
    gate-runner self-test plus fourteen gated suites ran
-   16/70/22/50/70/17/16/41/63/47/43/1211/23/357/38 checks. All five analysis
+   16/70/22/50/70/17/16/41/63/47/43/1211/23/363/38 checks. All five analysis
    determinism reruns executed from the complete HISTORY cache: 38 guards, zero
    skips. Browser smoke ran 357; `MATH DIFF PROOF: EMPTY` for all ten frozen
-   function bodies. The rebase added only unreferenced `docs/ffopportunity/` files;
-   executable and test bytes did not move.
+   function bodies. Re-running the Walter parser produced no artifact changes.
 
 ### In flight / nothing blocked
 
-The current team-code alias branch is green and awaits Anthony's review; it must not
+The current Unicode/team-contract branch is green and awaits Anthony's review; it must not
 merge without that review. PR #54 remains OPEN, ON HOLD, and untouched at remote
 head `4bd541e`; GitHub currently reports it conflicting with `main`. Its PATHS
 policy is still the data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the

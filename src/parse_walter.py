@@ -30,7 +30,8 @@ import os
 import re
 import sys
 
-from player_names import PlayerIdentityResolver, search_key
+from player_names import (APOSTROPHE_VARIANTS, PlayerIdentityResolver,
+                          search_key)
 from team_codes import canonical_team
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +40,7 @@ OUTDIR = os.path.join(ROOT, "data", "walter")
 ADP = os.path.join(ROOT, "out", "data", "adp.json")
 
 FUZZY_THRESHOLD = 0.90
+APOSTROPHE_RE = re.escape("".join(APOSTROPHE_VARIANTS))
 
 # common-nickname resolution pass, applied in norm space before fuzzy match
 NICKNAMES = {"cameron": "cam", "christopher": "chris", "michael": "mike",
@@ -187,7 +189,7 @@ def parse(src_text):
         (r"ceiling of ([A-Z]{1,3}\d{1,3})", "ceiling"),
         (r"ceiling:?\s*([A-Z]{1,3}\d{1,3})", "ceiling"),
         (r"floor \(([A-Z]{1,3}\d{1,3})\)", "floor"),
-        (r"[Ww]alter[’']?s ([A-Z]{1,3}\d{1,3})", "rank"),
+        (rf"[Ww]alter[{APOSTROPHE_RE}]?s ([A-Z]{{1,3}}\d{{1,3}})", "rank"),
         (r"projected? (?:him )?as (?:the )?(?:overall )?([A-Z]{1,3}\d{1,3})", "rank"),
         (r"ranked (?:him )?(?:as )?(?:the )?(?:inside the )?([A-Z]{1,3}\d{1,3})", "rank"),
         (r"projects as the overall ([A-Z]{1,3}\d{1,3})", "rank"),
@@ -297,7 +299,8 @@ def parse(src_text):
             continue
         if sub is None:
             continue
-        for bm in re.finditer(r"\*\*([A-Z][A-Za-z.'’ ]+?)\*\*", ln):
+        for bm in re.finditer(
+                rf"\*\*([A-Z][A-Za-z.{APOSTROPHE_RE} ]+?)\*\*", ln):
             cand = bm.group(1).strip()
             words = cand.split()
             if not (2 <= len(words) <= 3):
