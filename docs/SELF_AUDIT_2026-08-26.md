@@ -144,6 +144,30 @@ never the *content*. The class is "a check that cannot fail in the state it exis
 to detect." Engine linkage now uses a self-verifying canonical content digest,
 and a same-day mutation fixture proves the digest changes while the date does not.
 
+**PRESENCE-NOT-CORRECTNESS GUARD - one decision-input instance (P2-9), with
+lower-stakes analogues.** The FLEX suite proves that the observed artifact exists;
+that its independently supplied totals, shares, intervals, and allocation satisfy
+basic bounds and sums; and that the same allocation reaches the engine. It never
+recomputes those fields from one another or compares a truthy allocation with the
+Sleeper starter data it claims to summarize. This is distinct from the fail-open
+class above: the guard does fail on missing or falsy input, and the mandatory VOR
+step blocks that fallback from the 06:00 workflow. It cannot fail on the harder
+state - plausible, wrong data.
+
+The repository audit found three other unbacked semantic shape checks:
+`test_pages_data.py` requires top-50 Sleeper ADPs only to be truthy;
+`test_ceiling.py` requires weekly replacement values only to be positive with the
+expected keys; and `test_archetypes.py` requires thresholds to be positive and
+verification samples to clear minimum `n`. The latter two are optional display
+layers rebuilt daily; the ADP shard is live-refreshed rather than a frozen input.
+FLEX is the only committed input whose presence/shape guard is relied upon to
+exclude a silent fallback **and** whose unchecked value directly reprices draft
+decision math. WS2 artifact pointers and the publication heartbeat are not members
+of this class because existence is their stated contract. The mathdiff proof
+compares function bodies, while engine lineage and the CVS/VONA/mock rebuild guards
+compare content. Historical #42 is the closest repaired predecessor: its date-only
+proxy had this shape until the digest repair.
+
 **CONDITIONING FRAME - 2 occurrences (#8, #32).** Mixing conditional and
 unconditional survival in one expression, four months apart, in two different
 subsystems. **Why it did not generalize:** #8's fix routed three specific call sites
@@ -499,6 +523,29 @@ comment "documented seat last year". It is labelled and switchable, and the live
 correctly resolves slot from `roster_id` (`draft_room.html:461`), so this is cosmetic.
 But note `roster_id == 7` and `slot == 7` are the same integer by coincidence; if a
 future edit conflates them the tests would not notice.
+
+**P2-9. The FLEX guard validates presence and linkage, not the correctness of a
+truthy observed allocation.** `tests/test_vor.py` proves
+`flex_usage_2025.json` exists; checks basic bounds and sums on its separately
+supplied counts, shares, intervals, and allocation; and proves that allocation is
+linked into the engine. It does not rederive the observed counts from Sleeper's
+2025 matchup starters, recompute shares and Wilson intervals from the counts, or
+recompute the largest-remainder allocation from the shares. A missing or falsy
+allocation activates the projection-greedy fallback, but the mandatory VOR gate in
+the 06:00 `draft-refresh` workflow then fails, so that fallback cannot publish
+through the scheduled path. A coordinated truthy-but-wrong artifact can satisfy
+every current guard and render normally. Confirmed counterexample: changing the
+allocation from RB4/WR8/TE0 to RB5/WR7/TE0, then rebuilding the dependent engine
+fields, leaves all 32 relevant VOR predicates green. The derivation has a second
+version of the same weakness: it stops at the first failed or empty matchup week,
+while the guard accepts `n >= 150`; thirteen complete weeks produce `n=156`, so a
+plausible partial season can also pass.
+
+- Severity: **LOW before the draft.** The artifact is a frozen 2025 snapshot and
+  no wrong committed value is known.
+- Draft-critical: **no.** The realistic missing/falsy scheduled path already
+  fails closed.
+- Decision: no correctness guard now, by Anthony's direction nine days out.
 
 ### Hunted and found clean (stated so the next agent does not redo it)
 
