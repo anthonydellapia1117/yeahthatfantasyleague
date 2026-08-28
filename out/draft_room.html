@@ -1199,16 +1199,17 @@ function tickClock(){
   } else {
     const left = Math.max(0, Math.ceil((lp + t * 1000 - Date.now()) / 1000));
     const thresholds = clockThresholds(t);
+    const redStage = left < thresholds.red;
     el.textContent = left > 0
       ? Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0")
       : "0:00";
-    el.classList.toggle("amber", left < thresholds.amber && left >= thresholds.red);
-    el.classList.toggle("red", left < thresholds.red);
+    el.classList.toggle("amber", left < thresholds.amber && !redStage);
+    el.classList.toggle("red", redStage);
     el.classList.toggle("blink", left < thresholds.blink && left > 0);
     if (rule) rule.textContent = left > 0
       ? `clock ${t}s per pick (draft settings), anchored to Sleeper's last-pick timestamp - forfeit on expiry (rule 3.2)`
       : "clock expired by Sleeper's own timestamps - check Sleeper";
-    if (LiveState.wasMe && left <= thresholds.red && left > 0 && !LiveState.warnedUrgent){
+    if (LiveState.wasMe && redStage && left > 0 && !LiveState.warnedUrgent){
       LiveState.warnedUrgent = true; beep(1200);
     }
   }

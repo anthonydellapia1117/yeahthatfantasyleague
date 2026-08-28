@@ -173,7 +173,10 @@ def main():
     prospect = xwalk["prospect"]
     gsis_of = xwalk["matched"]
 
-    now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    # One UTC instant supplies both representations; a local-midnight rollover
+    # can no longer split the date label from the timestamp it describes.
+    run_at = datetime.datetime.now(datetime.timezone.utc)
+    computed_at = run_at.isoformat(timespec="seconds")
     tags = []
     for e in inp["players"]:
         pos, name = e["pos"], e["name"]
@@ -293,7 +296,7 @@ def main():
             "reasons": reasons,
             "capital_tiebreak": cap_tb,
             "source": "bullish_inputs_2026.json",
-            "computed_at": now,
+            "computed_at": computed_at,
             "ttl_hours": 72,
         })
 
@@ -402,8 +405,8 @@ def main():
 
     out = {
         "provenance": {
-            "generated": datetime.date.today().isoformat(),
-            "computed_at": now,
+            "generated": run_at.date().isoformat(),
+            "computed_at": computed_at,
             "engine_generated": eng["generated"],
             "engine_content_sha256": engine_digest,
             "inputs_content_sha256": json_content_sha256(inp),

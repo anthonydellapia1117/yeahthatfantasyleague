@@ -32,6 +32,14 @@ function freshDisplayLayers(){
   return layers;
 }
 
+function currentRosterLabels(){
+  const fs = require("fs");
+  const engine = JSON.parse(fs.readFileSync(
+    path.resolve("out/engine_2026.json"), "utf8"));
+  return [...new Set(engine.rosters.flatMap(r =>
+    [r.handle, r.team_name, r.franchise].filter(Boolean)))];
+}
+
 (async () => {
   const browser = await chromium.launch({
     // this image ships the browser at a fixed path; CI overrides it
@@ -1332,9 +1340,13 @@ function freshDisplayLayers(){
       contentType: "application/json", body: JSON.stringify(staleCvs) }));
     await badBoard.goto(base + "/out/big_board.html");
     await badBoard.waitForTimeout(900);
-    ok(/different engine payload/.test(await badBoard.textContent("#banner")) &&
+    const mismatchBanner = await badBoard.textContent("#banner");
+    ok(/artifacts out of sync/i.test(mismatchBanner) &&
+       /board blocked/i.test(mismatchBanner) &&
+       !/unreachable/i.test(mismatchBanner) &&
        await badBoard.locator("#board .brow").count() === 0,
-       "big board: same-date CVS content mismatch refuses to render");
+       "big board: same-date CVS mismatch names lineage, not the network",
+       mismatchBanner.trim());
     await badBoard.close();
 
     // phone-width net: no horizontal overflow at 375, and injury badges
@@ -1442,9 +1454,9 @@ function freshDisplayLayers(){
     ok(/before you:/.test(upSoon) || /YOU ARE ON THE CLOCK/.test(upSoon),
        "up-next names who picks before you", upSoon.trim());
     const franch = await pe.textContent("#lv-franch");
-    ok(/Sex Panther|Taylor Made|Riley Reid|My Back Hurts|Kelce|Rob and GregBo/.test(franch)
-       || /\(/.test(franch),
-       "the clock line carries a team label with its provenance", franch.trim());
+    const rosterLabels = currentRosterLabels();
+    ok(rosterLabels.some(label => franch.includes(label)),
+       "the clock line carries a payload-derived team label", franch.trim());
     // the Board tab (best-available view) carries all three channels too
     const vb = await pe.evaluate(() => ({
       containers: document.querySelectorAll("#scr-board .vrow[data-sig]").length,
@@ -1765,8 +1777,12 @@ function freshDisplayLayers(){
        "mock live: seat picker follows the mock's 10 teams, not the league's 12");
     ok(/off in draft mode/.test(await page.textContent("#f-opps")),
        "mock live: league-mate dossiers off with the reason stated");
-    ok(!/Antdell|Taylor Made|Cambrias/.test(await page.textContent("#lv-franch")),
-       "mock live: no league franchise names attached to mock seats");
+    const mockFranchise = await page.textContent("#lv-franch");
+    const leakedRosterLabels = currentRosterLabels().filter(
+      label => mockFranchise.includes(label));
+    ok(leakedRosterLabels.length === 0,
+       "mock live: no real-league roster labels attached to mock seats",
+       leakedRosterLabels.join(", "));
     await page.close();
   }
 
@@ -2224,6 +2240,102 @@ function freshDisplayLayers(){
     ok(stageFailures.length === 0,
        "timer contract: 40% amber, 15% red, 5% blinking red at 30/60/90/120s",
        stageFailures.join("; "));
+
+    // 23f: audio and paint must enter the SAME red stage. The AudioContext
+    // stub records frequencies without exposing the room's closure state; the
+    // scenario is driven through Sleeper responses and the public one-second
+    // clock. The 880Hz on-clock beep is valid and intentionally ignored here.
+    const urgentFailures = [];
+    for (const timer of [30, 60, 90, 120]){
+      const page = await browser.newPage();
+      await page.addInitScript(now => {
+        window.__clockNow = now;
+        window.__beeps = [];
+        Date.now = () => window.__clockNow;
+        class FakeAudioContext {
+          constructor(){ this.currentTime = 0; this.destination = {}; }
+          createOscillator(){
+            const osc = {
+              frequency: { value: 0 }, connect(){}, stop(){},
+              start(){ window.__beeps.push(osc.frequency.value); },
+            };
+            return osc;
+          }
+          createGain(){
+            return { gain: { setValueAtTime(){}, exponentialRampToValueAtTime(){} },
+                     connect(){} };
+          }
+        }
+        window.AudioContext = FakeAudioContext;
+        window.webkitAudioContext = FakeAudioContext;
+      }, FIXED_NOW);
+      const redBoundarySecond = Math.ceil(timer / 4);
+      const sixPicks = [
+        pick(1, "p1", "One", "Player", "RB"),
+        pick(2, "p2", "Two", "Player", "WR"),
+        pick(3, "p3", "Three", "Player", "RB"),
+        pick(4, "p4", "Four", "Player", "WR"),
+        pick(5, "p5", "Five", "Player", "QB"),
+        pick(6, "p6", "Six", "Player", "TE"),
+      ];
+      await page.route("**/v1/draft/*/picks*", r => r.fulfill({
+        contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify(sixPicks),
+      }));
+      await page.route("**/v1/draft/*", r => {
+        if (r.request().url().includes("/picks")) return r.fallback();
+        r.fulfill({
+          contentType: "application/json",
+          headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify(draftPayload(
+            timer, FIXED_NOW - (timer - redBoundarySecond) * 1000)),
+        });
+      });
+      await page.goto(FILE);
+      await page.waitForFunction(() =>
+        document.querySelector("#clock")?.textContent.trim() !== "-:--");
+      const atBoundary = await page.evaluate(() => ({
+        amber: document.querySelector("#clock").classList.contains("amber"),
+        red: document.querySelector("#clock").classList.contains("red"),
+        urgent: window.__beeps.filter(freq => freq === 1200).length,
+        text: document.querySelector("#clock").textContent.trim(),
+      }));
+      await page.evaluate(now => { window.__clockNow = now + 1000; }, FIXED_NOW);
+      const firstRedText = Math.floor((redBoundarySecond - 1) / 60) + ":" +
+        String((redBoundarySecond - 1) % 60).padStart(2, "0");
+      await page.waitForFunction(expected =>
+        document.querySelector("#clock")?.textContent.trim() === expected,
+        firstRedText);
+      const inRed = await page.evaluate(() => ({
+        amber: document.querySelector("#clock").classList.contains("amber"),
+        red: document.querySelector("#clock").classList.contains("red"),
+        urgent: window.__beeps.filter(freq => freq === 1200).length,
+        text: document.querySelector("#clock").textContent.trim(),
+      }));
+      await page.evaluate(now => { window.__clockNow = now + 2000; }, FIXED_NOW);
+      const secondRedText = Math.floor((redBoundarySecond - 2) / 60) + ":" +
+        String((redBoundarySecond - 2) % 60).padStart(2, "0");
+      await page.waitForFunction(expected =>
+        document.querySelector("#clock")?.textContent.trim() === expected,
+        secondRedText);
+      const afterTick = await page.evaluate(() => ({
+        amber: document.querySelector("#clock").classList.contains("amber"),
+        red: document.querySelector("#clock").classList.contains("red"),
+        urgent: window.__beeps.filter(freq => freq === 1200).length,
+        text: document.querySelector("#clock").textContent.trim(),
+      }));
+      if (!atBoundary.amber || atBoundary.red || atBoundary.urgent !== 0 ||
+          inRed.amber || !inRed.red || inRed.urgent !== 1 ||
+          afterTick.amber || !afterTick.red || afterTick.urgent !== 1)
+        urgentFailures.push(
+          `${timer}s boundary=${JSON.stringify(atBoundary)} ` +
+          `red=${JSON.stringify(inRed)} repeat=${JSON.stringify(afterTick)}`);
+      await page.close();
+    }
+    ok(urgentFailures.length === 0,
+       "timer audio contract: urgent beep begins with red at 30/60/90/120s and fires once",
+       urgentFailures.join("; "));
   }
 
   await browser.close();

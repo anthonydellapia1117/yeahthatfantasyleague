@@ -28,6 +28,20 @@ def ok(cond, name, detail=""):
 
 inp = json.load(open(os.path.join(D, "bullish_inputs_2026.json")))
 d = json.load(open(os.path.join(D, "bullish_2026.json")))
+try:
+    _computed_at = datetime.datetime.fromisoformat(
+        d["provenance"]["computed_at"])
+    _computed_is_utc = (_computed_at.utcoffset() == datetime.timedelta(0))
+    _computed_utc_date = _computed_at.astimezone(
+        datetime.timezone.utc).date().isoformat()
+except (KeyError, TypeError, ValueError):
+    _computed_is_utc = False
+    _computed_utc_date = None
+ok(_computed_is_utc and
+   d.get("provenance", {}).get("generated") == _computed_utc_date,
+   "BULLISH timestamp is UTC and generated is its UTC date",
+   f"generated {d.get('provenance', {}).get('generated')}, "
+   f"computed_at {d.get('provenance', {}).get('computed_at')}")
 inp_digest = inp.get("provenance", {}).get("engine_content_sha256", "")
 tag_digest = d.get("provenance", {}).get("engine_content_sha256", "")
 ok(len(inp_digest) == 64 and tag_digest == inp_digest,
