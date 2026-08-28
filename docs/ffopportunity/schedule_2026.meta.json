@@ -85,10 +85,10 @@
   "TEN": 20.33,
   "WAS": 23.25
  },
- "pulled_at": "2026-08-28T13:40:39+00:00",
+ "pulled_at": "2026-08-28T21:47:20+00:00",
  "rows": 272,
  "season": 2026,
- "snapshot_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+ "snapshot_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
  "sync_transition": {
   "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
   "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
@@ -113,9 +113,9 @@
     "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
-   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
    "team_games_priced": 186,
-   "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+   "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
    "weeks": [
     1,
     2,
@@ -156,7 +156,7 @@
     "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
-   "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
    "team_games_priced": 186,
    "upstream_content_sha256": null,
    "weeks": [
@@ -170,7 +170,7 @@
   }
  },
  "team_games_priced": 186,
- "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+ "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
  "upstream_source": "http://www.habitatring.com/games.csv",
  "weeks": [
   1,

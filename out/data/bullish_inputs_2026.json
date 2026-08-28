@@ -7,10 +7,10 @@
    "ceiling_2026.json": "3bbcae99126f89fc9774efb98857be43fd47a9d43d3a15026c47d1c063b8f40c",
    "usage_2025.json": "932cfec8d625eb662326d34d16533d079357f2fd15de1dc95f101051f5c8cb00",
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
-   "depth_charts.json": "b5a14a0768cf0ca2875d501964d8dbb71cdccb239d5e4e8d47f2a7f7245da4f6",
-   "crosswalk.json": "63dab2e88225e8522d8cb0fac7e14ad5b621b9753bdf576563cfaafb7e58f4c4",
-   "docs/ffopportunity/schedule_2026.csv": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
-   "docs/ffopportunity/schedule_2026.meta.json": "01b7c3521d929bd9daee27428ef6fa45fd459d02e7394f107abcf588dc1d77c1"
+   "depth_charts.json": "67c2098edcf046b87ffecc96d15f8c1e66d0c80c640f532c47b0f2c5481e1fd5",
+   "crosswalk.json": "b37c4cfc56c842689efc6d1a2dd5b6f9c6050d61cd9660b91972485d45478188",
+   "docs/ffopportunity/schedule_2026.csv": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
+   "docs/ffopportunity/schedule_2026.meta.json": "9f4e3aff9b920812562d88c66801367ee7430886e877f46e2dd7b202be16d8ed"
   },
   "vegas": {
    "week1_rb": {
@@ -25,10 +25,10 @@
     "source": "docs/ffopportunity/schedule_2026.csv",
     "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
     "upstream_source": "http://www.habitatring.com/games.csv",
-    "pulled_at": "2026-08-28T13:40:39+00:00",
-    "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
-    "snapshot_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
-    "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+    "pulled_at": "2026-08-28T21:47:20+00:00",
+    "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
+    "snapshot_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
+    "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
     "pricing_by_week_sha256": {
      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
@@ -247,7 +247,7 @@
      "event": "UNCHANGED",
      "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
      "prior": {
-      "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+      "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
       "upstream_content_sha256": null,
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
       "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
@@ -280,8 +280,8 @@
       }
      },
      "current": {
-      "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
-      "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+      "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
+      "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
       "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
       "pricing_by_week_sha256": {
