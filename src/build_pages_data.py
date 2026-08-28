@@ -17,6 +17,7 @@ Run: python3 src/build_pages_data.py [--skip-pbp]
 import argparse
 import csv
 import datetime
+import hashlib
 import io
 import json
 import math
@@ -25,6 +26,7 @@ import sys
 import urllib.request
 
 from player_names import PlayerIdentityResolver, comparison_key
+from team_codes import CANONICAL_NFL_TEAMS, canonical_team
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "data")
@@ -45,6 +47,14 @@ def parquet(url, columns=None):
     import pyarrow.parquet as pq
     buf = io.BytesIO(fetch(url))
     return pq.read_table(buf, columns=columns)
+
+
+def parquet_with_content_sha256(url, columns=None):
+    """Read one parquet while retaining the identity of its source bytes."""
+    import pyarrow.parquet as pq
+    raw = fetch(url)
+    return (pq.read_table(io.BytesIO(raw), columns=columns),
+            hashlib.sha256(raw).hexdigest())
 
 
 def stamp(shard, source, url):
@@ -97,6 +107,53 @@ def merge_ffc_market(sleeper_rows, ffc_rows):
     merged.sort(key=lambda row: (row.get("adp_sleeper") or 999,
                                  row["player_id"]))
     return merged
+
+
+def aggregate_rb_player_team_carries(rows):
+    """Aggregate literal 2025 RB carries by historical player-team.
+
+    This ledger is deliberately built before the fantasy-point trim and keeps
+    separate rows when a player appeared for multiple teams. All season types
+    present in the weekly source remain in scope, matching the existing 2025
+    usage artifact's all-week basis.
+    """
+    canonical = set(CANONICAL_NFL_TEAMS)
+    aggregate = {}
+    season_types = set()
+    for row in rows:
+        if str(row.get("season") or "") != "2025" or row.get("position") != "RB":
+            continue
+        player_id = str(row.get("player_id") or "").strip()
+        team = canonical_team(row.get("team"))
+        if not player_id or team not in canonical:
+            raise ValueError(
+                f"RB carry ledger has unresolved identity/team: {player_id}/{team}")
+        raw_carries = row.get("carries")
+        try:
+            numeric_carries = 0.0 if raw_carries is None else float(raw_carries)
+        except (TypeError, ValueError):
+            raise ValueError(
+                f"RB carry ledger has invalid carries for {player_id}/{team}")
+        if (isinstance(raw_carries, bool) or
+                not math.isfinite(numeric_carries) or
+                numeric_carries < 0 or not numeric_carries.is_integer()):
+            raise ValueError(
+                f"RB carry ledger has invalid carries for {player_id}/{team}")
+        carries = int(numeric_carries)
+        key = (player_id, team)
+        current = aggregate.setdefault(key, {
+            "gsis_id": player_id,
+            "name": str(row.get("player_display_name") or "").strip(),
+            "team": team,
+            "carries": 0,
+        })
+        current["carries"] += carries
+        season_types.add(str(row.get("season_type") or "UNKNOWN"))
+    return {
+        "rows": sorted(aggregate.values(),
+                       key=lambda item: (item["team"], item["gsis_id"])),
+        "season_types": sorted(season_types),
+    }
 
 
 def build_adp():
@@ -232,13 +289,23 @@ def build_usage_2025():
     beyond share = player_sum / team_sum where the column is itself a share's
     numerator (documented per field)."""
     url = f"{NV}/stats_player/stats_player_week_2025.parquet"
-    cols = ["player_id", "player_display_name", "position", "team", "week",
+    cols = ["player_id", "player_display_name", "position", "team", "season",
+            "season_type", "week",
             "targets", "receptions", "receiving_yards", "receiving_air_yards",
             "target_share", "air_yards_share", "wopr",
             "carries", "rushing_yards", "attempts", "passing_yards", "passing_tds",
             "receiving_tds", "rushing_tds", "fantasy_points_ppr"]
-    t = parquet(url, columns=cols)
+    t, source_content_sha256 = parquet_with_content_sha256(url, columns=cols)
     stamp("usage_2025", "nflverse stats_player weekly 2025 (CC-BY-4.0)", url)
+    rb_carry_ledger = aggregate_rb_player_team_carries(
+        {column: t[column][i].as_py() for column in
+         ("player_id", "player_display_name", "position", "team", "season",
+          "season_type", "carries")}
+        for i in range(t.num_rows)
+    )
+    rb_carry_ledger_content_sha256 = hashlib.sha256(json.dumps(
+        rb_carry_ledger["rows"], sort_keys=True,
+        separators=(",", ":")).encode()).hexdigest()
     agg = {}
     for i in range(t.num_rows):
         pid = str(t["player_id"][i])
@@ -276,9 +343,21 @@ def build_usage_2025():
         row["ppr_pts"] = r2(row["ppr_pts"])
         players.append({"gsis_id": pid, **row})
     players.sort(key=lambda r: -r["ppr_pts"])
-    write("usage_2025", {"provenance": prov("usage_2025",
-                                            basis="2025 season sums of literal columns; share fields are means of nflverse weekly share columns"),
-                         "players": players})
+    write("usage_2025", {
+        "provenance": prov(
+            "usage_2025",
+            basis=("2025 all-week season sums of literal columns; share fields "
+                   "are means of nflverse weekly share columns"),
+            rb_carry_ledger_basis=(
+                "literal carries by historical player-team before the 10-PPR "
+                "player trim; multi-team players retain separate rows"),
+            rb_carry_ledger_season_types=rb_carry_ledger["season_types"],
+            source_content_sha256=source_content_sha256,
+            rb_carry_ledger_content_sha256=rb_carry_ledger_content_sha256,
+        ),
+        "players": players,
+        "rb_player_team_carries": rb_carry_ledger["rows"],
+    })
 
 
 def build_proe_2025(skip_pbp=False):

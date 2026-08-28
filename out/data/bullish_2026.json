@@ -1,10 +1,10 @@
 {
  "provenance": {
   "generated": "2026-08-28",
-  "computed_at": "2026-08-28T13:57:40+00:00",
+  "computed_at": "2026-08-28T16:21:48+00:00",
   "engine_generated": "2026-08-28",
   "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
-  "inputs_content_sha256": "aaafb904e5e7467b26ebd03ecb1cb20b120fc9146cac7212ed10a98ee637e043",
+  "inputs_content_sha256": "0991eebd1c614f2dfe6bcf559b370ed70ee7319a0f950f04dac4b6eea813d860",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -336,20 +336,20 @@
     "gap": 14
    },
    {
+    "name": "Javonte Williams",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 3,
+    "pos_adp_rank": 17,
+    "gap": 14
+   },
+   {
     "name": "Jared Goff",
     "pos": "QB",
     "status": "BULLISH",
     "score_rank": 2,
     "pos_adp_rank": 16,
     "gap": 14
-   },
-   {
-    "name": "Javonte Williams",
-    "pos": "RB",
-    "status": "BULLISH",
-    "score_rank": 4,
-    "pos_adp_rank": 17,
-    "gap": 13
    },
    {
     "name": "Brock Purdy",
@@ -392,20 +392,20 @@
     "gap": 8
    },
    {
+    "name": "Chase Brown",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 3,
+    "pos_adp_rank": 10,
+    "gap": 7
+   },
+   {
     "name": "Ashton Jeanty",
     "pos": "RB",
     "status": "WATCH",
     "score_rank": 1,
     "pos_adp_rank": 8,
     "gap": 7
-   },
-   {
-    "name": "Chase Brown",
-    "pos": "RB",
-    "status": "BULLISH",
-    "score_rank": 4,
-    "pos_adp_rank": 10,
-    "gap": 6
    },
    {
     "name": "Kyren Williams",
@@ -424,8 +424,8 @@
     "gap": 6
    }
   ],
-  "spearman_score_vs_adp_tagged": 0.779,
-  "statement": "13 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.779; a value near 1.0 would mean the tag merely restates the market."
+  "spearman_score_vs_adp_tagged": 0.75,
+  "statement": "13 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.75; a value near 1.0 would mean the tag merely restates the market."
  },
  "te_scarcity_adjudication": {
   "basis": "league-exact PPG, 8+ game TEs, 2023-2025",
@@ -500,7 +500,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T13:57:40+00:00",
+    "computed_at": "2026-08-28T16:21:48+00:00",
     "ttl_hours": 72
    },
    {
@@ -520,7 +520,7 @@
     ],
     "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T13:57:40+00:00",
+    "computed_at": "2026-08-28T16:21:48+00:00",
     "ttl_hours": 72
    },
    {
@@ -538,7 +538,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T13:57:40+00:00",
+    "computed_at": "2026-08-28T16:21:48+00:00",
     "ttl_hours": 72
    },
    {
@@ -556,7 +556,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T13:57:40+00:00",
+    "computed_at": "2026-08-28T16:21:48+00:00",
     "ttl_hours": 72
    },
    {
@@ -576,7 +576,7 @@
     ],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T13:57:40+00:00",
+    "computed_at": "2026-08-28T16:21:48+00:00",
     "ttl_hours": 72
    }
   ],
@@ -585,6 +585,1007 @@
    "A non-vacuous receiving-share criterion using a complete and season-consistent team universe",
    "A reviewed rerun of N.1 after a repaired TE matrix is reintroduced"
   ]
+ },
+ "rb_backfield_denominator_repair": {
+  "status": "ACTIVATED",
+  "scope": [
+   "RB.backfield_command"
+  ],
+  "source": "out/data/usage_2025.json#rb_player_team_carries",
+  "held_constant": "current code, current injury state, current player universe, and every non-backfield criterion; the component ledger separately exchanges historical grouping and complete player-team carry rows",
+  "replacement": {
+   "status": "ACTIVATED",
+   "source": "out/data/usage_2025.json#rb_player_team_carries",
+   "replacement": "2025 player carries divided by the complete untrimmed 2025 RB carry total on that historical team; multi-team rows stay split",
+   "retired_counterfactual": "the same committed usage rows grouped by each player's 2026 depth-chart team",
+   "grouping_only_intermediate": "the retired trimmed player rows regrouped by their stored historical team before adding the untrimmed split ledger",
+   "counterfactual_reproduces_committed_baseline": true,
+   "season_scope": "all 2025 season types present in the weekly source, preserving the prior all-week basis",
+   "multi_team_player_policy": "all split rows contribute to team denominators; a player with positive carries for multiple teams has a null individual share"
+  },
+  "thresholds": {
+   "before": {
+    "n": 46,
+    "zero_n": 0,
+    "excluded_unobserved_n": 3,
+    "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
+    "percentile_method": "nearest index: round(q * (n - 1))",
+    "p50": 0.506,
+    "p75": 0.7342,
+    "p80": 0.7632,
+    "p50_method": "upper middle observation for even n; retired stage-2 baseline"
+   },
+   "after": {
+    "n": 46,
+    "zero_n": 0,
+    "excluded_unobserved_n": 3,
+    "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
+    "percentile_method": "nearest index: round(q * (n - 1))",
+    "p50": 0.5072,
+    "p75": 0.6538,
+    "p80": 0.6946,
+    "p50_method": "upper middle observation for even n; preserved stage-2 convention"
+   }
+  },
+  "input_changed": [
+   {
+    "player": "Jahmyr Gibbs|RB",
+    "before": 0.655,
+    "after": 0.5971,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DET",
+     "player_carries": 243,
+     "current_roster_team_rb_carries": 371
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DET",
+     "player_carries": 243,
+     "historical_team_rb_carries": 407
+    }
+   },
+   {
+    "player": "Bijan Robinson|RB",
+    "before": 0.7513,
+    "after": 0.6538,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "ATL",
+     "player_carries": 287,
+     "current_roster_team_rb_carries": 382
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "ATL",
+     "player_carries": 287,
+     "historical_team_rb_carries": 439
+    }
+   },
+   {
+    "player": "Christian McCaffrey|RB",
+    "before": 1.0,
+    "after": 0.7694,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "SF",
+     "player_carries": 337,
+     "current_roster_team_rb_carries": 337
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "SF",
+     "player_carries": 337,
+     "historical_team_rb_carries": 438
+    }
+   },
+   {
+    "player": "Jonathan Taylor|RB",
+    "before": 1.0,
+    "after": 0.866,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "IND",
+     "player_carries": 323,
+     "current_roster_team_rb_carries": 323
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "IND",
+     "player_carries": 323,
+     "historical_team_rb_carries": 373
+    }
+   },
+   {
+    "player": "James Cook|RB",
+    "before": 0.7632,
+    "after": 0.7598,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "BUF",
+     "player_carries": 348,
+     "current_roster_team_rb_carries": 456
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "BUF",
+     "player_carries": 348,
+     "historical_team_rb_carries": 458
+    }
+   },
+   {
+    "player": "Chase Brown|RB",
+    "before": 0.7342,
+    "after": 0.6946,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CIN",
+     "player_carries": 232,
+     "current_roster_team_rb_carries": 316
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CIN",
+     "player_carries": 232,
+     "historical_team_rb_carries": 334
+    }
+   },
+   {
+    "player": "Derrick Henry|RB",
+    "before": 0.9247,
+    "after": 0.7832,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "BAL",
+     "player_carries": 307,
+     "current_roster_team_rb_carries": 332
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "BAL",
+     "player_carries": 307,
+     "historical_team_rb_carries": 392
+    }
+   },
+   {
+    "player": "Saquon Barkley|RB",
+    "before": 0.7907,
+    "after": 0.7766,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "PHI",
+     "player_carries": 306,
+     "current_roster_team_rb_carries": 387
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "PHI",
+     "player_carries": 306,
+     "historical_team_rb_carries": 394
+    }
+   },
+   {
+    "player": "Kenneth Walker|RB",
+    "before": 0.7647,
+    "after": 0.5608,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "KC",
+     "player_carries": 286,
+     "current_roster_team_rb_carries": 374
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "SEA",
+     "player_carries": 286,
+     "historical_team_rb_carries": 510
+    }
+   },
+   {
+    "player": "Omarion Hampton|RB",
+    "before": 0.3197,
+    "after": 0.3369,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LAC",
+     "player_carries": 125,
+     "current_roster_team_rb_carries": 391
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LAC",
+     "player_carries": 125,
+     "historical_team_rb_carries": 371
+    }
+   },
+   {
+    "player": "Ashton Jeanty|RB",
+    "before": 0.9603,
+    "after": 0.8664,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LV",
+     "player_carries": 266,
+     "current_roster_team_rb_carries": 277
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LV",
+     "player_carries": 266,
+     "historical_team_rb_carries": 307
+    }
+   },
+   {
+    "player": "Breece Hall|RB",
+    "before": 0.7666,
+    "after": 0.7297,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NYJ",
+     "player_carries": 243,
+     "current_roster_team_rb_carries": 317
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NYJ",
+     "player_carries": 243,
+     "historical_team_rb_carries": 333
+    }
+   },
+   {
+    "player": "Kyren Williams|RB",
+    "before": 0.6392,
+    "after": 0.6273,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LAR",
+     "player_carries": 303,
+     "current_roster_team_rb_carries": 474
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LAR",
+     "player_carries": 303,
+     "historical_team_rb_carries": 483
+    }
+   },
+   {
+    "player": "D'Andre Swift|RB",
+    "before": 0.573,
+    "after": 0.5629,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CHI",
+     "player_carries": 255,
+     "current_roster_team_rb_carries": 445
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CHI",
+     "player_carries": 255,
+     "historical_team_rb_carries": 453
+    }
+   },
+   {
+    "player": "Travis Etienne|RB",
+    "before": 0.49,
+    "after": 0.6959,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NO",
+     "player_carries": 270,
+     "current_roster_team_rb_carries": 551
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "JAX",
+     "player_carries": 270,
+     "historical_team_rb_carries": 388
+    }
+   },
+   {
+    "player": "Javonte Williams|RB",
+    "before": 0.7262,
+    "after": 0.658,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DAL",
+     "player_carries": 252,
+     "current_roster_team_rb_carries": 347
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DAL",
+     "player_carries": 252,
+     "historical_team_rb_carries": 383
+    }
+   },
+   {
+    "player": "David Montgomery|RB",
+    "before": 0.3674,
+    "after": 0.3882,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "HOU",
+     "player_carries": 158,
+     "current_roster_team_rb_carries": 430
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DET",
+     "player_carries": 158,
+     "historical_team_rb_carries": 407
+    }
+   },
+   {
+    "player": "Josh Jacobs|RB",
+    "before": 0.9004,
+    "after": 0.6216,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "GB",
+     "player_carries": 253,
+     "current_roster_team_rb_carries": 281
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "GB",
+     "player_carries": 253,
+     "historical_team_rb_carries": 407
+    }
+   },
+   {
+    "player": "Cam Skattebo|RB",
+    "before": 0.2457,
+    "after": 0.2551,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NYG",
+     "player_carries": 101,
+     "current_roster_team_rb_carries": 411
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NYG",
+     "player_carries": 101,
+     "historical_team_rb_carries": 396
+    }
+   },
+   {
+    "player": "Bucky Irving|RB",
+    "before": 0.4565,
+    "after": 0.4347,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TB",
+     "player_carries": 173,
+     "current_roster_team_rb_carries": 379
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TB",
+     "player_carries": 173,
+     "historical_team_rb_carries": 398
+    }
+   },
+   {
+    "player": "Quinshon Judkins|RB",
+    "before": 0.7143,
+    "after": 0.6516,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CLE",
+     "player_carries": 230,
+     "current_roster_team_rb_carries": 322
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CLE",
+     "player_carries": 230,
+     "historical_team_rb_carries": 353
+    }
+   },
+   {
+    "player": "Bhayshul Tuten|RB",
+    "before": 0.3671,
+    "after": 0.2242,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "JAX",
+     "player_carries": 87,
+     "current_roster_team_rb_carries": 237
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "JAX",
+     "player_carries": 87,
+     "historical_team_rb_carries": 388
+    }
+   },
+   {
+    "player": "TreVeyon Henderson|RB",
+    "before": 0.506,
+    "after": 0.4575,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NE",
+     "player_carries": 210,
+     "current_roster_team_rb_carries": 415
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NE",
+     "player_carries": 210,
+     "historical_team_rb_carries": 459
+    }
+   },
+   {
+    "player": "Jaylen Warren|RB",
+    "before": 0.4806,
+    "after": 0.6011,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "PIT",
+     "player_carries": 223,
+     "current_roster_team_rb_carries": 464
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "PIT",
+     "player_carries": 223,
+     "historical_team_rb_carries": 371
+    }
+   },
+   {
+    "player": "Rhamondre Stevenson|RB",
+    "before": 0.453,
+    "after": 0.4096,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NE",
+     "player_carries": 188,
+     "current_roster_team_rb_carries": 415
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NE",
+     "player_carries": 188,
+     "historical_team_rb_carries": 459
+    }
+   },
+   {
+    "player": "Rico Dowdle|RB",
+    "before": 0.5194,
+    "after": 0.5878,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "PIT",
+     "player_carries": 241,
+     "current_roster_team_rb_carries": 464
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CAR",
+     "player_carries": 241,
+     "historical_team_rb_carries": 410
+    }
+   },
+   {
+    "player": "Tony Pollard|RB",
+    "before": 0.5961,
+    "after": 0.7378,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TEN",
+     "player_carries": 242,
+     "current_roster_team_rb_carries": 406
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TEN",
+     "player_carries": 242,
+     "historical_team_rb_carries": 328
+    }
+   },
+   {
+    "player": "Kyle Monangai|RB",
+    "before": 0.427,
+    "after": 0.4194,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CHI",
+     "player_carries": 190,
+     "current_roster_team_rb_carries": 445
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CHI",
+     "player_carries": 190,
+     "historical_team_rb_carries": 453
+    }
+   },
+   {
+    "player": "Jordan Mason|RB",
+    "before": 0.4923,
+    "after": 0.4609,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "MIN",
+     "player_carries": 159,
+     "current_roster_team_rb_carries": 323
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "MIN",
+     "player_carries": 159,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Kenny Gainwell|RB",
+    "before": 0.3166,
+    "after": 0.3235,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TB",
+     "player_carries": 120,
+     "current_roster_team_rb_carries": 379
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "PIT",
+     "player_carries": 120,
+     "historical_team_rb_carries": 371
+    }
+   },
+   {
+    "player": "Chuba Hubbard|RB",
+    "before": 0.875,
+    "after": 0.3585,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CAR",
+     "player_carries": 147,
+     "current_roster_team_rb_carries": 168
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CAR",
+     "player_carries": 147,
+     "historical_team_rb_carries": 410
+    }
+   },
+   {
+    "player": "Aaron Jones|RB",
+    "before": 0.4087,
+    "after": 0.3826,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "MIN",
+     "player_carries": 132,
+     "current_roster_team_rb_carries": 323
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "MIN",
+     "player_carries": 132,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Blake Corum|RB",
+    "before": 0.3608,
+    "after": 0.354,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LAR",
+     "player_carries": 171,
+     "current_roster_team_rb_carries": 474
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LAR",
+     "player_carries": 171,
+     "historical_team_rb_carries": 483
+    }
+   },
+   {
+    "player": "Chris Rodriguez|RB",
+    "before": 0.4726,
+    "after": 0.3246,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "JAX",
+     "player_carries": 112,
+     "current_roster_team_rb_carries": 237
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "WAS",
+     "player_carries": 112,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Rachaad White|RB",
+    "before": 0.3761,
+    "after": 0.3317,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "WAS",
+     "player_carries": 132,
+     "current_roster_team_rb_carries": 351
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TB",
+     "player_carries": 132,
+     "historical_team_rb_carries": 398
+    }
+   },
+   {
+    "player": "Jacory Croskey-Merritt|RB",
+    "before": 0.4986,
+    "after": 0.5072,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "WAS",
+     "player_carries": 175,
+     "current_roster_team_rb_carries": 351
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "WAS",
+     "player_carries": 175,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Tyjae Spears|RB",
+    "before": 0.1773,
+    "after": 0.2195,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TEN",
+     "player_carries": 72,
+     "current_roster_team_rb_carries": 406
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TEN",
+     "player_carries": 72,
+     "historical_team_rb_carries": 328
+    }
+   },
+   {
+    "player": "Tyrone Tracy|RB",
+    "before": 0.4282,
+    "after": 0.4444,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NYG",
+     "player_carries": 176,
+     "current_roster_team_rb_carries": 411
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NYG",
+     "player_carries": 176,
+     "historical_team_rb_carries": 396
+    }
+   },
+   {
+    "player": "Woody Marks|RB",
+    "before": 0.5326,
+    "after": 0.5135,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "HOU",
+     "player_carries": 229,
+     "current_roster_team_rb_carries": 430
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "HOU",
+     "player_carries": 229,
+     "historical_team_rb_carries": 446
+    }
+   },
+   {
+    "player": "Tyler Allgeier|RB",
+    "before": 0.5,
+    "after": 0.3257,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "ARI",
+     "player_carries": 143,
+     "current_roster_team_rb_carries": 286
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "ATL",
+     "player_carries": 143,
+     "historical_team_rb_carries": 439
+    }
+   },
+   {
+    "player": "Brian Robinson|RB",
+    "before": 0.2487,
+    "after": 0.2169,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "ATL",
+     "player_carries": 95,
+     "current_roster_team_rb_carries": 382
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "SF",
+     "player_carries": 95,
+     "historical_team_rb_carries": 438
+    }
+   },
+   {
+    "player": "Zach Charbonnet|RB",
+    "before": 0.5526,
+    "after": 0.3706,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "SEA",
+     "player_carries": 189,
+     "current_roster_team_rb_carries": 342
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "SEA",
+     "player_carries": 189,
+     "historical_team_rb_carries": 510
+    }
+   },
+   {
+    "player": "Alvin Kamara|RB",
+    "before": 0.2377,
+    "after": 0.4367,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NO",
+     "player_carries": 131,
+     "current_roster_team_rb_carries": 551
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NO",
+     "player_carries": 131,
+     "historical_team_rb_carries": 300
+    }
+   }
+  ],
+  "gained": [],
+  "lost": [],
+  "status_changed": [],
+  "score_changed": [
+   {
+    "player": "Jahmyr Gibbs|RB",
+    "before": 84.0,
+    "after": 69.0
+   }
+  ],
+  "gate_score_changed": [
+   {
+    "player": "Aaron Jones|RB",
+    "before": 4.3,
+    "after": 1.7
+   },
+   {
+    "player": "Alvin Kamara|RB",
+    "before": 0.9,
+    "after": 2.5
+   },
+   {
+    "player": "Chris Rodriguez|RB",
+    "before": 0.6,
+    "after": 0.2
+   },
+   {
+    "player": "Chuba Hubbard|RB",
+    "before": 7.7,
+    "after": 1.7
+   },
+   {
+    "player": "Jacory Croskey-Merritt|RB",
+    "before": 7.7,
+    "after": 11.0
+   },
+   {
+    "player": "Jahmyr Gibbs|RB",
+    "before": 84.0,
+    "after": 69.0
+   },
+   {
+    "player": "Jaylen Warren|RB",
+    "before": 6.2,
+    "after": 8.9
+   },
+   {
+    "player": "Kenneth Walker|RB",
+    "before": 5.5,
+    "after": 4.4
+   },
+   {
+    "player": "Tony Pollard|RB",
+    "before": 12.7,
+    "after": 15.7
+   },
+   {
+    "player": "Travis Etienne|RB",
+    "before": 2.5,
+    "after": 4.4
+   },
+   {
+    "player": "TreVeyon Henderson|RB",
+    "before": 15.7,
+    "after": 11.0
+   },
+   {
+    "player": "Tyler Allgeier|RB",
+    "before": 11.0,
+    "after": 4.4
+   },
+   {
+    "player": "Zach Charbonnet|RB",
+    "before": 33.6,
+    "after": 11.0
+   }
+  ],
+  "component_attribution": {
+   "grouping_only": {
+    "before_threshold": {
+     "n": 46,
+     "zero_n": 0,
+     "excluded_unobserved_n": 3,
+     "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.506,
+     "p75": 0.7342,
+     "p80": 0.7632,
+     "p50_method": "upper middle observation for even n; retired stage-2 baseline"
+    },
+    "after_threshold": {
+     "n": 46,
+     "zero_n": 0,
+     "excluded_unobserved_n": 3,
+     "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.5072,
+     "p75": 0.658,
+     "p80": 0.6674,
+     "p50_method": "upper middle observation for even n; grouping-only intermediate"
+    },
+    "gate_score_changed": [
+     {
+      "player": "Alvin Kamara|RB",
+      "before": 0.9,
+      "after": 2.5
+     },
+     {
+      "player": "Chris Rodriguez|RB",
+      "before": 0.6,
+      "after": 0.2
+     },
+     {
+      "player": "Chuba Hubbard|RB",
+      "before": 7.7,
+      "after": 1.7
+     },
+     {
+      "player": "Jacory Croskey-Merritt|RB",
+      "before": 7.7,
+      "after": 11.0
+     },
+     {
+      "player": "Jahmyr Gibbs|RB",
+      "before": 84.0,
+      "after": 69.0
+     },
+     {
+      "player": "Jaylen Warren|RB",
+      "before": 6.2,
+      "after": 11.0
+     },
+     {
+      "player": "Kenneth Walker|RB",
+      "before": 5.5,
+      "after": 4.4
+     },
+     {
+      "player": "Tony Pollard|RB",
+      "before": 12.7,
+      "after": 15.7
+     },
+     {
+      "player": "Travis Etienne|RB",
+      "before": 2.5,
+      "after": 3.5
+     },
+     {
+      "player": "TreVeyon Henderson|RB",
+      "before": 15.7,
+      "after": 11.0
+     },
+     {
+      "player": "Tyler Allgeier|RB",
+      "before": 11.0,
+      "after": 4.4
+     },
+     {
+      "player": "Zach Charbonnet|RB",
+      "before": 33.6,
+      "after": 11.0
+     }
+    ],
+    "gained": [],
+    "lost": [],
+    "status_changed": [],
+    "score_changed": [
+     {
+      "player": "Jahmyr Gibbs|RB",
+      "before": 84.0,
+      "after": 69.0
+     }
+    ]
+   },
+   "untrimmed_split_ledger": {
+    "before_threshold": {
+     "n": 46,
+     "zero_n": 0,
+     "excluded_unobserved_n": 3,
+     "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.5072,
+     "p75": 0.658,
+     "p80": 0.6674,
+     "p50_method": "upper middle observation for even n; grouping-only intermediate"
+    },
+    "after_threshold": {
+     "n": 46,
+     "zero_n": 0,
+     "excluded_unobserved_n": 3,
+     "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.5072,
+     "p75": 0.6538,
+     "p80": 0.6946,
+     "p50_method": "upper middle observation for even n; preserved stage-2 convention"
+    },
+    "gate_score_changed": [
+     {
+      "player": "Aaron Jones|RB",
+      "before": 4.3,
+      "after": 1.7
+     },
+     {
+      "player": "Jaylen Warren|RB",
+      "before": 11.0,
+      "after": 8.9
+     },
+     {
+      "player": "Travis Etienne|RB",
+      "before": 3.5,
+      "after": 4.4
+     }
+    ],
+    "gained": [],
+    "lost": [],
+    "status_changed": [],
+    "score_changed": []
+   }
+  },
+  "non_rb_invariance": {
+   "before_count": 16,
+   "after_count": 16,
+   "tag_records_identical": true
+  },
+  "open_inverse_gap": "backfield_command now measures 2025 team shares accurately; it still does not measure 2026 carries opened by departures. Vacated carries remains assessment-only pending an ADP-redundancy test and explicit no-prior-NFL-sample handling."
  },
  "forward_vegas_activation": {
   "status": "ACTIVATED",
@@ -1110,19 +2111,19 @@
    "sleeper_id": "9221",
    "adp": 1.3,
    "status": "BULLISH",
-   "score": 84.0,
+   "score": 69.0,
    "gate": "P(>= 4 of 5)",
    "criteria": {
     "receiving_volume": 0.95,
     "expected_td_equity": 0.15,
     "line_quality": 0.95,
     "availability": 0.95,
-    "backfield_command": 0.95
+    "backfield_command": 0.75
    },
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1145,7 +2146,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1168,7 +2169,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1192,7 +2193,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1215,7 +2216,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1236,7 +2237,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1257,7 +2258,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1278,7 +2279,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1299,7 +2300,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1322,7 +2323,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1341,7 +2342,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1364,7 +2365,7 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1385,7 +2386,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1408,7 +2409,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1431,7 +2432,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1454,7 +2455,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1475,7 +2476,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1496,7 +2497,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1517,7 +2518,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1536,7 +2537,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1555,7 +2556,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1574,7 +2575,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1595,7 +2596,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1614,7 +2615,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1633,7 +2634,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   },
   {
@@ -1652,7 +2653,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T13:57:40+00:00",
+   "computed_at": "2026-08-28T16:21:48+00:00",
    "ttl_hours": 72
   }
  ]

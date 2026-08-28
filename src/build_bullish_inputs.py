@@ -78,6 +78,134 @@ def observed_share(observations, player_id, minimum_total=100):
             "player": observations[player_id], "total": total}
 
 
+def _validated_rb_usage(usage_rows):
+    """Return canonical 2025 RB usage rows keyed by player identity.
+
+    `usage_2025.json` is already one season row per player. Rejecting duplicate
+    identities here keeps a future producer change from silently assigning one
+    player's carries to two denominators.
+    """
+    canonical = set(CANONICAL_NFL_TEAMS)
+    rows = {}
+    for row in usage_rows:
+        if row.get("pos") != "RB":
+            continue
+        player_id = str(row.get("gsis_id") or "").strip()
+        team = canonical_team(row.get("team"))
+        carries = row.get("carries")
+        if not player_id or player_id in rows:
+            raise ValueError(
+                "2025 RB usage contains a blank or duplicate player identity")
+        if team not in canonical:
+            raise ValueError(
+                f"2025 RB usage contains an unresolved historical team: {team}")
+        if (isinstance(carries, bool) or not isinstance(carries, (int, float)) or
+                not math.isfinite(carries) or carries < 0):
+            raise ValueError(
+                f"2025 RB usage contains invalid carries for {player_id}")
+        rows[player_id] = {"team": team, "carries": carries}
+    return rows
+
+
+def _rb_backfield_samples(usage_rows, assigned_teams, minimum_total=100):
+    """Build player shares after assigning every observed row to one team."""
+    usage_by_player = _validated_rb_usage(usage_rows)
+    canonical = set(CANONICAL_NFL_TEAMS)
+    by_team = defaultdict(dict)
+    for player_id, usage_row in usage_by_player.items():
+        team = assigned_teams.get(player_id)
+        if team is None:
+            continue
+        team = canonical_team(team)
+        if team not in canonical:
+            raise ValueError(
+                f"RB denominator assignment has an unresolved team: {team}")
+        by_team[team][player_id] = usage_row["carries"]
+
+    samples = {}
+    for team, observations in by_team.items():
+        for player_id in observations:
+            share = observed_share(observations, player_id, minimum_total)
+            if share is not None:
+                samples[player_id] = {
+                    "value": share["value"],
+                    "season": 2025,
+                    "team": team,
+                    "player_carries": share["player"],
+                    "team_rb_carries": share["total"],
+                }
+    return samples
+
+
+def historical_rb_backfield_samples(carry_ledger, minimum_total=100):
+    """Build exact historical-team shares from player-team carry rows.
+
+    Every row contributes to its historical team's denominator. A player with
+    positive carries for multiple teams has no single share and is therefore
+    null rather than assigned by row order; his split rows still remain in both
+    team denominators.
+    """
+    canonical = set(CANONICAL_NFL_TEAMS)
+    by_team = defaultdict(dict)
+    player_rows = defaultdict(list)
+    seen = set()
+    for row in carry_ledger:
+        player_id = str(row.get("gsis_id") or "").strip()
+        team = canonical_team(row.get("team"))
+        carries = row.get("carries")
+        key = (player_id, team)
+        if not player_id or key in seen:
+            raise ValueError(
+                "RB player-team carry ledger has a blank or duplicate identity/team")
+        if team not in canonical:
+            raise ValueError(
+                f"RB player-team carry ledger has an unresolved team: {team}")
+        if (isinstance(carries, bool) or not isinstance(carries, (int, float)) or
+                not math.isfinite(carries) or carries < 0):
+            raise ValueError(
+                f"RB player-team carry ledger has invalid carries for {player_id}")
+        seen.add(key)
+        by_team[team][player_id] = carries
+        player_rows[player_id].append((team, carries))
+
+    samples = {}
+    for player_id, rows in player_rows.items():
+        positive_teams = [team for team, carries in rows if carries > 0]
+        if len(positive_teams) == 1:
+            team = positive_teams[0]
+        elif not positive_teams and len(rows) == 1:
+            team = rows[0][0]
+        else:
+            continue
+        share = observed_share(by_team[team], player_id, minimum_total)
+        if share is not None:
+            samples[player_id] = {
+                "value": share["value"],
+                "season": 2025,
+                "team": team,
+                "player_carries": share["player"],
+                "team_rb_carries": share["total"],
+            }
+    return samples
+
+
+def current_roster_rb_backfield_counterfactual(usage_rows, depth_rows,
+                                               minimum_total=100):
+    """Reproduce the retired bug: group 2025 usage by the 2026 depth team."""
+    assigned = {}
+    for row in depth_rows:
+        if row.get("pos") != "RB":
+            continue
+        player_id = str(row.get("gsis_id") or "").strip()
+        if player_id.lower() in ("", "none", "null", "nan"):
+            continue
+        if player_id in assigned:
+            raise ValueError(
+                "2026 RB depth chart contains a duplicate identity")
+        assigned[player_id] = canonical_team(row.get("team"))
+    return _rb_backfield_samples(usage_rows, assigned, minimum_total)
+
+
 def distribution(vals, name, qs=(0.5, 0.75, 0.8), *,
                  excluded_unobserved_n=0, observation_rule="finite observed values"):
     """Describe a percentile population without converting absence to zero."""
@@ -766,16 +894,23 @@ def main():
     goal_p = goal["player_2025"]
     goal_team = goal["team_2025"]
 
-    # team rec yards (for YMS) and team RB carries (competition)
+    # Team rec yards (for YMS) and RB carry competition. The live RB sample
+    # assigns 2025 production to its 2025 team. The current-roster grouping is
+    # retained only as a same-build counterfactual so this one change is
+    # attributable rather than compared with yesterday's artifact.
     team_rec = defaultdict(float)
     for u in usage:
         team_rec[u["team"]] += u["rec_yards"]
-    team_rb_car = defaultdict(dict)
-    for e in depth:
-        if e["pos"] == "RB":
-            u = usage_by_gsis.get(e["gsis_id"])
-            if u:
-                team_rb_car[e["team"]][e["gsis_id"]] = u["carries"]
+    rb_carry_ledger = usage_art["rb_player_team_carries"]
+    historical_rb_samples = historical_rb_backfield_samples(rb_carry_ledger)
+    trimmed_usage_by_player = _validated_rb_usage(usage)
+    historical_trimmed_counterfactual = _rb_backfield_samples(
+        usage,
+        {player_id: row["team"]
+         for player_id, row in trimmed_usage_by_player.items()},
+    )
+    current_roster_rb_counterfactual = (
+        current_roster_rb_backfield_counterfactual(usage, depth))
 
     # QB epa/att from spw
     qb_epa = defaultdict(lambda: [0.0, 0])
@@ -840,14 +975,37 @@ def main():
             if tt.get("i5"):
                 e["inside5_share"] = {"k": goal_p[gid]["i5"], "n": tt["i5"],
                                       "basis": f"2025 role on {g25team}"}
-        if p["pos"] == "RB" and team26 in team_rb_car:
-            share = observed_share(team_rb_car[team26], gid)
+        if p["pos"] == "RB":
+            share = historical_rb_samples.get(gid)
             if share is not None:
                 e["backfield_share"] = share["value"]
                 e["backfield_share_sample"] = {
-                    "season": 2025,
-                    "player_carries": share["player"],
-                    "team_carries": share["total"],
+                    "season": share["season"],
+                    "historical_team": share["team"],
+                    "player_carries": share["player_carries"],
+                    "historical_team_rb_carries": share["team_rb_carries"],
+                }
+            counterfactual = current_roster_rb_counterfactual.get(gid)
+            if counterfactual is not None:
+                e["backfield_share_counterfactual_current_roster"] = (
+                    counterfactual["value"])
+                e["backfield_share_counterfactual_sample"] = {
+                    "season": counterfactual["season"],
+                    "current_roster_team": counterfactual["team"],
+                    "player_carries": counterfactual["player_carries"],
+                    "current_roster_team_rb_carries":
+                        counterfactual["team_rb_carries"],
+                }
+            trimmed_historical = historical_trimmed_counterfactual.get(gid)
+            if trimmed_historical is not None:
+                e["backfield_share_counterfactual_historical_trimmed"] = (
+                    trimmed_historical["value"])
+                e["backfield_share_historical_trimmed_sample"] = {
+                    "season": trimmed_historical["season"],
+                    "historical_team": trimmed_historical["team"],
+                    "player_carries": trimmed_historical["player_carries"],
+                    "historical_team_rb_carries":
+                        trimmed_historical["team_rb_carries"],
                 }
         if p["pos"] == "QB" and gid in qb_epa and qb_epa[gid][1] >= 150:
             e["epa_per_att"] = round(qb_epa[gid][0] / qb_epa[gid][1], 4)
@@ -859,19 +1017,16 @@ def main():
     te = [e for e in players if e["pos"] == "TE" and e.get("routes_proxy", 0) >= 100]
     qb = [e for e in players if e["pos"] == "QB" and e.get("carries_pg") is not None]
     rb_all = [e for e in players if e["pos"] == "RB"]
-    rb_backfield_candidates = [
-        e for e in rb_all
-        if e.get("team_2026") in team_rb_car and
-        sum(team_rb_car[e["team_2026"]].values()) >= 100
-    ]
     rb_backfield = [e["backfield_share"] for e in rb_all
                     if e.get("backfield_share") is not None]
     rb_backfield_dist = distribution(
         rb_backfield, "rb_backfield_share",
-        excluded_unobserved_n=len(rb_backfield_candidates) - len(rb_backfield),
-        observation_rule=("2025 usage row exists for the canonical player and "
-                          "the current-team observed RB carry total is at least 100; "
-                          "observed zero is included, absence is null"),
+        excluded_unobserved_n=len(rb_all) - len(rb_backfield),
+        observation_rule=("the untrimmed 2025 player-team carry ledger contains "
+                          "one positive historical team for the canonical player "
+                          "and that team's observed RB carry total is at least 100; "
+                          "observed zero is included, absence or a positive "
+                          "multi-team split is null"),
     )
     # Stage 2 historically uses the upper middle observation for an even-n
     # median. Preserve that convention explicitly; changing quantile methods is
@@ -879,6 +1034,38 @@ def main():
     rb_backfield_dist["p50"] = round(sorted(rb_backfield)[len(rb_backfield) // 2], 4)
     rb_backfield_dist["p50_method"] = (
         "upper middle observation for even n; preserved stage-2 convention")
+    rb_backfield_counterfactual = [
+        e["backfield_share_counterfactual_current_roster"] for e in rb_all
+        if e.get("backfield_share_counterfactual_current_roster") is not None
+    ]
+    rb_backfield_counterfactual_dist = distribution(
+        rb_backfield_counterfactual,
+        "rb_backfield_share_counterfactual_current_roster",
+        excluded_unobserved_n=len(rb_all) - len(rb_backfield_counterfactual),
+        observation_rule=("same usage_2025.json rows assigned to 2026 depth-chart "
+                          "teams; retained only as the retired same-build baseline"),
+    )
+    rb_backfield_counterfactual_dist["p50"] = round(
+        sorted(rb_backfield_counterfactual)[
+            len(rb_backfield_counterfactual) // 2], 4)
+    rb_backfield_counterfactual_dist["p50_method"] = (
+        "upper middle observation for even n; retired stage-2 baseline")
+    rb_backfield_historical_trimmed = [
+        e["backfield_share_counterfactual_historical_trimmed"] for e in rb_all
+        if e.get("backfield_share_counterfactual_historical_trimmed") is not None
+    ]
+    rb_backfield_historical_trimmed_dist = distribution(
+        rb_backfield_historical_trimmed,
+        "rb_backfield_share_counterfactual_historical_trimmed",
+        excluded_unobserved_n=len(rb_all) - len(rb_backfield_historical_trimmed),
+        observation_rule=("trimmed usage_2025.json player rows assigned to their "
+                          "stored historical team; grouping-only intermediate"),
+    )
+    rb_backfield_historical_trimmed_dist["p50"] = round(
+        sorted(rb_backfield_historical_trimmed)[
+            len(rb_backfield_historical_trimmed) // 2], 4)
+    rb_backfield_historical_trimmed_dist["p50_method"] = (
+        "upper middle observation for even n; grouping-only intermediate")
     thresholds = {
         "wr_tprr": distribution(
             [e["tprr_proxy"]["k"] / e["tprr_proxy"]["n"] for e in wr], "tprr"),
@@ -895,6 +1082,10 @@ def main():
             excluded_unobserved_n=sum("inside5_share" not in e for e in rb),
             observation_rule="2025 inside-five sample has n > 0; k=0 is observed"),
         "rb_backfield_share": rb_backfield_dist,
+        "rb_backfield_share_counterfactual_current_roster":
+            rb_backfield_counterfactual_dist,
+        "rb_backfield_share_counterfactual_historical_trimmed":
+            rb_backfield_historical_trimmed_dist,
         "team_line_ybc": distribution(sorted(team_line.values()), "ybc"),
         "on_field_dropback_share_reference": distribution(
             [e["on_field_dropback_share"]["k"] /
@@ -989,6 +1180,25 @@ def main():
             "td_per_point": {"value": td_per_point,
                              "basis": "2025 offensive TDs / 2025 points scored"},
             "roles": "inside-5 share and YMS are 2025-role priors and say so",
+            "rb_backfield": {
+                "status": "ACTIVATED",
+                "source": ("out/data/usage_2025.json#rb_player_team_carries"),
+                "replacement": ("2025 player carries divided by the complete "
+                                "untrimmed 2025 RB carry total on that historical "
+                                "team; multi-team rows stay split"),
+                "retired_counterfactual": ("the same committed usage rows grouped "
+                                           "by each player's 2026 depth-chart team"),
+                "grouping_only_intermediate": (
+                    "the retired trimmed player rows regrouped by their stored "
+                    "historical team before adding the untrimmed split ledger"),
+                "counterfactual_reproduces_committed_baseline": True,
+                "season_scope": ("all 2025 season types present in the weekly "
+                                 "source, preserving the prior all-week basis"),
+                "multi_team_player_policy": ("all split rows contribute to team "
+                                             "denominators; a player with positive "
+                                             "carries for multiple teams has a null "
+                                             "individual share"),
+            },
             "proxy": "routes = on-field membership on team dropbacks "
                      "(participation 2025); counts pass-block snaps as routes",
         },

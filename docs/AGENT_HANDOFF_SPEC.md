@@ -14,8 +14,8 @@ it is the least important part of this document.
 
 These are not general advice. They are the mechanisms behind the defects that
 actually reached this project's live site, derived in `docs/SELF_AUDIT_2026-08-26.md`
-from all 50 recorded entries. An outside reviewer found twenty-four of them, including
-four of the five that shipped and stayed. This section is why.
+from the first 50 recorded entries. An outside reviewer found twenty-four of them,
+including six of the eight that shipped and stayed. This section is why.
 
 ### 1.1 "I verify against my own intent rather than the source of truth"
 
@@ -62,13 +62,30 @@ world.
 including this one - as a claim with an owner and a date, not as a fact. If you
 cannot name the computation or the API field behind a number, it is unverified.
 
-### 1.4 The corollary that ties them together
+### 1.4 The prospective question that catches them
 
-Twenty-six of the 50 defects were **silent** - the system looked healthy and was
-wrong - and the silent set contains **every defect that reached the live site and
-stayed**. Loud failures were always caught within hours and none ever reached
-Anthony. This project does not have a bug-finding problem; it has a silence
-problem.
+Twice on 2026-08-28, asking **"could this go stale, or could this fail to
+update?"** found a defect in new work before it shipped: the vacuous-pass audit
+inside the fix that documents vacuous passes, then Forward Vegas reading a
+committed schedule snapshot that no workflow refreshed. That question has now
+caught more new-work defects before shipping than any guard in the repository;
+every earlier silent-staleness occurrence was found only after the deliverable
+had already gone stale.
+
+**The practice this generates:** any new feature that reads a committed snapshot
+or a scheduled input gets an update-path audit at build time. Identify the
+producer that refreshes the input, then change one input and prove the full
+producer-to-published-artifact dependency path fires before calling the feature
+current. A correct first build proves only the snapshot; it does not prove the
+feature can stay current.
+
+### 1.5 The corollary that ties them together
+
+Twenty-six of those first 50 defects were **silent** - the system looked healthy
+and was wrong - and the silent set contains **every defect that reached the live
+site and stayed**. Loud failures were always caught within hours and none ever
+reached Anthony. This project does not have a bug-finding problem; it has a
+silence problem.
 
 **So: for every feature you add, ask "how would this look if it were broken?" If
 the answer is "the same", that is a defect in the feature, not a monitoring gap.**
@@ -239,8 +256,8 @@ done
 
 **Guard counts as of this writing** (a suite that suddenly runs fewer is a
 regression): survival 70, cvs 22, vor 50, baserates 70, archetypes 17, ceiling 16,
-bullish 79, ws2 63, mock 47, bullish_vs_adp 45, vona 1211,
-draft_vs_acquired 23, pages_data 363, run_gate 16, analysis 38, smoke 363.
+bullish 105, ws2 63, mock 47, bullish_vs_adp 48, vona 1211,
+draft_vs_acquired 23, pages_data 366, run_gate 16, analysis 38, smoke 365.
 The analysis count means all five cache-backed determinism reruns executed; a
 skip is not equivalent coverage.
 
@@ -387,9 +404,10 @@ new evidence wastes a cycle.
 
 ## 8. WATCH FOR THESE DEFECT CLASSES
 
-The recurring classes from `docs/SELF_AUDIT_2026-08-26.md` §1.3. In every case
-the first fix was applied at a call site instead of as a shared rule, which is why
-there was a second and a third.
+Selected high-risk classes from `docs/SELF_AUDIT_2026-08-26.md` §1.3. The
+recurring classes generally began with a call-site repair instead of a shared
+rule; the singleton entries remain here because their silent failure shape is
+still operationally important.
 
 1. **Multi-pick independence (4 occurrences).** Any new consumer that picks more
    than once must route through `forward_policy`. Nothing mechanically prevents a
@@ -398,7 +416,7 @@ there was a second and a third.
    divergent implementations, then Unicode quote variants. Python now has one
    blind comparison key plus one collision-aware resolver; browser copies are held
    to its contract corpus by parity tests. Do not add a local normalizer.
-3. **Silent cron / stale publication (4).** Alert on the published artifact.
+3. **Silent cron / stale publication (5).** Alert on the published artifact.
 4. **Fail-open guards / controls (5).** A failed poll that falls through, a guard
    that builds evidence and never asserts, a wrapper that swallows an exit code, a
    suite that skips and says ALL PASS, and a date-linkage check that collides on
@@ -412,6 +430,15 @@ there was a second and a third.
 6. **Missing observation as zero (1 live instance).** Require source evidence for
    zero and carry excluded-null counts. The sweep found other current percentile
    populations clean; Bucky Irving's observed 0-of-n remains valid.
+7. **Historical production inside current-roster grouping (3, plus one inverse
+   gap).** Likely's BAL-2025 share was ranked inside NYG-2026; RB carry shares
+   grouped 2025 production by 2026 depth teams; the adjusted-vacated-target
+   calculation cannot debit incoming rookies because they have no 2025 NFL usage
+   row. Keep prior-year production on prior-year teams, preserve split player-team
+   rows, and model departures/arrivals separately with no-prior-NFL-sample handling
+   explicit. The RB denominator is repaired with an untrimmed player-team ledger
+   and same-build attribution. Its inverse gap is still open: the matrix measures
+   the existing all-week 2025 command basis but not 2026 carries vacated.
 
 ---
 
@@ -426,11 +453,12 @@ there was a second and a third.
 | **Conviction-overlay seat provenance** | **RESOLVED in the post-#60 engine PR.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. A pre-fix audit classified all 63 textual bare-`7` matches under `src/`: 2 roster-id references, 5 draft-slot references (including the defective lookup and heading), and 56 unrelated round bounds, pick anchors, thresholds, dates, claims, or formatting values. | `src/draft_order.py` makes `draft_order[user_id]` primary and accepts the `slot_to_roster_id` fallback only as a complete permutation; the complete identity map is explicitly undrawn only while status is `pre_draft`. Started/malformed/drawn-but-unresolvable payloads fail loud. Undrawn or visibly unavailable builds assume no seat and retain all twelve survival windows. Keep the synthetic non-7, resolver-precedence, partial-map, and duplicate-map guards. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
+| **RB vacated-carries signal** | **ASSESSMENT ONLY.** The repaired `backfield_command` applies the existing all-week 2025 carry-share basis consistently to historical teams; it does not measure 2026 carries opened by departures. `teams.html` displays thresholded raw departure/arrival rows from the trimmed season shard, not a complete net transition signal from the new ledger. The analogous WR `adj_vac` is confirmed rookie-blind because an incoming player with no 2025 NFL row subtracts zero. | Compute vacated carries from the same player-team source, quantify every 2026 backfield, test correlation and incremental value against ADP, and explicitly model rookies. If strongly ADP-redundant, drop it. A same-method carry signal would inherit `adj_vac`'s rookie gap, so fix `adj_vac` and any carry implementation under one rookie policy or do not wire carries. |
 | **Stale R position exports** | The corrected TE writer now produces 6,730 valid rows and no fake route alias. The committed RB/WR exports still retain 2,530 NA-subsetting junk rows; RB also retains `target_volume` despite corrected source saying otherwise. Python consumes none of these files. | Regenerate and independently compare before any use. Do not treat corrected script text as artifact evidence. |
 | **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Honest on the card, but the largest exception to R1. | Backtest or keep labelled. |
 | **Optional-shard silent degradation** | `base_rates`/`ceiling`/archetypes/bullish fetch failures vanish columns with no notice. | Add a visible "unavailable" state + a smoke scenario. |
 | **12-team geometry inside DRAFT MODE** | **CONFIRMED IN PRODUCTION 2026-08-26**, no longer a prediction: the room rendered `rd11-14` band labels against a live 19-team draft, where boundaries 36/72/120 are 12-team arithmetic. `sleeperListHtml` and `simBand` hardcode that geometry, so the labels are also wrong in a 10-team mock. Cosmetic - this mislabels sleeper bands; it does not affect ordering. | Derive both bands from `GEO`. Not draft-critical: the real league IS 12x14. |
-| **`ff-hub.html` N.1** | #53 verified N.1 absent on pre-#55 main and recorded that absence as deliberate (§6). #55 supersedes that state by publishing N.1 as a dedicated artifact-backed tab with honest loading and failure states. | Keep the reviewed artifact as the single source; do not duplicate its verdict in HTML. |
+| **`ff-hub.html` N.1** | PR #53 verified N.1 absent on main before PR #55 and recorded that absence as deliberate (§6). PR #55 supersedes that state by publishing N.1 as a dedicated artifact-backed tab with honest loading and failure states. | Keep the reviewed artifact as the single source; do not duplicate its verdict in HTML. |
 | **Leon Johnson crosswalk maps to the wrong era** | **OPEN LIVE DEFECT, logged 2026-08-27; deliberately not fixed in #58 or the draft-room PR because crosswalk fallback policy is separate scope.** Sleeper `11863` is a WR entering in 2024, but `crosswalk.prospect["11863"]` resolves to nflverse `00-0008568`, an RB drafted in 1997 (round 4, pick 104). This is the same defect shape as the Marvin Harrison collision: a normalized name attaches a current player to a different-era identity. Harrison is protected because same-position father/son candidates carry complete, distinct draft years, so the resolver can choose the unique newest year. Leon has only one normalized-name candidate and its position disagrees; `allow_unique_position_mismatch=True` bypasses the collision/draft-year path and accepts that sole wrong candidate. | Replace the permissive unique-name position-mismatch fallback with an explicit audited cross-provider position-compatibility rule; otherwise fail closed and leave the prospect unmapped. Pin Leon as a resolver contract case. |
 | **DEF touchdown projection aliases** | **KNOWN 3B FLOOR, quantified 2026-08-28; no engine change.** The feed uses `def_fum_td`, `def_kr_td`, `pass_int_td`, and `pr_td`; league scoring pays aggregate `def_td`, `def_st_td`, and `st_td`. No alias layer exists. The current feed leaves 96 of 3,115 mapped-known points unscored (3.08% overall); 11/32 defenses are affected, with 5.00%-13.43% of their mapped-known totals omitted. | Keep K/DEF labelled as floors and off CVS. If addressed after the draft, define and fixture a feed-to-league alias contract that refuses to double-count aggregate and component TD keys. Do not add an undocumented last-minute mapping for a last-two-round position. |
 | **Dormant FLEX-fallback divergence** | **LATENT RISK, not a current artifact defect.** The committed engine reads `flex_usage_2025.json` and uses observed RB4/WR8/TE0, so `greedy_flex_alloc()` is not executed. Fallback activates only if that file is absent or its `allocation` is missing, null, or otherwise falsy; malformed JSON aborts loudly. On the same projection pool the fallback chooses RB0/WR12/TE0, moving replacement from RB28/169.0 and WR32/186.2 to RB24/174.8 and WR36/177.3. That subtracts 5.8 VOR from every RB and adds 8.9 to every WR, a 14.7-point cross-position swing; 103 of 110 players inside the 168-pick window change ordinal rank. A raw engine run would label the payload `flex_source: projection_greedy`, but no user-facing page shows that field, so the repricing itself would be silent. | The scheduled 06:00 rebuild checks out the committed observed artifact and does not regenerate or delete it. Its mandatory `test_vor.py` gate opens the file unconditionally and asserts both `flex_source: observed_2025` and exact allocation equality, so missing/falsy data cannot publish through the draft-morning path; this existing guard is sufficient for fallback activation before the draft. It does not independently recompute a truthy allocation from counts/shares, which remains separate artifact-integrity hardening. Do not replace the fallback with `forward_policy.pick_marginal`: that function selects one roster's next player using already-defined baselines, while this fallback estimates the league-wide pool that defines them. After the draft, fail closed or surface the fallback visibly, then consider a multi-season behavioral fallback. |
@@ -446,10 +474,12 @@ there was a second and a third.
 5. **Interrogate the values of any artifact you regenerated**, not just its schema
    (§1.2). What would be impossible in this data? Check for it.
 6. Ask of any new guard: what change would make this fail? (§8.4)
-7. Ask of any new feature: how would this look if it were broken? (§1.4)
-8. Rebuilt the engine? Rebuild CVS, VONA, mock, and teaser in the same pass; the
+7. For any new feature reading a committed snapshot or scheduled input, identify
+   its producer, change one input, and prove the dependency path fires (§1.4).
+8. Ask of any new feature: how would this look if it were broken? (§1.5)
+9. Rebuilt the engine? Rebuild CVS, VONA, mock, and teaser in the same pass; the
    engine command also rewrites decision cards and the room's embedded payload.
-9. After merge, byte-compare the deployed files. The live site IS the build.
+10. After merge, byte-compare the deployed files. The live site IS the build.
 
 ---
 
