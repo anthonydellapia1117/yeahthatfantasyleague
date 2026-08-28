@@ -4,6 +4,7 @@
 Runs WITHOUT network: operates only on committed out/data/*.json.
 Run: python3 tests/test_pages_data.py
 """
+import ast
 import datetime
 import copy
 import importlib.util
@@ -839,6 +840,36 @@ ok(len(_wanted) >= 8 and len(_known) >= 8,
    "the reproducibility scan found both the builders' inputs and the fetcher's",
    f"builders want {len(_wanted)} refs, fetcher provides {len(_known)} families")
 
+# One canonical default, imported everywhere. Derive the value from the
+# canonical assignment so this guard does not type the path it prohibits.
+_history_source = os.path.join(_srcdir, "analyze_recency.py")
+_history_tree = ast.parse(open(_history_source).read(), filename=_history_source)
+_history_assignment = next(
+    node for node in _history_tree.body
+    if isinstance(node, ast.Assign) and
+    any(isinstance(target, ast.Name) and target.id == "HISTORY"
+        for target in node.targets))
+_history_default = ast.literal_eval(_history_assignment.value.args[1])
+_history_literal_sites = []
+for _scope in ("src", "tests"):
+    _base = os.path.join(ROOT, _scope)
+    for _dirpath, _, _filenames in os.walk(_base):
+        for _filename in _filenames:
+            if not _filename.endswith(".py"):
+                continue
+            _path = os.path.join(_dirpath, _filename)
+            _tree = ast.parse(open(_path).read(), filename=_path)
+            for _node in ast.walk(_tree):
+                if isinstance(_node, ast.Constant) and \
+                   _node.value == _history_default:
+                    _history_literal_sites.append(
+                        (os.path.relpath(_path, ROOT), _node.lineno))
+_history_literal_sites.sort()
+ok(len(_history_literal_sites) == 1 and
+   _history_literal_sites[0][0] == "src/analyze_recency.py",
+   "the default HISTORY path is defined once and imported everywhere",
+   f"found {_history_literal_sites}")
+
 # The live-source refresh must bypass the cache without making a failed fetch
 # destructive. Exercise the helper without network so this is behavior, not only
 # workflow-text coverage.
@@ -864,8 +895,21 @@ with tempfile.TemporaryDirectory() as _td:
         _updated = _fetch_mod.fetch(
             "https://example.invalid/games.csv", _dest, refresh=True,
             required_prefix=b"game_id,season,game_type,week,")
-    ok(_updated == "ok" and open(_dest, "rb").read() == _fresh,
-       "explicit live refresh atomically replaces the cached games file")
+    ok(_updated == "ok" and open(_dest, "rb").read() == _fresh and
+       _response.close.call_count == 1,
+       "explicit live refresh atomically replaces the cache and closes the response")
+
+    _read_failure = mock.Mock()
+    _read_failure.read.side_effect = RuntimeError("read interrupted")
+    with mock.patch.object(_fetch_mod.urllib.request, "urlopen",
+                           return_value=_read_failure):
+        _failed_read = _fetch_mod.fetch(
+            "https://example.invalid/games.csv", _dest, refresh=True,
+            required_prefix=b"game_id,season,game_type,week,")
+    ok(_failed_read.startswith("FAIL") and
+       _read_failure.close.call_count == 1 and
+       open(_dest, "rb").read() == _fresh,
+       "failed response read closes the socket and preserves the complete cache")
 
     with mock.patch.object(_fetch_mod.urllib.request, "urlopen",
                            side_effect=RuntimeError("offline")):

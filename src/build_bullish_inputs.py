@@ -30,13 +30,10 @@ from collections import defaultdict
 
 import pyarrow.parquet as pq
 
+from analyze_recency import HISTORY
 from engine_lineage import json_content_sha256, require as require_engine_digest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HISTORY = os.environ.get(
-    "HISTORY",
-    "/tmp/claude-0/-home-user-yeahthatfantasyleague/"
-    "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history")
 D = os.path.join(ROOT, "out", "data")
 OUT = os.path.join(D, "bullish_inputs_2026.json")
 

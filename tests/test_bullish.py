@@ -15,6 +15,7 @@ import datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 sys.path.insert(0, os.path.join(ROOT, "src"))
+from analyze_recency import HISTORY
 from engine_lineage import json_content_sha256
 fails = []
 
@@ -65,10 +66,7 @@ try:
 except (KeyError, TypeError, ValueError):
     _pulled_is_date = False
 ok(_pulled_is_date, "Vegas provenance carries a parseable source pull date")
-_games = os.path.join(os.environ.get(
-    "HISTORY",
-    "/tmp/claude-0/-home-user-yeahthatfantasyleague/"
-    "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history"), "games.csv")
+_games = os.path.join(HISTORY, "games.csv")
 if os.path.exists(_games):
     _games_date = datetime.datetime.fromtimestamp(
         os.path.getmtime(_games), tz=datetime.timezone.utc).date().isoformat()
