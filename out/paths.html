@@ -153,8 +153,17 @@ function render(){
   });
 }
 
-fetch("data/vona_tree_2026.json").then(function(r){ return r.json(); })
-  .then(function(j){
+Promise.all([
+  fetch("data/vona_tree_2026.json").then(function(r){
+    if (!r.ok) throw new Error("VONA " + r.status); return r.json(); }),
+  fetch("engine_2026.json").then(function(r){
+    if (!r.ok) throw new Error("engine " + r.status); return r.json(); })
+]).then(function(pair){
+    var j = pair[0], engine = pair[1];
+    var digest = engine.content_sha256 || "";
+    if (!/^[0-9a-f]{64}$/.test(digest) ||
+        j.provenance.engine_content_sha256 !== digest)
+      throw new Error("draft path data was built from a different engine payload");
     T = j;
     $("hdr").textContent = "the order is undrawn - pick a slot";
     $("foot").textContent = "generated " + j.provenance.generated +
@@ -163,9 +172,9 @@ fetch("data/vona_tree_2026.json").then(function(r){ return r.json(); })
       j.provenance.bullish_on_nodes;
     render();
   })
-  .catch(function(){
+  .catch(function(e){
     $("content").innerHTML = '<div class="card"><p>Draft path data not ' +
-      'available - run python3 src/build_vona_tree.py</p></div>';
+      'available - ' + esc(e.message || "run python3 src/build_vona_tree.py") + '</p></div>';
   });
 </script>
 </body>

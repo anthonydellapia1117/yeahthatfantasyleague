@@ -1,5 +1,47 @@
 # Changelog
 
+## Engine content lineage and visible display lag (2026-08-27)
+
+The date-only linkage added for P2-3 was fail-open for same-day rebuilds. Both
+engine and mock said `2026-08-26` while 14 mock tier values differed from a clean
+rebuild. The guard could not fail in the exact draft-morning state it was meant to
+detect. The engine now carries a SHA-256 over canonical JSON with only the digest
+field omitted, and a same-day mutation fixture proves content changes while the
+date stays fixed. Human-readable dates remain provenance, not identity.
+
+All six direct JSON derivatives carry `engine_content_sha256`. CVS, VONA, and mock
+are strict: builders validate the engine digest, the publication guard uses an
+explicit registry, the big board refuses a mismatched CVS payload, the room
+suppresses its CVS pick recommendation, and PATHS refuses a mismatched tree. The
+embedded room engine is object-identical to the standalone payload, decision cards
+name the digest, and all five teaser pages carry it. Missing digests never compare
+equal. The external engine injector now fails instead of warning and exiting zero
+when the room or its sentinels are absent.
+
+Ceiling and BULLISH are the bounded exception. They require pyarrow and a 156 MB
+HISTORY cache, so adding their complete rebuild to the 25-minute 06:00
+draft-refresh would add PyPI, 59 cached source files, and an unversioned live games
+endpoint to the decision-critical path. They remain display-only, carry exact
+engine lineage, and render a neutral visible stale state after an engine change;
+the 08:00 pages-data run rebuilds the chain. BULLISH inputs digest all five
+committed source payloads, BULLISH tags digest the exact inputs payload, and the
+08:00 workflow requires every display layer to match the current engine. This
+chooses visible option (b), not a partial tag rebuild that would relabel stale
+computed inputs as current.
+
+An isolated audit from base `da78b0c` rebuilt all 13 direct, embedded, and static
+engine derivatives. **Zero substantive mismatches remain.** On pre-#56 main, the
+same reconstruction found 15 stale engine-derived fields: the 14 mock tiers that
+falsely passed date linkage, plus one BULLISH injury reason with no linkage oracle.
+
+The #56 follow-up closes two reproducibility defects found in review. History
+downloads now close every HTTP response even when reading fails; the regression
+uses the existing plain response mock and asserts one close. Seven builders and
+`test_bullish.py` no longer copy the ephemeral default HISTORY path. They import
+the canonical `analyze_recency.HISTORY` value, and an AST guard proves the literal
+has exactly one definition across `src/` and `tests/`. Before this correction the
+literal had nine sites: eight source definitions and the new test copy.
+
 ## P2-3 recurrence: pages-data refreshed a CVS input without its board (2026-08-27)
 
 The daily `pages-data` commit `46ae1ca` refreshed `depth_charts.json` (as-of
@@ -17,8 +59,9 @@ the shared Pages boundary reruns the existing registered linkage and invariant
 guards, and the external publication watcher still detects a producer or deploy
 that never runs. This is not universal dependency discovery: several builders do
 not declare machine-readable inputs, and not every engine consumer carries lineage.
-The durable fix is a dependency manifest/DAG plus content digests enforced once at
-publication; that is recorded rather than built eleven days before the draft.
+The bounded content-digest control is implemented in the entry above. A universal
+dependency DAG remains deferred; the registry is explicit rather than pretending
+to discover undeclared inputs.
 The same audit found two pure-stdlib engine consumers missing from
 `draft-refresh.yml`: `mock_drafts_2026.json` and the teaser's allowed player set.
 Tomorrow's scheduled run would have stopped loudly when the engine date moved but
@@ -28,13 +71,8 @@ guards. Rebuilding mock also exposed 14 stale tier values hidden by a same-day
 engine-date collision; mock and VONA now have exact rebuild proofs at the shared
 publication boundary, rather than treating a date match as payload identity.
 
-One bounded edge remains explicit rather than hidden: BULLISH reads engine injury
-state but carries no engine lineage, and rebuilding its full input chain needs the
-156 MB HISTORY cache. The current Zay Flowers correction proves that this artifact
-had lagged an Aug-26 engine update. `pages-data` now repairs it daily two hours after
-`draft-refresh`; adding HISTORY to the 25-minute draft-morning job or separating a
-small injury overlay belongs in the future dependency-manifest work, not this
-hotfix. Walter resolution similarly records guide SHA but not the ADP snapshot it
+The BULLISH edge is closed by the visible, nonfatal content-lineage treatment in
+the entry above. Walter resolution still records guide SHA but not the ADP snapshot it
 used; this run re-resolved it and staged the resulting conflict ledger.
 The daily workflow now rebuilds CVS after its shards, runs the exact deterministic
 CVS proof and the declared downstream invariant suites through `run_gate.sh`, and
@@ -46,11 +84,10 @@ or byte-reconstruction proofs for every artifact; CVS is the artifact with that
 exact deterministic proof within the shard-derived chain. The registered VONA and
 mock artifacts have separate exact rebuild proofs against the engine.
 
-CVS now records `engine_generated` separately from its own build date. The room and
-build guard compare that engine generation date against the shipped engine;
-rebuilding CVS a day later from new depth charts no longer creates a false mismatch.
-This is the same date-level linkage the room already used, now made explicit and
-build-gated; it is not an exact payload digest.
+At #56, CVS began recording `engine_generated` separately from its own build date,
+which stopped conflating independent build dates but still compared only calendar
+strings. The content-digest entry above supersedes that linkage oracle while keeping
+the date for human provenance.
 
 The dependency audit also found real HISTORY-bound consumers: archetypes reads
 ADP/crosswalk/depth/usage, and the BULLISH input/tag chain reads

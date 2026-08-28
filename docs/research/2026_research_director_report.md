@@ -1,5 +1,10 @@
 # YeahThatFantasyLeague 2026: Research Director's Championship Report
 
+> Historical research snapshot. Its engine-only rebuild and ship instructions
+> are superseded by `.github/workflows/draft-refresh.yml` and
+> `docs/DRAFT_MORNING.md`; the engine and its strict derivatives must move
+> together.
+
 ## TL;DR
 - **Do NOT migrate off GitHub Pages before the draft.** Your static batch-pipeline architecture fits GitHub Pages perfectly; a Supabase+Vercel move two weeks out is unnecessary risk. Revisit post-draft only if you want runtime queries, persisted state, or a league-facing multi-user app. **Your working verdict is validated.**
 - **Anthony's preseason-RB1 claim is essentially correct, with one correction:** since 2016, exactly two preseason ADP RB1s also finished as the actual PPR RB1 - David Johnson (2016, 407.8 PPR points) and Christian McCaffrey (2023, 391.3 PPR points), **NOT 2019**. That is a 20% conversion rate (2 of 10). The consensus 2026 RB1 is Jahmyr Gibbs with Bijan Robinson a close second, so history says drafting "the" RB1 to repeat is a coin-flip-at-best - but the elite RB tier still wins leagues.

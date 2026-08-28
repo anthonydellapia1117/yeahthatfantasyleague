@@ -32,11 +32,9 @@ import os
 import re
 from collections import defaultdict
 
+from analyze_recency import HISTORY
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HISTORY = os.environ.get(
-    "HISTORY",
-    "/tmp/claude-0/-home-user-yeahthatfantasyleague/"
-    "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history")
 OUT = os.path.join(ROOT, "out", "data", "base_rates.json")
 PICKS = os.path.join(ROOT, "out", "picks.csv")
 # LEAGUE-SIDE history runs 2013-2025: the LeagueLegacy archive covers all

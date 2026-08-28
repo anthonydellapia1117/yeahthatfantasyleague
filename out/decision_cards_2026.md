@@ -1,6 +1,7 @@
 # 2026 Decision Cards - YeahThatFantasyLeague!
 
 Generated 2026-08-26 from live Sleeper projections and ADP. **Regenerate the morning of 2026-09-08** - both move daily, and injury statuses churn.
+Engine content SHA-256: `bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782`.
 
 Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,039 of this league's own picks. Opponent urgency from Phase 3H priors (recency-weighted, shrunk; thin eras labelled). No champion mimicry - every call is VOR and tier math. Where two candidates sit in one tier the card says COIN FLIP: the projection feed has no variance measure, so break ties toward ceiling yourself.
 

@@ -3,7 +3,8 @@
 # which needs no admin API call - the artifact-based configure-pages
 # enablement failed with "Resource not accessible by integration" because
 # the Actions token cannot CREATE a Pages site, only push branches.
-# Draft-morning flow: python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push
+# Draft-morning production flow is .github/workflows/draft-refresh.yml. Never
+# rebuild and ship the engine alone; its strict derivatives must move with it.
 name: pages
 on:
   push:
@@ -28,6 +29,8 @@ jobs:
         run: sh tests/run_gate.sh python3 tests/test_cvs.py
       - name: Archetype invariant guards
         run: sh tests/run_gate.sh python3 tests/test_archetypes.py
+      - name: Ceiling invariant guards
+        run: sh tests/run_gate.sh python3 tests/test_ceiling.py
       - name: BULLISH invariant guards
         run: sh tests/run_gate.sh python3 tests/test_bullish.py
       - name: VONA deterministic rebuild guards

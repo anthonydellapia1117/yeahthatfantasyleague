@@ -7,6 +7,7 @@ import importlib.util, math, os, sys, csv
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "src"))
 spec = importlib.util.spec_from_file_location("eng", os.path.join(ROOT, "src", "engine_2026.py"))
 eng = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(eng)
@@ -259,6 +260,10 @@ ok(all(t not in overlay_block for t in
 ok(eng.load_my_board() == [], "shipped data/my_board.csv carries zero calls")
 m0 = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 md_shipped = open(os.path.join(ROOT, "out", "decision_cards_2026.md")).read()
+from engine_lineage import is_valid as valid_engine_digest
+ok(valid_engine_digest(m0), "engine carries a self-verifying content digest")
+ok(m0["content_sha256"] in md_shipped,
+   "decision cards name the exact engine content they render")
 m1 = eng.apply_overlay(copy.deepcopy(m0), [])
 ok(json.dumps(m1, sort_keys=True) == json.dumps(m0, sort_keys=True),
    "empty board: apply_overlay returns the model byte-identical")

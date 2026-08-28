@@ -29,16 +29,16 @@ rehearsal's `real` times.
 
 | # | Command | Rehearsed | What it does |
 |---|---|---|---|
-| 1 | `git fetch origin main && git checkout -B claude/chat-migration-desktop-ruannr origin/main` | 5 s | clean start from main |
+| 1 | `git fetch origin main && git switch -C <repair-branch> origin/main` | 5 s | clean branch from main; never commit directly to main |
 | 1b | `python3 src/preflight_draft.py` | 1 s | geometry preflight: asserts the LIVE draft is still snake, no third-round reversal, and the teams/rounds the payload ships. Stop here on a mismatch - every computed pick number depends on it |
 | 2 | `python3 src/engine_2026.py` | 3.7 s | live ADP + projections; rewrites the sentinel payload, engine_2026.json, decision cards |
 | 3 | `python3 src/build_cvs_inputs.py` | 2.0 s | nflverse volatility, TD rates, 2026 SOS |
 | 4 | `python3 src/build_cvs.py` | 0.3 s | the CVS board payload |
 | 4a | `python3 src/build_vona_tree.py` | 1.0 s | the PATHS tree - derives from the engine payload, so it MUST be rebuilt with it; the page guards fail if it falls behind |
-| 4b | `python3 src/mock_draft.py` | 0.2 s | deterministic mock validation - carries `engine_generated` and must move with the engine |
+| 4b | `python3 src/mock_draft.py` | 0.2 s | deterministic mock validation - carries the exact engine content digest and must move with the engine |
 | 4c | `python3 src/build_teaser.py` | 0.1 s | regenerates the teaser's allowed player subset from the live board |
 | 4d | `python3 tests/test_run_gate.py` | 0.3 s | gate-runner self-test: proves the masking shapes (pipe, compound wrapper, exit-0 liar) are caught |
-| 5 | `sh tests/run_gate.sh python3 tests/test_survival.py` | 0.6 s | 37 frozen-behavior guards |
+| 5 | `sh tests/run_gate.sh python3 tests/test_survival.py` | 0.6 s | 41 frozen-behavior guards |
 | 6 | `GATE_SENTINEL="MATH DIFF PROOF: EMPTY" sh tests/run_gate.sh python3 tests/mathdiff.py` | 0.1 s | ten function bodies byte-identical to origin/main |
 | 7 | `sh tests/run_gate.sh python3 tests/test_cvs.py` | 0.1 s | anchor law, cap, signals, determinism |
 | 7b | `sh tests/run_gate.sh python3 tests/test_vor.py` | 0.1 s | exact scoring, derived flex allocation, derived tiers |
@@ -51,20 +51,29 @@ rehearsal's `real` times.
 | 7i | `sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py` | 0.1 s | BULLISH-vs-ADP test: reviewed INCONCLUSIVE verdict verbatim, cited figures cross-check the cells, ADP-confound disclosure, tag stays display-only |
 | 7j | `sh tests/run_gate.sh python3 tests/test_vona.py` | 0.2 s | VONA path tree: depth, derived thresholds, survival floor, no repeats, no BULLISH on nodes |
 | 7k | `sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py` | 0.2 s | drafted-vs-acquired: champions-vs-field intervals, era flags, the two results kept distinct |
-| 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | ~200 page/data guards incl. contrast + teaser |
+| 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | 321 page/data guards incl. content lineage, contrast, and teaser |
 | 9 | `GATE_ALLOW_SKIP=1 sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards. The five determinism reruns are cache-gated; without the HISTORY cache they skip, and run_gate now FAILS on a skip unless you say it is expected - hence the explicit `GATE_ALLOW_SKIP=1`. Coverage lost when you use it: 5 of 38 checks in this suite, and they are the ones proving the artifacts reproduce. With the cache they run and take ~25 min - merge-gate territory, not morning territory |
-| 10 | full smoke (see the playwright note below) | 94 s + install | 21 hermetic browser scenarios (incl. DRAFT MODE, the forward-pick law, and the path tree) |
+| 10 | full smoke (see the Playwright note below) | 94 s + install | 350 browser guards, including same-day lineage mismatches, DRAFT MODE, the forward-pick law, and PATHS |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
 
-Playwright note for step 10: the repo has no package.json, so a fresh
-container has no playwright-core. Install the driver once per session and
-run the smoke against the browser this image already ships - in the
-container, do NOT run `playwright install`, the binary is already at
-/opt/pw-browsers/chromium:
+Ceiling and BULLISH deliberately do not rebuild in the 06:00 workflow. Their
+complete chain needs pyarrow, a 156 MB HISTORY cache, and an unversioned live games
+source. Both carry engine content lineage; after step 2 the pages hide or neutralize
+their old values as stale. The 08:00 pages-data run rebuilds them, twelve hours
+before the draft. Do not run only `build_bullish.py`: it refuses an inputs digest
+from a different engine rather than laundering stale inputs into a fresh tag file.
 
-    mkdir -p /tmp/pw && (cd /tmp/pw && npm install --no-save playwright-core)
-    NODE_PATH=/tmp/pw/node_modules sh tests/run_gate.sh node tests/smoke_draft_room.js out/draft_room.html
+Playwright note for step 10: install the same driver and Chromium binary the
+workflow uses. `CI` and `npm_config_yes` prevent an npm prompt from hanging the job:
+
+    mkdir -p /tmp/pw && cd /tmp/pw
+    CI=1 npm_config_yes=true npm install --no-save --no-fund --no-audit playwright
+    ./node_modules/.bin/playwright install --with-deps chromium
+    export NODE_PATH=/tmp/pw/node_modules
+    PW_CHROMIUM=$(node -e "console.log(require('/tmp/pw/node_modules/playwright').chromium.executablePath())")
+    test -x "$PW_CHROMIUM" || { echo "chromium not found at $PW_CHROMIUM"; exit 1; }
+    PW_CHROMIUM="$PW_CHROMIUM" sh tests/run_gate.sh node tests/smoke_draft_room.js out/draft_room.html
 
 The smoke takes the browser path from `PW_CHROMIUM` when it is set and
 falls back to that container path otherwise, which is how the CI workflow
@@ -119,8 +128,9 @@ with `PAGES=https://anthonydellapia1117.github.io/yeahthatfantasyleague`.
 
 ## Automation
 
-Two layers, both aimed at 6:00 AM Eastern (10:00 UTC) on 2026-08-28 (a
-dry run three weeks out) and 2026-09-08 (draft morning).
+Four automation layers. The first two cover 6:00 AM Eastern (10:00 UTC) on
+2026-08-28 (a dry run 11 days out) and 2026-09-08 (draft morning); the draw and
+publication watches have their own cadences.
 
 LAYER 1 - `.github/workflows/draft-refresh.yml`. The machine that does
 the work. Cron-fired on those two dates, it runs steps 2 through 10 of
@@ -134,10 +144,9 @@ demand with a `dry_run` input that defaults to true - every gate runs,
 nothing is committed.
 
 LAYER 2 - a scheduled Claude Routine per date, firing after the workflow.
-It confirms the live site actually byte-matches main, and if the workflow
-went red it diagnoses the failure, pushes a fix to
-`claude/chat-migration-desktop-ruannr`, and reports. It does not push to
-main; a 6:00 AM failure leaves the whole day to land the fix, and the
+It confirms the live site actually byte-matches main, and if the workflow went
+red it diagnoses the failure, opens or updates a repair PR, and reports. It does
+not push to main; a 6:00 AM failure leaves the whole day to land the fix, and the
 deployed build is never in a broken state while that happens.
 
 LAYER 3 - the draft-order draw watch. A Claude Routine runs
@@ -152,7 +161,7 @@ Anthony hears about the draw without opening the app.
 
 LAYER 4 - the publication watch. The pages-data cron failed 8 of its
 first 14 scheduled runs (the last four consecutively) and nothing
-noticed - the third silent-cron incident. The lesson, applied: alert on
+noticed - one of four silent-staleness incidents. The lesson, applied: alert on
 missing successful PUBLICATION, not on workflow execution. A daily
 Claude Routine runs `python3 src/check_publication.py`, which reads the
 LIVE site's deployed provenance.json - the thing a green run actually
@@ -160,9 +169,9 @@ produces - and stays silent while it is under 48 hours old.
 STALE or UNREADABLE push-notifies Anthony and triggers a diagnosis of
 the failed run. The Routine retires itself after draft day.
 
-Anthony still owns the night-before checklist - the board calls, any
-Walter revision, the walter layer decision. Neither layer touches
-`data/`.
+Anthony still owns the night-before checklist - the board calls, any Walter
+revision, and the Walter-layer decision. No automation edits owner-authored
+`data/my_board.csv` or the Walter source documents.
 
 If the draft date or time moves, update the workflow cron AND the
 Routines rather than adding new ones, so there is only ever one scheduled

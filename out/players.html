@@ -262,8 +262,14 @@ function vorColor(v){
 const PFILTERS = { bull: "BULLISH/WATCH only", arch: "archetype-tagged only",
                    call: "your call only" };
 const PView = { q: "", bull: false, arch: false, call: false };
+function pBullCurrent(){
+  const engineDigest = D.engine && D.engine.content_sha256 || "";
+  const bullDigest = D.bull && D.bull.provenance &&
+    D.bull.provenance.engine_content_sha256 || "";
+  return /^[0-9a-f]{64}$/.test(engineDigest) && bullDigest === engineDigest;
+}
 function pTagged(p){
-  return !!(D.bull && D.bull.tags &&
+  return !!(pBullCurrent() && D.bull.tags &&
             D.bull.tags.some(t => t.name === p.name && t.pos === p.pos));
 }
 function pArch(p){
@@ -272,7 +278,7 @@ function pArch(p){
 }
 function pMatch(p){
   if (PView.q && !norm(p.name).includes(PView.q)) return false;
-  if (PView.bull && !pTagged(p)) return false;
+  if (PView.bull && pBullCurrent() && !pTagged(p)) return false;
   if (PView.arch && !pArch(p)) return false;
   if (PView.call && !D.board[norm(p.name)]) return false;
   return true;
@@ -280,7 +286,8 @@ function pMatch(p){
 function pActive(){
   const on = [];
   if (PView.q) on.push('search "' + PView.q + '"');
-  for (const k of Object.keys(PFILTERS)) if (PView[k]) on.push(PFILTERS[k]);
+  for (const k of Object.keys(PFILTERS))
+    if (PView[k] && (k !== "bull" || pBullCurrent())) on.push(PFILTERS[k]);
   return on;
 }
 
@@ -288,6 +295,7 @@ function renderIndex(msg){
   const c = document.getElementById("content");
   const s = vorScale();
   c.innerHTML = `${msg ? `<div class="banner">${msg}</div>` : ""}
+    ${D.bull && !pBullCurrent() ? '<div class="banner">BULLISH tags stale versus current board - the tag filter is disabled until the daily rebuild.</div>' : ""}
     <div class="card">
     <input type="search" id="q" placeholder="search any player" autocomplete="off">
     <div class="pfilt" id="pfilt"></div>
@@ -312,7 +320,9 @@ function renderPFilters(){
   const f = document.getElementById("pfilt");
   if (!f) return;
   f.innerHTML = Object.keys(PFILTERS).map(k =>
-    `<button data-pf="${k}"${PView[k] ? ' class="on"' : ""}>${PFILTERS[k]}</button>`).join("");
+    `<button data-pf="${k}"${PView[k] && (k !== "bull" || pBullCurrent())
+      ? ' class="on"' : ""}${k === "bull" && !pBullCurrent()
+      ? ' disabled title="BULLISH tags stale or unavailable"' : ""}>${PFILTERS[k]}</button>`).join("");
   f.querySelectorAll("button").forEach(b => b.onclick = () => {
     PView[b.dataset.pf] = !PView[b.dataset.pf]; renderPFilters(); renderGroups();
   });

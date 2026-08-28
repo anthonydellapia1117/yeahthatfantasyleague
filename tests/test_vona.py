@@ -26,6 +26,10 @@ def ok(cond, label, detail=""):
 
 t = json.load(open(os.path.join(D, "vona_tree_2026.json")))
 prov, th = t["provenance"], t["thresholds"]
+engine_artifact = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+ok(prov.get("engine_content_sha256") == engine_artifact.get("content_sha256") and
+   len(prov.get("engine_content_sha256", "")) == 64,
+   "tree records the exact engine content it consumed")
 
 # --- the approved decisions ---
 ok(prov["depth"] == 7, "depth is 7")

@@ -31,6 +31,8 @@ import os
 import re
 import statistics
 
+from engine_lineage import require as require_engine_digest
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out")
 D = os.path.join(OUT, "data")
@@ -63,6 +65,7 @@ def zscores(vals):
 def main():
     cfg = jload(os.path.join(ROOT, "data", "cvs_weights.json"))
     eng = jload(os.path.join(OUT, "engine_2026.json"))
+    engine_digest = require_engine_digest(eng)
     usage = {norm(u["name"]): u for u in jload(os.path.join(D, "usage_2025.json"))["players"]}
     proe = {t["team"]: t["proe_2025"] for t in jload(os.path.join(D, "team_proe_2025.json"))["teams"]}
     vol = {norm(v["name"]): v for v in jload(os.path.join(D, "volatility_2025.json"))["players"]}
@@ -429,11 +432,10 @@ def main():
 
     payload = {
         "generated": datetime.date.today().isoformat(),
-        # Build date and engine-generation provenance are different facts. CVS can be
-        # rebuilt after a depth-chart refresh without rebuilding the engine;
-        # recording the engine date separately lets the room compare the
-        # dependency's generation date instead of assuming both jobs ran together.
+        # Build date and engine-generation provenance are different facts. Keep
+        # the date for humans; the digest below is the actual linkage oracle.
         "engine_generated": eng["generated"],
+        "engine_content_sha256": engine_digest,
         "config": cfg,
         "walter_reference_points": walter_refs,
         "walter_source_sha256": wsha,

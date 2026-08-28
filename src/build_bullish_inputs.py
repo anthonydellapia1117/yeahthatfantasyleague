@@ -30,11 +30,10 @@ from collections import defaultdict
 
 import pyarrow.parquet as pq
 
+from analyze_recency import HISTORY
+from engine_lineage import json_content_sha256, require as require_engine_digest
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HISTORY = os.environ.get(
-    "HISTORY",
-    "/tmp/claude-0/-home-user-yeahthatfantasyleague/"
-    "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history")
 D = os.path.join(ROOT, "out", "data")
 OUT = os.path.join(D, "bullish_inputs_2026.json")
 
@@ -182,11 +181,27 @@ def main():
 
     # ---- shards
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
-    usage = json.load(open(os.path.join(D, "usage_2025.json")))["players"]
+    engine_digest = require_engine_digest(eng)
+    usage_art = json.load(open(os.path.join(D, "usage_2025.json")))
+    usage = usage_art["players"]
     goal = json.load(open(os.path.join(D, "goalline_2025.json")))
     ceil_art = json.load(open(os.path.join(D, "ceiling_2026.json")))
-    depth = json.load(open(os.path.join(D, "depth_charts.json")))["entries"]
+    ceiling_digest = ceil_art.get("provenance", {}).get("engine_content_sha256")
+    if ceiling_digest != engine_digest:
+        raise ValueError(
+            "ceiling inputs were built from a different engine payload; "
+            "rebuild src/build_ceiling.py first"
+        )
+    depth_art = json.load(open(os.path.join(D, "depth_charts.json")))
+    depth = depth_art["entries"]
     xwalk = json.load(open(os.path.join(D, "crosswalk.json")))
+    input_content_sha256 = {
+        "ceiling_2026.json": json_content_sha256(ceil_art),
+        "usage_2025.json": json_content_sha256(usage_art),
+        "goalline_2025.json": json_content_sha256(goal),
+        "depth_charts.json": json_content_sha256(depth_art),
+        "crosswalk.json": json_content_sha256(xwalk),
+    }
 
     u_by_key = {norm(u["name"]) + "|" + u["pos"]: u for u in usage}
     ceil_by_key = {norm(p["name"]) + "|" + p["pos"]: p for p in ceil_art["players"]}
@@ -358,6 +373,9 @@ def main():
     out = {
         "provenance": {
             "generated": datetime.date.today().isoformat(),
+            "engine_generated": eng["generated"],
+            "engine_content_sha256": engine_digest,
+            "input_content_sha256": input_content_sha256,
             "vegas": {"source": "nflverse schedules, Week-1 2026 closing lines "
                                 "(16/16 games - the only complete coverage "
                                 "window)", "pulled": games_pulled},

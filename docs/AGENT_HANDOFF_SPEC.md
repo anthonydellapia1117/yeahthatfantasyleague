@@ -14,7 +14,7 @@ it is the least important part of this document.
 
 These are not general advice. They are the mechanisms behind the defects that
 actually reached this project's live site, derived in `docs/SELF_AUDIT_2026-08-26.md`
-from all 39 known defects. An outside reviewer found fourteen of them, including
+from all 42 recorded entries. An outside reviewer found sixteen of them, including
 four of the five that shipped and stayed. This section is why.
 
 ### 1.1 "I verify against my own intent rather than the source of truth"
@@ -28,7 +28,7 @@ The same mechanism produced the freshness defect (verified the fetch *resolved*,
 not that the payload was *fresh* - a shared cache served 118-second-old picks) and
 the cron defect (verified the workflow *existed*, not that it had *succeeded* -
 8 of 14 scheduled runs had failed, the last four consecutively, while the live
-site served four-day-old data).
+site served Aug-17 depth data for 6d 6h 58m 40s).
 
 **The rule this generates:** when a value is knowable from a server, a file, or a
 computation, a test that asserts your code handles that value correctly is not
@@ -64,7 +64,7 @@ cannot name the computation or the API field behind a number, it is unverified.
 
 ### 1.4 The corollary that ties them together
 
-Sixteen of the 39 defects were **silent** - the system looked healthy and was
+Nineteen of the 42 defects were **silent** - the system looked healthy and was
 wrong - and the silent set contains **every defect that reached the live site and
 stayed**. Loud failures were always caught within hours and none ever reached
 Anthony. This project does not have a bug-finding problem; it has a silence
@@ -159,14 +159,22 @@ the absence. The clock renders `-:--` with "clock unavailable - use Sleeper"
 rather than a plausible countdown.
 
 **R10. Alert on the deliverable, not the machine.** Monitor the published artifact
-on the live site, not whether a job ran. *Why:* three silent-cron incidents;
-`src/check_publication.py` is the fix.
+on the live site, not whether a job ran. `src/check_publication.py` catches missing
+or old deploys; producer ordering plus shared publication linkage guards catch an
+internally inconsistent build before it ships. *Why:* four silent-staleness
+incidents, including one that never deployed and therefore could not be found by an
+external age watcher.
 
 **R11. Provenance on every artifact.** Every `out/data/*.json` carries a
 `provenance` block with generation date, sources, method, and stated limitations.
-Artifacts that declare engine linkage use the engine generation date as
-`engine_generated`, and a guard asserts that date matches the shipped engine. This
-is a registered set, not automatic dependency discovery or a content digest.
+The engine carries a self-verifying SHA-256 over canonical payload JSON, excluding
+only the digest field. Six direct JSON derivatives record it as
+`engine_content_sha256`; the strict CVS/VONA/mock set must match at publication.
+The HISTORY-bound ceiling/BULLISH display set may lag only with a visible neutral
+stale state. BULLISH inputs also digest each committed source artifact, and tags
+digest the exact inputs payload, so two children of the same engine cannot collide.
+Keep `engine_generated` for human display, never as the linkage oracle. This is an
+explicit registry, not automatic dependency discovery.
 
 **R12. Never quote a pooled rate when the strata are unbalanced.** *Why:* 93.5% of
 BULLISH tags land in one ADP band, so the pooled comparison measures the market.
@@ -184,7 +192,10 @@ Full detail and rehearsed timings: `docs/DRAFT_MORNING.md`. The short form:
 ```sh
 # 0. environment
 export PAGES=https://anthonydellapia1117.github.io/yeahthatfantasyleague
-mkdir -p /tmp/pw && (cd /tmp/pw && npm install --no-save playwright-core)   # once
+mkdir -p /tmp/pw && cd /tmp/pw
+CI=1 npm_config_yes=true npm install --no-save --no-fund --no-audit playwright
+./node_modules/.bin/playwright install --with-deps chromium
+cd -
 
 # 1. is the world still what the app assumes?
 python3 src/preflight_draft.py
@@ -194,6 +205,8 @@ python3 src/engine_2026.py
 python3 src/build_cvs_inputs.py
 python3 src/build_cvs.py
 python3 src/build_vona_tree.py          # derives from the engine - rebuild together
+python3 src/mock_draft.py               # same strict engine payload
+python3 src/build_teaser.py             # static subset carries the same digest
 
 # 3. gates - every one through run_gate
 python3 tests/test_run_gate.py
@@ -205,9 +218,11 @@ for t in cvs vor baserates archetypes ceiling bullish ws2 mock \
 done
 GATE_ALLOW_SKIP=1 sh tests/run_gate.sh python3 tests/test_analysis.py
 
-# 4. browser suite (26 hermetic scenarios)
-NODE_PATH=/tmp/pw/node_modules sh tests/run_gate.sh \
-  node tests/smoke_draft_room.js out/draft_room.html
+# 4. browser suite
+export NODE_PATH=/tmp/pw/node_modules
+PW_CHROMIUM=$(node -e "console.log(require('/tmp/pw/node_modules/playwright').chromium.executablePath())")
+PW_CHROMIUM="$PW_CHROMIUM" sh tests/run_gate.sh node \
+  tests/smoke_draft_room.js out/draft_room.html
 
 # 5. ship, then PROVE it shipped
 git push -u origin <branch>            # PR, ready-for-review, squash-merge
@@ -217,9 +232,10 @@ done
 ```
 
 **Guard counts as of this writing** (a suite that suddenly runs fewer is a
-regression): survival 39, cvs 19, vor 50, baserates 70, archetypes 17, ceiling 14,
-bullish 31, ws2 63, mock 46, bullish_vs_adp 43, vona 1686, draft_vs_acquired 23,
-pages_data 302, run_gate 16, analysis 38 (33 on CI), smoke 343.
+regression): survival 41, cvs 20, vor 50, baserates 70, archetypes 17, ceiling 16,
+bullish 38 (39 in pages-data strict mode), ws2 63, mock 47,
+bullish_vs_adp 43, vona 1687, draft_vs_acquired 23, pages_data 321, run_gate 16,
+analysis 38 (33 on CI), smoke 350.
 
 **Rebuilding the analysis layer** needs the historical cache, which is NOT in the
 repo: `python3 src/fetch_history.py` (~156MB, nine families, `HISTORY` env var to
@@ -275,13 +291,15 @@ new evidence wastes a cycle.
 **Coupling that is not obvious:**
 - `engine_2026.json` is **embedded** in `draft_room.html`, not fetched. Rebuilding
   the engine rewrites that HTML between its sentinel markers.
-- `cvs.json` records both its own `generated` date and the `engine_generated`
-  date it consumed. The room and build guard compare the latter to the shipped
-  engine (`draft_room.html:~1627`); independent CVS/engine build dates are no
-  longer conflated. This is date-level linkage, not a payload digest.
-- `vona_tree_2026.json` and `mock_drafts_2026.json` record `engine_generated`; a
-  page guard now asserts it matches. CVS now carries the same lineage fact at
-  top level; no other artifact records its engine.
+- `cvs.json` records its own build date, the engine date for humans, and the exact
+  `engine_content_sha256` it consumed. The room suppresses the pick recommendation
+  and the big board refuses to render if that digest differs from the shipped
+  engine. Two missing digests never count as a match.
+- `vona_tree_2026.json` and `mock_drafts_2026.json` carry the same digest and are
+  strict publication dependencies. `paths.html` fetches the engine beside the tree
+  and refuses a mismatch. Ceiling, BULLISH inputs, and BULLISH tags also carry the
+  digest, but are display-only, HISTORY-bound exceptions: stale values are hidden
+  or neutralized until the 08:00 pages-data rebuild.
 - `pages.yml` deploys an **explicit HTML file list** plus `out/data/*.json` by
   wildcard. A new page must be added to that list or it 404s live - this bit once
   (`paths.html`). Guard 8c checks nav-linked pages; a non-nav-linked page would
@@ -360,12 +378,16 @@ there was a second and a third.
    `ingest._norm_player` and `build_pages_data.norm_name` - and the diacritic fold
    is only in the second. The tests assert a match *rate* against today's data, not
    the normalizer's *contract*, so each repair patches a symptom.
-3. **Silent cron / stale publication (3).** Alert on the published artifact.
-4. **Fail-open guards (3).** A guard that builds evidence and never asserts; a
-   wrapper that swallows an exit code; a suite that skips and says ALL PASS. Ask of
+3. **Silent cron / stale publication (4).** Alert on the published artifact.
+4. **Fail-open guards / controls (5).** A failed poll that falls through, a guard
+   that builds evidence and never asserts, a wrapper that swallows an exit code, a
+   suite that skips and says ALL PASS, and a date-linkage check that collides on
+   same-day builds. Ask of
    every new guard: *what change would make this fail?* If you cannot answer, it is
    decoration.
-5. **Conditioning frame (2).** R4.
+5. **Doc/artifact divergence (3).** A written result can be stale, absent from its
+   consuming surface, or counted before pruning changes the rendered artifact.
+   Verify the artifact and the live page, not the changelog claim.
 
 ---
 
@@ -391,12 +413,13 @@ there was a second and a third.
 1. `python3 src/preflight_draft.py` if you touched anything draft-geometry-shaped.
 2. Full gate battery (§4). Every suite through `run_gate`, output to a file.
 3. `mathdiff` prints `MATH DIFF PROOF: EMPTY`.
-4. Smoke suite, 343 PASS.
+4. Smoke suite, 350 PASS.
 5. **Interrogate the values of any artifact you regenerated**, not just its schema
    (§1.2). What would be impossible in this data? Check for it.
 6. Ask of any new guard: what change would make this fail? (§8.4)
 7. Ask of any new feature: how would this look if it were broken? (§1.4)
-8. Rebuilt the engine? Rebuild `build_vona_tree.py` in the same pass.
+8. Rebuilt the engine? Rebuild CVS, VONA, mock, and teaser in the same pass; the
+   engine command also rewrites decision cards and the room's embedded payload.
 9. After merge, byte-compare the deployed files. The live site IS the build.
 
 ---

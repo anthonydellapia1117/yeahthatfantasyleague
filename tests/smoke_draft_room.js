@@ -1251,6 +1251,60 @@ const ok = (cond, name, detail) => {
     ok(errs15.length === 0, "big board: zero console errors", errs15[0] || "");
     await pg.close();
 
+    // Same-day lineage mismatch: optional display layers stay nonfatal, but
+    // their old values must read as stale rather than current.
+    const staleDisplay = await browser.newPage();
+    const staleBull = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_2026.json"), "utf8"));
+    staleBull.provenance.engine_content_sha256 = "0".repeat(64);
+    const staleCeiling = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/ceiling_2026.json"), "utf8"));
+    staleCeiling.provenance.engine_content_sha256 = "0".repeat(64);
+    await staleDisplay.route("**/data/bullish_2026.json", r => r.fulfill({
+      contentType: "application/json", body: JSON.stringify(staleBull) }));
+    await staleDisplay.route("**/data/ceiling_2026.json", r => r.fulfill({
+      contentType: "application/json", body: JSON.stringify(staleCeiling) }));
+    await staleDisplay.goto(base + "/out/big_board.html");
+    await staleDisplay.waitForTimeout(1200);
+    await staleDisplay.evaluate(() => {
+      View.bull = true; persist(); renderFilters(); renderBoard();
+    });
+    const staleBoardText = await staleDisplay.textContent("#board");
+    ok(/BULLISH tags stale versus current board/.test(staleBoardText) &&
+       /TAGS STALE \d+h/.test(staleBoardText) &&
+       await staleDisplay.locator("#board .brow").count() > 0 &&
+       await staleDisplay.locator('button[data-t="bull"]:disabled').count() === 1,
+       "big board: stale BULLISH filter is disabled without emptying the board");
+    await staleDisplay.click('#views button[data-v="ceiling"]');
+    ok(/ceiling data stale versus current board/.test(
+         await staleDisplay.textContent("#ceil-t")),
+       "big board: mismatched ceiling values are hidden visibly");
+    await staleDisplay.goto(base + "/out/players.html");
+    await staleDisplay.waitForTimeout(1000);
+    await staleDisplay.evaluate(() => {
+      PView.bull = true; renderPFilters(); renderGroups();
+    });
+    ok(/BULLISH tags stale versus current board/.test(
+         await staleDisplay.textContent("#content")) &&
+       await staleDisplay.locator("#pgrid .idxrow").count() > 0 &&
+       await staleDisplay.locator('button[data-pf="bull"]:disabled').count() === 1,
+       "players: stale BULLISH filter is disabled without emptying the index");
+    await staleDisplay.close();
+
+    // The core CVS board is decision-bearing and fails closed, not merely
+    // badged. The date remains unchanged; only the content digest disagrees.
+    const badBoard = await browser.newPage();
+    const staleCvs = JSON.parse(fs.readFileSync(path.resolve("out/cvs.json"), "utf8"));
+    staleCvs.engine_content_sha256 = "0".repeat(64);
+    await badBoard.route("**/cvs.json", r => r.fulfill({
+      contentType: "application/json", body: JSON.stringify(staleCvs) }));
+    await badBoard.goto(base + "/out/big_board.html");
+    await badBoard.waitForTimeout(900);
+    ok(/different engine payload/.test(await badBoard.textContent("#banner")) &&
+       await badBoard.locator("#board .brow").count() === 0,
+       "big board: same-date CVS content mismatch refuses to render");
+    await badBoard.close();
+
     // phone-width net: no horizontal overflow at 375, and injury badges
     // never paint over the conf/vol column (the polish-pass regression)
     const p375 = await browser.newPage({ viewport: { width: 375, height: 667 } });
@@ -1395,6 +1449,27 @@ const ok = (cond, name, detail) => {
     ok(!/walter [+-]/.test(offtxt), "off-mode card carries no walter percentages");
     ok(!/NaN/.test(offtxt), "off-mode card renders no NaN");
     await pe.evaluate(() => localStorage.removeItem("ytfl_walter_live"));
+    const staleBullRoom = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_2026.json"), "utf8"));
+    staleBullRoom.provenance.engine_content_sha256 = "0".repeat(64);
+    staleBullRoom.tags = [];
+    await pe.route("**/data/bullish_2026.json", r => r.fulfill({
+      contentType: "application/json", body: JSON.stringify(staleBullRoom) }));
+    await pe.reload();
+    await pe.waitForTimeout(3500);
+    ok(/TAGS STALE \d+h/.test(await pe.textContent("#lv-chips")),
+       "draft room: stale BULLISH state remains visible for an untagged recommendation");
+    const staleCvsRoom = JSON.parse(require("fs").readFileSync(
+      path.resolve("out/cvs.json"), "utf8"));
+    staleCvsRoom.engine_content_sha256 = "0".repeat(64);
+    await pe.route("**/cvs.json", r => r.fulfill({
+      contentType: "application/json", body: JSON.stringify(staleCvsRoom) }));
+    await pe.reload();
+    await pe.waitForTimeout(3500);
+    const stalePe = await pe.textContent("#pe-body");
+    ok(/different engine payload/.test(stalePe) &&
+       await pe.locator("#pe-body .rname").count() === 0,
+       "draft room: same-date CVS mismatch suppresses the pick recommendation");
     ok(errs16.length === 0, "pick engine: zero console errors", errs16[0] || "");
     await pe.close();
 
@@ -1756,6 +1831,18 @@ const ok = (cond, name, detail) => {
       return nums.length > 0 && nums.every(n => n >= 40);
     });
     ok(floorOk, "paths: every rendered node is at least 40% likely to be there");
+    const stalePaths = await browser.newPage();
+    const staleTree = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/vona_tree_2026.json"), "utf8"));
+    staleTree.provenance.engine_content_sha256 = "0".repeat(64);
+    await stalePaths.route("**/data/vona_tree_2026.json", r => r.fulfill({
+      contentType: "application/json", body: JSON.stringify(staleTree) }));
+    await stalePaths.goto(base + "/out/paths.html");
+    await stalePaths.waitForTimeout(700);
+    ok(/different engine payload/.test(await stalePaths.textContent("#content")) &&
+       await stalePaths.locator(".tnode").count() === 0,
+       "paths: same-date content mismatch refuses to render the tree");
+    await stalePaths.close();
     ok(perr.length === 0, "paths: zero console errors", perr[0] || "");
     await pg.close();
     srv.close();

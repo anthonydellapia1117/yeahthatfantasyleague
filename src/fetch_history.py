@@ -59,6 +59,7 @@ import gzip
 import os
 import sys
 import urllib.request
+from contextlib import closing
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_recency import HISTORY
@@ -70,7 +71,8 @@ def fetch(url, dest, gz=False, refresh=False, required_prefix=None):
     tmp = dest + ".tmp"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "ytfl-hub"})
-        raw = urllib.request.urlopen(req, timeout=180).read()
+        with closing(urllib.request.urlopen(req, timeout=180)) as response:
+            raw = response.read()
         if gz:
             raw = gzip.decompress(raw)
         if len(raw) <= 1000:

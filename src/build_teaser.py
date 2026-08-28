@@ -24,6 +24,8 @@ Run after the engine (the players subset tracks the live board):
 import json
 import os
 
+from engine_lineage import require as require_engine_digest
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "teaser")
 PAYLOAD = os.path.join(ROOT, "out", "engine_2026.json")
@@ -89,7 +91,7 @@ def nav(active):
             + links + '<span class="pill">TEASER</span></nav>')
 
 
-def page(title, active, body):
+def page(title, active, body, engine_digest):
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -97,6 +99,7 @@ def page(title, active, body):
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark">
 <meta name="robots" content="noindex">
+<meta name="ytfl-engine-content-sha256" content="{engine_digest}">
 <title>{title}</title>
 <style>{CSS}</style>
 </head>
@@ -123,6 +126,7 @@ def locked_card(title, lines=3):
 
 def build():
     m = json.load(open(PAYLOAD))
+    engine_digest = require_engine_digest(m)
     draft_date = m["league"]["draft_date"]
     players = sorted(m["players"], key=lambda p: -p["vor"])
     top = lambda pos, n: [p for p in players if p["pos"] == pos][:n]
@@ -152,7 +156,8 @@ def build():
           : "DRAFT DAY";
 }})();
 </script>"""
-    open(os.path.join(OUT, "index.html"), "w").write(page("YTFL Hub 2026", "hub", hub))
+    open(os.path.join(OUT, "index.html"), "w").write(
+        page("YTFL Hub 2026", "hub", hub, engine_digest))
 
     # PLAYERS - top 3 at QB/RB/WR, top 1 at TE/K/DST; names only, numbers redacted
     sections = []
@@ -168,7 +173,7 @@ def build():
         sections.append(f'<div class="card lock"><h2>{pos} - the board\'s top '
                         f'{len(rows)}</h2>{shown}{hidden}{WM_NOTE}</div>')
     open(os.path.join(OUT, "players.html"), "w").write(
-        page("YTFL Players 2026", "players", "".join(sections)))
+        page("YTFL Players 2026", "players", "".join(sections), engine_digest))
 
     # DRAFT ROOM - static skeleton, fake content, no payload, no fetch
     dr = f"""
@@ -190,7 +195,7 @@ def build():
 {locked_card("Live draft grid - 12 teams x 14 rounds", 4)}
 {locked_card("Best available value board", 5)}"""
     open(os.path.join(OUT, "draft_room.html"), "w").write(
-        page("YTFL Draft Room 2026", "draft", dr))
+        page("YTFL Draft Room 2026", "draft", dr, engine_digest))
 
     # TEAMS - the 32 tiles (public NFL info); every instrument locked
     teams32 = ["ARI","ATL","BAL","BUF","CAR","CHI","CIN","CLE","DAL","DEN","DET","GB",
@@ -203,7 +208,8 @@ def build():
 {locked_card("Pace and tendency", 2)}
 {locked_card("Vacated opportunity", 3)}
 {locked_card("Depth chart - ranked by value", 5)}"""
-    open(os.path.join(OUT, "teams.html"), "w").write(page("YTFL Teams 2026", "teams", tm))
+    open(os.path.join(OUT, "teams.html"), "w").write(
+        page("YTFL Teams 2026", "teams", tm, engine_digest))
 
     # FINDINGS - the hook line; everything else locked
     ff = f"""
@@ -217,7 +223,8 @@ def build():
 {locked_card("Dead hypotheses", 5)}
 {locked_card("Champion drafts", 4)}
 {locked_card("Draft vs waiver", 3)}"""
-    open(os.path.join(OUT, "ff-hub.html"), "w").write(page("ff-hub - findings", "findings", ff))
+    open(os.path.join(OUT, "ff-hub.html"), "w").write(
+        page("ff-hub - findings", "findings", ff, engine_digest))
 
     shown_names = [p["name"] for rows in show.values() for p in rows]
     print(f"wrote 5 teaser pages to out/teaser/ - visible players: {len(shown_names)}")

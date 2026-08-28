@@ -1,6 +1,8 @@
 {
  "provenance": {
   "generated": "2026-08-26",
+  "engine_generated": "2026-08-26",
+  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
   "format": "H2H + league median, league_average_match=1 verified live on both league ids - every week scores twice",
   "scoring": "league-exact (6-pt pass TD, full PPR)",
   "boom_cutoffs": "per-week positional top-12 scores, computed",

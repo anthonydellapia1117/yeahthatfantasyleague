@@ -2,6 +2,7 @@
  "provenance": {
   "generated": "2026-08-27",
   "engine_generated": "2026-08-26",
+  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
   "objective": "VONA(pos) = E[best available at this pick] - E[best available at my next pick], both survival-weighted over the whole positional pool",
   "survival": "frozen survival model called from src/engine_2026.py - the pre-draft convention every artifact uses; the adopted calibration applies to conditional survival in the LIVE room only, and after the one-frame fix this builder uses no conditional survival at all",
   "conditioning": "ONE frame: both expectations use unconditional survival from the same pre-draft information state. E[next] <= E[now] and VONA >= 0 are structural and guarded - the first build mixed frames and 28% of nodes went negative",

@@ -31,11 +31,10 @@ import math
 import os
 from collections import defaultdict
 
+from analyze_recency import HISTORY
+from engine_lineage import json_content_sha256, require as require_engine_digest
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HISTORY = os.environ.get(
-    "HISTORY",
-    "/tmp/claude-0/-home-user-yeahthatfantasyleague/"
-    "3092ab3f-cbec-5ded-8daf-9676b9b6a046/scratchpad/history")
 D = os.path.join(ROOT, "out", "data")
 IN = os.path.join(D, "bullish_inputs_2026.json")
 OUT = os.path.join(D, "bullish_2026.json")
@@ -102,9 +101,34 @@ def main():
     inp = json.load(open(IN))
     thr = inp["thresholds"]
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
-    usage = json.load(open(os.path.join(D, "usage_2025.json")))["players"]
-    depth = json.load(open(os.path.join(D, "depth_charts.json")))["entries"]
+    engine_digest = require_engine_digest(eng)
+    inputs_digest = inp.get("provenance", {}).get("engine_content_sha256")
+    if inputs_digest != engine_digest:
+        raise ValueError(
+            "bullish inputs were built from a different engine payload; "
+            "rebuild src/build_bullish_inputs.py first"
+        )
+    usage_art = json.load(open(os.path.join(D, "usage_2025.json")))
+    usage = usage_art["players"]
+    goalline_art = json.load(open(os.path.join(D, "goalline_2025.json")))
+    ceiling_art = json.load(open(os.path.join(D, "ceiling_2026.json")))
+    depth_art = json.load(open(os.path.join(D, "depth_charts.json")))
+    depth = depth_art["entries"]
     xwalk = json.load(open(os.path.join(D, "crosswalk.json")))
+    current_inputs = {
+        "ceiling_2026.json": json_content_sha256(ceiling_art),
+        "usage_2025.json": json_content_sha256(usage_art),
+        "goalline_2025.json": json_content_sha256(goalline_art),
+        "depth_charts.json": json_content_sha256(depth_art),
+        "crosswalk.json": json_content_sha256(xwalk),
+    }
+    declared_inputs = inp.get("provenance", {}).get("input_content_sha256", {})
+    for name, digest in current_inputs.items():
+        if declared_inputs.get(name) != digest:
+            raise ValueError(
+                f"bullish inputs were built from a different {name}; "
+                "rebuild src/build_bullish_inputs.py first"
+            )
     inj_by_name = {norm(p["name"]) + "|" + p["pos"]: p.get("injury") or ""
                    for p in eng["players"]}
 
@@ -388,6 +412,9 @@ def main():
         "provenance": {
             "generated": datetime.date.today().isoformat(),
             "computed_at": now,
+            "engine_generated": eng["generated"],
+            "engine_content_sha256": engine_digest,
+            "inputs_content_sha256": json_content_sha256(inp),
             "conventions": {"bullish_p": BULLISH_P, "watch_p": WATCH_P,
                             "note": "decision-rule confidence levels, stated "
                                     "like p<0.05; every metric threshold is a "
