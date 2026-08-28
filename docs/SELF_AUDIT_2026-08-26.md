@@ -68,25 +68,27 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 43 | `LA/LAR` mismatch nulled both CVS context factors for every Ram; weight redistribution kept the live board plausible | **REVIEWER** (team-code audit) | since CVS factor launch | yes | **OPTIONAL DEGRADATION (4)** |
 | 44 | The lucky-player control reproduced exactly from an all-week extract containing postseason weeks; the clean regular-season top-tier penalty was -14.34, not the reported -30.2 | **REVIEWER** (source-basis reproduction) | <1 day | no (analysis record) | **REPRODUCIBLE CONTAMINATED SOURCE** |
 | 45 | Four RBs with no observed 2025 usage entered the BULLISH backfield percentile as `0.0`; the population was 50 instead of 46 and its median was 0.4986 instead of 0.5060 | **REVIEWER** (percentile-population sweep) | since C5 | yes | **MISSING OBSERVATION AS ZERO** |
-| 46 | The advertised TE 2-of-2 gate was one varying on-field-dropback input times a constant 0.9 market-share input for all 19 veterans; Isaiah Likely's BAL-2025 share was ranked alone in his NYG-2026 group | **REVIEWER** (input-value audit) | since C5 | yes | **VACUOUS GATE + SEASON/TEAM GROUPING** |
+| 46 | The advertised TE 2-of-2 gate was one varying on-field-dropback input times a constant 0.9 market-share input for all 19 veterans; Isaiah Likely's BAL-2025 share was ranked alone in his NYG-2026 group | **REVIEWER** (input-value audit) | since C5 | yes | **VACUOUS GATE + HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (1)** |
 | 47 | Corrected `ALL_R_CODE.R` said the RB export was regenerated, but the committed RB CSV still carried `target_volume` and 2,530 NA-subsetting junk rows | **REVIEWER** (script/artifact comparison) | <1 day | no (analysis artifact) | **DOC/ARTIFACT DIVERGENCE (4)** |
 | 48 | The R forward-Vegas export inverted the verified home-spread convention in 224/224 team-games; 31/32 aggregates were wrong and rank correlation with the correct table was -0.437 | **REVIEWER** (source-sign verification) | <1 day | no (caught before app wiring) | **ANALYSIS SOURCE REGRESSION** |
 | 49 | Fourteen Python and four browser name normalizers disagreed; consolidation removed 119 phantom replay identities and restored 16 current ADP joins | **REVIEWER** (normalizer inventory) | since the duplicated consumers diverged | yes | **NAME-NORM (4)** |
 | 50 | The canonical quote fold covered curly U+2019 but not modifier-letter apostrophe U+02BC; the contract, not one observed spelling, was incomplete | **REVIEWER** (Unicode corpus audit) | latent | no known current player impact | **NAME-NORM (5)** |
 | 51 | Forward Vegas read a committed `schedule_2026.csv` snapshot that no workflow refreshed, so its dynamic horizon would have stayed at Weeks 1-6 while live games priced further out | **SELF-PRE** (new-feature update-path audit) | 0 | no - caught before first stale build | **SILENT STALENESS (5)** |
+| 52 | `backfield_share` grouped the existing all-week 2025 carry basis by each player's 2026 depth-chart team; David Montgomery's 158 DET carries moved into HOU, removing them from Gibbs's denominator. The aggregate usage shard also trimmed low-PPR backs and collapsed multi-team rows, so historical regrouping alone still left PHI/JAX denominators wrong | **REVIEWER** (RB input-denominator audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (2) + INCOMPLETE/COALESCED SOURCE** |
+| 53 | `adj_vac` subtracts an incoming player only when he has 2025 NFL targets; a 2026 rookie therefore subtracts zero, overstating the destination team's open opportunity while producing a plausible value | **REVIEWER** (opportunity-input audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (3)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 51 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **9.8%**. The first
+Of the 53 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **9.4%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
 the first spontaneous instance: before shipping a newly wired input, I asked
 whether its source could actually update and found that it could not.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 24, ANTHONY 1.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 26, ANTHONY 1.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -95,14 +97,14 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Twenty-four of 51 - the largest single share, and disproportionately the severe
-ones - came from outside review. Of the eight defects now known to have reached
+Twenty-six of 53 - the largest single share, and disproportionately the severe
+ones - came from outside review. Of the ten defects now known to have reached
 the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
-#43, #45, #46), **six were found by someone other than me.**
+#43, #45, #46, #52, #53), **eight were found by someone other than me.**
 
 ### 1.3 Which classes recur, and why the first fix did not generalize
 
-Six classes have three or more occurrences. In every case the first fix was
+Seven classes have three or more occurrences. In every case the first fix was
 applied at the **call site** rather than at the **rule**.
 
 **MULTI-PICK INDEPENDENCE - 4 occurrences (#23, #24, #25, #33).**
@@ -236,6 +238,38 @@ error: Isaiah Likely's 2025 Baltimore share was ranked inside his one-player 202
 Giants group. Resumption requires two genuine, season-consistent criteria and a
 new reviewed N.1 test.
 
+**HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING - 3 occurrences (#46,
+#52, #53), plus one inverse gap.** Likely's BAL-2025 receiving share was ranked
+among NYG-2026 TEs. RB shares rebuilt 2025 carry denominators from 2026 depth
+charts, moving Montgomery's DET carries to HOU and inflating Gibbs; the first
+repair attempt then exposed a second source defect because a trimmed one-row-per-
+player shard could not represent Tank Bigsby's JAX/PHI split. Adjusted vacated
+targets treats incoming rookies as zero because they have no 2025 NFL usage.
+
+The historical RB repair now consumes an untrimmed player-team ledger: every
+split row contributes to its historical team's denominator and a player with
+positive carries on multiple teams receives a null individual share rather than
+an invented single-team one. A same-build counterfactual reproduces the exact
+retired calculation, then separates historical regrouping from the untrimmed
+split ledger. The fixed 2025 parquet bytes and canonical 161-row ledger digest
+are pinned, so a rebuilt artifact cannot silently truncate weeks, postseason, or
+the long tail while remaining internally self-consistent.
+It changes 13 RB gate scores, only Gibbs among displayed tags (84.0 to 69.0),
+with no tag membership/status or non-RB movement.
+
+The repair exposes the inverse omission without solving it: `backfield_command`
+now applies the existing all-week 2025 carry-share basis consistently to
+historical teams, but the RB matrix has no measure of carries opened by 2026
+departures. `teams.html` displays thresholded raw departure/arrival rows from the
+trimmed one-row-per-player shard; it does not compute a complete net signal from
+the new ledger.
+Vacated carries remains assessment-only until its ADP correlation and incremental
+value are measured. A same-method carry signal would inherit the
+rookie/no-prior-NFL-sample problem in `adj_vac`, so fix `adj_vac` and any carry
+implementation under one rookie policy or do not wire carries. The rule is:
+historical production stays keyed to its historical season/team; departures and
+arrivals are computed separately and bidirectionally, with rookies explicit.
+
 **REPRODUCIBLE CONTAMINATED SOURCE (#44).** Byte-identical reproduction proved the
 arithmetic and still confirmed the wrong claim because the chosen extract included
 postseason weeks. The top-tier lucky-player penalty moved from -30.2 to -14.34 on
@@ -253,7 +287,7 @@ reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
 #15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43,
-#44, #45, #46, #47, #48, #49. Twenty-six of fifty, and
+#44, #45, #46, #47, #48, #49, #52, #53. Twenty-eight of 53, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it
@@ -271,7 +305,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Twenty-four finds, including six of the eight long-lived live defects. The mechanism is
+Twenty-six finds, including eight of the ten long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 

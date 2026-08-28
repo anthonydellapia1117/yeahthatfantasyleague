@@ -192,6 +192,10 @@ def main():
                      if e.get("gp_rate_2yr") is not None)
     gp_p50 = gp_vals[len(gp_vals) // 2] if gp_vals else 0.85
     bf_p50 = thr["rb_backfield_share"]["p50"]
+    bf_counterfactual_p50 = thr[
+        "rb_backfield_share_counterfactual_current_roster"]["p50"]
+    bf_historical_trimmed_p50 = thr[
+        "rb_backfield_share_counterfactual_historical_trimmed"]["p50"]
 
     prospect = xwalk["prospect"]
     gsis_of = xwalk["matched"]
@@ -203,6 +207,9 @@ def main():
     tags = []
     legacy_non_te_tags = []
     counterfactual_forward_tags = []
+    counterfactual_backfield_tags = []
+    counterfactual_historical_trimmed_tags = []
+    rb_backfield_gate_scores = {}
     te_shadow_tags = []
     te_market_probability_counts = defaultdict(int)
     te_grouping_mismatches = []
@@ -263,6 +270,8 @@ def main():
         crit = {}
         legacy_crit = None
         counterfactual_forward_crit = None
+        counterfactual_backfield_crit = None
+        counterfactual_historical_trimmed_crit = None
         if pos == "RB":
             if e.get("targets_pg") is not None:
                 crit["receiving_volume"] = p_soft(
@@ -281,6 +290,24 @@ def main():
             need, total = 4, 5
             legacy_crit = dict(crit)
             counterfactual_forward_crit = dict(crit)
+            counterfactual_backfield_crit = dict(crit)
+            old_share = e.get(
+                "backfield_share_counterfactual_current_roster")
+            if old_share is not None:
+                counterfactual_backfield_crit["backfield_command"] = p_soft(
+                    old_share, bf_counterfactual_p50, 0.1)
+            else:
+                counterfactual_backfield_crit.pop("backfield_command", None)
+            counterfactual_historical_trimmed_crit = dict(crit)
+            trimmed_share = e.get(
+                "backfield_share_counterfactual_historical_trimmed")
+            if trimmed_share is not None:
+                counterfactual_historical_trimmed_crit[
+                    "backfield_command"] = p_soft(
+                        trimmed_share, bf_historical_trimmed_p50, 0.1)
+            else:
+                counterfactual_historical_trimmed_crit.pop(
+                    "backfield_command", None)
         elif pos == "WR":
             if e.get("tprr_proxy"):
                 crit["target_earning"] = p_prop(
@@ -377,6 +404,10 @@ def main():
             cap_tb = f"NFL R{pr['draft_round']} {pr['draft_year']} (years-1-2 tiebreak only)"
         status, p_gate, reasons = classify(
             crit, need, total, pos, sleeper_id)
+        if pos == "RB":
+            rb_backfield_gate_scores[f"{name}|RB"] = {
+                "after": round(p_gate * 100, 1),
+            }
         if status is not None:
             tag = tag_record(e, sleeper_id, status, p_gate, need, total,
                              crit, reasons, cap_tb)
@@ -384,6 +415,13 @@ def main():
                 te_shadow_tags.append(tag)
             else:
                 tags.append(tag)
+                if pos != "RB":
+                    counterfactual_backfield_tags.append(tag_record(
+                        e, sleeper_id, status, p_gate, need, total,
+                        crit, reasons, cap_tb))
+                    counterfactual_historical_trimmed_tags.append(tag_record(
+                        e, sleeper_id, status, p_gate, need, total,
+                        crit, reasons, cap_tb))
 
         if legacy_crit is not None:
             legacy_status, legacy_gate, legacy_reasons = classify(
@@ -399,6 +437,26 @@ def main():
                 counterfactual_forward_tags.append(tag_record(
                     e, sleeper_id, prior_status, prior_gate, need, total,
                     counterfactual_forward_crit, prior_reasons, cap_tb))
+        if counterfactual_backfield_crit is not None:
+            prior_status, prior_gate, prior_reasons = classify(
+                counterfactual_backfield_crit, need, total, pos, sleeper_id)
+            rb_backfield_gate_scores[f"{name}|RB"]["before"] = round(
+                prior_gate * 100, 1)
+            if prior_status is not None:
+                counterfactual_backfield_tags.append(tag_record(
+                    e, sleeper_id, prior_status, prior_gate, need, total,
+                    counterfactual_backfield_crit, prior_reasons, cap_tb))
+        if counterfactual_historical_trimmed_crit is not None:
+            prior_status, prior_gate, prior_reasons = classify(
+                counterfactual_historical_trimmed_crit,
+                need, total, pos, sleeper_id)
+            rb_backfield_gate_scores[f"{name}|RB"][
+                "historical_trimmed"] = round(prior_gate * 100, 1)
+            if prior_status is not None:
+                counterfactual_historical_trimmed_tags.append(tag_record(
+                    e, sleeper_id, prior_status, prior_gate, need, total,
+                    counterfactual_historical_trimmed_crit,
+                    prior_reasons, cap_tb))
 
     te_players = [e for e in inp["players"] if e["pos"] == "TE"]
     te_gate_suspension = {
@@ -492,6 +550,127 @@ def main():
             "ci95_pp": [-7.3, 28.2],
             "p_two_sided": 0.261,
         },
+    }
+
+    backfield_counterfactual_by_key = {
+        tag_key(tag): tag for tag in counterfactual_backfield_tags}
+    backfield_trimmed_by_key = {
+        tag_key(tag): tag for tag in counterfactual_historical_trimmed_tags}
+    non_rb_live = {
+        key: tag for key, tag in live_by_key.items()
+        if not key.endswith("|RB")
+    }
+    non_rb_counterfactual = {
+        key: tag for key, tag in backfield_counterfactual_by_key.items()
+        if not key.endswith("|RB")
+    }
+    if non_rb_live != non_rb_counterfactual:
+        raise ValueError(
+            "RB backfield denominator repair changed a non-RB tag")
+    non_rb_trimmed = {
+        key: tag for key, tag in backfield_trimmed_by_key.items()
+        if not key.endswith("|RB")
+    }
+    if non_rb_live != non_rb_trimmed:
+        raise ValueError(
+            "RB backfield denominator attribution changed a non-RB tag")
+
+    def comparison_delta(before, after):
+        common = sorted(set(before) & set(after))
+        return {
+            "gained": sorted(set(after) - set(before)),
+            "lost": sorted(set(before) - set(after)),
+            "status_changed": [
+                {"player": key,
+                 "before": before[key]["status"],
+                 "after": after[key]["status"]}
+                for key in common
+                if before[key]["status"] != after[key]["status"]
+            ],
+            "score_changed": [
+                {"player": key,
+                 "before": before[key]["score"],
+                 "after": after[key]["score"]}
+                for key in common
+                if before[key]["score"] != after[key]["score"]
+            ],
+        }
+
+    def gate_score_delta(before_field, after_field):
+        return [
+            {"player": key,
+             "before": values[before_field],
+             "after": values[after_field]}
+            for key, values in sorted(rb_backfield_gate_scores.items())
+            if values[before_field] != values[after_field]
+        ]
+    backfield_input_changes = []
+    for player in inp["players"]:
+        if player["pos"] != "RB":
+            continue
+        before = player.get("backfield_share_counterfactual_current_roster")
+        after = player.get("backfield_share")
+        if before != after:
+            backfield_input_changes.append({
+                "player": f"{player['name']}|RB",
+                "before": before,
+                "after": after,
+                "before_sample": player.get(
+                    "backfield_share_counterfactual_sample"),
+                "after_sample": player.get("backfield_share_sample"),
+            })
+    full_backfield_delta = comparison_delta(
+        backfield_counterfactual_by_key, live_by_key)
+    grouping_only_delta = comparison_delta(
+        backfield_counterfactual_by_key, backfield_trimmed_by_key)
+    untrimmed_split_ledger_delta = comparison_delta(
+        backfield_trimmed_by_key, live_by_key)
+    rb_backfield_denominator_repair = {
+        "status": "ACTIVATED",
+        "scope": ["RB.backfield_command"],
+        "source": "out/data/usage_2025.json#rb_player_team_carries",
+        "held_constant": (
+            "current code, current injury state, current player universe, and "
+            "every non-backfield criterion; the component ledger separately "
+            "exchanges historical grouping and complete player-team carry rows"),
+        "replacement": inp["provenance"]["rb_backfield"],
+        "thresholds": {
+            "before": thr[
+                "rb_backfield_share_counterfactual_current_roster"],
+            "after": thr["rb_backfield_share"],
+        },
+        "input_changed": backfield_input_changes,
+        **full_backfield_delta,
+        "gate_score_changed": gate_score_delta("before", "after"),
+        "component_attribution": {
+            "grouping_only": {
+                "before_threshold": thr[
+                    "rb_backfield_share_counterfactual_current_roster"],
+                "after_threshold": thr[
+                    "rb_backfield_share_counterfactual_historical_trimmed"],
+                "gate_score_changed": gate_score_delta(
+                    "before", "historical_trimmed"),
+                **grouping_only_delta,
+            },
+            "untrimmed_split_ledger": {
+                "before_threshold": thr[
+                    "rb_backfield_share_counterfactual_historical_trimmed"],
+                "after_threshold": thr["rb_backfield_share"],
+                "gate_score_changed": gate_score_delta(
+                    "historical_trimmed", "after"),
+                **untrimmed_split_ledger_delta,
+            },
+        },
+        "non_rb_invariance": {
+            "before_count": len(non_rb_counterfactual),
+            "after_count": len(non_rb_live),
+            "tag_records_identical": True,
+        },
+        "open_inverse_gap": (
+            "backfield_command now measures 2025 team shares accurately; it "
+            "still does not measure 2026 carries opened by departures. Vacated "
+            "carries remains assessment-only pending an ADP-redundancy test and "
+            "explicit no-prior-NFL-sample handling."),
     }
 
     # ---- ADP-edge accountability
@@ -681,6 +860,7 @@ def main():
         "adp_edge": edge,
         "te_scarcity_adjudication": te_adj,
         "te_gate_suspension": te_gate_suspension,
+        "rb_backfield_denominator_repair": rb_backfield_denominator_repair,
         "forward_vegas_activation": forward_vegas_activation,
         "forward_vegas_delta": forward_vegas_delta,
         "qb_gap": inp["qb_gap"],

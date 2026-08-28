@@ -5,6 +5,7 @@ accountability, delta report, and display-only wiring.
 Runs WITHOUT network on the committed artifacts and pages.
 Run: python3 tests/test_bullish.py
 """
+import hashlib
 import json
 import math
 import os
@@ -20,10 +21,13 @@ D = os.path.join(ROOT, "out", "data")
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from analyze_recency import HISTORY
 from build_bullish_inputs import (classify_forward_transition,
+                                  current_roster_rb_backfield_counterfactual,
                                   derive_forward_vegas, distribution,
                                   enforce_forward_transition, observed_share,
+                                  historical_rb_backfield_samples,
                                   select_forward_transition,
                                   validate_sync_transition)
+from build_pages_data import aggregate_rb_player_team_carries
 from engine_lineage import file_content_sha256, json_content_sha256
 from player_names import PlayerIdentityResolver
 from team_codes import CANONICAL_NFL_TEAMS, canonical_team
@@ -453,58 +457,272 @@ ok(n_prop >= 100, "proportion inputs ship as k/n for interval math", str(n_prop)
 engine_for_ids = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 engine_identity = PlayerIdentityResolver(engine_for_ids["players"])
 matched = source_payloads["crosswalk.json"]["matched"]
-usage_by_gsis = {u["gsis_id"]: u for u in source_payloads["usage_2025.json"]["players"]}
-team_now = {e["gsis_id"]: e["team"]
-            for e in source_payloads["depth_charts.json"]["entries"]}
-observed_rb = {}
-for depth_row in source_payloads["depth_charts.json"]["entries"]:
-    if depth_row["pos"] != "RB":
+usage_rows = source_payloads["usage_2025.json"]["players"]
+carry_ledger = source_payloads["usage_2025.json"]["rb_player_team_carries"]
+historical_rb = historical_rb_backfield_samples(carry_ledger)
+historical_trimmed_counterfactual = historical_rb_backfield_samples(
+    [row for row in usage_rows if row.get("pos") == "RB"])
+current_roster_counterfactual = current_roster_rb_backfield_counterfactual(
+    usage_rows, source_payloads["depth_charts.json"]["entries"])
+
+# The producer fixture below specifies how the ledger is built. These committed-
+# payload checks separately prove that build_usage_2025 actually wired the full
+# all-week, pre-trim result into the shard rather than feeding the helper a
+# trimmed or regular-season-only subset.
+ledger_keys = [(row["team"], row["gsis_id"]) for row in carry_ledger]
+ledger_content_sha256 = hashlib.sha256(json.dumps(
+    carry_ledger, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+ledger_by_player = {}
+for row in carry_ledger:
+    ledger_by_player.setdefault(row["gsis_id"], []).append(row)
+trimmed_rb_usage = {row["gsis_id"]: row for row in usage_rows
+                    if row.get("pos") == "RB"}
+depth_rb_teams = {
+    row["gsis_id"]: canonical_team(row["team"])
+    for row in source_payloads["depth_charts.json"]["entries"]
+    if row.get("pos") == "RB" and row.get("gsis_id")
+}
+ledger_only_positive_ids = {
+    player_id for player_id, rows in ledger_by_player.items()
+    if player_id not in trimmed_rb_usage and
+    any(row["carries"] > 0 for row in rows)
+}
+positive_multiteam_ids = {
+    player_id for player_id, rows in ledger_by_player.items()
+    if sum(row["carries"] > 0 for row in rows) > 1
+}
+trimmed_carry_mismatches = [
+    player_id for player_id, usage_row in trimmed_rb_usage.items()
+    if player_id not in ledger_by_player or
+    sum(row["carries"] for row in ledger_by_player[player_id]) !=
+    usage_row["carries"]
+]
+historical_team_mismatches = []
+historical_current_movers = []
+for player_id, usage_row in trimmed_rb_usage.items():
+    positive_teams = [row["team"] for row in ledger_by_player.get(player_id, [])
+                      if row["carries"] > 0]
+    if len(positive_teams) != 1:
         continue
-    usage_row = usage_by_gsis.get(depth_row["gsis_id"])
-    if usage_row is not None:
-        observed_rb.setdefault(depth_row["team"], {})[depth_row["gsis_id"]] = \
-            usage_row["carries"]
+    historical_team = positive_teams[0]
+    if historical_team != canonical_team(usage_row["team"]):
+        historical_team_mismatches.append(player_id)
+    if (player_id in depth_rb_teams and
+            historical_team != depth_rb_teams[player_id]):
+        historical_current_movers.append(player_id)
+ok(ledger_keys == sorted(ledger_keys) and
+   len(ledger_keys) == len(set(ledger_keys)) and
+   len(carry_ledger) == 161 and
+   len(ledger_by_player) == 154 and
+   sum(row["carries"] for row in carry_ledger) == 12399 and
+   {row["team"] for row in carry_ledger} == set(CANONICAL_NFL_TEAMS) and
+   source_payloads["usage_2025.json"]["provenance"].get(
+       "rb_carry_ledger_season_types") == ["POST", "REG"] and
+   source_payloads["usage_2025.json"]["provenance"].get(
+       "source_content_sha256") ==
+       "2a461becaa9adb3c93a3074a3a31f1e960162a50163371a2d34e28393b5fff10" and
+   ledger_content_sha256 ==
+       "6efd886a6aafc396879edefeba227fd990d2cec82f1020540181b2f4a15ae3f0" and
+   source_payloads["usage_2025.json"]["provenance"].get(
+       "rb_carry_ledger_content_sha256") == ledger_content_sha256,
+   "fixed 2025 RB source and ledger are exact, all-team, and explicitly all-week",
+   (f"rows={len(carry_ledger)}, ids={len(ledger_by_player)}, "
+    f"carries={sum(row['carries'] for row in carry_ledger)}, "
+    f"ledger_sha={ledger_content_sha256}"))
+ok(bool(ledger_only_positive_ids) and bool(positive_multiteam_ids) and
+   not trimmed_carry_mismatches and not historical_team_mismatches and
+   bool(historical_current_movers),
+   "committed RB ledger preserves pre-trim rows, historical teams, splits, and all-week totals",
+   (f"ledger-only={len(ledger_only_positive_ids)}, "
+    f"multi-team={len(positive_multiteam_ids)}, "
+    f"carry-mismatches={trimmed_carry_mismatches[:8]}, "
+    f"team-mismatches={historical_team_mismatches[:8]}, "
+    f"historical/current movers={len(historical_current_movers)}"))
+
+synthetic_raw = [
+    {"player_id": "incumbent", "player_display_name": "Incumbent",
+     "position": "RB", "team": "DET", "season": 2025,
+     "season_type": "REG", "carries": 240},
+    {"player_id": "incumbent", "player_display_name": "Incumbent",
+     "position": "RB", "team": "DET", "season": 2025,
+     "season_type": "POST", "carries": 3},
+    {"player_id": "departed", "player_display_name": "Departed",
+     "position": "RB", "team": "DET", "season": 2025,
+     "season_type": "REG", "carries": 158},
+    {"player_id": "long-tail", "player_display_name": "Long Tail",
+     "position": "RB", "team": "DET", "season": 2025,
+     "season_type": "REG", "carries": 6},
+    {"player_id": "traveler", "player_display_name": "Traveler",
+     "position": "RB", "team": "JAX", "season": 2025,
+     "season_type": "REG", "carries": 5},
+    {"player_id": "traveler", "player_display_name": "Traveler",
+     "position": "RB", "team": "PHI", "season": 2025,
+     "season_type": "REG", "carries": 62},
+    {"player_id": "jax-incumbent", "player_display_name": "Jax Incumbent",
+     "position": "RB", "team": "JAX", "season": 2025,
+     "season_type": "REG", "carries": 270},
+    {"player_id": "phi-incumbent", "player_display_name": "Phi Incumbent",
+     "position": "RB", "team": "PHI", "season": 2025,
+     "season_type": "REG", "carries": 306},
+    {"player_id": "qb", "player_display_name": "Quarterback",
+     "position": "QB", "team": "DET", "season": 2025,
+     "season_type": "REG", "carries": 100},
+]
+synthetic_ledger_result = aggregate_rb_player_team_carries(synthetic_raw)
+synthetic_ledger = synthetic_ledger_result["rows"]
+synthetic_historical = historical_rb_backfield_samples(synthetic_ledger)
+ok(synthetic_ledger_result["season_types"] == ["POST", "REG"] and
+   not any(row["gsis_id"] == "qb" for row in synthetic_ledger) and
+   sorted(row["carries"] for row in synthetic_ledger
+          if row["gsis_id"] == "traveler") == [5, 62] and
+   "traveler" not in synthetic_historical and
+   synthetic_historical["incumbent"]["player_carries"] == 243 and
+   synthetic_historical["incumbent"]["team_rb_carries"] == 407 and
+   synthetic_historical["jax-incumbent"]["team_rb_carries"] == 275 and
+   synthetic_historical["phi-incumbent"]["team_rb_carries"] == 368,
+   "RB ledger is all-week, untrimmed, position-specific, and split by team")
+
+synthetic_usage = [
+    {"gsis_id": "incumbent", "pos": "RB", "team": "DET", "carries": 243},
+    {"gsis_id": "departed", "pos": "RB", "team": "DET", "carries": 158},
+    {"gsis_id": "new-teammate", "pos": "RB", "team": "HOU", "carries": 100},
+]
+synthetic_depth = [
+    {"gsis_id": "incumbent", "pos": "RB", "team": "DET"},
+    {"gsis_id": "departed", "pos": "RB", "team": "HOU"},
+    {"gsis_id": "new-teammate", "pos": "RB", "team": "HOU"},
+]
+synthetic_trimmed_historical = historical_rb_backfield_samples(synthetic_usage)
+synthetic_retired = current_roster_rb_backfield_counterfactual(
+    synthetic_usage, synthetic_depth)
+ok(synthetic_trimmed_historical["incumbent"]["team"] == "DET" and
+   synthetic_trimmed_historical["incumbent"]["team_rb_carries"] == 401 and
+   synthetic_trimmed_historical["incumbent"]["value"] == 0.606 and
+   synthetic_retired["incumbent"]["team_rb_carries"] == 243 and
+   synthetic_retired["incumbent"]["value"] == 1.0,
+   "departed RB stays in his historical denominator, not his current roster")
 
 backfield_ok = True
-candidate_n = observed_n = 0
+observed_n = 0
+expected_values = []
+expected_trimmed_values = []
+bad_backfield = []
 for player in (p for p in inp["players"] if p["pos"] == "RB"):
     identity = engine_identity.resolve(player["name"], position="RB").record
     sleeper_id = str(identity.get("sleeper_id") or "") if identity else ""
     gsis_id = matched.get(sleeper_id)
-    team = team_now.get(gsis_id) or (identity or {}).get("team")
-    observations = observed_rb.get(team, {})
-    total = sum(observations.values())
-    if total >= 100:
-        candidate_n += 1
-    expected = (None if not gsis_id or gsis_id not in observations or total < 100
-                else {"value": round(observations[gsis_id] / total, 4),
-                      "player": observations[gsis_id], "total": total})
+    expected = historical_rb.get(gsis_id)
     actual = player.get("backfield_share")
     sample = player.get("backfield_share_sample")
     if expected is None:
         backfield_ok &= actual is None and sample is None
+        if actual is not None or sample is not None:
+            bad_backfield.append(player["name"])
     else:
         observed_n += 1
-        backfield_ok &= (actual == expected["value"] and
-                         sample == {"season": 2025,
-                                    "player_carries": expected["player"],
-                                    "team_carries": expected["total"]})
+        expected_values.append(expected["value"])
+        expected_sample = {
+            "season": 2025,
+            "historical_team": expected["team"],
+            "player_carries": expected["player_carries"],
+            "historical_team_rb_carries": expected["team_rb_carries"],
+        }
+        if actual != expected["value"] or sample != expected_sample:
+            backfield_ok = False
+            bad_backfield.append(player["name"])
+    retired = current_roster_counterfactual.get(gsis_id)
+    retired_sample = (None if retired is None else {
+        "season": 2025,
+        "current_roster_team": retired["team"],
+        "player_carries": retired["player_carries"],
+        "current_roster_team_rb_carries": retired["team_rb_carries"],
+    })
+    if (player.get("backfield_share_counterfactual_current_roster") !=
+            (retired or {}).get("value") or
+            player.get("backfield_share_counterfactual_sample") != retired_sample):
+        backfield_ok = False
+        bad_backfield.append(player["name"])
+    trimmed = historical_trimmed_counterfactual.get(gsis_id)
+    trimmed_sample = (None if trimmed is None else {
+        "season": 2025,
+        "historical_team": trimmed["team"],
+        "player_carries": trimmed["player_carries"],
+        "historical_team_rb_carries": trimmed["team_rb_carries"],
+    })
+    if (player.get("backfield_share_counterfactual_historical_trimmed") !=
+            (trimmed or {}).get("value") or
+            player.get("backfield_share_historical_trimmed_sample") !=
+            trimmed_sample):
+        backfield_ok = False
+        bad_backfield.append(player["name"])
+    if trimmed is not None:
+        expected_trimmed_values.append(trimmed["value"])
 ok(backfield_ok,
-   "every backfield percentile member has a canonical observed carry sample")
+   "backfield shares use 2025 RB carries grouped by each player's 2025 team",
+   ", ".join(bad_backfield[:8]))
 bf = thr["rb_backfield_share"]
 ok(bf["n"] == observed_n and
-   bf["excluded_unobserved_n"] == candidate_n - observed_n and
-   bf["n"] + bf["excluded_unobserved_n"] == candidate_n,
+   bf["excluded_unobserved_n"] ==
+       sum(p["pos"] == "RB" for p in inp["players"]) - observed_n,
    "backfield population reconciles observed and excluded identities",
-   f"artifact={bf}, candidates={candidate_n}, observed={observed_n}")
+   f"artifact={bf}, observed={observed_n}")
 inside5_zeros = [p for p in inp["players"]
                  if p.get("inside5_share", {}).get("k") == 0 and
                  p.get("inside5_share", {}).get("n", 0) > 0]
-ok(bf["p50"] == 0.506 and
+expected_backfield_p50 = round(
+    sorted(expected_values)[len(expected_values) // 2], 4)
+def expected_backfield_distribution(values, excluded):
+    ordered = sorted(values)
+    return {
+        "n": len(ordered),
+        "zero_n": sum(value == 0 for value in ordered),
+        "excluded_unobserved_n": excluded,
+        "p50": round(ordered[len(ordered) // 2], 4),
+        "p75": round(ordered[int(round(.75 * (len(ordered) - 1)))], 4),
+        "p80": round(ordered[int(round(.80 * (len(ordered) - 1)))], 4),
+    }
+expected_backfield_dist = expected_backfield_distribution(
+    expected_values,
+    sum(p["pos"] == "RB" for p in inp["players"]) - observed_n)
+ok(all(bf[key] == expected_backfield_dist[key]
+       for key in ("n", "zero_n", "excluded_unobserved_n", "p50", "p75", "p80")) and
    "upper middle" in bf.get("p50_method", "") and
-   thr["rb_inside5"]["zero_n"] == len(inside5_zeros) == 1,
-   "corrected backfield median ships while the real inside-five zero remains",
-   f"backfield={bf}, inside5 zeros={[p['name'] for p in inside5_zeros]}")
+   "untrimmed 2025 player-team carry ledger" in
+       bf.get("observation_rule", ""),
+   "historical-team backfield distribution rederives from committed usage",
+   f"artifact={bf}, expected={expected_backfield_dist}")
+counterfactual_values = [
+    current_roster_counterfactual[matched.get(str(
+        (engine_identity.resolve(player["name"], position="RB").record or {}).get(
+            "sleeper_id") or ""))]["value"]
+    for player in inp["players"] if player["pos"] == "RB" and
+    matched.get(str((engine_identity.resolve(
+        player["name"], position="RB").record or {}).get("sleeper_id") or ""))
+    in current_roster_counterfactual
+]
+expected_counterfactual_dist = expected_backfield_distribution(
+    counterfactual_values,
+    sum(p["pos"] == "RB" for p in inp["players"]) -
+    len(counterfactual_values))
+counterfactual_dist = thr[
+    "rb_backfield_share_counterfactual_current_roster"]
+ok(all(counterfactual_dist[key] == expected_counterfactual_dist[key]
+       for key in ("n", "zero_n", "excluded_unobserved_n", "p50", "p75", "p80")),
+   "retired current-roster distribution remains an exact same-build baseline",
+   f"artifact={counterfactual_dist}, expected={expected_counterfactual_dist}")
+expected_trimmed_dist = expected_backfield_distribution(
+    expected_trimmed_values,
+    sum(p["pos"] == "RB" for p in inp["players"]) -
+    len(expected_trimmed_values))
+trimmed_dist = thr[
+    "rb_backfield_share_counterfactual_historical_trimmed"]
+ok(all(trimmed_dist[key] == expected_trimmed_dist[key]
+       for key in ("n", "zero_n", "excluded_unobserved_n", "p50", "p75", "p80")),
+   "grouping-only intermediate remains independently reproducible",
+   f"artifact={trimmed_dist}, expected={expected_trimmed_dist}")
+ok(thr["rb_inside5"]["zero_n"] == len(inside5_zeros) == 1,
+   "real inside-five zero remains observed rather than excluded",
+   str([p["name"] for p in inside5_zeros]))
 
 # 2. QB gap derivation present with n and CI, both scorings
 for key in ("league_6pt", "counterfactual_4pt"):
@@ -614,6 +832,91 @@ ok(all(item.endswith("|QB") or item.endswith("|WR")
        for item in activation.get("status_changed", []) +
        activation.get("score_changed", [])),
    "forward activation delta contains only the approved QB/WR consumers")
+backfield_repair = d.get("rb_backfield_denominator_repair", {})
+backfield_changed = (
+    backfield_repair.get("gained", []) + backfield_repair.get("lost", []) +
+    [x.get("player", "") for x in
+     backfield_repair.get("status_changed", [])] +
+    [x.get("player", "") for x in
+     backfield_repair.get("score_changed", []) +
+     backfield_repair.get("gate_score_changed", [])]
+)
+expected_input_changes = []
+for player in inp["players"]:
+    if (player["pos"] == "RB" and
+            player.get("backfield_share") !=
+            player.get("backfield_share_counterfactual_current_roster")):
+        expected_input_changes.append({
+            "player": f"{player['name']}|RB",
+            "before": player.get(
+                "backfield_share_counterfactual_current_roster"),
+            "after": player.get("backfield_share"),
+            "before_sample": player.get(
+                "backfield_share_counterfactual_sample"),
+            "after_sample": player.get("backfield_share_sample"),
+        })
+live_tags = {f"{tag['name']}|{tag['pos']}": tag for tag in d["tags"]}
+ok(backfield_repair.get("status") == "ACTIVATED" and
+   backfield_repair.get("scope") == ["RB.backfield_command"] and
+   bool(expected_input_changes) and
+   backfield_repair.get("input_changed") == expected_input_changes and
+   backfield_repair.get("thresholds", {}).get("before") ==
+       counterfactual_dist and
+   backfield_repair.get("thresholds", {}).get("after") == bf,
+   "RB denominator activation ledger is complete and same-build",
+   str(backfield_repair))
+components = backfield_repair.get("component_attribution", {})
+grouping_component = components.get("grouping_only", {})
+completeness_component = components.get("untrimmed_split_ledger", {})
+ok(grouping_component.get("before_threshold") == counterfactual_dist and
+   grouping_component.get("after_threshold") == trimmed_dist and
+   completeness_component.get("before_threshold") == trimmed_dist and
+   completeness_component.get("after_threshold") == bf,
+   "RB repair separates historical grouping from the untrimmed split ledger",
+   str(components))
+component_changed = []
+for component in (grouping_component, completeness_component):
+    component_changed += component.get("gained", []) + component.get("lost", [])
+    component_changed += [
+        item.get("player", "") for item in
+        component.get("status_changed", []) + component.get("score_changed", []) +
+        component.get("gate_score_changed", [])]
+grouping_changed = (grouping_component.get("gained", []) +
+                    grouping_component.get("lost", []) +
+                    grouping_component.get("status_changed", []) +
+                    grouping_component.get("score_changed", []) +
+                    grouping_component.get("gate_score_changed", []))
+completeness_changed = (completeness_component.get("gained", []) +
+                        completeness_component.get("lost", []) +
+                        completeness_component.get("status_changed", []) +
+                        completeness_component.get("score_changed", []) +
+                        completeness_component.get("gate_score_changed", []))
+ok(bool(grouping_changed) and bool(completeness_changed) and
+   all(key.endswith("|RB") for key in component_changed),
+   "both RB attribution components bite and remain position-isolated")
+ok(bool(backfield_changed) and
+   all(key.endswith("|RB") for key in backfield_changed) and
+   backfield_repair.get("non_rb_invariance", {}).get(
+       "tag_records_identical") is True and
+   backfield_repair["non_rb_invariance"]["before_count"] ==
+       backfield_repair["non_rb_invariance"]["after_count"],
+   "RB denominator repair changes only RB records and proves non-RB invariance")
+ok(bool(backfield_repair.get("score_changed")) and
+   all(item["player"] in live_tags and
+       live_tags[item["player"]]["score"] == item["after"]
+       for item in backfield_repair.get("score_changed", [])),
+   "RB denominator score delta reconciles to the live same-build tags")
+ok(bool(backfield_repair.get("gate_score_changed")) and
+   all(item["player"] not in live_tags or
+       live_tags[item["player"]]["score"] == item["after"]
+       for item in backfield_repair.get("gate_score_changed", [])) and
+   {item["player"] for item in backfield_repair.get("score_changed", [])} <=
+   {item["player"] for item in
+    backfield_repair.get("gate_score_changed", [])},
+   "full RB gate-score ledger includes and reconciles every displayed score move")
+ok("does not measure 2026 carries opened" in
+   backfield_repair.get("open_inverse_gap", ""),
+   "RB ledger states the vacated-carries inverse gap without claiming a fix")
 refresh_delta = d.get("forward_vegas_delta", {})
 refresh_same_build = refresh_delta.get("same_build_counterfactual", {})
 refresh_changed = (

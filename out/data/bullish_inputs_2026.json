@@ -5,7 +5,7 @@
   "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
   "input_content_sha256": {
    "ceiling_2026.json": "3bbcae99126f89fc9774efb98857be43fd47a9d43d3a15026c47d1c063b8f40c",
-   "usage_2025.json": "795d27bbab685a1970c336e5005e391be6cab21a42a083c0e792e887dabf1e58",
+   "usage_2025.json": "932cfec8d625eb662326d34d16533d079357f2fd15de1dc95f101051f5c8cb00",
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
    "depth_charts.json": "b5a14a0768cf0ca2875d501964d8dbb71cdccb239d5e4e8d47f2a7f7245da4f6",
    "crosswalk.json": "63dab2e88225e8522d8cb0fac7e14ad5b621b9753bdf576563cfaafb7e58f4c4",
@@ -330,6 +330,16 @@
    "basis": "2025 offensive TDs / 2025 points scored"
   },
   "roles": "inside-5 share and YMS are 2025-role priors and say so",
+  "rb_backfield": {
+   "status": "ACTIVATED",
+   "source": "out/data/usage_2025.json#rb_player_team_carries",
+   "replacement": "2025 player carries divided by the complete untrimmed 2025 RB carry total on that historical team; multi-team rows stay split",
+   "retired_counterfactual": "the same committed usage rows grouped by each player's 2026 depth-chart team",
+   "grouping_only_intermediate": "the retired trimmed player rows regrouped by their stored historical team before adding the untrimmed split ledger",
+   "counterfactual_reproduces_committed_baseline": true,
+   "season_scope": "all 2025 season types present in the weekly source, preserving the prior all-week basis",
+   "multi_team_player_policy": "all split rows contribute to team denominators; a player with positive carries for multiple teams has a null individual share"
+  },
   "proxy": "routes = on-field membership on team dropbacks (participation 2025); counts pass-block snaps as routes"
  },
  "teams": {
@@ -559,12 +569,34 @@
    "n": 46,
    "zero_n": 0,
    "excluded_unobserved_n": 3,
-   "observation_rule": "2025 usage row exists for the canonical player and the current-team observed RB carry total is at least 100; observed zero is included, absence is null",
+   "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
+   "percentile_method": "nearest index: round(q * (n - 1))",
+   "p50": 0.5072,
+   "p75": 0.6538,
+   "p80": 0.6946,
+   "p50_method": "upper middle observation for even n; preserved stage-2 convention"
+  },
+  "rb_backfield_share_counterfactual_current_roster": {
+   "n": 46,
+   "zero_n": 0,
+   "excluded_unobserved_n": 3,
+   "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
    "percentile_method": "nearest index: round(q * (n - 1))",
    "p50": 0.506,
    "p75": 0.7342,
    "p80": 0.7632,
-   "p50_method": "upper middle observation for even n; preserved stage-2 convention"
+   "p50_method": "upper middle observation for even n; retired stage-2 baseline"
+  },
+  "rb_backfield_share_counterfactual_historical_trimmed": {
+   "n": 46,
+   "zero_n": 0,
+   "excluded_unobserved_n": 3,
+   "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
+   "percentile_method": "nearest index: round(q * (n - 1))",
+   "p50": 0.5072,
+   "p75": 0.658,
+   "p80": 0.6674,
+   "p50_method": "upper middle observation for even n; grouping-only intermediate"
   },
   "team_line_ybc": {
    "n": 32,
@@ -689,11 +721,26 @@
     "n": 27,
     "basis": "2025 role on DET"
    },
-   "backfield_share": 0.655,
+   "backfield_share": 0.5971,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "DET",
     "player_carries": 243,
-    "team_carries": 371
+    "historical_team_rb_carries": 407
+   },
+   "backfield_share_counterfactual_current_roster": 0.655,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "DET",
+    "player_carries": 243,
+    "current_roster_team_rb_carries": 371
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.606,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "DET",
+    "player_carries": 243,
+    "historical_team_rb_carries": 401
    }
   },
   {
@@ -729,11 +776,26 @@
     "n": 24,
     "basis": "2025 role on ATL"
    },
-   "backfield_share": 0.7513,
+   "backfield_share": 0.6538,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "ATL",
     "player_carries": 287,
-    "team_carries": 382
+    "historical_team_rb_carries": 439
+   },
+   "backfield_share_counterfactual_current_roster": 0.7513,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "ATL",
+    "player_carries": 287,
+    "current_roster_team_rb_carries": 382
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.6674,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "ATL",
+    "player_carries": 287,
+    "historical_team_rb_carries": 430
    }
   },
   {
@@ -829,11 +891,26 @@
     "n": 26,
     "basis": "2025 role on SF"
    },
-   "backfield_share": 1.0,
+   "backfield_share": 0.7694,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "SF",
     "player_carries": 337,
-    "team_carries": 337
+    "historical_team_rb_carries": 438
+   },
+   "backfield_share_counterfactual_current_roster": 1.0,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "SF",
+    "player_carries": 337,
+    "current_roster_team_rb_carries": 337
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.7801,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "SF",
+    "player_carries": 337,
+    "historical_team_rb_carries": 432
    }
   },
   {
@@ -869,11 +946,26 @@
     "n": 36,
     "basis": "2025 role on IND"
    },
-   "backfield_share": 1.0,
+   "backfield_share": 0.866,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "IND",
     "player_carries": 323,
-    "team_carries": 323
+    "historical_team_rb_carries": 373
+   },
+   "backfield_share_counterfactual_current_roster": 1.0,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "IND",
+    "player_carries": 323,
+    "current_roster_team_rb_carries": 323
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.9585,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "IND",
+    "player_carries": 323,
+    "historical_team_rb_carries": 337
    }
   },
   {
@@ -969,11 +1061,26 @@
     "n": 43,
     "basis": "2025 role on BUF"
    },
-   "backfield_share": 0.7632,
+   "backfield_share": 0.7598,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "BUF",
     "player_carries": 348,
-    "team_carries": 456
+    "historical_team_rb_carries": 458
+   },
+   "backfield_share_counterfactual_current_roster": 0.7632,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "BUF",
+    "player_carries": 348,
+    "current_roster_team_rb_carries": 456
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.7632,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "BUF",
+    "player_carries": 348,
+    "historical_team_rb_carries": 456
    }
   },
   {
@@ -1042,8 +1149,23 @@
    "backfield_share": 0.6296,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "MIA",
     "player_carries": 238,
-    "team_carries": 378
+    "historical_team_rb_carries": 378
+   },
+   "backfield_share_counterfactual_current_roster": 0.6296,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "MIA",
+    "player_carries": 238,
+    "current_roster_team_rb_carries": 378
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.6296,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "MIA",
+    "player_carries": 238,
+    "historical_team_rb_carries": 378
    }
   },
   {
@@ -1079,11 +1201,26 @@
     "n": 20,
     "basis": "2025 role on CIN"
    },
-   "backfield_share": 0.7342,
+   "backfield_share": 0.6946,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "CIN",
     "player_carries": 232,
-    "team_carries": 316
+    "historical_team_rb_carries": 334
+   },
+   "backfield_share_counterfactual_current_roster": 0.7342,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "CIN",
+    "player_carries": 232,
+    "current_roster_team_rb_carries": 316
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.7342,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "CIN",
+    "player_carries": 232,
+    "historical_team_rb_carries": 316
    }
   },
   {
@@ -1149,11 +1286,26 @@
     "n": 32,
     "basis": "2025 role on BAL"
    },
-   "backfield_share": 0.9247,
+   "backfield_share": 0.7832,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "BAL",
     "player_carries": 307,
-    "team_carries": 332
+    "historical_team_rb_carries": 392
+   },
+   "backfield_share_counterfactual_current_roster": 0.9247,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "BAL",
+    "player_carries": 307,
+    "current_roster_team_rb_carries": 332
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.7852,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "BAL",
+    "player_carries": 307,
+    "historical_team_rb_carries": 391
    }
   },
   {
@@ -1189,11 +1341,26 @@
     "n": 33,
     "basis": "2025 role on PHI"
    },
-   "backfield_share": 0.7907,
+   "backfield_share": 0.7766,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "PHI",
     "player_carries": 306,
-    "team_carries": 387
+    "historical_team_rb_carries": 394
+   },
+   "backfield_share_counterfactual_current_roster": 0.7907,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "PHI",
+    "player_carries": 306,
+    "current_roster_team_rb_carries": 387
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.9563,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "PHI",
+    "player_carries": 306,
+    "historical_team_rb_carries": 320
    }
   },
   {
@@ -1259,11 +1426,26 @@
     "n": 30,
     "basis": "2025 role on SEA"
    },
-   "backfield_share": 0.7647,
+   "backfield_share": 0.5608,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "SEA",
     "player_carries": 286,
-    "team_carries": 374
+    "historical_team_rb_carries": 510
+   },
+   "backfield_share_counterfactual_current_roster": 0.7647,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "KC",
+    "player_carries": 286,
+    "current_roster_team_rb_carries": 374
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.5697,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "SEA",
+    "player_carries": 286,
+    "historical_team_rb_carries": 502
    }
   },
   {
@@ -1299,11 +1481,26 @@
     "n": 21,
     "basis": "2025 role on LAC"
    },
-   "backfield_share": 0.3197,
+   "backfield_share": 0.3369,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "LAC",
     "player_carries": 125,
-    "team_carries": 391
+    "historical_team_rb_carries": 371
+   },
+   "backfield_share_counterfactual_current_roster": 0.3197,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "LAC",
+    "player_carries": 125,
+    "current_roster_team_rb_carries": 391
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3342,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "LAC",
+    "player_carries": 125,
+    "historical_team_rb_carries": 374
    }
   },
   {
@@ -1400,11 +1597,26 @@
     "n": 13,
     "basis": "2025 role on LV"
    },
-   "backfield_share": 0.9603,
+   "backfield_share": 0.8664,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "LV",
     "player_carries": 266,
-    "team_carries": 277
+    "historical_team_rb_carries": 307
+   },
+   "backfield_share_counterfactual_current_roster": 0.9603,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "LV",
+    "player_carries": 266,
+    "current_roster_team_rb_carries": 277
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.9236,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "LV",
+    "player_carries": 266,
+    "historical_team_rb_carries": 288
    }
   },
   {
@@ -1721,11 +1933,26 @@
     "n": 12,
     "basis": "2025 role on NYJ"
    },
-   "backfield_share": 0.7666,
+   "backfield_share": 0.7297,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "NYJ",
     "player_carries": 243,
-    "team_carries": 317
+    "historical_team_rb_carries": 333
+   },
+   "backfield_share_counterfactual_current_roster": 0.7666,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "NYJ",
+    "player_carries": 243,
+    "current_roster_team_rb_carries": 317
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.7666,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "NYJ",
+    "player_carries": 243,
+    "historical_team_rb_carries": 317
    }
   },
   {
@@ -1821,11 +2048,26 @@
     "n": 34,
     "basis": "2025 role on LA"
    },
-   "backfield_share": 0.6392,
+   "backfield_share": 0.6273,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "LAR",
     "player_carries": 303,
-    "team_carries": 474
+    "historical_team_rb_carries": 483
+   },
+   "backfield_share_counterfactual_current_roster": 0.6392,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "LAR",
+    "player_carries": 303,
+    "current_roster_team_rb_carries": 474
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.6392,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "LAR",
+    "player_carries": 303,
+    "historical_team_rb_carries": 474
    }
   },
   {
@@ -1861,11 +2103,26 @@
     "n": 28,
     "basis": "2025 role on CHI"
    },
-   "backfield_share": 0.573,
+   "backfield_share": 0.5629,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "CHI",
     "player_carries": 255,
-    "team_carries": 445
+    "historical_team_rb_carries": 453
+   },
+   "backfield_share_counterfactual_current_roster": 0.573,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "CHI",
+    "player_carries": 255,
+    "current_roster_team_rb_carries": 445
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.573,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "CHI",
+    "player_carries": 255,
+    "historical_team_rb_carries": 445
    }
   },
   {
@@ -1901,11 +2158,26 @@
     "n": 34,
     "basis": "2025 role on JAX"
    },
-   "backfield_share": 0.49,
+   "backfield_share": 0.6959,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "JAX",
     "player_carries": 270,
-    "team_carries": 551
+    "historical_team_rb_carries": 388
+   },
+   "backfield_share_counterfactual_current_roster": 0.49,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "NO",
+    "player_carries": 270,
+    "current_roster_team_rb_carries": 551
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.6027,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "JAX",
+    "player_carries": 270,
+    "historical_team_rb_carries": 448
    }
   },
   {
@@ -2001,11 +2273,26 @@
     "n": 33,
     "basis": "2025 role on DAL"
    },
-   "backfield_share": 0.7262,
+   "backfield_share": 0.658,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "DAL",
     "player_carries": 252,
-    "team_carries": 347
+    "historical_team_rb_carries": 383
+   },
+   "backfield_share_counterfactual_current_roster": 0.7262,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "DAL",
+    "player_carries": 252,
+    "current_roster_team_rb_carries": 347
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.658,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "DAL",
+    "player_carries": 252,
+    "historical_team_rb_carries": 383
    }
   },
   {
@@ -2101,11 +2388,26 @@
     "n": 27,
     "basis": "2025 role on DET"
    },
-   "backfield_share": 0.3674,
+   "backfield_share": 0.3882,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "DET",
     "player_carries": 158,
-    "team_carries": 430
+    "historical_team_rb_carries": 407
+   },
+   "backfield_share_counterfactual_current_roster": 0.3674,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "HOU",
+    "player_carries": 158,
+    "current_roster_team_rb_carries": 430
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.394,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "DET",
+    "player_carries": 158,
+    "historical_team_rb_carries": 401
    }
   },
   {
@@ -2261,11 +2563,26 @@
     "n": 27,
     "basis": "2025 role on GB"
    },
-   "backfield_share": 0.9004,
+   "backfield_share": 0.6216,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "GB",
     "player_carries": 253,
-    "team_carries": 281
+    "historical_team_rb_carries": 407
+   },
+   "backfield_share_counterfactual_current_roster": 0.9004,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "GB",
+    "player_carries": 253,
+    "current_roster_team_rb_carries": 281
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.6216,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "GB",
+    "player_carries": 253,
+    "historical_team_rb_carries": 407
    }
   },
   {
@@ -2332,11 +2649,26 @@
     "n": 31,
     "basis": "2025 role on NYG"
    },
-   "backfield_share": 0.2457,
+   "backfield_share": 0.2551,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "NYG",
     "player_carries": 101,
-    "team_carries": 411
+    "historical_team_rb_carries": 396
+   },
+   "backfield_share_counterfactual_current_roster": 0.2457,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "NYG",
+    "player_carries": 101,
+    "current_roster_team_rb_carries": 411
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.2551,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "NYG",
+    "player_carries": 101,
+    "historical_team_rb_carries": 396
    }
   },
   {
@@ -2403,11 +2735,26 @@
     "n": 22,
     "basis": "2025 role on TB"
    },
-   "backfield_share": 0.4565,
+   "backfield_share": 0.4347,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "TB",
     "player_carries": 173,
-    "team_carries": 379
+    "historical_team_rb_carries": 398
+   },
+   "backfield_share_counterfactual_current_roster": 0.4565,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "TB",
+    "player_carries": 173,
+    "current_roster_team_rb_carries": 379
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4425,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "TB",
+    "player_carries": 173,
+    "historical_team_rb_carries": 391
    }
   },
   {
@@ -2473,11 +2820,26 @@
     "n": 24,
     "basis": "2025 role on CLE"
    },
-   "backfield_share": 0.7143,
+   "backfield_share": 0.6516,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "CLE",
     "player_carries": 230,
-    "team_carries": 322
+    "historical_team_rb_carries": 353
+   },
+   "backfield_share_counterfactual_current_roster": 0.7143,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "CLE",
+    "player_carries": 230,
+    "current_roster_team_rb_carries": 322
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.6647,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "CLE",
+    "player_carries": 230,
+    "historical_team_rb_carries": 346
    }
   },
   {
@@ -3058,11 +3420,26 @@
     "n": 34,
     "basis": "2025 role on JAX"
    },
-   "backfield_share": 0.3671,
+   "backfield_share": 0.2242,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "JAX",
     "player_carries": 87,
-    "team_carries": 237
+    "historical_team_rb_carries": 388
+   },
+   "backfield_share_counterfactual_current_roster": 0.3671,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "JAX",
+    "player_carries": 87,
+    "current_roster_team_rb_carries": 237
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.1942,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "JAX",
+    "player_carries": 87,
+    "historical_team_rb_carries": 448
    }
   },
   {
@@ -3160,11 +3537,26 @@
     "n": 29,
     "basis": "2025 role on NE"
    },
-   "backfield_share": 0.506,
+   "backfield_share": 0.4575,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "NE",
     "player_carries": 210,
-    "team_carries": 415
+    "historical_team_rb_carries": 459
+   },
+   "backfield_share_counterfactual_current_roster": 0.506,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "NE",
+    "player_carries": 210,
+    "current_roster_team_rb_carries": 415
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4709,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "NE",
+    "player_carries": 210,
+    "historical_team_rb_carries": 446
    }
   },
   {
@@ -3200,11 +3592,26 @@
     "n": 29,
     "basis": "2025 role on PIT"
    },
-   "backfield_share": 0.4806,
+   "backfield_share": 0.6011,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "PIT",
     "player_carries": 223,
-    "team_carries": 464
+    "historical_team_rb_carries": 371
+   },
+   "backfield_share_counterfactual_current_roster": 0.4806,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "PIT",
+    "player_carries": 223,
+    "current_roster_team_rb_carries": 464
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.6501,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "PIT",
+    "player_carries": 223,
+    "historical_team_rb_carries": 343
    }
   },
   {
@@ -3343,11 +3750,26 @@
     "n": 29,
     "basis": "2025 role on NE"
    },
-   "backfield_share": 0.453,
+   "backfield_share": 0.4096,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "NE",
     "player_carries": 188,
-    "team_carries": 415
+    "historical_team_rb_carries": 459
+   },
+   "backfield_share_counterfactual_current_roster": 0.453,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "NE",
+    "player_carries": 188,
+    "current_roster_team_rb_carries": 415
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4215,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "NE",
+    "player_carries": 188,
+    "historical_team_rb_carries": 446
    }
   },
   {
@@ -3747,11 +4169,26 @@
     "n": 14,
     "basis": "2025 role on CAR"
    },
-   "backfield_share": 0.5194,
+   "backfield_share": 0.5878,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "CAR",
     "player_carries": 241,
-    "team_carries": 464
+    "historical_team_rb_carries": 410
+   },
+   "backfield_share_counterfactual_current_roster": 0.5194,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "PIT",
+    "player_carries": 241,
+    "current_roster_team_rb_carries": 464
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.5892,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "CAR",
+    "player_carries": 241,
+    "historical_team_rb_carries": 409
    }
   },
   {
@@ -3820,8 +4257,23 @@
    "backfield_share": 0.4113,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "DEN",
     "player_carries": 153,
-    "team_carries": 372
+    "historical_team_rb_carries": 372
+   },
+   "backfield_share_counterfactual_current_roster": 0.4113,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "DEN",
+    "player_carries": 153,
+    "current_roster_team_rb_carries": 372
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4113,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "DEN",
+    "player_carries": 153,
+    "historical_team_rb_carries": 372
    }
   },
   {
@@ -3857,11 +4309,26 @@
     "n": 12,
     "basis": "2025 role on TEN"
    },
-   "backfield_share": 0.5961,
+   "backfield_share": 0.7378,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "TEN",
     "player_carries": 242,
-    "team_carries": 406
+    "historical_team_rb_carries": 328
+   },
+   "backfield_share_counterfactual_current_roster": 0.5961,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "TEN",
+    "player_carries": 242,
+    "current_roster_team_rb_carries": 406
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.7707,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "TEN",
+    "player_carries": 242,
+    "historical_team_rb_carries": 314
    }
   },
   {
@@ -4040,11 +4507,26 @@
     "n": 28,
     "basis": "2025 role on CHI"
    },
-   "backfield_share": 0.427,
+   "backfield_share": 0.4194,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "CHI",
     "player_carries": 190,
-    "team_carries": 445
+    "historical_team_rb_carries": 453
+   },
+   "backfield_share_counterfactual_current_roster": 0.427,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "CHI",
+    "player_carries": 190,
+    "current_roster_team_rb_carries": 445
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.427,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "CHI",
+    "player_carries": 190,
+    "historical_team_rb_carries": 445
    }
   },
   {
@@ -4141,11 +4623,26 @@
     "n": 15,
     "basis": "2025 role on MIN"
    },
-   "backfield_share": 0.4923,
+   "backfield_share": 0.4609,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "MIN",
     "player_carries": 159,
-    "team_carries": 323
+    "historical_team_rb_carries": 345
+   },
+   "backfield_share_counterfactual_current_roster": 0.4923,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "MIN",
+    "player_carries": 159,
+    "current_roster_team_rb_carries": 323
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4923,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "MIN",
+    "player_carries": 159,
+    "historical_team_rb_carries": 323
    }
   },
   {
@@ -4301,11 +4798,26 @@
     "n": 29,
     "basis": "2025 role on PIT"
    },
-   "backfield_share": 0.3166,
+   "backfield_share": 0.3235,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "PIT",
     "player_carries": 120,
-    "team_carries": 379
+    "historical_team_rb_carries": 371
+   },
+   "backfield_share_counterfactual_current_roster": 0.3166,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "TB",
+    "player_carries": 120,
+    "current_roster_team_rb_carries": 379
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3499,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "PIT",
+    "player_carries": 120,
+    "historical_team_rb_carries": 343
    }
   },
   {
@@ -4535,11 +5047,26 @@
     "n": 14,
     "basis": "2025 role on CAR"
    },
-   "backfield_share": 0.875,
+   "backfield_share": 0.3585,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "CAR",
     "player_carries": 147,
-    "team_carries": 168
+    "historical_team_rb_carries": 410
+   },
+   "backfield_share_counterfactual_current_roster": 0.875,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "CAR",
+    "player_carries": 147,
+    "current_roster_team_rb_carries": 168
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3594,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "CAR",
+    "player_carries": 147,
+    "historical_team_rb_carries": 409
    }
   },
   {
@@ -4638,8 +5165,23 @@
    "backfield_share": 0.4435,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "DEN",
     "player_carries": 165,
-    "team_carries": 372
+    "historical_team_rb_carries": 372
+   },
+   "backfield_share_counterfactual_current_roster": 0.4435,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "DEN",
+    "player_carries": 165,
+    "current_roster_team_rb_carries": 372
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4435,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "DEN",
+    "player_carries": 165,
+    "historical_team_rb_carries": 372
    }
   },
   {
@@ -4807,11 +5349,26 @@
     "n": 15,
     "basis": "2025 role on MIN"
    },
-   "backfield_share": 0.4087,
+   "backfield_share": 0.3826,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "MIN",
     "player_carries": 132,
-    "team_carries": 323
+    "historical_team_rb_carries": 345
+   },
+   "backfield_share_counterfactual_current_roster": 0.4087,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "MIN",
+    "player_carries": 132,
+    "current_roster_team_rb_carries": 323
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4087,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "MIN",
+    "player_carries": 132,
+    "historical_team_rb_carries": 323
    }
   },
   {
@@ -4847,11 +5404,26 @@
     "n": 34,
     "basis": "2025 role on LA"
    },
-   "backfield_share": 0.3608,
+   "backfield_share": 0.354,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "LAR",
     "player_carries": 171,
-    "team_carries": 474
+    "historical_team_rb_carries": 483
+   },
+   "backfield_share_counterfactual_current_roster": 0.3608,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "LAR",
+    "player_carries": 171,
+    "current_roster_team_rb_carries": 474
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3608,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "LAR",
+    "player_carries": 171,
+    "historical_team_rb_carries": 474
    }
   },
   {
@@ -4887,11 +5459,26 @@
     "n": 37,
     "basis": "2025 role on WAS"
    },
-   "backfield_share": 0.4726,
+   "backfield_share": 0.3246,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "WAS",
     "player_carries": 112,
-    "team_carries": 237
+    "historical_team_rb_carries": 345
+   },
+   "backfield_share_counterfactual_current_roster": 0.4726,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "JAX",
+    "player_carries": 112,
+    "current_roster_team_rb_carries": 237
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3246,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "WAS",
+    "player_carries": 112,
+    "historical_team_rb_carries": 345
    }
   },
   {
@@ -4927,11 +5514,26 @@
     "n": 22,
     "basis": "2025 role on TB"
    },
-   "backfield_share": 0.3761,
+   "backfield_share": 0.3317,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "TB",
     "player_carries": 132,
-    "team_carries": 351
+    "historical_team_rb_carries": 398
+   },
+   "backfield_share_counterfactual_current_roster": 0.3761,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "WAS",
+    "player_carries": 132,
+    "current_roster_team_rb_carries": 351
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3376,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "TB",
+    "player_carries": 132,
+    "historical_team_rb_carries": 391
    }
   },
   {
@@ -4967,11 +5569,26 @@
     "n": 37,
     "basis": "2025 role on WAS"
    },
-   "backfield_share": 0.4986,
+   "backfield_share": 0.5072,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "WAS",
     "player_carries": 175,
-    "team_carries": 351
+    "historical_team_rb_carries": 345
+   },
+   "backfield_share_counterfactual_current_roster": 0.4986,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "WAS",
+    "player_carries": 175,
+    "current_roster_team_rb_carries": 351
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.5072,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "WAS",
+    "player_carries": 175,
+    "historical_team_rb_carries": 345
    }
   },
   {
@@ -5049,11 +5666,26 @@
     "n": 12,
     "basis": "2025 role on TEN"
    },
-   "backfield_share": 0.1773,
+   "backfield_share": 0.2195,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "TEN",
     "player_carries": 72,
-    "team_carries": 406
+    "historical_team_rb_carries": 328
+   },
+   "backfield_share_counterfactual_current_roster": 0.1773,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "TEN",
+    "player_carries": 72,
+    "current_roster_team_rb_carries": 406
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.2293,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "TEN",
+    "player_carries": 72,
+    "historical_team_rb_carries": 314
    }
   },
   {
@@ -5089,11 +5721,26 @@
     "n": 31,
     "basis": "2025 role on NYG"
    },
-   "backfield_share": 0.4282,
+   "backfield_share": 0.4444,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "NYG",
     "player_carries": 176,
-    "team_carries": 411
+    "historical_team_rb_carries": 396
+   },
+   "backfield_share_counterfactual_current_roster": 0.4282,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "NYG",
+    "player_carries": 176,
+    "current_roster_team_rb_carries": 411
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4444,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "NYG",
+    "player_carries": 176,
+    "historical_team_rb_carries": 396
    }
   },
   {
@@ -5176,11 +5823,26 @@
     "n": 25,
     "basis": "2025 role on HOU"
    },
-   "backfield_share": 0.5326,
+   "backfield_share": 0.5135,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "HOU",
     "player_carries": 229,
-    "team_carries": 430
+    "historical_team_rb_carries": 446
+   },
+   "backfield_share_counterfactual_current_roster": 0.5326,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "HOU",
+    "player_carries": 229,
+    "current_roster_team_rb_carries": 430
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.5465,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "HOU",
+    "player_carries": 229,
+    "historical_team_rb_carries": 419
    }
   },
   {
@@ -5246,11 +5908,26 @@
     "n": 24,
     "basis": "2025 role on ATL"
    },
-   "backfield_share": 0.5,
+   "backfield_share": 0.3257,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "ATL",
     "player_carries": 143,
-    "team_carries": 286
+    "historical_team_rb_carries": 439
+   },
+   "backfield_share_counterfactual_current_roster": 0.5,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "ARI",
+    "player_carries": 143,
+    "current_roster_team_rb_carries": 286
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3326,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "ATL",
+    "player_carries": 143,
+    "historical_team_rb_carries": 430
    }
   },
   {
@@ -5286,11 +5963,26 @@
     "n": 26,
     "basis": "2025 role on SF"
    },
-   "backfield_share": 0.2487,
+   "backfield_share": 0.2169,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "SF",
     "player_carries": 95,
-    "team_carries": 382
+    "historical_team_rb_carries": 438
+   },
+   "backfield_share_counterfactual_current_roster": 0.2487,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "ATL",
+    "player_carries": 95,
+    "current_roster_team_rb_carries": 382
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.2199,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "SF",
+    "player_carries": 95,
+    "historical_team_rb_carries": 432
    }
   },
   {
@@ -5326,11 +6018,26 @@
     "n": 30,
     "basis": "2025 role on SEA"
    },
-   "backfield_share": 0.5526,
+   "backfield_share": 0.3706,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "SEA",
     "player_carries": 189,
-    "team_carries": 342
+    "historical_team_rb_carries": 510
+   },
+   "backfield_share_counterfactual_current_roster": 0.5526,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "SEA",
+    "player_carries": 189,
+    "current_roster_team_rb_carries": 342
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.3765,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "SEA",
+    "player_carries": 189,
+    "historical_team_rb_carries": 502
    }
   },
   {
@@ -5366,11 +6073,26 @@
     "n": 17,
     "basis": "2025 role on NO"
    },
-   "backfield_share": 0.2377,
+   "backfield_share": 0.4367,
    "backfield_share_sample": {
     "season": 2025,
+    "historical_team": "NO",
     "player_carries": 131,
-    "team_carries": 551
+    "historical_team_rb_carries": 300
+   },
+   "backfield_share_counterfactual_current_roster": 0.2377,
+   "backfield_share_counterfactual_sample": {
+    "season": 2025,
+    "current_roster_team": "NO",
+    "player_carries": 131,
+    "current_roster_team_rb_carries": 551
+   },
+   "backfield_share_counterfactual_historical_trimmed": 0.4662,
+   "backfield_share_historical_trimmed_sample": {
+    "season": 2025,
+    "historical_team": "NO",
+    "player_carries": 131,
+    "historical_team_rb_carries": 281
    }
   }
  ]
