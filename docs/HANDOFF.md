@@ -15,9 +15,9 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-28 by Codex - repaired the RB `backfield_command` denominator: all-week 2025 carries stay on historical teams, an untrimmed split player-team ledger supplies complete denominators, and a same-build three-frame attribution separates regrouping from source completeness/granularity. |
-| **Next agent** | Review the PR from `codex/rb-historical-backfield`; do not merge it without Anthony's approval. Keep #54 OPEN, ON HOLD, and untouched. After this PR, continue in the approved order: rename `team_targets`/`targets_pg` with validation; audit the four remaining R mislabels; assess (do not build) vacated carries against ADP and the shared rookie gap; keep team supply shadow/display-only. |
-| **Branch** | `codex/rb-historical-backfield`, based on `main` at `024c6ec` (#66); implementation is green and ready for review, not merged |
+| **Last touched** | 2026-08-28 by Copilot - renamed the ffopportunity team supply column to pass-attempt terminology. `rec_attempt_team` carries pass attempts, not receiver targets: `pass_attempt_team == rec_attempt_team` in 36,063/36,063 rows, constant within all 3,386 team-games, and rebuilding from it reproduces all 192 rows exactly. Header and producer only - the 192 data rows are byte-identical. Six guards in `test_pages_data.py` now re-derive the identity from source instead of trusting the label. |
+| **Next agent** | Review the PR from `pass-attempt-terminology`; do not merge it without Anthony's approval. Keep #54 OPEN, ON HOLD, and untouched. The `team_targets`/`targets_pg` rename is DONE. Next in the approved order: audit the four remaining R mislabels (`route_participation_proxy`, `team_implied_total`, `prior_epa_proxy` are known; `team_targets` is now closed); then assess (do not build) vacated carries against ADP and the shared rookie gap; keep team supply shadow/display-only. |
+| **Branch** | `pass-attempt-terminology`, based on `main` at `d88933d` (#67); implementation is green and ready for review, not merged |
 | **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #66 is merged and was verified live in the preceding cycle. The RB historical-denominator repair is branch-only until its PR is reviewed and merged. |
 | **Draft order** | UNDRAWN as checked 2026-08-28 16:37 UTC (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
@@ -162,8 +162,10 @@ drawn and Anthony asks to inspect his actual slot. The `docs/ffopportunity/` R e
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already
 correct, and the shipped QB table did not inherit the R file's `-2` interception
 error. Do not consume unreviewed local regenerated exports. The forward-Vegas and
-TE items are complete on main; do not repeat them. The next approved work is the
-`team_targets`/`targets_pg` rename and validation, then the four-mislabel audit.
+TE items are complete on main; do not repeat them. The `team_targets`/`targets_pg`
+rename and validation is COMPLETE on `pass-attempt-terminology`; the next approved
+work is the four-mislabel audit (three remain: `route_participation_proxy`,
+`team_implied_total`, `prior_epa_proxy`).
 Vacated carries is assessment-only after those: quantify every backfield, test its
 ADP relationship and incremental value, and handle the rookie/no-prior-NFL-sample
 gap jointly with `adj_vac` before proposing any wiring.
