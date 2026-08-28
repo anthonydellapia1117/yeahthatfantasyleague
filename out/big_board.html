@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0b1120">
 <meta name="color-scheme" content="dark">
 <link rel="apple-touch-icon" href="icon-180.png">
+<script src="player_names.js"></script>
 <script src="nav.js" data-active="board" data-reveal defer></script>
 <title>YTFL Big Board 2026</title>
 <style>
@@ -242,8 +243,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 
 const esc = s => String(s).replace(/[&<>"']/g,
   c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const norm = (s) => String(s).toLowerCase().replace(/[.']/g, "")
-  .replace(/\s+(jr|sr|ii|iii|iv|v)$/,"").trim();
+const norm = playerComparisonKey;
 const pct = x => Math.round(x * 100) + "%";
 
 // signal encoding: three channels, always - container treatment (CSS above),
@@ -325,8 +325,7 @@ async function pollDraft(){
     if (!d || d.status !== "drafting"){ D.live = false; return; }
     const picks = await fetch("https://api.sleeper.app/v1/draft/" + id + "/picks").then(r => r.json());
     D.live = true;
-    D.drafted = new Set((picks || []).map(p =>
-      norm(((p.metadata || {}).first_name || "") + " " + ((p.metadata || {}).last_name || ""))));
+    D.drafted = new Set((picks || []).map(p => String(p.player_id || "")).filter(Boolean));
     renderBoard();
   } catch (e) { /* offline board stays full */ }
 }
@@ -458,11 +457,12 @@ function renderBoard(){
   if (View.sig !== "ALL")
     list = View.sig === "conflicts" ? list.filter(p => S(p).signal_conflict)
       : list.filter(p => S(p).signal === View.sig);
-  if (View.avail && D.drafted.size) list = list.filter(p => !D.drafted.has(norm(p.name)));
+  if (View.avail && D.drafted.size)
+    list = list.filter(p => !D.drafted.has(String(p.sleeper_id || "")));
   if (View.rookies) list = list.filter(isRookie);
   if (View.walter) list = list.filter(p => p.walter.applied.length || p.walter.evidence.length);
   if (View.bull && bullishCurrent())
-    list = list.filter(p => D.bull.tags.some(x => x.name === p.name && x.pos === p.pos));
+    list = list.filter(p => bullishTag(p));
   renderActiveFilters(list.length, D.cvs.players.length);
   document.getElementById("board").innerHTML =
     (wl ? "" : '<p class="small" id="wl-note">WALTER LAYER OFF (live toggle) - pure model board, ranks and signals recomputed server-side without the guide.</p>') +
@@ -470,7 +470,7 @@ function renderBoard(){
     (list.map(p => `
     <div class="brow" data-sig="${S(p).signal || ""}">
       <div class="rk num">${S(p).cvs_rank}</div>
-      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${bullishChip(p)}${D.drafted.has(norm(p.name)) ? '<span class="floor">drafted</span>' : ""}</div>
+      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${bullishChip(p)}${D.drafted.has(String(p.sleeper_id || "")) ? '<span class="floor">drafted</span>' : ""}</div>
       <div class="trio"><span class="c num">${val(p)}</span><br>
         <span class="sub num">conf ${pct(p.confidence)} - vol ${p.volatility ? p.volatility.sd : "-"}</span></div>
       <div class="meta">${p.pos} - <a href="teams.html#t=${encodeURIComponent(p.team || "")}">${esc(p.team || "-")}</a>
@@ -502,9 +502,14 @@ function bullishCurrent(){
     D.bull.provenance.engine_content_sha256 || "";
   return /^[0-9a-f]{64}$/.test(engineDigest) && bullDigest === engineDigest;
 }
+function bullishTag(p){
+  const sleeperId = String(p.sleeper_id || "");
+  if (!sleeperId || !D.bull) return null;
+  return D.bull.tags.find(x => String(x.sleeper_id || "") === sleeperId) || null;
+}
 function bullishChip(p){
   if (!D.bull) return "";
-  const t = D.bull.tags.find(x => x.name === p.name && x.pos === p.pos);
+  const t = bullishTag(p);
   if (!t) return "";
   const ageH = Math.max(0, (Date.now() - Date.parse(t.computed_at)) / 3600000);
   if (!bullishCurrent()){

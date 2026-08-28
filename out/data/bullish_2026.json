@@ -1,10 +1,10 @@
 {
  "provenance": {
   "generated": "2026-08-27",
-  "computed_at": "2026-08-27T22:24:53+00:00",
+  "computed_at": "2026-08-28T02:44:02+00:00",
   "engine_generated": "2026-08-26",
   "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
-  "inputs_content_sha256": "efd307fa78ca6e6f3b9e3535e4a5c383c3e8b694f09fcf176592905d768e84c1",
+  "inputs_content_sha256": "80c39d00125f416b008c0c502d381496b7e972518c5ea2b3b7c9afc724dd3012",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -211,7 +211,7 @@
   }
  },
  "delta": {
-  "previous": "2026-08-26",
+  "previous": "2026-08-27",
   "gained": [],
   "lost": [],
   "status_changed": []
@@ -220,6 +220,7 @@
   {
    "name": "Jahmyr Gibbs",
    "pos": "RB",
+   "sleeper_id": "9221",
    "adp": 1.6,
    "status": "BULLISH",
    "score": 84.0,
@@ -234,12 +235,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Bijan Robinson",
    "pos": "RB",
+   "sleeper_id": "9509",
    "adp": 2.5,
    "status": "WATCH",
    "score": 50.3,
@@ -256,12 +258,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Puka Nacua",
    "pos": "WR",
+   "sleeper_id": "9493",
    "adp": 4.7,
    "status": "BULLISH",
    "score": 97.8,
@@ -278,12 +281,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ja'Marr Chase",
    "pos": "WR",
+   "sleeper_id": "7564",
    "adp": 3.0,
    "status": "BULLISH",
    "score": 90.6,
@@ -300,12 +304,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jonathan Taylor",
    "pos": "RB",
+   "sleeper_id": "6813",
    "adp": 7.1,
    "status": "WATCH",
    "score": 58.2,
@@ -322,12 +327,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jaxon Smith-Njigba",
    "pos": "WR",
+   "sleeper_id": "9488",
    "adp": 6.4,
    "status": "BULLISH",
    "score": 96.0,
@@ -342,12 +348,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Amon-Ra St. Brown",
    "pos": "WR",
+   "sleeper_id": "7547",
    "adp": 7.1,
    "status": "BULLISH",
    "score": 97.2,
@@ -362,12 +369,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chase Brown",
    "pos": "RB",
+   "sleeper_id": "9224",
    "adp": 15.7,
    "status": "BULLISH",
    "score": 69.0,
@@ -382,12 +390,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Derrick Henry",
    "pos": "RB",
+   "sleeper_id": "3198",
    "adp": 20.5,
    "status": "BULLISH",
    "score": 84.0,
@@ -402,12 +411,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Saquon Barkley",
    "pos": "RB",
+   "sleeper_id": "4866",
    "adp": 13.0,
    "status": "WATCH",
    "score": 58.2,
@@ -424,12 +434,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Trey McBride",
    "pos": "TE",
+   "sleeper_id": "8130",
    "adp": 21.5,
    "status": "BULLISH",
    "score": 90.0,
@@ -441,12 +452,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Josh Allen",
    "pos": "QB",
+   "sleeper_id": "4984",
    "adp": 22.8,
    "status": "BULLISH",
    "score": 91.7,
@@ -459,12 +471,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ashton Jeanty",
    "pos": "RB",
+   "sleeper_id": "12527",
    "adp": 14.7,
    "status": "WATCH",
    "score": 84.0,
@@ -481,12 +494,13 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chris Olave",
    "pos": "WR",
+   "sleeper_id": "8144",
    "adp": 30.4,
    "status": "BULLISH",
    "score": 63.8,
@@ -503,12 +517,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Zay Flowers",
    "pos": "WR",
+   "sleeper_id": "9997",
    "adp": 42.8,
    "status": "BULLISH",
    "score": 68.8,
@@ -525,12 +540,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Kyren Williams",
    "pos": "RB",
+   "sleeper_id": "8150",
    "adp": 29.7,
    "status": "WATCH",
    "score": 56.6,
@@ -547,12 +563,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "D'Andre Swift",
    "pos": "RB",
+   "sleeper_id": "6790",
    "adp": 55.8,
    "status": "WATCH",
    "score": 46.4,
@@ -569,12 +586,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Tyler Warren",
    "pos": "TE",
+   "sleeper_id": "12518",
    "adp": 47.7,
    "status": "BULLISH",
    "score": 90.0,
@@ -588,12 +606,13 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Javonte Williams",
    "pos": "RB",
+   "sleeper_id": "7588",
    "adp": 35.0,
    "status": "BULLISH",
    "score": 69.0,
@@ -608,12 +627,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Lamar Jackson",
    "pos": "QB",
+   "sleeper_id": "4881",
    "adp": 31.2,
    "status": "WATCH",
    "score": 55.0,
@@ -628,12 +648,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Drake Maye",
    "pos": "QB",
+   "sleeper_id": "11564",
    "adp": 47.1,
    "status": "WATCH",
    "score": 55.0,
@@ -648,12 +669,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Joe Burrow",
    "pos": "QB",
+   "sleeper_id": "6770",
    "adp": 51.7,
    "status": "BULLISH",
    "score": 75.4,
@@ -666,12 +688,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Dak Prescott",
    "pos": "QB",
+   "sleeper_id": "3294",
    "adp": 78.1,
    "status": "BULLISH",
    "score": 91.7,
@@ -684,12 +707,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Kyle Pitts",
    "pos": "TE",
+   "sleeper_id": "7553",
    "adp": 69.0,
    "status": "BULLISH",
    "score": 90.0,
@@ -701,12 +725,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Travis Kelce",
    "pos": "TE",
+   "sleeper_id": "1466",
    "adp": 92.2,
    "status": "BULLISH",
    "score": 88.9,
@@ -718,12 +743,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Trevor Lawrence",
    "pos": "QB",
+   "sleeper_id": "7523",
    "adp": 100.9,
    "status": "WATCH",
    "score": 45.0,
@@ -738,12 +764,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Caleb Williams",
    "pos": "QB",
+   "sleeper_id": "11560",
    "adp": 71.3,
    "status": "WATCH",
    "score": 55.0,
@@ -758,12 +785,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jalen Hurts",
    "pos": "QB",
+   "sleeper_id": "6904",
    "adp": 60.9,
    "status": "WATCH",
    "score": 55.0,
@@ -778,12 +806,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Justin Herbert",
    "pos": "QB",
+   "sleeper_id": "6797",
    "adp": 82.9,
    "status": "BULLISH",
    "score": 75.4,
@@ -796,12 +825,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Patrick Mahomes",
    "pos": "QB",
+   "sleeper_id": "4046",
    "adp": 106.3,
    "status": "WATCH",
    "score": 45.0,
@@ -817,12 +847,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Matthew Stafford",
    "pos": "QB",
+   "sleeper_id": "421",
    "adp": 95.4,
    "status": "BULLISH",
    "score": 91.7,
@@ -835,12 +866,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jared Goff",
    "pos": "QB",
+   "sleeper_id": "3163",
    "adp": 133.8,
    "status": "BULLISH",
    "score": 91.7,
@@ -853,12 +885,13 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Hunter Henry",
    "pos": "TE",
+   "sleeper_id": "3214",
    "adp": 138.3,
    "status": "WATCH",
    "score": 45.0,
@@ -872,12 +905,13 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Kyler Murray",
    "pos": "QB",
+   "sleeper_id": "5849",
    "adp": 159.5,
    "status": "WATCH",
    "score": 45.0,
@@ -892,7 +926,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-27T22:24:53+00:00",
+   "computed_at": "2026-08-28T02:44:02+00:00",
    "ttl_hours": 72
   }
  ]

@@ -28,6 +28,7 @@ import os
 from collections import defaultdict
 
 from analyze_recency import HISTORY
+from player_names import PlayerIdentityResolver
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
@@ -41,12 +42,6 @@ W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
      "receiving_2pt_conversions": 2.0,
      "sack_fumbles_lost": -2.0, "rushing_fumbles_lost": -2.0,
      "receiving_fumbles_lost": -2.0, "special_teams_tds": 6.0}
-
-
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
 
 
 def wilson(k, n, z=1.96):
@@ -67,19 +62,21 @@ def pctile(vals, q):
     return vals[i]
 
 
-DISPLAY = {}                 # normalized name -> last seen display name
-
-
 def season_rows(year):
-    """name|pos -> {league-scored totals, targets, touches, games}, REG."""
+    """gsis id -> {identity + league-scored totals}, REG.
+
+    nflverse supplies the stable identity.  A lossy name key is only used at
+    the external FFC boundary, through PlayerIdentityResolver below.
+    """
     agg = defaultdict(lambda: defaultdict(float))
     with open(os.path.join(HISTORY, f"spw_{year}.csv")) as fh:
         for r in csv.DictReader(fh):
             if r.get("season_type") != "REG":
                 continue
-            key = norm(r["player_display_name"]) + "|" + r.get("position", "")
-            DISPLAY[key.split("|")[0]] = r["player_display_name"]
+            key = r["player_id"]
             a = agg[key]
+            a["name"] = r["player_display_name"]
+            a["pos"] = r.get("position", "")
             a["games"] += 1
             for col in ("targets", "carries", "receptions"):
                 v = r.get(col)
@@ -105,7 +102,7 @@ def season_rows(year):
 
 
 def pos_rank(agg, pos):
-    lst = sorted(((a["pts"], k) for k, a in agg.items() if k.endswith("|" + pos)),
+    lst = sorted(((a["pts"], k) for k, a in agg.items() if a["pos"] == pos),
                  reverse=True)
     return {k: i for i, (_, k) in enumerate(lst, 1)}
 
@@ -118,10 +115,9 @@ def main():
     goal = json.load(open(os.path.join(D, "goalline_2025.json")))
 
     prospect = xw["prospect"]           # sleeper player_id -> draft year/round
-    u_by_key = {norm(u["name"]) + "|" + u["pos"]: u for u in usage}
-    team_now = {}                        # name|pos -> 2026 team (depth charts)
-    for e in depth:
-        team_now[norm(e["player"]) + "|" + e["pos"]] = e["team"]
+    gsis_of = xw["matched"]              # sleeper player_id -> gsis id
+    usage_by_gsis = {u["gsis_id"]: u for u in usage}
+    team_now = {e["gsis_id"]: e["team"] for e in depth}
 
     # ---- derived thresholds, each stated with its distribution
     qbs = [u for u in usage if u["pos"] == "QB" and u["weeks"] >= 8]
@@ -149,10 +145,10 @@ def main():
     for yr in range(2016, 2026):
         agg = season_rows(yr)
         rb1_of_yr = min(pos_rank(agg, "RB").items(), key=lambda kv: kv[1])
-        actual_rb1[yr] = rb1_of_yr[0].split("|")[0]
+        actual_rb1[yr] = rb1_of_yr[0]
         ranks = pos_rank(agg, "WR")
         for key, a in agg.items():
-            if key.endswith("|WR") and a["targets"] >= thr["wr_target_threshold"]:
+            if a["pos"] == "WR" and a["targets"] >= thr["wr_target_threshold"]:
                 v_n += 1
                 v_24 += ranks.get(key, 999) <= 24
                 v_12 += ranks.get(key, 999) <= 12
@@ -175,7 +171,8 @@ def main():
             p_agg, p_yr = prev
             ranks = pos_rank(agg, "RB")
             for key, a in p_agg.items():
-                if key.endswith("|RB") and a["carries"] + a["receptions"] >= thr["touch_fade"]:
+                if a["pos"] == "RB" and \
+                   a["carries"] + a["receptions"] >= thr["touch_fade"]:
                     t_n += 1
                     hit = ranks.get(key, 999) <= 5
                     t_top5 += hit
@@ -196,16 +193,16 @@ def main():
     rb_ranks25 = pos_rank(agg25, "RB")
     rb1_key = next((k for k, r in rb_ranks25.items() if r == 1), None)
     touch_400_keys = [k for k, a in agg25.items()
-                      if k.endswith("|RB")
+                      if a["pos"] == "RB"
                       and a["carries"] + a["receptions"] >= thr["touch_fade"]]
 
     # ambiguous backfield: 2026 team's returning-RB carry concentration
     team_rb_carries = defaultdict(list)
-    for key, team in team_now.items():
-        if key.endswith("|RB"):
-            u = u_by_key.get(key)
+    for e in depth:
+        if e["pos"] == "RB":
+            u = usage_by_gsis.get(e["gsis_id"])
             if u:
-                team_rb_carries[team].append(u["carries"])
+                team_rb_carries[e["team"]].append(u["carries"])
     top_share = {}
     for team, cs in team_rb_carries.items():
         tot = sum(cs)
@@ -226,9 +223,15 @@ def main():
         pre = min((p for p in ffc["players"] if p["position"] == "RB"),
                   key=lambda p: p["adp"])
         act = actual_rb1[yr]
+        actual = season_rows(yr)
+        resolved = PlayerIdentityResolver(
+            [{"name": row["name"], "pos": row["pos"], "gsis_id": gsis_id}
+             for gsis_id, row in actual.items()]
+        ).resolve(pre["name"], position="RB")
         row = {"year": yr, "preseason_rb1": pre["name"],
-               "actual_rb1": DISPLAY.get(act, act),
-               "converted": norm(pre["name"]) == act}
+               "actual_rb1": actual[act]["name"],
+               "converted": bool(resolved.record and
+                                 resolved.record["gsis_id"] == act)}
         if yr == 2016:
             row["source_dependency"] = (
                 "the 2016 cell is source-dependent: FFC ADP names one RB1, "
@@ -262,9 +265,10 @@ def main():
         if (p.get("adp_sleeper") or 999) > draft_len:   # it earns a tag
             continue
         name, pos = p["name"], p["pos"]
-        key = norm(name) + "|" + pos
-        pr = prospect.get(str(p.get("player_id") or ""))
-        u = u_by_key.get(key)
+        sid = str(p.get("player_id") or "")
+        gid = gsis_of.get(sid)
+        pr = prospect.get(sid)
+        u = usage_by_gsis.get(gid)
         adp_round = math.ceil((p.get("adp_sleeper") or 999) / 12)
 
         if pos == "WR" and pr and pr.get("draft_year") == SEASON - 1:
@@ -283,7 +287,7 @@ def main():
                     f"{tpg:.1f} targets/g in 2025 >= p75 of RB usage "
                     f"({thr['rb_targets_pg_p75']})")
         if pos == "RB":
-            team = team_now.get(key)
+            team = team_now.get(gid)
             if team in ambiguous_teams:
                 add(name, pos, "ambiguous_backfield",
                     "target_if_cheap_fade_if_premium",
@@ -307,7 +311,7 @@ def main():
         if u and u["weeks"] <= thr["injury_weeks_max"] and pos in ("RB", "WR", "TE", "QB"):
             prev_rank = None
             for yr_ranks in (pos_rank(agg25, pos), pos_rank(season_rows(2024), pos)):
-                r = yr_ranks.get(key)
+                r = yr_ranks.get(gid)
                 if r and r <= 24:
                     prev_rank = r
                     break
@@ -315,13 +319,13 @@ def main():
                 add(name, pos, "post_injury_discount", "context",
                     f"played {int(u['weeks'])} weeks in 2025 with a recent "
                     f"top-24 finish (rank {prev_rank}) on record", zero_ir=True)
-        if pos == "RB" and key == rb1_key:
+        if pos == "RB" and gid == rb1_key:
             add(name, pos, "rb1_curse", "fade",
                 "computed 2025 RB1 under league scoring; the prior-year RB1 "
                 "declined in 6 of the last 7 seasons (report claim, ledger "
                 "verified below for the touch half)")
-        if pos == "RB" and key in touch_400_keys:
-            a25 = agg25[key]
+        if pos == "RB" and gid in touch_400_keys:
+            a25 = agg25[gid]
             add(name, pos, "touch_400_fade", "fade",
                 f"{int(a25['carries'] + a25['receptions'])} touches in 2025 "
                 f">= {thr['touch_fade']}; our 2013-2024 ledger: "

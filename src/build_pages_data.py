@@ -22,8 +22,9 @@ import json
 import math
 import os
 import sys
-import unicodedata
 import urllib.request
+
+from player_names import PlayerIdentityResolver, comparison_key
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "data")
@@ -91,15 +92,32 @@ def build_adp():
     url_f = "https://fantasyfootballcalculator.com/api/v1/adp/ppr?teams=12&year=2026"
     ffc = json.loads(fetch(url_f))
     stamp("adp_ffc", "fantasyfootballcalculator (documented, attribution requested)", url_f)
-    f_rows = {}
+    f_rows = []
     for p in ffc.get("players", []):
-        f_rows[p["name"].lower()] = {
-            "adp_ffc": r2(p.get("adp")), "stdev": r2(p.get("stdev")),
-            "high": p.get("high"), "low": p.get("low"), "bye": p.get("bye")}
+        # FFC calls kickers PK; Sleeper calls the same roster position K.
+        # Provider position taxonomy is separate from name normalization.
+        ffc_pos = "K" if p.get("position") == "PK" else p.get("position")
+        f_rows.append({
+            "name": p["name"], "pos": ffc_pos,
+            "fields": {
+                "adp_ffc": r2(p.get("adp")), "stdev": r2(p.get("stdev")),
+                "high": p.get("high"), "low": p.get("low"),
+                "bye": p.get("bye")}})
+    ffc_resolver = PlayerIdentityResolver(f_rows)
+    sleeper_buckets = {}
+    for player_id, row in s_rows.items():
+        sleeper_buckets.setdefault(
+            (comparison_key(row["name"]), row["pos"]), []).append(player_id)
 
     merged = []
     for pid, row in s_rows.items():
-        f = f_rows.get(row["name"].lower(), {})
+        resolved = ffc_resolver.resolve(row["name"], position=row["pos"])
+        target_unique = len(sleeper_buckets[
+            (comparison_key(row["name"]), row["pos"])]) == 1
+        # Source uniqueness is not enough: one FFC row must never fan out to
+        # two Sleeper identities which comparison_key deliberately collapses.
+        f = (resolved.record["fields"]
+             if resolved.record is not None and target_unique else {})
         merged.append({"player_id": pid, **row, **f})
     merged.sort(key=lambda r: (r.get("adp_sleeper") or 999, r["player_id"]))
     write("adp", {"provenance": {"adp_source": "sleeper",
@@ -110,20 +128,6 @@ def build_adp():
                   "players": merged})
     return s_rows
 
-
-def norm_name(n):
-    """Suffix/punctuation/diacritic normalizer - the suffix and punctuation
-    strip is the same fix the 3B audit forced on ingest.py's reconciliation
-    ('Kenneth Walker' vs 'Kenneth Walker III'). Diacritic folding joined it
-    when the P2 cron audit found Sleeper's 'Audric Estime' unmatched against
-    nflverse's 'Audric Estimé' - a real draftable RB lost to an accent."""
-    n = unicodedata.normalize("NFKD", n)
-    n = "".join(c for c in n if not unicodedata.combining(c))
-    n = n.lower().replace(".", "").replace("'", "")
-    parts = [w for w in n.split() if w not in ("jr", "sr", "ii", "iii", "iv", "v")]
-    return " ".join(parts)
-
-
 def build_crosswalk(sleeper_ids):
     """Sleeper player_id <-> gsis_id via nflverse players (v2). Unmatched logged.
     Team defenses are excluded up front: Sleeper models DEF as pseudo-players and
@@ -132,25 +136,30 @@ def build_crosswalk(sleeper_ids):
     t = parquet(url, columns=["gsis_id", "display_name", "latest_team", "position",
                               "birth_date", "draft_year", "draft_round", "draft_pick"])
     stamp("crosswalk", "nflverse players v2 (CC-BY-4.0)", url)
-    by_name = {}
+    nflverse_players = []
     for i in range(t.num_rows):
         nm = str(t["display_name"][i])
-        by_name.setdefault(norm_name(nm), []).append({
-            "gsis_id": str(t["gsis_id"][i]), "team": str(t["latest_team"][i]),
+        nflverse_players.append({
+            "name": nm, "gsis_id": str(t["gsis_id"][i]),
+            "team": str(t["latest_team"][i]),
             "pos": str(t["position"][i]),
             "draft_year": None if t["draft_year"][i].as_py() is None else int(t["draft_year"][i].as_py()),
             "draft_round": None if t["draft_round"][i].as_py() is None else int(t["draft_round"][i].as_py()),
             "draft_pick": None if t["draft_pick"][i].as_py() is None else int(t["draft_pick"][i].as_py()),
         })
+    resolver = PlayerIdentityResolver(nflverse_players)
     matched, unmatched, disambiguated = {}, [], []
     for pid, row in sleeper_ids.items():
         if row["pos"] == "DEF":
             continue                    # team entity, no gsis crosswalk exists
-        cands = by_name.get(norm_name(row["name"]), [])
+        result = resolver.resolve(row["name"], position=row["pos"],
+                                  prefer_latest_draft_year=True,
+                                  allow_unique_position_mismatch=True)
+        cands = result.candidates
         pos_match = [c for c in cands if c["pos"] == row["pos"]]
-        if len(pos_match) == 1:
-            matched[pid] = pos_match[0]
-        elif len(pos_match) > 1:
+        if result.record is not None:
+            matched[pid] = result.record
+        if result.rule == "most recent draft_year":
             # Same name, same position, different men. The suffix strip that
             # rescues "Kenneth Walker" vs "Kenneth Walker III" also collapses
             # fathers onto sons: Marvin Harrison (1996, IND) and Marvin Harrison
@@ -164,23 +173,18 @@ def build_crosswalk(sleeper_ids):
             # undrafted (Frank Gore vs Frank Gore Jr.) would resolve backwards
             # onto the retired father. If any candidate lacks an entry year the
             # pair stays unmatched, which is exactly the status quo.
-            years = [c["draft_year"] for c in pos_match]
-            best = max(years) if all(y for y in years) else None
-            top = [c for c in pos_match if c["draft_year"] == best] if best else []
-            if best and len(top) == 1:
-                matched[pid] = top[0]
-                disambiguated.append({"player_id": pid, "name": row["name"],
-                                      "pos": row["pos"], "chose_draft_year": best,
-                                      "over": sorted(c["draft_year"] or 0 for c in pos_match
-                                                     if c is not top[0]),
-                                      "rule": "most recent draft_year"})
-            else:
-                unmatched.append({"player_id": pid, **row, "candidates": len(cands),
-                                  "why": "same name and position, entry year cannot separate"})
-        elif len(cands) == 1:
-            matched[pid] = cands[0]
-        else:
-            unmatched.append({"player_id": pid, **row, "candidates": len(cands)})
+            chosen = result.record
+            disambiguated.append({"player_id": pid, "name": row["name"],
+                                  "pos": row["pos"],
+                                  "chose_draft_year": chosen["draft_year"],
+                                  "over": sorted(c["draft_year"] or 0 for c in pos_match
+                                                 if c is not chosen),
+                                  "rule": result.rule})
+        elif result.record is None:
+            entry = {"player_id": pid, **row, "candidates": len(cands)}
+            if len(pos_match) > 1:
+                entry["why"] = result.reason
+            unmatched.append(entry)
     write("crosswalk", {"provenance": prov("crosswalk"),
                         "matched": {k: v["gsis_id"] for k, v in matched.items()},
                         "prospect": {k: {kk: v[kk] for kk in ("draft_year", "draft_round", "draft_pick")}

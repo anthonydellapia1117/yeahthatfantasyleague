@@ -39,6 +39,7 @@ import os
 from collections import defaultdict
 
 from analyze_recency import HISTORY
+from player_names import nflverse_roster_identity
 
 # THE VERDICT IS REPORTED, NOT COMPUTED. The automated rule this script
 # used to carry (BEATS ADP / UNDERPOWERED / NULL, derived from six
@@ -101,12 +102,6 @@ W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
      "receiving_fumbles_lost": -2.0, "special_teams_tds": 6.0}
 
 
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
-
-
 def wilson(k, n):
     if n == 0:
         return None
@@ -136,13 +131,15 @@ def two_prop(k1, n1, k2, n2):
 
 
 def season(year):
-    """name|pos -> league-scored totals plus opportunity counts, REG."""
+    """gsis id -> identity plus league-scored totals/opportunities, REG."""
     agg = defaultdict(lambda: defaultdict(float))
     with open(os.path.join(HISTORY, f"spw_{year}.csv")) as fh:
         for r in csv.DictReader(fh):
             if r.get("season_type") != "REG" or r.get("position") not in POSITIONS:
                 continue
-            a = agg[norm(r["player_display_name"]) + "|" + r["position"]]
+            a = agg[r["player_id"]]
+            a["name"] = r["player_display_name"]
+            a["pos"] = r["position"]
             a["games"] += 1
             for col in ("targets", "carries"):
                 v = r.get(col)
@@ -161,6 +158,21 @@ def season(year):
     return agg
 
 
+def season_identity(year):
+    """Resolve that season's market names against nflverse roster identity.
+
+    Roster snapshots retain players who produced no stats, so a drafted
+    injury/holdout still enters the outcome ledger as a bust.  Stable GSIS ids
+    also carry an actual player across a recorded position change without
+    transferring a father's history to his son.
+    """
+    with open(os.path.join(HISTORY, f"roster_{year}.csv")) as roster_fh, \
+         open(os.path.join(HISTORY, f"spw_{year}.csv")) as stats_fh:
+        return nflverse_roster_identity(
+            csv.DictReader(roster_fh), positions=POSITIONS,
+            stat_rows=csv.DictReader(stats_fh))
+
+
 def pctile(vals, q):
     vals = sorted(vals)
     if not vals:
@@ -176,6 +188,7 @@ def main():
     for year in YEARS:
         prior = stats[year - 1]
         cur = stats[year]
+        current_identity = season_identity(year)
         ffc = json.load(open(os.path.join(HISTORY, f"ffc_ppr_{year}.json")))
         by_pos = defaultdict(list)
         for p in sorted(ffc["players"], key=lambda x: x["adp"]):
@@ -185,13 +198,19 @@ def main():
         rank = {}
         for pos in POSITIONS:
             pool = sorted(((a["pts"], k) for k, a in cur.items()
-                           if k.endswith("|" + pos)), reverse=True)
+                           if a["pos"] == pos), reverse=True)
             for i, (_pts, k) in enumerate(pool, 1):
                 rank[k] = i
         for pos, lst in by_pos.items():
             # the criterion thresholds are percentiles of THIS season's own
             # prior-year pool - computed, never carried between seasons
-            cand = [prior[norm(p["name"]) + "|" + pos] for p in lst[:48]]
+            resolved = [current_identity.resolve(
+                            p["name"], position=pos,
+                            prefer_latest_draft_year=True).record
+                        for p in lst[:48]]
+            cand = [prior[r["gsis_id"]] for r in resolved
+                    if r is not None and r["gsis_id"] in prior
+                    and prior[r["gsis_id"]]["pos"] == pos]
             opp = [(a["targets"] + a["carries"]) / a["games"]
                    for a in cand if a["games"] >= 8]
             eff = [a["pts"] / (a["targets"] + a["carries"])
@@ -204,14 +223,21 @@ def main():
                 band = next((b[2] for b in BANDS if b[0] <= i <= b[1]), None)
                 if band is None:
                     continue
-                key = norm(p["name"]) + "|" + pos
-                a = prior.get(key)
-                if not a or a["games"] < 8:
+                current = current_identity.resolve(
+                    p["name"], position=pos,
+                    prefer_latest_draft_year=True).record
+                gsis_id = current["gsis_id"] if current is not None else None
+                a = prior.get(gsis_id)
+                if not a or a["pos"] != pos or a["games"] < 8:
                     continue        # no prior-season sample: criteria unknown
                 touches = a["targets"] + a["carries"]
                 tagged = (touches / a["games"] >= t_opp and touches >= 40
                           and a["pts"] / touches >= t_eff)
-                fr = rank.get(key, 999)
+                # Positional hit rates require the outcome and ADP cohorts to
+                # agree. Stable identity alone must not turn a finish at one
+                # position into a hit at another.
+                fr = rank.get(gsis_id, 999) \
+                    if gsis_id in cur and cur[gsis_id]["pos"] == pos else 999
                 rows.append({"year": year, "pos": pos, "band": band,
                              "adp_rank": i, "tagged": bool(tagged),
                              "hit12": fr <= 12, "hit24": fr <= 24})

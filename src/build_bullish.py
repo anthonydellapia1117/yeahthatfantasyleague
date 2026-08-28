@@ -33,6 +33,7 @@ from collections import defaultdict
 
 from analyze_recency import HISTORY
 from engine_lineage import json_content_sha256, require as require_engine_digest
+from player_names import PlayerIdentityResolver
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
@@ -49,12 +50,6 @@ W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
      "receiving_2pt_conversions": 2.0,
      "sack_fumbles_lost": -2.0, "rushing_fumbles_lost": -2.0,
      "receiving_fumbles_lost": -2.0, "special_teams_tds": 6.0}
-
-
-def norm(n):
-    n = n.lower().replace(".", "").replace("'", "")
-    return " ".join(w for w in n.split()
-                    if w not in ("jr", "sr", "ii", "iii", "iv", "v"))
 
 
 def phi(z):
@@ -129,22 +124,18 @@ def main():
                 f"bullish inputs were built from a different {name}; "
                 "rebuild src/build_bullish_inputs.py first"
             )
-    inj_by_name = {norm(p["name"]) + "|" + p["pos"]: p.get("injury") or ""
-                   for p in eng["players"]}
+    engine_identity = PlayerIdentityResolver(eng["players"])
+    injury_by_sleeper = {str(p.get("sleeper_id") or ""): p.get("injury") or ""
+                         for p in eng["players"]}
 
     def band(dkey):
         d = thr[dkey]
         return max(0.0, (d["p75"] - d["p50"]) / 2)
 
     # ---- adjusted vacated targets per 2026 team, computed live
-    u_team25 = {norm(u["name"]) + "|" + u["pos"]: (u["team"], u["targets"])
-                for u in usage}
-    team_now = {}
-    depth_rank = {}
-    for e in depth:
-        key = norm(e["player"]) + "|" + e["pos"]
-        team_now[key] = e["team"]
-        depth_rank[key] = e["rank"]
+    u_team25 = {u["gsis_id"]: (u["team"], u["targets"]) for u in usage}
+    team_now = {e["gsis_id"]: e["team"] for e in depth}
+    depth_rank = {e["gsis_id"]: e["rank"] for e in depth}
     vacated = defaultdict(float)
     incoming = defaultdict(float)
     for key, (t25, tg) in u_team25.items():
@@ -180,13 +171,15 @@ def main():
     bf_p50 = bf_vals[len(bf_vals) // 2] if bf_vals else 0.5
 
     prospect = xwalk["prospect"]
-    sid_of = {p["name"] + "|" + p["pos"]: str(p.get("sleeper_id") or "")
-              for p in eng["players"]}
+    gsis_of = xwalk["matched"]
 
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     tags = []
     for e in inp["players"]:
         pos, name = e["pos"], e["name"]
+        identity = engine_identity.resolve(name, position=pos).record
+        sleeper_id = str(identity.get("sleeper_id") or "") if identity else ""
+        gsis_id = gsis_of.get(sleeper_id)
         crit = {}
         if pos == "RB":
             if e.get("targets_pg") is not None:
@@ -215,10 +208,9 @@ def main():
                 crit["first_read"] = p_prop(
                     e["first_read"]["k"], e["first_read"]["n"],
                     thr["wr_first_read"]["p75"])
-            key = norm(name) + "|" + pos
             t26 = e.get("team_2026")
             vac_ok = adj_vac.get(t26, 0) >= av_p75
-            primary_top5 = t26 in top5_implied and depth_rank.get(key) == 1
+            primary_top5 = t26 in top5_implied and depth_rank.get(gsis_id) == 1
             crit["opportunity"] = 0.9 if (vac_ok or primary_top5) else 0.2
             if e.get("route_part"):
                 crit["route_participation"] = p_prop(
@@ -241,12 +233,11 @@ def main():
                 crit["route_participation"] = p_prop(
                     e["route_part"]["k"], e["route_part"]["n"],
                     thr["te_route_part"]["p75"])
-            key = norm(name) + "|TE"
             t26 = e.get("team_2026")
             mates = [x for x in inp["players"] if x.get("team_2026") == t26
                      and x.get("yms_2025") is not None]
             mates.sort(key=lambda x: -x["yms_2025"])
-            my_rank = next((i for i, x in enumerate(mates, 1) if x["name"] == name),
+            my_rank = next((i for i, x in enumerate(mates, 1) if x is e),
                            None)
             if e.get("yms_2025") is not None and my_rank:
                 crit["market_share"] = 0.9 if my_rank <= 2 else 0.2
@@ -271,7 +262,7 @@ def main():
                            f"as not met, never guessed")
 
         # event taxonomy on CURRENT injury status (critique S5 severity table)
-        inj = (inj_by_name.get(norm(name) + "|" + pos) or "").lower()
+        inj = (injury_by_sleeper.get(sleeper_id) or "").lower()
         if inj in ("ir", "out", "pup", "nfi", "sus"):
             status = "SUSPENDED"
             reasons.append(f"injury status '{inj}' - suspended pending return")
@@ -288,12 +279,13 @@ def main():
                 reasons.append("questionable - flagged, no demotion")
 
         cap_tb = None
-        pr = prospect.get(sid_of.get(name + "|" + pos, ""))
+        pr = prospect.get(sleeper_id)
         if pr and pr.get("draft_year") in (2025, 2026) and pr.get("draft_round"):
             cap_tb = f"NFL R{pr['draft_round']} {pr['draft_year']} (years-1-2 tiebreak only)"
 
         tags.append({
-            "name": name, "pos": pos, "adp": e["adp"],
+            "name": name, "pos": pos, "sleeper_id": sleeper_id or None,
+            "adp": e["adp"],
             "status": status,
             "score": round(p_gate * 100, 1),
             "gate": f"P(>= {need} of {total})",
@@ -362,7 +354,7 @@ def main():
             for r in csv.DictReader(fh):
                 if r.get("season_type") != "REG" or r.get("position") != "TE":
                     continue
-                key = norm(r["player_display_name"])
+                key = r["player_id"]
                 for col, w in W.items():
                     v = r.get(col)
                     if v:

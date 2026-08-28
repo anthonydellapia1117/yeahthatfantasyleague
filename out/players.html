@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0b1120">
 <meta name="color-scheme" content="dark">
 <link rel="apple-touch-icon" href="icon-180.png">
+<script src="player_names.js"></script>
 <script src="nav.js" data-active="players" data-reveal defer></script>
 <title>YTFL Players 2026</title>
 <style>
@@ -136,12 +137,28 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 
 const esc = s => String(s).replace(/[&<>"']/g,
   c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const norm = (s) => String(s).toLowerCase().replace(/[.']/g, "")
-  .replace(/\s+(jr|sr|ii|iii|iv|v)$/,"").trim();
+const norm = playerComparisonKey;
 
 // Every number on this page is tappable and names its shard, field, source,
 // and fetch time (pattern 1 from the platform research - built first).
 const D = { engine: null, adp: null, usage: null, xwalk: null, prov: null };
+function sleeperId(p){ return p && p.sleeper_id != null ? String(p.sleeper_id) : ""; }
+function uniqueEngineByName(name, pos){
+  const key = norm(name);
+  const hits = D.engine.players.filter(p => norm(p.name) === key && (!pos || p.pos === pos));
+  return hits.length === 1 ? hits[0] : null;
+}
+function rowsBySleeperId(rows){
+  const out = {}, collisions = new Set();
+  for (const row of rows || []){
+    const p = uniqueEngineByName(row.name, row.pos);
+    const id = sleeperId(p);
+    if (!id) continue;
+    if (out[id]) collisions.add(id); else out[id] = row;
+  }
+  for (const id of collisions) delete out[id];
+  return out;
+}
 function provFor(shard){
   if (shard === "engine_2026.json")
     return { source: "audited engine build (src/engine_2026.py)",
@@ -188,15 +205,23 @@ async function boot(){
     document.getElementById("content").innerHTML = "";
     return;
   }
-  D.adpByNorm = Object.fromEntries(D.adp.players.map(x => [norm(x.name), x]));
-  D.usageByName = {};
-  for (const u of D.usage.players) D.usageByName[norm(u.name)] = u;
+  D.engineById = Object.fromEntries(D.engine.players
+    .filter(p => sleeperId(p)).map(p => [sleeperId(p), p]));
+  D.adpById = Object.fromEntries(D.adp.players.map(x => [String(x.player_id), x]));
+  D.usageByGsis = Object.fromEntries(D.usage.players.map(u => [u.gsis_id, u]));
   D.vorSorted = D.engine.players.slice().sort((a, b) => b.vor - a.vor);
   D.adpRank = {};
   D.engine.players.slice().filter(p => p.adp < 900).sort((a, b) => a.adp - b.adp)
-    .forEach((p, i) => { D.adpRank[p.name] = i + 1; });
-  D.board = {};
-  for (const c of (D.engine.my_board || [])) if (c.matched) D.board[norm(c.player)] = c;
+    .forEach((p, i) => { D.adpRank[sleeperId(p)] = i + 1; });
+  D.archById = rowsBySleeperId(D.arch && D.arch.players);
+  D.bullById = rowsBySleeperId(D.bull && D.bull.tags);
+  D.boardById = {};
+  for (const c of (D.engine.my_board || [])) if (c.matched){
+    const direct = c.sleeper_id != null ? D.engineById[String(c.sleeper_id)] : null;
+    const p = direct || uniqueEngineByName(c.player, c.pos);
+    const id = sleeperId(p);
+    if (id) D.boardById[id] = c;
+  }
   renderFoot();
   route();
   window.addEventListener("hashchange", route);
@@ -213,8 +238,7 @@ function renderFoot(){
 function route(){
   const h = decodeURIComponent((location.hash || "").replace(/^#p=/, ""));
   if (!h){ renderIndex(); return; }
-  const p = D.engine.players.find(x => x.sleeper_id === h) ||
-            D.engine.players.find(x => norm(x.name) === norm(h));
+  const p = D.engineById[String(h)] || uniqueEngineByName(h, null);
   if (!p){ renderIndex("No player matches \"" + esc(h) + "\""); return; }
   renderPlayer(p);
   window.scrollTo(0, 0);
@@ -269,18 +293,16 @@ function pBullCurrent(){
   return /^[0-9a-f]{64}$/.test(engineDigest) && bullDigest === engineDigest;
 }
 function pTagged(p){
-  return !!(pBullCurrent() && D.bull.tags &&
-            D.bull.tags.some(t => t.name === p.name && t.pos === p.pos));
+  return !!(pBullCurrent() && D.bullById[sleeperId(p)]);
 }
 function pArch(p){
-  return !!(D.arch && D.arch.players &&
-            D.arch.players.some(a => norm(a.name) === norm(p.name) && a.pos === p.pos));
+  return !!D.archById[sleeperId(p)];
 }
 function pMatch(p){
   if (PView.q && !norm(p.name).includes(PView.q)) return false;
   if (PView.bull && pBullCurrent() && !pTagged(p)) return false;
   if (PView.arch && !pArch(p)) return false;
-  if (PView.call && !D.board[norm(p.name)]) return false;
+  if (PView.call && !D.boardById[sleeperId(p)]) return false;
   return true;
 }
 function pActive(){
@@ -367,7 +389,7 @@ function renderGroups(){
 }
 
 function ycChip(p){
-  const c = D.board[norm(p.name)];
+  const c = D.boardById[sleeperId(p)];
   if (!c) return "";
   return `<span class="yc ${c.call === "BULL" ? "bull" : "bear"}">YOUR CALL - ${c.call}</span>`;
 }
@@ -377,7 +399,7 @@ function ycChip(p){
 // Display only. Orientation colors follow the existing verdict palette use.
 function archCard(p){
   if (!D.arch) return "";
-  const e = D.arch.players.find(x => x.name === p.name && x.pos === p.pos);
+  const e = D.archById[sleeperId(p)];
   if (!e) return "";
   const cls = o => o === "target" ? "arch-t" : o === "fade" ? "arch-f" : "arch-c";
   const lbl = o => o === "target" ? "TARGET ARCHETYPE" : o === "fade" ? "FADE ARCHETYPE"
@@ -396,11 +418,13 @@ function archCard(p){
 
 function renderPlayer(p){
   const c = document.getElementById("content");
-  const band = D.adpByNorm[norm(p.name)];
-  const u = D.usageByName[norm(p.name)];
+  const id = sleeperId(p);
+  const gsis = id ? D.xwalk.matched[id] : null;
+  const band = id ? D.adpById[id] : null;
+  const u = gsis ? D.usageByGsis[gsis] : null;
   const pr = p.sleeper_id ? (D.xwalk.prospect[p.sleeper_id] || null) : null;
   const vorRank = D.vorSorted.indexOf(p) + 1;
-  const aRank = D.adpRank[p.name];
+  const aRank = D.adpRank[id];
   const gap = aRank ? aRank - vorRank : null;
 
   let h = `<div class="card">
@@ -455,7 +479,7 @@ function renderPlayer(p){
     <p class="small">Combine measurables and age are not wired - the Phase A build ships no combine shard yet. Absent means absent, not zero.</p>
   </div>`;
 
-  const yc = D.board[norm(p.name)];
+  const yc = D.boardById[id];
   if (yc){
     h += `<div class="card"><h2>Your call</h2>
       <p><span class="yc ${yc.call === "BULL" ? "bull" : "bear"}">YOUR CALL - ${yc.call}${yc.move ? " " + esc(yc.move) : ""}</span></p>

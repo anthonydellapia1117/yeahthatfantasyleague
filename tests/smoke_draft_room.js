@@ -582,22 +582,24 @@ const ok = (cond, name, detail) => {
     const unit = await page.evaluate(() => {
       const O = window.__overlay;
       const saved = O.state.map;
-      O.state.map = { "aaa bbb": { player: "Aaa Bbb", call: "BULL",
-                                   move: "+1 tier", reason: "r", source: "s",
-                                   date: "2026-08-13", matched: true },
-                      "ccc ddd": { player: "Ccc Ddd", call: "BEAR",
-                                   move: "", reason: "r", source: "s",
-                                   date: "2026-08-13", matched: true } };
+      O.state.map = { "unit-bull": { player: "Aaa Bbb", call: "BULL",
+                                     move: "+1 tier", reason: "r", source: "s",
+                                     date: "2026-08-13", matched: true },
+                      "unit-bear": { player: "Ccc Ddd", call: "BEAR",
+                                     move: "", reason: "r", source: "s",
+                                     date: "2026-08-13", matched: true } };
       const res = {
-        chip: O.chip({ name: "Aaa Bbb" }),
-        chipNone: O.chip({ name: "Zzz Qqq" }),
-        flipBull: O.flip([{ name: "Zzz Qqq" }, { name: "Aaa Bbb" }]),
-        flipNone: O.flip([{ name: "Zzz Qqq" }, { name: "Yyy Www" }]),
+        chip: O.chip({ name: "Aaa Bbb", sleeper_id: "unit-bull" }),
+        chipNone: O.chip({ name: "Zzz Qqq", sleeper_id: "unit-none" }),
+        flipBull: O.flip([{ name: "Zzz Qqq", sleeper_id: "unit-none" },
+                          { name: "Aaa Bbb", sleeper_id: "unit-bull" }]),
+        flipNone: O.flip([{ name: "Zzz Qqq", sleeper_id: "unit-none" },
+                          { name: "Yyy Www", sleeper_id: "unit-other" }]),
         resorted: O.resort([
-          { name: "P One", pos: "RB", tier: 2, vor: 90 },
-          { name: "Ccc Ddd", pos: "RB", tier: 2, vor: 88 },
-          { name: "Aaa Bbb", pos: "RB", tier: 2, vor: 85 },
-          { name: "P Four", pos: "RB", tier: 3, vor: 80 },
+          { name: "P One", sleeper_id: "unit-one", pos: "RB", tier: 2, vor: 90 },
+          { name: "Ccc Ddd", sleeper_id: "unit-bear", pos: "RB", tier: 2, vor: 88 },
+          { name: "Aaa Bbb", sleeper_id: "unit-bull", pos: "RB", tier: 2, vor: 85 },
+          { name: "P Four", sleeper_id: "unit-four", pos: "RB", tier: 3, vor: 80 },
         ]).map(p => p.name).join(","),
       };
       O.state.map = saved;
@@ -624,7 +626,8 @@ const ok = (cond, name, detail) => {
       const p = payload.players.find(x => x.name === name);
       return { player: p.name, call, move, reason: "smoke fixture",
                source: "test", confidence: "", date: "2026-08-13",
-               matched: true, pos: p.pos, adp: p.adp, vor: p.vor, tier: p.tier };
+               matched: true, sleeper_id: p.sleeper_id, pos: p.pos,
+               adp: p.adp, vor: p.vor, tier: p.tier };
     };
     // The bull call has to sit on whoever the model actually ranks second
     // behind its primary once the fixture's six picks are gone - naming a
@@ -638,8 +641,10 @@ const ok = (cond, name, detail) => {
     const runnerUp = alive9[1].name;
     payload.my_board = [mkCall(runnerUp, "BULL", "+1 tier"),
                         mkCall(alive9[8].name, "BEAR", "-1 tier")];
-    const tmp = path.join(os.tmpdir(), "ytfl_overlay_smoke.html");
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "ytfl-overlay-smoke-"));
+    const tmp = path.join(tmpDir, "ytfl_overlay_smoke.html");
     fs.writeFileSync(tmp, raw.slice(0, a) + JSON.stringify(payload) + raw.slice(b));
+    fs.copyFileSync(path.resolve("out/player_names.js"), path.join(tmpDir, "player_names.js"));
     const p9 = await browser.newPage();
     const mk9 = (f, l, pos) => ({ metadata: { first_name: f, last_name: l, position: pos } });
     const picks9 = [mk9("Ja'Marr","Chase","WR"), mk9("Bijan","Robinson","RB"),
@@ -673,7 +678,7 @@ const ok = (cond, name, detail) => {
     ok(await p9.locator(".yc.bull").count() >= 1 && await p9.locator(".yc.bear").count() >= 1,
        "overlay e2e: YOUR CALL chips render on the value board");
     await p9.close();
-    fs.unlinkSync(tmp);
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
   // ---- scenario 10: PHASE C PLAYER PAGES. Served over a local hermetic

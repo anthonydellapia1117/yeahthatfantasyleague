@@ -11,12 +11,17 @@ import importlib.util
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
 from unittest import mock
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
+sys.path.insert(0, os.path.join(ROOT, "src"))
+from player_names import (PlayerIdentityResolver, comparison_key,
+                          nflverse_roster_identity)
+
 fails = []
 
 
@@ -93,10 +98,363 @@ if xw and rec and adp:
     ok(all(n in logged for n in un_fringe),
        "every unmatched fringe player (ADP 200-249) is logged in reconciliation",
        f"unlogged: {[n for n in un_fringe if n not in logged][:5]}")
-    # the diacritic fold stays in the normalizer (the Estime/Estimé miss)
-    bp = open(os.path.join(ROOT, "src", "build_pages_data.py")).read()
-    ok("unicodedata.normalize(\"NFKD\"" in bp and "unicodedata.combining" in bp,
-       "crosswalk normalizer folds diacritics (Estime/Estimé class)")
+    # Match rate is a useful tripwire, but it is not the specification.  The
+    # canonical key and identity resolver have an explicit behavioral corpus
+    # below so the next source-specific spelling incident cannot redefine the
+    # contract in only one consumer.
+
+    # Source uniqueness is not enough: one FFC row must not fan out to two
+    # Sleeper identities which the deliberately blind key collapses.
+    _target_buckets = {}
+    for _player in adp["players"]:
+        _target_buckets.setdefault(
+            (comparison_key(_player["name"]), _player["pos"]), []).append(_player)
+    _target_collisions = [rows for rows in _target_buckets.values()
+                          if len(rows) > 1]
+    _market_fields = ("adp_ffc", "stdev", "high", "low", "bye")
+    _target_leaks = [
+        [(p["player_id"], p["name"]) for p in rows]
+        for rows in _target_collisions
+        if any(any(field in p for field in _market_fields) for p in rows)]
+    ok(bool(_target_collisions) and not _target_leaks,
+       "FFC market rows fail closed on every ambiguous Sleeper target bucket",
+       str(_target_leaks))
+
+# 3b. PLAYER-NAME CONTRACT.  comparison_key is intentionally blind to source
+#     typography.  PlayerIdentityResolver retains the collision and requires
+#     independent evidence before it returns an identity.
+_equivalent_names = [
+    ("Audric Estime", "Audric Estimé"),
+    ("John Metchie", "John Metchie III"),
+    ("D.J. Moore", "DJ Moore"),
+    ("Ja'Marr Chase", "Ja’Marr Chase", "Jamarr Chase"),
+    ("Jaxon Smith-Njigba", "Jaxon Smith Njigba", "JaxonSmithNjigba"),
+    ("Amon-Ra St. Brown", "Amon Ra St Brown", "AmonRaStBrown"),
+]
+_suffix_forms = tuple(f"Example Player {suffix}"
+                      for suffix in ("Jr", "Sr", "II", "III", "IV", "V"))
+_equivalent_names.append(("Example Player",) + _suffix_forms)
+for _group in _equivalent_names:
+    _keys = {comparison_key(name) for name in _group}
+    ok(len(_keys) == 1,
+       "comparison key is blind to: " + " / ".join(_group),
+       str(sorted(_keys)))
+ok(comparison_key("Joshua Alexander") != comparison_key("Josh Alexander"),
+   "comparison key does not invent nickname equivalence")
+_alias_identity = PlayerIdentityResolver([
+    {"name": "Kenneth Gainwell", "aliases": ["Kenny Gainwell"],
+     "pos": "RB", "id": "gainwell"},
+])
+ok(comparison_key("Kenneth Gainwell") != comparison_key("Kenny Gainwell") and
+   _alias_identity.resolve("Kenny Gainwell", position="RB").record["id"] ==
+   "gainwell",
+   "identity aliases are explicit evidence, never comparison-key blindness")
+_alias_collision = PlayerIdentityResolver([
+    {"name": "First Player", "aliases": ["Shared Alias"], "pos": "WR"},
+    {"name": "Second Player", "aliases": ["Shared Alias"], "pos": "WR"},
+])
+ok(_alias_collision.resolve("Shared Alias", position="WR").record is None,
+   "an alias collision stays unresolved")
+_primary_over_alias = PlayerIdentityResolver([
+    {"name": "Michael Thomas", "aliases": [], "pos": "WR", "id": "primary"},
+    {"name": "Mike Thomas", "aliases": ["Michael Thomas"],
+     "pos": "WR", "id": "alias"},
+])
+_primary_result = _primary_over_alias.resolve("Michael Thomas", position="WR")
+ok(_primary_result.record and _primary_result.record["id"] == "primary" and
+   _primary_result.rule == "position + exact primary name",
+   "an exact primary name outranks another record's colliding alias")
+_reverse_alias = PlayerIdentityResolver([
+    {"name": "Michael Thomas", "aliases": [], "pos": "WR", "id": "other"},
+    {"name": "Mike Thomas", "aliases": ["Michael Thomas Jr."],
+     "pos": "WR", "id": "alias"},
+])
+_reverse_result = _reverse_alias.resolve("Michael Thomas Jr.", position="WR")
+ok(_reverse_result.record and _reverse_result.record["id"] == "alias" and
+   _reverse_result.rule == "position + exact alias name",
+   "a suffix-blind primary cannot steal another record's exact alias")
+_evidence_only = nflverse_roster_identity(
+    [], positions=("RB",), alias_rows=[
+        {"player_id": "00-identity", "player_name": "Ray Rice", "pos": "RB"},
+        {"player_id": "espn-local", "player_name": "Wrong Namespace", "pos": "RB"},
+    ])
+ok(_evidence_only.resolve("Ray Rice", position="RB").record["gsis_id"] ==
+   "00-identity" and
+   _evidence_only.resolve("Wrong Namespace", position="RB").record is None,
+   "stable GSIS evidence survives a missing roster row; foreign ids do not")
+
+_identity_corpus = [
+    {"name": "Marvin Harrison", "pos": "WR", "draft_year": 1996,
+     "id": "father"},
+    {"name": "Marvin Harrison Jr.", "pos": "WR", "draft_year": 2024,
+     "id": "son"},
+    {"name": "Frank Gore", "pos": "RB", "draft_year": 2005,
+     "id": "father-gore"},
+    {"name": "Frank Gore Jr.", "pos": "RB", "draft_year": None,
+     "id": "son-gore"},
+]
+_identity = PlayerIdentityResolver(_identity_corpus)
+ok(len(_identity.candidates("Marvin Harrison Jr.")) == 2 and
+   _identity.resolve("Marvin Harrison Jr.", position="WR").record is None,
+   "identity layer retains the Harrison father/son collision")
+_harrison = _identity.resolve(
+    "Marvin Harrison Jr.", position="WR", prefer_latest_draft_year=True)
+ok(_harrison.record and _harrison.record["id"] == "son" and
+   _harrison.rule == "most recent draft_year",
+   "current-player resolver uses the unique latest draft year explicitly")
+ok(_identity.resolve("Frank Gore Jr.", position="RB",
+                     prefer_latest_draft_year=True).record is None,
+   "identity layer fails closed when Gore father/son years are incomplete")
+_tied = PlayerIdentityResolver([
+    {"name": "Tie Player", "pos": "WR", "draft_year": 2025, "id": "a"},
+    {"name": "Tie Player Jr.", "pos": "WR", "draft_year": 2025, "id": "b"},
+])
+ok(_tied.resolve("Tie Player", position="WR",
+                 prefer_latest_draft_year=True).record is None,
+   "identity layer fails closed when the latest year is tied")
+_positioned = PlayerIdentityResolver([
+    {"name": "Shared Name", "pos": "RB", "id": "rb"},
+    {"name": "Shared Name", "pos": "WR", "id": "wr"},
+])
+ok(_positioned.resolve("Shared Name", position="WR").record["id"] == "wr",
+   "identity layer uses position when it uniquely separates a collision")
+_position_mismatch = PlayerIdentityResolver([
+    {"name": "Position Changer", "pos": "TE", "id": "te"},
+])
+ok(_position_mismatch.resolve("Position Changer", position="WR").record is None,
+   "identity layer fails closed on a unique-name position mismatch")
+_legacy_position = _position_mismatch.resolve(
+    "Position Changer", position="WR", allow_unique_position_mismatch=True)
+ok(_legacy_position.record and _legacy_position.record["id"] == "te" and
+   "position mismatch" in _legacy_position.rule,
+   "the crosswalk's legacy position-mismatch fallback is explicit and opt-in")
+
+if adp:
+    _current = [{"name": p["name"], "pos": p["pos"],
+                 "id": p["player_id"]} for p in adp["players"]]
+    _current_resolver = PlayerIdentityResolver(_current)
+    _current_buckets = {}
+    for _record in _current:
+        _current_buckets.setdefault(
+            (comparison_key(_record["name"]), _record["pos"]), []).append(_record)
+    _ambiguous_current = [records for records in _current_buckets.values()
+                          if len(records) > 1]
+    _silently_resolved = []
+    for _records in _ambiguous_current:
+        _result = _current_resolver.resolve(
+            _records[0]["name"], position=_records[0]["pos"])
+        if _result.record is not None:
+            _silently_resolved.append(_records[0]["name"])
+    ok(bool(_ambiguous_current) and not _silently_resolved,
+       "identity layer fails closed for every current same-key/position collision",
+       f"{len(_ambiguous_current)} buckets; resolved {_silently_resolved}")
+
+# 3c. STRUCTURAL SINGLE-DEFINITION GUARD.  Every consumer imports the
+#     canonical layer; a retyped suffix/punctuation normalizer fails even if
+#     today's match-rate happens to stay green.
+_python_sites = []
+_duplicate_normalizers = []
+_missing_imports = []
+_duplicate_nfkd = []
+_normalizer_name = re.compile(
+    r"(^|_)(norm(?:aliz(?:e|er|ation))?|comparison_?key|search_?key|"
+    r"canonical_?name|name_?canonical|name_?key|key_?name|player_?key|"
+    r"strip_?suffix|fold_?name|name_?fold)($|_)", re.I)
+_suffix_literal = re.compile(
+    r"(?:['\"]jr['\"].*['\"]sr['\"].*['\"]ii['\"]|"
+    r"jr\\?\|sr\\?\|ii)", re.I | re.S)
+
+
+def _assigned_names(node):
+    targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+    return [child.id for target in targets for child in ast.walk(target)
+            if isinstance(child, ast.Name)]
+
+
+def _has_blind_chain(tree):
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        calls = [child for child in ast.walk(node)
+                 if isinstance(child, ast.Call)]
+        has_case_fold = any(
+            isinstance(call.func, ast.Attribute) and
+            call.func.attr in ("lower", "casefold") for call in calls)
+        has_punctuation_fold = any(
+            (isinstance(call.func, ast.Attribute) and
+             call.func.attr in ("replace", "translate")) or
+            (isinstance(call.func, ast.Attribute) and
+             isinstance(call.func.value, ast.Name) and
+             call.func.value.id == "re" and call.func.attr == "sub")
+            for call in calls)
+        if has_case_fold and has_punctuation_fold:
+            return True
+    return False
+
+
+def _synthetic_python_duplicate(source):
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and \
+           _normalizer_name.search(node.name):
+            return True
+        if isinstance(node, (ast.Assign, ast.AnnAssign)) and any(
+                _normalizer_name.search(name)
+                for name in _assigned_names(node)):
+            return True
+    return _has_blind_chain(tree) or bool(_suffix_literal.search(source))
+
+
+_guard_mutants = (
+    "def norm(n): return n.lower().replace('.', '')",
+    "opaque = lambda n: n.casefold().replace('-', '')",
+    "import re\nclean = lambda n: re.sub(r\"[.'’]\", '', n.casefold())",
+    "def fold_name(n): return n.casefold()\ndef strip_suffix(n): return n",
+    "SUFFIXES = {'jr', 'sr', 'ii', 'iii'}",
+)
+ok(all(_synthetic_python_duplicate(source) for source in _guard_mutants),
+   "structural guard bites on reduced, lambda, split-helper, and suffix mutants")
+
+
+for _scope in ("src", "tests"):
+    _base = os.path.join(ROOT, _scope)
+    for _dirpath, _, _filenames in os.walk(_base):
+        for _filename in _filenames:
+            if not _filename.endswith(".py"):
+                continue
+            _path = os.path.join(_dirpath, _filename)
+            _rel = os.path.relpath(_path, ROOT)
+            _source = open(_path).read()
+            _tree = ast.parse(_source, filename=_path)
+            _is_canonical = _rel == "src/player_names.py"
+            _is_guard = _rel == "tests/test_pages_data.py"
+            if not (_is_canonical or _is_guard) and \
+               ("NFKD" in _source or "unicodedata" in _source):
+                _duplicate_nfkd.append(_rel)
+            if not (_is_canonical or _is_guard) and _suffix_literal.search(_source):
+                _duplicate_normalizers.append((_rel, "suffix literal", 1))
+            if not (_is_canonical or _is_guard) and _has_blind_chain(_tree):
+                _duplicate_normalizers.append((_rel, "blind transform chain", 1))
+            _imports = set()
+            for _node in ast.walk(_tree):
+                if isinstance(_node, ast.ImportFrom) and \
+                   _node.module == "player_names":
+                    _imports.update(alias.name for alias in _node.names)
+            for _node in ast.walk(_tree):
+                if isinstance(_node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    if _node.name in ("comparison_key", "search_key",
+                                      "_comparison_parts"):
+                        _python_sites.append((_rel, _node.name, _node.lineno))
+                    if _normalizer_name.search(_node.name) and \
+                       not (_is_canonical or _is_guard):
+                        _duplicate_normalizers.append(
+                            (_rel, _node.name, _node.lineno))
+                if isinstance(_node, (ast.Assign, ast.AnnAssign)) and \
+                   not (_is_canonical or _is_guard):
+                    for _assigned in _assigned_names(_node):
+                        if _normalizer_name.search(_assigned):
+                            value = _node.value
+                            canonical_alias = (isinstance(value, ast.Name) and
+                                               value.id in ("comparison_key",
+                                                            "search_key"))
+                            if not canonical_alias:
+                                _duplicate_normalizers.append(
+                                    (_rel, _assigned, _node.lineno))
+                if isinstance(_node, ast.Call) and isinstance(_node.func, ast.Name) and \
+                   _node.func.id in ("comparison_key", "search_key",
+                                     "PlayerIdentityResolver",
+                                     "nflverse_roster_identity") and \
+                   _rel != "src/player_names.py" and _node.func.id not in _imports:
+                    _missing_imports.append((_rel, _node.func.id, _node.lineno))
+ok([(path, name) for path, name, _ in _python_sites] == [
+       ("src/player_names.py", "_comparison_parts"),
+       ("src/player_names.py", "comparison_key"),
+       ("src/player_names.py", "search_key")],
+   "Python player-name transformation is defined in one canonical module",
+   str(_python_sites))
+ok(not _duplicate_normalizers,
+   "no Python consumer retypes the player-name transformation",
+   str(_duplicate_normalizers))
+ok(not _duplicate_nfkd,
+   "no Python consumer retypes the canonical Unicode fold",
+   str(_duplicate_nfkd))
+ok(not _missing_imports,
+   "every Python normalizer/resolver consumer imports the canonical symbol",
+   str(_missing_imports))
+
+_browser_key_path = os.path.join(ROOT, "out", "player_names.js")
+_browser_key_source = open(_browser_key_path).read()
+_browser_pages = ("draft_room.html", "big_board.html", "players.html", "teams.html")
+_browser_duplicates = []
+
+
+def _javascript_duplicate(source):
+    without_shared_alias = re.sub(
+        r"\bconst\s+norm\s*=\s*playerComparisonKey\s*;", "", source)
+    return bool(
+        "function playerComparisonKey" in source or
+        re.search(r"\.normalize\([\"']NFKD[\"']\)", source) or
+        re.search(r"(?:toLowerCase\(\)[^;\n]{0,300}\.replace\(|"
+                  r"\.replace\([^;\n]{0,300}toLowerCase\(\))", source) or
+        re.search(r"(?:function|const|let|var)\s+[\w$]*"
+                  r"(?:norm|normaliz|nameKey|playerKey|stripSuffix|foldName)"
+                  r"[\w$]*\s*(?:\(|=)", without_shared_alias, re.I))
+
+
+ok(_javascript_duplicate(
+       "const keyForPlayer = n => n.toLowerCase().replace(/[^a-z]/g, '');") and
+   _javascript_duplicate(
+       "const clean = n => n.replace(/[.']/g, '').toLowerCase();") and
+   _javascript_duplicate(
+       "const foldName = n => n.toLowerCase(); const stripSuffix = n => n;") and
+   not _javascript_duplicate("const norm = playerComparisonKey;"),
+   "browser duplication guard bites on inline and split-helper mutants")
+for _page_name in _browser_pages:
+    _page_source = open(os.path.join(ROOT, "out", _page_name)).read()
+    if ("player_names.js" not in _page_source or
+        "const norm = playerComparisonKey" not in _page_source):
+        _browser_duplicates.append(_page_name + ": shared key absent")
+    if re.search(r"jr\|sr\|ii\|iii\|iv\|v", _page_source, re.I):
+        _browser_duplicates.append(_page_name + ": suffix logic duplicated")
+for _dirpath, _, _filenames in os.walk(os.path.join(ROOT, "out")):
+    for _filename in _filenames:
+        if not _filename.endswith((".html", ".js")) or \
+           _filename == "player_names.js":
+            continue
+        _path = os.path.join(_dirpath, _filename)
+        _source = open(_path).read()
+        if _javascript_duplicate(_source):
+            _browser_duplicates.append(
+                os.path.relpath(_path, ROOT) + ": key logic duplicated")
+ok(_browser_key_source.count("function playerComparisonKey") == 1 and
+   not _browser_duplicates,
+   "four browser consumers share one JavaScript comparison-key definition",
+   "; ".join(_browser_duplicates))
+
+_parity_names = [name for group in _equivalent_names for name in group]
+if adp:
+    _parity_names.extend(p["name"] for p in adp["players"])
+_parity_names = list(dict.fromkeys(_parity_names))
+_node_program = (
+    "const fs=require('fs');"
+    "const m=require(process.argv[1]);"
+    "const xs=JSON.parse(fs.readFileSync(0,'utf8'));"
+    "process.stdout.write(JSON.stringify(xs.map(m.playerComparisonKey)));"
+)
+try:
+    _node_result = subprocess.run(
+        ["node", "-e", _node_program, _browser_key_path],
+        input=json.dumps(_parity_names), text=True, capture_output=True,
+        check=True)
+    _js_keys = json.loads(_node_result.stdout)
+    _py_keys = [comparison_key(name) for name in _parity_names]
+    _parity_bad = [name for name, py, js in
+                   zip(_parity_names, _py_keys, _js_keys) if py != js]
+    ok(not _parity_bad,
+       "browser comparison key matches Python for the corpus and current pool",
+       str(_parity_bad[:5]))
+except (OSError, subprocess.CalledProcessError, ValueError) as _exc:
+    ok(False, "browser comparison key parity test executes", str(_exc))
 
 # 4. Depth charts: all 32 teams, as-of date fresh (within 7 days of build)
 dc = load("depth_charts")

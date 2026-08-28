@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0b1120">
 <meta name="color-scheme" content="dark">
 <link rel="apple-touch-icon" href="icon-180.png">
+<script src="player_names.js"></script>
 <script src="nav.js" data-active="teams" data-reveal defer></script>
 <title>YTFL Teams 2026</title>
 <style>
@@ -93,13 +94,18 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 
 const esc = s => String(s).replace(/[&<>"']/g,
   c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const norm = (s) => String(s).toLowerCase().replace(/[.']/g, "")
-  .replace(/\s+(jr|sr|ii|iii|iv|v)$/,"").trim();
+const norm = playerComparisonKey;
 
 // N1 stands here the way it stands everywhere: everything on this page is
 // display and overlay-evidence. Nothing rendered here reaches the engine,
 // a survival number, or a verdict - the engine never reads this layer.
-const D = { engine: null, pc: null, proe: null, dc: null, usage: null, prov: null };
+const D = { engine: null, pc: null, proe: null, dc: null, usage: null,
+            xwalk: null, prov: null };
+function uniqueEngineByName(name, pos){
+  const key = norm(name);
+  const hits = D.engine.players.filter(p => norm(p.name) === key && (!pos || p.pos === pos));
+  return hits.length === 1 ? hits[0] : null;
+}
 function provFor(shard){
   if (shard === "engine_2026.json")
     return { source: "audited engine build (src/engine_2026.py)",
@@ -130,9 +136,10 @@ document.addEventListener("click", e => {
 async function boot(){
   const get = f => fetch(f).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
   try {
-    [D.engine, D.pc, D.proe, D.dc, D.usage, D.prov] = await Promise.all([
+    [D.engine, D.pc, D.proe, D.dc, D.usage, D.xwalk, D.prov] = await Promise.all([
       get("engine_2026.json"), get("data/playcallers.json"), get("data/team_proe_2025.json"),
-      get("data/depth_charts.json"), get("data/usage_2025.json"), get("data/provenance.json")]);
+      get("data/depth_charts.json"), get("data/usage_2025.json"),
+      get("data/crosswalk.json"), get("data/provenance.json")]);
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -142,7 +149,15 @@ async function boot(){
   }
   D.pcByTeam = Object.fromEntries(D.pc.callers.map(c => [c.team, c]));
   D.proeByTeam = Object.fromEntries(D.proe.teams.map(t => [t.team, t]));
-  D.engByNorm = Object.fromEntries(D.engine.players.map(p => [norm(p.name), p]));
+  D.engByGsis = {};
+  const ambiguousGsis = new Set();
+  for (const p of D.engine.players){
+    const gsis = D.xwalk.matched[String(p.sleeper_id)];
+    if (!gsis) continue;
+    if (D.engByGsis[gsis]) ambiguousGsis.add(gsis); else D.engByGsis[gsis] = p;
+  }
+  for (const gsis of ambiguousGsis) delete D.engByGsis[gsis];
+  D.ambiguousGsis = ambiguousGsis;
   D.usageByGsis = Object.fromEntries(D.usage.players.map(u => [u.gsis_id, u]));
   D.teams = [...new Set(D.dc.entries.map(e => e.team))].sort();
   renderFoot();
@@ -176,9 +191,11 @@ function skillDepth(team){
   const order = { QB: 1, RB: 2, FB: 3, WR: 4, TE: 5, K: 6 };
   return D.dc.entries.filter(e => e.team === team && order[e.pos])
     .map(e => {
-      const eng = D.engByNorm[norm(e.player)];
+      const eng = D.engByGsis[e.gsis_id] || (!D.ambiguousGsis.has(e.gsis_id)
+        ? uniqueEngineByName(e.player, e.pos) : null);
       const u = D.usageByGsis[e.gsis_id];
-      return { ...e, vor: eng ? eng.vor : null, tier: eng ? eng.tier : null,
+      return { ...e, engine: eng || null,
+               vor: eng ? eng.vor : null, tier: eng ? eng.tier : null,
                share: u ? (e.pos === "RB" || e.pos === "FB" ? null : u.target_share_mean) : null,
                targets: u ? u.targets : null, carries: u ? u.carries : null };
     })
@@ -255,7 +272,7 @@ function renderTeam(team){
 
   const rows = depth.map(e => `<tr>
     <td>${esc(e.pos)}</td>
-    <td>${D.engByNorm[norm(e.player)] ? `<a href="players.html#p=${encodeURIComponent(D.engByNorm[norm(e.player)].sleeper_id || e.player)}">${esc(e.player)}</a>` : esc(e.player)}<span class="slot">slot ${pv(e.rank, "depth_charts.json", "rank")}</span></td>
+    <td>${e.engine ? `<a href="players.html#p=${encodeURIComponent(e.engine.sleeper_id)}">${esc(e.player)}</a>` : esc(e.player)}<span class="slot">slot ${pv(e.rank, "depth_charts.json", "rank")}</span></td>
     <td class="num">${e.vor != null ? pv(e.vor.toFixed(0), "engine_2026.json", "vor") : "-"}</td>
     <td class="num">${e.targets != null ? pv(e.targets, "usage_2025.json", "targets") : "-"}</td>
     <td class="num">${e.carries != null ? pv(e.carries, "usage_2025.json", "carries") : "-"}</td>

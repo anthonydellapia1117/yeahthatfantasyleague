@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-26",
+  "generated": "2026-08-27",
   "question": "does the tag add information ADP does not already carry? Phase A: the fantasy-ADP gate makes the tag a confirmation device by construction unless it shows within-band lift",
   "method": "per season 2017-2025, rebuild the opportunity + efficiency spine from the PRIOR season (per-game touches >= pool p75 and points per touch >= pool p75, thresholds recomputed per season and position), then compare tagged vs untagged hit rates WITHIN each preseason ADP band",
   "scoring": "league-exact (full PPR, 6-pt pass TD)",
