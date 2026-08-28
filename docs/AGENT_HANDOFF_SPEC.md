@@ -233,9 +233,9 @@ done
 
 **Guard counts as of this writing** (a suite that suddenly runs fewer is a
 regression): survival 41, cvs 20, vor 50, baserates 70, archetypes 17, ceiling 16,
-bullish 38 (39 in pages-data strict mode), ws2 63, mock 47,
-bullish_vs_adp 43, vona 1687, draft_vs_acquired 23, pages_data 321, run_gate 16,
-analysis 38 (33 on CI), smoke 350.
+bullish 40 (41 in pages-data strict mode), ws2 63, mock 47,
+bullish_vs_adp 43, vona 1687, draft_vs_acquired 23, pages_data 350, run_gate 16,
+analysis 38 (33 on CI), smoke 355.
 
 **Rebuilding the analysis layer** needs the historical cache, which is NOT in the
 repo: `python3 src/fetch_history.py` (~156MB, nine families, `HISTORY` env var to
@@ -405,6 +405,7 @@ there was a second and a third.
 | **Optional-shard silent degradation** | `base_rates`/`ceiling`/archetypes/bullish fetch failures vanish columns with no notice. | Add a visible "unavailable" state + a smoke scenario. |
 | **12-team geometry inside DRAFT MODE** | **CONFIRMED IN PRODUCTION 2026-08-26**, no longer a prediction: the room rendered `rd11-14` band labels against a live 19-team draft, where boundaries 36/72/120 are 12-team arithmetic. `sleeperListHtml` and `simBand` hardcode that geometry, so the labels are also wrong in a 10-team mock. Cosmetic - this mislabels sleeper bands; it does not affect ordering. | Derive both bands from `GEO`. Not draft-critical: the real league IS 12x14. |
 | **`ff-hub.html` N.1** | #53 verified N.1 absent on pre-#55 main and recorded that absence as deliberate (§6). #55 supersedes that state by publishing N.1 as a dedicated artifact-backed tab with honest loading and failure states. | Keep the reviewed artifact as the single source; do not duplicate its verdict in HTML. |
+| **Leon Johnson crosswalk maps to the wrong era** | **OPEN LIVE DEFECT, logged 2026-08-27; deliberately not fixed in #58 or the draft-room PR because crosswalk fallback policy is separate scope.** Sleeper `11863` is a WR entering in 2024, but `crosswalk.prospect["11863"]` resolves to nflverse `00-0008568`, an RB drafted in 1997 (round 4, pick 104). This is the same defect shape as the Marvin Harrison collision: a normalized name attaches a current player to a different-era identity. Harrison is protected because same-position father/son candidates carry complete, distinct draft years, so the resolver can choose the unique newest year. Leon has only one normalized-name candidate and its position disagrees; `allow_unique_position_mismatch=True` bypasses the collision/draft-year path and accepts that sole wrong candidate. | Replace the permissive unique-name position-mismatch fallback with an explicit audited cross-provider position-compatibility rule; otherwise fail closed and leave the prospect unmapped. Pin Leon as a resolver contract case. |
 
 ---
 
@@ -413,7 +414,7 @@ there was a second and a third.
 1. `python3 src/preflight_draft.py` if you touched anything draft-geometry-shaped.
 2. Full gate battery (§4). Every suite through `run_gate`, output to a file.
 3. `mathdiff` prints `MATH DIFF PROOF: EMPTY`.
-4. Smoke suite, 350 PASS.
+4. Smoke suite, 355 PASS.
 5. **Interrogate the values of any artifact you regenerated**, not just its schema
    (§1.2). What would be impossible in this data? Check for it.
 6. Ask of any new guard: what change would make this fail? (§8.4)
