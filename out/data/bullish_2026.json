@@ -2,6 +2,9 @@
  "provenance": {
   "generated": "2026-08-27",
   "computed_at": "2026-08-27T22:24:53+00:00",
+  "engine_generated": "2026-08-26",
+  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
+  "inputs_content_sha256": "efd307fa78ca6e6f3b9e3535e4a5c383c3e8b694f09fcf176592905d768e84c1",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,

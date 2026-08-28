@@ -14,6 +14,8 @@ import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
+sys.path.insert(0, os.path.join(ROOT, "src"))
+from engine_lineage import json_content_sha256
 fails = []
 
 
@@ -25,6 +27,28 @@ def ok(cond, name, detail=""):
 
 inp = json.load(open(os.path.join(D, "bullish_inputs_2026.json")))
 d = json.load(open(os.path.join(D, "bullish_2026.json")))
+inp_digest = inp.get("provenance", {}).get("engine_content_sha256", "")
+tag_digest = d.get("provenance", {}).get("engine_content_sha256", "")
+ok(len(inp_digest) == 64 and tag_digest == inp_digest,
+   "BULLISH inputs and tags record one exact engine payload")
+source_payloads = {
+    name: json.load(open(os.path.join(D, name)))
+    for name in ("ceiling_2026.json", "usage_2025.json", "goalline_2025.json",
+                 "depth_charts.json", "crosswalk.json")
+}
+ok(inp.get("provenance", {}).get("input_content_sha256") ==
+   {name: json_content_sha256(payload)
+    for name, payload in source_payloads.items()},
+   "BULLISH inputs record every committed source payload exactly")
+ok(d.get("provenance", {}).get("inputs_content_sha256") ==
+   json_content_sha256(inp),
+   "BULLISH tags record the exact computed-input payload")
+if os.environ.get("REQUIRE_DISPLAY_ENGINE_MATCH") == "1":
+    eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    ok(all(a.get("provenance", {}).get("engine_content_sha256") ==
+           eng.get("content_sha256")
+           for a in (source_payloads["ceiling_2026.json"], inp, d)),
+       "pages-data repaired every display artifact to the current engine")
 
 # 1. inputs: proportions carry k and n; thresholds carry distributions;
 #    provenance states the proxy weakness and the Vegas window
@@ -128,6 +152,20 @@ for page, chip in ((bp, "bullishChip"), (drp, "bullChip")):
     seg = page[page.index(f"function {chip}"):]
     seg = seg[:seg.index("\n}")]
     ok("ttl_hours" in seg and "ageH" in seg, f"{chip} enforces the 72h TTL with age display")
+ok("TAGS STALE" in bp and "TAGS STALE" in drp,
+   "engine mismatch renders a neutral stale tag, never a current verdict")
+players_page = open(os.path.join(ROOT, "out", "players.html")).read()
+ok("pBullCurrent" in players_page and
+   "BULLISH tags stale versus current board" in players_page,
+   "players filter disables stale BULLISH semantics visibly")
+builder = open(os.path.join(ROOT, "src", "build_bullish.py")).read()
+ok("inputs_digest != engine_digest" in builder and
+   "build_bullish_inputs.py first" in builder,
+   "tag builder refuses inputs from a different engine payload")
+inputs_builder = open(os.path.join(ROOT, "src", "build_bullish_inputs.py")).read()
+ok("ceiling_digest != engine_digest" in inputs_builder and
+   "build_ceiling.py first" in inputs_builder,
+   "input builder refuses ceiling values from a different engine payload")
 _pe_seg = drp[drp.index("function peScore"):drp.index("function peCondition")]
 ok("bullChip" not in _pe_seg and "BULL" not in _pe_seg,
    "the tag never enters the pick-engine score")

@@ -23,6 +23,8 @@ ok(os.path.exists(path), "ceiling artifact exists")
 d = json.load(open(path))
 
 prov = d["provenance"]
+ok(len(prov.get("engine_content_sha256", "")) == 64,
+   "ceiling records engine content lineage")
 ok("league_average_match=1" in prov["format"],
    "the median-game setting is stated as verified, not assumed")
 ok("variance-premium" in prov["limitation"],
@@ -65,6 +67,8 @@ ok("No synthetic variance premium" in bp,
    "the lens declares its limitation instead of smuggling a lambda")
 ok("ceiling artifact absent - the board runs without it" in bp,
    "graceful absence path present")
+ok("ceiling data stale versus current board" in bp,
+   "engine mismatch hides stale ceiling values visibly")
 ok("zero-IR" in bp, "zero-IR cost named on the view")
 
 print()

@@ -41,6 +41,8 @@ jobs:
         run: python3 src/build_cvs.py
       - name: Rebuild archetypes
         run: python3 src/build_archetypes.py
+      - name: Rebuild ceiling
+        run: python3 src/build_ceiling.py
       - name: Rebuild BULLISH inputs
         run: python3 src/build_bullish_inputs.py
       - name: Rebuild BULLISH tags
@@ -49,8 +51,10 @@ jobs:
         run: sh tests/run_gate.sh python3 tests/test_cvs.py
       - name: Archetype invariant guards
         run: sh tests/run_gate.sh python3 tests/test_archetypes.py
+      - name: Ceiling invariant guards
+        run: sh tests/run_gate.sh python3 tests/test_ceiling.py
       - name: BULLISH invariant guards
-        run: sh tests/run_gate.sh python3 tests/test_bullish.py
+        run: REQUIRE_DISPLAY_ENGINE_MATCH=1 sh tests/run_gate.sh python3 tests/test_bullish.py
       - name: Page and data guards
         run: sh tests/run_gate.sh python3 tests/test_pages_data.py
       - name: Commit and push

@@ -46,6 +46,7 @@ import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from forward_policy import pick_marginal, roster_caps  # noqa: E402
+from engine_lineage import stamp as stamp_engine  # noqa: E402
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -621,6 +622,7 @@ def render_markdown(m):
     say(f"Generated {m['generated']} from live Sleeper projections and ADP. "
         f"**Regenerate the morning of 2026-09-08** - both move daily, and "
         f"injury statuses churn.")
+    say(f"Engine content SHA-256: `{m['content_sha256']}`.")
     say("")
     say("Survival = P(available), normal pick-error model, sd fitted per ADP "
         "band to 2,039 of this league's own picks. Opponent urgency from "
@@ -719,14 +721,12 @@ def render_markdown(m):
 
 
 def inject_app(m):
-    """Replace the JSON between the sentinels in draft_room.html, if present."""
+    """Replace the draft-room payload; absence is fatal in this repository."""
     if not os.path.exists(APP_PATH):
-        return False
+        raise RuntimeError(f"draft-room app missing at {APP_PATH}")
     html = open(APP_PATH).read()
     if SENTINEL_OPEN not in html or SENTINEL_CLOSE not in html:
-        print(f"WARNING: sentinels missing in {APP_PATH}, not injected",
-              file=sys.stderr)
-        return False
+        raise RuntimeError(f"engine sentinels missing in {APP_PATH}")
     payload = json.dumps(m, separators=(",", ":"))
     pre, rest = html.split(SENTINEL_OPEN, 1)
     _, post = rest.split(SENTINEL_CLOSE, 1)
@@ -741,6 +741,7 @@ def main():
     a = ap.parse_args()
 
     m = apply_overlay(build_model(), load_my_board())
+    stamp_engine(m)
     md = render_markdown(m)
     os.makedirs("out", exist_ok=True)
     open(MD_PATH, "w").write(md)

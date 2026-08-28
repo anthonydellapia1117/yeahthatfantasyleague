@@ -37,6 +37,8 @@ import math
 import os
 from collections import defaultdict
 
+from engine_lineage import require as require_engine_digest
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HISTORY = os.environ.get(
     "HISTORY",
@@ -82,6 +84,7 @@ def weekly_points(year):
 
 def main():
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    engine_digest = require_engine_digest(eng)
     baselines = eng["baselines"]
     draftable = [p for p in eng["players"]
                  if p["adp"] <= 14 * 12 and p["pos"] in POSITIONS]
@@ -152,6 +155,8 @@ def main():
     out = {
         "provenance": {
             "generated": datetime.date.today().isoformat(),
+            "engine_generated": eng["generated"],
+            "engine_content_sha256": engine_digest,
             "format": ("H2H + league median, league_average_match=1 verified "
                        "live on both league ids - every week scores twice"),
             "scoring": "league-exact (6-pt pass TD, full PPR)",

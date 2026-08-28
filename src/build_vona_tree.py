@@ -49,6 +49,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, ROOT)
 
 # the frozen survival model is CALLED, never reimplemented
+from engine_lineage import require as require_engine_digest  # noqa: E402
 from engine_2026 import survival, snake_picks, TEAMS  # noqa: E402
 from forward_policy import phantom_lineup_pts, starter_caps  # noqa: E402
 
@@ -298,6 +299,7 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
 
 def main():
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    engine_digest = require_engine_digest(eng)
     players = [p for p in eng["players"]
                if p["pos"] in SKILL and p.get("adp", 999) < 900]
     players.sort(key=lambda p: -p["vor"])
@@ -366,6 +368,7 @@ def main():
         "provenance": {
             "generated": datetime.date.today().isoformat(),
             "engine_generated": eng["generated"],
+            "engine_content_sha256": engine_digest,
             "objective": ("VONA(pos) = E[best available at this pick] - "
                           "E[best available at my next pick], both survival-"
                           "weighted over the whole positional pool"),

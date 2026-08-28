@@ -1,6 +1,6 @@
 # Scheduled draft-morning refresh (docs/DRAFT_MORNING.md).
 # 10:00 UTC = 6:00 AM Eastern (EDT) on the two dates Anthony asked for:
-# 08-28 (dry run, three weeks out) and 09-08 (draft morning itself).
+# 08-28 (dry run, 11 days out) and 09-08 (draft morning itself).
 # Every step is a gate. The commit only happens if all of them pass, so a
 # red run leaves the last verified build serving. After a successful push,
 # pages.yml is dispatched explicitly and deploys the site.
@@ -76,12 +76,19 @@ jobs:
       # run if this is ever skipped and the tree falls behind the engine.
       - name: Rebuild VONA path tree
         run: python3 src/build_vona_tree.py
-      # Both outputs read the engine payload directly. The mock carries
-      # engine_generated; the teaser's allowed names track the live board.
+      # Both outputs read the engine payload directly. Mock carries the exact
+      # engine content digest; the teaser embeds it beside the allowed names.
       - name: Rebuild mock-draft validation
         run: python3 src/mock_draft.py
       - name: Rebuild teaser
         run: python3 src/build_teaser.py
+
+      # Ceiling and BULLISH are display-only and HISTORY-bound. Pulling their
+      # 156 MB cache, pyarrow, and the live games source into this 25-minute
+      # decision-critical job would add a new draft-morning failure path. They
+      # instead carry the engine content digest: the three consuming pages hide
+      # or neutralize stale values after this 06:00 build, and pages-data
+      # rebuilds the complete chain at 08:00.
 
       # steps 5-9: the python gates, every one through run_gate.sh, which
       # demands exit 0 AND the ALL PASS sentinel together (the exit-code-
@@ -111,7 +118,7 @@ jobs:
         run: sh tests/run_gate.sh python3 tests/test_ws2.py
       - name: Mock-draft guards
         run: sh tests/run_gate.sh python3 tests/test_mock.py
-      - name: BULLISH-vs-ADP null guards
+      - name: BULLISH-vs-ADP INCONCLUSIVE finding guards
         run: sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py
       - name: VONA path-tree guards
         run: sh tests/run_gate.sh python3 tests/test_vona.py

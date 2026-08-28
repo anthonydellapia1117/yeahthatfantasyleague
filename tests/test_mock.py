@@ -23,11 +23,15 @@ def ok(cond, label):
 
 
 m = json.load(open(os.path.join(D, "mock_drafts_2026.json")))
+eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 
 prov = m["provenance"]
-ok(all(k in prov for k in ("generated", "engine_generated", "method",
+ok(all(k in prov for k in ("generated", "engine_generated",
+                           "engine_content_sha256", "method",
                            "kdef_window", "finding", "scope")),
    "provenance complete, the naive-VOR finding stated")
+ok(prov["engine_content_sha256"] == eng["content_sha256"],
+   "mock records the exact engine content it consumed")
 ok(prov["kdef_window"]["observed_n"] > 0,
    "opponent K/DEF window derived from observed league drafts")
 

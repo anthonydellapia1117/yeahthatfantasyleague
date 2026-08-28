@@ -297,6 +297,9 @@ async function boot(){
   const get = f => fetch(f).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
   try {
     [D.cvs, D.eng] = await Promise.all([get("cvs.json"), get("engine_2026.json")]);
+    if (!/^[0-9a-f]{64}$/.test(D.eng.content_sha256 || "") ||
+        D.cvs.engine_content_sha256 !== D.eng.content_sha256)
+      throw new Error("cvs.json was built from a different engine payload");
     // C2 base rates: display-only historical context; the board must render
     // identically in its absence, so this fetch never gates boot
     try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
@@ -357,11 +360,13 @@ function renderFilters(){
   sigf.querySelectorAll("button").forEach(b => b.onclick = () => {
     View.sig = b.dataset.sig; persist(); renderFilters(); renderBoard(); });
   const togf = document.getElementById("togf");
+  const bullReady = bullishCurrent();
   togf.innerHTML = `
     <button data-t="avail"${View.avail ? ' class="on"' : ""}>available only</button>
     <button data-t="rookies"${View.rookies ? ' class="on"' : ""}>rookies only</button>
     <button data-t="walter"${View.walter ? ' class="on"' : ""}>walter-tagged only</button>
-    <button data-t="bull"${View.bull ? ' class="on"' : ""}>BULLISH/WATCH only</button>
+    <button data-t="bull"${View.bull && bullReady ? ' class="on"' : ""}${
+      bullReady ? "" : ' disabled title="BULLISH tags stale or unavailable"'}>BULLISH/WATCH only</button>
     <button data-t="wl" id="wl-toggle"${walterOn() ? ' class="on"' : ""}
       style="margin-left:auto${walterOn() ? "" : ";border-color:#b91c1c;color:#b91c1c"}">WALTER LAYER ${walterOn() ? "ON" : "OFF"}</button>`;
   togf.querySelectorAll("button").forEach(b => b.onclick = () => {
@@ -385,7 +390,8 @@ function activeFilters(){
   if (View.pos !== "ALL") on.push(["pos", "position " + View.pos]);
   if (View.sig !== "ALL") on.push(["sig", "signal " + View.sig.replace(/_/g, " ")]);
   for (const k of Object.keys(FILTER_LABELS))
-    if (View[k]) on.push([k, FILTER_LABELS[k]]);
+    if (View[k] && (k !== "bull" || bullishCurrent()))
+      on.push([k, FILTER_LABELS[k]]);
   return on;
 }
 function clearFilters(){
@@ -455,11 +461,12 @@ function renderBoard(){
   if (View.avail && D.drafted.size) list = list.filter(p => !D.drafted.has(norm(p.name)));
   if (View.rookies) list = list.filter(isRookie);
   if (View.walter) list = list.filter(p => p.walter.applied.length || p.walter.evidence.length);
-  if (View.bull && D.bull)
+  if (View.bull && bullishCurrent())
     list = list.filter(p => D.bull.tags.some(x => x.name === p.name && x.pos === p.pos));
   renderActiveFilters(list.length, D.cvs.players.length);
   document.getElementById("board").innerHTML =
     (wl ? "" : '<p class="small" id="wl-note">WALTER LAYER OFF (live toggle) - pure model board, ranks and signals recomputed server-side without the guide.</p>') +
+    (D.bull && !bullishCurrent() ? '<p class="small">BULLISH tags stale versus current board - tag filters and verdict chips are disabled until the daily rebuild.</p>' : "") +
     (list.map(p => `
     <div class="brow" data-sig="${S(p).signal || ""}">
       <div class="rk num">${S(p).cvs_rank}</div>
@@ -489,11 +496,21 @@ function rateBand(rank){
 // ---- C5 BULLISH tags: a computed layer BESIDE the signal encoding, never
 // superseding it. Chip shows status + age; title carries the top reason and
 // the gate probability. Past the 72h TTL a BULLISH chip degrades to WATCH.
+function bullishCurrent(){
+  const engineDigest = D.eng && D.eng.content_sha256 || "";
+  const bullDigest = D.bull && D.bull.provenance &&
+    D.bull.provenance.engine_content_sha256 || "";
+  return /^[0-9a-f]{64}$/.test(engineDigest) && bullDigest === engineDigest;
+}
 function bullishChip(p){
   if (!D.bull) return "";
   const t = D.bull.tags.find(x => x.name === p.name && x.pos === p.pos);
   if (!t) return "";
   const ageH = Math.max(0, (Date.now() - Date.parse(t.computed_at)) / 3600000);
+  if (!bullishCurrent()){
+    const title = `BULLISH tags stale versus current board; age ${ageH.toFixed(0)}h`;
+    return `<span class="sig" style="color:var(--ink3);border-color:var(--ink3)" title="${esc(title)}">TAGS STALE ${ageH.toFixed(0)}h</span>`;
+  }
   let st = t.status;
   let stale = "";
   if (st === "BULLISH" && ageH > t.ttl_hours){ st = "WATCH"; stale = " (stale)"; }
@@ -569,6 +586,12 @@ function renderCeiling(){
   const el = document.getElementById("ceil-t");
   if (!el) return;
   if (!D.ceil){ el.innerHTML = '<p class="small">ceiling artifact absent - the board runs without it</p>'; return; }
+  const ceilingDigest = (D.ceil.provenance || {}).engine_content_sha256 || "";
+  if (!/^[0-9a-f]{64}$/.test(D.eng.content_sha256 || "") ||
+      ceilingDigest !== D.eng.content_sha256){
+    el.innerHTML = '<p class="small">ceiling data stale versus current board - values are hidden until the daily rebuild.</p>';
+    return;
+  }
   const rows = D.ceil.players.filter(p => p.boom)
     .sort((a, b) => b.boom.rate - a.boom.rate || b.p90_week - a.p90_week);
   el.innerHTML = `<div class="tw"><table>
@@ -613,7 +636,7 @@ function renderKdef(){
 function renderFoot(){
   const c = D.cvs;
   document.getElementById("foot").innerHTML =
-    `<b>Provenance (guard N2)</b> - cvs generated ${esc(c.generated)} - built from engine ${esc(c.engine_generated || c.generated)} - shipped engine ${esc(D.eng.generated)}
+    `<b>Provenance (guard N2)</b> - cvs generated ${esc(c.generated)} - built from engine ${esc(c.engine_generated || c.generated)} - shipped engine ${esc(D.eng.generated)} - engine content ${esc(D.eng.content_sha256.slice(0, 12))}
      - walter source sha ${esc(c.walter_source_sha256.slice(0, 12))} - weights from data/cvs_weights.json
      (z_point_scale ${c.config.z_point_scale}, walter cap ${c.config.walter_cap_pct}%,
      walter_enabled ${c.config.walter_enabled}). The anchor law and the cap are unit-tested at every merge.`;

@@ -2,6 +2,7 @@
  "provenance": {
   "generated": "2026-08-27",
   "engine_generated": "2026-08-26",
+  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
   "method": "deterministic snake sim from the committed engine payload; our seat scores candidates by optimal-lineup improvement over replacement-level phantoms (engine baselines), VOR tie-break; eleven ADP seats; comparison runs: naive max-VOR and ADP chalk",
   "finding": "naive max-VOR drafts duplicate elite TEs early (slots 6 and 12) because raw VOR prices a duplicate at starter value; the marginal policy corrects it and the live room's roster-need line is the same guard in interactive form",
   "kdef_window": {

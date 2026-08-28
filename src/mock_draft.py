@@ -44,6 +44,7 @@ import os
 import statistics
 from collections import Counter, defaultdict
 
+from engine_lineage import require as require_engine_digest
 from forward_policy import phantom_lineup_pts, roster_caps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -206,6 +207,7 @@ def sanity(team, rounds_total):
 
 def main():
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
+    engine_digest = require_engine_digest(eng)
     lg = eng["league"]
     rounds_total, teams_n = lg["rounds"], lg["teams"]
     players = [p for p in eng["players"] if p.get("adp") is not None]
@@ -244,6 +246,7 @@ def main():
         "provenance": {
             "generated": datetime.date.today().isoformat(),
             "engine_generated": eng["generated"],
+            "engine_content_sha256": engine_digest,
             "method": ("deterministic snake sim from the committed engine "
                        "payload; our seat scores candidates by optimal-"
                        "lineup improvement over replacement-level phantoms "

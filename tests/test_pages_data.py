@@ -5,9 +5,11 @@ Runs WITHOUT network: operates only on committed out/data/*.json.
 Run: python3 tests/test_pages_data.py
 """
 import datetime
+import copy
 import importlib.util
 import json
 import os
+import re
 import sys
 import tempfile
 from unittest import mock
@@ -874,45 +876,122 @@ with tempfile.TemporaryDirectory() as _td:
        "failed live refresh preserves the last complete games file")
 
 # ---------------------------------------------------------------------------
-# ENGINE GENERATION LINKAGE. Artifacts registered with engine_generated must
-# MATCH the engine generation date that ships beside them. CVS is checked
-# explicitly below; the data-directory scan covers the registered VONA/mock set.
-# This does not discover undeclared dependencies. The draft-morning workflow rebuilds
-# engine_2026.json (a
-# previous refresh moved 259 ADP values) and the registered artifacts have to be
-# rebuilt with it. The failure this closes is a nav-linked decision surface -
-# the PATHS tab - silently rendering a tree computed against yesterday's board
-# on draft night. test_mock.py asserted the key EXISTED; nothing asserted it
-# AGREED, and paths.html cannot show the mismatch either: it prints the tree's
-# own recorded engine generation date and never fetches the engine to compare.
+# ENGINE CONTENT LINKAGE. A generation DATE cannot distinguish two builds on
+# the same calendar day: that hole once let 14 stale mock tiers pass the guard.
+# The strict registered set must match the canonical payload digest. The three
+# HISTORY-bound display artifacts also carry lineage, but may deliberately lag
+# the 06:00 engine until pages-data repairs them at 08:00; their pages must make
+# that mismatch visible instead of presenting old values as current.
+sys.path.insert(0, os.path.join(ROOT, "src"))
+from engine_lineage import (content_sha256 as _engine_sha,
+                            is_valid as _engine_valid,
+                            json_content_sha256 as _json_sha)
 _eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 _cvs = json.load(open(os.path.join(ROOT, "out", "cvs.json")))
-ok(_cvs.get("engine_generated") == _eng.get("generated"),
-   "cvs.json declares the engine generation date it consumed",
-   f"cvs says {_cvs.get('engine_generated')}, engine says {_eng.get('generated')}")
-_room_src = open(os.path.join(ROOT, "out", "draft_room.html")).read()
-ok("CVS.engine_generated || CVS.generated" in _room_src and
-   "const stale = cvsEngine !== E.generated" in _room_src and
-   "CVS.generated !== E.generated" not in _room_src,
-   "the room compares CVS engine generation dates, not unrelated build dates")
-_derived = 0
-for _f in sorted(os.listdir(D)):
-    if not _f.endswith(".json"):
+ok(_engine_valid(_eng),
+   "engine content digest independently recomputes from the shipped payload")
+_same_day = copy.deepcopy(_eng)
+_same_day["players"][0]["tier"] = (_same_day["players"][0].get("tier") or 0) + 1
+ok(_same_day["generated"] == _eng["generated"] and
+   _engine_sha(_same_day) != _eng["content_sha256"],
+   "same-day content mutation changes the digest while the date stays equal")
+
+_strict_engine_derivatives = {
+    "cvs.json": (_cvs, _cvs),
+    "vona_tree_2026.json": (
+        json.load(open(os.path.join(D, "vona_tree_2026.json"))), "provenance"),
+    "mock_drafts_2026.json": (
+        json.load(open(os.path.join(D, "mock_drafts_2026.json"))), "provenance"),
+}
+for _name, (_artifact, _where) in _strict_engine_derivatives.items():
+    _lineage = _artifact if isinstance(_where, dict) else _artifact[_where]
+    ok(_lineage.get("engine_content_sha256") == _eng["content_sha256"],
+       f"{_name}: exact engine content matches the shipped payload",
+       f"artifact says {_lineage.get('engine_content_sha256')}, "
+       f"engine says {_eng['content_sha256']}")
+_display_lag_paths = ("ceiling_2026.json", "bullish_inputs_2026.json",
+                      "bullish_2026.json")
+_display_lag = {name: json.load(open(os.path.join(D, name)))
+                for name in _display_lag_paths}
+for _name, _artifact in _display_lag.items():
+    _digest = _artifact.get("provenance", {}).get("engine_content_sha256", "")
+    ok(bool(re.fullmatch(r"[0-9a-f]{64}", _digest)),
+       f"{_name}: display-only engine lineage is explicit")
+ok(_display_lag["bullish_inputs_2026.json"]["provenance"]["engine_content_sha256"] ==
+   _display_lag["bullish_2026.json"]["provenance"]["engine_content_sha256"],
+   "BULLISH tags and their computed inputs share one engine payload")
+_bull_inputs = _display_lag["bullish_inputs_2026.json"]
+_source_payloads = {
+    "ceiling_2026.json": _display_lag["ceiling_2026.json"],
+    "usage_2025.json": json.load(open(os.path.join(D, "usage_2025.json"))),
+    "goalline_2025.json": json.load(open(os.path.join(D, "goalline_2025.json"))),
+    "depth_charts.json": json.load(open(os.path.join(D, "depth_charts.json"))),
+    "crosswalk.json": json.load(open(os.path.join(D, "crosswalk.json"))),
+}
+_source_manifest = _bull_inputs.get("provenance", {}).get(
+    "input_content_sha256", {})
+ok(_source_manifest == {name: _json_sha(payload)
+                        for name, payload in _source_payloads.items()},
+   "BULLISH inputs match every committed source payload they consumed")
+ok(_display_lag["bullish_2026.json"]["provenance"].get(
+       "inputs_content_sha256") == _json_sha(_bull_inputs),
+   "BULLISH tags match the exact computed-input payload they consumed")
+_mutated_ceiling = copy.deepcopy(_display_lag["ceiling_2026.json"])
+_mutated_ceiling["players"][0]["p90_week"] += 0.1
+ok(_mutated_ceiling["provenance"]["engine_content_sha256"] ==
+   _display_lag["ceiling_2026.json"]["provenance"]["engine_content_sha256"] and
+   _json_sha(_mutated_ceiling) != _source_manifest["ceiling_2026.json"],
+   "same-engine ceiling mutation changes the BULLISH source digest")
+_mutated_inputs = copy.deepcopy(_bull_inputs)
+_mutated_inputs["thresholds"]["wr_tprr"]["p75"] += 0.0001
+ok(_mutated_inputs["provenance"]["engine_content_sha256"] ==
+   _bull_inputs["provenance"]["engine_content_sha256"] and
+   _json_sha(_mutated_inputs) !=
+   _display_lag["bullish_2026.json"]["provenance"]["inputs_content_sha256"],
+   "same-engine input mutation changes the BULLISH tag-source digest")
+
+_declared_lineage = {"cvs.json"}
+for _name in sorted(os.listdir(D)):
+    if not _name.endswith(".json"):
         continue
     try:
-        _a = json.load(open(os.path.join(D, _f)))
-    except (ValueError, OSError):
+        _candidate = json.load(open(os.path.join(D, _name)))
+    except (OSError, ValueError):
         continue
-    _p = _a.get("provenance") if isinstance(_a, dict) else None
-    if not isinstance(_p, dict) or "engine_generated" not in _p:
-        continue
-    _derived += 1
-    ok(_p["engine_generated"] == _eng["generated"],
-       f"{_f}: built from the engine that ships with it",
-       f"artifact says {_p['engine_generated']}, engine says {_eng['generated']}")
-ok(_derived >= 2,
-   "the registered engine-linked artifacts match the shipped generation date",
-   f"found {_derived}")
+    if isinstance(_candidate, dict) and isinstance(_candidate.get("provenance"), dict) and \
+       "engine_content_sha256" in _candidate["provenance"]:
+        _declared_lineage.add(_name)
+_registered_lineage = set(_strict_engine_derivatives) | set(_display_lag_paths)
+ok(_declared_lineage == _registered_lineage,
+   "every artifact declaring engine lineage is in the strict or display registry",
+   f"declared {sorted(_declared_lineage)}, registered {sorted(_registered_lineage)}")
+
+_room_src = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+_open = '<script id="engine-data" type="application/json">'
+_close = '</script><!--engine-data-end-->'
+_embedded = json.loads(_room_src.split(_open, 1)[1].split(_close, 1)[0])
+ok(_embedded == _eng,
+   "draft room embeds the exact engine object that ships beside it")
+ok("CVS.engine_content_sha256" in _room_src and
+   "cvsDigest !== engineDigest" in _room_src and
+   "pick engine is offline until both rebuild together" in _room_src and
+   "CVS.engine_generated || CVS.generated" not in _room_src,
+   "draft room fails closed on a missing or mismatched CVS digest")
+_board_src = open(os.path.join(ROOT, "out", "big_board.html")).read()
+_paths_src = open(os.path.join(ROOT, "out", "paths.html")).read()
+ok("D.cvs.engine_content_sha256 !== D.eng.content_sha256" in _board_src,
+   "big board refuses a CVS payload from a different engine")
+ok('fetch("engine_2026.json")' in _paths_src and
+   "j.provenance.engine_content_sha256 !== digest" in _paths_src,
+   "PATHS fetches the engine and refuses a mismatched tree")
+ok(all(_eng["content_sha256"] in
+       open(os.path.join(ROOT, "out", "teaser", name)).read()
+       for name in ("index.html", "players.html", "draft_room.html",
+                    "teams.html", "ff-hub.html")),
+   "all five teaser pages name the exact engine content they render")
+ok(_eng["content_sha256"] in
+   open(os.path.join(ROOT, "out", "decision_cards_2026.md")).read(),
+   "decision cards name the exact engine content they render")
 
 # ---------------------------------------------------------------------------
 # PRODUCER/PUBLICATION COVERAGE. The exact CVS determinism proof lives in
@@ -926,15 +1005,21 @@ _pages_yml = open(os.path.join(ROOT, ".github", "workflows", "pages.yml")).read(
 _draft_refresh_yml = open(os.path.join(ROOT, ".github", "workflows",
                                        "draft-refresh.yml")).read()
 _downstream_builders = ("parse_walter.py", "build_cvs.py", "build_archetypes.py",
-                        "build_bullish_inputs.py", "build_bullish.py")
-_downstream_guards = ("test_cvs.py", "test_archetypes.py", "test_bullish.py")
+                        "build_ceiling.py", "build_bullish_inputs.py",
+                        "build_bullish.py")
+_downstream_guards = ("test_cvs.py", "test_archetypes.py", "test_ceiling.py",
+                      "test_bullish.py")
 ok(all(f"python3 src/{name}" in _pages_data_yml
        for name in _downstream_builders) and
    all(f"run_gate.sh python3 tests/{name}" in _pages_data_yml
        for name in _downstream_guards),
    "pages-data runs every declared shard-derived builder and invariant guard")
+ok("REQUIRE_DISPLAY_ENGINE_MATCH=1 sh tests/run_gate.sh python3 "
+   "tests/test_bullish.py" in _pages_data_yml,
+   "pages-data proves its 08:00 display-lineage repair reached the current engine")
 _producer_order = ("build_pages_data.py", "parse_walter.py", "build_cvs.py",
-                   "build_archetypes.py", "build_bullish_inputs.py",
+                   "build_archetypes.py", "build_ceiling.py",
+                   "build_bullish_inputs.py",
                    "build_bullish.py")
 ok(all(_pages_data_yml.index(_producer_order[i]) <
        _pages_data_yml.index(_producer_order[i + 1])
@@ -967,6 +1052,11 @@ _draft_gates_i = _draft_refresh_yml.index("python3 tests/test_mock.py")
 ok(all(_engine_i < i < _draft_gates_i
        for i in (_vona_i, _mock_i, _teaser_i)),
    "draft-refresh rebuilds VONA, mock, and teaser after their engine input")
+ok("156 MB" in _draft_refresh_yml and
+   not re.search(r"^\s*run:\s*python3 src/build_(?:ceiling|bullish)",
+                 _draft_refresh_yml, re.M),
+   "draft-refresh names the HISTORY-bound display exception instead of "
+   "adding it to the decision-critical path")
 
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")

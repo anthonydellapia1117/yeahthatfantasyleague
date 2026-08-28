@@ -10,6 +10,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "src"))
 spec = importlib.util.spec_from_file_location(
     "cvsmod", os.path.join(ROOT, "src", "build_cvs.py"))
 cvsmod = importlib.util.module_from_spec(spec)
@@ -29,9 +30,13 @@ E = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 cfg = C["config"]
 players = C["players"]
 
+ok(C.get("engine_content_sha256") == E.get("content_sha256") and
+   len(C.get("engine_content_sha256", "")) == 64,
+   "CVS records the exact engine content it consumed",
+   f"cvs says {C.get('engine_content_sha256')}, "
+   f"engine says {E.get('content_sha256')}")
 ok(C.get("engine_generated") == E.get("generated"),
-   "CVS records the engine generation date it consumed",
-   f"cvs says {C.get('engine_generated')}, engine says {E.get('generated')}")
+   "CVS retains the human-readable engine generation date")
 
 # 1. z-score unit behavior: mean 0, unit spread, None passthrough, degenerate
 zs = cvsmod.zscores([1.0, 2.0, 3.0, None, 4.0])
