@@ -223,8 +223,8 @@
    "p_two_sided": 0.0001
   }
  },
- "verdict": "INCONCLUSIVE \u2014 incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. That interval permits harm and useful lift alike. Only three tags occur at ranks 13-24 and none at 25-48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.",
- "verdict_basis": "reported, fixed by review 2026-08-28 - not computed. Removing the non-discriminating TE matrix reduced the point estimate and widened the interval; it did not rescue the result. That points to the ADP gate rather than one criterion. The prior three-state automation was removed as unsound: a post-hoc minimum-detectable-effect comparison is not an equivalence test, the significance branch searched six cells without multiplicity control, and its BEATS label was sign-blind. Every figure the verdict cites is cross-checked against the computed cells at build time; a mismatch fails the build for re-review instead of regenerating the text",
+ "verdict": "INCONCLUSIVE \u2014 incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the top-band sample from 300 to 199 players (43 to 35 tagged) and widened the interval from 31.0pp to 35.5pp. That is the expected direction when a non-discriminating group is removed: fewer observations mean more uncertainty. Because the verdict held while uncertainty increased, the unresolved limitation is the ADP-gated design, not one individual criterion. The current interval permits harm and useful lift alike. Only three tags occur at ranks 13-24 and none at 25-48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.",
+ "verdict_basis": "reported, fixed by review 2026-08-28 - not computed. Removing the non-discriminating TE matrix reduced the point estimate and widened the interval because the restricted scope has fewer observations; it did not rescue the result. That points to the ADP gate rather than one criterion. The prior three-state automation was removed as unsound: a post-hoc minimum-detectable-effect comparison is not an equivalence test, the significance branch searched six cells without multiplicity control, and its BEATS label was sign-blind. Every figure the current-scope figure the verdict cites is cross-checked against the computed cells at build time; the prior-scope comparison is pinned to the cited pre-suspension artifact. A mismatch fails the build for re-review instead of regenerating the text",
  "verdict_cites": {
   "pos1-12 tagged k/n": [
    22,
@@ -242,8 +242,35 @@
    28.2
   ],
   "pos1-12 p two-sided": 0.261,
+  "pos1-12 total n": 199,
+  "pos1-12 diff ci95 width pp": 35.5,
   "pos13-24 tagged n": 3,
   "pos25-48 tagged n": 0
+ },
+ "scope_change": {
+  "prior": {
+   "scope": [
+    "RB",
+    "WR",
+    "TE"
+   ],
+   "top_band_total_n": 300,
+   "top_band_tagged_n": 43,
+   "diff_ci95_width_pp": 31.0,
+   "source_commit": "242ae6b284a82e81f575eb42805bcf638a65ebbf",
+   "source_artifact": "out/data/bullish_vs_adp.json",
+   "source_content_sha256": "405cac582f5b953d9ba46a53b670123c8870892b37dc79bdfb2e5ffe2ee172b4"
+  },
+  "current": {
+   "scope": [
+    "RB",
+    "WR"
+   ],
+   "top_band_total_n": 199,
+   "top_band_tagged_n": 35,
+   "diff_ci95_width_pp": 35.5
+  },
+  "interpretation": "Removing the non-discriminating TE group left fewer observations and therefore widened uncertainty. The INCONCLUSIVE verdict holding under that expected widening points to the ADP-gated design rather than one individual tag criterion."
  },
  "concentration": {
   "tagged_by_band": {

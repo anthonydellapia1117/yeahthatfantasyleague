@@ -52,7 +52,14 @@ FIXED_VERDICT = (
     "RB/WR scope after suspending the non-discriminating TE matrix. Among "
     "positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases "
     "(62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. "
-    "That interval permits harm and useful lift alike. Only three tags occur "
+    "Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the "
+    "top-band sample from 300 to 199 players (43 to 35 tagged) and widened "
+    "the interval from 31.0pp to 35.5pp. That is the expected direction when "
+    "a non-discriminating group is removed: fewer observations mean more "
+    "uncertainty. Because the verdict held while uncertainty increased, the "
+    "unresolved limitation is the ADP-gated design, not one individual "
+    "criterion. The current interval permits harm and useful lift alike. "
+    "Only three tags occur "
     "at ranks 13-24 and none at 25-48, so those regions are not identifiable. "
     "Coarse bands do not adjust for exact ADP, position, season, or repeated "
     "players. Tags stay display-only pending continuous-ADP, season-held-out "
@@ -66,6 +73,32 @@ ok("not an equivalence test" in a.get("verdict_basis", "")
    and "multiplicity" in a.get("verdict_basis", "")
    and "sign-blind" in a.get("verdict_basis", ""),
    "the basis names all three defects of the removed automation")
+scope_change = a.get("scope_change", {})
+prior_scope = scope_change.get("prior", {})
+current_scope = scope_change.get("current", {})
+top_lift = a["within_band"]["pos1-12"]["lift_hit12"]
+current_width = round(
+    100 * (top_lift["diff_ci95"][1] - top_lift["diff_ci95"][0]), 1)
+ok(prior_scope.get("scope") == ["RB", "WR", "TE"] and
+   prior_scope.get("top_band_total_n") == 300 and
+   prior_scope.get("top_band_tagged_n") == 43 and
+   prior_scope.get("diff_ci95_width_pp") == 31.0 and
+   prior_scope.get("source_commit") ==
+   "242ae6b284a82e81f575eb42805bcf638a65ebbf" and
+   prior_scope.get("source_content_sha256") ==
+   "405cac582f5b953d9ba46a53b670123c8870892b37dc79bdfb2e5ffe2ee172b4",
+   "the prior mixed-position scope is pinned to the reviewed artifact")
+ok(current_scope.get("scope") == ["RB", "WR"] and
+   current_scope.get("top_band_total_n") ==
+   a["within_band"]["pos1-12"]["tagged"]["n"] +
+   a["within_band"]["pos1-12"]["untagged"]["n"] and
+   current_scope.get("top_band_tagged_n") ==
+   a["within_band"]["pos1-12"]["tagged"]["n"] and
+   current_scope.get("diff_ci95_width_pp") == current_width == 35.5,
+   "the current scope and widened interval rederive from computed cells")
+ok("fewer observations" in scope_change.get("interpretation", "") and
+   "ADP-gated design" in scope_change.get("interpretation", ""),
+   "the scope-change interpretation explains expected widening and its cause")
 
 # the automation must actually be GONE, not just overridden
 ok("significant_cells" not in a and "underpowered_bands" not in a,

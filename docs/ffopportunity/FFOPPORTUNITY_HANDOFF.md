@@ -47,7 +47,7 @@ It is implemented in `src/build_bullish.py` (tag engine) and `src/build_bullish_
 | QB | 2 of 3 | rushing, environment, efficiency |
 | TE | **SUSPENDED** (former 2 of 2) | No live criteria. The former on-field-dropback input includes pass blocks, while market_share was constant at 0.9 for all 19 veterans. |
 
-**Critical status:** The BULLISH tag is **display-only**. INCONCLUSIVE — incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1–12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. That interval permits harm and useful lift alike. Only three tags occur at ranks 13–24 and none at 25–48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.
+**Critical status:** The BULLISH tag is **display-only**. INCONCLUSIVE — incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1–12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the top-band sample from 300 to 199 players (43 to 35 tagged) and widened the interval from 31.0pp to 35.5pp. That is the expected direction when a non-discriminating group is removed: fewer observations mean more uncertainty. Because the verdict held while uncertainty increased, the unresolved limitation is the ADP-gated design, not one individual criterion. The current interval permits harm and useful lift alike. Only three tags occur at ranks 13–24 and none at 25–48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.
 
 ### What we set out to do
 
@@ -358,11 +358,26 @@ with open(games_path) as fh:
 This extrapolates an entire 17-game season, coaching environment, and matchup schedule from **one Sunday's betting line**. It was identified as the weakest proxy in the app.
 
 **Implemented replacement:** the app does not read the derived R CSV. It validates
-the raw 272-game schedule (32 canonical teams, 17 games each), derives the maximal
+the raw 272-game schedule snapshot (32 canonical teams, 17 games each), derives the maximal
 contiguous fully priced prefix, and computes home = total/2 + spread/2 under the
 independently verified nflverse sign. Current horizon is Weeks 1-6, 93 games and
 186 team-games. Week 7 is 7/14 priced. The values feed QB environment and WR
 opportunity only; Week-1 RB expected-TD equity is isolated.
+
+The snapshot is not static. Daily `pages-data` refreshes nflverse `games.csv`,
+synchronizes its 2026 regular-season rows into the committed snapshot, validates
+before any consumer runs, and stages snapshot plus metadata in the same commit.
+The metadata records pull time, upstream/snapshot/decision-input digests, horizon,
+and priced game/team-game counts. The artifact reports `HORIZON_EXTENDED`,
+`CONTRACTED`, `REPRICED`, or `UNCHANGED`, persists the last material event, and
+shows its schedule-only same-build tag delta on Home and Draft Room. `CONTRACTED`
+fails before replacing the last verified broader snapshot; temporary unpricing and
+intentional narrowing cannot be safely distinguished automatically. The 06:00
+draft-refresh remains intentionally HISTORY-free and consumes the last validated
+committed snapshot. Before publishing attribution, the consumer independently
+rederives the stored transition, validates finite totals for all 32 teams, and
+rejects ambiguous mixed schedule/model movement. A model-only change therefore
+cannot masquerade as a schedule-only tag delta.
 
 **Feeds:** QB `environment` criterion, WR `opportunity` criterion.
 **Verdict:** **GATE.**
@@ -411,10 +426,7 @@ As more complete weeks price, the derived horizon and tags may move visibly.
 
 3. **Hold every new signal at display until null-tested against 13 seasons.** Of the candidates tested across four rounds, **three of the most promising failed their control tests** (YAC-OE, garbage time, neutral_script_role). Raw correlation and year-over-year stability are *not* sufficient evidence. The controlled test — does the signal predict next-year outcomes *within* a production tier — is the one that matters.
 
-4. **BULLISH remains display-only.** INCONCLUSIVE — incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1–12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. That interval permits harm and useful lift alike. Only three tags occur at ranks 13–24 and none at 25–48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing. Removing the
-   non-discriminating TE matrix reduced the point estimate (+13.4pp to +10.4pp)
-   and widened the interval (31.0pp to 35.5pp); it did not rescue the result.
-   The unresolved issue is the ADP gate, not one individual criterion.
+4. **BULLISH remains display-only.** INCONCLUSIVE — incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1–12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the top-band sample from 300 to 199 players (43 to 35 tagged) and widened the interval from 31.0pp to 35.5pp. That is the expected direction when a non-discriminating group is removed: fewer observations mean more uncertainty. Because the verdict held while uncertainty increased, the unresolved limitation is the ADP-gated design, not one individual criterion. The current interval permits harm and useful lift alike. Only three tags occur at ranks 13–24 and none at 25–48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.
 
 5. **`COLUMN_DICTIONARY.md` retains historical cautions.** The TE false route
    alias is removed. The WR `tprr_proxy` warning remains because ffopportunity
@@ -422,7 +434,10 @@ As more complete weeks price, the derived horizon and tags may move visibly.
 
 6. **2026 Vegas coverage is partial and explicit.** The activated horizon is Weeks
    1-6, 93 games / 186 team-games; Week 7 is 7/14 priced. The artifact exposes the
-   boundary and recomputes it every build.
+   boundary and recomputes it every build from the daily-synchronized snapshot.
+   A synthetic Week-7 completion proves the event moves to 107 games / 214
+   team-games; a synthetic contraction fails closed without replacing either
+   snapshot file.
 
 7. **Repeatability ≠ predictiveness.** This is the single most important methodological lesson of the four rounds. YAC-OE is the most repeatable signal in the dataset (r up to 0.691) and predicts nothing about next-year fantasy points once production tier is controlled.
 
@@ -502,8 +517,9 @@ Tested or evaluated and **not** recommended for extraction:
 ## 8. Recommended execution order
 
 1. **Forward Vegas is complete for its approved scope.** Raw schedule input,
-   verified sign, 32-team/full-schedule reconciliation, dynamic horizon, immutable
-   activation delta, QB/WR consumers only. Do not substitute the broken R CSV.
+   verified sign, 32-team/full-schedule reconciliation, daily snapshot sync,
+   dynamic horizon event, immutable activation delta, QB/WR consumers only. Do not
+   substitute the broken R CSV.
 2. **Wire `team_opportunity_supply`** as share denominators. Gate.
 3. **Wire `line_quality_team` and `qb_rush_split`** into their RB/QB criteria. Gate.
 4. **Rebuild `regression_flags_clean` at 6-pt passing TDs** from component `_exp` columns. Then wire `exp_per_game` as a display-ranked input.

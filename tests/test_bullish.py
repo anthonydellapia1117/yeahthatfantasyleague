@@ -13,15 +13,21 @@ import sys
 import datetime
 import csv
 import copy
+import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from analyze_recency import HISTORY
-from build_bullish_inputs import derive_forward_vegas, distribution, observed_share
+from build_bullish_inputs import (classify_forward_transition,
+                                  derive_forward_vegas, distribution,
+                                  enforce_forward_transition, observed_share,
+                                  select_forward_transition,
+                                  validate_sync_transition)
 from engine_lineage import file_content_sha256, json_content_sha256
 from player_names import PlayerIdentityResolver
 from team_codes import CANONICAL_NFL_TEAMS, canonical_team
+from sync_forward_schedule import sync as sync_forward_schedule
 fails = []
 
 
@@ -62,6 +68,9 @@ source_digests = {
 forward_schedule_rel = "docs/ffopportunity/schedule_2026.csv"
 forward_schedule_path = os.path.join(ROOT, forward_schedule_rel)
 source_digests[forward_schedule_rel] = file_content_sha256(forward_schedule_path)
+forward_meta_rel = "docs/ffopportunity/schedule_2026.meta.json"
+forward_meta_path = os.path.join(ROOT, forward_meta_rel)
+source_digests[forward_meta_rel] = file_content_sha256(forward_meta_path)
 ok(inp.get("provenance", {}).get("input_content_sha256") ==
    source_digests,
    "BULLISH inputs record every committed source payload exactly")
@@ -118,6 +127,7 @@ else:
 # horizon length is evidence, never a typed six-week policy.
 with open(forward_schedule_path) as fh:
     schedule_rows = list(csv.DictReader(fh))
+forward_meta = json.load(open(forward_meta_path))
 forward_expected = derive_forward_vegas(copy.deepcopy(schedule_rows))
 ok(forward_expected["weeks"] == forward_vegas["weeks"] and
    forward_expected["game_count"] == forward_vegas["games"] and
@@ -129,6 +139,10 @@ ok(forward_expected["weeks"] == forward_vegas["weeks"] and
    forward_vegas["regular_season_games_per_team"] and
    forward_expected["coverage"] == forward_vegas["coverage"] and
    forward_expected["boundary"] == forward_vegas["next_partial_week"] and
+   forward_expected["decision_input_sha256"] ==
+   forward_vegas["decision_input_sha256"] and
+   forward_expected["pricing_by_week_sha256"] ==
+   forward_vegas["pricing_by_week_sha256"] and
    forward_vegas["first_week"] == forward_expected["weeks"][0] and
    forward_vegas["last_week"] == forward_expected["weeks"][-1] and
    forward_vegas["teams"] == 32 and
@@ -139,8 +153,16 @@ ok(forward_expected["weeks"] == forward_vegas["weeks"] and
    str(forward_vegas))
 ok(forward_vegas["source_content_sha256"] ==
    file_content_sha256(forward_schedule_path) and
+   forward_vegas["snapshot_content_sha256"] ==
+   forward_meta["snapshot_content_sha256"] and
+   forward_vegas["upstream_content_sha256"] ==
+   forward_meta["upstream_content_sha256"] and
+   forward_vegas["pulled_at"] == forward_meta["pulled_at"] and
+   forward_vegas["games_priced"] == forward_meta["games_priced"] and
+   forward_vegas["team_games_priced"] ==
+   forward_meta["team_games_priced"] and
    d["provenance"]["forward_vegas"] == forward_vegas,
-   "forward Vegas exact source and scope propagate to the tag artifact")
+   "forward Vegas pull, digests, counts, and scope propagate to the tag artifact")
 ok(set(forward_expected["implied_total"]) == set(CANONICAL_NFL_TEAMS) and
    inp["teams"]["forward_implied_total"] == forward_expected["implied_total"] and
    sum(forward_expected["team_game_counts"].values()) ==
@@ -196,6 +218,179 @@ later_partial["total_line"] = "44.5"
 ok(derive_forward_vegas(later_partial_rows)["weeks"] ==
    forward_expected["weeks"],
    "a half-posted line beyond the priced horizon is recorded, not fatal")
+
+# The producer must classify the decision input, not unrelated CSV churn. Its
+# synthetic horizon extension is the bite test for the event that was added
+# before the first real extension occurred.
+def write_schedule(path, rows):
+    fieldnames = list(rows[0])
+    with open(path, "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def sync_fixture(mutator):
+    with tempfile.TemporaryDirectory() as td:
+        source = os.path.join(td, "games.csv")
+        snapshot = os.path.join(td, "schedule.csv")
+        metadata = os.path.join(td, "schedule.meta.json")
+        write_schedule(source, copy.deepcopy(schedule_rows))
+        baseline = sync_forward_schedule(source, snapshot, metadata)
+        before_snapshot = open(snapshot, "rb").read()
+        before_metadata = open(metadata, "rb").read()
+        changed = copy.deepcopy(schedule_rows)
+        mutator(changed)
+        write_schedule(source, changed)
+        try:
+            result = sync_forward_schedule(source, snapshot, metadata)
+            error = None
+        except ValueError as exc:
+            result = None
+            error = str(exc)
+        return {
+            "baseline": baseline,
+            "result": result,
+            "error": error,
+            "snapshot_unchanged": open(snapshot, "rb").read() == before_snapshot,
+            "metadata_unchanged": open(metadata, "rb").read() == before_metadata,
+        }
+
+
+def complete_week7(rows):
+    for row in rows:
+        if int(row["week"]) == 7 and not (
+                str(row.get("total_line") or "").strip() and
+                str(row.get("spread_line") or "").strip()):
+            row["total_line"] = "44.0"
+            row["spread_line"] = "0.0"
+
+
+extended = sync_fixture(complete_week7)
+ext = extended["result"]["sync_transition"]
+ok(extended["baseline"]["sync_transition"]["event"] == "UNCHANGED" and
+   ext["event"] == "HORIZON_EXTENDED" and
+   ext["prior"]["last_week"] == 6 and ext["current"]["last_week"] == 7 and
+   ext["prior"]["games_priced"] == 93 and
+   ext["current"]["games_priced"] == 107 and
+   ext["current"]["team_games_priced"] == 214,
+   "synthetic Week-7 completion fires HORIZON_EXTENDED at 93->107 games",
+   str(ext))
+
+
+def reprice_week1(rows):
+    row = next(row for row in rows if int(row["week"]) == 1)
+    row["total_line"] = str(float(row["total_line"]) + 1.0)
+
+
+repriced = sync_fixture(reprice_week1)["result"]["sync_transition"]
+ok(repriced["event"] == "REPRICED" and
+   repriced["current"]["games_priced"] == 93 and
+   repriced["flags"]["decision_pricing_changed"] is True,
+   "same-horizon line change fires REPRICED")
+
+
+def change_moneyline_only(rows):
+    row = next(row for row in rows if int(row["week"]) == 1)
+    row["home_moneyline"] = str(float(row.get("home_moneyline") or 0) + 1.0)
+
+
+source_only = sync_fixture(change_moneyline_only)["result"]["sync_transition"]
+ok(source_only["event"] == "UNCHANGED" and
+   source_only["flags"]["source_changed"] is True and
+   source_only["flags"]["decision_pricing_changed"] is False,
+   "non-decision source churn remains UNCHANGED")
+
+
+def contract_week6(rows):
+    row = next(row for row in rows if int(row["week"]) == 6)
+    row["total_line"] = row["spread_line"] = ""
+
+
+contracted = sync_fixture(contract_week6)
+ok("CONTRACTED" in (contracted["error"] or "") and
+   contracted["snapshot_unchanged"] and contracted["metadata_unchanged"],
+   "horizon contraction fails closed before replacing either snapshot file",
+   str(contracted))
+
+_contract_state = classify_forward_transition(
+    {"weeks": [1, 2, 3, 4, 5, 6], "games_priced": 93,
+     "team_games_priced": 186}, {},
+    {"weeks": [1, 2, 3, 4, 5], "games_priced": 79,
+     "team_games_priced": 158}, {})
+try:
+    enforce_forward_transition(_contract_state)
+    _contract_rejected = False
+except ValueError:
+    _contract_rejected = True
+ok(_contract_rejected and _contract_state["event"] == "CONTRACTED",
+   "pure transition guard rejects a narrower 93->79-game horizon")
+
+# The metadata consumer must rederive the producer event rather than trusting a
+# plausible-looking label/prior frame. These totals are schedule-only values
+# produced under the current model logic.
+_current_state = forward_vegas
+_current_totals = forward_expected["implied_total"]
+_sync_prior_totals = dict(_current_totals)
+_valid_unchanged = classify_forward_transition(
+    _current_state, _sync_prior_totals, _current_state, _current_totals)
+try:
+    validate_sync_transition(
+        _valid_unchanged, _sync_prior_totals,
+        _current_state, _current_totals)
+    _valid_transition_accepted = True
+except ValueError:
+    _valid_transition_accepted = False
+_fabricated = copy.deepcopy(_valid_unchanged)
+_fabricated["event"] = "HORIZON_EXTENDED"
+_fabricated["prior"]["last_week"] = 1
+_fabricated_prior_totals = dict(_sync_prior_totals)
+_fabricated_prior_totals["ARI"] = 999.0
+try:
+    validate_sync_transition(
+        _fabricated, _fabricated_prior_totals,
+        _current_state, _current_totals)
+    _fabricated_transition_rejected = False
+except ValueError:
+    _fabricated_transition_rejected = True
+ok(_valid_transition_accepted and _fabricated_transition_rejected,
+   "builder rederives sync metadata and rejects fabricated event/prior values")
+
+# A model-only change may move derived totals, but it is not a schedule-only
+# tag delta. The current-code sync prior is therefore the counterfactual; the
+# old-model artifact totals must not be presented as if current code were held.
+_old_model_state = copy.deepcopy(_current_state)
+_new_model_state = copy.deepcopy(_current_state)
+_old_model_state["model_logic_sha256"] = "a" * 64
+_new_model_state["model_logic_sha256"] = "b" * 64
+_old_model_totals = dict(_current_totals)
+_old_model_totals["ARI"] = round(_old_model_totals["ARI"] + 1.0, 2)
+_model_build_transition = classify_forward_transition(
+    _old_model_state, _old_model_totals,
+    _new_model_state, _current_totals)
+_selected_model_event, _selected_model_counterfactual = \
+    select_forward_transition(
+        _valid_unchanged, _model_build_transition,
+        _sync_prior_totals, _old_model_totals, _current_totals)
+ok(_model_build_transition["event"] == "REPRICED" and
+   _model_build_transition["attribution"] == "MODEL_LOGIC" and
+   _selected_model_event == _model_build_transition and
+   _selected_model_counterfactual == _current_totals and
+   _selected_model_counterfactual != _old_model_totals,
+   "model-only movement keeps the same-build schedule counterfactual at zero")
+
+_conflicting_material = copy.deepcopy(_model_build_transition)
+_conflicting_material["event"] = "HORIZON_EXTENDED"
+try:
+    select_forward_transition(
+        extended["result"]["sync_transition"], _conflicting_material,
+        extended["result"]["prior_implied_total"],
+        _old_model_totals, extended["result"]["current_implied_total"])
+    _conflicting_material_rejected = False
+except ValueError:
+    _conflicting_material_rejected = True
+ok(_conflicting_material_rejected,
+   "builder rejects disagreeing material sync and prior-artifact transitions")
 
 def raises_forward(mutator):
     rows = copy.deepcopy(schedule_rows)
@@ -419,6 +614,24 @@ ok(all(item.endswith("|QB") or item.endswith("|WR")
        for item in activation.get("status_changed", []) +
        activation.get("score_changed", [])),
    "forward activation delta contains only the approved QB/WR consumers")
+refresh_delta = d.get("forward_vegas_delta", {})
+refresh_same_build = refresh_delta.get("same_build_counterfactual", {})
+refresh_changed = (
+    refresh_same_build.get("gained", []) + refresh_same_build.get("lost", []) +
+    [x.get("player", "") for x in refresh_same_build.get("status_changed", [])] +
+    [x.get("player", "") for x in refresh_same_build.get("score_changed", [])]
+)
+ok(refresh_delta.get("event") in
+   {"HORIZON_EXTENDED", "CONTRACTED", "REPRICED", "UNCHANGED"} and
+   refresh_delta.get("current", {}).get("games_priced") ==
+   forward_vegas["games_priced"] and
+   refresh_delta.get("current", {}).get("team_games_priced") ==
+   forward_vegas["team_games_priced"] and
+   refresh_same_build.get("rb_invariance", {}).get(
+       "tag_records_identical") is True and
+   all(x.endswith("|QB") or x.endswith("|WR") for x in refresh_changed),
+   "daily forward event is explicit, same-build, and QB/WR isolated",
+   str(refresh_delta))
 
 # 8. pages: chips wired display-only, beside the signal encoding
 bp = open(os.path.join(ROOT, "out", "big_board.html")).read()
@@ -428,8 +641,9 @@ ok("bullishChip" in bp and 'get("data/bullish_2026.json")' in bp,
 ok("bullishTag" in bp and "x.name === p.name" not in bp and
    "x.pos === p.pos" not in bp,
    "big board joins BULLISH tags by Sleeper identity, never raw name")
-ok("bullChip" in drp and 'fetch("data/bullish_2026.json")' in drp,
-   "room chip wired with optional load")
+ok("bullChip" in drp and
+   'fetch("data/bullish_2026.json", {cache:"no-store"})' in drp,
+   "room chip wired with an uncached optional load")
 ok("never" in drp[drp.index("C5 BULLISH layer"):drp.index("C5 BULLISH layer") + 300]
    and "replacing" in drp[drp.index("C5 BULLISH layer"):drp.index("C5 BULLISH layer") + 300],
    "room states the tag sits beside the signal encoding, never replacing it")
@@ -439,6 +653,13 @@ for page, chip in ((bp, "bullishChip"), (drp, "bullChip")):
     ok("ttl_hours" in seg and "ageH" in seg, f"{chip} enforces the 72h TTL with age display")
 ok("TAGS STALE" in bp and "TAGS STALE" in drp,
    "engine mismatch renders a neutral stale tag, never a current verdict")
+home_page = open(os.path.join(ROOT, "out", "home.html")).read()
+ok("forward-vegas-delta" in home_page and
+   'fetch(f, {cache:"no-store"})' in home_page and
+   "last_material_event" in home_page and
+   "same-build schedule-only comparison" in home_page and
+   "forwardVegasStatus" in drp and "forward_vegas_delta" in drp,
+   "home provenance and draft room expose the persisted forward refresh event")
 players_page = open(os.path.join(ROOT, "out", "players.html")).read()
 ok("pBullCurrent" in players_page and
    "BULLISH tags stale versus current board" in players_page,

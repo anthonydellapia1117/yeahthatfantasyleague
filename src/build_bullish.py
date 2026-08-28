@@ -32,6 +32,8 @@ import os
 from collections import defaultdict
 
 from analyze_recency import HISTORY
+from build_bullish_inputs import (FORWARD_META, FORWARD_META_REL,
+                                  FORWARD_SCHEDULE, FORWARD_SCHEDULE_REL)
 from engine_lineage import (file_content_sha256, json_content_sha256,
                             require as require_engine_digest)
 from player_names import PlayerIdentityResolver
@@ -41,9 +43,6 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 IN = os.path.join(D, "bullish_inputs_2026.json")
 OUT = os.path.join(D, "bullish_2026.json")
-FORWARD_SCHEDULE_REL = "docs/ffopportunity/schedule_2026.csv"
-FORWARD_SCHEDULE = os.path.join(ROOT, FORWARD_SCHEDULE_REL)
-
 BULLISH_P = 0.60
 WATCH_P = 0.35
 
@@ -122,6 +121,7 @@ def main():
         "depth_charts.json": json_content_sha256(depth_art),
         "crosswalk.json": json_content_sha256(xwalk),
         FORWARD_SCHEDULE_REL: file_content_sha256(FORWARD_SCHEDULE),
+        FORWARD_META_REL: file_content_sha256(FORWARD_META),
     }
     declared_inputs = inp.get("provenance", {}).get("input_content_sha256", {})
     for name, digest in current_inputs.items():
@@ -159,6 +159,18 @@ def main():
     forward_implied = inp["teams"]["forward_implied_total"]
     top5_forward_implied = set(sorted(
         forward_implied, key=lambda t: (-forward_implied[t], t))[:5])
+    counterfactual_forward_implied = inp["teams"].get(
+        "forward_counterfactual_implied_total", forward_implied)
+    top5_counterfactual_forward = set(sorted(
+        counterfactual_forward_implied,
+        key=lambda t: (-counterfactual_forward_implied[t], t))[:5])
+    counterfactual_forward_values = sorted(counterfactual_forward_implied.values())
+    counterfactual_forward_p50 = counterfactual_forward_values[
+        int(round(0.50 * (len(counterfactual_forward_values) - 1)))]
+    counterfactual_forward_p75 = counterfactual_forward_values[
+        int(round(0.75 * (len(counterfactual_forward_values) - 1)))]
+    counterfactual_forward_band = max(
+        0.0, (counterfactual_forward_p75 - counterfactual_forward_p50) / 2)
     week1_implied = inp["teams"]["implied_total"]
     # This reproduces the pre-forward consumer exactly for a permanent,
     # same-build activation ledger; it does not feed the live tags.
@@ -190,6 +202,7 @@ def main():
     computed_at = run_at.isoformat(timespec="seconds")
     tags = []
     legacy_non_te_tags = []
+    counterfactual_forward_tags = []
     te_shadow_tags = []
     te_market_probability_counts = defaultdict(int)
     te_grouping_mismatches = []
@@ -249,6 +262,7 @@ def main():
         gsis_id = gsis_of.get(sleeper_id)
         crit = {}
         legacy_crit = None
+        counterfactual_forward_crit = None
         if pos == "RB":
             if e.get("targets_pg") is not None:
                 crit["receiving_volume"] = p_soft(
@@ -266,6 +280,7 @@ def main():
                 crit["backfield_command"] = p_soft(e["backfield_share"], bf_p50, 0.1)
             need, total = 4, 5
             legacy_crit = dict(crit)
+            counterfactual_forward_crit = dict(crit)
         elif pos == "WR":
             if e.get("tprr_proxy"):
                 crit["target_earning"] = p_prop(
@@ -293,6 +308,12 @@ def main():
                                    depth_rank.get(gsis_id) == 1)
             legacy_crit["opportunity"] = (
                 0.9 if (vac_ok or legacy_primary_top5) else 0.2)
+            counterfactual_forward_crit = dict(crit)
+            counterfactual_primary_top5 = (
+                canonical_team(t26) in top5_counterfactual_forward and
+                depth_rank.get(gsis_id) == 1)
+            counterfactual_forward_crit["opportunity"] = (
+                0.9 if (vac_ok or counterfactual_primary_top5) else 0.2)
         elif pos == "QB":
             if e.get("rush_ypg") is not None:
                 crit["rushing"] = p_soft(e["rush_ypg"], thr["qb_rush_ypg"]["p75"],
@@ -312,6 +333,15 @@ def main():
                     band("implied_total"))
             else:
                 legacy_crit.pop("environment", None)
+            counterfactual_forward_crit = dict(crit)
+            counterfactual_value = counterfactual_forward_implied.get(
+                canonical_team(e.get("team_2026")))
+            if counterfactual_value is not None:
+                counterfactual_forward_crit["environment"] = p_soft(
+                    counterfactual_value, counterfactual_forward_p75,
+                    counterfactual_forward_band)
+            else:
+                counterfactual_forward_crit.pop("environment", None)
         else:  # TE
             if e.get("on_field_dropback_share"):
                 crit["on_field_dropback_presence"] = p_prop(
@@ -362,6 +392,13 @@ def main():
                 legacy_non_te_tags.append(tag_record(
                     e, sleeper_id, legacy_status, legacy_gate, need, total,
                     legacy_crit, legacy_reasons, cap_tb))
+        if counterfactual_forward_crit is not None:
+            prior_status, prior_gate, prior_reasons = classify(
+                counterfactual_forward_crit, need, total, pos, sleeper_id)
+            if prior_status is not None:
+                counterfactual_forward_tags.append(tag_record(
+                    e, sleeper_id, prior_status, prior_gate, need, total,
+                    counterfactual_forward_crit, prior_reasons, cap_tb))
 
     te_players = [e for e in inp["players"] if e["pos"] == "TE"]
     te_gate_suspension = {
@@ -413,6 +450,11 @@ def main():
     if rb_legacy != rb_live:
         raise ValueError(
             "forward Vegas changed an RB tag; QB/WR-only isolation failed")
+    rb_counterfactual = [
+        tag for tag in counterfactual_forward_tags if tag["pos"] == "RB"]
+    if rb_counterfactual != rb_live:
+        raise ValueError(
+            "forward Vegas refresh changed an RB tag; QB/WR-only isolation failed")
     forward_vegas_activation = {
         "status": "ACTIVATED",
         "scope": ["QB.environment", "WR.opportunity"],
@@ -545,6 +587,7 @@ def main():
 
     # ---- delta vs the previous committed artifact (the T-24h diff engine)
     delta = {"previous": None, "gained": [], "lost": [], "status_changed": []}
+    prev = None
     if os.path.exists(OUT):
         prev = json.load(open(OUT))
         delta["previous"] = prev.get("provenance", {}).get("generated")
@@ -554,6 +597,70 @@ def main():
         delta["lost"] = sorted(k for k in old if k not in new)
         delta["status_changed"] = sorted(
             f"{k}: {old[k]} -> {new[k]}" for k in new if k in old and old[k] != new[k])
+
+    counterfactual_by_key = {
+        tag_key(tag): tag for tag in counterfactual_forward_tags}
+    current_by_key = {tag_key(tag): tag for tag in tags}
+    forward_common = sorted(set(counterfactual_by_key) & set(current_by_key))
+    same_build_delta = {
+        "held_constant": (
+            "current code, current non-schedule inputs, current injury state, "
+            "and current player universe; only the prior versus current forward "
+            "schedule decision input and its derived QB threshold/top-five WR "
+            "environment are exchanged"),
+        "gained": sorted(set(current_by_key) - set(counterfactual_by_key)),
+        "lost": sorted(set(counterfactual_by_key) - set(current_by_key)),
+        "status_changed": [
+            {"player": key,
+             "before": counterfactual_by_key[key]["status"],
+             "after": current_by_key[key]["status"]}
+            for key in forward_common
+            if counterfactual_by_key[key]["status"] !=
+            current_by_key[key]["status"]
+        ],
+        "score_changed": [
+            {"player": key,
+             "before": counterfactual_by_key[key]["score"],
+             "after": current_by_key[key]["score"]}
+            for key in forward_common
+            if counterfactual_by_key[key]["score"] !=
+            current_by_key[key]["score"]
+        ],
+        "rb_invariance": {
+            "before_count": len(rb_counterfactual),
+            "after_count": len(rb_live),
+            "tag_records_identical": True,
+        },
+    }
+    changed_players = (
+        same_build_delta["gained"] + same_build_delta["lost"] +
+        [item["player"] for item in same_build_delta["status_changed"]] +
+        [item["player"] for item in same_build_delta["score_changed"]]
+    )
+    if any(not (key.endswith("|QB") or key.endswith("|WR"))
+           for key in changed_players):
+        raise ValueError("forward schedule delta escaped the QB/WR consumer scope")
+    event = inp["provenance"]["vegas"]["forward"]["delta_event"]
+    forward_vegas_delta = {
+        "event": event["event"],
+        "attribution": event["attribution"],
+        "pulled_at": inp["provenance"]["vegas"]["forward"]["pulled_at"],
+        "prior": event["prior"],
+        "current": event["current"],
+        "flags": event["flags"],
+        "contracted_response": event["contracted_response"],
+        "same_build_counterfactual": same_build_delta,
+    }
+    material_snapshot = {
+        key: value for key, value in forward_vegas_delta.items()
+        if key != "last_material_event"
+    }
+    if event["event"] != "UNCHANGED":
+        forward_vegas_delta["last_material_event"] = material_snapshot
+    else:
+        forward_vegas_delta["last_material_event"] = (
+            (prev or {}).get("forward_vegas_delta", {}).get(
+                "last_material_event"))
 
     out = {
         "provenance": {
@@ -575,6 +682,7 @@ def main():
         "te_scarcity_adjudication": te_adj,
         "te_gate_suspension": te_gate_suspension,
         "forward_vegas_activation": forward_vegas_activation,
+        "forward_vegas_delta": forward_vegas_delta,
         "qb_gap": inp["qb_gap"],
         "delta": delta,
         "tags": tags,

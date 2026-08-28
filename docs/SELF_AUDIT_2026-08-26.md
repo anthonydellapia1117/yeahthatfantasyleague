@@ -73,16 +73,18 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 48 | The R forward-Vegas export inverted the verified home-spread convention in 224/224 team-games; 31/32 aggregates were wrong and rank correlation with the correct table was -0.437 | **REVIEWER** (source-sign verification) | <1 day | no (caught before app wiring) | **ANALYSIS SOURCE REGRESSION** |
 | 49 | Fourteen Python and four browser name normalizers disagreed; consolidation removed 119 phantom replay identities and restored 16 current ADP joins | **REVIEWER** (normalizer inventory) | since the duplicated consumers diverged | yes | **NAME-NORM (4)** |
 | 50 | The canonical quote fold covered curly U+2019 but not modifier-letter apostrophe U+02BC; the contract, not one observed spelling, was incomplete | **REVIEWER** (Unicode corpus audit) | latent | no known current player impact | **NAME-NORM (5)** |
+| 51 | Forward Vegas read a committed `schedule_2026.csv` snapshot that no workflow refreshed, so its dynamic horizon would have stayed at Weeks 1-6 while live games priced further out | **SELF-PRE** (new-feature update-path audit) | 0 | no - caught before first stale build | **SILENT STALENESS (5)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 50 entries: 4 are SELF-PRE (#25, #26, #27, #30) - **8.0%**. Even those
+Of the 51 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **9.8%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
-known answer. #27 was caught by an assertion I wrote in the same sitting. None of
-the four is an instance of me noticing an error I had no prior reason to look for.
+known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
+the first spontaneous instance: before shipping a newly wired input, I asked
+whether its source could actually update and found that it could not.
 
 The other categories: SELF-POST 12, GUARD 9, REVIEWER 24, ANTHONY 1.
 
@@ -93,7 +95,7 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Twenty-four of 50 - the largest single share, and disproportionately the severe
+Twenty-four of 51 - the largest single share, and disproportionately the severe
 ones - came from outside review. Of the eight defects now known to have reached
 the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
 #43, #45, #46), **six were found by someone other than me.**
@@ -128,8 +130,8 @@ contract corpus matters: current names used U+2019, while unobserved U+02BC stil
 split an otherwise identical name. The test now names the punctuation classes
 instead of waiting for the next player to expose one.
 
-**SILENT CRON / STALE PUBLICATION - 4 occurrences (#19, #35, #41, and the
-pre-#19 shard staleness it exposed).**
+**SILENT CRON / STALE PUBLICATION - 5 occurrences (#19, #35, P2-3's
+draft-morning rebuild gap, #41, and #51).**
 **Why it did not generalize:** after #19 the fix was a *guard inside the job* (a
 7-day as-of check). That makes the job fail loudly - but a failing job is exactly
 the state nobody was watching. The monitoring was pointed at the machine, not at the
@@ -139,6 +141,17 @@ rebuild rule was copied into one workflow rather than enforced at the shared
 publication boundary. The measured publication exposure behind #35 was not the
 four-day shorthand first recorded: Pages served Aug-17 depth data for exactly
 **6d 6h 58m 40s**.
+
+#51 is the first occurrence caught before it became stale. Forward Vegas was
+designed to extend as more schedule weeks priced, but `pages-data.yml` refreshed
+HISTORY `games.csv` while the builder consumed a static committed snapshot that no
+workflow updated. It would have kept answering the Weeks 1-6 question through draft
+morning with current-looking tags. The repair synchronizes and validates the 2026
+snapshot before consumers run, stages snapshot plus metadata atomically, records
+source/snapshot/decision digests and explicit horizon events, and fails closed on a
+contracted horizon. The distinctive lesson is prospective: inspect the update path
+of a new feature before trusting its first correct build. Every earlier occurrence
+was found only after the deliverable had already gone stale.
 
 **FAIL-OPEN GUARD / CONTROL - 5 occurrences (#14, #15, #22, the SKIP hole in
 Part 2, and #42).**

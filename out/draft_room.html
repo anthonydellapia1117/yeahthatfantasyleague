@@ -1602,16 +1602,33 @@ const PE_SIG = { personal_dnd: "MY DND", consensus_dnd: "walter+model DND",
 // C5 BULLISH layer: computed tags BESIDE the signal encoding, never replacing
 // it. Optional load; the room runs identically without the artifact.
 let BULL = null;
+function forwardVegasStatus(d){
+  if (!d || !d.current) return "";
+  const c = d.current;
+  const s = d.same_build_counterfactual || {};
+  const moved = new Set([...(s.gained || []), ...(s.lost || []),
+    ...(s.status_changed || []).map(x => x.player),
+    ...(s.score_changed || []).map(x => x.player)]).size;
+  let text = `Forward Vegas ${d.event}: W1-${c.last_week}, ${c.games_priced} games / ` +
+    `${c.team_games_priced} team-games priced; ${moved} schedule-only tag move${moved === 1 ? "" : "s"}.`;
+  if (d.event === "UNCHANGED" && d.last_material_event && d.last_material_event.current){
+    const m = d.last_material_event, p = m.prior || {}, n = m.current;
+    text += ` Last material: ${m.event}, W1-${p.last_week} to W1-${n.last_week}, ` +
+      `${p.games_priced} to ${n.games_priced} games.`;
+  }
+  return text;
+}
 async function loadBullish(){
   try {
-    const r = await fetch("data/bullish_2026.json");
+    const r = await fetch("data/bullish_2026.json", {cache:"no-store"});
     if (r.ok){
       BULL = await r.json();
       BULL._byId = rowsByPlayerId(BULL.tags);
       const status = document.getElementById("bull-status");
       const note = BULL.te_gate_suspension && BULL.te_gate_suspension.display_note;
-      status.hidden = !note;
-      status.textContent = note || "";
+      const forward = forwardVegasStatus(BULL.forward_vegas_delta);
+      status.hidden = !(note || forward);
+      status.textContent = [note, forward].filter(Boolean).join(" ");
       if (LiveState.lastRender && LiveState.els) LiveState.lastRender();
     }
   } catch (e) { /* absent is a supported state */ }

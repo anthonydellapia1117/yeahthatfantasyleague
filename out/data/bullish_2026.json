@@ -1,10 +1,10 @@
 {
  "provenance": {
   "generated": "2026-08-28",
-  "computed_at": "2026-08-28T12:03:32+00:00",
+  "computed_at": "2026-08-28T13:57:40+00:00",
   "engine_generated": "2026-08-28",
   "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
-  "inputs_content_sha256": "77a49d212fcf28acb9c483c3bb4d1ec468ba2d8b3614b42a944862fb9f765e45",
+  "inputs_content_sha256": "aaafb904e5e7467b26ebd03ecb1cb20b120fc9146cac7212ed10a98ee637e043",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -13,7 +13,22 @@
   "ttl": "72h revalidation - the room degrades BULLISH to WATCH past it",
   "forward_vegas": {
    "source": "docs/ffopportunity/schedule_2026.csv",
-   "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+   "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
+   "upstream_source": "http://www.habitatring.com/games.csv",
+   "pulled_at": "2026-08-28T13:40:39+00:00",
+   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "snapshot_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
    "season": 2026,
    "derivation": "maximal contiguous prefix from week 1 where every scheduled game has total_line and spread_line",
    "spread_convention": "positive spread_line means home favored; home=total/2+spread/2, away=total/2-spread/2",
@@ -28,7 +43,9 @@
    "first_week": 1,
    "last_week": 6,
    "games": 93,
+   "games_priced": 93,
    "team_games": 186,
+   "team_games_priced": 186,
    "teams": 32,
    "full_schedule_games": 272,
    "regular_season_games_per_team": 17,
@@ -215,7 +232,87 @@
    ],
    "excluded_consumers": [
     "RB.expected_td_equity"
-   ]
+   ],
+   "delta_event": {
+    "event": "UNCHANGED",
+    "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+    "prior": {
+     "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+     "upstream_content_sha256": null,
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "complete": false,
+      "partial_line_games": 0,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "week": 7
+     }
+    },
+    "current": {
+     "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+     "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "week": 7,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     }
+    },
+    "flags": {
+     "source_changed": true,
+     "coverage_changed": false,
+     "horizon_changed": false,
+     "implied_totals_changed": false,
+     "decision_pricing_changed": false,
+     "model_logic_changed": false,
+     "prior_horizon_repriced": false
+    },
+    "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
+   }
   },
   "te_tags": "suspended; see top-level te_gate_suspension for the computed shadow ledger and evidence"
  },
@@ -403,7 +500,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T12:03:32+00:00",
+    "computed_at": "2026-08-28T13:57:40+00:00",
     "ttl_hours": 72
    },
    {
@@ -423,7 +520,7 @@
     ],
     "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T12:03:32+00:00",
+    "computed_at": "2026-08-28T13:57:40+00:00",
     "ttl_hours": 72
    },
    {
@@ -441,7 +538,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T12:03:32+00:00",
+    "computed_at": "2026-08-28T13:57:40+00:00",
     "ttl_hours": 72
    },
    {
@@ -459,7 +556,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T12:03:32+00:00",
+    "computed_at": "2026-08-28T13:57:40+00:00",
     "ttl_hours": 72
    },
    {
@@ -479,7 +576,7 @@
     ],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T12:03:32+00:00",
+    "computed_at": "2026-08-28T13:57:40+00:00",
     "ttl_hours": 72
    }
   ],
@@ -501,7 +598,22 @@
   },
   "replacement": {
    "source": "docs/ffopportunity/schedule_2026.csv",
-   "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+   "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
+   "upstream_source": "http://www.habitatring.com/games.csv",
+   "pulled_at": "2026-08-28T13:40:39+00:00",
+   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "snapshot_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
    "season": 2026,
    "derivation": "maximal contiguous prefix from week 1 where every scheduled game has total_line and spread_line",
    "spread_convention": "positive spread_line means home favored; home=total/2+spread/2, away=total/2-spread/2",
@@ -516,7 +628,9 @@
    "first_week": 1,
    "last_week": 6,
    "games": 93,
+   "games_priced": 93,
    "team_games": 186,
+   "team_games_priced": 186,
    "teams": 32,
    "full_schedule_games": 272,
    "regular_season_games_per_team": 17,
@@ -703,7 +817,87 @@
    ],
    "excluded_consumers": [
     "RB.expected_td_equity"
-   ]
+   ],
+   "delta_event": {
+    "event": "UNCHANGED",
+    "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+    "prior": {
+     "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+     "upstream_content_sha256": null,
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "complete": false,
+      "partial_line_games": 0,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "week": 7
+     }
+    },
+    "current": {
+     "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+     "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "week": 7,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     }
+    },
+    "flags": {
+     "source_changed": true,
+     "coverage_changed": false,
+     "horizon_changed": false,
+     "implied_totals_changed": false,
+     "decision_pricing_changed": false,
+     "model_logic_changed": false,
+     "prior_horizon_repriced": false
+    },
+    "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
+   }
   },
   "gained": [
    "Brock Purdy|QB",
@@ -772,6 +966,100 @@
    "p_two_sided": 0.261
   }
  },
+ "forward_vegas_delta": {
+  "event": "UNCHANGED",
+  "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+  "pulled_at": "2026-08-28T13:40:39+00:00",
+  "prior": {
+   "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+   "upstream_content_sha256": null,
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games_priced": 93,
+   "team_games_priced": 186,
+   "next_partial_week": {
+    "complete": false,
+    "partial_line_games": 0,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "week": 7
+   }
+  },
+  "current": {
+   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games_priced": 93,
+   "team_games_priced": 186,
+   "next_partial_week": {
+    "week": 7,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "partial_line_games": 0,
+    "complete": false
+   }
+  },
+  "flags": {
+   "source_changed": true,
+   "coverage_changed": false,
+   "horizon_changed": false,
+   "implied_totals_changed": false,
+   "decision_pricing_changed": false,
+   "model_logic_changed": false,
+   "prior_horizon_repriced": false
+  },
+  "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
+  "same_build_counterfactual": {
+   "held_constant": "current code, current non-schedule inputs, current injury state, and current player universe; only the prior versus current forward schedule decision input and its derived QB threshold/top-five WR environment are exchanged",
+   "gained": [],
+   "lost": [],
+   "status_changed": [],
+   "score_changed": [],
+   "rb_invariance": {
+    "before_count": 10,
+    "after_count": 10,
+    "tag_records_identical": true
+   }
+  },
+  "last_material_event": null
+ },
  "qb_gap": {
   "definition": "top-12 QB season finishes 2016-2025 (n=120), rushing class = rush yds/g >= that season's p75 among 8+ game QBs; season TOTAL points under each scoring",
   "league_6pt": {
@@ -834,7 +1122,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -857,7 +1145,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -880,7 +1168,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -904,7 +1192,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -927,7 +1215,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -948,7 +1236,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -969,7 +1257,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -990,7 +1278,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1011,7 +1299,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1034,7 +1322,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1053,7 +1341,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1076,7 +1364,7 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1097,7 +1385,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1120,7 +1408,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1143,7 +1431,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1166,7 +1454,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1187,7 +1475,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1208,7 +1496,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1229,7 +1517,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1248,7 +1536,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1267,7 +1555,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1286,7 +1574,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1307,7 +1595,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1326,7 +1614,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1345,7 +1633,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
@@ -1364,7 +1652,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T12:03:32+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   }
  ]

@@ -875,6 +875,24 @@ function currentRosterLabels(){
       contentType: "application/json", headers: { "access-control-allow-origin": "*" },
       body: JSON.stringify([{ player_id: "9221", count: 12345 },
                             { player_id: "0000-nobody", count: 999 }]) }));
+    const forwardExtension = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/bullish_2026.json"), "utf8"));
+    forwardExtension.forward_vegas_delta = {
+      event: "HORIZON_EXTENDED", attribution: "SCHEDULE_INPUT",
+      pulled_at: "2026-09-06T12:00:00+00:00",
+      prior: { last_week: 6, games_priced: 93, team_games_priced: 186 },
+      current: { last_week: 7, games_priced: 107, team_games_priced: 214 },
+      flags: { horizon_changed: true, decision_pricing_changed: true },
+      same_build_counterfactual: {
+        gained: ["Synthetic QB|QB"], lost: [], status_changed: [],
+        score_changed: [],
+        rb_invariance: { before_count: 10, after_count: 10,
+                         tag_records_identical: true }
+      },
+      last_material_event: null
+    };
+    await hpg.route("**/out/data/bullish_2026.json", r => r.fulfill({
+      contentType: "application/json", body: JSON.stringify(forwardExtension) }));
     await hpg.goto(base + "/out/home.html");
     await hpg.waitForTimeout(1500);
     const htxt = await hpg.textContent("body");
@@ -889,6 +907,16 @@ function currentRosterLabels(){
        "home: unknown trending players counted, not invented");
     ok(/0 times in 13 seasons/.test(htxt) && /p=0\.323/.test(htxt),
        "home: history fact carries its caveat");
+    const forwardText = await hpg.textContent("#forward-vegas-delta");
+    ok(await hpg.locator("#forward-vegas-delta").getAttribute("data-event") ===
+       "HORIZON_EXTENDED" && /Weeks 1-7/.test(forwardText) &&
+       /107/.test(forwardText) && /214/.test(forwardText) &&
+       /same-build schedule-only/.test(forwardText) && /SCHEDULE_INPUT/.test(forwardText),
+       "home: synthetic horizon extension renders counts and schedule attribution",
+       forwardText);
+    ok(!(await hpg.locator("#forward-vegas-delta").getAttribute("class"))
+         .match(/fresh|aging|stale/),
+       "home: forward event uses a neutral class, not reserved verdict colors");
     for (const s of ["draft_room.html", "players.html", "teams.html", "ff-hub.html"])
       ok(await hpg.locator(`.surfaces a[href="${s}"]`).count() === 1, "home links " + s);
     ok(herr.length === 0, "home: zero console errors", herr[0] || "");
@@ -1008,7 +1036,11 @@ function currentRosterLabels(){
       await pg.route("**/api.sleeper.app/**", r => r.abort());
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(file === "draft_room.html" ? 2500 : 1000);
-      ok((await pg.textContent("#bull-status")).trim() === teSusp.display_note &&
+      const bullStatusText = (await pg.textContent("#bull-status")).trim();
+      ok((file === "draft_room.html"
+            ? bullStatusText.startsWith(teSusp.display_note) &&
+              /Forward Vegas/.test(bullStatusText)
+            : bullStatusText === teSusp.display_note) &&
          await pg.locator("#bull-status").isVisible(),
          `${file}: TE tag suspension is visible and artifact-driven`);
       if (file === "big_board.html"){

@@ -1057,6 +1057,17 @@ if os.path.exists(hp):
        "overlay completeness states the grading floor")
     ok("my_board" in hpage and "byte-identical" in hpage,
        "overlay card explains the empty-board guarantee")
+    ok('id="forward-vegas-delta"' in hpage and
+       'fetch(f, {cache:"no-store"})' in hpage and
+       "data/bullish_2026.json" in hpage and
+       "last_material_event" in hpage and
+       "same-build schedule-only comparison" in hpage,
+       "home exposes uncached forward horizon, attribution, and persisted event")
+    _forward_style = hpage[hpage.index(".forward-vegas{"):
+                           hpage.index(".forward-vegas{") + 260]
+    ok(not any(token in _forward_style for token in
+               ("var(--go)", "var(--warn)", "var(--stop)")),
+       "forward refresh notice does not reuse reserved verdict colors")
 
 # 12b. FINDINGS N.1. The user-facing findings page consumes the reviewed
 #      BULLISH-vs-ADP artifact as its single source, fails visibly when that
@@ -1548,6 +1559,8 @@ _source_digests = {name: _json_sha(payload)
                    for name, payload in _source_payloads.items()}
 _source_digests["docs/ffopportunity/schedule_2026.csv"] = _file_sha(
     os.path.join(ROOT, "docs", "ffopportunity", "schedule_2026.csv"))
+_source_digests["docs/ffopportunity/schedule_2026.meta.json"] = _file_sha(
+    os.path.join(ROOT, "docs", "ffopportunity", "schedule_2026.meta.json"))
 _source_manifest = _bull_inputs.get("provenance", {}).get(
     "input_content_sha256", {})
 ok(_source_manifest == _source_digests,
@@ -1636,7 +1649,8 @@ ok(all(f"python3 src/{name}" in _pages_data_yml
 ok("REQUIRE_DISPLAY_ENGINE_MATCH=1 sh tests/run_gate.sh python3 "
    "tests/test_bullish.py" in _pages_data_yml,
    "pages-data proves its 08:00 display-lineage repair reached the current engine")
-_producer_order = ("build_pages_data.py", "parse_walter.py", "build_cvs.py",
+_producer_order = ("sync_forward_schedule.py", "build_pages_data.py",
+                   "parse_walter.py", "build_cvs.py",
                    "build_archetypes.py", "build_ceiling.py",
                    "build_bullish_inputs.py",
                    "build_bullish.py")
@@ -1650,8 +1664,15 @@ ok("actions/cache@v4" in _pages_data_yml and
    _re2.search(r'\("games\.csv",\s*fetch\(.{0,300}'
                r'refresh=args\.refresh_live', _fetcher, _re2.S),
    "pages-data retains versioned history but refreshes live games.csv")
-ok("git add out/data/ out/cvs.json data/walter/" in _pages_data_yml,
-   "pages-data stages shards, Walter resolution, and derived artifacts atomically")
+ok("python3 src/sync_forward_schedule.py" in _pages_data_yml and
+   _pages_data_yml.index("fetch_history.py --refresh-live") <
+   _pages_data_yml.index("sync_forward_schedule.py") <
+   _pages_data_yml.index("build_pages_data.py"),
+   "pages-data validates and syncs the forward snapshot before every consumer")
+ok("docs/ffopportunity/schedule_2026.csv" in _pages_data_yml and
+   "docs/ffopportunity/schedule_2026.meta.json" in _pages_data_yml and
+   "out/data/ out/cvs.json data/walter/" in _pages_data_yml,
+   "pages-data stages schedule snapshot, metadata, and derivatives atomically")
 ok("gh workflow run pages.yml --ref main" in _pages_data_yml and
    "actions: write" in _pages_data_yml,
    "pages-data explicitly dispatches Pages after its token-authored push")
@@ -1672,6 +1693,8 @@ ok(all(_engine_i < i < _draft_gates_i
        for i in (_vona_i, _mock_i, _teaser_i)),
    "draft-refresh rebuilds VONA, mock, and teaser after their engine input")
 ok("156 MB" in _draft_refresh_yml and
+   "sync_forward_schedule.py" not in _draft_refresh_yml and
+   "fetch_history.py" not in _draft_refresh_yml and
    not re.search(r"^\s*run:\s*python3 src/build_(?:ceiling|bullish)",
                  _draft_refresh_yml, re.M),
    "draft-refresh names the HISTORY-bound display exception instead of "

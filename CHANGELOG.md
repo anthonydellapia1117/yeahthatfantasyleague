@@ -28,11 +28,14 @@ expected receptions as route participation. Its TE CSV is 6,730 identified rows,
 
 N.1 was rerun in the remaining RB/WR scope and remains **INCONCLUSIVE**: 22/35
 (62.9%) versus 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Removing TE
-reduced the point estimate and widened the interval from 31.0pp to 35.5pp; it did
-not rescue the result. Tags remain display-only.
+reduced the top-band sample from 300 to 199 players (43 to 35 tagged), so the
+interval widened from 31.0pp to 35.5pp in the expected direction: fewer
+observations mean more uncertainty. The verdict holding with that wider interval
+points to the ADP-gated design rather than one individual criterion. Tags remain
+display-only.
 
 Forward Vegas is activated only for QB environment and WR opportunity. The builder
-reads the raw committed 2026 schedule and validates a complete 272-game, 32-team,
+reads a reproducibly committed 2026 schedule snapshot and validates a complete 272-game, 32-team,
 17-games-per-team regular season before pricing coverage. It then derives the
 maximal fully priced prefix each build. Current scope is Weeks 1-6, 93 games and
 186 team-games; Week 7 is 7/14 priced. The artifact carries every weekly coverage
@@ -43,6 +46,23 @@ Mahomes moves WATCH to BULLISH; Ja'Marr Chase moves BULLISH to WATCH. All ten RB
 tag records remain identical because Week-1 Vegas still exclusively feeds RB
 expected-TD equity. Independent test arithmetic, not the production helper,
 reconstructs all 32 forward totals with the verified home-spread sign.
+
+The daily producer now refreshes that snapshot from the same live nflverse
+`games.csv` it already downloads, validates it before any dependent build, and
+stages the snapshot and its metadata in the cron transaction. Provenance records
+the UTC pull time, upstream/snapshot/decision-input digests, priced games and
+team-games, and an explicit `HORIZON_EXTENDED`, `CONTRACTED`, `REPRICED`, or
+`UNCHANGED` event. A contraction fails closed before replacing the last verified
+broader snapshot because intentional narrowing cannot be distinguished safely from
+temporary unpricing or source failure. Home and Draft Room show the current event;
+the last material event persists across later unchanged runs. A synthetic Week-7
+completion bites the guard at W1-6 -> W1-7 and 93 -> 107 games (186 -> 214
+team-games). The schedule-only delta reruns current code against prior and current
+forward inputs and retains the ten-record RB invariance proof. The consumer
+rederives the producer's transition and validates both 32-team total maps before
+trusting its event or prior frame. Model-only movement keeps a zero schedule delta;
+ambiguous mixed transitions fail closed rather than being mislabeled as
+schedule-only.
 
 The analysis audit also records three source-quality findings. The lucky-player
 penalty reproduced exactly from an all-week file but changed from -30.2 to -14.34

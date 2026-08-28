@@ -55,6 +55,8 @@ td{padding:5px 8px 5px 0;border-bottom:1px solid var(--s2)}
   padding:14px 12px;color:var(--ink);font-weight:700;text-align:center}
 .surfaces a span{display:block;font-size:11px;font-weight:400;color:var(--ink3);margin-top:2px}
 .note{font-size:11px;color:var(--ink3);border-top:1px dashed var(--line);margin-top:8px;padding-top:6px}
+.forward-vegas{font-size:12px;color:var(--ink2);border:1px solid var(--line);
+  border-left:3px solid var(--info);border-radius:7px;margin-top:10px;padding:8px 10px}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
 .slink{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;
   border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:4px 10px;
@@ -89,6 +91,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 <div class="card">
   <h2>Data staleness board</h2>
   <div id="stale"><p class="small">loading provenance...</p></div>
+  <div id="forward-vegas-delta" class="forward-vegas" data-event="loading">loading forward Vegas provenance...</div>
   <p class="note">ages computed against your clock from provenance.json fetch stamps; the shard cron runs daily at 12:00 UTC after the nflverse 7AM depth-chart refresh. Fresh under 36h, aging under 7 days, stale beyond.</p>
 </div>
 
@@ -140,8 +143,48 @@ function ageCell(hours){
   return `<td class="num ${cls}">${label}</td>`;
 }
 
+function forwardMoveCount(delta){
+  const s = delta && delta.same_build_counterfactual;
+  if (!s) return 0;
+  return new Set([...(s.gained || []), ...(s.lost || []),
+    ...(s.status_changed || []).map(x => x.player),
+    ...(s.score_changed || []).map(x => x.player)]).size;
+}
+function renderForwardVegas(bull){
+  const el = document.getElementById("forward-vegas-delta");
+  const d = bull && bull.forward_vegas_delta;
+  if (!d || !d.current){
+    el.dataset.event = "unavailable";
+    el.textContent = "Forward Vegas refresh record unavailable - no horizon or tag-change state is inferred.";
+    return;
+  }
+  const c = d.current, p = d.prior || {}, moves = forwardMoveCount(d);
+  const current = `<b>Forward Vegas ${esc(d.event)}</b> - Weeks 1-${esc(c.last_week)}, ` +
+    `<span class="num">${esc(c.games_priced)}</span> games / ` +
+    `<span class="num">${esc(c.team_games_priced)}</span> team-games priced; ` +
+    `<span class="num">${moves}</span> player tag${moves === 1 ? "" : "s"} moved in the ` +
+    `same-build schedule-only comparison. Pulled ${esc(d.pulled_at || "unknown")}. ` +
+    `Attribution: ${esc(d.attribution || "unknown")}.`;
+  let prior = "";
+  const m = d.last_material_event;
+  if (d.event === "UNCHANGED" && m && m.current){
+    const mp = m.prior || {}, mc = m.current;
+    prior = `<br><b>Last material event:</b> ${esc(m.event)} - ` +
+      `W1-${esc(mp.last_week)} to W1-${esc(mc.last_week)}, ` +
+      `${esc(mp.games_priced)} to ${esc(mc.games_priced)} games; ` +
+      `${forwardMoveCount(m)} player tag${forwardMoveCount(m) === 1 ? "" : "s"} moved. ` +
+      `${esc(m.pulled_at || "")}`;
+  } else if (p.last_week != null && c.last_week != null && d.event !== "UNCHANGED") {
+    prior = `<br><span class="small">Window changed from W1-${esc(p.last_week)} / ` +
+      `${esc(p.games_priced)} games to W1-${esc(c.last_week)} / ` +
+      `${esc(c.games_priced)} games.</span>`;
+  }
+  el.dataset.event = d.event;
+  el.innerHTML = current + prior;
+}
+
 async function boot(){
-  const get = f => fetch(f).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
+  const get = f => fetch(f, {cache:"no-store"}).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
   let E = null, prov = null;
   try {
     [E, prov] = await Promise.all([get("engine_2026.json"), get("data/provenance.json")]);
@@ -168,6 +211,8 @@ async function boot(){
   for (const [k, v] of Object.entries(prov.shards))
     rows += `<tr><td>${esc(k)}</td><td class="small">${esc(v.source || "-")}</td>${ageCell(ageOf(v.fetched_at))}</tr>`;
   document.getElementById("stale").innerHTML = rows + "</table>";
+  try { renderForwardVegas(await get("data/bullish_2026.json")); }
+  catch (e) { renderForwardVegas(null); }
 
   // overlay completeness - calls without sources are flagged, not hidden
   const board = E.my_board || [];
