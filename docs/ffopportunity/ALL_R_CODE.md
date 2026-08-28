@@ -393,13 +393,18 @@ wk %>%
   distinct(season, posteam, week, .keep_all = TRUE) %>%
   group_by(season, posteam) %>%
   summarise(games = n_distinct(week),
-            team_targets = sum(num(rec_attempt_team), na.rm = TRUE),
+            # NOTE: rec_attempt_team is PASS ATTEMPTS, not targets. Verified at
+            # source: pass_attempt_team == rec_attempt_team in 36,063/36,063
+            # player-week rows, constant within all 3,386 team-games, and it
+            # reconciles to summed pass attempts (not to summed receiver
+            # targets, which are 882 lower in 2025). Named accordingly.
+            team_pass_attempts = sum(num(pass_attempt_team), na.rm = TRUE),
             team_carries = sum(num(rush_attempt_team), na.rm = TRUE),
             team_rec_yds_exp = sum(num(rec_yards_gained_exp_team), na.rm = TRUE),
             team_rec_td_exp = sum(num(rec_touchdown_exp_team), na.rm = TRUE),
             team_rush_td_exp = sum(num(rush_touchdown_exp_team), na.rm = TRUE),
             .groups = "drop") %>%
-  mutate(targets_pg = team_targets/games, carries_pg = team_carries/games) %>%
+  mutate(pass_attempts_pg = team_pass_attempts/games, carries_pg = team_carries/games) %>%
   write_csv(file.path(OUT, "team_opportunity_supply_2020_2025.csv"))
 
 # 3. REBUILT EPA - drops the 122 QB rows (defect).
@@ -464,5 +469,5 @@ adot_rz %>% filter(season == 2025, receiver_position == "TE") %>% arrange(desc(r
 # 2026 Team Environments (Vegas implied total)
 vegas26 %>% arrange(desc(implied_total_2026))
 
-# Team Opportunity Supply (2025, targets per game)
-team_opp %>% filter(season == 2025) %>% arrange(desc(targets_pg))
+# Team Opportunity Supply (2025, pass attempts per game)
+team_opp %>% filter(season == 2025) %>% arrange(desc(pass_attempts_pg))

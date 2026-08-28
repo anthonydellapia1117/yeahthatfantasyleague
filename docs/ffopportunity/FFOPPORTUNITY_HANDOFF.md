@@ -117,7 +117,7 @@ Four rounds of extraction and testing followed. The headline result is that **mo
 | File | Rows | Description |
 |---|---|---|
 | `vegas_2026_forward.csv` | 32 | **DO NOT CONSUME.** The R export inverted home/away in 224/224 team-games. The app derives its own verified table from `schedule_2026.csv`. |
-| `team_opportunity_supply_2020_2025.csv` | 192 | Team target/carry supply — the denominator every share metric divides by. `targets_pg`, `carries_pg`, `team_rec_td_exp`, `team_rush_td_exp` |
+| `team_opportunity_supply_2020_2025.csv` | 192 | Team pass-attempt/carry supply — the denominator every share metric divides by. `pass_attempts_pg`, `carries_pg`, `team_rec_td_exp`, `team_rush_td_exp`. **Renamed from `team_targets`/`targets_pg`: the source column `rec_attempt_team` carries pass attempts, not targets. Values unchanged.** |
 | `epa_per_target_clean_2020_2025.csv` | 997 | EPA per target, WR/TE/RB only (QB contamination removed), min 40 targets |
 
 ### Documentation (2 files)
@@ -250,6 +250,10 @@ Built in round 3 specifically to replace the mislabeled `tprr_proxy`. Year-over-
 | `rush_attempt_team` | +0.369 |
 
 More stable than any player-level round-3 signal, and it is the denominator every share metric already divides by. Exported as `team_opportunity_supply_2020_2025.csv`.
+
+**Terminology correction.** These columns were exported as `team_targets`/`targets_pg` but are built from `rec_attempt_team`, which carries **pass attempts**, not receiver targets. Verified on the committed data: `pass_attempt_team == rec_attempt_team` in 36,063/36,063 rows, constant within all 3,386 team-games, and reproducing the file from `pass_attempt_team` yields all 192 rows exactly. Renamed to `team_pass_attempts`/`pass_attempts_pg`; **no value changed**. Note the stability figures above are unaffected — they were computed on the same numbers under the old name.
+
+Do not confuse this with `bullish_wr_2020_2025.csv`'s `team_targets`, which is a genuinely different field (sum of WR `rec_attempt`) and remains correctly named.
 
 **PROE — the coaching-scheme signal.** Computed as actual pass rate minus expected (`xpass`), with dropbacks = pass plays + QB scrambles. 2025 range: NYJ −12.5 (most run-heavy) to ARI +1.8 (most pass-happy). This is the **only** direct measure of coaching scheme in the entire dataset, and coaching scheme is named explicitly in the BULLISH intent.
 
@@ -391,7 +395,7 @@ As more complete weeks price, the derived horizon and tags may move visibly.
 | File | Feeds criterion | Python target | Gate/Display |
 |---|---|---|---|
 | `schedule_2026.csv` | QB environment, WR opportunity through a verified derived horizon | `build_bullish_inputs.py` | **ACTIVATED; exact source digest + coverage gate** |
-| `team_opportunity_supply_2020_2025.csv` | share denominators (all positions) | `build_bullish_inputs.py` | **GATE** |
+| `team_opportunity_supply_2020_2025.csv` | share denominators (all positions) — note the supply column is **pass attempts** | `build_bullish_inputs.py` | **GATE** |
 | `line_quality_team_2020_2025.csv` | RB line_quality | `build_bullish.py` RB block | **GATE** |
 | `qb_rush_split_2020_2025.csv` | QB rushing | `build_bullish.py` QB block | **GATE** |
 | `proe_weekly_reg_2020_2025.csv` | coaching scheme (new criterion) | `build_bullish_inputs.py` + new criterion | Display → gate after null test |
