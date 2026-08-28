@@ -15,25 +15,26 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-28 by Codex - defined the full player-name apostrophe/quote contract in Python and browser code, routed Walter's capture boundary through it, added a repository-discovered output team-code guard, and recorded the Rams silent-null incident as defect #43. |
-| **Next agent** | Wait for Anthony's review of `codex/unicode-team-contract`. After it lands, assess TE-gate honesty, then independently verify the reported QB junk rows and sweep every percentile population before any forward-Vegas shadow work. Keep #54 OPEN, ON HOLD, and untouched. |
-| **Branch** | `codex/unicode-team-contract`, based on `main` at `39b8ac2` (#64); review and merge only through its PR |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #64 is merged and live at `39b8ac2`; the Pages run was green, all 48 deployed files were byte-identical, all seven surfaces returned 200, `PAGES DATA FRESH - published 2026-08-28T02:16Z (9h ago)`, and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. The Unicode/team-contract branch is not live pending review. |
-| **Draft order** | UNDRAWN as of 2026-08-28 (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
+| **Last touched** | 2026-08-28 by Codex - excluded absent RB observations from the live BULLISH percentile, suspended the vacuous TE matrix with visible provenance, reran N.1 in its honest RB/WR scope, and activated raw-schedule forward Vegas only for QB environment and WR opportunity. |
+| **Next agent** | Wait for Anthony's review of `codex/bullish-input-integrity`; do not merge it unilaterally. Keep #54 OPEN, ON HOLD, and untouched. After this branch is resolved, follow the remaining `docs/ffopportunity/FFOPPORTUNITY_HANDOFF.md` integration order, preserving the display/shadow/offline/do-not-wire boundaries. |
+| **Branch** | `codex/bullish-input-integrity`, based on `main` at `242ae6b` (#65); review and merge only through its PR |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #65 is merged and live at `242ae6b`; the Pages run was green, all 48 deployed files were byte-identical, all seven surfaces returned 200, `PAGES DATA FRESH - published 2026-08-28T02:16Z (9h ago)`, and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. The BULLISH input-integrity branch is not live pending review. |
+| **Draft order** | UNDRAWN as last checked 2026-08-28 (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
 
 ### What was done in the last session
 
-1. **#53 and #55 through #64 are merged; #64 is live.** #53 records the human
+1. **#53 and #55 through #65 are merged; #65 is live.** #53 records the human
    live-path exercise and its limits. #55 fixed the round-7 VONA lookahead by
    comparing against real round 8 and published the reviewed N.1
    **INCONCLUSIVE** finding on `ff-hub.html`. #63 made the red paint and beep share
    one boundary, fixed BULLISH UTC provenance, replaced data-dependent collision
    assumptions with deterministic fixtures, corrected digest-mismatch diagnosis,
-   and removed transient team-name assertions. #64 fixed the live `LA/LAR` joins.
-   Its Pages deployment is 48/48 byte-identical and healthy. Do not confuse an
-   unmerged fix with a stale deploy.
+   and removed transient team-name assertions. #64 fixed the live `LA/LAR` joins;
+   #65 completed the Unicode quote contract and added the repository-discovered
+   output team-code guard. Its Pages deployment is 48/48 byte-identical and
+   healthy. Do not confuse the unmerged BULLISH branch with a stale deploy.
 2. **#58 consolidated player identity.** One Python comparison key plus the
    collision-aware identity resolver replaced fourteen Python definitions; four
    browser copies are held to Python by corpus parity. Replay survival pairs fell
@@ -55,7 +56,7 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    same-day mutation fixtures prove the guard bites. Strict artifacts fail closed;
    BULLISH/ceiling remain display-only and visibly stale during the intentional
    06:00-08:00 lag instead of burdening the draft-morning workflow with HISTORY.
-5. **#64 fixed the live LA/LAR wrong-answer defect without rewriting
+5. **#64-#65 fixed team-code and player-quote contracts without rewriting
    provider shards.** One canonical Python helper maps `LA->LAR`, `JAC->JAX`,
    `WSH->WAS`, and `ARZ->ARI`; every changed Python consumer imports it. Matching
    browser boundary logic now lets the team and room pages join provider-native
@@ -63,38 +64,83 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    null team context and surrounding talent, the room omitted the Rams PROE chip,
    and `teams.html#t=LAR` fell back. Source-derived guards cover all four team-keyed
    shards and browser smoke exercises the LAR route. BULLISH tags and the engine/VOR
-   payload are unchanged.
-6. **The current follow-up defines quote and output-team contracts.** U+2019 was
-   already folded and the claimed Wan'Dale loss did not reproduce. Exhaustive
+   payload are unchanged. U+2019 was already folded and the claimed Wan'Dale loss
+   did not reproduce. Exhaustive
    committed-source inventory found ten real U+2019 player-name uses, zero U+02BC,
    U+00B4, or U+2018 uses, and zero U+0060 backticks embedded in a player name.
-   Current main nevertheless fails U+02BC and U+0060 comparison and splits the
+   Pre-#65 main nevertheless failed U+02BC and U+0060 comparison and split the
    U+00B4 search token. One pre-NFKD fold now covers ASCII plus U+2019, U+02BC,
    U+0060, U+00B4, and U+2018 in Python and JavaScript while exact-name collision
    evidence remains untouched. Walter's capture regex imports the same contract.
    A dynamic guard scans every committed output JSON/CSV, including scalar fields,
    code-keyed maps, and unlabelled pair domains; unknown codes fail while aliases
    and the explicit `FA` non-team state pass.
-7. **Full battery green on the current branch.** The
+6. **The current branch makes BULLISH inputs honest before adding signal.** The
+   percentile sweep found exactly one live contaminated population: absent 2025
+   RB usage was coerced to observed zero. The discovery frame changed 50 entries
+   to 46 observations; after #65's fresh engine moved Jonah Coleman outside the
+   168-pick pool, the committed frame is 49 candidates = 46 observations + three
+   explicit null exclusions. The upper-middle median is 0.5060, Jacory
+   Croskey-Merritt and Tyler Allgeier move from criterion probability 0.75 to 0.50,
+   and Bucky Irving's real 0-of-n inside-five result remains a legitimate zero.
+   Every percentile now carries observation and exclusion accounting.
+7. **The live TE gate is suspended, not cosmetically relabelled.** All 19 eligible
+   veterans received the same 0.9 market-share value, so the advertised 2-of-2
+   matrix was one varying on-field-dropback input times a constant. McBride,
+   Warren, Pitts, Kelce, and Henry are omitted from live tags and retained in a
+   top-level evidence ledger. All three tag surfaces render the same neutral
+   suspension explanation. The ledger also records Isaiah Likely's 2025 Baltimore
+   share being ranked alone in his 2026 Giants group. The historical TE extract is
+   regenerated to 6,730 identified rows with no fake route alias or NA-subsetting
+   junk; the still-dirty RB/WR R exports remain explicitly unconsumed.
+8. **N.1 remains INCONCLUSIVE after the honest scope change.** RB/WR tags are 22/35
+   (62.9%) versus 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Removing
+   the non-discriminating TE criterion reduced the point estimate and widened the
+   interval from 31.0pp to 35.5pp; it did not rescue the result. The approved
+   verdict is artifact-backed on `ff-hub.html`, and all tags remain display-only.
+9. **Forward Vegas is live only in the two approved consumers.** The builder reads
+   raw `schedule_2026.csv`, validates 272 regular-season games / 32 canonical teams
+   / 17 games per team, verifies the home-spread sign independently, and derives
+   the maximal contiguous fully priced horizon every build. Current scope is Weeks
+   1-6, 93 games, 186 team-games; Week 7 is 7/14 priced. The top environments are
+   LAR, DET, BAL, BUF, and SF. Gains are Brock Purdy and Jordan Love; losses are
+   Caleb Williams, Jalen Hurts, Justin Herbert, Kyler Murray, and Trevor Lawrence;
+   Mahomes promotes to BULLISH and Ja'Marr Chase demotes to WATCH. The replacement
+   feeds only QB environment and WR opportunity. All ten RB tag records are
+   object-identical in the same-build counterfactual because RB expected-TD equity
+   remains on its separate Week-1 source. The horizon, priced-game counts, source
+   SHA, and activation delta are permanent provenance.
+10. **Source-quality defects are recorded separately from app truth.** The
+   lucky-player penalty reproduces from the contaminated all-week file but changes
+   materially in the clean regular-season control. The R forward-Vegas export has
+   the opposite sign in 224/224 team-games, while the app's existing Week-1 formula
+   was already correct. Corrected R source also claimed an RB regeneration whose
+   committed CSV still carries `target_volume` and 2,530 junk rows. Reproducible
+   arithmetic, corrected source, and regenerated artifact bytes are three distinct
+   claims.
+11. **Full battery green on the current branch.** The
    gate-runner self-test plus fourteen gated suites ran
-   16/70/22/50/70/17/16/41/63/47/43/1211/23/363/38 checks. All five analysis
+   16/70/22/50/70/17/16/79/63/47/45/1211/23/363/38 checks (2,130 total). All five analysis
    determinism reruns executed from the complete HISTORY cache: 38 guards, zero
-   skips. Browser smoke ran 357; `MATH DIFF PROOF: EMPTY` for all ten frozen
-   function bodies. Re-running the Walter parser produced no artifact changes.
+   skips. Browser smoke ran 363; `MATH DIFF PROOF: EMPTY` for all ten frozen
+   function bodies. The ceiling artifact was rebuilt against #65's exact engine
+   lineage before the BULLISH chain: weekly replacements are unchanged; 140 ADPs
+   moved with the fresh engine, and only Kyler Murray and Tyler Allgeier moved in
+   projection/availability-adjusted projection.
 
 ### In flight / nothing blocked
 
-The current Unicode/team-contract branch is green and awaits Anthony's review; it must not
-merge without that review. PR #54 remains OPEN, ON HOLD, and untouched at remote
-head `4bd541e`; GitHub currently reports it conflicting with `main`. Its PATHS
+The current BULLISH input-integrity branch is green and awaits Anthony's review; it
+must not merge without that review. PR #54 remains OPEN, ON HOLD, and untouched at
+remote head `4bd541e`; its mergeability is currently unresolved against moving
+`main`. Its PATHS
 policy is still the data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the
 conditional spread floor. Do not rebase, resolve, or merge it until the order is
 drawn and Anthony asks to inspect his actual slot. The `docs/ffopportunity/` R export
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already
 correct, and the shipped QB table did not inherit the R file's `-2` interception
-error. Do not consume regenerated local exports. After this PR, follow Anthony's
-sequence: TE-gate honesty, contaminated-percentile verification/sweep, then corrected
-forward Vegas from raw schedule data in shadow only.
+error. Do not consume unreviewed local regenerated exports. The forward-Vegas and
+TE items named in the old queue are complete on this branch; do not repeat them.
 
 ### The three things the next agent most needs to know
 
