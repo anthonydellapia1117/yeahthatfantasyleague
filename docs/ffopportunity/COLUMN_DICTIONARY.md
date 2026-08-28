@@ -129,6 +129,44 @@ carried in this extract.
 |---|---|
 | total_fantasy_points_diff | The gap: actual - expected fantasy points. ADP-orthogonal (r = -0.155 vs ADP). Positive = overperformed, negative = underperformed. |
 
+### team_opportunity_supply_2020_2025.csv
+
+| Column | Description |
+|---|---|
+| games | Regular-season team-games in the season |
+| team_pass_attempts | Season pass attempts, summed from the `pass_attempt_team` column |
+| team_carries | Season rush attempts, summed from `rush_attempt_team` |
+| team_rec_yds_exp | Season expected receiving yards (team) |
+| team_rec_td_exp | Season expected receiving TDs (team) |
+| team_rush_td_exp | Season expected rushing TDs (team) |
+| pass_attempts_pg | `team_pass_attempts / games` |
+| carries_pg | `team_carries / games` |
+
+**Corrected mislabel — `team_targets` -> `team_pass_attempts`, `targets_pg` ->
+`pass_attempts_pg`.** These columns were produced from `rec_attempt_team`, whose
+name suggests receiver targets. It is not. It carries **pass attempts**, verified
+against the committed source:
+
+- `pass_attempt_team == rec_attempt_team` in **36,063 of 36,063** player-week rows
+- The value is **constant within all 3,386 team-games** (it is a team total, not a
+  player quantity)
+- It reconciles to summed **pass attempts**, not to summed receiver targets. In the
+  2025 regular season the stored value is **17,438** against **16,556** summed
+  receiver targets — a gap of 882 that closes when compared against pass attempts
+- Rebuilding the file from `pass_attempt_team` reproduces **all 192 rows exactly**
+
+**The numbers did not change. Only the name was wrong.** The header rename is the
+entire data-side edit; every value in the file is byte-identical to before.
+
+`tests/test_pages_data.py` now asserts the identity and the within-team-game
+constancy directly from `ep_weekly_2020_2025.csv`, so if the upstream ffopportunity
+schema ever diverges the guard fails loudly rather than silently relabeling.
+
+**Not renamed:** `bullish_wr_2020_2025.csv` also has a `team_targets` column, and it
+is a **different quantity** — the sum of WR `rec_attempt` within a team-week, which
+really is targets. All 13,483 rows differ from `rec_attempt_team`. It is correct as
+named and was deliberately left alone.
+
 ## Scoring Note
 
 total_fantasy_points_exp is scored at 4-point passing TDs. If your league uses 6-point pass TDs, rebuild from component _exp columns (pass_touchdown_exp * 6, rush_touchdown_exp * 6, pass_yards_gained_exp / 25, rush_yards_gained_exp / 10, pass_interception_exp * -2). See bullish_qb_2020_2025.csv for the rescored version.

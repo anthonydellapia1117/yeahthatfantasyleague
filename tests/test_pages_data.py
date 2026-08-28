@@ -1700,6 +1700,125 @@ ok("156 MB" in _draft_refresh_yml and
    "draft-refresh names the HISTORY-bound display exception instead of "
    "adding it to the decision-critical path")
 
+# ---- ffopportunity team supply: the column is PASS ATTEMPTS, not targets.
+# The export was published as `team_targets`/`targets_pg` while being built from
+# `rec_attempt_team`. That column does not carry receiver targets. Rather than
+# trust either label, these guards re-derive the identity from the committed
+# weekly source, so an upstream ffopportunity schema change fails loudly here
+# instead of silently restoring a name that lies.
+_ffo_dir = os.path.join(ROOT, "docs", "ffopportunity")
+_ffo_weekly = os.path.join(_ffo_dir, "ep_weekly_2020_2025.csv")
+_ffo_supply = os.path.join(_ffo_dir, "team_opportunity_supply_2020_2025.csv")
+if os.path.exists(_ffo_weekly) and os.path.exists(_ffo_supply):
+    def _ffo_num(row, col):
+        raw = row.get(col)
+        if raw in (None, "", "NA"):
+            return None
+        try:
+            return float(raw)
+        except ValueError:
+            return None
+
+    _ffo_rows = list(csv.DictReader(open(_ffo_weekly)))
+    _pa_rec_seen = 0
+    _pa_rec_mismatch = []
+    _team_game_values = {}
+    for _row in _ffo_rows:
+        _pa = _ffo_num(_row, "pass_attempt_team")
+        _rec = _ffo_num(_row, "rec_attempt_team")
+        if _pa is None and _rec is None:
+            continue
+        _pa_rec_seen += 1
+        if _pa != _rec:
+            _pa_rec_mismatch.append(
+                (_row.get("season"), _row.get("posteam"), _row.get("week"), _pa, _rec))
+        _team = _row.get("posteam") or ""
+        if _team and _team != "NA" and _rec is not None:
+            _team_game_values.setdefault(
+                (_row.get("season"), _team, _row.get("week")), set()).add(_rec)
+    ok(_pa_rec_seen > 0 and not _pa_rec_mismatch,
+       "ffopportunity: pass_attempt_team equals rec_attempt_team on every row "
+       f"({_pa_rec_seen - len(_pa_rec_mismatch)}/{_pa_rec_seen})",
+       "; ".join(str(m) for m in _pa_rec_mismatch[:3]))
+    _varying = [k for k, v in _team_game_values.items() if len(v) > 1]
+    ok(_team_game_values and not _varying,
+       "ffopportunity: the team supply column is constant within every "
+       f"team-game ({len(_team_game_values) - len(_varying)}/{len(_team_game_values)})",
+       "; ".join(str(k) for k in _varying[:3]))
+
+    # the published file must reproduce from pass_attempt_team, regular season only
+    _rebuilt = {}
+    _rebuilt_weeks = {}
+    _supply_seen = set()
+    for _row in _ffo_rows:
+        _season, _team, _week = _row.get("season"), _row.get("posteam"), _row.get("week")
+        if not _team or _team == "NA":
+            continue
+        try:
+            _week_n = int(_week)
+        except (TypeError, ValueError):
+            continue
+        if _week_n > (17 if _season == "2020" else 18):
+            continue
+        _key = (_season, _team, _week)
+        if _key in _supply_seen:
+            continue
+        _supply_seen.add(_key)
+        _pa = _ffo_num(_row, "pass_attempt_team")
+        if _pa is None:
+            continue
+        _rebuilt[(_season, _team)] = _rebuilt.get((_season, _team), 0.0) + _pa
+        _rebuilt_weeks.setdefault((_season, _team), set()).add(_week)
+
+    _supply_rows = list(csv.DictReader(open(_ffo_supply)))
+    _hdr = _supply_rows[0].keys() if _supply_rows else []
+    ok("team_pass_attempts" in _hdr and "pass_attempts_pg" in _hdr
+       and "team_targets" not in _hdr and "targets_pg" not in _hdr,
+       "team supply header names pass attempts, not targets",
+       ",".join(_hdr))
+    _supply_bad = []
+    for _row in _supply_rows:
+        _key = (_row.get("season"), _row.get("posteam"))
+        _stored = _ffo_num(_row, "team_pass_attempts")
+        _expect = _rebuilt.get(_key)
+        if _stored is None or _expect is None or abs(_stored - _expect) > 1e-6:
+            _supply_bad.append(f"{_key}:{_stored}!={_expect}")
+    ok(_supply_rows and not _supply_bad,
+       "team supply reproduces exactly from pass_attempt_team "
+       f"({len(_supply_rows) - len(_supply_bad)}/{len(_supply_rows)} rows)",
+       "; ".join(_supply_bad[:3]))
+
+    # the stored value is NOT summed receiver targets - the mislabel this closes
+    _recv = {}
+    for _row in _ffo_rows:
+        _season, _team, _week = _row.get("season"), _row.get("posteam"), _row.get("week")
+        if not _team or _team == "NA" or _row.get("position") not in ("WR", "RB", "TE"):
+            continue
+        try:
+            _week_n = int(_week)
+        except (TypeError, ValueError):
+            continue
+        if _week_n > (17 if _season == "2020" else 18):
+            continue
+        _recv[(_season, _team)] = _recv.get((_season, _team), 0.0) + (
+            _ffo_num(_row, "rec_attempt") or 0.0)
+    _identical = [k for k, v in _rebuilt.items()
+                  if _recv.get(k) is not None and abs(v - _recv[k]) < 1e-6]
+    ok(_rebuilt and not _identical,
+       "team supply is distinguishable from summed receiver targets - the "
+       "column is pass attempts and the name now says so",
+       f"{len(_identical)} team-seasons matched receiver targets exactly")
+
+    # bullish_wr.team_targets is a DIFFERENT field (sum of WR rec_attempt) and
+    # must keep its name - a careless rename here would break a working input
+    _wr_path = os.path.join(_ffo_dir, "bullish_wr_2020_2025.csv")
+    if os.path.exists(_wr_path):
+        with open(_wr_path) as _fh:
+            _wr_hdr = next(csv.reader(_fh))
+        ok("team_targets" in _wr_hdr,
+           "bullish_wr keeps team_targets - it really is targets, unlike the "
+           "team supply column")
+
 print()
 print(f"{len(fails)} FAILURES" if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

@@ -1,4 +1,4 @@
-season,posteam,games,team_targets,team_carries,team_rec_yds_exp,team_rec_td_exp,team_rush_td_exp,targets_pg,carries_pg
+season,posteam,games,team_pass_attempts,team_carries,team_rec_yds_exp,team_rec_td_exp,team_rush_td_exp,pass_attempts_pg,carries_pg
 2020,ARI,16,575,479,4407.010000000001,28.349999999999998,24.05,35.9375,29.9375
 2020,ATL,16,628,409,5048.41,36.04,13.109999999999998,39.25,25.5625
 2020,BAL,16,406,555,3096.61,27.42,22.04,25.375,34.6875
