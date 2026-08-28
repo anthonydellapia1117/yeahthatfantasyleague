@@ -15,47 +15,56 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-27 by Claude - docs-only correction recording the verified live path. Codex is concurrently working four review findings (round-7 VONA against zero, hardcoded `SURV_FLOOR`, the p25 branch rule, N.1 missing from `ff-hub.html`); **one writer per item, do not touch those.** |
-| **Next agent** | **Codex.** Read `docs/AGENT_HANDOFF_SPEC.md` FIRST, sections 1 and 2 before touching anything. |
-| **Branch** | `claude/chat-migration-desktop-ruannr`, based on `main` |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - byte-verified against `main` as of `04d3dd3` |
+| **Last touched** | 2026-08-27 by Codex - PR #57 adds content-based engine lineage, visible display lag, and the fifth fail-open record. Implementation and documentation are committed; this baton is the final commit. |
+| **Next agent** | Wait for Anthony's decision on #57. After it merges, rebase #54 onto main, restore #55's half-up smoke oracle during conflict resolution, run the full battery, push, and keep #54 OPEN and ON HOLD. Then the queued work is normalizer consolidation and the free-analysis brief. |
+| **Branch** | `codex/fix-engine-content-lineage`, PR #57, based on `main` at `da78b0c` |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #56 deployment byte-verified 47/47 against `main` at `da78b0c`; live CVS SHA-256 `e4d14fe857ded7445efca3a90dc5b134770c9d2332ec4435cf8e90e1b236c2f3` |
 | **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. A Routine checks every 2h and self-retires on the draw. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272` (19 teams) - see `AGENT_HANDOFF_SPEC.md` §11 |
 
 ### What was done in the last session
 
-1. **P0** - the pick clock (hardcoded 120s against a real 60s `pick_timer`, anchored
-   to poll-detection). Server-anchored or honestly absent. Merged, deployed.
-2. **P1 A/B/C/F** - VONA one-frame conditioning (28% of nodes had negative VONA),
-   VONA starter feasibility via the shared `forward_policy` layer, room response
-   validity vs freshness, and the BULLISH-vs-ADP verdict changed from an unsound
-   automated rule to reviewed reported text. Merged (#51), deployed.
-3. **P2** - pages-data cron verified dead for 4 days (8 of 14 scheduled runs failed);
-   root-caused to a crosswalk guard and a missing diacritic fold; fixed, and the
-   alert moved to the published artifact (`src/check_publication.py`).
-4. **Self-audit** - `docs/SELF_AUDIT_2026-08-26.md`. 39 defects classified; 4 caught
-   pre-commit (~10%); five recurring classes; a predicted-defect hunt that found
-   the items below.
-5. **Archive prune** - the repo is public and member finance/profile data was
-   tracked under a duplicate root that defeated the `.gitignore` rule. 165 files
-   deleted, roots collapsed to one, nothing functional changed (verified
-   byte-for-byte).
-6. **Draft-critical fixes** - geometry preflight; the VONA tree now rebuilds with
-   the engine it derives from; skipped guards now fail the gate.
-7. **`fetch_history.py` extended** from four data families to nine. The five it did
-   not know about had no URL recorded anywhere, which left the C5 BULLISH inputs
-   unreproducible by anyone. All five URLs verified byte-identical to the cache.
+1. **#56 merged and deployed.** Main is `da78b0c`. Pages rebuilt all 47 files
+   byte-identically, the rebuilt CVS is live, publication says
+   `PAGES DATA FRESH - published 2026-08-27T21:54Z (2h ago)`, and preflight says
+   `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`.
+2. **PR #57 closes date-only linkage.** The engine now self-stamps canonical JSON
+   with SHA-256, and all six JSON consumers record the exact payload digest. CVS,
+   VONA, and mock are strict. The room payload is object-identical; decision cards
+   and all five teaser pages name the digest. A same-day mutation fixture proves
+   the date can stay equal while the digest changes.
+3. **BULLISH uses visible option (b).** A full 06:00 rebuild would add pyarrow, a
+   156 MB HISTORY cache, 59 cached source files, and a live games endpoint to the
+   25-minute decision-critical job. Ceiling and BULLISH therefore carry engine
+   lineage and render neutral stale states from 06:00 until pages-data strictly
+   rebuilds ceiling, inputs, and tags at 08:00. Inputs digest five committed source
+   artifacts; tags digest the exact complete inputs payload.
+4. **Content accounting is clean.** An isolated reconstruction from base
+   `da78b0c` found 0 substantive mismatches across 13 current engine derivatives.
+   The pre-#56 snapshot exposed 15 stale fields: 14 mock tiers and one BULLISH
+   injury reason. Current linkage is 0 failures of 13 at engine digest
+   `bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782`.
+5. **The audit now records 42 entries.** It includes FAIL-OPEN GUARD occurrence 5
+   and the measured publication exposure: Pages served Aug-17 depth data for
+   exactly 6d 6h 58m 40s. Counts are 16 reviewer finds and 19 silent failures.
+6. **Full battery green.** The 15 suites ran 16/41/20/50/70/17/16/38/63/47/43/
+   1687/23/319/38 guards; pages-data strict BULLISH ran 39; smoke ran 350;
+   `MATH DIFF PROOF: EMPTY` for all ten frozen function bodies. Three independent
+   release reviews found no blocker.
 
 ### In flight / nothing blocked
 
-Nothing is half-finished. Every change above is committed, gated, and either merged
-or on the branch with a green battery.
+PR #57 is open, green locally, and intentionally unmerged pending Anthony's review.
+PR #54 remains open, ON HOLD, and untouched at remote head `4bd541e`; it is the next
+branch to rebase only after #57 merges.
 
 ### The three things the next agent most needs to know
 
-1. **`docs/AGENT_HANDOFF_SPEC.md` §1** - the three failure modes that produced this
-   project's live defects. More useful than the module map.
+1. **Do not replace the digest with a timestamp.** Human `generated` dates remain
+   provenance, never identity. Strict consumers fail closed; display-only lag must
+   be visibly neutral. Raw HISTORY bytes are not yet a universal dependency DAG,
+   and optional BULLISH absence remains the already-recorded P2-4 residual.
 2. **The live browser-to-Sleeper path IS VERIFIED** - Anthony ran the deployed room
    in DRAFT MODE against a live 19-team Sleeper draft (`1388575351239606272`) on
    2026-08-26. The clock counted off that draft's **120s** `pick_timer`, which
@@ -281,10 +290,11 @@ Live app: https://anthonydellapia1117.github.io/yeahthatfantasyleague/out/draft_
 Six gated phases per docs/DRAFT_ROOM_BUILD_ORDER.md: broadcast-grade design
 system, live pick-clock mode (duration from draft settings), sixteen features (roster-need-aware
 recommendation first), the quarantined league-mate simulator, GitHub Pages
-deployment via the gh-pages workflow, and this review. Draft-morning flow:
-`python3 src/engine_2026.py && git commit -am "draft morning rebuild" && git push`.
-The survival math is frozen: 21 Python guards + the smoke suite with 42 JS
-parity anchors + the calibration benchmark gate every merge.
+deployment via the gh-pages workflow, and this review. Draft-morning production
+uses the mapped, gated `.github/workflows/draft-refresh.yml` chain in
+`docs/DRAFT_MORNING.md`; an engine-only commit is invalid.
+The survival math is frozen: 41 Python guards + 350 browser guards, including 42
+JS parity anchors, plus the calibration benchmark gate every merge.
 
 ## Draft-day features + conviction overlay - shipped 2026-08-13
 
