@@ -266,7 +266,7 @@ async function loadN1(){
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const d = await r.json();
     const bands = d && d.within_band;
-    if (!d || typeof d.verdict !== 'string' || !d.verdict.includes(' - ') ||
+    if (!d || typeof d.verdict !== 'string' || !/\s[—-]\s/.test(d.verdict) ||
         !d.provenance || typeof d.provenance.generated !== 'string' ||
         typeof d.provenance.method !== 'string' ||
         typeof d.provenance.limitation !== 'string' || !d.concentration ||
@@ -278,7 +278,7 @@ async function loadN1(){
         !n1BandOk(bands['pos25-48'])) {
       throw new Error('unusable schema');
     }
-    const verdictLabel = d.verdict.split(' - ')[0];
+    const verdictLabel = d.verdict.split(/\s[—-]\s/)[0];
     $('#n1Verdict').textContent = verdictLabel;
     $('#n1Text').textContent = d.verdict;
     const labels = {'pos1-12':'Positional 1-12', 'pos13-24':'Positional 13-24',

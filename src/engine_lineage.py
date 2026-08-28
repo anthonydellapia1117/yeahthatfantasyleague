@@ -30,6 +30,15 @@ def json_content_sha256(payload):
     return hashlib.sha256(raw).hexdigest()
 
 
+def file_content_sha256(path):
+    """Return SHA-256 over the exact bytes at ``path``."""
+    digest = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def content_sha256(payload):
     """Return the SHA-256 of canonical engine JSON excluding ``FIELD``."""
     if not isinstance(payload, dict):

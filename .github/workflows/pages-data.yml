@@ -31,6 +31,10 @@ jobs:
       - name: Complete history cache
         # Versioned files stay cached; games.csv is a live schedule/lines file.
         run: python3 src/fetch_history.py --refresh-live
+      - name: Sync and validate forward schedule snapshot
+        # The committed snapshot keeps draft-refresh HISTORY-free. CONTRACTED
+        # fails here before replacing the last verified broader window.
+        run: python3 src/sync_forward_schedule.py
       - name: Build page-data shards
         run: python3 src/build_pages_data.py
       # Downstream chain. Walter resolves guide players against the refreshed
@@ -62,7 +66,9 @@ jobs:
         run: |
           git config user.name "pages-data-cron"
           git config user.email "actions@users.noreply.github.com"
-          git add out/data/ out/cvs.json data/walter/
+          git add docs/ffopportunity/schedule_2026.csv \
+            docs/ffopportunity/schedule_2026.meta.json \
+            out/data/ out/cvs.json data/walter/
           if git diff --cached --quiet; then
             echo "pushed=false" >> "$GITHUB_OUTPUT"
             echo "no payload changes"
@@ -83,3 +89,21 @@ jobs:
         run: |
           echo "## Shard sizes" >> "$GITHUB_STEP_SUMMARY"
           ls -la out/data/ | awk '{print "-", $NF, $5}' >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d = json.load(open("out/data/bullish_2026.json"))["forward_vegas_delta"]
+          c = d["current"]
+          moves = d["same_build_counterfactual"]
+          changed = set(moves["gained"]) | set(moves["lost"])
+          changed |= {item["player"] for item in moves["status_changed"]}
+          changed |= {item["player"] for item in moves["score_changed"]}
+          print()
+          print("## Forward Vegas refresh")
+          print(f"- {d['event']}: W1-{c['last_week']}, "
+                f"{c['games_priced']} games / "
+                f"{c['team_games_priced']} team-games; "
+                f"{len(changed)} same-build tag changes")
+          if d.get("last_material_event"):
+              m = d["last_material_event"]
+              print(f"- last material event: {m['event']} at {m['pulled_at']}")
+          PY

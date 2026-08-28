@@ -81,7 +81,7 @@ qb$team_implied_total <- ave(qb$total_fantasy_points_exp, qb$posteam, qb$season,
 write.csv(qb, file.path(out, "bullish_qb_2020_2025.csv"), row.names = FALSE, na = "")
 
 # --- 4. TE ---
-te <- wk[wk$position == "TE", c(
+te <- wk[!is.na(wk$position) & wk$position == "TE", c(
   "season", "week", "player_id", "full_name", "position", "posteam",
   "receptions", "receptions_exp",
   "rec_attempt", "rec_air_yards",
@@ -91,7 +91,8 @@ te <- wk[wk$position == "TE", c(
   "total_touchdown_diff"
 )]
 
-te$route_participation_proxy <- te$receptions_exp
+# Route participation is unavailable in ffopportunity; do not relabel
+# receptions_exp as a route metric.
 te$team_rec_yds_exp <- ave(te$rec_yards_gained_exp, te$posteam, te$season, te$week, FUN = function(x) sum(x, na.rm = TRUE))
 te$receiving_market_share <- ifelse(te$team_rec_yds_exp > 0, te$rec_yards_gained_exp / te$team_rec_yds_exp, NA)
 write.csv(te, file.path(out, "bullish_te_2020_2025.csv"), row.names = FALSE, na = "")

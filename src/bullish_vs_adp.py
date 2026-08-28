@@ -54,43 +54,70 @@ from player_names import nflverse_roster_identity
 # data moves, the run fails loudly so a stale verdict is never
 # republished; the text itself only changes by review, never by code.
 VERDICT = (
-    "INCONCLUSIVE - incremental value over ADP is unresolved in the only "
-    "band with usable overlap. Among positional ADP ranks 1-12, tagged "
-    "players finished top-12 in 28/43 cases (65.1%) vs 133/257 (51.8%), "
-    "+13.4pp, 95% CI [-2.1, +28.9]. That interval permits slight harm and "
-    "useful lift alike. Only three tags occur at ranks 13-24 and none at "
-    "25-48, so those regions are not identifiable. Coarse bands do not "
-    "adjust for exact ADP, position, season, or repeated players. Tag "
-    "stays display-only pending a continuous-ADP, season-held-out test.")
+    "INCONCLUSIVE — incremental value over ADP remains unresolved in the "
+    "RB/WR scope after suspending the non-discriminating TE matrix. Among "
+    "positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases "
+    "(62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. "
+    "Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the "
+    "top-band sample from 300 to 199 players (43 to 35 tagged) and widened "
+    "the interval from 31.0pp to 35.5pp. That is the expected direction when "
+    "a non-discriminating group is removed: fewer observations mean more "
+    "uncertainty. Because the verdict held while uncertainty increased, the "
+    "unresolved limitation is the ADP-gated design, not one individual "
+    "criterion. The current interval permits harm and useful lift alike. "
+    "Only three tags occur "
+    "at ranks 13-24 and none at 25-48, so those regions are not identifiable. "
+    "Coarse bands do not adjust for exact ADP, position, season, or repeated "
+    "players. Tags stay display-only pending continuous-ADP, season-held-out "
+    "testing.")
 
 VERDICT_BASIS = (
-    "reported, fixed by review 2026-08-26 - not computed. The prior "
+    "reported, fixed by review 2026-08-28 - not computed. Removing the "
+    "non-discriminating TE matrix reduced the point estimate and widened the "
+    "interval because the restricted scope has fewer observations; it did not "
+    "rescue the result. That points to the ADP gate rather than one criterion. "
+    "The prior "
     "three-state automation was removed as unsound: a post-hoc minimum-"
     "detectable-effect comparison is not an equivalence test, the "
     "significance branch searched six cells without multiplicity "
     "control, and its BEATS label was sign-blind. Every figure the "
-    "verdict cites is cross-checked against the computed cells at build "
-    "time; a mismatch fails the build for re-review instead of "
-    "regenerating the text")
+    "current-scope figure the verdict cites is cross-checked against the "
+    "computed cells at build time; the prior-scope comparison is pinned to "
+    "the cited pre-suspension artifact. A mismatch fails the build for "
+    "re-review instead of regenerating the text")
 
 # the figures the fixed verdict cites, in the artifact's own units -
 # cross_check() recomputes each from the cells and refuses to publish on
 # any mismatch
 VERDICT_CITES = {
-    "pos1-12 tagged k/n": (28, 43),
-    "pos1-12 tagged rate pct": 65.1,
-    "pos1-12 untagged k/n": (133, 257),
-    "pos1-12 untagged rate pct": 51.8,
-    "pos1-12 diff pp": 13.4,
-    "pos1-12 diff ci95 pp": (-2.1, 28.9),
+    "pos1-12 tagged k/n": (22, 35),
+    "pos1-12 tagged rate pct": 62.9,
+    "pos1-12 untagged k/n": (86, 164),
+    "pos1-12 untagged rate pct": 52.4,
+    "pos1-12 diff pp": 10.4,
+    "pos1-12 diff ci95 pp": (-7.3, 28.2),
+    "pos1-12 p two-sided": 0.261,
+    "pos1-12 total n": 199,
+    "pos1-12 diff ci95 width pp": 35.5,
     "pos13-24 tagged n": 3,
     "pos25-48 tagged n": 0,
+}
+
+PRIOR_SCOPE_REFERENCE = {
+    "scope": ["RB", "WR", "TE"],
+    "top_band_total_n": 300,
+    "top_band_tagged_n": 43,
+    "diff_ci95_width_pp": 31.0,
+    "source_commit": "242ae6b284a82e81f575eb42805bcf638a65ebbf",
+    "source_artifact": "out/data/bullish_vs_adp.json",
+    "source_content_sha256":
+        "405cac582f5b953d9ba46a53b670123c8870892b37dc79bdfb2e5ffe2ee172b4",
 }
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "out", "data", "bullish_vs_adp.json")
 YEARS = list(range(2017, 2026))
-POSITIONS = ("RB", "WR", "TE")          # the tag's own skill scope
+POSITIONS = ("RB", "WR")                # live tag scope after TE suspension
 BANDS = [(1, 12, "pos1-12"), (13, 24, "pos13-24"), (25, 48, "pos25-48")]
 
 W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
@@ -290,6 +317,11 @@ def main():
         "pos1-12 diff ci95 pp": (round(l12["diff_ci95"][0] * 100, 1),
                                  round(l12["diff_ci95"][1] * 100, 1))
         if l12 else None,
+        "pos1-12 p two-sided": round(l12["p_two_sided"], 3) if l12 else None,
+        "pos1-12 total n": tn + un,
+        "pos1-12 diff ci95 width pp": round(
+            (l12["diff_ci95"][1] - l12["diff_ci95"][0]) * 100, 1)
+        if l12 else None,
         "pos13-24 tagged n": within["pos13-24"]["tagged"]["n"],
         "pos25-48 tagged n": within["pos25-48"]["tagged"]["n"],
     }
@@ -334,6 +366,21 @@ def main():
         "verdict_basis": VERDICT_BASIS,
         "verdict_cites": {k: list(v) if isinstance(v, tuple) else v
                           for k, v in VERDICT_CITES.items()},
+        "scope_change": {
+            "prior": PRIOR_SCOPE_REFERENCE,
+            "current": {
+                "scope": list(POSITIONS),
+                "top_band_total_n": tn + un,
+                "top_band_tagged_n": tn,
+                "diff_ci95_width_pp": computed[
+                    "pos1-12 diff ci95 width pp"],
+            },
+            "interpretation": (
+                "Removing the non-discriminating TE group left fewer observations "
+                "and therefore widened uncertainty. The INCONCLUSIVE verdict "
+                "holding under that expected widening points to the ADP-gated "
+                "design rather than one individual tag criterion."),
+        },
         # the Phase A concern, quantified: if nearly every tag lands on a
         # player ADP already ranks at the top, the tag is confirming the
         # market rather than adding to it, whatever the pooled rates say

@@ -64,6 +64,8 @@ from contextlib import closing
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from analyze_recency import HISTORY
 
+LIVE_GAMES_URL = "http://www.habitatring.com/games.csv"
+
 
 def fetch(url, dest, gz=False, refresh=False, required_prefix=None):
     if not refresh and os.path.exists(dest) and os.path.getsize(dest) > 1000:
@@ -134,7 +136,7 @@ def main():
     # Live file, not a versioned release. The producer opts into refreshing it;
     # reproducibility runs retain the cache they were pointed at.
     results.append(("games.csv", fetch(
-        "http://www.habitatring.com/games.csv",
+        LIVE_GAMES_URL,
         os.path.join(HISTORY, "games.csv"), refresh=args.refresh_live,
         required_prefix=b"game_id,season,game_type,week,")))
 

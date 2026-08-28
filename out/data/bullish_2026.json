@@ -1,35 +1,331 @@
 {
  "provenance": {
   "generated": "2026-08-28",
-  "computed_at": "2026-08-28T07:24:46+00:00",
-  "engine_generated": "2026-08-26",
-  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
-  "inputs_content_sha256": "a029e35a1d694745222d6370cc0ed33a452b29a0b0ae1ddd4df07955b83fe368",
+  "computed_at": "2026-08-28T13:57:40+00:00",
+  "engine_generated": "2026-08-28",
+  "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
+  "inputs_content_sha256": "aaafb904e5e7467b26ebd03ecb1cb20b120fc9146cac7212ed10a98ee637e043",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
    "note": "decision-rule confidence levels, stated like p<0.05; every metric threshold is a computed percentile in bullish_inputs"
   },
-  "ttl": "72h revalidation - the room degrades BULLISH to WATCH past it"
+  "ttl": "72h revalidation - the room degrades BULLISH to WATCH past it",
+  "forward_vegas": {
+   "source": "docs/ffopportunity/schedule_2026.csv",
+   "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
+   "upstream_source": "http://www.habitatring.com/games.csv",
+   "pulled_at": "2026-08-28T13:40:39+00:00",
+   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "snapshot_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "season": 2026,
+   "derivation": "maximal contiguous prefix from week 1 where every scheduled game has total_line and spread_line",
+   "spread_convention": "positive spread_line means home favored; home=total/2+spread/2, away=total/2-spread/2",
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games": 93,
+   "games_priced": 93,
+   "team_games": 186,
+   "team_games_priced": 186,
+   "teams": 32,
+   "full_schedule_games": 272,
+   "regular_season_games_per_team": 17,
+   "team_game_counts": {
+    "ARI": 6,
+    "ATL": 6,
+    "BAL": 6,
+    "BUF": 6,
+    "CAR": 5,
+    "CHI": 6,
+    "CIN": 5,
+    "CLE": 6,
+    "DAL": 6,
+    "DEN": 6,
+    "DET": 5,
+    "GB": 6,
+    "HOU": 6,
+    "IND": 6,
+    "JAX": 6,
+    "KC": 5,
+    "LAR": 6,
+    "LAC": 6,
+    "LV": 6,
+    "MIA": 5,
+    "MIN": 5,
+    "NE": 6,
+    "NO": 6,
+    "NYG": 6,
+    "NYJ": 6,
+    "PHI": 6,
+    "PIT": 6,
+    "SEA": 6,
+    "SF": 6,
+    "TB": 6,
+    "TEN": 6,
+    "WAS": 6
+   },
+   "coverage": [
+    {
+     "week": 1,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 2,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 3,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 4,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 5,
+     "priced_games": 15,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 6,
+     "priced_games": 14,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 7,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 8,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 9,
+     "priced_games": 1,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 10,
+     "priced_games": 1,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 11,
+     "priced_games": 1,
+     "scheduled_games": 13,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 12,
+     "priced_games": 5,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 13,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 14,
+     "priced_games": 0,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 15,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 16,
+     "priced_games": 4,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 17,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 18,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    }
+   ],
+   "next_partial_week": {
+    "week": 7,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "partial_line_games": 0,
+    "complete": false
+   },
+   "top_five_teams": [
+    "LAR",
+    "DET",
+    "BAL",
+    "BUF",
+    "SF"
+   ],
+   "top_five_tie_policy": "higher mean, then canonical team code",
+   "consumers": [
+    "QB.environment",
+    "WR.opportunity"
+   ],
+   "excluded_consumers": [
+    "RB.expected_td_equity"
+   ],
+   "delta_event": {
+    "event": "UNCHANGED",
+    "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+    "prior": {
+     "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+     "upstream_content_sha256": null,
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "complete": false,
+      "partial_line_games": 0,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "week": 7
+     }
+    },
+    "current": {
+     "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+     "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "week": 7,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     }
+    },
+    "flags": {
+     "source_changed": true,
+     "coverage_changed": false,
+     "horizon_changed": false,
+     "implied_totals_changed": false,
+     "decision_pricing_changed": false,
+     "model_logic_changed": false,
+     "prior_horizon_repriced": false
+    },
+    "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
+   }
+  },
+  "te_tags": "suspended; see top-level te_gate_suspension for the computed shadow ledger and evidence"
  },
  "adp_edge": {
   "question": "what do the tags find that ADP alone does not?",
   "divergent": [
    {
-    "name": "Jared Goff",
-    "pos": "QB",
-    "status": "BULLISH",
-    "score_rank": 1,
-    "pos_adp_rank": 16,
-    "gap": 15
-   },
-   {
     "name": "Zay Flowers",
     "pos": "WR",
     "status": "BULLISH",
-    "score_rank": 5,
+    "score_rank": 4,
     "pos_adp_rank": 19,
-    "gap": 14
+    "gap": 15
    },
    {
     "name": "D'Andre Swift",
@@ -37,6 +333,14 @@
     "status": "WATCH",
     "score_rank": 10,
     "pos_adp_rank": 24,
+    "gap": 14
+   },
+   {
+    "name": "Jared Goff",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 2,
+    "pos_adp_rank": 16,
     "gap": 14
    },
    {
@@ -48,12 +352,20 @@
     "gap": 13
    },
    {
-    "name": "Hunter Henry",
-    "pos": "TE",
-    "status": "WATCH",
+    "name": "Brock Purdy",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 2,
+    "pos_adp_rank": 15,
+    "gap": 13
+   },
+   {
+    "name": "Jordan Love",
+    "pos": "QB",
+    "status": "BULLISH",
     "score_rank": 5,
-    "pos_adp_rank": 17,
-    "gap": 12
+    "pos_adp_rank": 18,
+    "gap": 13
    },
    {
     "name": "Derrick Henry",
@@ -67,16 +379,16 @@
     "name": "Matthew Stafford",
     "pos": "QB",
     "status": "BULLISH",
-    "score_rank": 1,
+    "score_rank": 2,
     "pos_adp_rank": 11,
-    "gap": 10
+    "gap": 9
    },
    {
-    "name": "Kyler Murray",
-    "pos": "QB",
-    "status": "WATCH",
-    "score_rank": 11,
-    "pos_adp_rank": 19,
+    "name": "Chris Olave",
+    "pos": "WR",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 13,
     "gap": 8
    },
    {
@@ -85,38 +397,6 @@
     "status": "WATCH",
     "score_rank": 1,
     "pos_adp_rank": 8,
-    "gap": 7
-   },
-   {
-    "name": "Chris Olave",
-    "pos": "WR",
-    "status": "BULLISH",
-    "score_rank": 6,
-    "pos_adp_rank": 13,
-    "gap": 7
-   },
-   {
-    "name": "Dak Prescott",
-    "pos": "QB",
-    "status": "BULLISH",
-    "score_rank": 1,
-    "pos_adp_rank": 8,
-    "gap": 7
-   },
-   {
-    "name": "Kyle Pitts",
-    "pos": "TE",
-    "status": "BULLISH",
-    "score_rank": 1,
-    "pos_adp_rank": 8,
-    "gap": 7
-   },
-   {
-    "name": "Travis Kelce",
-    "pos": "TE",
-    "status": "BULLISH",
-    "score_rank": 4,
-    "pos_adp_rank": 11,
     "gap": 7
    },
    {
@@ -136,16 +416,16 @@
     "gap": 6
    },
    {
-    "name": "Justin Herbert",
+    "name": "Patrick Mahomes",
     "pos": "QB",
     "status": "BULLISH",
-    "score_rank": 5,
-    "pos_adp_rank": 9,
-    "gap": 4
+    "score_rank": 7,
+    "pos_adp_rank": 13,
+    "gap": 6
    }
   ],
-  "spearman_score_vs_adp_tagged": 0.806,
-  "statement": "16 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.806; a value near 1.0 would mean the tag merely restates the market."
+  "spearman_score_vs_adp_tagged": 0.779,
+  "statement": "13 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.779; a value near 1.0 would mean the tag merely restates the market."
  },
  "te_scarcity_adjudication": {
   "basis": "league-exact PPG, 8+ game TEs, 2023-2025",
@@ -172,6 +452,613 @@
    "te1_te12": 6.21
   },
   "verdict": "TE1-TE3 mean gap 1.66 PPG, TE1-TE6 3.67, TE1-TE12 6.21. The Gemini doc's 'TE1-TE3 now under 1.0 PPG' is CONTRADICTED on our scoring; the director report's 'elite TE is a real edge' is SUPPORTED by the TE1-TE12 spread."
+ },
+ "te_gate_suspension": {
+  "status": "SUSPENDED",
+  "display_policy": "All TE rows are omitted from tags; pages render no per-player TE BULLISH, WATCH, or SUSPENDED chip.",
+  "display_note": "TE BULLISH/WATCH tags are suspended: the former 2-of-2 gate had one varying input.",
+  "reason_codes": [
+   "route_input_is_on_field_dropbacks_not_routes",
+   "market_share_criterion_is_constant",
+   "historical_share_grouped_by_current_team"
+  ],
+  "effective_test_before_suspension": "P(2025 on-field dropback share >= TE p75) multiplied by 0.9 for every veteran TE; the advertised 2-of-2 gate had one varying criterion.",
+  "evidence": {
+   "draftable_tes": 20,
+   "veterans_with_both_inputs": 19,
+   "market_share_probability_counts": {
+    "0.9": 19,
+    "0.2": 0
+   },
+   "route_basis": "Player membership in offense_players on 2025 regular-season team dropbacks; pass-block snaps are included and this is not routes run.",
+   "historical_share_current_team_mismatches": [
+    {
+     "name": "Isaiah Likely",
+     "sleeper_id": "8131",
+     "share_season": 2025,
+     "share_team": "BAL",
+     "share_value": 0.094,
+     "rank_group_team": "NYG",
+     "rank_group_size": 1,
+     "assigned_probability": 0.9
+    }
+   ]
+  },
+  "omitted_tags": [
+   {
+    "name": "Trey McBride",
+    "pos": "TE",
+    "sleeper_id": "8130",
+    "adp": 21.0,
+    "status": "BULLISH",
+    "score": 90.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 1.0,
+     "market_share": 0.9
+    },
+    "reasons": [],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-08-28T13:57:40+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Tyler Warren",
+    "pos": "TE",
+    "sleeper_id": "12518",
+    "adp": 47.2,
+    "status": "BULLISH",
+    "score": 90.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 1.0,
+     "market_share": 0.9
+    },
+    "reasons": [
+     "questionable - flagged, no demotion"
+    ],
+    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-08-28T13:57:40+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Kyle Pitts",
+    "pos": "TE",
+    "sleeper_id": "7553",
+    "adp": 69.1,
+    "status": "BULLISH",
+    "score": 90.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 1.0,
+     "market_share": 0.9
+    },
+    "reasons": [],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-08-28T13:57:40+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Travis Kelce",
+    "pos": "TE",
+    "sleeper_id": "1466",
+    "adp": 92.2,
+    "status": "BULLISH",
+    "score": 88.9,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 0.988,
+     "market_share": 0.9
+    },
+    "reasons": [],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-08-28T13:57:40+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Hunter Henry",
+    "pos": "TE",
+    "sleeper_id": "3214",
+    "adp": 139.8,
+    "status": "WATCH",
+    "score": 45.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 0.5005,
+     "market_share": 0.9
+    },
+    "reasons": [
+     "near-miss: gate probability in the watch band"
+    ],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-08-28T13:57:40+00:00",
+    "ttl_hours": 72
+   }
+  ],
+  "resume_requires": [
+   "A genuine routes-run input",
+   "A non-vacuous receiving-share criterion using a complete and season-consistent team universe",
+   "A reviewed rerun of N.1 after a repaired TE matrix is reintroduced"
+  ]
+ },
+ "forward_vegas_activation": {
+  "status": "ACTIVATED",
+  "scope": [
+   "QB.environment",
+   "WR.opportunity"
+  ],
+  "baseline": {
+   "source": "nflverse HISTORY games.csv, Week-1 2026 lines",
+   "threshold": "implied_total"
+  },
+  "replacement": {
+   "source": "docs/ffopportunity/schedule_2026.csv",
+   "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
+   "upstream_source": "http://www.habitatring.com/games.csv",
+   "pulled_at": "2026-08-28T13:40:39+00:00",
+   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "snapshot_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "season": 2026,
+   "derivation": "maximal contiguous prefix from week 1 where every scheduled game has total_line and spread_line",
+   "spread_convention": "positive spread_line means home favored; home=total/2+spread/2, away=total/2-spread/2",
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games": 93,
+   "games_priced": 93,
+   "team_games": 186,
+   "team_games_priced": 186,
+   "teams": 32,
+   "full_schedule_games": 272,
+   "regular_season_games_per_team": 17,
+   "team_game_counts": {
+    "ARI": 6,
+    "ATL": 6,
+    "BAL": 6,
+    "BUF": 6,
+    "CAR": 5,
+    "CHI": 6,
+    "CIN": 5,
+    "CLE": 6,
+    "DAL": 6,
+    "DEN": 6,
+    "DET": 5,
+    "GB": 6,
+    "HOU": 6,
+    "IND": 6,
+    "JAX": 6,
+    "KC": 5,
+    "LAR": 6,
+    "LAC": 6,
+    "LV": 6,
+    "MIA": 5,
+    "MIN": 5,
+    "NE": 6,
+    "NO": 6,
+    "NYG": 6,
+    "NYJ": 6,
+    "PHI": 6,
+    "PIT": 6,
+    "SEA": 6,
+    "SF": 6,
+    "TB": 6,
+    "TEN": 6,
+    "WAS": 6
+   },
+   "coverage": [
+    {
+     "week": 1,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 2,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 3,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 4,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 5,
+     "priced_games": 15,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 6,
+     "priced_games": 14,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 7,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 8,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 9,
+     "priced_games": 1,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 10,
+     "priced_games": 1,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 11,
+     "priced_games": 1,
+     "scheduled_games": 13,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 12,
+     "priced_games": 5,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 13,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 14,
+     "priced_games": 0,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 15,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 16,
+     "priced_games": 4,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 17,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 18,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    }
+   ],
+   "next_partial_week": {
+    "week": 7,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "partial_line_games": 0,
+    "complete": false
+   },
+   "top_five_teams": [
+    "LAR",
+    "DET",
+    "BAL",
+    "BUF",
+    "SF"
+   ],
+   "top_five_tie_policy": "higher mean, then canonical team code",
+   "consumers": [
+    "QB.environment",
+    "WR.opportunity"
+   ],
+   "excluded_consumers": [
+    "RB.expected_td_equity"
+   ],
+   "delta_event": {
+    "event": "UNCHANGED",
+    "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+    "prior": {
+     "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+     "upstream_content_sha256": null,
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "complete": false,
+      "partial_line_games": 0,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "week": 7
+     }
+    },
+    "current": {
+     "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+     "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "pricing_by_week_sha256": {
+      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "week": 7,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     }
+    },
+    "flags": {
+     "source_changed": true,
+     "coverage_changed": false,
+     "horizon_changed": false,
+     "implied_totals_changed": false,
+     "decision_pricing_changed": false,
+     "model_logic_changed": false,
+     "prior_horizon_repriced": false
+    },
+    "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
+   }
+  },
+  "gained": [
+   "Brock Purdy|QB",
+   "Jordan Love|QB"
+  ],
+  "lost": [
+   "Caleb Williams|QB",
+   "Jalen Hurts|QB",
+   "Justin Herbert|QB",
+   "Kyler Murray|QB",
+   "Trevor Lawrence|QB"
+  ],
+  "status_changed": [
+   {
+    "player": "Ja'Marr Chase|WR",
+    "before": "BULLISH",
+    "after": "WATCH"
+   },
+   {
+    "player": "Patrick Mahomes|QB",
+    "before": "WATCH",
+    "after": "BULLISH"
+   }
+  ],
+  "score_changed": [
+   {
+    "player": "Dak Prescott|QB",
+    "before": 91.7,
+    "after": 75.4
+   },
+   {
+    "player": "Ja'Marr Chase|WR",
+    "before": 90.6,
+    "after": 55.7
+   },
+   {
+    "player": "Joe Burrow|QB",
+    "before": 75.4,
+    "after": 61.9
+   },
+   {
+    "player": "Josh Allen|QB",
+    "before": 91.7,
+    "after": 99.3
+   },
+   {
+    "player": "Patrick Mahomes|QB",
+    "before": 45.0,
+    "after": 75.0
+   }
+  ],
+  "rb_invariance": {
+   "before_count": 10,
+   "after_count": 10,
+   "tag_records_identical": true
+  },
+  "n1_after_activation": {
+   "scope": "RB/WR historical proxy; does not validate the live matrix",
+   "verdict": "INCONCLUSIVE",
+   "top_adp_band": "22/35 (62.9%) vs 86/164 (52.4%)",
+   "difference_pp": 10.4,
+   "ci95_pp": [
+    -7.3,
+    28.2
+   ],
+   "p_two_sided": 0.261
+  }
+ },
+ "forward_vegas_delta": {
+  "event": "UNCHANGED",
+  "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+  "pulled_at": "2026-08-28T13:40:39+00:00",
+  "prior": {
+   "source_content_sha256": "0c75f889f96aad446bfbf43e270adfec93bc1f6fd9ec0d266fc86b399fdeb5d6",
+   "upstream_content_sha256": null,
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games_priced": 93,
+   "team_games_priced": 186,
+   "next_partial_week": {
+    "complete": false,
+    "partial_line_games": 0,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "week": 7
+   }
+  },
+  "current": {
+   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "upstream_content_sha256": "934adb63d193665617cd7bd478588507e33abcb8aa5a90df69923b119c6feded",
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pricing_by_week_sha256": {
+    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+   },
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games_priced": 93,
+   "team_games_priced": 186,
+   "next_partial_week": {
+    "week": 7,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "partial_line_games": 0,
+    "complete": false
+   }
+  },
+  "flags": {
+   "source_changed": true,
+   "coverage_changed": false,
+   "horizon_changed": false,
+   "implied_totals_changed": false,
+   "decision_pricing_changed": false,
+   "model_logic_changed": false,
+   "prior_horizon_repriced": false
+  },
+  "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
+  "same_build_counterfactual": {
+   "held_constant": "current code, current non-schedule inputs, current injury state, and current player universe; only the prior versus current forward schedule decision input and its derived QB threshold/top-five WR environment are exchanged",
+   "gained": [],
+   "lost": [],
+   "status_changed": [],
+   "score_changed": [],
+   "rb_invariance": {
+    "before_count": 10,
+    "after_count": 10,
+    "tag_records_identical": true
+   }
+  },
+  "last_material_event": null
  },
  "qb_gap": {
   "definition": "top-12 QB season finishes 2016-2025 (n=120), rushing class = rush yds/g >= that season's p75 among 8+ game QBs; season TOTAL points under each scoring",
@@ -211,7 +1098,7 @@
   }
  },
  "delta": {
-  "previous": "2026-08-27",
+  "previous": "2026-08-28",
   "gained": [],
   "lost": [],
   "status_changed": []
@@ -221,7 +1108,7 @@
    "name": "Jahmyr Gibbs",
    "pos": "RB",
    "sleeper_id": "9221",
-   "adp": 1.6,
+   "adp": 1.3,
    "status": "BULLISH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -235,14 +1122,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Bijan Robinson",
    "pos": "RB",
    "sleeper_id": "9509",
-   "adp": 2.5,
+   "adp": 2.2,
    "status": "WATCH",
    "score": 50.3,
    "gate": "P(>= 4 of 5)",
@@ -258,14 +1145,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Puka Nacua",
    "pos": "WR",
    "sleeper_id": "9493",
-   "adp": 4.7,
+   "adp": 4.1,
    "status": "BULLISH",
    "score": 97.8,
    "gate": "P(>= 4 of 5)",
@@ -274,44 +1161,45 @@
     "yprr": 0.95,
     "first_read": 0.9401,
     "opportunity": 0.9,
-    "route_participation": 0.9536
+    "on_field_dropback_presence": 0.9536
    },
    "reasons": [
     "questionable - flagged, no demotion"
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ja'Marr Chase",
    "pos": "WR",
    "sleeper_id": "7564",
-   "adp": 3.0,
-   "status": "BULLISH",
-   "score": 90.6,
+   "adp": 3.6,
+   "status": "WATCH",
+   "score": 55.7,
    "gate": "P(>= 4 of 5)",
    "criteria": {
     "target_earning": 0.9693,
     "yprr": 0.5,
     "first_read": 0.9436,
-    "opportunity": 0.9,
-    "route_participation": 1.0
+    "opportunity": 0.2,
+    "on_field_dropback_presence": 1.0
    },
    "reasons": [
+    "near-miss: gate probability in the watch band",
     "questionable - flagged, no demotion"
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jonathan Taylor",
    "pos": "RB",
    "sleeper_id": "6813",
-   "adp": 7.1,
+   "adp": 7.2,
    "status": "WATCH",
    "score": 58.2,
    "gate": "P(>= 4 of 5)",
@@ -327,14 +1215,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jaxon Smith-Njigba",
    "pos": "WR",
    "sleeper_id": "9488",
-   "adp": 6.4,
+   "adp": 6.6,
    "status": "BULLISH",
    "score": 96.0,
    "gate": "P(>= 4 of 5)",
@@ -343,19 +1231,19 @@
     "yprr": 0.95,
     "first_read": 1.0,
     "opportunity": 0.2,
-    "route_participation": 1.0
+    "on_field_dropback_presence": 1.0
    },
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Amon-Ra St. Brown",
    "pos": "WR",
    "sleeper_id": "7547",
-   "adp": 7.1,
+   "adp": 8.9,
    "status": "BULLISH",
    "score": 97.2,
    "gate": "P(>= 4 of 5)",
@@ -364,19 +1252,19 @@
     "yprr": 0.75,
     "first_read": 1.0,
     "opportunity": 0.9,
-    "route_participation": 1.0
+    "on_field_dropback_presence": 1.0
    },
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chase Brown",
    "pos": "RB",
    "sleeper_id": "9224",
-   "adp": 15.7,
+   "adp": 16.1,
    "status": "BULLISH",
    "score": 69.0,
    "gate": "P(>= 4 of 5)",
@@ -390,14 +1278,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Derrick Henry",
    "pos": "RB",
    "sleeper_id": "3198",
-   "adp": 20.5,
+   "adp": 20.9,
    "status": "BULLISH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -411,14 +1299,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Saquon Barkley",
    "pos": "RB",
    "sleeper_id": "4866",
-   "adp": 13.0,
+   "adp": 13.4,
    "status": "WATCH",
    "score": 58.2,
    "gate": "P(>= 4 of 5)",
@@ -434,51 +1322,33 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Trey McBride",
-   "pos": "TE",
-   "sleeper_id": "8130",
-   "adp": 21.5,
-   "status": "BULLISH",
-   "score": 90.0,
-   "gate": "P(>= 2 of 2)",
-   "criteria": {
-    "route_participation": 1.0,
-    "market_share": 0.9
-   },
-   "reasons": [],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Josh Allen",
    "pos": "QB",
    "sleeper_id": "4984",
-   "adp": 22.8,
+   "adp": 22.1,
    "status": "BULLISH",
-   "score": 91.7,
+   "score": 99.3,
    "gate": "P(>= 2 of 3)",
    "criteria": {
     "rushing": 0.95,
-    "environment": 0.15,
+    "environment": 0.95,
     "efficiency": 0.95
    },
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ashton Jeanty",
    "pos": "RB",
    "sleeper_id": "12527",
-   "adp": 14.7,
+   "adp": 14.1,
    "status": "WATCH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -494,14 +1364,14 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chris Olave",
    "pos": "WR",
    "sleeper_id": "8144",
-   "adp": 30.4,
+   "adp": 30.8,
    "status": "BULLISH",
    "score": 63.8,
    "gate": "P(>= 4 of 5)",
@@ -510,21 +1380,19 @@
     "yprr": 0.15,
     "first_read": 0.9581,
     "opportunity": 0.9,
-    "route_participation": 1.0
+    "on_field_dropback_presence": 1.0
    },
-   "reasons": [
-    "questionable - flagged, no demotion"
-   ],
+   "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Zay Flowers",
    "pos": "WR",
    "sleeper_id": "9997",
-   "adp": 42.8,
+   "adp": 42.0,
    "status": "BULLISH",
    "score": 68.8,
    "gate": "P(>= 4 of 5)",
@@ -533,21 +1401,21 @@
     "yprr": 0.95,
     "first_read": 0.6773,
     "opportunity": 0.9,
-    "route_participation": 1.0
+    "on_field_dropback_presence": 1.0
    },
    "reasons": [
     "questionable - flagged, no demotion"
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Kyren Williams",
    "pos": "RB",
    "sleeper_id": "8150",
-   "adp": 29.7,
+   "adp": 29.2,
    "status": "WATCH",
    "score": 56.6,
    "gate": "P(>= 4 of 5)",
@@ -563,14 +1431,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "D'Andre Swift",
    "pos": "RB",
    "sleeper_id": "6790",
-   "adp": 55.8,
+   "adp": 55.1,
    "status": "WATCH",
    "score": 46.4,
    "gate": "P(>= 4 of 5)",
@@ -586,34 +1454,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Tyler Warren",
-   "pos": "TE",
-   "sleeper_id": "12518",
-   "adp": 47.7,
-   "status": "BULLISH",
-   "score": 90.0,
-   "gate": "P(>= 2 of 2)",
-   "criteria": {
-    "route_participation": 1.0,
-    "market_share": 0.9
-   },
-   "reasons": [
-    "questionable - flagged, no demotion"
-   ],
-   "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Javonte Williams",
    "pos": "RB",
    "sleeper_id": "7588",
-   "adp": 35.0,
+   "adp": 35.5,
    "status": "BULLISH",
    "score": 69.0,
    "gate": "P(>= 4 of 5)",
@@ -627,14 +1475,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Lamar Jackson",
    "pos": "QB",
    "sleeper_id": "4881",
-   "adp": 31.2,
+   "adp": 32.8,
    "status": "WATCH",
    "score": 55.0,
    "gate": "P(>= 2 of 3)",
@@ -648,14 +1496,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Drake Maye",
    "pos": "QB",
    "sleeper_id": "11564",
-   "adp": 47.1,
+   "adp": 48.3,
    "status": "WATCH",
    "score": 55.0,
    "gate": "P(>= 2 of 3)",
@@ -669,33 +1517,52 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Joe Burrow",
    "pos": "QB",
    "sleeper_id": "6770",
-   "adp": 51.7,
+   "adp": 51.6,
    "status": "BULLISH",
-   "score": 75.4,
+   "score": 61.9,
    "gate": "P(>= 2 of 3)",
    "criteria": {
     "rushing": 0.15,
-    "environment": 0.95,
+    "environment": 0.75,
     "efficiency": 0.75
    },
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Dak Prescott",
    "pos": "QB",
    "sleeper_id": "3294",
-   "adp": 78.1,
+   "adp": 78.4,
+   "status": "BULLISH",
+   "score": 75.4,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.75,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-08-28T13:57:40+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Brock Purdy",
+   "pos": "QB",
+   "sleeper_id": "8183",
+   "adp": 121.2,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -707,154 +1574,35 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Kyle Pitts",
-   "pos": "TE",
-   "sleeper_id": "7553",
-   "adp": 69.0,
-   "status": "BULLISH",
-   "score": 90.0,
-   "gate": "P(>= 2 of 2)",
-   "criteria": {
-    "route_participation": 1.0,
-    "market_share": 0.9
-   },
-   "reasons": [],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Travis Kelce",
-   "pos": "TE",
-   "sleeper_id": "1466",
-   "adp": 92.2,
-   "status": "BULLISH",
-   "score": 88.9,
-   "gate": "P(>= 2 of 2)",
-   "criteria": {
-    "route_participation": 0.988,
-    "market_share": 0.9
-   },
-   "reasons": [],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Trevor Lawrence",
-   "pos": "QB",
-   "sleeper_id": "7523",
-   "adp": 100.9,
-   "status": "WATCH",
-   "score": 45.0,
-   "gate": "P(>= 2 of 3)",
-   "criteria": {
-    "rushing": 0.15,
-    "environment": 0.75,
-    "efficiency": 0.5
-   },
-   "reasons": [
-    "near-miss: gate probability in the watch band"
-   ],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Caleb Williams",
-   "pos": "QB",
-   "sleeper_id": "11560",
-   "adp": 71.3,
-   "status": "WATCH",
-   "score": 55.0,
-   "gate": "P(>= 2 of 3)",
-   "criteria": {
-    "rushing": 0.15,
-    "environment": 0.95,
-    "efficiency": 0.5
-   },
-   "reasons": [
-    "near-miss: gate probability in the watch band"
-   ],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Jalen Hurts",
-   "pos": "QB",
-   "sleeper_id": "6904",
-   "adp": 60.9,
-   "status": "WATCH",
-   "score": 55.0,
-   "gate": "P(>= 2 of 3)",
-   "criteria": {
-    "rushing": 0.15,
-    "environment": 0.95,
-    "efficiency": 0.5
-   },
-   "reasons": [
-    "near-miss: gate probability in the watch band"
-   ],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Justin Herbert",
-   "pos": "QB",
-   "sleeper_id": "6797",
-   "adp": 82.9,
-   "status": "BULLISH",
-   "score": 75.4,
-   "gate": "P(>= 2 of 3)",
-   "criteria": {
-    "rushing": 0.75,
-    "environment": 0.95,
-    "efficiency": 0.15
-   },
-   "reasons": [],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Patrick Mahomes",
    "pos": "QB",
    "sleeper_id": "4046",
-   "adp": 106.3,
-   "status": "WATCH",
-   "score": 45.0,
+   "adp": 107.1,
+   "status": "BULLISH",
+   "score": 75.0,
    "gate": "P(>= 2 of 3)",
    "criteria": {
     "rushing": 0.5,
-    "environment": 0.15,
+    "environment": 0.75,
     "efficiency": 0.75
    },
    "reasons": [
-    "near-miss: gate probability in the watch band",
     "questionable - flagged, no demotion"
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Matthew Stafford",
    "pos": "QB",
    "sleeper_id": "421",
-   "adp": 95.4,
+   "adp": 96.2,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -866,14 +1614,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jared Goff",
    "pos": "QB",
    "sleeper_id": "3163",
-   "adp": 133.8,
+   "adp": 133.3,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -885,48 +1633,26 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   },
   {
-   "name": "Hunter Henry",
-   "pos": "TE",
-   "sleeper_id": "3214",
-   "adp": 138.3,
-   "status": "WATCH",
-   "score": 45.0,
-   "gate": "P(>= 2 of 2)",
-   "criteria": {
-    "route_participation": 0.5005,
-    "market_share": 0.9
-   },
-   "reasons": [
-    "near-miss: gate probability in the watch band"
-   ],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Kyler Murray",
+   "name": "Jordan Love",
    "pos": "QB",
-   "sleeper_id": "5849",
-   "adp": 159.5,
-   "status": "WATCH",
-   "score": 45.0,
+   "sleeper_id": "6804",
+   "adp": 149.5,
+   "status": "BULLISH",
+   "score": 75.4,
    "gate": "P(>= 2 of 3)",
    "criteria": {
-    "rushing": 0.75,
-    "environment": 0.5,
-    "efficiency": 0.15
+    "rushing": 0.15,
+    "environment": 0.75,
+    "efficiency": 0.95
    },
-   "reasons": [
-    "near-miss: gate probability in the watch band"
-   ],
+   "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T07:24:46+00:00",
+   "computed_at": "2026-08-28T13:57:40+00:00",
    "ttl_hours": 72
   }
  ]

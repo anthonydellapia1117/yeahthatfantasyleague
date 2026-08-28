@@ -129,6 +129,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
   <a class="slink" href="https://sleeper.com/draft/nfl/1389378429505241089" target="_blank" rel="noopener noreferrer" title="Open the live Sleeper draft board">SLEEPER DRAFT</a>
 </header>
 <div id="banner" class="banner" hidden></div>
+<div id="bull-status" class="small" hidden></div>
 
 <div class="card factors">
   <h2>How this board thinks - every factor, and where it actually lives</h2>
@@ -317,10 +318,19 @@ async function boot(){
   try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
   try { D.ceil = await get("data/ceiling_2026.json"); } catch (e) { D.ceil = null; }
   try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
+  renderBullStatus();
   renderViews(); renderFilters(); renderLegend();
   renderBoard(); renderDelta(); renderConflicts(); renderCeiling(); renderKdef(); renderFoot();
   pollDraft();
   setInterval(pollDraft, 15000);
+}
+
+function renderBullStatus(){
+  const el = document.getElementById("bull-status");
+  const note = D.bull && D.bull.te_gate_suspension &&
+    D.bull.te_gate_suspension.display_note;
+  el.hidden = !note;
+  el.textContent = note || "";
 }
 
 async function pollDraft(){

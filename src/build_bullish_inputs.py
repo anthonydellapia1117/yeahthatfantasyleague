@@ -23,20 +23,27 @@ Run: python3 src/build_bullish_inputs.py
 """
 import csv
 import datetime
+import hashlib
+import inspect
 import json
 import math
 import os
 from collections import defaultdict
 
-import pyarrow.parquet as pq
-
 from analyze_recency import HISTORY
-from engine_lineage import json_content_sha256, require as require_engine_digest
+from engine_lineage import (file_content_sha256, json_content_sha256,
+                            require as require_engine_digest)
 from player_names import PlayerIdentityResolver
+from team_codes import CANONICAL_NFL_TEAMS, canonical_team
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
 OUT = os.path.join(D, "bullish_inputs_2026.json")
+FORWARD_SCHEDULE_REL = "docs/ffopportunity/schedule_2026.csv"
+FORWARD_SCHEDULE = os.path.join(ROOT, FORWARD_SCHEDULE_REL)
+FORWARD_META_REL = "docs/ffopportunity/schedule_2026.meta.json"
+FORWARD_META = os.path.join(ROOT, FORWARD_META_REL)
+NFL_REGULAR_SEASON_GAMES_PER_TEAM = 17
 
 W = {"passing_yards": 0.04, "passing_tds": 6.0, "passing_interceptions": -1.0,
      "passing_2pt_conversions": 2.0,
@@ -56,7 +63,449 @@ def pctile(vals, q):
     return vals[i]
 
 
+def observed_share(observations, player_id, minimum_total=100):
+    """Return an observed share; absence is null while observed zero is valid."""
+    if not player_id or player_id not in observations:
+        return None
+    vals = list(observations.values())
+    if any(isinstance(v, bool) or not isinstance(v, (int, float)) or
+           not math.isfinite(v) or v < 0 for v in vals):
+        raise ValueError("share observations must be finite non-negative numbers")
+    total = sum(vals)
+    if total < minimum_total:
+        return None
+    return {"value": round(observations[player_id] / total, 4),
+            "player": observations[player_id], "total": total}
+
+
+def distribution(vals, name, qs=(0.5, 0.75, 0.8), *,
+                 excluded_unobserved_n=0, observation_rule="finite observed values"):
+    """Describe a percentile population without converting absence to zero."""
+    if excluded_unobserved_n < 0:
+        raise ValueError("excluded_unobserved_n cannot be negative")
+    clean = []
+    for value in vals:
+        if (isinstance(value, bool) or not isinstance(value, (int, float)) or
+                not math.isfinite(value)):
+            raise ValueError(f"{name} contains a non-finite observation")
+        clean.append(value)
+    return {
+        "n": len(clean),
+        "zero_n": sum(value == 0 for value in clean),
+        "excluded_unobserved_n": excluded_unobserved_n,
+        "observation_rule": observation_rule,
+        "percentile_method": "nearest index: round(q * (n - 1))",
+        **{f"p{int(q * 100)}": (round(pctile(clean, q), 4)
+                                  if clean else None) for q in qs},
+    }
+
+
+def derive_forward_vegas(rows):
+    """Derive the maximal fully priced 2026 REG prefix from schedule rows.
+
+    The returned team totals are canonical and averaged only across the
+    contiguous complete horizon. A partial week ends the horizon; it never
+    contributes a partially observed team sample.
+    """
+    by_week = defaultdict(list)
+    game_ids = set()
+    canonical = set(CANONICAL_NFL_TEAMS)
+    for row in rows:
+        if str(row.get("season") or "") != "2026" or row.get("game_type") != "REG":
+            continue
+        try:
+            week = int(row["week"])
+        except (KeyError, TypeError, ValueError):
+            raise ValueError("forward schedule contains an invalid week")
+        game_id = str(row.get("game_id") or "").strip()
+        if not game_id or game_id in game_ids:
+            raise ValueError("forward schedule contains a blank or duplicate game_id")
+        game_ids.add(game_id)
+        home = canonical_team(row.get("home_team"))
+        away = canonical_team(row.get("away_team"))
+        if home not in canonical or away not in canonical or home == away:
+            raise ValueError(
+                f"forward schedule has unresolved teams in {game_id}: {home}/{away}")
+
+        raw_total = str(row.get("total_line") or "").strip()
+        raw_spread = str(row.get("spread_line") or "").strip()
+        total = spread = None
+        line_state = "unpriced"
+        if raw_total and raw_spread:
+            try:
+                total, spread = float(raw_total), float(raw_spread)
+            except ValueError:
+                raise ValueError(f"forward schedule has non-numeric lines: {game_id}")
+            if not math.isfinite(total) or not math.isfinite(spread):
+                raise ValueError(f"forward schedule has non-finite lines: {game_id}")
+            line_state = "priced"
+        elif raw_total or raw_spread:
+            # Sportsbooks can post one side of the pair first. That makes the
+            # game unpriced for horizon purposes; it must not invalidate an
+            # earlier contiguous, fully priced prefix.
+            line_state = "partial"
+        by_week[week].append({"game_id": game_id, "home": home, "away": away,
+                              "total": total, "spread": spread,
+                              "line_state": line_state})
+
+    weeks = sorted(by_week)
+    if not weeks or weeks != list(range(1, weeks[-1] + 1)):
+        raise ValueError("forward schedule weeks must be contiguous from week 1")
+    for week, games in by_week.items():
+        seen = set()
+        for game in games:
+            pair = {game["home"], game["away"]}
+            if seen & pair:
+                raise ValueError(f"team appears twice in forward schedule week {week}")
+            seen |= pair
+
+    # Reconcile the input as a complete NFL regular-season schedule before
+    # judging pricing coverage. Otherwise a missing row can make a week look
+    # fully priced relative only to the rows that survived the omission.
+    season_team_games = defaultdict(int)
+    for games in by_week.values():
+        for game in games:
+            season_team_games[game["home"]] += 1
+            season_team_games[game["away"]] += 1
+    expected_games = (len(CANONICAL_NFL_TEAMS) *
+                      NFL_REGULAR_SEASON_GAMES_PER_TEAM // 2)
+    if (set(season_team_games) != canonical or
+            set(season_team_games.values()) !=
+            {NFL_REGULAR_SEASON_GAMES_PER_TEAM} or
+            len(game_ids) != expected_games):
+        raise ValueError(
+            "forward schedule is not a complete 32-team regular season: "
+            f"games={len(game_ids)}/{expected_games}, "
+            f"team_games={dict(sorted(season_team_games.items()))}")
+
+    coverage = []
+    selected_weeks = []
+    for week in weeks:
+        games = by_week[week]
+        priced = sum(g["total"] is not None and g["spread"] is not None
+                     for g in games)
+        partial = sum(g["line_state"] == "partial" for g in games)
+        coverage.append({"week": week, "priced_games": priced,
+                         "scheduled_games": len(games),
+                         "partial_line_games": partial,
+                         "complete": priced == len(games)})
+        if len(selected_weeks) == week - 1 and priced == len(games):
+            selected_weeks.append(week)
+    if not selected_weeks:
+        raise ValueError("forward schedule has no fully priced opening week")
+
+    team_values = defaultdict(list)
+    game_count = 0
+    for week in selected_weeks:
+        for game in by_week[week]:
+            total, spread = game["total"], game["spread"]
+            home_total = total / 2 + spread / 2
+            away_total = total / 2 - spread / 2
+            if (not math.isclose(home_total + away_total, total) or
+                    not math.isclose(home_total - away_total, spread)):
+                raise ValueError("forward implied-total sign invariant failed")
+            team_values[game["home"]].append(home_total)
+            team_values[game["away"]].append(away_total)
+            game_count += 1
+
+    if set(team_values) != canonical:
+        missing = sorted(canonical - set(team_values))
+        extra = sorted(set(team_values) - canonical)
+        raise ValueError(f"forward horizon team coverage mismatch: missing={missing}, extra={extra}")
+    if sum(map(len, team_values.values())) != 2 * game_count:
+        raise ValueError("forward horizon team-game reconciliation failed")
+
+    totals = {team: round(sum(team_values[team]) / len(team_values[team]), 2)
+              for team in CANONICAL_NFL_TEAMS}
+    team_game_counts = {team: len(team_values[team])
+                        for team in CANONICAL_NFL_TEAMS}
+    boundary = next((x for x in coverage if x["week"] == selected_weeks[-1] + 1),
+                    None)
+
+    def pricing_digest(weeks_to_hash):
+        decision_rows = [
+            {
+                "game_id": game["game_id"],
+                "week": week,
+                "home": game["home"],
+                "away": game["away"],
+                "total": game["total"],
+                "spread": game["spread"],
+            }
+            for week in weeks_to_hash
+            for game in by_week[week]
+        ]
+        decision_rows.sort(key=lambda row: (row["week"], row["game_id"]))
+        payload = json.dumps(
+            decision_rows, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    return {
+        "implied_total": totals,
+        "weeks": selected_weeks,
+        "game_count": game_count,
+        "team_game_count": 2 * game_count,
+        "team_game_counts": team_game_counts,
+        "full_schedule_games": len(game_ids),
+        "regular_season_games_per_team": NFL_REGULAR_SEASON_GAMES_PER_TEAM,
+        "coverage": coverage,
+        "boundary": boundary,
+        "decision_input_sha256": pricing_digest(selected_weeks),
+        "pricing_by_week_sha256": {
+            str(week): pricing_digest([week]) for week in selected_weeks
+        },
+    }
+
+
+def forward_model_logic_sha256():
+    """Digest the derivation itself, separately from changing schedule data."""
+    return hashlib.sha256(
+        inspect.getsource(derive_forward_vegas).encode("utf-8")
+    ).hexdigest()
+
+
+def classify_forward_transition(previous_provenance, previous_totals,
+                                current_provenance, current_totals):
+    """Classify the schedule-driven decision-input change between builds.
+
+    Event priority follows the decision window, not raw source bytes. A source
+    can change outside the selected horizon while the actual QB/WR input stays
+    identical; that is UNCHANGED with source_changed=true, not REPRICED.
+    """
+    previous_provenance = previous_provenance or current_provenance
+    previous_totals = previous_totals or current_totals
+
+    def state(provenance):
+        weeks = list(provenance.get("weeks") or [])
+        games = provenance.get("games_priced", provenance.get("games"))
+        team_games = provenance.get(
+            "team_games_priced", provenance.get("team_games"))
+        return {
+            "source_content_sha256": provenance.get(
+                "snapshot_content_sha256",
+                provenance.get("source_content_sha256")),
+            "upstream_content_sha256": provenance.get(
+                "upstream_content_sha256"),
+            "model_logic_sha256": provenance.get("model_logic_sha256"),
+            "decision_input_sha256": provenance.get("decision_input_sha256"),
+            "pricing_by_week_sha256": dict(
+                provenance.get("pricing_by_week_sha256") or {}),
+            "weeks": weeks,
+            "first_week": weeks[0] if weeks else None,
+            "last_week": weeks[-1] if weeks else None,
+            "games_priced": games,
+            "team_games_priced": team_games,
+            "next_partial_week": provenance.get("next_partial_week"),
+        }
+
+    prior = state(previous_provenance)
+    current = state(current_provenance)
+    prior_last = prior["last_week"] or 0
+    current_last = current["last_week"] or 0
+    prior_games = prior["games_priced"] or 0
+    current_games = current["games_priced"] or 0
+    horizon_contracted = (current_last < prior_last or
+                          (current_last == prior_last and
+                           current_games < prior_games))
+    horizon_extended = (current_last > prior_last or
+                        (current_last == prior_last and
+                         current_games > prior_games))
+    totals_changed = previous_totals != current_totals
+    prior_decision_digest = prior.get("decision_input_sha256")
+    current_decision_digest = current.get("decision_input_sha256")
+    pricing_changed = (
+        prior_decision_digest != current_decision_digest
+        if prior_decision_digest is not None and current_decision_digest is not None
+        else totals_changed
+    )
+    if horizon_contracted:
+        event = "CONTRACTED"
+    elif horizon_extended:
+        event = "HORIZON_EXTENDED"
+    elif pricing_changed or totals_changed:
+        event = "REPRICED"
+    else:
+        event = "UNCHANGED"
+
+    prior_model = prior.get("model_logic_sha256")
+    current_model = current.get("model_logic_sha256")
+    model_changed = (prior_model != current_model
+                     if prior_model is not None and current_model is not None
+                     else None)
+    source_changed = (
+        prior.get("source_content_sha256") !=
+        current.get("source_content_sha256") or
+        (prior.get("upstream_content_sha256") is not None and
+         current.get("upstream_content_sha256") is not None and
+         prior.get("upstream_content_sha256") !=
+         current.get("upstream_content_sha256")))
+    prior_week_hashes = prior.get("pricing_by_week_sha256") or {}
+    current_week_hashes = current.get("pricing_by_week_sha256") or {}
+    common_weeks = set(prior_week_hashes) & set(current_week_hashes)
+    prior_horizon_repriced = any(
+        prior_week_hashes[week] != current_week_hashes[week]
+        for week in common_weeks
+    )
+    if event == "UNCHANGED":
+        attribution = "NO_FORWARD_DECISION_INPUT_CHANGE"
+    elif model_changed is False and pricing_changed:
+        attribution = "SCHEDULE_INPUT"
+    elif model_changed is True and not pricing_changed:
+        attribution = "MODEL_LOGIC"
+    elif model_changed is True and pricing_changed:
+        attribution = "MIXED_SOURCE_AND_MODEL"
+    else:
+        attribution = "SAME_BUILD_COUNTERFACTUAL_REQUIRED"
+
+    return {
+        "event": event,
+        "attribution": attribution,
+        "prior": prior,
+        "current": current,
+        "flags": {
+            "source_changed": source_changed,
+            "coverage_changed": (
+                prior["weeks"] != current["weeks"] or
+                prior["games_priced"] != current["games_priced"] or
+                prior["team_games_priced"] != current["team_games_priced"] or
+                prior["next_partial_week"] != current["next_partial_week"]),
+            "horizon_changed": prior["weeks"] != current["weeks"],
+            "implied_totals_changed": totals_changed,
+            "decision_pricing_changed": pricing_changed,
+            "model_logic_changed": model_changed,
+            "prior_horizon_repriced": prior_horizon_repriced,
+        },
+        "contracted_response": (
+            "FAIL CLOSED: do not overwrite the last verified snapshot or tags; "
+            "a shorter priced horizon can reflect an unpriced game or source "
+            "hiccup and must be reviewed before changing the decision window."),
+    }
+
+
+def enforce_forward_transition(transition):
+    """Refuse a narrower live decision window; the prior verified build stays."""
+    if transition.get("event") == "CONTRACTED":
+        prior = transition["prior"]
+        current = transition["current"]
+        raise ValueError(
+            "forward Vegas horizon CONTRACTED; refusing to publish "
+            f"W1-{prior['last_week']} / {prior['games_priced']} games -> "
+            f"W1-{current['last_week']} / {current['games_priced']} games. "
+            + transition["contracted_response"])
+
+
+def require_implied_total_map(values, label):
+    """Require one finite implied-total value for every canonical NFL team."""
+    if not isinstance(values, dict) or set(values) != set(CANONICAL_NFL_TEAMS):
+        raise ValueError(
+            f"{label} does not cover exactly 32 canonical NFL teams")
+    invalid = {
+        team: value for team, value in values.items()
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or
+        not math.isfinite(value)
+    }
+    if invalid:
+        raise ValueError(f"{label} has non-finite/non-numeric values: {invalid}")
+    return values
+
+
+def validate_sync_transition(sync_transition, prior_totals,
+                             current_provenance, current_totals):
+    """Rederive producer metadata before trusting its event or counterfactual."""
+    if not isinstance(sync_transition, dict):
+        raise ValueError("forward schedule metadata has no sync transition")
+    require_implied_total_map(prior_totals, "forward prior implied totals")
+    require_implied_total_map(current_totals, "forward current implied totals")
+    expected = classify_forward_transition(
+        sync_transition.get("prior"), prior_totals,
+        current_provenance, current_totals)
+    if sync_transition != expected:
+        raise ValueError(
+            "forward schedule sync transition is not self-consistent with its "
+            f"prior/current inputs: expected {expected}, got {sync_transition}")
+    enforce_forward_transition(expected)
+    return expected
+
+
+def select_forward_transition(sync_transition, build_transition,
+                              sync_prior_totals, previous_output_totals,
+                              current_totals):
+    """Select an honest event and a current-code schedule counterfactual.
+
+    The sync producer rederives both its prior snapshot and current snapshot with
+    the current code, so its prior totals are the preferred schedule-only frame.
+    A previous artifact is usable only to recover a schedule change that landed
+    without a paired output, and only when both artifacts carry identical model
+    logic. Mixed model/schedule movement fails instead of being misattributed.
+    """
+    require_implied_total_map(sync_prior_totals,
+                              "forward sync-prior implied totals")
+    require_implied_total_map(current_totals,
+                              "forward current implied totals")
+    sync_material = sync_transition["event"] != "UNCHANGED"
+    build_material = build_transition["event"] != "UNCHANGED"
+
+    if sync_material and build_material:
+        decision_fields = (
+            "model_logic_sha256", "decision_input_sha256",
+            "pricing_by_week_sha256", "weeks", "games_priced",
+            "team_games_priced", "next_partial_week")
+        same_prior_frame = all(
+            sync_transition["prior"].get(field) ==
+            build_transition["prior"].get(field)
+            for field in decision_fields)
+        same_event = (
+            sync_transition["event"] == build_transition["event"] and
+            sync_transition["attribution"] == build_transition["attribution"])
+        same_prior_totals = (
+            isinstance(previous_output_totals, dict) and
+            previous_output_totals == sync_prior_totals)
+        if not (same_prior_frame and same_event and same_prior_totals):
+            raise ValueError(
+                "forward schedule sync and prior-artifact transitions are both "
+                "material but disagree; refusing to publish ambiguous attribution")
+        return sync_transition, sync_prior_totals
+
+    if sync_material:
+        # A deterministic rerun after the output was already rebuilt still
+        # carries the producer's material event and current-code prior frame.
+        return sync_transition, sync_prior_totals
+
+    if build_material:
+        attribution = build_transition.get("attribution")
+        if attribution == "MODEL_LOGIC":
+            # Schedule did not move. Comparing the sync producer's two
+            # current-code frames correctly yields a zero schedule-only delta.
+            return build_transition, sync_prior_totals
+        if attribution == "SCHEDULE_INPUT":
+            require_implied_total_map(
+                previous_output_totals,
+                "forward prior-artifact implied totals")
+            prior_model = build_transition["prior"].get("model_logic_sha256")
+            current_model = build_transition["current"].get("model_logic_sha256")
+            if not prior_model or prior_model != current_model:
+                raise ValueError(
+                    "cannot recover a schedule-only counterfactual across "
+                    "different or missing model-logic digests")
+            return build_transition, previous_output_totals
+        raise ValueError(
+            "forward model and schedule changed without one current-code prior "
+            "schedule frame; refusing to label a same-build counterfactual")
+
+    return sync_transition, sync_prior_totals
+
+
 def main():
+    # Keep the pure parsing/contract helpers importable in the Pages gate, whose
+    # Python environment intentionally does not carry the analysis-only package.
+    import pyarrow.parquet as pq
+
+    previous_output = None
+    if os.path.exists(OUT):
+        with open(OUT) as fh:
+            previous_output = json.load(fh)
+
     games_path = os.path.join(HISTORY, "games.csv")
     games_pulled = datetime.datetime.fromtimestamp(
         os.path.getmtime(games_path), tz=datetime.timezone.utc).date().isoformat()
@@ -156,6 +605,115 @@ def main():
                 # spread_line is home-relative in nflverse
                 implied[r["home_team"]] = round(tl / 2 + sp / 2, 2)
                 implied[r["away_team"]] = round(tl / 2 - sp / 2, 2)
+
+    # Forward schedule is a separate source and a separate decision input.
+    # It changes QB environment and WR opportunity only; RB expected-TD equity
+    # remains on the Week-1 lines above so a schedule-window change cannot move
+    # a different criterion through hidden dictionary reuse.
+    with open(FORWARD_SCHEDULE) as fh:
+        forward = derive_forward_vegas(csv.DictReader(fh))
+    forward_implied = forward["implied_total"]
+    forward_schedule_digest = file_content_sha256(FORWARD_SCHEDULE)
+    with open(FORWARD_META) as fh:
+        forward_meta = json.load(fh)
+    forward_meta_digest = file_content_sha256(FORWARD_META)
+    forward_model_digest = forward_model_logic_sha256()
+    try:
+        pulled_at = datetime.datetime.fromisoformat(
+            forward_meta["pulled_at"].replace("Z", "+00:00"))
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("forward schedule metadata has no valid pull time") from exc
+    if pulled_at.utcoffset() != datetime.timedelta(0):
+        raise ValueError("forward schedule pull time is not UTC")
+    expected_meta = {
+        "season": 2026,
+        "snapshot_content_sha256": forward_schedule_digest,
+        "decision_input_sha256": forward["decision_input_sha256"],
+        "pricing_by_week_sha256": forward["pricing_by_week_sha256"],
+        "model_logic_sha256": forward_model_digest,
+        "games_priced": forward["game_count"],
+        "team_games_priced": forward["team_game_count"],
+        "weeks": forward["weeks"],
+        "next_partial_week": forward["boundary"],
+        "current_implied_total": forward_implied,
+    }
+    meta_mismatch = {
+        key: {"expected": value, "actual": forward_meta.get(key)}
+        for key, value in expected_meta.items()
+        if forward_meta.get(key) != value
+    }
+    upstream_digest = forward_meta.get("upstream_content_sha256", "")
+    if len(upstream_digest) != 64 or any(
+            char not in "0123456789abcdef" for char in upstream_digest):
+        meta_mismatch["upstream_content_sha256"] = {
+            "expected": "64 lowercase hex characters",
+            "actual": upstream_digest,
+        }
+    if meta_mismatch:
+        raise ValueError(
+            "forward schedule snapshot/metadata mismatch; run "
+            f"src/sync_forward_schedule.py first: {meta_mismatch}")
+
+    forward_provenance = {
+        "source": FORWARD_SCHEDULE_REL,
+        "metadata_source": FORWARD_META_REL,
+        "upstream_source": forward_meta.get("upstream_source"),
+        "pulled_at": forward_meta["pulled_at"],
+        "source_content_sha256": forward_schedule_digest,
+        "snapshot_content_sha256": forward_schedule_digest,
+        "upstream_content_sha256": upstream_digest,
+        "decision_input_sha256": forward["decision_input_sha256"],
+        "pricing_by_week_sha256": forward["pricing_by_week_sha256"],
+        "model_logic_sha256": forward_model_digest,
+        "season": 2026,
+        "derivation": ("maximal contiguous prefix from week 1 where every "
+                       "scheduled game has total_line and spread_line"),
+        "spread_convention": ("positive spread_line means home favored; "
+                              "home=total/2+spread/2, "
+                              "away=total/2-spread/2"),
+        "weeks": forward["weeks"],
+        "first_week": forward["weeks"][0],
+        "last_week": forward["weeks"][-1],
+        "games": forward["game_count"],
+        "games_priced": forward["game_count"],
+        "team_games": forward["team_game_count"],
+        "team_games_priced": forward["team_game_count"],
+        "teams": len(forward_implied),
+        "full_schedule_games": forward["full_schedule_games"],
+        "regular_season_games_per_team": forward[
+            "regular_season_games_per_team"],
+        "team_game_counts": forward["team_game_counts"],
+        "coverage": forward["coverage"],
+        "next_partial_week": forward["boundary"],
+        "top_five_teams": sorted(
+            forward_implied,
+            key=lambda team: (-forward_implied[team], team))[:5],
+        "top_five_tie_policy": "higher mean, then canonical team code",
+        "consumers": ["QB.environment", "WR.opportunity"],
+        "excluded_consumers": ["RB.expected_td_equity"],
+    }
+    previous_forward_provenance = forward_provenance
+    previous_forward_implied = forward_implied
+    if previous_output:
+        previous_forward_provenance = (
+            previous_output.get("provenance", {}).get("vegas", {}).get(
+                "forward") or forward_provenance)
+        previous_forward_implied = (
+            previous_output.get("teams", {}).get("forward_implied_total") or
+            forward_implied)
+    build_transition = classify_forward_transition(
+        previous_forward_provenance, previous_forward_implied,
+        forward_provenance, forward_implied)
+    enforce_forward_transition(build_transition)
+    sync_prior_implied = forward_meta.get("prior_implied_total")
+    sync_transition = validate_sync_transition(
+        forward_meta.get("sync_transition"), sync_prior_implied,
+        forward_provenance, forward_implied)
+    forward_transition, forward_counterfactual = select_forward_transition(
+        sync_transition, build_transition, sync_prior_implied,
+        previous_forward_implied if previous_output else None,
+        forward_implied)
+    forward_provenance["delta_event"] = forward_transition
     # td-per-point from 2025 actuals: offensive TDs / points implied by them is
     # circular; use TDs per team point scored (final scores from spw totals is
     # indirect) - compute points from league-neutral basis: 2025 team points =
@@ -196,6 +754,8 @@ def main():
         "goalline_2025.json": json_content_sha256(goal),
         "depth_charts.json": json_content_sha256(depth_art),
         "crosswalk.json": json_content_sha256(xwalk),
+        FORWARD_SCHEDULE_REL: forward_schedule_digest,
+        FORWARD_META_REL: forward_meta_digest,
     }
 
     usage_by_gsis = {u["gsis_id"]: u for u in usage}
@@ -210,12 +770,12 @@ def main():
     team_rec = defaultdict(float)
     for u in usage:
         team_rec[u["team"]] += u["rec_yards"]
-    team_rb_car = defaultdict(list)
+    team_rb_car = defaultdict(dict)
     for e in depth:
         if e["pos"] == "RB":
             u = usage_by_gsis.get(e["gsis_id"])
             if u:
-                team_rb_car[e["team"]].append((e["gsis_id"], u["carries"]))
+                team_rb_car[e["team"]][e["gsis_id"]] = u["carries"]
 
     # QB epa/att from spw
     qb_epa = defaultdict(lambda: [0.0, 0])
@@ -248,6 +808,9 @@ def main():
              "team_line_ybc": team_line.get(team26),
              "gp_rate_2yr": cl.get("gp_rate_2yr"),
              "exp_missed": cl.get("exp_missed")}
+        if p["pos"] in ("QB", "WR"):
+            e["forward_implied_total"] = forward_implied.get(
+                canonical_team(team26))
         if gid and routes.get(gid):
             r = routes[gid]
             k = tgt.get(gid, 0)
@@ -256,7 +819,12 @@ def main():
             e["tprr_proxy"] = {"k": k, "n": r}
             e["yprr_proxy"] = round(rec_yds.get(gid, 0.0) / r, 3)
             if tm and team_dropbacks.get(tm):
-                e["route_part"] = {"k": r, "n": team_dropbacks[tm]}
+                e["on_field_dropback_share"] = {
+                    "k": r,
+                    "n": team_dropbacks[tm],
+                    "basis": ("2025 regular-season team dropbacks with the player "
+                              "listed on offense; pass-block snaps are included"),
+                }
             if tm and fr_team_n.get(tm):
                 e["first_read"] = {"k": fr_tgt.get(gid, 0), "n": fr_team_n[tm]}
         if u:
@@ -273,38 +841,77 @@ def main():
                 e["inside5_share"] = {"k": goal_p[gid]["i5"], "n": tt["i5"],
                                       "basis": f"2025 role on {g25team}"}
         if p["pos"] == "RB" and team26 in team_rb_car:
-            tot = sum(c for _, c in team_rb_car[team26])
-            own = dict(team_rb_car[team26]).get(gid, 0)
-            if tot >= 100:
-                e["backfield_share"] = round(own / tot, 4)
+            share = observed_share(team_rb_car[team26], gid)
+            if share is not None:
+                e["backfield_share"] = share["value"]
+                e["backfield_share_sample"] = {
+                    "season": 2025,
+                    "player_carries": share["player"],
+                    "team_carries": share["total"],
+                }
         if p["pos"] == "QB" and gid in qb_epa and qb_epa[gid][1] >= 150:
             e["epa_per_att"] = round(qb_epa[gid][0] / qb_epa[gid][1], 4)
         players.append(e)
 
     # ---- thresholds: percentiles of qualifying distributions
-    def dist(vals, name, qs=(0.5, 0.75, 0.8)):
-        return {"n": len(vals),
-                **{f"p{int(q*100)}": round(pctile(vals, q), 4) for q in qs}}
     wr = [e for e in players if e["pos"] == "WR" and e.get("routes_proxy", 0) >= 150]
     rb = [e for e in players if e["pos"] == "RB" and e.get("targets_pg") is not None]
     te = [e for e in players if e["pos"] == "TE" and e.get("routes_proxy", 0) >= 100]
     qb = [e for e in players if e["pos"] == "QB" and e.get("carries_pg") is not None]
+    rb_all = [e for e in players if e["pos"] == "RB"]
+    rb_backfield_candidates = [
+        e for e in rb_all
+        if e.get("team_2026") in team_rb_car and
+        sum(team_rb_car[e["team_2026"]].values()) >= 100
+    ]
+    rb_backfield = [e["backfield_share"] for e in rb_all
+                    if e.get("backfield_share") is not None]
+    rb_backfield_dist = distribution(
+        rb_backfield, "rb_backfield_share",
+        excluded_unobserved_n=len(rb_backfield_candidates) - len(rb_backfield),
+        observation_rule=("2025 usage row exists for the canonical player and "
+                          "the current-team observed RB carry total is at least 100; "
+                          "observed zero is included, absence is null"),
+    )
+    # Stage 2 historically uses the upper middle observation for an even-n
+    # median. Preserve that convention explicitly; changing quantile methods is
+    # a separate model change, not part of the absent-vs-zero repair.
+    rb_backfield_dist["p50"] = round(sorted(rb_backfield)[len(rb_backfield) // 2], 4)
+    rb_backfield_dist["p50_method"] = (
+        "upper middle observation for even n; preserved stage-2 convention")
     thresholds = {
-        "wr_tprr": dist([e["tprr_proxy"]["k"] / e["tprr_proxy"]["n"] for e in wr], "tprr"),
-        "wr_yprr": dist([e["yprr_proxy"] for e in wr], "yprr"),
-        "wr_first_read": dist([e["first_read"]["k"] / e["first_read"]["n"]
-                               for e in wr if "first_read" in e], "fr"),
-        "rb_targets_pg": dist([e["targets_pg"] for e in rb], "tgt"),
-        "rb_inside5": dist([e["inside5_share"]["k"] / e["inside5_share"]["n"]
-                            for e in rb if "inside5_share" in e], "i5"),
-        "team_line_ybc": dist(sorted(team_line.values()), "ybc"),
-        "te_route_part": dist([e["route_part"]["k"] / e["route_part"]["n"]
-                               for e in te if "route_part" in e], "rp"),
-        "qb_rush_ypg": dist([e["rush_ypg"] for e in qb], "rypg"),
-        "implied_total": dist(sorted(implied.values()), "imp"),
+        "wr_tprr": distribution(
+            [e["tprr_proxy"]["k"] / e["tprr_proxy"]["n"] for e in wr], "tprr"),
+        "wr_yprr": distribution([e["yprr_proxy"] for e in wr], "yprr"),
+        "wr_first_read": distribution(
+            [e["first_read"]["k"] / e["first_read"]["n"]
+             for e in wr if "first_read" in e], "fr",
+            excluded_unobserved_n=sum("first_read" not in e for e in wr)),
+        "rb_targets_pg": distribution([e["targets_pg"] for e in rb], "tgt",
+                                      excluded_unobserved_n=len(rb_all) - len(rb)),
+        "rb_inside5": distribution(
+            [e["inside5_share"]["k"] / e["inside5_share"]["n"]
+             for e in rb if "inside5_share" in e], "i5",
+            excluded_unobserved_n=sum("inside5_share" not in e for e in rb),
+            observation_rule="2025 inside-five sample has n > 0; k=0 is observed"),
+        "rb_backfield_share": rb_backfield_dist,
+        "team_line_ybc": distribution(sorted(team_line.values()), "ybc"),
+        "on_field_dropback_share_reference": distribution(
+            [e["on_field_dropback_share"]["k"] /
+             e["on_field_dropback_share"]["n"]
+             for e in te if "on_field_dropback_share" in e], "dropback_share",
+            excluded_unobserved_n=sum(
+                "on_field_dropback_share" not in e for e in te),
+            observation_rule=("2025 TE population with at least 100 observed "
+                              "on-field team dropbacks; pass-block snaps count")),
+        "qb_rush_ypg": distribution([e["rush_ypg"] for e in qb], "rypg"),
+        "implied_total": distribution(sorted(implied.values()), "imp"),
+        "forward_implied_total": distribution(
+            list(forward_implied.values()), "forward_imp",
+            observation_rule="all canonical teams in the maximal fully priced horizon"),
         "note": ("qualification floors: WR/TE routes-proxy >= 150/100, QB 150+ "
                  "attempts, RB with 2025 usage; proxies count pass-block snaps "
-                 "as routes (stated weakness), so thresholds are percentiles "
+                 "as on-field dropbacks (stated weakness), so thresholds are percentiles "
                  "of OUR distribution, never PFF-unit imports"),
     }
 
@@ -370,9 +977,15 @@ def main():
             "engine_generated": eng["generated"],
             "engine_content_sha256": engine_digest,
             "input_content_sha256": input_content_sha256,
-            "vegas": {"source": "nflverse schedules, Week-1 2026 closing lines "
-                                "(16/16 games - the only complete coverage "
-                                "window)", "pulled": games_pulled},
+            "vegas": {
+                "week1_rb": {
+                    "source": "nflverse HISTORY games.csv, Week-1 2026 lines",
+                    "pulled": games_pulled,
+                    "games": len(implied) // 2,
+                    "consumers": ["RB.expected_td_equity"],
+                },
+                "forward": forward_provenance,
+            },
             "td_per_point": {"value": td_per_point,
                              "basis": "2025 offensive TDs / 2025 points scored"},
             "roles": "inside-5 share and YMS are 2025-role priors and say so",
@@ -380,6 +993,9 @@ def main():
                      "(participation 2025); counts pass-block snaps as routes",
         },
         "teams": {"implied_total": implied, "implied_tds": implied_tds,
+                  "forward_implied_total": forward_implied,
+                  "forward_counterfactual_implied_total":
+                      forward_counterfactual,
                   "line_ybc_2025": team_line},
         "thresholds": thresholds,
         "qb_gap": qb_gap,

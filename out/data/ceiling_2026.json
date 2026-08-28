@@ -1,8 +1,8 @@
 {
  "provenance": {
-  "generated": "2026-08-27",
-  "engine_generated": "2026-08-26",
-  "engine_content_sha256": "bf952b002a23dc328cefbb0281be335e2d583431863978c5099c092c7d460782",
+  "generated": "2026-08-28",
+  "engine_generated": "2026-08-28",
+  "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
   "format": "H2H + league median, league_average_match=1 verified live on both league ids - every week scores twice",
   "scoring": "league-exact (6-pt pass TD, full PPR)",
   "boom_cutoffs": "per-week positional top-12 scores, computed",
@@ -18,7 +18,7 @@
   {
    "name": "Jahmyr Gibbs",
    "pos": "RB",
-   "adp": 1.6,
+   "adp": 1.3,
    "proj": 331.4,
    "weeks_2025": 17,
    "weekly_mean": 21.58,
@@ -37,7 +37,7 @@
   {
    "name": "Bijan Robinson",
    "pos": "RB",
-   "adp": 2.5,
+   "adp": 2.2,
    "proj": 324.9,
    "weeks_2025": 17,
    "weekly_mean": 21.81,
@@ -56,7 +56,7 @@
   {
    "name": "Puka Nacua",
    "pos": "WR",
-   "adp": 4.7,
+   "adp": 4.1,
    "proj": 312.5,
    "weeks_2025": 16,
    "weekly_mean": 23.44,
@@ -75,7 +75,7 @@
   {
    "name": "Ja'Marr Chase",
    "pos": "WR",
-   "adp": 3.0,
+   "adp": 3.6,
    "proj": 311.1,
    "weeks_2025": 16,
    "weekly_mean": 19.6,
@@ -94,7 +94,7 @@
   {
    "name": "Christian McCaffrey",
    "pos": "RB",
-   "adp": 5.0,
+   "adp": 5.2,
    "proj": 291.0,
    "weeks_2025": 17,
    "weekly_mean": 24.51,
@@ -113,7 +113,7 @@
   {
    "name": "Jonathan Taylor",
    "pos": "RB",
-   "adp": 7.1,
+   "adp": 7.2,
    "proj": 272.3,
    "weeks_2025": 17,
    "weekly_mean": 21.31,
@@ -132,7 +132,7 @@
   {
    "name": "Jaxon Smith-Njigba",
    "pos": "WR",
-   "adp": 6.4,
+   "adp": 6.6,
    "proj": 284.6,
    "weeks_2025": 17,
    "weekly_mean": 21.17,
@@ -151,7 +151,7 @@
   {
    "name": "Amon-Ra St. Brown",
    "pos": "WR",
-   "adp": 7.1,
+   "adp": 8.9,
    "proj": 280.5,
    "weeks_2025": 17,
    "weekly_mean": 19.06,
@@ -170,7 +170,7 @@
   {
    "name": "James Cook",
    "pos": "RB",
-   "adp": 10.1,
+   "adp": 10.8,
    "proj": 260.8,
    "weeks_2025": 17,
    "weekly_mean": 17.78,
@@ -189,7 +189,7 @@
   {
    "name": "Brock Bowers",
    "pos": "TE",
-   "adp": 23.6,
+   "adp": 23.0,
    "proj": 253.5,
    "weeks_2025": 12,
    "weekly_mean": 14.68,
@@ -208,7 +208,7 @@
   {
    "name": "De'Von Achane",
    "pos": "RB",
-   "adp": 12.3,
+   "adp": 12.8,
    "proj": 257.4,
    "weeks_2025": 16,
    "weekly_mean": 20.18,
@@ -227,7 +227,7 @@
   {
    "name": "Chase Brown",
    "pos": "RB",
-   "adp": 15.7,
+   "adp": 16.1,
    "proj": 255.2,
    "weeks_2025": 17,
    "weekly_mean": 16.62,
@@ -246,7 +246,7 @@
   {
    "name": "CeeDee Lamb",
    "pos": "WR",
-   "adp": 9.0,
+   "adp": 8.2,
    "proj": 270.5,
    "weeks_2025": 13,
    "weekly_mean": 15.45,
@@ -265,7 +265,7 @@
   {
    "name": "Derrick Henry",
    "pos": "RB",
-   "adp": 20.5,
+   "adp": 20.9,
    "proj": 246.9,
    "weeks_2025": 17,
    "weekly_mean": 16.44,
@@ -284,7 +284,7 @@
   {
    "name": "Saquon Barkley",
    "pos": "RB",
-   "adp": 13.0,
+   "adp": 13.4,
    "proj": 246.7,
    "weeks_2025": 16,
    "weekly_mean": 14.52,
@@ -303,7 +303,7 @@
   {
    "name": "Nico Collins",
    "pos": "WR",
-   "adp": 25.3,
+   "adp": 25.4,
    "proj": 262.0,
    "weeks_2025": 15,
    "weekly_mean": 15.08,
@@ -322,7 +322,7 @@
   {
    "name": "Kenneth Walker",
    "pos": "RB",
-   "adp": 19.7,
+   "adp": 19.3,
    "proj": 244.0,
    "weeks_2025": 17,
    "weekly_mean": 11.29,
@@ -341,7 +341,7 @@
   {
    "name": "Omarion Hampton",
    "pos": "RB",
-   "adp": 15.5,
+   "adp": 15.4,
    "proj": 242.9,
    "weeks_2025": 9,
    "weekly_mean": 15.08,
@@ -360,7 +360,7 @@
   {
    "name": "Trey McBride",
    "pos": "TE",
-   "adp": 21.5,
+   "adp": 21.0,
    "proj": 234.9,
    "weeks_2025": 17,
    "weekly_mean": 18.58,
@@ -379,7 +379,7 @@
   {
    "name": "Josh Allen",
    "pos": "QB",
-   "adp": 22.8,
+   "adp": 22.1,
    "proj": 415.5,
    "weeks_2025": 16,
    "weekly_mean": 26.54,
@@ -398,7 +398,7 @@
   {
    "name": "Ashton Jeanty",
    "pos": "RB",
-   "adp": 14.7,
+   "adp": 14.1,
    "proj": 233.9,
    "weeks_2025": 17,
    "weekly_mean": 14.42,
@@ -417,7 +417,7 @@
   {
    "name": "Justin Jefferson",
    "pos": "WR",
-   "adp": 11.4,
+   "adp": 11.0,
    "proj": 250.4,
    "weeks_2025": 17,
    "weekly_mean": 11.85,
@@ -436,7 +436,7 @@
   {
    "name": "Drake London",
    "pos": "WR",
-   "adp": 17.4,
+   "adp": 17.3,
    "proj": 250.2,
    "weeks_2025": 12,
    "weekly_mean": 16.82,
@@ -455,7 +455,7 @@
   {
    "name": "A.J. Brown",
    "pos": "WR",
-   "adp": 18.8,
+   "adp": 17.5,
    "proj": 247.2,
    "weeks_2025": 15,
    "weekly_mean": 14.69,
@@ -474,7 +474,7 @@
   {
    "name": "George Pickens",
    "pos": "WR",
-   "adp": 23.6,
+   "adp": 24.7,
    "proj": 245.7,
    "weeks_2025": 17,
    "weekly_mean": 17.17,
@@ -493,7 +493,7 @@
   {
    "name": "Colston Loveland",
    "pos": "TE",
-   "adp": 39.2,
+   "adp": 40.9,
    "proj": 215.4,
    "weeks_2025": 16,
    "weekly_mean": 10.32,
@@ -512,7 +512,7 @@
   {
    "name": "Malik Nabers",
    "pos": "WR",
-   "adp": 28.6,
+   "adp": 28.2,
    "proj": 236.7,
    "weeks_2025": 4,
    "weekly_mean": 14.28,
@@ -531,7 +531,7 @@
   {
    "name": "Chris Olave",
    "pos": "WR",
-   "adp": 30.4,
+   "adp": 30.8,
    "proj": 235.9,
    "weeks_2025": 16,
    "weekly_mean": 16.81,
@@ -550,7 +550,7 @@
   {
    "name": "Rashee Rice",
    "pos": "WR",
-   "adp": 27.3,
+   "adp": 26.9,
    "proj": 229.3,
    "weeks_2025": 8,
    "weekly_mean": 18.76,
@@ -569,7 +569,7 @@
   {
    "name": "DeVonta Smith",
    "pos": "WR",
-   "adp": 36.4,
+   "adp": 35.3,
    "proj": 229.2,
    "weeks_2025": 17,
    "weekly_mean": 11.87,
@@ -595,7 +595,7 @@
   {
    "name": "Breece Hall",
    "pos": "RB",
-   "adp": 33.1,
+   "adp": 33.9,
    "proj": 211.0,
    "weeks_2025": 16,
    "weekly_mean": 13.1,
@@ -614,7 +614,7 @@
   {
    "name": "Zay Flowers",
    "pos": "WR",
-   "adp": 42.8,
+   "adp": 42.0,
    "proj": 228.2,
    "weeks_2025": 17,
    "weekly_mean": 14.31,
@@ -633,7 +633,7 @@
   {
    "name": "Ladd McConkey",
    "pos": "WR",
-   "adp": 38.9,
+   "adp": 38.3,
    "proj": 228.2,
    "weeks_2025": 16,
    "weekly_mean": 11.31,
@@ -652,7 +652,7 @@
   {
    "name": "Kyren Williams",
    "pos": "RB",
-   "adp": 29.7,
+   "adp": 29.2,
    "proj": 208.0,
    "weeks_2025": 17,
    "weekly_mean": 15.49,
@@ -671,7 +671,7 @@
   {
    "name": "D'Andre Swift",
    "pos": "RB",
-   "adp": 55.8,
+   "adp": 55.1,
    "proj": 208.0,
    "weeks_2025": 16,
    "weekly_mean": 14.29,
@@ -690,7 +690,7 @@
   {
    "name": "Travis Etienne",
    "pos": "RB",
-   "adp": 44.1,
+   "adp": 44.9,
    "proj": 207.7,
    "weeks_2025": 17,
    "weekly_mean": 14.94,
@@ -709,7 +709,7 @@
   {
    "name": "Garrett Wilson",
    "pos": "WR",
-   "adp": 45.7,
+   "adp": 44.6,
    "proj": 224.9,
    "weeks_2025": 7,
    "weekly_mean": 14.21,
@@ -728,7 +728,7 @@
   {
    "name": "Tyler Warren",
    "pos": "TE",
-   "adp": 47.7,
+   "adp": 47.2,
    "proj": 201.1,
    "weeks_2025": 17,
    "weekly_mean": 11.09,
@@ -747,7 +747,7 @@
   {
    "name": "Javonte Williams",
    "pos": "RB",
-   "adp": 35.0,
+   "adp": 35.5,
    "proj": 207.3,
    "weeks_2025": 16,
    "weekly_mean": 15.18,
@@ -766,7 +766,7 @@
   {
    "name": "Tee Higgins",
    "pos": "WR",
-   "adp": 34.3,
+   "adp": 34.0,
    "proj": 224.4,
    "weeks_2025": 15,
    "weekly_mean": 14.11,
@@ -785,7 +785,7 @@
   {
    "name": "Emeka Egbuka",
    "pos": "WR",
-   "adp": 39.4,
+   "adp": 39.7,
    "proj": 224.0,
    "weeks_2025": 17,
    "weekly_mean": 11.51,
@@ -823,7 +823,7 @@
   {
    "name": "Tetairoa McMillan",
    "pos": "WR",
-   "adp": 37.8,
+   "adp": 37.5,
    "proj": 223.0,
    "weeks_2025": 17,
    "weekly_mean": 12.55,
@@ -842,7 +842,7 @@
   {
    "name": "Mike Evans",
    "pos": "WR",
-   "adp": 61.5,
+   "adp": 61.4,
    "proj": 222.2,
    "weeks_2025": 8,
    "weekly_mean": 10.6,
@@ -861,7 +861,7 @@
   {
    "name": "Jaylen Waddle",
    "pos": "WR",
-   "adp": 46.2,
+   "adp": 46.6,
    "proj": 221.0,
    "weeks_2025": 16,
    "weekly_mean": 12.13,
@@ -880,7 +880,7 @@
   {
    "name": "Sam LaPorta",
    "pos": "TE",
-   "adp": 59.1,
+   "adp": 59.0,
    "proj": 196.5,
    "weeks_2025": 9,
    "weekly_mean": 11.88,
@@ -899,7 +899,7 @@
   {
    "name": "Josh Jacobs",
    "pos": "RB",
-   "adp": 31.0,
+   "adp": 31.4,
    "proj": 202.6,
    "weeks_2025": 15,
    "weekly_mean": 15.81,
@@ -918,7 +918,7 @@
   {
    "name": "Lamar Jackson",
    "pos": "QB",
-   "adp": 31.2,
+   "adp": 32.8,
    "proj": 380.0,
    "weeks_2025": 13,
    "weekly_mean": 20.3,
@@ -956,7 +956,7 @@
   {
    "name": "Drake Maye",
    "pos": "QB",
-   "adp": 47.1,
+   "adp": 48.3,
    "proj": 378.8,
    "weeks_2025": 17,
    "weekly_mean": 24.82,
@@ -975,7 +975,7 @@
   {
    "name": "Bucky Irving",
    "pos": "RB",
-   "adp": 41.3,
+   "adp": 41.6,
    "proj": 197.3,
    "weeks_2025": 10,
    "weekly_mean": 13.85,
@@ -994,7 +994,7 @@
   {
    "name": "Terry McLaurin",
    "pos": "WR",
-   "adp": 55.3,
+   "adp": 56.1,
    "proj": 213.8,
    "weeks_2025": 10,
    "weekly_mean": 11.42,
@@ -1013,7 +1013,7 @@
   {
    "name": "Quinshon Judkins",
    "pos": "RB",
-   "adp": 54.9,
+   "adp": 53.6,
    "proj": 196.0,
    "weeks_2025": 14,
    "weekly_mean": 12.13,
@@ -1032,7 +1032,7 @@
   {
    "name": "Parker Washington",
    "pos": "WR",
-   "adp": 76.6,
+   "adp": 76.0,
    "proj": 212.4,
    "weeks_2025": 16,
    "weekly_mean": 11.54,
@@ -1051,7 +1051,7 @@
   {
    "name": "Joe Burrow",
    "pos": "QB",
-   "adp": 51.7,
+   "adp": 51.6,
    "proj": 372.1,
    "weeks_2025": 8,
    "weekly_mean": 21.68,
@@ -1070,7 +1070,7 @@
   {
    "name": "Luther Burden",
    "pos": "WR",
-   "adp": 52.8,
+   "adp": 52.7,
    "proj": 209.0,
    "weeks_2025": 15,
    "weekly_mean": 8.53,
@@ -1089,7 +1089,7 @@
   {
    "name": "Rome Odunze",
    "pos": "WR",
-   "adp": 65.8,
+   "adp": 65.1,
    "proj": 207.9,
    "weeks_2025": 12,
    "weekly_mean": 12.17,
@@ -1108,7 +1108,7 @@
   {
    "name": "Christian Watson",
    "pos": "WR",
-   "adp": 70.1,
+   "adp": 70.9,
    "proj": 207.6,
    "weeks_2025": 10,
    "weekly_mean": 13.24,
@@ -1127,7 +1127,7 @@
   {
    "name": "Jameson Williams",
    "pos": "WR",
-   "adp": 58.4,
+   "adp": 58.5,
    "proj": 206.2,
    "weeks_2025": 17,
    "weekly_mean": 12.94,
@@ -1146,7 +1146,7 @@
   {
    "name": "Dak Prescott",
    "pos": "QB",
-   "adp": 78.1,
+   "adp": 78.4,
    "proj": 365.9,
    "weeks_2025": 17,
    "weekly_mean": 22.58,
@@ -1165,7 +1165,7 @@
   {
    "name": "Harold Fannin",
    "pos": "TE",
-   "adp": 68.5,
+   "adp": 68.7,
    "proj": 180.4,
    "weeks_2025": 16,
    "weekly_mean": 11.65,
@@ -1203,7 +1203,7 @@
   {
    "name": "Tucker Kraft",
    "pos": "TE",
-   "adp": 63.8,
+   "adp": 62.8,
    "proj": 174.4,
    "weeks_2025": 8,
    "weekly_mean": 14.65,
@@ -1222,7 +1222,7 @@
   {
    "name": "Jayden Reed",
    "pos": "WR",
-   "adp": 114.4,
+   "adp": 112.1,
    "proj": 197.6,
    "weeks_2025": 5,
    "weekly_mean": 9.7,
@@ -1241,7 +1241,7 @@
   {
    "name": "Brian Thomas",
    "pos": "WR",
-   "adp": 73.3,
+   "adp": 73.9,
    "proj": 195.4,
    "weeks_2025": 14,
    "weekly_mean": 9.91,
@@ -1260,7 +1260,7 @@
   {
    "name": "Kyle Pitts",
    "pos": "TE",
-   "adp": 69.0,
+   "adp": 69.1,
    "proj": 171.6,
    "weeks_2025": 17,
    "weekly_mean": 12.4,
@@ -1298,7 +1298,7 @@
   {
    "name": "Trevor Lawrence",
    "pos": "QB",
-   "adp": 100.9,
+   "adp": 100.4,
    "proj": 355.4,
    "weeks_2025": 17,
    "weekly_mean": 24.01,
@@ -1317,7 +1317,7 @@
   {
    "name": "Caleb Williams",
    "pos": "QB",
-   "adp": 71.3,
+   "adp": 71.9,
    "proj": 355.3,
    "weeks_2025": 17,
    "weekly_mean": 22.33,
@@ -1336,7 +1336,7 @@
   {
    "name": "George Kittle",
    "pos": "TE",
-   "adp": 91.2,
+   "adp": 89.9,
    "proj": 169.3,
    "weeks_2025": 11,
    "weekly_mean": 14.68,
@@ -1374,7 +1374,7 @@
   {
    "name": "Bhayshul Tuten",
    "pos": "RB",
-   "adp": 62.6,
+   "adp": 62.2,
    "proj": 174.8,
    "weeks_2025": 15,
    "weekly_mean": 5.91,
@@ -1393,7 +1393,7 @@
   {
    "name": "Jalen Hurts",
    "pos": "QB",
-   "adp": 60.9,
+   "adp": 60.6,
    "proj": 352.5,
    "weeks_2025": 16,
    "weekly_mean": 22.32,
@@ -1412,7 +1412,7 @@
   {
    "name": "Jayden Daniels",
    "pos": "QB",
-   "adp": 63.8,
+   "adp": 64.9,
    "proj": 350.7,
    "weeks_2025": 7,
    "weekly_mean": 19.04,
@@ -1431,7 +1431,7 @@
   {
    "name": "TreVeyon Henderson",
    "pos": "RB",
-   "adp": 53.8,
+   "adp": 53.2,
    "proj": 171.0,
    "weeks_2025": 17,
    "weekly_mean": 12.13,
@@ -1450,7 +1450,7 @@
   {
    "name": "Jaylen Warren",
    "pos": "RB",
-   "adp": 72.0,
+   "adp": 71.8,
    "proj": 170.6,
    "weeks_2025": 16,
    "weekly_mean": 13.57,
@@ -1469,7 +1469,7 @@
   {
    "name": "Dalton Kincaid",
    "pos": "TE",
-   "adp": 89.4,
+   "adp": 87.7,
    "proj": 163.6,
    "weeks_2025": 12,
    "weekly_mean": 10.51,
@@ -1488,14 +1488,14 @@
   {
    "name": "Jadarian Price",
    "pos": "RB",
-   "adp": 67.7,
+   "adp": 67.5,
    "proj": 170.0,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Bo Nix",
    "pos": "QB",
-   "adp": 119.9,
+   "adp": 120.7,
    "proj": 347.7,
    "weeks_2025": 17,
    "weekly_mean": 21.52,
@@ -1514,7 +1514,7 @@
   {
    "name": "Justin Herbert",
    "pos": "QB",
-   "adp": 82.9,
+   "adp": 82.8,
    "proj": 347.5,
    "weeks_2025": 16,
    "weekly_mean": 21.99,
@@ -1533,7 +1533,7 @@
   {
    "name": "Rhamondre Stevenson",
    "pos": "RB",
-   "adp": 81.8,
+   "adp": 80.6,
    "proj": 169.0,
    "weeks_2025": 14,
    "weekly_mean": 12.77,
@@ -1552,7 +1552,7 @@
   {
    "name": "Marvin Harrison",
    "pos": "WR",
-   "adp": 75.5,
+   "adp": 75.3,
    "proj": 186.2,
    "weeks_2025": 12,
    "weekly_mean": 10.65,
@@ -1571,7 +1571,7 @@
   {
    "name": "Mark Andrews",
    "pos": "TE",
-   "adp": 129.2,
+   "adp": 129.9,
    "proj": 162.5,
    "weeks_2025": 17,
    "weekly_mean": 7.71,
@@ -1590,7 +1590,7 @@
   {
    "name": "Brenton Strange",
    "pos": "TE",
-   "adp": 151.8,
+   "adp": 152.6,
    "proj": 161.0,
    "weeks_2025": 12,
    "weekly_mean": 9.83,
@@ -1609,7 +1609,7 @@
   {
    "name": "Jake Ferguson",
    "pos": "TE",
-   "adp": 98.2,
+   "adp": 98.6,
    "proj": 159.8,
    "weeks_2025": 17,
    "weekly_mean": 11.06,
@@ -1628,7 +1628,7 @@
   {
    "name": "Patrick Mahomes",
    "pos": "QB",
-   "adp": 106.3,
+   "adp": 107.1,
    "proj": 344.7,
    "weeks_2025": 14,
    "weekly_mean": 24.33,
@@ -1647,7 +1647,7 @@
   {
    "name": "DK Metcalf",
    "pos": "WR",
-   "adp": 74.7,
+   "adp": 74.9,
    "proj": 183.3,
    "weeks_2025": 15,
    "weekly_mean": 12.48,
@@ -1666,7 +1666,7 @@
   {
    "name": "Matthew Stafford",
    "pos": "QB",
-   "adp": 95.4,
+   "adp": 96.2,
    "proj": 344.2,
    "weeks_2025": 17,
    "weekly_mean": 26.49,
@@ -1685,7 +1685,7 @@
   {
    "name": "Jared Goff",
    "pos": "QB",
-   "adp": 133.8,
+   "adp": 133.3,
    "proj": 343.5,
    "weeks_2025": 17,
    "weekly_mean": 21.94,
@@ -1704,7 +1704,7 @@
   {
    "name": "Isaiah Likely",
    "pos": "TE",
-   "adp": 109.9,
+   "adp": 109.0,
    "proj": 157.3,
    "weeks_2025": 12,
    "weekly_mean": 5.14,
@@ -1723,7 +1723,7 @@
   {
    "name": "Jaxson Dart",
    "pos": "QB",
-   "adp": 90.6,
+   "adp": 91.8,
    "proj": 340.5,
    "weeks_2025": 14,
    "weekly_mean": 19.76,
@@ -1742,7 +1742,7 @@
   {
    "name": "DJ Moore",
    "pos": "WR",
-   "adp": 57.9,
+   "adp": 57.1,
    "proj": 179.0,
    "weeks_2025": 17,
    "weekly_mean": 10.25,
@@ -1761,7 +1761,7 @@
   {
    "name": "T.J. Hockenson",
    "pos": "TE",
-   "adp": 164.0,
+   "adp": 164.7,
    "proj": 155.0,
    "weeks_2025": 15,
    "weekly_mean": 7.52,
@@ -1780,7 +1780,7 @@
   {
    "name": "Rico Dowdle",
    "pos": "RB",
-   "adp": 85.3,
+   "adp": 85.0,
    "proj": 161.1,
    "weeks_2025": 17,
    "weekly_mean": 12.72,
@@ -1799,7 +1799,7 @@
   {
    "name": "Alec Pierce",
    "pos": "WR",
-   "adp": 101.0,
+   "adp": 101.1,
    "proj": 177.9,
    "weeks_2025": 15,
    "weekly_mean": 12.22,
@@ -1837,7 +1837,7 @@
   {
    "name": "Tony Pollard",
    "pos": "RB",
-   "adp": 84.8,
+   "adp": 84.3,
    "proj": 160.1,
    "weeks_2025": 17,
    "weekly_mean": 10.93,
@@ -1856,14 +1856,14 @@
   {
    "name": "Carnell Tate",
    "pos": "WR",
-   "adp": 66.3,
+   "adp": 66.9,
    "proj": 177.3,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Hunter Henry",
    "pos": "TE",
-   "adp": 138.3,
+   "adp": 139.8,
    "proj": 153.5,
    "weeks_2025": 17,
    "weekly_mean": 10.52,
@@ -1882,7 +1882,7 @@
   {
    "name": "Courtland Sutton",
    "pos": "WR",
-   "adp": 79.2,
+   "adp": 80.0,
    "proj": 174.3,
    "weeks_2025": 17,
    "weekly_mean": 12.92,
@@ -1901,7 +1901,7 @@
   {
    "name": "Chris Godwin",
    "pos": "WR",
-   "adp": 95.8,
+   "adp": 95.4,
    "proj": 173.6,
    "weeks_2025": 9,
    "weekly_mean": 9.22,
@@ -1920,7 +1920,7 @@
   {
    "name": "Josh Downs",
    "pos": "WR",
-   "adp": 107.1,
+   "adp": 107.5,
    "proj": 172.3,
    "weeks_2025": 16,
    "weekly_mean": 8.65,
@@ -1939,7 +1939,7 @@
   {
    "name": "Jonathon Brooks",
    "pos": "RB",
-   "adp": 108.1,
+   "adp": 106.9,
    "proj": 154.9,
    "gp_rate_2yr": 0.0882,
    "exp_missed": 15.5,
@@ -1949,7 +1949,7 @@
   {
    "name": "Kyle Monangai",
    "pos": "RB",
-   "adp": 99.4,
+   "adp": 98.1,
    "proj": 154.6,
    "weeks_2025": 17,
    "weekly_mean": 8.63,
@@ -1968,7 +1968,7 @@
   {
    "name": "Jordan Addison",
    "pos": "WR",
-   "adp": 103.1,
+   "adp": 104.5,
    "proj": 171.7,
    "weeks_2025": 14,
    "weekly_mean": 9.65,
@@ -1987,7 +1987,7 @@
   {
    "name": "Jordan Love",
    "pos": "QB",
-   "adp": 148.8,
+   "adp": 149.5,
    "proj": 332.5,
    "weeks_2025": 15,
    "weekly_mean": 19.14,
@@ -2006,7 +2006,7 @@
   {
    "name": "Jordan Mason",
    "pos": "RB",
-   "adp": 117.9,
+   "adp": 116.9,
    "proj": 153.7,
    "weeks_2025": 16,
    "weekly_mean": 8.06,
@@ -2025,7 +2025,7 @@
   {
    "name": "Michael Pittman",
    "pos": "WR",
-   "adp": 102.5,
+   "adp": 102.3,
    "proj": 170.9,
    "weeks_2025": 17,
    "weekly_mean": 11.91,
@@ -2044,7 +2044,7 @@
   {
    "name": "Khalil Shakir",
    "pos": "WR",
-   "adp": 140.8,
+   "adp": 141.9,
    "proj": 170.7,
    "weeks_2025": 16,
    "weekly_mean": 10.4,
@@ -2063,7 +2063,7 @@
   {
    "name": "Wan'Dale Robinson",
    "pos": "WR",
-   "adp": 116.2,
+   "adp": 116.7,
    "proj": 170.7,
    "weeks_2025": 16,
    "weekly_mean": 13.62,
@@ -2082,7 +2082,7 @@
   {
    "name": "Matthew Golden",
    "pos": "WR",
-   "adp": 127.9,
+   "adp": 127.3,
    "proj": 170.1,
    "weeks_2025": 14,
    "weekly_mean": 5.0,
@@ -2120,7 +2120,7 @@
   {
    "name": "Jakobi Meyers",
    "pos": "WR",
-   "adp": 110.1,
+   "adp": 113.4,
    "proj": 169.3,
    "weeks_2025": 16,
    "weekly_mean": 10.99,
@@ -2139,14 +2139,14 @@
   {
    "name": "Makai Lemon",
    "pos": "WR",
-   "adp": 87.8,
+   "adp": 86.5,
    "proj": 168.5,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Michael Wilson",
    "pos": "WR",
-   "adp": 83.8,
+   "adp": 83.6,
    "proj": 166.0,
    "weeks_2025": 17,
    "weekly_mean": 12.98,
@@ -2165,7 +2165,7 @@
   {
    "name": "Jalen Coker",
    "pos": "WR",
-   "adp": 144.0,
+   "adp": 145.7,
    "proj": 165.9,
    "weeks_2025": 11,
    "weekly_mean": 8.22,
@@ -2182,9 +2182,28 @@
    "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
   },
   {
+   "name": "Kyler Murray",
+   "pos": "QB",
+   "adp": 159.0,
+   "proj": 327.1,
+   "weeks_2025": 5,
+   "weekly_mean": 18.56,
+   "weekly_sd": 3.03,
+   "p90_week": 22.32,
+   "boom": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0
+   },
+   "gp_rate_2yr": 0.6471,
+   "exp_missed": 6.0,
+   "avail_adj_proj": 89.0,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
    "name": "Baker Mayfield",
    "pos": "QB",
-   "adp": 141.3,
+   "adp": 143.7,
    "proj": 326.9,
    "weeks_2025": 17,
    "weekly_mean": 19.7,
@@ -2203,7 +2222,7 @@
   {
    "name": "Oronde Gadsden",
    "pos": "TE",
-   "adp": 127.8,
+   "adp": 128.1,
    "proj": 141.8,
    "weeks_2025": 15,
    "weekly_mean": 8.76,
@@ -2222,7 +2241,7 @@
   {
    "name": "Chuba Hubbard",
    "pos": "RB",
-   "adp": 77.8,
+   "adp": 77.6,
    "proj": 147.9,
    "weeks_2025": 15,
    "weekly_mean": 8.36,
@@ -2241,7 +2260,7 @@
   {
    "name": "Quentin Johnston",
    "pos": "WR",
-   "adp": 113.9,
+   "adp": 114.8,
    "proj": 163.9,
    "weeks_2025": 13,
    "weekly_mean": 13.17,
@@ -2260,7 +2279,7 @@
   {
    "name": "Xavier Worthy",
    "pos": "WR",
-   "adp": 139.2,
+   "adp": 140.4,
    "proj": 161.5,
    "weeks_2025": 14,
    "weekly_mean": 7.85,
@@ -2279,7 +2298,7 @@
   {
    "name": "RJ Harvey",
    "pos": "RB",
-   "adp": 79.9,
+   "adp": 79.5,
    "proj": 144.1,
    "weeks_2025": 17,
    "weekly_mean": 12.15,
@@ -2298,7 +2317,7 @@
   {
    "name": "Romeo Doubs",
    "pos": "WR",
-   "adp": 132.8,
+   "adp": 132.4,
    "proj": 161.2,
    "weeks_2025": 16,
    "weekly_mean": 10.34,
@@ -2317,7 +2336,7 @@
   {
    "name": "Dallas Goedert",
    "pos": "TE",
-   "adp": 123.1,
+   "adp": 123.0,
    "proj": 136.0,
    "weeks_2025": 15,
    "weekly_mean": 12.34,
@@ -2336,7 +2355,7 @@
   {
    "name": "Stefon Diggs",
    "pos": "WR",
-   "adp": 111.3,
+   "adp": 110.9,
    "proj": 157.3,
    "weeks_2025": 17,
    "weekly_mean": 12.37,
@@ -2355,14 +2374,14 @@
   {
    "name": "KC Concepcion",
    "pos": "WR",
-   "adp": 122.9,
+   "adp": 122.4,
    "proj": 156.4,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Deebo Samuel",
    "pos": "WR",
-   "adp": 137.2,
+   "adp": 138.0,
    "proj": 155.7,
    "weeks_2025": 16,
    "weekly_mean": 11.76,
@@ -2379,28 +2398,9 @@
    "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
   },
   {
-   "name": "Kyler Murray",
-   "pos": "QB",
-   "adp": 159.5,
-   "proj": 316.7,
-   "weeks_2025": 5,
-   "weekly_mean": 18.56,
-   "weekly_sd": 3.03,
-   "p90_week": 22.32,
-   "boom": {
-    "k": 0,
-    "n": 5,
-    "rate": 0.0
-   },
-   "gp_rate_2yr": 0.6471,
-   "exp_missed": 6.0,
-   "avail_adj_proj": 82.3,
-   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
-  },
-  {
    "name": "Aaron Jones",
    "pos": "RB",
-   "adp": 124.9,
+   "adp": 124.2,
    "proj": 137.1,
    "weeks_2025": 12,
    "weekly_mean": 9.89,
@@ -2419,7 +2419,7 @@
   {
    "name": "Blake Corum",
    "pos": "RB",
-   "adp": 103.8,
+   "adp": 103.6,
    "proj": 135.3,
    "weeks_2025": 17,
    "weekly_mean": 7.19,
@@ -2438,7 +2438,7 @@
   {
    "name": "Chris Rodriguez",
    "pos": "RB",
-   "adp": 142.3,
+   "adp": 142.1,
    "proj": 132.5,
    "weeks_2025": 12,
    "weekly_mean": 7.67,
@@ -2457,7 +2457,7 @@
   {
    "name": "Rachaad White",
    "pos": "RB",
-   "adp": 131.7,
+   "adp": 131.3,
    "proj": 128.1,
    "weeks_2025": 17,
    "weekly_mean": 8.41,
@@ -2476,7 +2476,7 @@
   {
    "name": "Jacory Croskey-Merritt",
    "pos": "RB",
-   "adp": 115.7,
+   "adp": 115.1,
    "proj": 127.9,
    "weeks_2025": 17,
    "weekly_mean": 8.25,
@@ -2495,7 +2495,7 @@
   {
    "name": "Rashid Shaheed",
    "pos": "WR",
-   "adp": 147.6,
+   "adp": 148.4,
    "proj": 138.1,
    "weeks_2025": 18,
    "weekly_mean": 8.7,
@@ -2514,14 +2514,14 @@
   {
    "name": "Denzel Boston",
    "pos": "WR",
-   "adp": 165.5,
+   "adp": 165.0,
    "proj": 134.7,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Tyjae Spears",
    "pos": "RB",
-   "adp": 166.0,
+   "adp": 166.2,
    "proj": 114.6,
    "weeks_2025": 13,
    "weekly_mean": 8.59,
@@ -2540,7 +2540,7 @@
   {
    "name": "Tyrone Tracy",
    "pos": "RB",
-   "adp": 163.7,
+   "adp": 163.5,
    "proj": 111.3,
    "weeks_2025": 15,
    "weekly_mean": 10.72,
@@ -2559,35 +2559,35 @@
   {
    "name": "De'Zhaun Stribling",
    "pos": "WR",
-   "adp": 156.2,
+   "adp": 137.0,
    "proj": 128.4,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Kenyon Sadiq",
    "pos": "TE",
-   "adp": 151.0,
+   "adp": 152.3,
    "proj": 100.2,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Jordyn Tyson",
    "pos": "WR",
-   "adp": 86.1,
+   "adp": 89.0,
    "proj": 111.0,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Ja'Kobi Lane",
    "pos": "WR",
-   "adp": 157.2,
+   "adp": 157.5,
    "proj": 104.9,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
    "name": "Woody Marks",
    "pos": "RB",
-   "adp": 159.1,
+   "adp": 160.5,
    "proj": 83.8,
    "weeks_2025": 16,
    "weekly_mean": 9.07,
@@ -2606,14 +2606,33 @@
   {
    "name": "Travis Hunter",
    "pos": "WR",
-   "adp": 167.4,
+   "adp": 167.2,
    "proj": 96.6,
    "avail_note": "no NFL sample - availability unadjusted"
   },
   {
+   "name": "Tyler Allgeier",
+   "pos": "RB",
+   "adp": 146.7,
+   "proj": 77.2,
+   "weeks_2025": 17,
+   "weekly_mean": 7.24,
+   "weekly_sd": 5.19,
+   "p90_week": 13.5,
+   "boom": {
+    "k": 1,
+    "n": 17,
+    "rate": 0.0588
+   },
+   "gp_rate_2yr": 1.0,
+   "exp_missed": 0.0,
+   "avail_adj_proj": 77.2,
+   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
+  },
+  {
    "name": "Brian Robinson",
    "pos": "RB",
-   "adp": 154.1,
+   "adp": 155.4,
    "proj": 69.9,
    "weeks_2025": 17,
    "weekly_mean": 3.68,
@@ -2630,28 +2649,9 @@
    "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
   },
   {
-   "name": "Tyler Allgeier",
-   "pos": "RB",
-   "adp": 145.6,
-   "proj": 69.4,
-   "weeks_2025": 17,
-   "weekly_mean": 7.24,
-   "weekly_sd": 5.19,
-   "p90_week": 13.5,
-   "boom": {
-    "k": 1,
-    "n": 17,
-    "rate": 0.0588
-   },
-   "gp_rate_2yr": 1.0,
-   "exp_missed": 0.0,
-   "avail_adj_proj": 69.4,
-   "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
-  },
-  {
    "name": "Zach Charbonnet",
    "pos": "RB",
-   "adp": 146.0,
+   "adp": 147.1,
    "proj": 67.2,
    "weeks_2025": 16,
    "weekly_mean": 11.34,
@@ -2668,16 +2668,9 @@
    "avail_note": "missed weeks return nothing and block a bench slot (no IR); penalty = expected missed weeks x weekly replacement points"
   },
   {
-   "name": "Jonah Coleman",
-   "pos": "RB",
-   "adp": 167.3,
-   "proj": 63.9,
-   "avail_note": "no NFL sample - availability unadjusted"
-  },
-  {
    "name": "Alvin Kamara",
    "pos": "RB",
-   "adp": 162.5,
+   "adp": 161.3,
    "proj": 63.0,
    "weeks_2025": 11,
    "weekly_mean": 9.15,

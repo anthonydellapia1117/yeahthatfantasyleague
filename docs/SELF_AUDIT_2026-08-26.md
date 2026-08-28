@@ -66,18 +66,27 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 41 | pages-data refreshed `depth_charts.json` without rebuilding CVS; a correct rebuild moved 80/190 player records and two Walter reference scales | **REVIEWER** (PR #54 rebase) | ~2 hours | no - the token-authored commit never deployed | **SILENT CRON (4)** |
 | 42 | Same-day engine and mock builds shared one date, so the linkage guard passed while 14 mock tier values were stale | **REVIEWER** (#56 dependency audit) | ~1 day | yes (deployed artifact) | **FAIL-OPEN GUARD (5)** |
 | 43 | `LA/LAR` mismatch nulled both CVS context factors for every Ram; weight redistribution kept the live board plausible | **REVIEWER** (team-code audit) | since CVS factor launch | yes | **OPTIONAL DEGRADATION (4)** |
+| 44 | The lucky-player control reproduced exactly from an all-week extract containing postseason weeks; the clean regular-season top-tier penalty was -14.34, not the reported -30.2 | **REVIEWER** (source-basis reproduction) | <1 day | no (analysis record) | **REPRODUCIBLE CONTAMINATED SOURCE** |
+| 45 | Four RBs with no observed 2025 usage entered the BULLISH backfield percentile as `0.0`; the population was 50 instead of 46 and its median was 0.4986 instead of 0.5060 | **REVIEWER** (percentile-population sweep) | since C5 | yes | **MISSING OBSERVATION AS ZERO** |
+| 46 | The advertised TE 2-of-2 gate was one varying on-field-dropback input times a constant 0.9 market-share input for all 19 veterans; Isaiah Likely's BAL-2025 share was ranked alone in his NYG-2026 group | **REVIEWER** (input-value audit) | since C5 | yes | **VACUOUS GATE + SEASON/TEAM GROUPING** |
+| 47 | Corrected `ALL_R_CODE.R` said the RB export was regenerated, but the committed RB CSV still carried `target_volume` and 2,530 NA-subsetting junk rows | **REVIEWER** (script/artifact comparison) | <1 day | no (analysis artifact) | **DOC/ARTIFACT DIVERGENCE (4)** |
+| 48 | The R forward-Vegas export inverted the verified home-spread convention in 224/224 team-games; 31/32 aggregates were wrong and rank correlation with the correct table was -0.437 | **REVIEWER** (source-sign verification) | <1 day | no (caught before app wiring) | **ANALYSIS SOURCE REGRESSION** |
+| 49 | Fourteen Python and four browser name normalizers disagreed; consolidation removed 119 phantom replay identities and restored 16 current ADP joins | **REVIEWER** (normalizer inventory) | since the duplicated consumers diverged | yes | **NAME-NORM (4)** |
+| 50 | The canonical quote fold covered curly U+2019 but not modifier-letter apostrophe U+02BC; the contract, not one observed spelling, was incomplete | **REVIEWER** (Unicode corpus audit) | latent | no known current player impact | **NAME-NORM (5)** |
+| 51 | Forward Vegas read a committed `schedule_2026.csv` snapshot that no workflow refreshed, so its dynamic horizon would have stayed at Weeks 1-6 while live games priced further out | **SELF-PRE** (new-feature update-path audit) | 0 | no - caught before first stale build | **SILENT STALENESS (5)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 43 entries: 4 are SELF-PRE (#25, #26, #27, #30) - **9.3%**. Even those
+Of the 51 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **9.8%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
-known answer. #27 was caught by an assertion I wrote in the same sitting. None of
-the four is an instance of me noticing an error I had no prior reason to look for.
+known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
+the first spontaneous instance: before shipping a newly wired input, I asked
+whether its source could actually update and found that it could not.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 17, ANTHONY 1.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 24, ANTHONY 1.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -86,14 +95,14 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Seventeen of 43 - the largest single share, and disproportionately the severe ones -
-came from outside review. Of the five defects that reached the live site and stayed
-there for more than a day (#19, #31, #34, #35, #39), **four were found by someone
-other than me.**
+Twenty-four of 51 - the largest single share, and disproportionately the severe
+ones - came from outside review. Of the eight defects now known to have reached
+the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
+#43, #45, #46), **six were found by someone other than me.**
 
 ### 1.3 Which classes recur, and why the first fix did not generalize
 
-Five classes have three or more occurrences. In every case the first fix was
+Six classes have three or more occurrences. In every case the first fix was
 applied at the **call site** rather than at the **rule**.
 
 **MULTI-PICK INDEPENDENCE - 4 occurrences (#23, #24, #25, #33).**
@@ -109,20 +118,20 @@ mechanically prevents a new consumer from re-implementing pick selection inline.
 guard added in P1-B checks the VONA tree's output specifically; it does not check
 "every multi-pick artifact in `out/data/`."
 
-**NAME NORMALIZATION - 3 occurrences (#2, #20, #39).**
-Same component, three incidents: suffixes, father/son collisions, diacritics. Each
-fix extended `norm_name` by one transformation, discovered by the one case that had
-just broken. **Why it did not generalize:** there is no test that asserts the
-normalizer's *contract* (what classes of difference it must be blind to). There are
-tests that assert a match *rate* against today's data. A rate test tells you
-something broke; it never tells you what the function is supposed to do, so each
-repair is a patch to the symptom. Worse, there are **two** independent normalizers -
-`draft_board`/`ingest` `_norm_player` and `build_pages_data.norm_name` - and #39 was
-fixed in only one of them. (Confirmed this session: the diacritic fold exists in
-`build_pages_data.py` and not in `src/ingest.py`.)
+**NAME NORMALIZATION - 5 occurrences (#2, #20, #39, #49, #50).**
+Suffixes, father/son collisions, diacritics, eighteen divergent implementations,
+then a quote-codepoint contract gap. The first three fixes each extended one
+normalizer with the transformation the latest case needed. Match-rate tests said
+something broke but never defined what the key must ignore or what identity must
+preserve. #49 finally separated the blind comparison key from the collision-aware
+identity resolver, routed every Python consumer through them, and held the four
+necessary browser copies to Python with corpus parity. #50 then proved why the
+contract corpus matters: current names used U+2019, while unobserved U+02BC still
+split an otherwise identical name. The test now names the punctuation classes
+instead of waiting for the next player to expose one.
 
-**SILENT CRON / STALE PUBLICATION - 4 occurrences (#19, #35, #41, and the
-pre-#19 shard staleness it exposed).**
+**SILENT CRON / STALE PUBLICATION - 5 occurrences (#19, #35, P2-3's
+draft-morning rebuild gap, #41, and #51).**
 **Why it did not generalize:** after #19 the fix was a *guard inside the job* (a
 7-day as-of check). That makes the job fail loudly - but a failing job is exactly
 the state nobody was watching. The monitoring was pointed at the machine, not at the
@@ -132,6 +141,17 @@ rebuild rule was copied into one workflow rather than enforced at the shared
 publication boundary. The measured publication exposure behind #35 was not the
 four-day shorthand first recorded: Pages served Aug-17 depth data for exactly
 **6d 6h 58m 40s**.
+
+#51 is the first occurrence caught before it became stale. Forward Vegas was
+designed to extend as more schedule weeks priced, but `pages-data.yml` refreshed
+HISTORY `games.csv` while the builder consumed a static committed snapshot that no
+workflow updated. It would have kept answering the Weeks 1-6 question through draft
+morning with current-looking tags. The repair synchronizes and validates the 2026
+snapshot before consumers run, stages snapshot plus metadata atomically, records
+source/snapshot/decision digests and explicit horizon events, and fails closed on a
+contracted horizon. The distinctive lesson is prospective: inspect the update path
+of a new feature before trusting its first correct build. Every earlier occurrence
+was found only after the deliverable had already gone stale.
 
 **FAIL-OPEN GUARD / CONTROL - 5 occurrences (#14, #15, #22, the SKIP hole in
 Part 2, and #42).**
@@ -177,7 +197,7 @@ mistake (conditional where unconditional was needed) in new code, and the artifa
 advertised it - 28% of nodes had negative VONA, an impossibility - for as long as it
 took an outsider to look.
 
-**DOC/ARTIFACT DIVERGENCE - 3 occurrences (#4, #37, #40).** The written record
+**DOC/ARTIFACT DIVERGENCE - 4 occurrences (#4, #37, #40, #47).** The written record
 can be internally stale (#4), absent from its consuming surface (#37), or disagree
 with the committed artifact (#40). At `04d3dd3`, `CHANGELOG.md` reports 39
 rendered forks, 29 dominated branches pruned, and 15 coin flips.
@@ -187,6 +207,40 @@ the actual visible surface: 259 nodes, 42 fork groups, and 21 visible coin-flip
 nodes. The counters were incremented before ancestor pruning, so removed descendants
 remained in the summaries. The correct fix is to compute visible node and fork
 counts recursively after pruning is complete.
+
+#47 is the same class at the producer boundary: corrected R source and prose said
+the RB export had been regenerated, while the committed CSV retained the old
+schema and 2,530 junk rows. Correct source code is not evidence that the artifact
+was rebuilt. The contract is source **plus** regenerated bytes, verified together.
+
+**MISSING OBSERVATION AS ZERO - one live instance (#45), after a full percentile
+population sweep.** `dict.get(id, 0)` put players with no 2025 usage into a
+backfield-share distribution as observed zeroes. The rule is narrower and stronger
+than “drop zeroes”: a zero is valid only when a canonical identity and source row
+show that zero; absence is null and excluded. The sweep found exactly one live
+instance. Every other BULLISH percentile population was identity-clean. Bucky
+Irving's 0-of-n inside-five share is a legitimate observed zero and remains in its
+population. The discovery frame had 50 candidates and four absent observations;
+after #65's fresh engine moved Jonah Coleman outside the 168-pick pool, the current
+artifact has 49 candidates, 46 observations, and three explicit exclusions. The
+median remains the corrected 0.5060; that frame change is recorded rather than
+silently forcing the old count.
+
+**VACUOUS GATE (#46).** A probabilistic matrix is not multi-criterion merely
+because it has two keys. Every eligible veteran TE received the same 0.9
+market-share probability, leaving only the on-field-dropback share to vary, and
+that quantity includes pass blocks. The live TE rows are suspended and omitted;
+the artifact keeps the five computed former rows plus a neutral explanation on
+all three tag surfaces. Its provenance also records the independent grouping
+error: Isaiah Likely's 2025 Baltimore share was ranked inside his one-player 2026
+Giants group. Resumption requires two genuine, season-consistent criteria and a
+new reviewed N.1 test.
+
+**REPRODUCIBLE CONTAMINATED SOURCE (#44).** Byte-identical reproduction proved the
+arithmetic and still confirmed the wrong claim because the chosen extract included
+postseason weeks. The top-tier lucky-player penalty moved from -30.2 to -14.34 on
+the clean regular-season source. Reproducibility is necessary evidence about a
+calculation; it is not evidence that the input population answers the question.
 
 ### 1.4 Silent versus loud
 
@@ -198,8 +252,8 @@ caught quickly, most within hours, several before merge. **Not one loud failure 
 reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
-#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43.
-Twenty of forty-three, and
+#15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43,
+#44, #45, #46, #47, #48, #49. Twenty-six of fifty, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it
@@ -217,7 +271,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Seventeen finds, including four of the five long-lived live defects. The mechanism is
+Twenty-four finds, including six of the eight long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 
@@ -228,14 +282,20 @@ down correctly from two minutes. Every test I wrote passed. What I never did was
 `GET /v1/draft/{id}` and read `settings.pick_timer`. The reviewer did. The same
 mechanism produced #34 (I checked that the fetch resolved, not that the payload was
 fresh) and #35 (I checked that the workflow existed, not that it had succeeded).
-**I test that the code does what I meant. I do not test that what I meant is true.**
+The R Vegas export (#48) inverted home and away in every priced team-game; only
+comparison with the app's existing formula, moneyline direction, and raw schedule
+established the sign. **I test that the code does what I meant. I do not test that
+what I meant is true.**
 
 **(b) I do not look at my own output as evidence.** The VONA artifact (#32) shipped
 with 57 of 204 nodes carrying negative VONA. That is not subtle - it is an
 impossibility, printed in the file, in a field named `vona`. I generated that file,
 wrote guards for its provenance and thresholds, and never once ran
-`min(n["vona"] for n in nodes)`. The reviewer read the artifact. **I write guards
-about a file's structure and never interrogate its values.**
+`min(n["vona"] for n in nodes)`. The reviewer read the artifact. The TE audit
+(#46) found nineteen identical 0.9 values in the advertised second criterion; the
+R comparison (#47) found corrected code beside an unchanged CSV. **I write guards
+about a file's structure and never interrogate its values or compare the producer
+with the committed output.**
 
 **(c) I accept a specification as a substitute for verification.** "Two minutes"
 came from the build order. `TEAMS = 12` came from me knowing the league. The step-sd

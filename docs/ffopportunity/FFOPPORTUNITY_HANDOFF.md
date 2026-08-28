@@ -43,11 +43,11 @@ It is implemented in `src/build_bullish.py` (tag engine) and `src/build_bullish_
 | Position | Gate | Criteria |
 |---|---|---|
 | RB | 4 of 5 | receiving_volume, expected_td_equity, line_quality, availability, backfield_command |
-| WR | 4 of 5 | target_earning (TPRR), yprr, first_read, opportunity, route_participation |
+| WR | 4 of 5 | target_earning (TPRR), yprr, first_read, opportunity, on_field_dropback_presence (includes pass blocks; not routes) |
 | QB | 2 of 3 | rushing, environment, efficiency |
-| TE | 2 of 2 | route_participation, market_share |
+| TE | **SUSPENDED** (former 2 of 2) | No live criteria. The former on-field-dropback input includes pass blocks, while market_share was constant at 0.9 for all 19 veterans. |
 
-**Critical status:** The BULLISH tag is **display-only**. It failed its null test against ADP (N.1): 65.1% top-12 hit rate for tagged vs 51.8% untagged within the top ADP band, CI [-2.1, +28.9], **p=0.104 — underpowered**. 93.5% of tags land in a single ADP band, meaning the tag currently mostly re-marks players ADP already ranks highly. It does not gate any decision.
+**Critical status:** The BULLISH tag is **display-only**. INCONCLUSIVE — incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1–12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the top-band sample from 300 to 199 players (43 to 35 tagged) and widened the interval from 31.0pp to 35.5pp. That is the expected direction when a non-discriminating group is removed: fewer observations mean more uncertainty. Because the verdict held while uncertainty increased, the unresolved limitation is the ADP-gated design, not one individual criterion. The current interval permits harm and useful lift alike. Only three tags occur at ranks 13–24 and none at 25–48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.
 
 ### What we set out to do
 
@@ -70,7 +70,7 @@ Four rounds of extraction and testing followed. The headline result is that **mo
 | `bullish_rb_2020_2025.csv` | 11,491 | `expected_td_equity` (rec_touchdown_exp + rush_touchdown_exp), `backfield_command` (rush_attempt / team_rush_attempt), `target_volume` ((receptions + receptions_exp)/2) |
 | `bullish_wr_2020_2025.csv` | 16,013 | `tprr_proxy` ⚠️ **MISLABELED**, `yprr_proxy` (rec_yards_gained_exp / receptions_exp), `first_read_share` (rec_attempt / team_rec_attempt), `vacated_targets` (team_receptions_exp − player_receptions_exp) |
 | `bullish_qb_2020_2025.csv` | 6,650 | `qb_fantasy_points_exp_6pt` (rescored to 6-pt pass TDs), `prior_epa_proxy` (total_fantasy_points_exp), `team_implied_total` |
-| `bullish_te_2020_2025.csv` | 9,260 | `route_participation_proxy` ⚠️ **MISLABELED**, `receiving_market_share` (rec_yards_gained_exp / team_rec_yards_gained_exp) |
+| `bullish_te_2020_2025.csv` | 6,730 valid rows | `receiving_market_share` (rec_yards_gained_exp / team_rec_yards_gained_exp); route participation is unavailable and the false alias was removed |
 | `bullish_gap_signal_2020_2025.csv` | 36,063 | `total_fantasy_points_diff` — ADP-orthogonal (r = −0.155 vs ADP) |
 
 ### Round 1 — Raw data (20 files)
@@ -116,7 +116,7 @@ Four rounds of extraction and testing followed. The headline result is that **mo
 
 | File | Rows | Description |
 |---|---|---|
-| `vegas_2026_forward.csv` | 32 | **Real 2026 forward Vegas lines.** `implied_total_2026`, `total_line_2026`, `games_priced`. All 32 teams, 224 team-games priced, range 21.04–28.33 |
+| `vegas_2026_forward.csv` | 32 | **DO NOT CONSUME.** The R export inverted home/away in 224/224 team-games. The app derives its own verified table from `schedule_2026.csv`. |
 | `team_opportunity_supply_2020_2025.csv` | 192 | Team target/carry supply — the denominator every share metric divides by. `targets_pg`, `carries_pg`, `team_rec_td_exp`, `team_rush_td_exp` |
 | `epa_per_target_clean_2020_2025.csv` | 997 | EPA per target, WR/TE/RB only (QB contamination removed), min 40 targets |
 
@@ -259,7 +259,7 @@ Extreme values verified as legitimate, not bugs: 2021 wk13 NE at −57.1 PROE is
 
 **QB rushing split.** 1,149 scrambles vs 1,260 designed QB runs in 2025. Designed carries are a sticky role; scrambles are volatile. The app's current `rush_ypg` merges them.
 
-**Per-week Vegas.** `implied_total` populates on 100% of plays with 17 distinct weekly values per team, range 15.2–29.5. The app currently reads Week 1 only.
+**Per-week Vegas.** `implied_total` populates on 100% of plays with 17 distinct weekly values per team, range 15.2–29.5. The app preserves Week 1 only for RB expected-TD equity; QB environment and WR opportunity use the separately derived forward horizon below.
 
 ### 3.5 Corrected finding — RB inside-5 share
 
@@ -326,7 +326,7 @@ Note the league's own weights from `src/build_bullish.py`: `passing_yards: 0.04`
 | **WR** yprr | ⚠️ Partial | `yprr_proxy` | inherits routes flaw |
 | **QB** rushing | ✅ Full | `qb_rush_split_2020_2025.csv` | designed/scramble split |
 | **QB** efficiency | ✅ Full | existing `epa_per_att` + `epa_per_target_clean` | cross-check |
-| **QB** environment | ⚠️ Partial | Week-1 hardcode | **fixable now** — see §5 |
+| **QB** environment | ✅ Forward scope | Raw `schedule_2026.csv`, current contiguous fully priced horizon Weeks 1-6 | Activated for QB only; exact scope ships in provenance |
 | **TE** market_share | ✅ Full | `bullish_te_2020_2025.csv` | — |
 | **TE** route_participation | ❌ **Broken** | = `receptions_exp` renamed | unfixable |
 | **Coaching scheme** | ✅ **New** | `proe_weekly_reg_2020_2025.csv` | only direct measure available |
@@ -341,9 +341,9 @@ Note the league's own weights from `src/build_bullish.py`: `passing_yards: 0.04`
 
 ### Priority 1 — highest-value single change
 
-**`vegas_2026_forward.csv` → `src/build_bullish_inputs.py` lines 156–163**
+**Raw `schedule_2026.csv` → separately derived `forward_implied_total`**
 
-Current code reads Week 1 only:
+The prior code read Week 1 only:
 ```python
 implied = {}
 with open(games_path) as fh:
@@ -357,18 +357,40 @@ with open(games_path) as fh:
 
 This extrapolates an entire 17-game season, coaching environment, and matchup schedule from **one Sunday's betting line**. It was identified as the weakest proxy in the app.
 
-**Replacement:** `vegas_2026_forward.csv` carries **224 team-games priced across weeks 1–6+** for all 32 teams, from real 2026 forward lines. Read `implied_total_2026` directly, keyed by `team`.
+**Implemented replacement:** the app does not read the derived R CSV. It validates
+the raw 272-game schedule snapshot (32 canonical teams, 17 games each), derives the maximal
+contiguous fully priced prefix, and computes home = total/2 + spread/2 under the
+independently verified nflverse sign. Current horizon is Weeks 1-6, 93 games and
+186 team-games. Week 7 is 7/14 priced. The values feed QB environment and WR
+opportunity only; Week-1 RB expected-TD equity is isolated.
+
+The snapshot is not static. Daily `pages-data` refreshes nflverse `games.csv`,
+synchronizes its 2026 regular-season rows into the committed snapshot, validates
+before any consumer runs, and stages snapshot plus metadata in the same commit.
+The metadata records pull time, upstream/snapshot/decision-input digests, horizon,
+and priced game/team-game counts. The artifact reports `HORIZON_EXTENDED`,
+`CONTRACTED`, `REPRICED`, or `UNCHANGED`, persists the last material event, and
+shows its schedule-only same-build tag delta on Home and Draft Room. `CONTRACTED`
+fails before replacing the last verified broader snapshot; temporary unpricing and
+intentional narrowing cannot be safely distinguished automatically. The 06:00
+draft-refresh remains intentionally HISTORY-free and consumes the last validated
+committed snapshot. Before publishing attribution, the consumer independently
+rederives the stored transition, validates finite totals for all 32 teams, and
+rejects ambiguous mixed schedule/model movement. A model-only change therefore
+cannot masquerade as a schedule-only tag delta.
 
 **Feeds:** QB `environment` criterion, WR `opportunity` criterion.
 **Verdict:** **GATE.**
 
-⚠️ **Caution:** `games_priced` ranges 6–9 per team and the resulting spread is compressed (21.04–28.33). Fantasy-playoff weeks 15–17 have only **4 of 48 games priced**, so a playoff-window Vegas input is **not yet buildable**. Re-pull `schedule_2026.csv` closer to the draft as more lines post.
+⚠️ **Caution:** the current forward judgment ends after Week 6. The artifact states
+every priced/scheduled count so the scope cannot masquerade as a full-season view.
+As more complete weeks price, the derived horizon and tags may move visibly.
 
 ### Full wiring table
 
 | File | Feeds criterion | Python target | Gate/Display |
 |---|---|---|---|
-| `vegas_2026_forward.csv` | QB environment, WR opportunity | `build_bullish_inputs.py:156-163` | **GATE** |
+| `schedule_2026.csv` | QB environment, WR opportunity through a verified derived horizon | `build_bullish_inputs.py` | **ACTIVATED; exact source digest + coverage gate** |
 | `team_opportunity_supply_2020_2025.csv` | share denominators (all positions) | `build_bullish_inputs.py` | **GATE** |
 | `line_quality_team_2020_2025.csv` | RB line_quality | `build_bullish.py` RB block | **GATE** |
 | `qb_rush_split_2020_2025.csv` | QB rushing | `build_bullish.py` QB block | **GATE** |
@@ -404,11 +426,18 @@ This extrapolates an entire 17-game season, coaching environment, and matchup sc
 
 3. **Hold every new signal at display until null-tested against 13 seasons.** Of the candidates tested across four rounds, **three of the most promising failed their control tests** (YAC-OE, garbage time, neutral_script_role). Raw correlation and year-over-year stability are *not* sufficient evidence. The controlled test — does the signal predict next-year outcomes *within* a production tier — is the one that matters.
 
-4. **BULLISH remains display-only.** N.1 returned p=0.104, underpowered, with 93.5% of tags in a single ADP band. Nothing in this work changes that status. Wiring these inputs improves the tag's *inputs*; it does not license the tag to gate a decision.
+4. **BULLISH remains display-only.** INCONCLUSIVE — incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1–12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the top-band sample from 300 to 199 players (43 to 35 tagged) and widened the interval from 31.0pp to 35.5pp. That is the expected direction when a non-discriminating group is removed: fewer observations mean more uncertainty. Because the verdict held while uncertainty increased, the unresolved limitation is the ADP-gated design, not one individual criterion. The current interval permits harm and useful lift alike. Only three tags occur at ranks 13–24 and none at 25–48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.
 
-5. **`COLUMN_DICTIONARY.md` is stale.** It documents rounds 1–2 only and still describes `tprr_proxy` as "targets per expected route" and `route_participation_proxy` as route participation. **Both descriptions are wrong.** Update before anyone relies on it.
+5. **`COLUMN_DICTIONARY.md` retains historical cautions.** The TE false route
+   alias is removed. The WR `tprr_proxy` warning remains because ffopportunity
+   has no route counts and the field is still not TPRR.
 
-6. **2026 Vegas coverage is partial.** 224 team-games priced, weeks 1–6+. Fantasy playoff weeks 15–17 have 4 of 48 games priced. Re-pull closer to the draft.
+6. **2026 Vegas coverage is partial and explicit.** The activated horizon is Weeks
+   1-6, 93 games / 186 team-games; Week 7 is 7/14 priced. The artifact exposes the
+   boundary and recomputes it every build from the daily-synchronized snapshot.
+   A synthetic Week-7 completion proves the event moves to 107 games / 214
+   team-games; a synthetic contraction fails closed without replacing either
+   snapshot file.
 
 7. **Repeatability ≠ predictiveness.** This is the single most important methodological lesson of the four rounds. YAC-OE is the most repeatable signal in the dataset (r up to 0.691) and predicts nothing about next-year fantasy points once production tier is controlled.
 
@@ -487,7 +516,10 @@ Tested or evaluated and **not** recommended for extraction:
 
 ## 8. Recommended execution order
 
-1. **Wire `vegas_2026_forward.csv`** into `build_bullish_inputs.py:156-163`. Single highest-value change. Gate.
+1. **Forward Vegas is complete for its approved scope.** Raw schedule input,
+   verified sign, 32-team/full-schedule reconciliation, daily snapshot sync,
+   dynamic horizon event, immutable activation delta, QB/WR consumers only. Do not
+   substitute the broken R CSV.
 2. **Wire `team_opportunity_supply`** as share denominators. Gate.
 3. **Wire `line_quality_team` and `qb_rush_split`** into their RB/QB criteria. Gate.
 4. **Rebuild `regression_flags_clean` at 6-pt passing TDs** from component `_exp` columns. Then wire `exp_per_game` as a display-ranked input.

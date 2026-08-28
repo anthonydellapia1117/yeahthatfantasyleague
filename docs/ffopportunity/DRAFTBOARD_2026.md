@@ -407,7 +407,7 @@ during regeneration. All five verified independently before acceptance.
 | 2 | **QB INT scored at −2**, league pays **−1.0**; two-point conversions **missing** | `src/build_bullish.py` W dict is authoritative | QB1 label changes; top 3 now a 0.06 pt tie |
 | 3 | **Three mislabeled columns** — `team_implied_total` (= sum of QB exp pts), `prior_epa_proxy` (= renamed exp pts), `target_volume` (= midpoint of actual and expectation) | Read against what they compute | All four dropped, not renamed |
 | 4 | **QB fade flags contaminated** — gap built on 4-pt scoring | TD counts differ between actual and expected, so error does not cancel | QB fades must not be displayed until recomputed |
-| 5 | **2,530 junk rows in `bullish_qb`** (38% of file) — blank position, blank season, zeros throughout | Found during regeneration; not in the original audit | BULLISH thresholds are **percentiles**, so a 38%-zero column deflates every QB threshold |
+| 5 | **2,530 base-R NA-subsetting rows in each of the committed RB/WR extracts; QB and the newly regenerated TE extract are clean** | Recounted directly from all four committed CSVs | Python consumes none of these files, so no live QB tag moved. A separate live absent-as-zero bug was found in the RB backfield percentile and fixed in the app builder. |
 
 **Two provenance corrections to the incoming audit.** The audit stated the Rev 3
 QB table was built on `bullish_qb_2020_2025.csv` and therefore inherited the −2
@@ -418,10 +418,14 @@ sign error was original to this work; in fact `src/build_bullish_inputs.py:156`
 was **already correct** (`tl/2 + sp/2`), and the R code introduced a regression
 against working app code.
 
-**Regenerated:** `vegas_2026_forward.csv`, `bullish_qb_2020_2025.csv`,
-`bullish_rb_2020_2025.csv`. Corrected source in `ALL_R_CODE_CORRECTED.R`, which
-carries a `stopifnot` guard that fails loudly if the spread convention ever
-inverts again.
+**Artifact-state correction:** the corrected script contains the RB writer, but
+the committed RB CSV was never regenerated: it still carries `target_volume`
+and 2,530 junk rows. QB and the separately regenerated TE extract carry corrected
+output; RB and WR do not. This is a second
+document/artifact divergence: a repaired generator does not prove its committed
+output moved. The TE extract is cleaned separately with the fake route alias
+removed. The Vegas table remains analysis-only; the app derives its forward
+window directly from `schedule_2026.csv`.
 
 **Unaffected:** `vegas_weekly_reg` reads ffopportunity's own `implied_total`
 column, which is authoritative and never used the broken formula.
@@ -455,7 +459,10 @@ A prior recommendation to pass on McCaffrey was made for a **guillotine** league
 2. **VOR, not raw points.** Raw exp/g systematically overstates QBs. Always subtract positional replacement.
 3. **Route participation is structurally unfixable.** No route counts in ffopportunity. The `routes_proxy` caveat stands.
 4. **Signals that failed control tests:** YAC-OE, garbage time, prior workload. `neutral_script_role` is near-random. **Age is the only new signal that survived.**
-5. **BULLISH is display-only** (p=0.104, underpowered). Not a draft gate.
+5. **BULLISH is display-only.** N.1 remains INCONCLUSIVE in the RB/WR scope:
+   22/35 (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2],
+   p=0.261. Removing the non-discriminating TE matrix did not rescue the
+   result. It is not a draft gate.
 6. **Gap = fade filter, not discovery, and not a talent judgment.**
 7. **`exp_per_game` outpredicts gap 2.4–4x.**
 8. **Playoff Vegas incomplete** (4/48). Re-pull before draft.

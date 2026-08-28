@@ -74,7 +74,7 @@ Each node shows, all computed:
   `SURV_FLOOR` is not rendered at all.
 - NO BULLISH chip, not even display-only. The tree is a decision
   surface, and a visual marker pulls the eye regardless of its label; at
-  93.5% top-band concentration (finding N.1) it would only re-mark
+  92.1% top-band concentration in the current RB/WR finding N.1; it would only re-mark
   players the board already ranks highly. All nudge, no information. The
   tag stays on the Players tab, where it is informational rather than
   prescriptive.
