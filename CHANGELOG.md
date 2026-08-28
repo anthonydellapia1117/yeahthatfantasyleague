@@ -34,6 +34,14 @@ engine derivatives. **Zero substantive mismatches remain.** On pre-#56 main, the
 same reconstruction found 15 stale engine-derived fields: the 14 mock tiers that
 falsely passed date linkage, plus one BULLISH injury reason with no linkage oracle.
 
+The #56 follow-up closes two reproducibility defects found in review. History
+downloads now close every HTTP response even when reading fails; the regression
+uses the existing plain response mock and asserts one close. Seven builders and
+`test_bullish.py` no longer copy the ephemeral default HISTORY path. They import
+the canonical `analyze_recency.HISTORY` value, and an AST guard proves the literal
+has exactly one definition across `src/` and `tests/`. Before this correction the
+literal had nine sites: eight source definitions and the new test copy.
+
 ## P2-3 recurrence: pages-data refreshed a CVS input without its board (2026-08-27)
 
 The daily `pages-data` commit `46ae1ca` refreshed `depth_charts.json` (as-of

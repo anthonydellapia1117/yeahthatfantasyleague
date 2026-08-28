@@ -51,7 +51,7 @@ rehearsal's `real` times.
 | 7i | `sh tests/run_gate.sh python3 tests/test_bullish_vs_adp.py` | 0.1 s | BULLISH-vs-ADP test: reviewed INCONCLUSIVE verdict verbatim, cited figures cross-check the cells, ADP-confound disclosure, tag stays display-only |
 | 7j | `sh tests/run_gate.sh python3 tests/test_vona.py` | 0.2 s | VONA path tree: depth, derived thresholds, survival floor, no repeats, no BULLISH on nodes |
 | 7k | `sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py` | 0.2 s | drafted-vs-acquired: champions-vs-field intervals, era flags, the two results kept distinct |
-| 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | 319 page/data guards incl. content lineage, contrast, and teaser |
+| 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | 321 page/data guards incl. content lineage, contrast, and teaser |
 | 9 | `GATE_ALLOW_SKIP=1 sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards. The five determinism reruns are cache-gated; without the HISTORY cache they skip, and run_gate now FAILS on a skip unless you say it is expected - hence the explicit `GATE_ALLOW_SKIP=1`. Coverage lost when you use it: 5 of 38 checks in this suite, and they are the ones proving the artifacts reproduce. With the cache they run and take ~25 min - merge-gate territory, not morning territory |
 | 10 | full smoke (see the Playwright note below) | 94 s + install | 350 browser guards, including same-day lineage mismatches, DRAFT MODE, the forward-pick law, and PATHS |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |

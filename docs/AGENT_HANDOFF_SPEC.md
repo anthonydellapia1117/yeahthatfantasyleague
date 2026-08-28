@@ -234,7 +234,7 @@ done
 **Guard counts as of this writing** (a suite that suddenly runs fewer is a
 regression): survival 41, cvs 20, vor 50, baserates 70, archetypes 17, ceiling 16,
 bullish 38 (39 in pages-data strict mode), ws2 63, mock 47,
-bullish_vs_adp 43, vona 1687, draft_vs_acquired 23, pages_data 319, run_gate 16,
+bullish_vs_adp 43, vona 1687, draft_vs_acquired 23, pages_data 321, run_gate 16,
 analysis 38 (33 on CI), smoke 350.
 
 **Rebuilding the analysis layer** needs the historical cache, which is NOT in the

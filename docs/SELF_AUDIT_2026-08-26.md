@@ -319,11 +319,14 @@ which is expected and now documented). A guard asserts every HISTORY filename an
 `src/` module reads is a family the fetcher knows, so the gap cannot silently
 reopen; it was verified to bite by deleting a download and watching it fail.
 
-Nine source files hardcode the same ephemeral container path as their `HISTORY`
-default (`build_base_rates`, `bullish_vs_adp`, `build_ws2_audit`, `build_bullish`,
-`build_bullish_inputs`, `build_archetypes`, `build_ceiling`, `analyze_recency`, and
-`fetch_history` via import). The cache is 156MB, 59 files, in
-`/tmp/claude-0/.../scratchpad/history`, and dies with this container.
+At discovery, seven builders copied the same ephemeral container path as the
+canonical `analyze_recency.HISTORY`; `fetch_history` imported the canonical value.
+The cache is 156MB, 59 files, in `/tmp/claude-0/.../scratchpad/history`, and dies
+with this container. A later test copied the literal again while adding coverage
+for this fix - the defect class reproducing inside its own guard. Resolved in #57:
+every consumer imports `analyze_recency.HISTORY`, and an AST guard derives the
+default from that assignment and asserts the literal occurs exactly once across
+`src/` and `tests/`. The guard itself therefore cannot become the second copy.
 
 `src/fetch_history.py` - committed in #36 explicitly so "anyone can rebuild that
 cache and reproduce byte-for-byte" - downloads **four** families
