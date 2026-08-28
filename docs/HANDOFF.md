@@ -15,8 +15,8 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-27 by Codex - PR #57 adds content-based engine lineage, visible display lag, and the fifth fail-open record. Implementation and documentation are committed; this baton is the final commit. |
-| **Next agent** | Wait for Anthony's decision on #57. After it merges, rebase #54 onto main, restore #55's half-up smoke oracle during conflict resolution, run the full battery, push, and keep #54 OPEN and ON HOLD. Then the queued work is normalizer consolidation and the free-analysis brief. |
+| **Last touched** | 2026-08-27 by Codex - PR #57 adds content-based engine lineage and now includes the #56 review follow-up: closed history responses plus one canonical HISTORY default. Implementation and documentation are committed; this baton is the final commit. |
+| **Next agent** | Wait for Anthony's decision on #57. The explicit order after this task is: normalizer consolidation, then rebase #54 onto main and restore #55's half-up smoke oracle, then the free-analysis brief. Each will arrive separately. Keep #54 OPEN, ON HOLD, and untouched until its turn. |
 | **Branch** | `codex/fix-engine-content-lineage`, PR #57, based on `main` at `da78b0c` |
 | **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #56 deployment byte-verified 47/47 against `main` at `da78b0c`; live CVS SHA-256 `e4d14fe857ded7445efca3a90dc5b134770c9d2332ec4435cf8e90e1b236c2f3` |
 | **Draft order** | UNDRAWN as of 2026-08-26 22:12Z. A Routine checks every 2h and self-retires on the draw. |
@@ -33,7 +33,9 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    with SHA-256, and all six JSON consumers record the exact payload digest. CVS,
    VONA, and mock are strict. The room payload is object-identical; decision cards
    and all five teaser pages name the digest. A same-day mutation fixture proves
-   the date can stay equal while the digest changes.
+   the date can stay equal while the digest changes. The digest recursively hashes
+   the whole payload and excludes only its own field; novel top-level and nested
+   fields both invalidate the prior digest.
 3. **BULLISH uses visible option (b).** A full 06:00 rebuild would add pyarrow, a
    156 MB HISTORY cache, 59 cached source files, and a live games endpoint to the
    25-minute decision-critical job. Ceiling and BULLISH therefore carry engine
@@ -49,15 +51,21 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    and the measured publication exposure: Pages served Aug-17 depth data for
    exactly 6d 6h 58m 40s. Counts are 16 reviewer finds and 19 silent failures.
 6. **Full battery green.** The 15 suites ran 16/41/20/50/70/17/16/38/63/47/43/
-   1687/23/319/38 guards; pages-data strict BULLISH ran 39; smoke ran 350;
+   1687/23/321/38 guards; pages-data strict BULLISH ran 39; smoke ran 350;
    `MATH DIFF PROOF: EMPTY` for all ten frozen function bodies. Three independent
    release reviews found no blocker.
+7. **Both #56 review findings are fixed in #57.** `fetch_history.fetch` closes its
+   response on success and interrupted reads while preserving the existing plain
+   mock. The HISTORY default had nine literal sites - eight source definitions and
+   `test_bullish.py`; it now has one, `analyze_recency.py`. Seven builders, the
+   fetcher, and the test import that canonical value. An AST guard derives the
+   literal rather than typing it and proves the one-site invariant.
 
 ### In flight / nothing blocked
 
 PR #57 is open, green locally, and intentionally unmerged pending Anthony's review.
-PR #54 remains open, ON HOLD, and untouched at remote head `4bd541e`; it is the next
-branch to rebase only after #57 merges.
+PR #54 remains open, ON HOLD, and untouched at remote head `4bd541e`. Normalizer
+consolidation comes before its rebase.
 
 ### The three things the next agent most needs to know
 
