@@ -73,6 +73,32 @@ def r2(x):
     return None if x is None else round(float(x), 2)
 
 
+def merge_ffc_market(sleeper_rows, ffc_rows):
+    """Attach one FFC market row only to one unambiguous Sleeper identity.
+
+    The comparison key is deliberately blind to suffixes and typography, so
+    uniqueness is required on both sides. In particular, one FFC row must not
+    fan out across a father/son (or other same-key/position) target bucket.
+    """
+    ffc_resolver = PlayerIdentityResolver(ffc_rows)
+    sleeper_buckets = {}
+    for player_id, row in sleeper_rows.items():
+        sleeper_buckets.setdefault(
+            (comparison_key(row["name"]), row["pos"]), []).append(player_id)
+
+    merged = []
+    for player_id, row in sleeper_rows.items():
+        resolved = ffc_resolver.resolve(row["name"], position=row["pos"])
+        target_unique = len(sleeper_buckets[
+            (comparison_key(row["name"]), row["pos"])]) == 1
+        fields = (resolved.record["fields"]
+                  if resolved.record is not None and target_unique else {})
+        merged.append({"player_id": player_id, **row, **fields})
+    merged.sort(key=lambda row: (row.get("adp_sleeper") or 999,
+                                 row["player_id"]))
+    return merged
+
+
 def build_adp():
     """Sleeper ADP (the engine's input) + FFC ADP with market bands. Both stamped."""
     url_s = ("https://api.sleeper.app/projections/nfl/2026?season_type=regular"
@@ -103,23 +129,7 @@ def build_adp():
                 "adp_ffc": r2(p.get("adp")), "stdev": r2(p.get("stdev")),
                 "high": p.get("high"), "low": p.get("low"),
                 "bye": p.get("bye")}})
-    ffc_resolver = PlayerIdentityResolver(f_rows)
-    sleeper_buckets = {}
-    for player_id, row in s_rows.items():
-        sleeper_buckets.setdefault(
-            (comparison_key(row["name"]), row["pos"]), []).append(player_id)
-
-    merged = []
-    for pid, row in s_rows.items():
-        resolved = ffc_resolver.resolve(row["name"], position=row["pos"])
-        target_unique = len(sleeper_buckets[
-            (comparison_key(row["name"]), row["pos"])]) == 1
-        # Source uniqueness is not enough: one FFC row must never fan out to
-        # two Sleeper identities which comparison_key deliberately collapses.
-        f = (resolved.record["fields"]
-             if resolved.record is not None and target_unique else {})
-        merged.append({"player_id": pid, **row, **f})
-    merged.sort(key=lambda r: (r.get("adp_sleeper") or 999, r["player_id"]))
+    merged = merge_ffc_market(s_rows, f_rows)
     write("adp", {"provenance": {"adp_source": "sleeper",
                                  "band_source": "ffc", "ffc_attribution": FFC_ATTR,
                                  "ffc_meta": {"drafts": ffc.get("meta", {}).get("total_drafts"),

@@ -297,14 +297,6 @@ async function boot(){
   const get = f => fetch(f).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
   try {
     [D.cvs, D.eng] = await Promise.all([get("cvs.json"), get("engine_2026.json")]);
-    if (!/^[0-9a-f]{64}$/.test(D.eng.content_sha256 || "") ||
-        D.cvs.engine_content_sha256 !== D.eng.content_sha256)
-      throw new Error("cvs.json was built from a different engine payload");
-    // C2 base rates: display-only historical context; the board must render
-    // identically in its absence, so this fetch never gates boot
-    try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
-    try { D.ceil = await get("data/ceiling_2026.json"); } catch (e) { D.ceil = null; }
-    try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
   } catch (e) {
     const b = document.getElementById("banner");
     b.hidden = false; b.className = "banner err";
@@ -312,6 +304,19 @@ async function boot(){
     document.getElementById("board").innerHTML = "";
     return;
   }
+  if (!/^[0-9a-f]{64}$/.test(D.eng.content_sha256 || "") ||
+      D.cvs.engine_content_sha256 !== D.eng.content_sha256){
+    const b = document.getElementById("banner");
+    b.hidden = false; b.className = "banner err";
+    b.textContent = "Artifacts out of sync; board blocked. cvs.json and engine_2026.json carry different content lineage. Rebuild and publish them together.";
+    document.getElementById("board").innerHTML = "";
+    return;
+  }
+  // C2 base rates: display-only historical context; the board must render
+  // identically in its absence, so this fetch never gates boot
+  try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
+  try { D.ceil = await get("data/ceiling_2026.json"); } catch (e) { D.ceil = null; }
+  try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
   renderViews(); renderFilters(); renderLegend();
   renderBoard(); renderDelta(); renderConflicts(); renderCeiling(); renderKdef(); renderFoot();
   pollDraft();

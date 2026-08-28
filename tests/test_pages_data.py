@@ -21,6 +21,7 @@ D = os.path.join(ROOT, "out", "data")
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from player_names import (PlayerIdentityResolver, comparison_key,
                           nflverse_roster_identity)
+from build_pages_data import merge_ffc_market
 
 fails = []
 
@@ -116,9 +117,34 @@ if xw and rec and adp:
         [(p["player_id"], p["name"]) for p in rows]
         for rows in _target_collisions
         if any(any(field in p for field in _market_fields) for p in rows)]
-    ok(bool(_target_collisions) and not _target_leaks,
+    ok(not _target_leaks,
        "FFC market rows fail closed on every ambiguous Sleeper target bucket",
-       str(_target_leaks))
+       f"{len(_target_collisions)} current buckets; leaks {_target_leaks}")
+
+# The live scan above is vacuous-safe because an upstream provider may remove
+# every collision. This fixed corpus makes the no-fanout behavior non-vacuous:
+# the suffix-blind key collides on the two Harrisons, while the punctuation-only
+# D.J./DJ variant remains a valid one-to-one market join.
+_synthetic_market = merge_ffc_market(
+    {
+        "father": {"name": "Marvin Harrison", "pos": "WR",
+                   "adp_sleeper": 201.0},
+        "son": {"name": "Marvin Harrison Jr.", "pos": "WR",
+                "adp_sleeper": 20.0},
+        "dj": {"name": "D.J. Moore", "pos": "WR", "adp_sleeper": 40.0},
+    },
+    [
+        {"name": "Marvin Harrison Jr.", "pos": "WR",
+         "fields": {"adp_ffc": 21.0}},
+        {"name": "DJ Moore", "pos": "WR",
+         "fields": {"adp_ffc": 41.0}},
+    ])
+_synthetic_by_id = {row["player_id"]: row for row in _synthetic_market}
+ok("adp_ffc" not in _synthetic_by_id["father"] and
+   "adp_ffc" not in _synthetic_by_id["son"],
+   "FFC synthetic collision cannot fan one market row across two identities")
+ok(_synthetic_by_id["dj"].get("adp_ffc") == 41.0,
+   "FFC synthetic one-to-one typography variant still joins")
 
 # 3b. PLAYER-NAME CONTRACT.  comparison_key is intentionally blind to source
 #     typography.  PlayerIdentityResolver retains the collision and requires
@@ -230,6 +256,8 @@ ok(_legacy_position.record and _legacy_position.record["id"] == "te" and
    "the crosswalk's legacy position-mismatch fallback is explicit and opt-in")
 
 if adp:
+    # This integration scan is allowed to see zero current collisions; the
+    # fixed Harrison/Gore corpus above is the non-vacuous behavior contract.
     _current = [{"name": p["name"], "pos": p["pos"],
                  "id": p["player_id"]} for p in adp["players"]]
     _current_resolver = PlayerIdentityResolver(_current)
@@ -245,7 +273,7 @@ if adp:
             _records[0]["name"], position=_records[0]["pos"])
         if _result.record is not None:
             _silently_resolved.append(_records[0]["name"])
-    ok(bool(_ambiguous_current) and not _silently_resolved,
+    ok(not _silently_resolved,
        "identity layer fails closed for every current same-key/position collision",
        f"{len(_ambiguous_current)} buckets; resolved {_silently_resolved}")
 
@@ -795,10 +823,14 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     ok(all("team_name" in r and "franchise" in r for r in rs),
        "every roster carries both the Sleeper team name and the franchise era")
     mine = [r for r in rs if r["roster_id"] == eng["league"]["anthony_roster_id"]]
-    ok(len(mine) == 1 and mine[0]["handle"] == "antdell"
-       and mine[0]["team_name"] == "Taylor Made",
-       "Anthony's roster resolves to antdell / Taylor Made",
-       str(mine and (mine[0]["handle"], mine[0]["team_name"])))
+    ok(len(mine) == 1,
+       "Anthony's stable roster id resolves exactly one roster",
+       str([row["roster_id"] for row in mine]))
+    ok(mine and isinstance(mine[0].get("handle"), str) and mine[0]["handle"] and
+       (mine[0].get("team_name") is None or
+        isinstance(mine[0].get("team_name"), str)),
+       "mutable Sleeper handle/team name are display fields, not identity",
+       str(mine and (mine[0].get("handle"), mine[0].get("team_name"))))
     ok(mine and mine[0]["franchise"] == "Antdell & Ernie",
        "the franchise era key is unchanged by the team-name work")
     _up = drp[drp.index("UPNEXT-BEGIN"):drp.index("UPNEXT-END")]
@@ -1123,6 +1155,7 @@ if all(os.path.exists(os.path.join(TEASER, f)) for f in _tfiles):
                   + _top("TE", 1) + _top("K", 1) + _top("DEF", 1))
     handles = {r["handle"] for r in em3["rosters"] if r.get("handle")}
     franchises = {r["franchise"] for r in em3["rosters"] if r.get("franchise")}
+    team_names = {r["team_name"] for r in em3["rosters"] if r.get("team_name")}
     top150 = [p["name"] for p in _pl[:150]]
     for f in _tfiles:
         src_t = open(os.path.join(TEASER, f)).read()
@@ -1133,7 +1166,8 @@ if all(os.path.exists(os.path.join(TEASER, f)) for f in _tfiles):
                  if t in src_t]
         ok(not leaks, f"teaser {f}: reaches no data, no shard, no real page",
            "; ".join(leaks))
-        oleaks = [h for h in (handles | franchises) if h and h in src_t]
+        oleaks = [h for h in (handles | franchises | team_names)
+                  if h and h in src_t]
         ok(not oleaks,
            f"teaser {f}: nothing about how this league's teams draft",
            "; ".join(oleaks[:3]))
