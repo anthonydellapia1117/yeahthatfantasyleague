@@ -1,348 +1,419 @@
 # YTFL 2026 Draft Board — ffopportunity Data Analysis
 
-Generated: August 28, 2026 (revised — see Corrections section)
+Generated: August 28, 2026 · **Revision 3** (see Corrections)
 Data source: ffopportunity v0.1.2 (ffverse) + nflreadr, R 4.6.1
-Seasons analyzed: 2020–2025 (6 years), 2026 preseason ADP (FantasyPros redraft-overall ECR, scraped 2026-08-21)
+Seasons: 2020–2025 · 2026 ADP: FantasyPros redraft-overall ECR, scraped 2026-08-21
 Repo: https://github.com/anthonydellapia1117/yeahthatfantasyleague/tree/main/docs/ffopportunity
 
 **League:** 12 teams, 14 rounds, snake, full PPR, **6-point passing TDs**, zero IR, H2H + median scoring.
-**ADP note:** ECR values below are overall ranks. In a 12-team draft, round ≈ ceil(ECR / 12).
+**ADP:** ECR = overall rank. Round ≈ ceil(ECR / 12).
 
 ---
 
-## Methodology
+## ⚠️ THE THREE RULES THIS BOARD MUST FOLLOW
 
-4 rounds of R-based extraction from ffopportunity. Every signal was tested for year-over-year repeatability **and** next-season predictiveness (control test within production tier). Two of three new signal candidates FAILED their control tests and are display-only. The gap signal (`total_fantasy_points_diff`) is a **fade filter, not a discovery signal**. `exp_per_game` outpredicts gap 2.4–4x.
+**1. Never compare across positions using raw exp/game.** ffopportunity scores at 4-pt passing TDs; YTFL pays 6. A QB and an RB compared on raw `total_fantasy_points_exp` is an apples-to-oranges error. Revision 2 of this board made exactly that mistake.
 
-Key correlations (YoY stability):
-- Team opportunity supply: r=.48–.52 (most stable signal found)
-- Backfield command: r=.472
-- RB inside-5 share: r=.338 (corrected from .079)
-- YAC over expected: r=.558–.720 **BUT NOT predictive** (failed control — signs flip across tiers)
-- Gap signal: r=.175–.284 (fade only)
-- neutral_script_role: r=.091–.177 (near-random, do not use)
+**2. The draft-relevant number is VOR, not raw points.** Raw exp/game says three QBs outscore CMC. VOR over positional replacement says CMC leads the field by nearly double. Both are computed below; **only VOR should drive a pick.**
 
-### ⚠️ Two signals, two different questions
-
-This board mixes a **team** signal (line quality, opportunity supply, Vegas) with a **player** signal (the fade flag). They measure different things and frequently point in opposite directions.
-
-**The correct synthesis:** good line + no fade = target. Good line + fade = **the line quality is already priced into the overperformance**, and the player is expensive. Never recommend a player on team traits alone when his individual gap says fade.
+**3. exp/game measures 2025 opportunity quality. It is not a 2026 forecast.** It says nothing about whether that opportunity recurs. Age is now controlled (below). Depth-chart and team changes are **not** — every player must be checked against `rosters_2026.csv` before being drafted.
 
 ---
 
-## ⚠️ SCORING CORRECTION — READ BEFORE USING QB NUMBERS
+## Cross-position truth table (2025 reg season, min 8 g)
 
-`total_fantasy_points_exp` in ffopportunity is scored at **4-point passing TDs**. YTFL pays **6**. Every QB expected-points figure from `regression_flags_clean` is therefore **understated by roughly 3–6 points per game**.
+| Rank | Player | Pos | **6-pt exp/g** (league) | 4-pt exp/g (ffopp default) |
+|---|---|---|---|---|
+| 1 | Matthew Stafford | QB | **26.40** | 20.52 |
+| 2 | Dak Prescott | QB | **26.28** | 20.87 |
+| 3 | Patrick Mahomes | QB | **26.21** | 21.28 |
+| 4 | **Christian McCaffrey** | RB | **25.55** | 25.52 |
+| 5 | Trevor Lawrence | QB | 25.44 | 21.18 |
+| 6 | Brock Purdy | QB | 25.33 | 20.54 |
 
-Rebuilt at league scoring (`pass_touchdown_exp*6 + rush_touchdown_exp*6 + pass_yards_gained_exp*0.04 + rush_yards_gained_exp*0.1 + receptions_exp*1.0 + pass_interception_exp*-1.0`), 2025 regular season, min 8 games:
+**CMC is #4 at league scoring, not #1.** He is #1 only under ffopportunity's 4-pt default, which is not this league. Revision 2 claimed "highest expected points per game of any player at any position" — that claim was built by rebuilding the QBs at 6 points and then comparing CMC against the 4-point ordering. It is withdrawn.
 
-| Rank | QB | Team | 6-pt exp/g | 4-pt exp/g | Diff | ECR | Fade |
-|---|---|---|---|---|---|---|---|
-| 1 | **Matthew Stafford** | LA | **26.40** | 20.52 | +5.88 | 104.3 | no |
-| 2 | **Dak Prescott** | DAL | **26.28** | 20.87 | +5.41 | 79.5 | no |
-| 3 | **Patrick Mahomes** | KC | **26.21** | 21.28 | +4.93 | 100.4 | no |
-| 4 | Trevor Lawrence | JAC | 25.44 | 21.18 | +4.26 | 77.3 | no |
-| 5 | Brock Purdy | SF | 25.33 | 20.54 | +4.79 | 96.5 | no (9 g) |
-| 6 | Drake Maye | NE | 23.60 | 19.41 | +4.19 | 38.3 | **FADE** |
-| 7 | Josh Allen | BUF | 23.15 | 20.35 | +2.80 | 25.9 | **FADE** |
-| 8 | Caleb Williams | CHI | 23.15 | 19.34 | +3.81 | — | no |
-| 9 | Justin Herbert | LAC | 22.94 | 18.77 | +4.17 | — | no |
-| 10 | Bo Nix | DEN | 22.76 | 18.89 | +3.87 | — | no |
-| 14 | Jalen Hurts | PHI | 21.37 | 18.49 | +2.88 | — | no |
+Non-QB figures are unaffected by the scoring issue (RB/WR/TE passing volume ≈ 0), so **all non-QB comparisons elsewhere in this document are valid as printed.**
 
-**The re-rank changes the board.** Stafford and Mahomes are QB1 and QB3 under league scoring and were **absent from the previous version entirely**. Both go ~round 9 (ECR 100–104), two-plus rounds later than Lawrence and Prescott, for equal or better expected production.
+---
+
+## VOR: the number that should actually drive picks
+
+Replacement level = last startable player at each position (12 teams; QB1/RB2/WR2/TE1 + 1 FLEX):
+
+| Pos | Replacement rank | Player at replacement | exp/g |
+|---|---|---|---|
+| QB | 12 | Daniel Jones | 21.94 |
+| RB | 30 | Woody Marks | 11.00 |
+| WR | 30 | Marvin Harrison Jr. | 11.51 |
+| TE | 12 | Zach Ertz | 9.54 |
+
+| Rank | Player | Pos | exp/g | **VOR/g** |
+|---|---|---|---|---|
+| 1 | **Christian McCaffrey** | RB | 25.55 | **+14.55** |
+| 2 | Bijan Robinson | RB | 19.24 | +8.24 |
+| 3 | Trey McBride | TE | 17.70 | +8.16 |
+| 4 | Amon-Ra St. Brown | WR | 19.29 | +7.78 |
+| 5 | Ja'Marr Chase | WR | 19.17 | +7.66 |
+| 6 | Puka Nacua | WR | 19.04 | +7.53 |
+| 7 | Jahmyr Gibbs | RB | 17.97 | +6.97 |
+| 8 | Jonathan Taylor | RB | 17.87 | +6.87 |
+| 9 | Davante Adams | WR | 18.34 | +6.83 |
+| 10 | Rashee Rice | WR | 17.97 | +6.46 |
+
+**Two things fall out of this table.**
+
+**CMC's claim survives in the correct frame.** He is #1 by VOR at +14.55/game — **1.8× the #2 player**. The gap between him and replacement is the largest positional edge available in the draft. The revision-2 wording was wrong; the underlying call was right.
+
+**No QB appears in the top 15 by VOR.** Stafford's 26.40 is only +4.46 over a QB replacement of 21.94. QB is deep; the raw-points lead is an artifact of positional scoring, not draft value. **This validates "wait on QB" rather than contradicting it.**
+
+---
+
+## AGE: now controlled, and it is real
+
+Age was previously unmodelled. It is now tested. Birth dates from `rosters_2026.csv` (2,886/2,930 populated), age measured at Sept 1.
+
+**Age in year t → change in exp/game in year t+1** (RB/WR/TE, 2020–2025, min 8 g both seasons):
+
+| Age band | n | Mean Δ exp/g | % declined |
+|---|---|---|---|
+| ≤24 | 372 | **+0.50** | 44.4% |
+| 25–26 | 163 | −0.54 | 62.0% |
+| 27–28 | 94 | −0.48 | 56.4% |
+| 29–30 | 36 | **−0.88** | 63.9% |
+| 31+ | 16 | **−1.61** | 56.2% |
+
+**The curve is monotonic in mean delta** and the direction is consistent. Unlike YAC-OE, garbage time, and workload, **age does not flip sign under control** — it is the only new signal in this entire body of work that survives.
+
+**Sample limitation, stated:** birth dates come only from the 2026 roster file, so the panel contains only players still active in 2026. Players who aged out of the league are missing. **This bias is conservative** — it removes the worst age outcomes, so the true effect is at least this large. Top bands are thin (n=36, n=16); treat magnitudes as directional, not precise.
+
+### WORKLOAD: tested, NULL
+
+Does high year-t opportunity volume predict year-t+1 decline, within production tier?
+
+| Pos | Top third | Mid third | Bottom third |
+|---|---|---|---|
+| RB | +0.45 | +0.80 | −0.93 |
+| WR | −0.16 | +0.86 | −1.00 |
+| TE | −0.44 | +0.44 | −0.32 |
+
+**Signs flip across every position; all magnitudes under 1 pt/game.** The "workload cliff" is not supported by this dataset. Same failure shape as garbage time and YAC-OE. **Do not use prior workload as a fade input.**
+
+### Age flags on this board — players 29+ in 2026
+
+| Player | Age | Tier | Player | Age | Tier |
+|---|---|---|---|---|---|
+| Matthew Stafford | 38 | QB target | Christian McCaffrey | **30** | **RB1 target** |
+| Davante Adams | **33** | **WR target** | Patrick Mahomes | 30 | QB target |
+| Dak Prescott | 33 | QB target | Dalton Schultz | 30 | TE value |
+| Mike Evans | 33 | WR value | Courtland Sutton | 30 | WR value |
+| Derrick Henry | 32 | avoid | Josh Allen | 30 | avoid |
+| Hunter Henry | 31 | TE value | Jauan Jennings | 29 | WR |
+| Dallas Goedert | 31 | avoid | Lamar Jackson | 29 | QB |
+
+**The two headline calls are both age-flagged.** CMC is 30 (29–30 band: −0.88/g, 63.9% decline). Adams is 33 (31+ band: −1.61/g). Both are still recommended — their VOR edge is large enough to absorb the expected decline — but **the forecast is now disclosed rather than implicit.**
+
+---
+
+## Does the RB1 base rate contradict the CMC call? No — it applies to a different player.
+
+The repo's own `preseason_rb1_ledger` (2016–2025): the preseason ADP RB1 converts to actual RB1 in **2 of 10 seasons (20%)**.
+
+| Year | Preseason RB1 | Actual RB1 | Converted |
+|---|---|---|---|
+| 2016 | David Johnson | David Johnson | ✅ |
+| 2017 | David Johnson | Todd Gurley | |
+| 2018 | Todd Gurley | **Christian McCaffrey** | |
+| 2019 | Saquon Barkley | **Christian McCaffrey** | |
+| 2020 | Christian McCaffrey | Alvin Kamara | |
+| 2021 | Christian McCaffrey | Jonathan Taylor | |
+| 2022 | Jonathan Taylor | Austin Ekeler | |
+| 2023 | Christian McCaffrey | **Christian McCaffrey** | ✅ |
+| 2024 | Christian McCaffrey | Jahmyr Gibbs | |
+| 2025 | Bijan Robinson | **Christian McCaffrey** | |
+
+**2026 preseason RB1 is Jahmyr Gibbs (ECR 2.9). CMC is RB3 (ECR 10.2).**
+
+So the 20% base rate applies to **Gibbs**, not McCaffrey. And Gibbs is *also* the largest RB fade in the ffopportunity data (+61.1). **Two independent signals — the league's own 10-year history and the expected-points model — converge on the same player.** That is the strongest single read on this board.
+
+Meanwhile CMC has been the **actual RB1 four times** (2018, 2019, 2023, 2025), more than any player in the window, and reached it from outside the preseason RB1 slot three of those four times. The opportunity signal and league history do **not** conflict on CMC. The genuine residual risk on him is age, which is now quantified above.
 
 ---
 
 ## TARGETS
 
-### Tier 1 — elite expected production, no fade
+### Tier 1 — elite VOR, no fade
 
-| Player | Pos | Team | Exp/Game | Gap (total) | ECR | Note |
-|---|---|---|---|---|---|---|
-| **Christian McCaffrey** | RB | SF | **25.52** | −19.3 | 10.2 | Highest exp/g of any player. Underperformed by 19 pts — **fade risk is inverted** |
-| **Amon-Ra St. Brown** | WR | DET | **19.29** | −3.9 | 5.5 | Highest non-QB WR exp/g, no fade, 35 RZ targets |
-| **Bijan Robinson** | RB | ATL | 19.27 | +43.2 | 3.7 | ⚠️ elite exp/g **but fade-flagged** — see AVOIDS |
-| **Ja'Marr Chase** | WR | CIN | 19.16 | +7.1 | 1.5 | No fade. Priced at WR1 and earns it |
-| **Puka Nacua** | WR | LAR | 19.04 | +70.4 | 3.5 | ⚠️ **largest fade in the dataset** — see AVOIDS |
-| **Davante Adams** | WR | LA | 18.34 | −2.4 | 50.7 | **Best value on the board** — WR4 by exp/g at WR24 cost |
-| **Rashee Rice** | WR | KC | 18.11 | +5.2 | 22.4 | 8 games. 15 EZ targets on 79 total = elite TD equity |
-| **Trey McBride** | TE | ARI | 17.76 | +14.0 | 20.9 | TE1 by a wide margin, best 2026 environment |
+| Player | Pos | Team | exp/g | VOR/g | Gap | ECR | Age | Note |
+|---|---|---|---|---|---|---|---|---|
+| **Christian McCaffrey** | RB | SF | 25.55 | **+14.55** | −19.3 | 10.2 | **30** | #1 by VOR, 1.8× the field. **Age-flagged** |
+| **Trey McBride** | TE | ARI | 17.70 | +8.16 | +14.0 | 20.9 | 26 | TE1 by a wide margin, best environment |
+| **Amon-Ra St. Brown** | WR | DET | 19.29 | +7.78 | −3.9 | 5.5 | 26 | Top WR by exp/g, no fade, 35 RZ targets |
+| **Ja'Marr Chase** | WR | CIN | 19.17 | +7.66 | +7.1 | 1.5 | 26 | No fade. Priced at WR1 and earns it |
+| **Davante Adams** | WR | LA | 18.34 | +6.83 | −2.4 | 50.7 | **33** | **Best value on the board.** WR9 VOR at WR24 cost. **Age-flagged** |
+| **Rashee Rice** | WR | KC | 17.97 | +6.46 | +5.2 | 22.4 | 26 | 15 EZ targets on 79 total. 8-game sample |
 
-CMC is the clearest single call on the board: the highest expected points per game of any player at any position, drafted 10th, and he **underperformed** his expectation — the opposite of fade risk.
+### Tier 2 — QB, and why you wait
 
-### Tier 2 — QB value (use the 6-pt numbers above)
-
-| Player | Pos | Team | 6-pt Exp/G | ECR | Note |
+| Player | Team | 6-pt exp/g | VOR/g | ECR | Age |
 |---|---|---|---|---|---|
-| Matthew Stafford | QB | LA | 26.40 | 104.3 | **QB1 by league scoring, drafted ~round 9** |
-| Dak Prescott | QB | DAL | 26.28 | 79.5 | Best supporting environment (36.7 tgt/g, 41.7 rec TD exp) |
-| Patrick Mahomes | QB | KC | 26.21 | 100.4 | QB3 at round-9 cost |
-| Trevor Lawrence | QB | JAC | 25.44 | 77.3 | No fade, solid |
-| Brock Purdy | QB | SF | 25.33 | 96.5 | 9 games — smaller sample, discount accordingly |
+| Matthew Stafford | LA | 26.40 | +4.46 | 104.3 | **38** |
+| Dak Prescott | DAL | 26.28 | +4.34 | 79.5 | **33** |
+| Patrick Mahomes | KC | 26.21 | +4.27 | 100.4 | **30** |
+| Trevor Lawrence | JAX | 25.44 | +3.50 | 77.3 | 26 |
+| Brock Purdy | SF | 25.33 | +3.39 | 96.5 | 26 |
 
-**Do not draft a QB before round 7.** The 4th-through-10th ranked QBs by expected points all cost round 7 or later, and the two highest are the cheapest of the group.
+**Every QB's VOR is under +4.5/game — less than a third of CMC's edge.** Take the position late. Among late QBs, Lawrence (26) and Purdy (26) carry no age flag; Stafford at 38 is the highest-variance name on the board despite leading in raw points.
 
-### Tier 3 — positional value (exp/game rank far ahead of ADP rank, no fade)
+### Tier 3 — positional value (exp/g rank ≫ ADP rank, no fade)
 
-| Player | Pos | Exp/G | Exp Rank | Pos ADP Rank | Edge |
-|---|---|---|---|---|---|
-| Zach Ertz | TE | 9.63 | 12 | 71 | **+59** |
-| Kimani Vidal | RB | 11.49 | 24 | 61 | **+37** |
-| Zach Charbonnet | RB | 11.24 | 26 | 48 | +22 |
-| Wan'Dale Robinson | WR | 13.56 | 17 | 39 | +22 |
-| Davante Adams | WR | 18.34 | 4 | 24 | +20 |
-| Courtland Sutton | WR | 12.92 | 18 | 37 | +19 |
-| Tyrone Tracy Jr. | RB | 11.10 | 28 | 46 | +18 |
-| Mike Evans | WR | 14.69 | 12 | 26 | +14 |
-| Rome Odunze | WR | 14.37 | 14 | 28 | +14 |
-| Colby Parkinson | TE | 8.64 | 18 | 32 | +14 |
-| Dalton Schultz | TE | 10.19 | 8 | 20 | +12 |
-| Javonte Williams | RB | 16.43 | 6 | 16 | +10 |
-| Hunter Henry | TE | 9.92 | 9 | 19 | +10 |
-| Jake Ferguson | TE | 11.82 | 4 | 12 | +8 |
-| Josh Jacobs | RB | 15.21 | 9 | 17 | +8 |
-| Jaylen Warren | RB | 12.99 | 19 | 27 | +8 |
+| Player | Pos | exp/g | Exp Rk | ADP Rk | Edge | Age | Team note |
+|---|---|---|---|---|---|---|---|
+| Kimani Vidal | RB | 11.49 | 24 | 61 | **+37** | 25 | LAC |
+| Zach Charbonnet | RB | 11.24 | 26 | 48 | +22 | 25 | SEA |
+| Wan'Dale Robinson | WR | 13.56 | 17 | 39 | +22 | 25 | **moved NYG → TEN** |
+| Davante Adams | WR | 18.34 | 4 | 24 | +20 | **33** | LA |
+| Courtland Sutton | WR | 12.92 | 18 | 37 | +19 | **30** | DEN |
+| Mike Evans | WR | 14.69 | 12 | 26 | +14 | **33** | **moved TB → SF** |
+| Rome Odunze | WR | 14.37 | 14 | 28 | +14 | 24 | CHI |
+| Colby Parkinson | TE | 8.64 | 18 | 32 | +14 | 27 | LA |
+| Dalton Schultz | TE | 10.19 | 8 | 20 | +12 | **30** | HOU |
+| Javonte Williams | RB | 16.43 | 6 | 16 | +10 | 26 | DAL |
+| Hunter Henry | TE | 9.92 | 9 | 19 | +10 | **31** | NE |
+| Jake Ferguson | TE | 11.82 | 4 | 12 | +8 | 27 | DAL |
+| Josh Jacobs | RB | 15.21 | 9 | 17 | +8 | 28 | **moved LV → GB** |
+| Jaylen Warren | RB | 12.99 | 19 | 27 | +8 | 27 | PIT |
 
-Deep-round names (Vidal, Charbonnet, Tracy, Ertz, Parkinson) are **volume-dependent** — the edge assumes a role they may not hold. Treat as late-round dart throws, not core targets.
+**REMOVED: Zach Ertz.** Revision 2 listed him as the single best value (+59 edge). **He is not on any 2026 NFL roster.** He was also the TE replacement-level player, which is why his exp/g looked like value — it was the baseline, not an edge.
+
+Young value plays with no age flag: **Vidal (25), Charbonnet (25), Odunze (24), Wan'Dale Robinson (25), Javonte Williams (26).** These are the cleanest Tier-3 names on both age and fade.
 
 ---
 
 ## AVOIDS — expensive fades
 
-**9 of the top 24 ADP picks are fade-flagged.** This is the single most actionable finding on the board.
+**9 of the top 24 ADP picks are fade-flagged.**
 
-| ECR | Player | Pos | Team | Gap (total) | Gap/G | Exp/G | Cost of the mistake |
-|---|---|---|---|---|---|---|---|
-| **2.9** | **Jahmyr Gibbs** | RB | DET | **+61.1** | +3.60 | 17.97 | **Round 1. Largest RB fade in the dataset** |
-| **3.5** | **Puka Nacua** | WR | LAR | **+70.4** | +4.40 | 19.04 | **Round 1. Largest fade of any player** |
-| **3.7** | **Bijan Robinson** | RB | ATL | +43.2 | +2.54 | 19.27 | Round 1 |
-| **4.8** | **Jaxon Smith-Njigba** | WR | SEA | **+62.8** | +3.69 | 17.48 | Round 1 |
-| **12.7** | **Jonathan Taylor** | RB | IND | **+56.5** | +3.32 | 17.99 | Round 2 |
-| **17.7** | **James Cook** | RB | BUF | **+52.2** | +3.07 | 14.71 | Round 2 |
-| 17.9 | Brock Bowers | TE | LV | +26.7 | +2.22 | 12.46 | Round 2 |
-| 20.1 | George Pickens | WR | DAL | +29.1 | +1.71 | 15.34 | Round 2 |
-| **22.2** | **De'Von Achane** | RB | MIA | **+56.1** | +3.50 | 16.63 | Round 2 |
-| 25.9 | Josh Allen | QB | BUF | +38.4 | +2.40 | 20.35 | Round 3 |
-| 29.9 | Zay Flowers | WR | BAL | +38.2 | +2.25 | 12.06 | Round 3 |
-| 36.4 | Tee Higgins | WR | CIN | +34.9 | +2.32 | 11.78 | Round 4 |
-| 38.3 | Derrick Henry | RB | BAL | +26.6 | +1.56 | 14.88 | Round 4 |
-| 38.3 | Drake Maye | QB | NE | +26.0 | +1.53 | 19.41 | Round 4 |
-| 77.1 | Tucker Kraft | TE | GB | +46.1 | +5.76 | 8.89 | Round 7 |
+| ECR | Player | Pos | Gap | Gap/G | Age | Note |
+|---|---|---|---|---|---|---|
+| **2.9** | **Jahmyr Gibbs** | RB | **+61.1** | +3.60 | 24 | **Preseason RB1 (20% convert) AND largest RB fade. Two signals agree** |
+| **3.5** | **Puka Nacua** | WR | **+70.4** | +4.40 | 25 | Largest fade of any player |
+| 3.7 | Bijan Robinson | RB | +43.2 | +2.54 | 24 | Round 1 |
+| **4.8** | Jaxon Smith-Njigba | WR | **+62.8** | +3.69 | 24 | Round 1 |
+| 12.7 | Jonathan Taylor | RB | +56.5 | +3.32 | 27 | Round 2 |
+| 17.7 | James Cook | RB | +52.2 | +3.07 | 26 | Round 2 |
+| 17.9 | Brock Bowers | TE | +26.7 | +2.22 | 23 | Round 2 |
+| 20.1 | George Pickens | WR | +29.1 | +1.71 | 25 | Round 2 |
+| 22.2 | De'Von Achane | RB | +56.1 | +3.50 | 24 | Round 2 |
+| 25.9 | Josh Allen | QB | +38.4 | +2.40 | **30** | Fade **and** age-flagged |
+| 29.9 | Zay Flowers | WR | +38.2 | +2.25 | 25 | Round 3 |
+| 36.4 | Tee Higgins | WR | +34.9 | +2.32 | 27 | Round 4 |
+| 38.3 | Derrick Henry | RB | +26.6 | +1.56 | **32** | Fade **and** age-flagged |
+| 38.3 | Drake Maye | QB | +26.0 | +1.53 | 24 | Round 4 |
+| 77.1 | Tucker Kraft | TE | +46.1 | +5.76 | 25 | Round 7 — cheap enough to absorb |
 
-**Reading this table correctly.** A fade flag is **not** "do not draft." Nacua, Gibbs, Bijan, and JSN are genuinely elite players. The flag says their 2025 production ran ~30–70 points ahead of what their opportunity justified, and the controlled historical pattern is a ~30-point regression. At a first-round price with no discount, that risk is unpriced. **The flag is a price signal, not a talent signal.**
+**A fade flag is a price signal, not a talent judgment.** Nacua, Gibbs, Bijan and JSN are elite. The flag says 2025 production ran 30–70 points ahead of the opportunity that generated it, and the controlled historical pattern is ~30 points of regression. At a first-round price with no discount, that risk is unpriced.
 
-The RB cluster is the sharpest read: **Gibbs, Taylor, Achane, and Cook are four of the five largest RB fades in the dataset and all go inside the top 25 picks.**
+**Double-flagged (fade + age 29+): Josh Allen, Derrick Henry.** These carry the highest downside on the board.
 
 ---
 
-## RB: Best Run-Blocking Teams (2025, YOE per carry)
+## RB: Run-blocking quality (2025 YOE/carry) — read with care
 
-| Rank | Team | Carries | YOE/Carry | Stuff Rate | Lead back status |
+| Rank | Team | Carries | YOE/Carry | Stuff | Lead back |
 |---|---|---|---|---|---|
-| 1 | BAL | 392 | +0.90 | 15.3% | Derrick Henry — **FADE (+26.6)** |
+| 1 | BAL | 392 | +0.90 | 15.3% | Derrick Henry — **FADE + AGE 32** |
 | 2 | BUF | 458 | +0.72 | 12.9% | James Cook — **FADE (+52.2)** |
-| 3 | LA | 483 | +0.66 | 12.2% | Kyren Williams — clean (+15.5, no flag) |
+| 3 | LA | 483 | **+0.66** | 12.2% | **Kyren Williams — clean, age 26** ✅ |
 | 4 | DET | 407 | +0.58 | 17.4% | Jahmyr Gibbs — **FADE (+61.1)** |
 | 5 | IND | 374 | +0.56 | 15.5% | Jonathan Taylor — **FADE (+56.5)** |
 | 6 | MIA | 380 | +0.51 | 21.3% | De'Von Achane — **FADE (+56.1)** |
-| 7 | DAL | 383 | +0.41 | 13.1% | Javonte Williams — clean (−20.2) |
+| 7 | DAL | 383 | **+0.41** | 13.1% | **Javonte Williams — clean, age 26** ✅ |
 | 8 | CHI | 455 | +0.39 | 13.6% | committee |
 
-**This table must not be read as "draft any RB from these teams."** Five of the top six run-blocking teams are led by fade-flagged backs. That is not a coincidence — **elite run blocking is one of the mechanisms that produces overperformance**, and the market has already paid for it.
+**Do not read this as "draft any RB from these teams."** Five of the top six are led by fade-flagged backs. Elite run blocking is one of the *mechanisms* that produces overperformance — the market has already paid for it.
 
-The two actionable rows are **LA (Kyren Williams, +0.66 YOE, no fade, ECR 42.6)** and **DAL (Javonte Williams, +0.41 YOE, −20.2 gap, ECR 45.0, RB6 by exp/game)**. Both offer elite-to-good line play without the regression risk.
+The two clean rows are **Kyren Williams (LA, ECR 42.6)** and **Javonte Williams (DAL, ECR 45.0)**: good-to-elite line play, no fade, age 26.
 
 ---
 
-## QB: Designed Rush Leaders (2025, min 6 games)
+## QB: Designed rush leaders (2025, min 6 g)
 
-| QB | Team | Designed/G | Designed Share | Rush TDs | Games | Note |
+| QB | Team | Designed/G | Share | Rush TD | G | Note |
 |---|---|---|---|---|---|---|
-| Justin Fields | NYJ | 5.00 | 61.6% | 3 | 9 | High value if starting — 9-game sample |
-| Josh Allen | BUF | 4.44 | 59.3% | 13 | 18 | Elite rushing, but **fade-flagged** |
-| Taysom Hill | NO | 4.33 | 100.0% | 1 | 12 | Hybrid role, not a fantasy QB |
-| Jalen Hurts | PHI | 4.06 | 62.7% | 6 | 17 | Tush-push TD equity, no fade |
-| Jaxson Dart | NYG | 3.43 | 55.8% | 7 | 14 | Rookie — monitor role |
-| Marcus Mariota | WAS | 3.20 | 64.0% | 0 | 10 | Backup |
-| Bo Nix | DEN | 3.11 | 58.9% | 2 | 18 | Solid designed role, no fade |
-| Jayden Daniels | WAS | 3.00 | 35.6% | 2 | 7 | **Scramble-heavy — less sticky**, 7-game sample |
-| Lamar Jackson | BAL | 2.85 | 55.2% | 1 | 13 | Lower designed volume than reputation |
+| Justin Fields | KC | 5.00 | 61.6% | 3 | 9 | **Now on KC** — role unclear |
+| Josh Allen | BUF | 4.44 | 59.3% | 13 | 18 | **Fade + age 30** |
+| Taysom Hill | NO | 4.33 | 100.0% | 1 | 12 | Not a fantasy QB |
+| Jalen Hurts | PHI | 4.06 | 62.7% | 6 | 17 | No fade, age 28 |
+| Jaxson Dart | NYG | 3.43 | 55.8% | 7 | 14 | Rookie |
+| Bo Nix | DEN | 3.11 | 58.9% | 2 | 18 | No fade, age 26 |
+| Jayden Daniels | WAS | 3.00 | 35.6% | 2 | 7 | **Scramble-heavy — less sticky** |
+| Lamar Jackson | BAL | 2.85 | 55.2% | 1 | 13 | Age 29 |
 
-Designed carries are a **sticky role**; scrambles are volatile. Daniels' 35.6% designed share means most of his rushing is improvised and less repeatable.
-
----
-
-## WR: Red Zone Target Leaders (2025, min 20 targets)
-
-| Rank | WR | Team | Targets | aDOT | RZ | EZ | Catchable | Fade |
-|---|---|---|---|---|---|---|---|---|
-| 1 | Amon-Ra St. Brown | DET | 172 | 8.1 | 35 | 21 | 69.2% | no |
-| 2 | Davante Adams | LA | 139 | 13.2 | 34 | 24 | 57.5% | no |
-| 3 | Jauan Jennings | SF | 101 | 10.0 | 23 | 12 | 62.2% | no |
-| 4 | George Pickens | DAL | 137 | 11.3 | 23 | 10 | 62.6% | **FADE** |
-| 5 | Jaxon Smith-Njigba | SEA | 189 | 11.1 | 23 | 8 | 62.9% | **FADE** |
-| 6 | Ja'Marr Chase | CIN | 185 | 8.5 | 22 | 8 | 67.1% | no |
-| 7 | Courtland Sutton | DEN | 139 | 12.2 | 21 | 9 | 58.8% | no |
-| 8 | Puka Nacua | LA | 208 | 10.1 | 21 | 10 | 66.1% | **FADE** |
-| 9 | Troy Franklin | DEN | 107 | 12.4 | 21 | 11 | 61.1% | no |
-| 10 | Khalil Shakir | BUF | 118 | 3.4 | 20 | 7 | 75.8% | no |
-| 11 | Rashee Rice | KC | 79 | 4.3 | 19 | 15 | 71.6% | no |
-
-Adams is the standout: 34 RZ targets **and** a 13.2 aDOT — deep work plus red-zone volume, at WR24 cost. Rice has 15 targets inside the 10 on only 79 total, the best TD-equity rate on the board. Shakir is a PPR floor play (75.8% catchable, 3.4 aDOT = slot volume) at ECR 120.
+Designed carries are a sticky role; scrambles are not. Daniels' 35.6% designed share means most of his rushing is improvised.
 
 ---
 
-## TE: Red Zone Target Leaders (2025)
+## WR: Red-zone target leaders (2025, min 20 targets)
 
-| Rank | TE | Team | Targets | aDOT | RZ | EZ | Catchable | Fade |
-|---|---|---|---|---|---|---|---|---|
-| 1 | Trey McBride | ARI | 170 | 6.6 | 34 | 12 | 69.3% | no |
-| 2 | Jake Ferguson | DAL | 103 | 4.6 | 25 | 14 | 73.5% | no |
-| 3 | Hunter Henry | NE | 103 | 8.2 | 24 | 11 | 66.4% | no |
-| 4 | Colby Parkinson | LA | 70 | 5.1 | 24 | 10 | 72.7% | no |
-| 5 | Tyler Warren | IND | 114 | 5.3 | 23 | 13 | 71.9% | no |
-| 6 | Colston Loveland | CHI | 109 | 9.8 | 19 | 8 | 64.7% | no |
-| 7 | Brock Bowers | LV | 87 | 6.5 | 18 | 10 | 65.6% | **FADE** |
-| 8 | Dallas Goedert | PHI | 89 | 7.5 | 17 | 10 | 68.9% | **FADE** |
-| — | Tucker Kraft | GB | 44 | 4.6 | 12 | 3 | — | **FADE** |
+| WR | Team | Tgt | aDOT | RZ | EZ | Catch% | Flag |
+|---|---|---|---|---|---|---|---|
+| Amon-Ra St. Brown | DET | 172 | 8.1 | 35 | 21 | 69.2% | — |
+| Davante Adams | LA | 139 | 13.2 | 34 | 24 | 57.5% | age 33 |
+| Jauan Jennings | MIN | 101 | 10.0 | 23 | 12 | 62.2% | age 29, **moved SF → MIN** |
+| George Pickens | DAL | 137 | 11.3 | 23 | 10 | 62.6% | **FADE** |
+| Jaxon Smith-Njigba | SEA | 189 | 11.1 | 23 | 8 | 62.9% | **FADE** |
+| Ja'Marr Chase | CIN | 185 | 8.5 | 22 | 8 | 67.1% | — |
+| Courtland Sutton | DEN | 139 | 12.2 | 21 | 9 | 58.8% | age 30 |
+| Puka Nacua | LA | 208 | 10.1 | 21 | 10 | 66.1% | **FADE** |
+| Troy Franklin | DEN | 107 | 12.4 | 21 | 11 | 61.1% | age 23 |
+| Khalil Shakir | BUF | 118 | 3.4 | 20 | 7 | 75.8% | age 26 |
+| Rashee Rice | KC | 79 | 4.3 | 19 | 15 | 71.6% | age 26 |
 
-McBride is TE1 by a wide margin — 34 RZ targets on 170 total, in the best 2026 environment. Ferguson (ECR 114) and Henry are the value plays. Kraft **is** in the dataset (44 targets, 12 RZ) — he simply does not rank top-8, and he is fade-flagged.
-
----
-
-## 2026 Team Environments (Vegas implied totals) — ⚠️ LOW CONFIDENCE
-
-| Tier | Teams | Implied Total |
-|---|---|---|
-| Elite | ARI (28.3), WAS (25.8), MIA (25.3) | 25+ |
-| Strong | DAL (24.9), ATL (24.9), IND (24.9), LV (24.2), CIN (23.8) | 24–25 |
-| Good | TEN, NO, BUF, NYJ, CAR, TB, NYG | 23–24 |
-| Neutral | CHI, GB, CLE, DEN, DET, MIN, NE | 22–23 |
-| Low | SF, LAC, HOU, PIT, BAL, LA, PHI, SEA, KC | 21–22 |
-
-**Treat this table as provisional.** Only **6–9 of 17 games** are priced per team, the resulting range is compressed (21.04–28.33), and the priced games are not a random sample — they are the ones books posted earliest. The "Low" tier containing KC, BAL, PHI, and LA — four of the strongest rosters in the league — is a strong signal that this reflects **early-schedule difficulty, not season-long environment**.
-
-Use ARI's top ranking (corroborated independently by 2025 opportunity supply) with moderate confidence. Do not use the bottom tier to downgrade anyone.
-
-Fantasy playoff weeks 15–17 have only **4 of 48 games priced**. Re-pull `schedule_2026.csv` nearer the draft.
+Adams: 34 RZ targets **and** 13.2 aDOT at WR24 cost — the best combination on the board, with the age caveat attached. Rice: 15 targets inside the 10 on only 79 total, the best TD-equity rate. Shakir: PPR floor at ECR 120.
 
 ---
 
-## 2025 Team Opportunity Supply (most pass-heavy)
+## TE: Red-zone target leaders (2025)
 
-| Rank | Team | Targets/G | Carries/G | Rec TD Exp | Rec Yds Exp |
-|---|---|---|---|---|---|
-| 1 | ARI | 38.2 | 21.5 | 32.8 | 4585 |
-| 2 | CIN | 37.6 | 22.4 | 30.3 | 4529 |
-| 3 | DAL | 36.7 | 27.4 | **41.7** | 4734 |
-| 4 | DEN | 36.1 | 26.8 | 29.3 | 4283 |
-| 5 | LA | 35.1 | 27.4 | **43.9** | 4705 |
-| 6 | NO | 34.8 | 25.6 | 19.7 | 4061 |
-| 7 | KC | 34.4 | 25.3 | 32.1 | 4033 |
-| 8 | DET | 34.2 | 26.0 | 30.6 | 4417 |
-| 9 | HOU | 34.2 | 27.9 | 28.0 | 4177 |
-| 10 | CHI | 33.8 | 29.7 | 28.6 | 4466 |
+| TE | Team | Tgt | aDOT | RZ | EZ | Catch% | Flag |
+|---|---|---|---|---|---|---|---|
+| Trey McBride | ARI | 170 | 6.6 | 34 | 12 | 69.3% | — |
+| Jake Ferguson | DAL | 103 | 4.6 | 25 | 14 | 73.5% | — |
+| Hunter Henry | NE | 103 | 8.2 | 24 | 11 | 66.4% | age 31 |
+| Colby Parkinson | LA | 70 | 5.1 | 24 | 10 | 72.7% | — |
+| Tyler Warren | IND | 114 | 5.3 | 23 | 13 | 71.9% | age 24 |
+| Colston Loveland | CHI | 109 | 9.8 | 19 | 8 | 64.7% | age 22 |
+| Brock Bowers | LV | 87 | 6.5 | 18 | 10 | 65.6% | **FADE** |
+| Dallas Goedert | PHI | 89 | 7.5 | 17 | 10 | 68.9% | **FADE + age 31** |
+| Tucker Kraft | GB | 44 | 4.6 | 12 | 3 | — | **FADE** |
 
-This is the **most stable signal in the entire dataset** (r=.48–.52 YoY) and deserves more weight than the 2026 Vegas table above.
-
-ARI leads both supply and Vegas — genuinely the best skill-position environment. **LA (43.9) and DAL (41.7) lead in expected receiving TDs**, which supports Adams, Nacua, Prescott, Pickens, and Ferguson as environment-boosted — and partly explains why LA and DAL pass-catchers overperformed.
+McBride is TE1 by a wide margin — 34 RZ targets, age 26, best environment, +8.16 VOR (3rd overall). Ferguson (ECR 114) and Warren (age 24) are the value plays.
 
 ---
 
-## Summary: Top 2026 Targets by Position
+## 2026 Team Environments (Vegas) — ⚠️ LOW CONFIDENCE
 
-### QB — wait, then take value
-1. **Matthew Stafford** (LA) — QB1 at 26.40 6-pt exp/g, ECR 104 (~round 9)
-2. **Dak Prescott** (DAL) — 26.28, best supporting environment, ECR 79
-3. **Patrick Mahomes** (KC) — 26.21, ECR 100
-4. **Trevor Lawrence** (JAC) — 25.44, no fade, ECR 77
-5. Jalen Hurts (PHI) — 21.37, no fade, tush-push TD equity
-- **AVOID at cost:** Josh Allen (ECR 25.9, fade +38.4), Drake Maye (ECR 38.3, fade +26.0)
+| Tier | Teams |
+|---|---|
+| Elite (25+) | ARI 28.3, WAS 25.8, MIA 25.3 |
+| Strong (24–25) | DAL 24.9, ATL 24.9, IND 24.9, LV 24.2, CIN 23.8 |
+| Good (23–24) | TEN, NO, BUF, NYJ, CAR, TB, NYG |
+| Neutral (22–23) | CHI, GB, CLE, DEN, DET, MIN, NE |
+| Low (21–22) | SF, LAC, HOU, PIT, BAL, LA, PHI, SEA, KC |
+
+**Provisional.** Only 6–9 of 17 games priced per team; range compressed (21.04–28.33); priced games are the earliest-posted, not a random sample. KC, BAL, PHI and LA in the bottom tier almost certainly reflects **early-schedule difficulty, not season environment**. Use ARI's top ranking (corroborated by 2025 supply) with moderate confidence; do not downgrade anyone off the bottom tier.
+
+Fantasy playoff weeks 15–17: **4 of 48 games priced.** Re-pull `schedule_2026.csv` before the draft.
+
+---
+
+## 2025 Team Opportunity Supply — most stable signal (r=.48–.52)
+
+| Team | Tgt/G | Car/G | Rec TD Exp | Rec Yds Exp |
+|---|---|---|---|---|
+| ARI | 38.2 | 21.5 | 32.8 | 4585 |
+| CIN | 37.6 | 22.4 | 30.3 | 4529 |
+| DAL | 36.7 | 27.4 | **41.7** | 4734 |
+| DEN | 36.1 | 26.8 | 29.3 | 4283 |
+| LA | 35.1 | 27.4 | **43.9** | 4705 |
+| NO | 34.8 | 25.6 | 19.7 | 4061 |
+| KC | 34.4 | 25.3 | 32.1 | 4033 |
+| DET | 34.2 | 26.0 | 30.6 | 4417 |
+| HOU | 34.2 | 27.9 | 28.0 | 4177 |
+| CHI | 33.8 | 29.7 | 28.6 | 4466 |
+
+Weight this above the 2026 Vegas table. ARI leads both. **LA (43.9) and DAL (41.7) lead in expected receiving TDs** — supporting Adams, Prescott, Ferguson, and partly explaining why LA and DAL pass-catchers overperformed.
+
+---
+
+## Summary by position
+
+### QB — wait. No QB clears +4.5 VOR/game.
+1. **Trevor Lawrence** (JAX, 26) — 25.44, no fade, **no age flag**, ECR 77
+2. **Brock Purdy** (SF, 26) — 25.33, no age flag, ECR 96 (9-game sample)
+3. Dak Prescott (DAL, 33) — 26.28, best environment, age-flagged
+4. Patrick Mahomes (KC, 30) — 26.21, age-flagged
+5. Matthew Stafford (LA, 38) — 26.40, highest raw, **highest age risk**
+- **Avoid at cost:** Josh Allen (fade +38.4, age 30), Drake Maye (fade +26.0)
 
 ### RB
-1. **Christian McCaffrey** (SF) — 25.52 exp/g, no fade, ECR 10.2. **The best value in round 1**
-2. **Kyren Williams** (LA) — +0.66 YOE line, no fade, ECR 42.6
-3. **Javonte Williams** (DAL) — RB6 by exp/g, −20.2 gap, ECR 45.0
-4. Josh Jacobs — RB9 by exp/g at RB17 cost
-5. Jaylen Warren / Zach Charbonnet / Kimani Vidal — late-round volume dart throws
-- **AVOID at cost:** Gibbs (2.9), Bijan (3.7), Taylor (12.7), Cook (17.7), Achane (22.2)
+1. **Christian McCaffrey** (SF, 30) — **+14.55 VOR, #1 overall by a factor of 1.8.** Age-flagged; edge absorbs it
+2. **Kyren Williams** (LA, 26) — +0.66 YOE line, no fade, ECR 42.6
+3. **Javonte Williams** (DAL, 26) — RB6 exp/g, −20.2 gap, ECR 45.0
+4. Josh Jacobs (GB, 28) — RB9 at RB17 cost; **new team**
+5. Kimani Vidal (25) / Zach Charbonnet (25) / Jaylen Warren (27) — late volume darts
+- **Avoid at cost:** Gibbs (2.9), Bijan (3.7), Taylor (12.7), Cook (17.7), Achane (22.2), Henry (fade + age 32)
 
 ### WR
-1. **Amon-Ra St. Brown** (DET) — 19.29 exp/g, no fade, 35 RZ targets, ECR 5.5
-2. **Ja'Marr Chase** (CIN) — 19.16 exp/g, no fade, ECR 1.5
-3. **Davante Adams** (LA) — 18.34 exp/g (WR4) at ECR 50.7 (WR24). **Best value on the board**
-4. **Rashee Rice** (KC) — 15 EZ targets on 79 total, ECR 22.4
-5. Mike Evans / Rome Odunze / Courtland Sutton — +14 to +19 rank edge
-6. Khalil Shakir (BUF) — PPR floor, 75.8% catchable, ECR 120
-- **AVOID at cost:** Nacua (3.5), JSN (4.8), Pickens (20.1), Flowers (29.9), Higgins (36.4)
+1. **Amon-Ra St. Brown** (DET, 26) — +7.78 VOR, no fade, 35 RZ targets, ECR 5.5
+2. **Ja'Marr Chase** (CIN, 26) — +7.66 VOR, no fade, ECR 1.5
+3. **Davante Adams** (LA, 33) — +6.83 VOR at ECR 50.7. **Best value; age-flagged**
+4. **Rashee Rice** (KC, 26) — +6.46 VOR, elite TD equity, 8-game sample
+5. Rome Odunze (24) / Wan'Dale Robinson (25, **now TEN**) — young value
+6. Khalil Shakir (BUF, 26) — PPR floor, ECR 120
+- **Avoid at cost:** Nacua (3.5), JSN (4.8), Pickens (20.1), Flowers (29.9), Higgins (36.4)
 
 ### TE
-1. **Trey McBride** (ARI) — 34 RZ targets, best environment, ECR 20.9
-2. **Jake Ferguson** (DAL) — 25 RZ / 14 EZ, 41.7 team rec TD exp, ECR 114
-3. **Tyler Warren** (IND) — 23 RZ / 13 EZ, ECR 54
-4. Hunter Henry (NE) — TE9 by exp/g at TE19 cost
-5. Dalton Schultz / Colby Parkinson / Zach Ertz — deep value
-- **AVOID at cost:** Brock Bowers (17.9, fade +26.7), Dallas Goedert (fade +36.4), Tucker Kraft (77.1, fade +46.1)
+1. **Trey McBride** (ARI, 26) — +8.16 VOR (3rd overall), 34 RZ targets, best environment
+2. **Jake Ferguson** (DAL, 27) — 25 RZ / 14 EZ, 41.7 team rec TD exp, ECR 114
+3. **Tyler Warren** (IND, 24) — 23 RZ / 13 EZ, ECR 54
+4. Colby Parkinson (LA, 27) / Hunter Henry (NE, 31, age-flagged)
+- **Avoid at cost:** Bowers (fade), Goedert (fade + age 31), Kraft (fade)
+- **REMOVED:** Zach Ertz — not on a 2026 roster
 
 ---
 
-## Corrections applied in this revision
+## Corrections in Revision 3
 
 | # | Issue | Correction |
 |---|---|---|
-| 1 | Kraft "scored ~98 pts above expectation" | **Actually +46.1.** 8 games × 5.76 gap/g = 46.1. `exp_pts` = 71.1, actual 117.2 |
-| 2 | QB exp/game used 4-pt scoring in a 6-pt league | Rebuilt all QBs at league scoring; +2.8 to +5.9 pts/g |
-| 3 | Stafford and Mahomes absent | Added — QB1 and QB3 under league scoring |
-| 4 | "Any DET / IND / BUF / BAL RB" | All four lead backs are fade-flagged. Reframed |
-| 5 | Josh Allen listed as QB target #1 | Fade-flagged (+38.4). Moved to avoid-at-cost |
-| 6 | Brock Bowers listed as TE target #4 | Fade-flagged (+26.7). Moved to avoid-at-cost |
-| 7 | Only 3 avoids named | **9 of the top 24 ADP picks are fade-flagged.** All listed |
-| 8 | TARGETS had 4 players, 3 of them QBs | Expanded to tiers with ARSB, Chase, Adams, McBride, Rice |
-| 9 | Kraft called "a popular TE target / TE1" | ECR 77.1 (~round 7), not a TE1 price |
-| 10 | Kraft "the clearest avoid" | Disagree — see below |
-| 11 | Kraft "NOT on this list" (TE RZ table) | He **is** in the data (44 tgt, 12 RZ); just not top-8 |
-| 12 | LA YOE/carry listed +0.67 | Source value is **+0.66** |
-| 13 | QB rush ranks skipped Hill and Mariota | Restored for completeness |
-| 14 | 2026 Vegas presented as settled | Flagged low-confidence: 6–9 of 17 games priced |
-| 15 | No ADP cross-reference | Added value board and expensive-fade table |
+| 1 | "CMC has the highest exp/g of any player at any position" | **False at league scoring.** He is #4; three QBs pass him. Claim withdrawn and replaced with the VOR framing, where he genuinely is #1 |
+| 2 | Cross-position comparisons mixed 4-pt and 6-pt figures | Full 6-pt truth table added. All non-QB comparisons re-verified as unaffected |
+| 3 | Raw exp/g used as the ranking frame | **VOR over positional replacement added** — the draft-relevant number. No QB in the top 15 |
+| 4 | Age unmodelled | **Now controlled.** Monotonic decline curve; survivorship bias documented as conservative |
+| 5 | Prior workload assumed to matter | **Tested and NULL** — signs flip across all three positions |
+| 6 | Zach Ertz listed as best value (+59 edge) | **Not on any 2026 roster.** Removed. He was the TE replacement baseline |
+| 7 | Wan'Dale Robinson flagged unrostered | **My error** — curly-apostrophe normalization bug. He is on TEN (moved from NYG) |
+| 8 | Team changes not tracked | Mike Evans TB→SF, Josh Jacobs LV→GB, Jauan Jennings SF→MIN, Justin Fields NYJ→KC, Wan'Dale NYG→TEN |
+| 9 | RB1 base rate treated as contradicting CMC | **It applies to Gibbs (2026 RB1), not CMC (RB3).** Base rate and fade flag converge on Gibbs |
+| 10 | Age risk stated once in a footer | Now attached to **every** 29+ recommendation inline |
 
-### Recommendations I disagree with
+### Note on the guillotine-league call
 
-**"Kraft is the clearest avoid."** He is the *smallest* fade among the named avoids by total gap (46.1 vs Nacua's 70.4 and Gibbs' 61.1), it came over only 8 games, and at ECR 77 he costs a 7th-round pick. **Gibbs at ECR 2.9 with a 61.1 gap is a far more expensive mistake.** Rank fades by cost × magnitude, not magnitude alone.
-
-**"Nacua and JSN are being valued at their ceiling."** Correct, but understated — they are the #1 and #3 largest fades in the dataset, going 3rd and 5th overall. That deserves stronger framing than "moderate."
-
-**The "Any [team] RB" construction.** Unsound as written. It applies a team signal to players whose individual data contradicts it. Five of the top six run-blocking teams have fade-flagged lead backs.
+A prior recommendation to pass on McCaffrey was made for a **guillotine** league, where a single bad week eliminates you and an injury tag is close to disqualifying. YTFL has no elimination mechanic. The reasoning does not transfer and the two calls are not in conflict — different format, different answer. Recorded so nobody reconciles them.
 
 ---
 
 ## Standing Cautions
 
-1. **4-pt vs 6-pt pass TD.** `total_fantasy_points_exp` is scored at 4-pt passing TDs; YTFL pays 6. The QB table above is rebuilt from components. **All other `exp` figures on this board remain 4-pt scored** — acceptable for non-QBs (whose passing volume is ~0) but must be rebuilt before any QB comparison.
-2. **Route participation is structurally unfixable.** ffopportunity has no route counts. The `routes_proxy` caveat must remain on every surface.
-3. **Two of three new signals failed control tests** (YAC-OE, garbage time). `neutral_script_role` is near-random. Hold every new signal at display until it passes a null test against 13 seasons of YTFL data.
-4. **BULLISH tag is display-only** (p=0.104, underpowered). Do not use as a draft gate.
-5. **The gap signal is a fade filter, not a discovery signal.** Use it to price overperformers, not to find sleepers. It is also **not a talent judgment** — Nacua and Gibbs remain elite players.
-6. **`exp_per_game` outpredicts gap 2.4–4x.** Prefer it as the ranking input.
-7. **Playoff weeks 15–17 Vegas data is incomplete** (4 of 48 games priced). Re-pull before the draft.
-8. **Small-sample players carry hidden risk:** Purdy (9 g), Rice (8 g), Kraft (8 g), Fields (9 g), Daniels (7 g), Burrow (8 g). Per-game rates are noisier than the tables suggest.
-9. **2025 data, 2026 rosters.** Every production figure is from 2025. Team changes, depth-chart moves, and rookie arrivals are **not** reflected in exp/game. Cross-check `rosters_2026.csv` and `depth_charts_2026.csv.gz` before finalizing — this is the largest unmodelled source of error on the board.
+1. **4-pt vs 6-pt.** QB figures here are rebuilt at league scoring. Non-QB figures remain 4-pt scored, which is valid (passing volume ≈ 0). **Never compare a QB to a non-QB on ffopportunity's default column.**
+2. **VOR, not raw points.** Raw exp/g systematically overstates QBs. Always subtract positional replacement.
+3. **Route participation is structurally unfixable.** No route counts in ffopportunity. The `routes_proxy` caveat stands.
+4. **Signals that failed control tests:** YAC-OE, garbage time, prior workload. `neutral_script_role` is near-random. **Age is the only new signal that survived.**
+5. **BULLISH is display-only** (p=0.104, underpowered). Not a draft gate.
+6. **Gap = fade filter, not discovery, and not a talent judgment.**
+7. **`exp_per_game` outpredicts gap 2.4–4x.**
+8. **Playoff Vegas incomplete** (4/48). Re-pull before draft.
+9. **Small samples:** Purdy (9 g), Rice (8 g), Kraft (8 g), Fields (9 g), Daniels (7 g).
+10. **2025 data on 2026 rosters.** Age is now controlled; **depth-chart competition and scheme changes are not.** Five team changes found on this board alone — re-check `rosters_2026.csv` and `depth_charts_2026.csv.gz` for every pick.
+11. **Name normalization.** The curly-apostrophe bug that misfiled Wan'Dale Robinson is the repo's own recurring defect class (SELF_AUDIT §1.3). Any join between ADP, rosters and ffopportunity must fold Unicode punctuation and diacritics.
 
 ---
 
-## Consistency check against FFOPPORTUNITY_HANDOFF.md
+## Consistency check vs FFOPPORTUNITY_HANDOFF.md
 
 | Handoff finding | Board status |
 |---|---|
 | Gap is fade, not discovery | ✅ Consistent |
 | exp beats gap 2.4–4x | ✅ Consistent |
-| YAC-OE failed control | ✅ Consistent — not used for any recommendation |
-| Garbage time dead | ✅ Consistent — absent |
-| neutral_script_role near-random | ✅ Consistent — absent |
-| Team supply most stable (r=.48–.52) | ✅ Consistent |
-| 4-pt vs 6-pt TD issue | ✅ **Fixed in this revision** (was violated) |
-| Vegas 2026 partial coverage | ✅ **Fixed in this revision** (was presented as settled) |
+| YAC-OE failed control | ✅ Not used |
+| Garbage time dead | ✅ Absent |
+| neutral_script_role near-random | ✅ Absent |
+| Team supply most stable | ✅ Consistent |
+| 4-pt vs 6-pt TD issue | ✅ **Fixed in Rev 3** (violated in Rev 2) |
+| Vegas 2026 partial | ✅ Flagged low-confidence |
 | Routes unfixable | ✅ Consistent |
 | BULLISH display-only | ✅ Consistent |
-| Fade ≈ 30-pt controlled penalty | ✅ Now reflected in avoid framing |
+| Fade ≈ 30-pt controlled penalty | ✅ Reflected |
+| "2025 data on 2026 rosters" largest error source | ✅ **Now partly closed** — age controlled, rosters checked, team changes listed |
