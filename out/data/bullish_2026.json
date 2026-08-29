@@ -1,10 +1,10 @@
 {
  "provenance": {
-  "generated": "2026-08-28",
-  "computed_at": "2026-08-28T21:47:54+00:00",
+  "generated": "2026-08-29",
+  "computed_at": "2026-08-29T16:20:56+00:00",
   "engine_generated": "2026-08-28",
   "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
-  "inputs_content_sha256": "307aea1def90e11a582fdf2092896da8f883ad4678c7dea9c317b1a3311a5436",
+  "inputs_content_sha256": "d02a9450c2518884be587a2db2fddda30656b23ba61a954fc346c2ecca0dbd61",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -15,17 +15,17 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-08-28T21:47:20+00:00",
-   "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
-   "snapshot_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
-   "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
-   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pulled_at": "2026-08-29T16:20:21+00:00",
+   "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+   "snapshot_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+   "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
+   "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
    "pricing_by_week_sha256": {
-    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
-    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
+    "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
@@ -234,10 +234,10 @@
     "RB.expected_td_equity"
    ],
    "delta_event": {
-    "event": "UNCHANGED",
-    "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+    "event": "REPRICED",
+    "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+     "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
      "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
@@ -270,16 +270,16 @@
      }
     },
     "current": {
-     "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
-     "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
+     "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+     "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
      "pricing_by_week_sha256": {
-      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
-      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
+      "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
       "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
@@ -306,10 +306,10 @@
      "source_changed": true,
      "coverage_changed": false,
      "horizon_changed": false,
-     "implied_totals_changed": false,
-     "decision_pricing_changed": false,
+     "implied_totals_changed": true,
+     "decision_pricing_changed": true,
      "model_logic_changed": false,
-     "prior_horizon_repriced": false
+     "prior_horizon_repriced": true
     },
     "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
    }
@@ -500,7 +500,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T21:47:54+00:00",
+    "computed_at": "2026-08-29T16:20:56+00:00",
     "ttl_hours": 72
    },
    {
@@ -520,7 +520,7 @@
     ],
     "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T21:47:54+00:00",
+    "computed_at": "2026-08-29T16:20:56+00:00",
     "ttl_hours": 72
    },
    {
@@ -538,7 +538,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T21:47:54+00:00",
+    "computed_at": "2026-08-29T16:20:56+00:00",
     "ttl_hours": 72
    },
    {
@@ -556,7 +556,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T21:47:54+00:00",
+    "computed_at": "2026-08-29T16:20:56+00:00",
     "ttl_hours": 72
    },
    {
@@ -576,7 +576,7 @@
     ],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-28T21:47:54+00:00",
+    "computed_at": "2026-08-29T16:20:56+00:00",
     "ttl_hours": 72
    }
   ],
@@ -1601,17 +1601,17 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-08-28T21:47:20+00:00",
-   "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
-   "snapshot_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
-   "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
-   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "pulled_at": "2026-08-29T16:20:21+00:00",
+   "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+   "snapshot_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+   "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
+   "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
    "pricing_by_week_sha256": {
-    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
-    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
+    "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
@@ -1820,10 +1820,10 @@
     "RB.expected_td_equity"
    ],
    "delta_event": {
-    "event": "UNCHANGED",
-    "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
+    "event": "REPRICED",
+    "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+     "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
      "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
@@ -1856,16 +1856,16 @@
      }
     },
     "current": {
-     "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
-     "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
+     "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+     "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+     "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
      "pricing_by_week_sha256": {
-      "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
-      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
+      "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
       "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
@@ -1892,10 +1892,10 @@
      "source_changed": true,
      "coverage_changed": false,
      "horizon_changed": false,
-     "implied_totals_changed": false,
-     "decision_pricing_changed": false,
+     "implied_totals_changed": true,
+     "decision_pricing_changed": true,
      "model_logic_changed": false,
-     "prior_horizon_repriced": false
+     "prior_horizon_repriced": true
     },
     "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
    }
@@ -1968,11 +1968,11 @@
   }
  },
  "forward_vegas_delta": {
-  "event": "UNCHANGED",
-  "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
-  "pulled_at": "2026-08-28T21:47:20+00:00",
+  "event": "REPRICED",
+  "attribution": "SCHEDULE_INPUT",
+  "pulled_at": "2026-08-29T16:20:21+00:00",
   "prior": {
-   "source_content_sha256": "981ab0b59e9a122af2c316a0bb55c5d6cb289f50e3f9b4607ac5199b89a3786a",
+   "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
    "upstream_content_sha256": null,
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
    "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
@@ -2005,16 +2005,16 @@
    }
   },
   "current": {
-   "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
-   "upstream_content_sha256": "f6aa3633ce8eb44e065f8d88894b0a5b3b5067c012166af80b92972cf10e6453",
+   "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+   "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+   "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
    "pricing_by_week_sha256": {
-    "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
-    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
+    "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "weeks": [
@@ -2041,10 +2041,10 @@
    "source_changed": true,
    "coverage_changed": false,
    "horizon_changed": false,
-   "implied_totals_changed": false,
-   "decision_pricing_changed": false,
+   "implied_totals_changed": true,
+   "decision_pricing_changed": true,
    "model_logic_changed": false,
-   "prior_horizon_repriced": false
+   "prior_horizon_repriced": true
   },
   "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
   "same_build_counterfactual": {
@@ -2059,7 +2059,99 @@
     "tag_records_identical": true
    }
   },
-  "last_material_event": null
+  "last_material_event": {
+   "event": "REPRICED",
+   "attribution": "SCHEDULE_INPUT",
+   "pulled_at": "2026-08-29T16:20:21+00:00",
+   "prior": {
+    "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
+    "upstream_content_sha256": null,
+    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+    "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+    "pricing_by_week_sha256": {
+     "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
+     "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+     "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+    },
+    "weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "first_week": 1,
+    "last_week": 6,
+    "games_priced": 93,
+    "team_games_priced": 186,
+    "next_partial_week": {
+     "complete": false,
+     "partial_line_games": 0,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "week": 7
+    }
+   },
+   "current": {
+    "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+    "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
+    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+    "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
+    "pricing_by_week_sha256": {
+     "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
+     "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+     "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+    },
+    "weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "first_week": 1,
+    "last_week": 6,
+    "games_priced": 93,
+    "team_games_priced": 186,
+    "next_partial_week": {
+     "week": 7,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    }
+   },
+   "flags": {
+    "source_changed": true,
+    "coverage_changed": false,
+    "horizon_changed": false,
+    "implied_totals_changed": true,
+    "decision_pricing_changed": true,
+    "model_logic_changed": false,
+    "prior_horizon_repriced": true
+   },
+   "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
+   "same_build_counterfactual": {
+    "held_constant": "current code, current non-schedule inputs, current injury state, and current player universe; only the prior versus current forward schedule decision input and its derived QB threshold/top-five WR environment are exchanged",
+    "gained": [],
+    "lost": [],
+    "status_changed": [],
+    "score_changed": [],
+    "rb_invariance": {
+     "before_count": 10,
+     "after_count": 10,
+     "tag_records_identical": true
+    }
+   }
+  }
  },
  "qb_gap": {
   "definition": "top-12 QB season finishes 2016-2025 (n=120), rushing class = rush yds/g >= that season's p75 among 8+ game QBs; season TOTAL points under each scoring",
@@ -2123,7 +2215,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2146,7 +2238,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2169,7 +2261,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2193,7 +2285,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2216,7 +2308,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2237,7 +2329,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2258,7 +2350,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2279,7 +2371,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2300,7 +2392,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2323,7 +2415,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2342,7 +2434,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2365,7 +2457,7 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2386,7 +2478,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2409,7 +2501,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2432,7 +2524,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2455,7 +2547,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2476,7 +2568,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2497,7 +2589,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2518,7 +2610,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2537,7 +2629,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2556,7 +2648,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2575,7 +2667,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2596,7 +2688,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2615,7 +2707,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2634,7 +2726,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   },
   {
@@ -2653,7 +2745,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-28T21:47:54+00:00",
+   "computed_at": "2026-08-29T16:20:56+00:00",
    "ttl_hours": 72
   }
  ]
