@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-29",
+  "generated": "2026-08-30",
   "engine_generated": "2026-08-28",
   "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
   "format": "H2H + league median, league_average_match=1 verified live on both league ids - every week scores twice",

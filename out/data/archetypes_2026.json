@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-29",
+  "generated": "2026-08-30",
   "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
   "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
  },
@@ -728,7 +728,7 @@
     {
      "tag": "late_te_dart",
      "orientation": "target",
-     "reason": "TE19 at ADP round 13; the report's punt path is two late darts, never mid-tier"
+     "reason": "TE20 at ADP round 14; the report's punt path is two late darts, never mid-tier"
     }
    ]
   },
@@ -857,7 +857,7 @@
     {
      "tag": "late_rushing_qb",
      "orientation": "target",
-     "reason": "30 rush yds/g (>= p75 23.58) at ADP round 9"
+     "reason": "30 rush yds/g (>= p75 23.58) at ADP round 10"
     }
    ]
   },
@@ -951,7 +951,7 @@
     {
      "tag": "late_te_dart",
      "orientation": "target",
-     "reason": "TE20 at ADP round 14; the report's punt path is two late darts, never mid-tier"
+     "reason": "TE19 at ADP round 14; the report's punt path is two late darts, never mid-tier"
     }
    ]
   },
@@ -985,7 +985,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "TEN returning-RB carry concentration below league median (64%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+     "reason": "TEN returning-RB carry concentration below league median (64%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },

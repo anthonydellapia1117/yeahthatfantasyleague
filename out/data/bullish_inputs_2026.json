@@ -1,21 +1,21 @@
 {
  "provenance": {
-  "generated": "2026-08-29",
+  "generated": "2026-08-30",
   "engine_generated": "2026-08-28",
   "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
   "input_content_sha256": {
-   "ceiling_2026.json": "88b4f2dc72bf34b38a25a8099ee5640efd26358d15fe8eb29a5e91c83ce61833",
+   "ceiling_2026.json": "a1f89ffe6463946152c12c39d05e30eebec4f6a6d65de44ffe97052f69ed4b3c",
    "usage_2025.json": "932cfec8d625eb662326d34d16533d079357f2fd15de1dc95f101051f5c8cb00",
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
-   "depth_charts.json": "bc3e5194aceed2ca6abd4ce4f92737364f2556935c0bc0ad96b89dc06cdb0e3e",
+   "depth_charts.json": "ca9764724b5da858a2e9a5a67867be3e64cc7c04b6d65b70b8218b85394f67db",
    "crosswalk.json": "b37c4cfc56c842689efc6d1a2dd5b6f9c6050d61cd9660b91972485d45478188",
-   "docs/ffopportunity/schedule_2026.csv": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
-   "docs/ffopportunity/schedule_2026.meta.json": "09260b07a56f20bb8df7637f307848e9630c0932978a564faba57e1a419c1251"
+   "docs/ffopportunity/schedule_2026.csv": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
+   "docs/ffopportunity/schedule_2026.meta.json": "b430ab0038550bedd187c684a9d3416e7b741e6c9b47b54e51adff0f278ce215"
   },
   "vegas": {
    "week1_rb": {
     "source": "nflverse HISTORY games.csv, Week-1 2026 lines",
-    "pulled": "2026-08-29",
+    "pulled": "2026-08-30",
     "games": 16,
     "consumers": [
      "RB.expected_td_equity"
@@ -25,17 +25,17 @@
     "source": "docs/ffopportunity/schedule_2026.csv",
     "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
     "upstream_source": "http://www.habitatring.com/games.csv",
-    "pulled_at": "2026-08-29T16:20:21+00:00",
-    "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
-    "snapshot_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
-    "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
-    "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
+    "pulled_at": "2026-08-30T16:13:13+00:00",
+    "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
+    "snapshot_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
+    "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
+    "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
     "pricing_by_week_sha256": {
      "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-     "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+     "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-     "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+     "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
     },
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
@@ -247,16 +247,16 @@
      "event": "REPRICED",
      "attribution": "SCHEDULE_INPUT",
      "prior": {
-      "source_content_sha256": "b1e6b3925fdbd0284e4d98a8461221c4e730695eb5fea778553d88281c74d13c",
+      "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
       "upstream_content_sha256": null,
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-      "decision_input_sha256": "dc71de8bbe7e547062ff688cd126e1ebd3eb51f214ec3adfb51670ecbb74395f",
+      "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
       "pricing_by_week_sha256": {
-       "1": "84d6baadfe3de5c53ffe9d62112b04d8e62ac9d7d3f57a95de1cca16c524784b",
-       "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+       "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
+       "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
        "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
        "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-       "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+       "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
        "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
       },
       "weeks": [
@@ -280,16 +280,16 @@
       }
      },
      "current": {
-      "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
-      "upstream_content_sha256": "738a73c8b1e33dcf6cc0ced0cbcace7e25078c6596bbfc01ffca5211ce658b3e",
+      "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
+      "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-      "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
+      "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
       "pricing_by_week_sha256": {
        "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-       "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+       "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
        "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
        "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-       "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+       "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
        "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
       },
       "weeks": [
@@ -413,6 +413,40 @@
   },
   "forward_implied_total": {
    "ARI": 18.17,
+   "ATL": 21.17,
+   "BAL": 26.67,
+   "BUF": 25.83,
+   "CAR": 20.95,
+   "CHI": 24.83,
+   "CIN": 25.55,
+   "CLE": 18.42,
+   "DAL": 25.46,
+   "DEN": 21.33,
+   "DET": 26.75,
+   "GB": 25.17,
+   "HOU": 23.08,
+   "IND": 22.92,
+   "JAX": 22.75,
+   "KC": 24.95,
+   "LAR": 27.0,
+   "LAC": 23.92,
+   "LV": 19.33,
+   "MIA": 18.95,
+   "MIN": 22.9,
+   "NE": 23.71,
+   "NO": 21.62,
+   "NYG": 23.33,
+   "NYJ": 18.38,
+   "PHI": 23.75,
+   "PIT": 22.12,
+   "SEA": 24.83,
+   "SF": 25.83,
+   "TB": 23.58,
+   "TEN": 20.33,
+   "WAS": 23.17
+  },
+  "forward_counterfactual_implied_total": {
+   "ARI": 18.17,
    "ATL": 21.25,
    "BAL": 26.67,
    "BUF": 25.83,
@@ -428,8 +462,8 @@
    "IND": 22.92,
    "JAX": 22.75,
    "KC": 24.95,
-   "LAR": 27.0,
    "LAC": 23.92,
+   "LAR": 27.0,
    "LV": 19.33,
    "MIA": 18.95,
    "MIN": 22.9,
@@ -438,40 +472,6 @@
    "NYG": 23.25,
    "NYJ": 18.29,
    "PHI": 23.75,
-   "PIT": 22.12,
-   "SEA": 24.83,
-   "SF": 25.83,
-   "TB": 23.58,
-   "TEN": 20.33,
-   "WAS": 23.25
-  },
-  "forward_counterfactual_implied_total": {
-   "ARI": 18.17,
-   "ATL": 21.17,
-   "BAL": 26.67,
-   "BUF": 25.83,
-   "CAR": 20.95,
-   "CHI": 24.83,
-   "CIN": 25.55,
-   "CLE": 18.5,
-   "DAL": 25.46,
-   "DEN": 21.33,
-   "DET": 26.75,
-   "GB": 25.17,
-   "HOU": 23.08,
-   "IND": 22.92,
-   "JAX": 22.75,
-   "KC": 24.95,
-   "LAC": 23.92,
-   "LAR": 27.0,
-   "LV": 19.33,
-   "MIA": 18.95,
-   "MIN": 22.9,
-   "NE": 23.71,
-   "NO": 21.62,
-   "NYG": 23.33,
-   "NYJ": 18.29,
-   "PHI": 23.83,
    "PIT": 22.12,
    "SEA": 24.83,
    "SF": 25.83,
@@ -582,7 +582,7 @@
    "excluded_unobserved_n": 3,
    "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
    "percentile_method": "nearest index: round(q * (n - 1))",
-   "p50": 0.506,
+   "p50": 0.5194,
    "p75": 0.7342,
    "p80": 0.7632,
    "p50_method": "upper middle observation for even n; retired stage-2 baseline"
@@ -644,7 +644,7 @@
    "excluded_unobserved_n": 0,
    "observation_rule": "all canonical teams in the maximal fully priced horizon",
    "percentile_method": "nearest index: round(q * (n - 1))",
-   "p50": 23.25,
+   "p50": 23.33,
    "p75": 24.95,
    "p80": 25.46
   },
@@ -1659,7 +1659,7 @@
    "team_line_ybc": 2.522,
    "gp_rate_2yr": 0.8529,
    "exp_missed": 2.5,
-   "forward_implied_total": 21.25,
+   "forward_implied_total": 21.17,
    "routes_proxy": 394,
    "tprr_proxy": {
     "k": 113,
@@ -1779,7 +1779,7 @@
    "team_line_ybc": 2.714,
    "gp_rate_2yr": 0.5588,
    "exp_missed": 7.5,
-   "forward_implied_total": 23.25,
+   "forward_implied_total": 23.33,
    "routes_proxy": 134,
    "tprr_proxy": {
     "k": 35,
@@ -2190,7 +2190,7 @@
    "team_line_ybc": 2.899,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
-   "forward_implied_total": 18.29,
+   "forward_implied_total": 18.38,
    "routes_proxy": 226,
    "tprr_proxy": {
     "k": 60,
@@ -2420,7 +2420,7 @@
    "team_line_ybc": 2.49,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
-   "forward_implied_total": 21.05,
+   "forward_implied_total": 20.95,
    "routes_proxy": 547,
    "tprr_proxy": {
     "k": 122,
@@ -2767,7 +2767,7 @@
    "team_line_ybc": 2.512,
    "gp_rate_2yr": 0.7941,
    "exp_missed": 3.5,
-   "forward_implied_total": 23.25,
+   "forward_implied_total": 23.17,
    "routes_proxy": 260,
    "tprr_proxy": {
     "k": 60,
@@ -3483,7 +3483,7 @@
    "team_line_ybc": 2.512,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
-   "forward_implied_total": 23.25,
+   "forward_implied_total": 23.17,
    "routes_proxy": 243,
    "tprr_proxy": {
     "k": 0,
@@ -3544,12 +3544,12 @@
     "player_carries": 210,
     "historical_team_rb_carries": 459
    },
-   "backfield_share_counterfactual_current_roster": 0.506,
+   "backfield_share_counterfactual_current_roster": 0.5276,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "NE",
     "player_carries": 210,
-    "current_roster_team_rb_carries": 415
+    "current_roster_team_rb_carries": 398
    },
    "backfield_share_counterfactual_historical_trimmed": 0.4709,
    "backfield_share_historical_trimmed_sample": {
@@ -3757,12 +3757,12 @@
     "player_carries": 188,
     "historical_team_rb_carries": 459
    },
-   "backfield_share_counterfactual_current_roster": 0.453,
+   "backfield_share_counterfactual_current_roster": 0.4724,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "NE",
     "player_carries": 188,
-    "current_roster_team_rb_carries": 415
+    "current_roster_team_rb_carries": 398
    },
    "backfield_share_counterfactual_historical_trimmed": 0.4215,
    "backfield_share_historical_trimmed_sample": {
@@ -4055,7 +4055,7 @@
    "team_line_ybc": 2.714,
    "gp_rate_2yr": 0.8235,
    "exp_missed": 3.0,
-   "forward_implied_total": 23.25,
+   "forward_implied_total": 23.33,
    "routes_proxy": 415,
    "tprr_proxy": {
     "k": 0,
@@ -4902,7 +4902,7 @@
    "team_line_ybc": 2.49,
    "gp_rate_2yr": 0.6471,
    "exp_missed": 6.0,
-   "forward_implied_total": 21.05,
+   "forward_implied_total": 20.95,
    "routes_proxy": 289,
    "tprr_proxy": {
     "k": 45,
@@ -5254,7 +5254,7 @@
    "team_line_ybc": 2.512,
    "gp_rate_2yr": 0.7353,
    "exp_missed": 4.5,
-   "forward_implied_total": 23.25,
+   "forward_implied_total": 23.17,
    "routes_proxy": 413,
    "tprr_proxy": {
     "k": 102,
@@ -5284,7 +5284,7 @@
    "team_line_ybc": 1.808,
    "gp_rate_2yr": null,
    "exp_missed": null,
-   "forward_implied_total": 18.5
+   "forward_implied_total": 18.42
   },
   {
    "name": "Deebo Samuel",
@@ -5631,7 +5631,7 @@
    "team_line_ybc": 1.808,
    "gp_rate_2yr": null,
    "exp_missed": null,
-   "forward_implied_total": 18.5
+   "forward_implied_total": 18.42
   },
   {
    "name": "Tyjae Spears",
