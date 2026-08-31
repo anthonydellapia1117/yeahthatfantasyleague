@@ -115,7 +115,7 @@ This is *who is in the room*, translated from Sleeper handles into thirteen year
 | Rd | Pick | **Best available and why** | **Wait or reach** | **Watch** |
 |---|---|---|---|---|
 
-- **Best available and why** - the name in bold, then the reasoning in plain sight: value over replacement, tier, ADP, the odds he's even there, and an injury flag in red if he's questionable. A fallback name sits underneath in small type.
+- **Planning anchor and why** - the name in bold, then the reasoning in plain sight: value over replacement, tier, ADP, the individual odds he is there, and an injury flag in red if he is questionable. The pre-draft sequence is a median-availability checkpoint path, not an opponent-board forecast. Do not print the engine's raw `fallback`: it is not re-solved through marginal lineup value and is not a runner-up.
 
 - **Wait or reach** - the column I built this app for. A single verdict, **WAIT in green** or **TAKE NOW in red**, and then the actual sentence:
 

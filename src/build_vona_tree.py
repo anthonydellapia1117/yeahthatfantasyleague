@@ -222,9 +222,9 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
                 "tier": p.get("tier"), "tier_left": tier_left,
                 "forced": len(chosen) == 1,
                 "why": (f"VONA gap {round(ranked[0][1]['vona'] - ranked[1][1]['vona'], 1)}"
-                        f" over {ranked[1][0]}; not a decision"
+                        f" over {ranked[1][0]}; no position-level fork under this rule"
                         if len(chosen) == 1 and len(ranked) > 1
-                        else f"within {eps} of the best option - a real fork"),
+                        else f"within {eps} of the best option - a position-level fork candidate"),
                 "children": walk(depth + 1, taken | {p["name"]},
                                  roster + [{"name": p["name"], "pos": pos,
                                             "pts": p["pts"]}]),
@@ -262,8 +262,8 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
                              default=float("-inf"))
                 if margin > 0:
                     stats["margins"].append(margin)
-                # A hairline domination is not a decision the board has made
-                # for you. Branches dominated by less than NARROW_BAND are
+                # A hairline domination does not separate the position-level
+                # actions under this rule. Branches dominated by less than NARROW_BAND are
                 # kept and flagged; the band is derived the same way the
                 # branch threshold is - p25 of the domination margins this
                 # board actually produces - so "narrow" means narrow by the

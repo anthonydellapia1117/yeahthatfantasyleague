@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-31 by Codex - opened #72 after auditing printable Sheet 4's method. Its names came from the engine's static median-availability checkpoints, not the ADP-chalk mock or 100,000-board paired simulation. Bijan enters the pick-4 candidate set at 50.319% individual survival; the renderer hid that knife edge and called the path "Board expects." #72 labels the method **NOT A FORECAST**, prints exact artifact availability plus tier/injury/coin-flip cues, distinguishes individual survival from path frequency, and omits the unsolved engine `fallback` rather than calling it "Next best." Model ordering and Anthony's Puka durability override are unchanged. |
-| **Next agent** | Review #72. If authorized, squash-merge it, wait for Pages, byte-compare the deployed manifest against main, and verify the live Sheet 4 method note, exact availability, Breece coin-flip cue, and absence of `Board expects` / `Next best`. The live Sleeper order transition is still pending and remains a separate observation. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. |
-| **Branch** | PR #72, `codex/cheatsheet-method-honesty`; functional commit `72b9642`, followed only by this baton commit. Gate-runner self-test 16; fourteen gated suites 120/22/51/70/17/16/107/63/173/48/1818/23/378/38 (2,944 guards); analysis 38 with zero skips and all five deterministic reruns; browser smoke 418; `MATH DIFF PROOF: EMPTY`; `git diff --check` clean. The unchanged renderer failed the new method-boundary smoke before the fix. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `d89af11` with #69 deployed. The cheat sheet is live and slot-4-correct, but its old categorical Sheet 4 labels remain until #72 is merged and byte-verified. |
+| **Last touched** | 2026-08-31 by Codex - squash-merged #72 as `2b34879`, verified 49/49 deployed files byte-identical, then opened #73 after sweeping the same claim-strength defect across every decision renderer. Draft Room pre-draft cards and generated decision-card markdown now state **NOT A FORECAST**, show individual availability and anchor-path scope, and omit the unsolved engine `fallback`. PATHS says `rendered position-level forks` and explicitly refuses to turn zero forks into a player-level finding. Big Board and both Draft Room heuristic scores now carry their configured-weight provenance on the number's face. No weight, score, rank, player ordering, verdict, survival value, or frozen math changed. |
+| **Next agent** | Review #73. If authorized, squash-merge it, wait for Pages, byte-compare the deployed manifest against main, and verify the live Draft Room checkpoint boundary, Big Board `CONFIGURED CVS, NOT ENGINE VOR` chip, grade/composite provenance, and PATHS action-space caveat. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. The real Sleeper placeholder-to-confirmed transition remains a separate pending observation. |
+| **Branch** | PR #73, `codex/ui-claim-provenance`; functional commit `4d33b65`, followed only by this baton commit. Fifteen gated suites passed 16/122/22/51/70/17/16/107/63/173/48/1818/23/384/38 (2,968 guards); analysis 38 had zero skips and all five deterministic reruns; browser smoke 429; `MATH DIFF PROOF: EMPTY` across all ten frozen functions; `git diff --check` clean. Independent diff review found and the branch fixed two self-recurrences before commit: an uncalibrated score gap labelled `confidence`, and synthetic fallback tests that depended on today's artifact containing a fallback. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `2b34879` with #72 deployed. Pages workflow `33435791175` passed and all 49 manifest files were byte-identical. Live Sheet 4 says `NOT A FORECAST`, shows Bijan 50.3% and Javonte 69.0%, preserves the Breece coin flip, and contains no `Board expects` or `Next best`. #73's broader renderer and provenance corrections are not live until separately reviewed and merged. |
 | **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. At 2026-08-31 20:16 UTC, `src/check_draft_order.py` still reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)`. A complete non-identity roster permutation may be corroborated by a shorter well-formed user order when a roster is ownerless; no partial user map resolves alone, and any owner-seat disagreement blocks loudly. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -264,14 +264,41 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     Big Board and the additive room pick engine still carry their older explicit
     CVS/Walter layer and typed proxy coefficients; do not describe those complete
     surfaces as engine-only.
+20. **#73 carries producer semantics and score provenance onto every affected
+    surface.** The Sheet 4 defect was one under-specified producer contract across
+    three renderers, not an isolated printable-page typo. Draft Room pre-draft
+    cards and `decision_cards_2026.md` now call the sequence median-availability
+    checkpoints, state that opponent boards are not simulated, scope instructions
+    to the anchor path, and omit the raw `fallback`. The field remains in engine
+    JSON as descriptive audit residue but no actionable renderer displays it. A
+    payload-independent synthetic fixture injects that field into any primary row
+    and proves both renderers ignore it. PATHS now says `rendered position-level
+    forks`; zero output is explicitly not evidence that no player-level decision
+    exists. Its artifact wording changed only in `why`: recursively removing that
+    field makes the before/after trees identical, so #54's parked model is neither
+    imported nor repaired here. The VONA spec and guard use the same bounded noun.
+
+    The provenance follow-up required no layout or scoring restructure. Big Board
+    puts `CONFIGURED CVS, NOT ENGINE VOR` beside its scores, names Walter ON plus
+    the configured cap, and says factor weights remain when Walter is OFF; the old
+    `pure model` claim is gone. Every 0-100 Draft Room grade carries `HEURISTIC
+    GRADE - judgment weights, not backtested`; its title names VALUE 30, MARKET 30,
+    URGENCY 20, NEED 12, SCARCITY 8, the 39/69 bands, and the limited role ordering
+    only `Also consider`. The Pick Engine carries `HEURISTIC COMPOSITE`, PE weights
+    NEED 12 / FLEX 6 / SCARCITY 8 / PLAYOFF 3, Walter state, and 10/4
+    composite-margin cutoffs. `confidence` was itself too strong for that typed
+    score gap and is gone from the band label. Neutral ink/line chips carry this
+    provenance; no reserved verdict color was reused.
 
 ### In flight / nothing blocked
 
-PR #69 is merged at `d89af11`; the five-side slot-4 cheat sheet is live. PR #72 is
-the current merge candidate and changes only Sheet 4's method honesty, guards, and
-the external-input audit record; it does not change engine bytes, player ordering,
-or owner preferences. The exact placeholder-to-confirmed transition is covered,
-but the real Sleeper transition is still pending. PR #54 remains OPEN,
+PR #72 is merged at `2b34879`; the five-side slot-4 cheat sheet and its qualified
+checkpoint method are live and byte-verified. PR #73 is the current merge
+candidate. It broadens that same producer contract to Draft Room, generated
+decision cards, and PATHS, and puts configured-weight provenance directly beside
+Big Board/CVS, 0-100 grade, and Pick Engine numbers. It changes no computation or
+ordering. The exact placeholder-to-confirmed transition is covered, but the real
+Sleeper transition is still pending. PR #54 remains OPEN,
 PARKED THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
 mergeability is unresolved against moving `main`. Its PATHS policy is still the
 data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the conditional spread

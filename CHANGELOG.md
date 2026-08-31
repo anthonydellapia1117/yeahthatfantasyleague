@@ -1,5 +1,31 @@
 # Changelog
 
+## Claim-strength and on-face score provenance (2026-08-31)
+
+The Sheet 4 audit generalized beyond the printable page. A correct calculation
+can still be presented as a stronger claim than it makes: threshold passage is
+not a forecast, an individually likely sequence is not a joint path, and an
+unsolved residue is not a runner-up. The Draft Room's pre-draft cards and the
+generated decision-card markdown now use the same median-availability method
+boundary as the cheat sheet, retain exact individual availability, scope every
+instruction to the stated anchor path, and omit the engine's raw `fallback`.
+A synthetic fallback fixture proves the renderer ignores that field. PATHS now
+counts rendered position-level forks and states that zero is not evidence of no
+player-level decision; its player-action redesign remains offseason work and
+held PR #54 remains parked.
+
+The same sweep found a second overclaim: `WALTER OFF - pure model` was false.
+Walter-off CVS still includes configured factor weights. The Big Board now puts
+`CONFIGURED CVS, NOT ENGINE VOR` beside its scores, names the live Walter state
+and cap, and explicitly says those factor weights remain when Walter is off.
+Every Draft Room 0-100 score carries `HEURISTIC GRADE - judgment weights, not
+backtested` on its face; its title names all five weights, band cutoffs, and that
+it orders only `Also consider`. The additive Pick Engine likewise labels the
+headline `HEURISTIC COMPOSITE`, names all four weights plus its 10/4
+composite-margin cutoffs as `composite margin HIGH/MEDIUM/LOW` rather than upgrading them to
+confidence, and identifies Walter ON/OFF without implying engine-only scoring. No
+weight, score, rank, player ordering, verdict, or survival number changed.
+
 ## Cheat-sheet checkpoint honesty and external-input boundary (2026-08-31)
 
 Printable Sheet 4 was arithmetically faithful to `engine_2026.json` but described

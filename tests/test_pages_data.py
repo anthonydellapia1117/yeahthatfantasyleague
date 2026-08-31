@@ -760,6 +760,21 @@ ok("NOT A FORECAST" in _cheat_src and
    "Alternate" not in _cheat_src,
    "the cheat sheet preserves availability/coin-flip context and never labels "
    "the static checkpoint path as a forecast or prints an unsolved fallback")
+_room_src = open(os.path.join(ROOT, "out", "draft_room.html")).read()
+_pre_src = _room_src[_room_src.index("function renderPre"):
+                     _room_src.index("function renderUpNext")]
+ok("MEDIAN-AVAILABILITY CHECKPOINTS" in _pre_src and
+   "NOT A FORECAST" in _pre_src and
+   "individual survival" in _pre_src and
+   "opponent boards" in _pre_src and
+   "r.fallback" not in _pre_src,
+   "draft-room pre-draft cards carry the checkpoint method boundary and never "
+   "render the unsolved fallback")
+_cards_src = open(os.path.join(ROOT, "out", "decision_cards_2026.md")).read()
+ok("Median-availability checkpoints - NOT A FORECAST" in _cards_src and
+   "Planning anchor (individual P avail)" in _cards_src and
+   "| Fallback |" not in _cards_src and "Board expects" not in _cards_src,
+   "generated decision cards preserve checkpoint qualifiers and omit fallback residue")
 
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")
@@ -867,6 +882,11 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
        "K and DST floors stated off the board, with the reason")
     ok('get("cvs.json")' in bpage, "board is driven by cvs.json")
     ok("Provenance (guard N2)" in bpage, "big board provenance footer present")
+    ok('id="rank-basis"' in bpage and
+       "CONFIGURED CVS, NOT ENGINE VOR" in bpage and
+       "c.config.walter_cap_pct" in bpage and
+       "Turning Walter off does not remove the CVS factor weights" in bpage,
+       "big board puts its configured-weight rank basis beside the displayed scores")
     # signal encoding: every signal has a container treatment, an icon, and a
     # text label; the legend and conflict marker render; filters persist
     SIGNALS = ["personal_dnd", "consensus_dnd", "single_dnd",
@@ -887,12 +907,12 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     ok("ytfl_walter_live" in bpage and "WALTER LAYER" in bpage,
        "live kill-switch toggle present, shared-key persisted")
     ok("no_walter" in bpage and "cvs_base" in bpage,
-       "kill-switch renders the server-ranked pure-model variant")
+       "kill-switch renders the server-ranked no-Walter CVS variant")
     ok("tier_move" in bpage and "tiermoves" in bpage,
        "tier-boundary crossings flagged on rows and named in the delta view")
     drp = open(os.path.join(ROOT, "out", "draft_room.html")).read()
     ok("ytfl_walter_live" in drp and "cvs_base" in drp,
-       "pick engine reads the same kill-switch and pure-model variant")
+       "pick engine reads the same kill-switch and no-Walter CVS variant")
     # the old draft-order hypothesis is quarantined; the externally reported
     # draw is first-class and a later official mismatch blocks rather than
     # silently replacing one plausible seat with another.
@@ -957,6 +977,22 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     ok("sigOf" not in _pe_seg and "sigBadge" not in _pe_seg
        and "sigOf" not in _gr_seg and "sigBadge" not in _gr_seg,
        "signals are display only - never inside the score or the grade")
+    ok("HEURISTIC GRADE" in _gr_seg and
+       "judgment weights, not backtested" in _gr_seg and
+       all(f"GRADE_W.{k}" in _gr_seg for k in
+           ("VALUE", "MARKET", "URGENCY", "NEED", "SCARCITY")) and
+       "GRADE_RED_MAX" in _gr_seg and "GRADE_AMBER_MAX" in _gr_seg and
+       "orders only Also consider" in _gr_seg,
+       "every 0-100 grade names its typed-weight provenance and limited ordering role")
+    _pe_render = drp[drp.index("function renderPickEngine"):
+                     drp.index("// ======== PICKENGINE-END")]
+    ok("HEURISTIC COMPOSITE" in _pe_render and
+       "judgment weights, not backtested" in _pe_render and
+       all(f"PE.{k}" in _pe_render for k in
+           ("NEED", "FLEX", "SCARCITY", "PLAYOFF", "HI", "MED")) and
+       "composite " in _pe_render and "composite margin " in _pe_render and
+       '"confidence " + band' not in _pe_render and "Walter ON" in _pe_render,
+       "pick-engine headline names its typed-weight scale, margin cutoffs, and Walter state")
     _vb_seg = drp[drp.index("function renderValueBoard"):drp.index("function simGauss")]
     ok("sigAttr(" in _vb_seg and "sigBadge(" in _vb_seg and "sigLegend()" in _vb_seg,
        "the value board (best-available view) carries all three signal channels")
@@ -1639,6 +1675,11 @@ ok("D.cvs.engine_content_sha256 !== D.eng.content_sha256" in _board_src,
 ok('fetch("engine_2026.json")' in _paths_src and
    "j.provenance.engine_content_sha256 !== digest" in _paths_src,
    "PATHS fetches the engine and refuses a mismatched tree")
+ok("rendered position-level fork" in _paths_src and
+   "Zero rendered forks is not evidence" in _paths_src and
+   "real decision points" not in _paths_src,
+   "PATHS names its position-level action space and refuses to turn zero output "
+   "into a player-level finding")
 ok(all(_eng["content_sha256"] in
        open(os.path.join(ROOT, "out", "teaser", name)).read()
        for name in ("index.html", "players.html", "draft_room.html",

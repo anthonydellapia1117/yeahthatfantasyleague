@@ -879,6 +879,15 @@ def render_markdown(m):
         "candidates sit in one tier the card says COIN FLIP: the projection "
         "feed has no variance measure, so break ties toward ceiling yourself.")
     say("")
+    say("**Median-availability checkpoints - NOT A FORECAST.** Each listed "
+        "anchor is selected by the marginal-lineup policy from players whose "
+        "individual modeled availability is at least even odds after prior "
+        "listed anchors are consumed. Opponent boards are not simulated; an "
+        "individual survival probability is not a joint path or selection "
+        "frequency. Re-solve after every actual pick. The raw JSON retains a "
+        "descriptive fallback residue for audit provenance; it is unsolved by "
+        "the marginal policy and is deliberately not rendered here.")
+    say("")
     order_ctx = m.get("draft_order_context") or {}
     primary_slot = order_ctx.get("primary_slot")
     if primary_slot is not None:
@@ -921,18 +930,19 @@ def render_markdown(m):
     for slot in slot_order:
         rounds = m["slots"].get(slot) or m["slots"][str(slot)]
         first8 = ", ".join(str(r["pick"]) for r in rounds[:8])
-        primary_mark = " - PRIMARY" if slot == primary_slot else " - reference"
+        primary_mark = (" - PRIMARY PLANNING SEAT" if slot == primary_slot
+                        else " - reference seat")
         say(f"## Slot {slot}{primary_mark} - picks {first8} ...")
         say("")
-        say("| Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |")
-        say("|---|---|---|---|---|")
+        say("| Rd | Pick | Planning anchor (individual P avail) | Deviation trigger |")
+        say("|---|---|---|---|")
         for r in rounds:
             if r["kdef"]:
                 say(f"| {r['round']} | {r['pick']} | K or DEF, best available "
-                    f"| - | none worth modelling |")
+                    f"| none worth modelling |")
                 continue
             if not r["primary"]:
-                say(f"| {r['round']} | {r['pick']} | best available skill | - "
+                say(f"| {r['round']} | {r['pick']} | best available skill "
                     f"| board empty in model - re-run live |")
                 continue
             p = r["primary"]
@@ -953,10 +963,8 @@ def render_markdown(m):
             if p["injury"]:
                 triggers.append(f"{p['name']} is {p['injury']} - "
                                 f"re-check draft morning")
-            fb = (f"{r['fallback']['name']} {r['fallback']['pos']} "
-                  f"{r['fallback']['vor']:.0f}" if r["fallback"] else "-")
             say(f"| {r['round']} | {r['pick']} | {p['name']} {p['pos']} "
-                f"{p['vor']:.0f} ({p['p_available_now']:.0%}) | {fb} | "
+                f"{p['vor']:.0f} ({p['p_available_now']:.0%}) | "
                 f"{'; '.join(triggers) if triggers else 'none'} |")
         say("")
     if m.get("my_board"):
@@ -1013,9 +1021,10 @@ def render_markdown(m):
         f"TE{m['replacement_ranks']['TE']}. Scoring verified live: "
         f"6-pt pass TD, full PPR.")
     say("")
-    say("Expectation, set in advance: survival numbers are probabilities from "
-        "13 drafts of history, not prophecy. The card tells you the price of "
-        "waiting; it does not know what eleven humans will do.")
+    say("Method boundary, set in advance: survival numbers are individual "
+        "probabilities from 13 drafts of history, not a forecast of the joint "
+        "path. These checkpoints tell you the modeled price of waiting on "
+        "their stated anchor path; they do not know what eleven humans will do.")
     return "\n".join(lines) + "\n"
 
 

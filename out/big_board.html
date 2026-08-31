@@ -120,6 +120,11 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
   border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:4px 10px;
   text-decoration:none;white-space:nowrap}
 .slink:hover{border-color:var(--ink2);color:var(--ink)}
+.provline{font-size:11px;color:var(--ink2);margin:8px 0;padding:7px 9px;
+  border:1px solid var(--line);border-radius:8px;background:var(--s2)}
+.provchip{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink3);border:1px solid var(--line);
+  border-radius:999px;padding:2px 6px;margin-right:5px;background:var(--s1)}
 </style>
 </head>
 <body>
@@ -148,7 +153,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <dt><span class="in">DECISION INPUT, CAPPED</span> - the Walter guide layer</dt>
     <dd>Judgment calls (target, sleeper, do-not-draft, regression, recency)
       apply as percentage deltas against the position's reference magnitude
-      (the within-position SD of the pure model score - even authority across
+      (the within-position SD of the pre-Walter CVS score - even authority across
       the range, at most 0.1 positional SD of movement at the cap), total
       clamped to the configured cap; every applied delta shows its verbatim
       quote and line reference below. Deltas that cross a tier boundary are
@@ -184,6 +189,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <div class="filters" id="togf"></div>
     <div class="activef" id="activef" hidden></div>
     <div class="legend" id="legend"></div>
+    <div id="rank-basis" class="provline"></div>
     <div id="board"><p class="small">loading cvs.json...</p></div>
     <p class="small" style="margin-top:10px">Three numbers per row, never one:
     CVS (rank basis), confidence (share of factor weight backed by real data),
@@ -466,6 +472,13 @@ function renderBoard(){
   const wl = walterOn();
   const S = p => wl ? p : p.no_walter;
   const val = p => wl ? p.cvs : p.cvs_base;
+  const c = D.cvs.config;
+  document.getElementById("rank-basis").innerHTML =
+    '<span class="provchip">RANK BASIS - CONFIGURED CVS, NOT ENGINE VOR</span>' +
+    'Engine VOR plus configured non-projection factor weights; Walter judgment ' +
+    (wl ? '<b>ON</b>, capped at <b>' + esc(String(c.walter_cap_pct)) +
+          '%</b> and prospectively unvalidated.'
+        : '<b>OFF</b>. Turning Walter off does not remove the CVS factor weights.');
   let list = D.cvs.players.slice();
   if (!wl) list.sort((a, b) => a.no_walter.cvs_rank - b.no_walter.cvs_rank);
   if (View.pos !== "ALL") list = list.filter(p => p.pos === View.pos);
@@ -480,7 +493,7 @@ function renderBoard(){
     list = list.filter(p => bullishTag(p));
   renderActiveFilters(list.length, D.cvs.players.length);
   document.getElementById("board").innerHTML =
-    (wl ? "" : '<p class="small" id="wl-note">WALTER LAYER OFF (live toggle) - pure model board, ranks and signals recomputed server-side without the guide.</p>') +
+    (wl ? "" : '<p class="small" id="wl-note">WALTER LAYER OFF (live toggle) - server-ranked CVS without the guide; configured factor weights remain.</p>') +
     (D.bull && !bullishCurrent() ? '<p class="small">BULLISH tags stale versus current board - tag filters and verdict chips are disabled until the daily rebuild.</p>' : "") +
     (list.map(p => `
     <div class="brow" data-sig="${S(p).signal || ""}">

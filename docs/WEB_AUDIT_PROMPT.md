@@ -93,8 +93,10 @@ rush_td 6, rec_td 6, fum_lost -2.0. EXCLUDE league 1092592577628426240 (empty sh
    manager) remain honest nulls until their history identities are resolved.
 3. DECISION CARDS. Make slot 4 the primary view at picks 4, 21, 28, 45, 52, 69,
    76, 93, 100, 117, 124, 141, 148, and 165. Keep one reference card per other
-   slot. Per round: primary target tier, fallback tier, deviation triggers
-   (position run and tier cliff), and what board state changes the call.
+   slot. Per round: median-availability planning anchor with exact individual
+   availability, deviation triggers (position run and tier cliff), and what
+   board state changes the call. Do not render a fallback unless the same
+   marginal objective independently solves and identifies a true runner-up.
 4. UPSIDE TILT. This is a high-stakes league and the owner's stated preference is
    bullish - ceiling over floor. Where two candidates are within one tier, prefer the
    higher-variance profile. Ground every tilt in VOR and tier math, never in champion

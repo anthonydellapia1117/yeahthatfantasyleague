@@ -269,11 +269,21 @@ from engine_lineage import is_valid as valid_engine_digest
 ok(valid_engine_digest(m0), "engine carries a self-verifying content digest")
 ok(m0["content_sha256"] in md_shipped,
    "decision cards name the exact engine content they render")
+ok("Median-availability checkpoints - NOT A FORECAST" in md_shipped and
+   "Planning anchor (individual P avail)" in md_shipped and
+   "| Fallback |" not in md_shipped,
+   "decision cards carry the checkpoint method boundary and omit unsolved fallback")
 m1 = eng.apply_overlay(copy.deepcopy(m0), [])
 ok(json.dumps(m1, sort_keys=True) == json.dumps(m0, sort_keys=True),
    "empty board: apply_overlay returns the model byte-identical")
 ok(eng.render_markdown(m1) == md_shipped,
    "empty board: rendered markdown byte-identical to the shipped cards")
+_fallback_fixture = copy.deepcopy(m1)
+_fallback_row = next(r for rs in _fallback_fixture["slots"].values()
+                     for r in rs if r.get("primary"))
+_fallback_row["fallback"]["name"] = "Synthetic Unsolved Fallback"
+ok("Synthetic Unsolved Fallback" not in eng.render_markdown(_fallback_fixture),
+   "markdown behaviorally omits a synthetic unsolved fallback residue")
 
 # 10d. populated board: the verdict-subject rule holds. A bull in a coin flip
 #      earns the tie-break; nothing else in the model moves.

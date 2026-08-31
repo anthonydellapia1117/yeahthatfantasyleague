@@ -44,10 +44,12 @@ do not" logic expressed as a number.
   not the per-slot arithmetic.
 - **Root:** the round-1 pick at that slot. When one option dominates -
   no rival within the branch threshold - render a SINGLE node and state
-  why ("VONA gap 34.1 pts over the next position; not a decision").
-- **Branch only at real decision points:** branch when two or more
+  why ("VONA gap 34.1 pts over the next position; no position-level fork
+  under this rule").
+- **Branch only at position-level fork candidates:** branch when two or more
   positions' VONA values sit within `BRANCH_EPS` of each other. A fake
-  fork is worse than none.
+  position fork is worse than none. This is not evidence that no
+  player-level decision exists.
 - **Parallel roots:** NOT gated on slot number. A slot cutoff would
   hardcode an assumption the data should decide. The tree branches
   wherever the top two options fall within the VONA threshold, at ANY
@@ -129,7 +131,7 @@ by hand.
    forward-pick law holds along every path.
 3. New tab wired into `nav.js` and the smoke.
 4. Findings-page entry with whatever the tree reveals about where the
-   real decision points cluster.
+   rendered position-level fork candidates cluster.
 
 ## 7. Decisions, resolved
 
