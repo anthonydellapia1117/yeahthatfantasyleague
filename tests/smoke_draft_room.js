@@ -2762,7 +2762,8 @@ function reportedUserOrder(){
     ok(/Top \d+ Overall/.test(titles), "cheat sheet 1: top-overall section", titles);
     ok(/QB and RB/.test(titles) && /WR and TE/.test(titles),
        "cheat sheet 2-3: by-position sections", titles);
-    ok(/My 14 Picks/.test(titles), "cheat sheet 4: my-picks section", titles);
+    ok(/Median-Availability Checkpoints/.test(titles),
+       "cheat sheet 4 names the median-availability method", titles);
     ok(/What I Actually Took/.test(titles), "cheat sheet 5: blank grid section", titles);
 
     // page 1 is dense and correctly ordered by VOR, sequentially ranked
@@ -2802,6 +2803,65 @@ function reportedUserOrder(){
        "cheat sheet renders the exact primary-slot pick sequence",
        renderedPicks.join("/"));
 
+    // Sheet 4 is a sequence of median-availability planning checkpoints, not
+    // a sampled opponent board. The old smoke deliberately banned the
+    // probabilities while allowing their selected names, which made a 50.3%
+    // Bijan checkpoint read as a categorical forecast. Pin the method and the
+    // context instead: exact payload availability beside every named anchor,
+    // row-exact coin-flip cues, and no unsolved fallback.
+    const methodText = await page.locator(".sheet").nth(3)
+      .locator(".method-note").textContent();
+    ok(/NOT A FORECAST/.test(methodText) && /at or above even odds/.test(methodText) &&
+       /opponent boards are not simulated/i.test(methodText) &&
+       /individual survival.+not a path or selection frequency/i.test(methodText),
+       "cheat sheet states the static checkpoint method and its boundary",
+       methodText);
+    const skillRounds = eng.slots[String(primarySlot)].filter(x => !x.kdef && x.primary);
+    const anchorText = await page.locator(".sheet").nth(3)
+      .locator("td.anchor").allTextContents();
+    const exactAvailability = skillRounds.length === anchorText.length &&
+      skillRounds.every((r, i) => anchorText[i].includes(
+        `${(100 * r.primary.p_available_now).toFixed(1)}% available`));
+    ok(exactAvailability,
+       "cheat sheet prints each engine checkpoint's exact modeled availability",
+       anchorText.join(" | "));
+    const coinByRow = await page.locator(".sheet").nth(3).locator("td.anchor")
+      .evaluateAll(cells => cells.map(cell => [...cell.querySelectorAll(".coin-cue")]
+        .map(node => node.textContent.trim())));
+    const expectedCoinByRow = skillRounds.map(r => (r.coin_flips || []).length
+      ? [`Coin flip: ${(r.coin_flips || []).join(", ")}`] : []);
+    ok(JSON.stringify(coinByRow) === JSON.stringify(expectedCoinByRow),
+       "cheat sheet preserves coin-flip cues on their exact payload rows",
+       JSON.stringify(coinByRow));
+    const sheet4Text = await page.locator(".sheet").nth(3).textContent();
+    ok(!/Board expects|Next best|Alternate|runner-up|contingency/i.test(sheet4Text) &&
+       /Re-solve live after every actual pick/.test(sheet4Text),
+       "cheat sheet omits the unsolved fallback and requires a live re-solve",
+       sheet4Text);
+
+    // Synthetic bite: the committed payload may legitimately have no coin
+    // flips after an ADP refresh. Force one into a single row and prove the
+    // renderer carries it on that row rather than letting the guard go vacuous.
+    const synthetic = JSON.parse(JSON.stringify(eng));
+    const syntheticRounds = synthetic.slots[String(primarySlot)];
+    const syntheticIndex = syntheticRounds.findIndex(x => !x.kdef && x.primary);
+    const syntheticAnchorIndex = syntheticRounds.slice(0, syntheticIndex)
+      .filter(x => !x.kdef && x.primary).length;
+    syntheticRounds[syntheticIndex].coin_flips = ["Synthetic Coin Flip"];
+    const syntheticPage = await browser.newPage();
+    await syntheticPage.route("**/out/engine_2026.json*", r => r.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify(synthetic),
+    }));
+    await syntheticPage.goto(base + "/out/cheatsheet.html");
+    await syntheticPage.waitForSelector(".sheet");
+    const syntheticCue = await syntheticPage.locator(".sheet").nth(3)
+      .locator("td.anchor").nth(syntheticAnchorIndex).locator(".coin-cue").textContent();
+    ok(syntheticCue.trim() === "Coin flip: Synthetic Coin Flip",
+       "cheat sheet coin-flip guard bites on a deterministic synthetic row",
+       syntheticCue);
+    await syntheticPage.close();
+
     // Other slots remain reference views, but only an explicit query may select
     // one. This distinguishes the intended reference feature from a silently
     // reused roster id becoming the default again.
@@ -2826,11 +2886,12 @@ function reportedUserOrder(){
       .locator("td.w").allTextContents()).join("");
     ok(blankText.trim() === "", "cheat sheet 5 pre-fills nothing");
 
-    // BANNED CONTENT. These are live or untrusted numbers and the paper cannot
-    // correct itself once printed.
+    // BANNED CONTENT. These are live or untrusted layers and the paper cannot
+    // correct itself once printed. Engine availability is required above: the
+    // selected names depend on it, so suppressing only that context was false
+    // precision rather than a freshness safeguard.
     const body = await page.evaluate(() => document.body.innerText);
     ok(!/BULLISH|WATCH/.test(body), "cheat sheet carries no BULLISH/WATCH tag");
-    ok(!/survives|P surv|survival/i.test(body), "cheat sheet carries no survival number");
     ok(!/VONA/.test(body), "cheat sheet carries no VONA content");
 
     // PRINT CONTRACT. Measured at Letter width, where the screen breakpoints

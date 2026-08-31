@@ -75,6 +75,36 @@ source_digests[forward_schedule_rel] = file_content_sha256(forward_schedule_path
 forward_meta_rel = "docs/ffopportunity/schedule_2026.meta.json"
 forward_meta_path = os.path.join(ROOT, forward_meta_rel)
 source_digests[forward_meta_rel] = file_content_sha256(forward_meta_path)
+
+# External-analysis boundary: production Python may consume only the refreshed
+# schedule snapshot and its metadata from docs/ffopportunity. The R exports and
+# narrative draft board are audit material, never application inputs. This is a
+# structural complement to the value-level provenance checks below.
+_src_texts = {}
+for _name in sorted(os.listdir(os.path.join(ROOT, "src"))):
+    if not _name.endswith(".py"):
+        continue
+    _text = open(os.path.join(ROOT, "src", _name)).read()
+    _src_texts[_name] = _text
+_src_ffo = {name: text for name, text in _src_texts.items()
+            if "ffopportunity" in text}
+ok(set(_src_ffo) == {"build_bullish_inputs.py"} and
+   f'FORWARD_SCHEDULE_REL = "{forward_schedule_rel}"' in
+   _src_ffo.get("build_bullish_inputs.py", "") and
+   f'FORWARD_META_REL = "{forward_meta_rel}"' in
+   _src_ffo.get("build_bullish_inputs.py", ""),
+   "production Python's sole ffopportunity boundary is the refreshed forward "
+   "schedule plus metadata",
+   ", ".join(_src_ffo))
+_forbidden_external = (
+    "ALL_R_CODE", "DRAFTBOARD_2026", "FFOPPORTUNITY_HANDOFF",
+    "bullish_qb_2020_2025", "bullish_rb_2020_2025",
+    "bullish_wr_2020_2025", "bullish_te_2020_2025",
+    "vegas_2026_forward",
+)
+ok(not any(token in text for text in _src_texts.values()
+           for token in _forbidden_external),
+   "production Python imports no Copilot/R analysis export")
 ok(inp.get("provenance", {}).get("input_content_sha256") ==
    source_digests,
    "BULLISH inputs record every committed source payload exactly")
