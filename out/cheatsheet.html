@@ -168,7 +168,17 @@ var $ = function(id){ return document.getElementById(id); };
 function esc(x){ return String(x == null ? "" : x).replace(/[&<>"']/g,
   function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 
-var D = { eng:null, cvs:null, adp:null, slot:null };
+var D = { eng:null, cvs:null, adp:null, slot:null, primarySlot:null };
+
+function selectSlot(slot){
+  D.slot = Number(slot);
+  var confirmation = D.eng.draft_order_context.sleeper_confirmation;
+  D.slotNote = D.slot === D.primarySlot
+    ? "PRIMARY SLOT " + D.primarySlot + " from engine draft-order context; Sleeper " +
+      confirmation + "."
+    : "REFERENCE SLOT " + D.slot + "; engine primary is slot " + D.primarySlot +
+      "; Sleeper " + confirmation + ".";
+}
 
 // PAGE-CAPACITY CONSTANT, not a model threshold. 120 is the number of rows
 // that fit three columns of forty on one Letter portrait side at the type
@@ -234,6 +244,8 @@ function sheet(title, meta, body, foot){
 
 function build(){
   var E = D.eng;
+  document.title = "YTFL Draft Cheat Sheet 2026 \u00b7 Slot " + D.slot +
+    (D.slot === D.primarySlot ? " Primary" : " Reference");
   var skill = E.players.filter(function(p){ return p.pos !== "K" && p.pos !== "DEF"; })
     .slice().sort(function(a, b){ return b.vor - a.vor; });
   var meta = "12-team &middot; 14-round &middot; full PPR &middot; 6-pt pass TD &middot; " +
@@ -302,8 +314,9 @@ function build(){
         "</span>" : "&mdash;") + "</td></tr>";
   });
   body4 += "</table>";
-  var s4 = sheet("My 14 Picks &middot; Slot " + D.slot, meta, body4,
-    "ASSUMES SLOT " + D.slot + ". " + esc(D.slotNote) +
+  var s4 = sheet("My 14 Picks &middot; Slot " + D.slot +
+    (D.slot === D.primarySlot ? " &middot; Primary" : " &middot; Reference"), meta, body4,
+    esc(D.slotNote) +
     " Names are the pre-draft board, not a live read - the room handles live.");
 
   // ---- SHEET 5: blank grid. Round numbers are row labels; every data cell
@@ -329,7 +342,7 @@ function renderSlots(){
   $("slots").innerHTML = h;
   Array.prototype.forEach.call($("slots").querySelectorAll("button"), function(b){
     b.onclick = function(){
-      D.slot = Number(b.dataset.slot);
+      selectSlot(b.dataset.slot);
       try { history.replaceState(null, "", "?slot=" + D.slot); } catch (e) {}
       renderSlots(); build();
     };
@@ -363,11 +376,17 @@ function boot(){
         if (x.player_id != null) D.byeById[String(x.player_id)] = x.bye;
         D.byeByName[norm(String(x.name || ""))] = x.bye;
       });
+    var teams = Number(D.eng.league.teams || 0);
+    var context = D.eng.draft_order_context || {};
+    var primary = Number(context.primary_slot);
+    if (!Number.isInteger(primary) || primary < 1 || primary > teams ||
+        !Array.isArray(D.eng.slots[String(primary)]))
+      throw new Error("engine draft_order_context.primary_slot is missing or invalid");
     var q = Number(new URLSearchParams(location.search).get("slot"));
-    var seed = D.eng.league.anthony_roster_id || 1;
-    D.slot = (q >= 1 && q <= (D.eng.league.teams || 12)) ? q : seed;
-    D.slotNote = "Draft order was undrawn at this build - slot " + D.slot +
-      " is the documented seed, not a drawn seat. Confirm on Sleeper before the draft.";
+    var explicitReference = Number.isInteger(q) && q >= 1 && q <= teams &&
+      Array.isArray(D.eng.slots[String(q)]);
+    D.primarySlot = primary;
+    selectSlot(explicitReference ? q : primary);
     if (!D.adp){
       $("banner").hidden = false;
       $("banner").textContent = "Bye weeks unavailable (data/adp.json did not load) - " +

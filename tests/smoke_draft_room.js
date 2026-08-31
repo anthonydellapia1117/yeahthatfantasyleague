@@ -2754,6 +2754,7 @@ function reportedUserOrder(){
 
     const eng = JSON.parse(require("fs").readFileSync(
       path.resolve("out/engine_2026.json"), "utf8"));
+    const primarySlot = Number(eng.draft_order_context?.primary_slot);
 
     // every section the sheet promises actually rendered
     ok(await page.locator(".sheet").count() === 5, "cheat sheet renders five sheets");
@@ -2784,10 +2785,38 @@ function reportedUserOrder(){
     ok(pickRows === eng.league.rounds + 1,
        "cheat sheet 4 lists every round once", String(pickRows));
     const slotTxt = await page.locator(".sheet").nth(3).locator(".sheet-t").textContent();
-    ok(/Slot \d+/.test(slotTxt), "cheat sheet 4 names the slot it assumed", slotTxt);
-    ok((await page.locator(".sheet").nth(3).locator(".sheet-f").textContent())
-        .includes("ASSUMES SLOT"),
-       "cheat sheet 4 states the slot assumption on the printed page");
+    ok(slotTxt.includes(`Slot ${primarySlot}`) && /Primary/.test(slotTxt),
+       "cheat sheet defaults to the engine's exact primary slot in its title", slotTxt);
+    const slotFoot = await page.locator(".sheet").nth(3).locator(".sheet-f").textContent();
+    ok(slotFoot.includes(`PRIMARY SLOT ${primarySlot}`),
+       "cheat sheet prints the engine's exact primary slot in its footer", slotFoot);
+    ok((await page.title()).includes(`Slot ${primarySlot} Primary`),
+       "cheat sheet document title names the engine's exact primary slot",
+       await page.title());
+    ok(await page.locator(`#slots button[data-slot="${primarySlot}"]`).getAttribute("class") === "on",
+       "cheat sheet selects the engine's exact primary-slot control");
+    const renderedPicks = (await page.locator(".sheet").nth(3)
+      .locator("table.pk td.pn").allTextContents()).map(x => Number(x.trim()));
+    const enginePicks = eng.slots[String(primarySlot)].map(x => Number(x.pick));
+    ok(JSON.stringify(renderedPicks) === JSON.stringify(enginePicks),
+       "cheat sheet renders the exact primary-slot pick sequence",
+       renderedPicks.join("/"));
+
+    // Other slots remain reference views, but only an explicit query may select
+    // one. This distinguishes the intended reference feature from a silently
+    // reused roster id becoming the default again.
+    const referenceSlot = primarySlot === 8 ? 9 : 8;
+    const refPage = await browser.newPage();
+    await refPage.goto(base + `/out/cheatsheet.html?slot=${referenceSlot}`);
+    await refPage.waitForSelector(".sheet");
+    const refTitle = await refPage.locator(".sheet").nth(3).locator(".sheet-t").textContent();
+    const refFoot = await refPage.locator(".sheet").nth(3).locator(".sheet-f").textContent();
+    ok(refTitle.includes(`Slot ${referenceSlot}`) && /Reference/.test(refTitle) &&
+       refFoot.includes(`REFERENCE SLOT ${referenceSlot}`) &&
+       refFoot.includes(`engine primary is slot ${primarySlot}`),
+       "explicit query selects a labelled reference without changing the primary",
+       `${refTitle} | ${refFoot}`);
+    await refPage.close();
 
     // the blank grid is blank by design
     const blanks = await page.locator(".sheet").nth(4).locator("td.w").count();

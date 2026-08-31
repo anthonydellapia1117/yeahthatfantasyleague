@@ -747,6 +747,12 @@ _missing_deploy = [h for h in _nav_hrefs if f"out/{h}" not in _pgy]
 ok(not _missing_deploy,
    "every nav-linked page is in the pages.yml deploy list",
    "; ".join(_missing_deploy))
+_cheat_src = open(os.path.join(ROOT, "out", "cheatsheet.html")).read()
+ok("out/cheatsheet.html" in _pgy,
+   "the printable cheat sheet is explicitly present in the Pages copy list")
+ok("draft_order_context" in _cheat_src and "context.primary_slot" in _cheat_src and
+   "anthony_roster_id ||" not in _cheat_src,
+   "the cheat sheet defaults from shared draft_order_context.primary_slot, not roster id")
 
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")
