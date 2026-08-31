@@ -10,6 +10,37 @@
 > below is retained only as a dated scenario; use the current slot-4 engine and
 > draft room for decisions. The other eleven slots remain reference views.
 
+> **Pick-4 owner decision, recorded outside the model:** if Gibbs, Bijan Robinson,
+> and Ja'Marr Chase go 1-2-3, the complete 4/21/28 marginal-lineup policy scores
+> McCaffrey **290.75**, Puka **288.67**, and Jonathan Taylor **272.05**. CMC's
+> nominal **+2.08** over Puka is inside the board-derived **7.0** coin-flip band,
+> and a documented survival-calibration sensitivity reverses it to Puka by 0.15.
+> The model therefore says **CMC/Puka tie**, not CMC. Anthony chooses **Puka** as
+> an explicit external tie-break because CMC is age 30, missed 13 of 34 games,
+> carried 450 touches in 2025, and this league has zero IR slots. That durability
+> judgment is not a projection, VOR input, BULLISH tag, or model verdict. If Puka
+> is still not practicing by September 5, withdraw the override and return to the
+> honest coin flip; Sleeper's injury label alone cannot establish practice status.
+
+> **Projection boundary:** the core board scores Sleeper's 2026 raw-stat
+> projection feed under this league's rules. The backward-looking limitation
+> applies to auxiliary ceiling, availability, usage, archetype, and opportunity
+> evidence built mostly from 2025 data on 2026 rosters, not to the core player
+> projection itself.
+
+> **Puka-path turn plan (100,000 paired survival states, seed 20260831):**
+> taking Puka changes pick 21 in only 3 of 100,000 states versus taking CMC.
+> Excluding true shock fallers, the current marginal-policy order is **Achane →
+> Chase Brown → Bowers → Derrick Henry → Saquon → Lamb → Kenneth Walker →
+> Hampton → Nico → Jeanty → McBride → Josh Allen** at 21; adjacent choices through Henry
+> are themselves within or near the 7.0 coin-flip band. At 28, apply the
+> marginal-lineup policy again rather than forcing a position. If Bowers was the
+> pick, take the best RB/WR (Nico, Henry, Javonte, and Walker are the common
+> outcomes) and do not double TE. If an RB was the pick, Bowers is usually the
+> next target, but any higher-VOR surviving RB still wins; a second RB remains
+> fully live because Puka + RB leaves RB2 open. The deterministic Bowers-to-Javonte
+> mock is one path, not the plan.
+
 ---
 
 ## The one change
@@ -81,7 +112,7 @@ Same doctrine everywhere: **rounds 1 through 5 buy skill capital, round 6 buys t
 
 | Rd | Pick (slot 2) | Best on board | Posture |
 |---|---|---|---|
-| 1 | 2 | McCaffrey RB 129.9 | Elite RB or WR. No decision to make |
+| 1 | 2 | McCaffrey RB 129.9 | Historical forced-board example; it did not test player-level alternatives or an observed board state |
 | 2 | 23 | Derrick Henry RB 85.8 | Henry 85.8 over Allen 68.0. Take the back |
 | 3 | 26 | **Josh Allen QB 68.0** | The one live early-QB cell. See the warning below before you take it |
 | 4 | 47 | Skattebo RB 48.4 | Running back |
@@ -167,9 +198,10 @@ And the value of the reshuffle in the superseded slot-7 scenario was: **+19.6 at
 | Defect | What it means | Src |
 |---|---|---|
 | `ppg` is fake | `gp` is hardcoded 18.0 for **all 242 drafted offensive players**. `ppg` is exactly `pts/18` and carries zero information beyond total points. Sorting by pts versus ppg produces 2 order differences, both float-rounding ties. **Delete this column from your decision loop.** The 32 `gp=1.0` rows are defenses with a placeholder game count | [S] |
-| Injury status is discarded | **39 of 242 drafted offensive players carry a non-null `injury_status` in the same Sleeper payload the engine reads, and the engine throws it away at lines 71-78.** Eight sit inside ADP 50, including the **number 1 ADP pick (Jahmyr Gibbs, Questionable) and the number 5 (Christian McCaffrey, Questionable)**, plus Nabers, Jacobs, Burden, Flowers, DeVonta Smith and Waddle. Injured players project a median 0.4 points *below* healthy same-position peers within 25 ADP slots, so the risk is priced into neither `pts` nor `gp`. This is the only availability signal that exists and it is not external - it is sitting in the file, unused. Check it manually on every pick inside round 4 | [S][E] |
+| Injury status is displayed, not valued | The current engine carries Sleeper's `injury_status` into player rows and the room renders it, but neither projected points nor VOR applies an injury penalty. The label is a warning, not a priced risk model, and it does not report practice participation. Check an authoritative practice report manually for every early-round injury; specifically, re-check Puka by September 5 before applying the owner override above | [S][E] |
 
-*The injured-player count was 42 when the finding was written and reads 39 on today's pull; Sleeper's status field churns daily. Re-pull it on draft morning.*
+*Sleeper's status field churns daily. Re-pull it on draft morning, but do not
+mistake a current `Questionable` label for evidence that a player practiced.*
 
 ---
 

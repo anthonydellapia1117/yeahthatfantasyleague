@@ -15,9 +15,9 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-31 by Codex - recorded Anthony's externally drawn **slot 4**, made its exact picks the primary planning geometry on every current slot-aware surface, retained all eleven reference slots, and added fail-closed reconciliation against Sleeper. Sleeper still exposes its complete identity placeholder, so official confirmation is visibly pending. The engine now carries raw n-labelled first-position history from all 13 seasons for the ten known seats; slots 3 (merged seat) and 7 (new manager) remain honest nulls, and the p=0.9932 tendency result remains description-only. |
-| **Next agent** | Review the open slot-4 PR; do not merge it unilaterally. Keep #54 OPEN, ON HOLD, and untouched. Open PR #69 (`cheatsheet`) still defaults to roster/seat 7 because its file is absent from main: after the core slot-4 PR lands, rebase #69 and make it consume `draft_order_context.primary_slot` before merging. Then continue the approved R-mislabel and vacated-carries assessment backlog only if Anthony has not redirected to the now-known draft seat. |
-| **Branch** | `codex/slot4-draft-order`, implementation commits `4c15ae7` and `4701b1f`, based on `origin/main` `7226ca7`. No merge or deploy has occurred. This baton update is intentionally the last commit. |
+| **Last touched** | 2026-08-31 by Codex - recorded Anthony's externally drawn **slot 4**, made its exact picks the primary planning geometry, and then audited the actual Gibbs/Bijan/Chase-gone decision through complete 4/21/28 continuations. The model says McCaffrey/Puka **tie** (+2.08 inside a derived 7.0 band; sensitivity reverses by 0.15). Anthony chooses Puka as an explicitly external zero-IR/durability override, not model output. The same audit found that PATHS' zero forks is a false-negative: its unconditional position-level action space never represented the question. |
+| **Next agent** | After #70 lands, rebase open PR #69 (`cheatsheet`) and make it consume `draft_order_context.primary_slot` before considering merge. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched: its Pareto branch remains position-level and does not repair the observed-board/player-action false-negative. Monitor Puka's practice participation through September 5; if he is still not practicing, withdraw the external tie-break and return to an honest CMC/Puka coin flip. |
+| **Branch** | `codex/slot4-draft-order`, based on `origin/main` `7226ca7`; PR #70 carries the slot-4 work plus the post-draw decision audit. This baton update remains the final commit on the branch before merge. |
 | **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - still reflects main `7226ca7`, not this branch. Published data was reported fresh at 24h during the branch verification. |
 | **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. `src/check_draft_order.py` reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)` on 2026-08-31. A complete official agreement promotes the source; any conflict blocks loudly. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
@@ -163,7 +163,7 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     independently reconciled to `out/picks.csv`; history is displayed with n and
     never enters survival or a verdict. Slots 3 and 7 remain null rather than being
     guessed. The branch battery ran the gate-runner self-test, all fifteen gated
-    suites at 114/0/22/51/70/17/16/106/63/173/48/1818/23/373/38 guards, all five
+    suites at 114/0/22/51/70/17/16/105/63/173/48/1818/23/373/38 guards, all five
     deterministic analysis reruns with zero skips, browser smoke at 378 guards,
     and `MATH DIFF PROOF: EMPTY`. A final attribution audit caught the first
     BULLISH rebuild using a local Week-1 HISTORY file pulled 2026-08-28, older than
@@ -173,16 +173,64 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     honestly labelled `REPRICED`. Slot selection itself changes no player value or
     tag; the fresh-feed delta versus main is separately attributable (Kyren
     Williams WATCH -> BULLISH and Sam Darnold newly WATCH).
+14. **The pick-4 model result is a tie; the owner decision is an external
+    override.** Under the stated Gibbs/Bijan/Chase-gone board, paired complete
+    4/21/28 policy simulation scores McCaffrey 290.75, Puka 288.67, and Jonathan
+    Taylor 272.05. McCaffrey's +2.08 over Puka is inside the artifact's derived
+    7.0-point coin-flip band, and the documented survival-calibration sensitivity
+    reverses the result to Puka +0.15. Anthony will take Puka because CMC is age
+    30, missed 13 of 34 games, carried 450 touches in 2025, and the league has
+    zero IR slots. This is deliberately absent from generated decision cards and
+    BULLISH data: it is an owner tie-break after the model declared equivalence.
+    If Puka is still not practicing by September 5, the override is withdrawn.
+    The core board itself uses Sleeper's 2026 raw-stat projections scored under
+    league-exact rules; 2025-on-2026 limitations describe auxiliary risk,
+    ceiling, usage, archetype, and opportunity evidence.
+15. **PATHS' empty result is a live false-negative, and #54 does not repair it.**
+    The slot-4 tree has nine nodes and zero rendered forks, but it accepts neither
+    an explicit unavailable-player state nor same-position player actions. Even
+    after removing Gibbs/Bijan/Chase by hand it would render Puka alone: WR VONA
+    45.83 versus RB 41.29, a 4.54 gap above a recomputed 3.58 epsilon. Zero forks
+    therefore meant the player-level question was never asked, not that no
+    decision existed. The offseason redesign needs an observed-board state,
+    player-level actions, and complete owner-turn continuations; VONA becomes a
+    diagnostic coordinate rather than the only branch generator.
+16. **Puka-first leaves pick 21 unchanged and makes the second RB at 28 fully
+    valuable.** A 100,000-state paired run (seed 20260831, Gibbs/Bijan/Chase gone,
+    Puka forced, raw conditional survival, common uniforms) chose the same player
+    at 21 as CMC-first in 99,997 states. Puka-path pick 21 was Bowers 40.337%,
+    Chase Brown 24.889%, Derrick Henry 11.952%, Achane 8.429%, Kenneth Walker
+    5.975%, and Nico Collins 3.813%; those six account for 95.395%. At 28 the
+    position mix was WR 34.242%, RB 32.833%, TE 25.993%, QB 6.932%; Nico was the
+    most frequent name at 23.500%, followed by Walker 10.321%, Henry 10.082%,
+    Bowers 9.809%, McBride 8.713%, Javonte 7.652%, and Loveland 7.471%.
+    Frequencies are availability descriptions, not priority: consume pick 21 and
+    rerun `pick_marginal`. Puka + one RB leaves RB2 open, so a second RB receives
+    full RB replacement value; CMC + RB prices a third RB against the higher FLEX
+    baseline. An exploratory two-turn stochastic lookahead changed pick 21 in
+    26.228% of states, mainly Bowers to a scarcer RB, but added only 0.686 expected
+    lineup points, far inside the 7.0 uncertainty band. It is offseason redesign
+    evidence, not a new draft-night verdict.
+17. **The post-audit merge battery is green, including the coverage that first
+    failed for environmental reasons.** The first analysis run correctly failed
+    the gate at 33 guards plus five skips because no local HISTORY cache existed.
+    `src/fetch_history.py` then populated all 59 files in an isolated `/tmp`
+    cache; the rerun passed 38/38 with zero skips and all five determinism rebuilds.
+    The full counts are gate-runner 16, then
+    114/0/22/51/70/17/16/105/63/173/48/1818/23/373/38 across the fifteen gated
+    suites including an empty mathdiff proof. Browser smoke passed 378 guards on
+    the workflow-installed Chromium. No test or analysis run changed a committed
+    artifact.
 
 ### In flight / nothing blocked
 
-The slot-4 branch is green and its PR awaits Anthony's review; do not merge it
-unilaterally. PR #54 remains OPEN, ON HOLD, and untouched at remote head `4bd541e`;
-its mergeability is currently unresolved against moving `main`. Its PATHS
-policy is still the data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the
-conditional spread floor. Do not rebase, resolve, or merge it until the order is
-drawn and Anthony asks to inspect his actual slot. The order is now externally
-drawn at slot 4, but this PR does not alter #54. Open PR #69 must not merge with its
+PR #70 is the slot-4 merge candidate authorized by Anthony. PR #54 remains OPEN,
+PARKED THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
+mergeability is unresolved against moving `main`. Its PATHS policy is still the
+data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the conditional spread
+floor, but its Pareto action space remains one action per position and cannot
+answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
+draft. Open PR #69 must not merge with its
 retired slot-7 cheat-sheet default; rebase it after the core slot context lands and
 consume the engine's primary slot. The `docs/ffopportunity/` R export
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already

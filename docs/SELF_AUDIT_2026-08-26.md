@@ -76,19 +76,20 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 51 | Forward Vegas read a committed `schedule_2026.csv` snapshot that no workflow refreshed, so its dynamic horizon would have stayed at Weeks 1-6 while live games priced further out | **SELF-PRE** (new-feature update-path audit) | 0 | no - caught before first stale build | **SILENT STALENESS (5)** |
 | 52 | `backfield_share` grouped the existing all-week 2025 carry basis by each player's 2026 depth-chart team; David Montgomery's 158 DET carries moved into HOU, removing them from Gibbs's denominator. The aggregate usage shard also trimmed low-PPR backs and collapsed multi-team rows, so historical regrouping alone still left PHI/JAX denominators wrong | **REVIEWER** (RB input-denominator audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (2) + INCOMPLETE/COALESCED SOURCE** |
 | 53 | `adj_vac` subtracts an incoming player only when he has 2025 NFL targets; a 2026 rookie therefore subtracts zero, overstating the destination team's open opportunity while producing a plausible value | **REVIEWER** (opportunity-input audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (3)** |
+| 54 | At the actual slot-4 decision, PATHS rendered zero forks and labelled the root "not a decision" while its action space contained one unconditional representative per position: it could neither condition on Gibbs/Bijan/Chase being gone nor compare McCaffrey with Taylor inside RB. On the observed board it would still render Puka alone (WR VONA 45.83 vs RB 41.29, gap 4.54 above a recomputed 3.58 epsilon) even though the complete 4/21/28 policy placed McCaffrey only 2.08 lineup points above Puka, inside the artifact's 7.0 coin-flip band | **REVIEWER** (slot-4 decision audit) | since PATHS shipped | yes | **SURFACE ABSENCE AS FINDING** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 53 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **9.4%**. The first
+Of the 54 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **9.3%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
 the first spontaneous instance: before shipping a newly wired input, I asked
 whether its source could actually update and found that it could not.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 26, ANTHONY 1.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 27, ANTHONY 1.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -97,10 +98,10 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Twenty-six of 53 - the largest single share, and disproportionately the severe
-ones - came from outside review. Of the ten defects now known to have reached
+Twenty-seven of 54 - the largest single share, and disproportionately the severe
+ones - came from outside review. Of the eleven defects now known to have reached
 the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
-#43, #45, #46, #52, #53), **eight were found by someone other than me.**
+#43, #45, #46, #52, #53, #54), **nine were found by someone other than me.**
 
 ### 1.3 Which classes recur, and why the first fix did not generalize
 
@@ -238,6 +239,27 @@ error: Isaiah Likely's 2025 Baltimore share was ranked inside his one-player 202
 Giants group. Resumption requires two genuine, season-consistent criteria and a
 new reviewed N.1 test.
 
+**SURFACE ABSENCE AS FINDING - one live instance (#54).** An empty result can
+look like negative evidence even when the system never represented the question.
+PATHS deliberately branches among positions, not players, and starts from an
+unconditional pre-draft pool. At slot 4 it therefore rendered zero forks and the
+phrase "not a decision" while being structurally unable to compare McCaffrey with
+Taylor or accept the observed Gibbs/Bijan/Chase-gone board. Conditioning only the
+pool does not repair the action space: Puka's WR VONA is 45.83 versus McCaffrey's
+RB VONA 41.29, a 4.54 gap above both the current 1.39 epsilon and the 3.58 epsilon
+recomputed on that depleted board, so the page would still render Puka alone.
+The complete adaptive 4/21/28 policy instead puts McCaffrey only 2.08 lineup
+points above Puka, inside the artifact's own 7.0-point coin-flip band. This is the
+same silence shape as optional-shard degradation, but the fetch and rendering
+both succeeded: the omitted action space itself became a false finding. The rule
+is that every zero-result surface must name the universe it actually queried and
+must carry a behavioral fixture in which a known actionable state produces an
+action. Held PR #54 changes the branch rule, ranking, and rendering, but still
+exposes only one action per position and therefore does not repair the missing
+question. For PATHS, the offseason repair is an explicit unavailable-player state,
+player-level actions, and complete turn continuations through the shared forward
+policy; changing epsilon cannot ask the missing question.
+
 **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING - 3 occurrences (#46,
 #52, #53), plus one inverse gap.** Likely's BAL-2025 receiving share was ranked
 among NYG-2026 TEs. RB shares rebuilt 2025 carry denominators from 2026 depth
@@ -287,7 +309,7 @@ reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
 #15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43,
-#44, #45, #46, #47, #48, #49, #52, #53. Twenty-eight of 53, and
+#44, #45, #46, #47, #48, #49, #52, #53, #54. Twenty-nine of 54, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it
@@ -305,7 +327,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Twenty-six finds, including eight of the ten long-lived live defects. The mechanism is
+Twenty-seven finds, including nine of the eleven long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 

@@ -16,6 +16,27 @@ build until the whole sequence is green.
 
 ## The night before
 
+- [ ] **Owner tie-break at pick 4:** only if Gibbs, Bijan Robinson, and Ja'Marr
+      Chase are gone, treat McCaffrey and Puka as tied. The complete 4/21/28
+      policy is CMC 290.75 versus Puka 288.67, a 2.08 difference inside the
+      derived 7.0-point coin-flip band; a survival-calibration sensitivity flips
+      the order by 0.15. Anthony's Puka choice is an external zero-IR/durability
+      override, not model output.
+- [ ] **September 5 Puka practice check:** verify an official Rams practice
+      report manually. If Puka is still not practicing, withdraw the durability
+      tie-break and return to a genuine CMC/Puka coin flip. The engine will carry
+      and render a changed Sleeper `injury_status`, but that field does not prove
+      practice participation and cannot satisfy this check by itself.
+- [ ] **If Puka is the pick, solve 21 before 28:** the paired simulation says the
+      pick-21 choice is unchanged from CMC-first in 99,997 of 100,000 states. On
+      the ordinary board, the model orders Achane, Chase Brown, Bowers, then
+      Henry, while treating adjacent choices as close. At 28 rerun marginal
+      lineup value: after Bowers, take the best RB/WR and do not double TE; after
+      an RB, Bowers is usually next if present, but a higher-VOR surviving RB
+      still wins and a second RB still receives full RB2 value. Frequencies
+      describe availability, not priority: Nico is the most
+      common pick-28 outcome, but Walker wins if both are actually present.
+
 - [ ] `data/my_board.csv` - every BULL/BEAR call in, each with a reason
       and a source. Unsourced conviction does not get graded.
 - [ ] If Walter shipped a guide revision: drop the new file in `data/`,

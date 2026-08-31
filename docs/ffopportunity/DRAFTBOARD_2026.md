@@ -8,6 +8,12 @@ Repo: https://github.com/anthonydellapia1117/yeahthatfantasyleague/tree/main/doc
 **League:** 12 teams, 14 rounds, snake, full PPR, **6-point passing TDs**, zero IR, H2H + median scoring.
 **ADP:** ECR = overall rank. Round ≈ ceil(ECR / 12).
 
+> **Scope boundary:** this document is an auxiliary ffopportunity analysis, not
+> the app's core projection engine. Its 2025-opportunity-on-2026-rosters caveats
+> apply to the evidence below. The core board independently scores Sleeper's 2026
+> raw-stat projection feed under league-exact rules; it is not 2025 production
+> relabelled as a 2026 forecast.
+
 ---
 
 ## ⚠️ THE THREE RULES THIS BOARD MUST FOLLOW
