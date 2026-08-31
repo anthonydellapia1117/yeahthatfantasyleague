@@ -584,7 +584,8 @@ ok(not _missing_imports,
 
 _browser_key_path = os.path.join(ROOT, "out", "player_names.js")
 _browser_key_source = open(_browser_key_path).read()
-_browser_pages = ("draft_room.html", "big_board.html", "players.html", "teams.html")
+_browser_pages = ("draft_room.html", "big_board.html", "players.html", "teams.html",
+                  "cheatsheet.html")
 _browser_duplicates = []
 
 
@@ -628,7 +629,7 @@ for _dirpath, _, _filenames in os.walk(os.path.join(ROOT, "out")):
                 os.path.relpath(_path, ROOT) + ": key logic duplicated")
 ok(_browser_key_source.count("function playerComparisonKey") == 1 and
    not _browser_duplicates,
-   "four browser consumers share one JavaScript comparison-key definition",
+   "five browser consumers share one JavaScript comparison-key definition",
    "; ".join(_browser_duplicates))
 
 _parity_names = [name for group in _equivalent_names for name in group]
@@ -746,6 +747,12 @@ _missing_deploy = [h for h in _nav_hrefs if f"out/{h}" not in _pgy]
 ok(not _missing_deploy,
    "every nav-linked page is in the pages.yml deploy list",
    "; ".join(_missing_deploy))
+_cheat_src = open(os.path.join(ROOT, "out", "cheatsheet.html")).read()
+ok("out/cheatsheet.html" in _pgy,
+   "the printable cheat sheet is explicitly present in the Pages copy list")
+ok("draft_order_context" in _cheat_src and "context.primary_slot" in _cheat_src and
+   "anthony_roster_id ||" not in _cheat_src,
+   "the cheat sheet defaults from shared draft_order_context.primary_slot, not roster id")
 
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")
@@ -1129,14 +1136,14 @@ ok(os.path.exists(navp), "nav.js exists (single source of truth)")
 if os.path.exists(navp):
     navsrc = open(navp).read()
     nav_items = re.findall(r'\["(\w+)",\s*"[^"]+",\s*"([^"]+)"\]', navsrc)
-    ok(len(nav_items) == 7, "nav defines exactly seven items", f"{len(nav_items)}")
+    ok(len(nav_items) == 8, "nav defines exactly eight items", f"{len(nav_items)}")
     missing = [href for _, href in nav_items
                if not os.path.exists(os.path.join(ROOT, "out", href))]
     ok(not missing, "every nav link target resolves to a real file",
        "; ".join(missing))
     PAGES = {"draft_room.html": "draft", "big_board.html": "board",
              "players.html": "players", "paths.html": "paths",
-             "teams.html": "teams",
+             "teams.html": "teams", "cheatsheet.html": "cheat",
              "ff-hub.html": "findings", "home.html": "hub"}
     seen_keys = []
     for fname, want in PAGES.items():
@@ -1149,7 +1156,7 @@ if os.path.exists(navp):
         ok('<nav class="small">' not in psrc,
            f"{fname} carries no second navigation system")
     ok(sorted(seen_keys) == sorted(k for k, _ in nav_items),
-       "each active key is used exactly once across the seven pages")
+       "each active key is used exactly once across the eight pages")
     dr = open(os.path.join(ROOT, "out", "draft_room.html")).read()
     tag_at = dr.index('src="nav.js"')
     ok(tag_at < dr.index('<script id="engine-data"'),

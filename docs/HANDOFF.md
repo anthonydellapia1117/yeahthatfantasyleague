@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-31 by Codex - rehearsed the still-unconsumed Sleeper placeholder-to-confirmed transition in one browser page. The real payload was still `pre_draft` / null user order / identity roster map / zero picks. The realistic publication has 11 users plus 12 roster slots because roster 3 is ownerless; main rejected it and, even under an idealized payload, could mix a confirmed banner with stale pending/reference content. The resolver and repaint contract now consume that exact transition coherently without weakening fail-closed disagreement handling. |
-| **Next agent** | Review and merge the order-transition PR before Rich publishes if possible, then observe the actual server transition: it must print `DRAFT ORDER DRAWN - Anthony has slot 4 (matches external report)` and the deployed room must confirm slot 4 without reload or mixed labels. This branch proves the captured pre-state plus a source-derived post-state fixture; it does **not** claim the real transition has happened. Afterward, rebase open PR #69 (`cheatsheet`) onto current main and make it consume `draft_order_context.primary_slot`. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. |
-| **Branch** | `codex/test-order-transition`, based on `origin/main` `3334020` (#70 merged). The transition fix and exact regression are the only executable changes. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - reflects main `3334020`, not this branch. The live room still showed slot 4 with Sleeper confirmation pending during the 18:31 UTC capture. |
+| **Last touched** | 2026-08-31 by Codex - squash-merged the order-transition fix as #71 at `3d5d41a`, then rebased #69 onto it. The printable five-side cheat sheet now fails closed without a valid engine `draft_order_context.primary_slot`, defaults exactly to slot 4, prints slot 4 in its document title, sheet title, footer, selected control, and 4/21/28/... pick ledger, and keeps the other eleven slots only as explicitly selected references. The Pages manifest already carries `out/cheatsheet.html`; a direct guard now pins that fact. |
+| **Next agent** | PR #69 is authorized and its full local battery is green; squash-merge it, wait for Pages, byte-compare the deployed manifest against main, and verify the live slot-4 title/footer before treating the printable surface as delivered. Observe the actual Sleeper transition when it happens: it must print `DRAFT ORDER DRAWN - Anthony has slot 4 (matches external report)` and all slot-conditioned surfaces must remain coherent without reload or mixed labels. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. |
+| **Branch** | PR #71 is merged at `3d5d41a`; this is rebased PR #69 (`cheatsheet`) with executable follow-up `Default cheat sheet to primary draft slot`. Gate-runner self-test 16; gated suites 120/0/22/51/70/17/16/105/63/173/48/1818/23/377/38 (2,941); analysis zero skips; browser smoke 414; `MATH DIFF PROOF: EMPTY`. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #71 is on main; the cheat sheet remains 404 until this PR's Pages deployment is byte-verified. |
 | **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. At 2026-08-31 18:31 UTC, `src/check_draft_order.py` still reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)`. A complete non-identity roster permutation may be corroborated by a shorter well-formed user order when a roster is ownerless; no partial user map resolves alone, and any owner-seat disagreement blocks loudly. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -157,8 +157,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     nav/countdown, doctrine, morning runbook, and operator docs consume that
     context. Main had no selected engine overlay seat while Sleeper was undrawn:
     its actual bad default was the room's pre-draft slot 7 render; PATHS defaulted
-    to slot 1. The open, unmerged #69 cheat sheet still has a separate slot 7
-    default and must follow this PR in merge order. The engine uses 156 raw
+    to slot 1. #69 originally repeated the conflation by using roster id 7 as the
+    printable sheet's slot; after #71 merged, the rebased page now consumes the
+    shared engine `draft_order_context.primary_slot` and labels every non-primary
+    selection as a reference. The engine uses 156 raw
     franchise-seasons from `out/positional_timing.csv`, byte-linked by SHA-256 and
     independently reconciled to `out/picks.csv`; history is displayed with n and
     never enters survival or a verdict. Slots 3 and 7 remain null rather than being
@@ -243,17 +245,17 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 ### In flight / nothing blocked
 
-PR #70 is merged at `3334020`. The order-transition branch is the next merge
-candidate; the real Sleeper transition was still pending at its final capture.
+PR #71 is merged at `3d5d41a`. The exact placeholder-to-confirmed transition is
+covered, but the real Sleeper transition was still pending at its final capture.
 PR #54 remains OPEN,
 PARKED THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
 mergeability is unresolved against moving `main`. Its PATHS policy is still the
 data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the conditional spread
 floor, but its Pareto action space remains one action per position and cannot
 answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
-draft. Open PR #69 remains conflicting and must not merge with its
-retired slot-7 cheat-sheet default; rebase it after the core slot context lands and
-consume the engine's primary slot. The `docs/ffopportunity/` R export
+draft. PR #69 is rebased and green: it consumes the engine's primary slot, retains
+all references, is explicitly present in the Pages copy list, and is the current
+authorized merge candidate. The `docs/ffopportunity/` R export
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already
 correct, and the shipped QB table did not inherit the R file's `-2` interception
 error. Do not consume unreviewed local regenerated exports. The forward-Vegas and

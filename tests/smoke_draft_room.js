@@ -1256,7 +1256,7 @@ function reportedUserOrder(){
     const base = "http://127.0.0.1:" + srv.address().port;
     const ACTIVE = { "big_board.html": "BIG BOARD", "players.html": "PLAYERS",
                      "teams.html": "TEAMS", "home.html": "HUB",
-                     "ff-hub.html": "FINDINGS" };
+                     "ff-hub.html": "FINDINGS", "cheatsheet.html": "CHEAT SHEET" };
     for (const [file, label] of Object.entries(ACTIVE)){
       const pg = await browser.newPage();
       const shellErrors = [];
@@ -1266,7 +1266,7 @@ function reportedUserOrder(){
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(800);
       ok(await pg.locator(".ynav").count() === 1, `nav renders on ${file}`);
-      ok(await pg.locator(".ynav-items a").count() === 7, `nav carries seven items on ${file}`);
+      ok(await pg.locator(".ynav-items a").count() === 8, `nav carries eight items on ${file}`);
       const on = pg.locator(".ynav-items a.on");
       ok(await on.count() === 1 && (await on.textContent()).trim() === label
          && await on.getAttribute("aria-current") === "page",
@@ -2722,6 +2722,151 @@ function reportedUserOrder(){
     ok(urgentFailures.length === 0,
        "timer audio contract: urgent beep begins with red at 30/60/90/120s and fires once",
        urgentFailures.join("; "));
+  }
+
+  // ---- scenario: printable cheat sheet. Five Letter sides, and the print
+  // stylesheet is the whole feature - a sheet that silently reflows to a sixth
+  // page, or drops a column, is the failure this scenario exists to catch.
+  {
+    const http = require("http");
+    const fs = require("fs");
+    const root = path.resolve(".");
+    const srv = http.createServer((req, res) => {
+      if (req.url === "/favicon.ico"){ res.writeHead(204); return res.end(); }
+      const urlPath = decodeURIComponent(req.url.split("?")[0]);
+      const f = path.join(root, urlPath.replace(/^\//, ""));
+      try {
+        const body = fs.readFileSync(f);
+        res.writeHead(200, { "content-type": f.endsWith(".json") ? "application/json"
+          : f.endsWith(".html") ? "text/html"
+          : f.endsWith(".js") ? "text/javascript" : "text/plain" });
+        res.end(body);
+      } catch { res.writeHead(404); res.end("nope"); }
+    });
+    await new Promise(r => srv.listen(0, "127.0.0.1", r));
+    const base = "http://127.0.0.1:" + srv.address().port;
+    const page = await browser.newPage();
+    const errors = [];
+    page.on("pageerror", e => errors.push(String(e)));
+    page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
+    await page.goto(base + "/out/cheatsheet.html");
+    await page.waitForTimeout(2000);
+
+    const eng = JSON.parse(require("fs").readFileSync(
+      path.resolve("out/engine_2026.json"), "utf8"));
+    const primarySlot = Number(eng.draft_order_context?.primary_slot);
+
+    // every section the sheet promises actually rendered
+    ok(await page.locator(".sheet").count() === 5, "cheat sheet renders five sheets");
+    const titles = (await page.locator(".sheet-t").allTextContents()).join(" | ");
+    ok(/Top \d+ Overall/.test(titles), "cheat sheet 1: top-overall section", titles);
+    ok(/QB and RB/.test(titles) && /WR and TE/.test(titles),
+       "cheat sheet 2-3: by-position sections", titles);
+    ok(/My 14 Picks/.test(titles), "cheat sheet 4: my-picks section", titles);
+    ok(/What I Actually Took/.test(titles), "cheat sheet 5: blank grid section", titles);
+
+    // page 1 is dense and correctly ordered by VOR, sequentially ranked
+    const rows1 = await page.locator(".sheet").nth(0).locator("tr.r").count();
+    ok(rows1 >= 100, "cheat sheet 1 lists a full page of players", String(rows1));
+    const ranks = await page.locator(".sheet").nth(0)
+      .locator("tr.r .rk").allTextContents();
+    ok(ranks[0].trim() === "1" && ranks[ranks.length - 1].trim() === String(rows1),
+       "cheat sheet 1 ranks run 1..n with no gaps",
+       `${ranks[0]}..${ranks[ranks.length - 1]}`);
+
+    // tier breaks are the thing the position pages exist to show
+    const tiers2 = await page.locator(".sheet").nth(1).locator("tr.tierbar").count();
+    const tiers3 = await page.locator(".sheet").nth(2).locator("tr.tierbar").count();
+    ok(tiers2 > 0 && tiers3 > 0, "cheat sheet 2-3 mark tier breaks as rules",
+       `${tiers2}/${tiers3}`);
+
+    // my-picks covers every round of the loaded league, K/DST rounds included
+    const pickRows = await page.locator(".sheet").nth(3).locator("table.pk tr").count();
+    ok(pickRows === eng.league.rounds + 1,
+       "cheat sheet 4 lists every round once", String(pickRows));
+    const slotTxt = await page.locator(".sheet").nth(3).locator(".sheet-t").textContent();
+    ok(slotTxt.includes(`Slot ${primarySlot}`) && /Primary/.test(slotTxt),
+       "cheat sheet defaults to the engine's exact primary slot in its title", slotTxt);
+    const slotFoot = await page.locator(".sheet").nth(3).locator(".sheet-f").textContent();
+    ok(slotFoot.includes(`PRIMARY SLOT ${primarySlot}`),
+       "cheat sheet prints the engine's exact primary slot in its footer", slotFoot);
+    ok((await page.title()).includes(`Slot ${primarySlot} Primary`),
+       "cheat sheet document title names the engine's exact primary slot",
+       await page.title());
+    ok(await page.locator(`#slots button[data-slot="${primarySlot}"]`).getAttribute("class") === "on",
+       "cheat sheet selects the engine's exact primary-slot control");
+    const renderedPicks = (await page.locator(".sheet").nth(3)
+      .locator("table.pk td.pn").allTextContents()).map(x => Number(x.trim()));
+    const enginePicks = eng.slots[String(primarySlot)].map(x => Number(x.pick));
+    ok(JSON.stringify(renderedPicks) === JSON.stringify(enginePicks),
+       "cheat sheet renders the exact primary-slot pick sequence",
+       renderedPicks.join("/"));
+
+    // Other slots remain reference views, but only an explicit query may select
+    // one. This distinguishes the intended reference feature from a silently
+    // reused roster id becoming the default again.
+    const referenceSlot = primarySlot === 8 ? 9 : 8;
+    const refPage = await browser.newPage();
+    await refPage.goto(base + `/out/cheatsheet.html?slot=${referenceSlot}`);
+    await refPage.waitForSelector(".sheet");
+    const refTitle = await refPage.locator(".sheet").nth(3).locator(".sheet-t").textContent();
+    const refFoot = await refPage.locator(".sheet").nth(3).locator(".sheet-f").textContent();
+    ok(refTitle.includes(`Slot ${referenceSlot}`) && /Reference/.test(refTitle) &&
+       refFoot.includes(`REFERENCE SLOT ${referenceSlot}`) &&
+       refFoot.includes(`engine primary is slot ${primarySlot}`),
+       "explicit query selects a labelled reference without changing the primary",
+       `${refTitle} | ${refFoot}`);
+    await refPage.close();
+
+    // the blank grid is blank by design
+    const blanks = await page.locator(".sheet").nth(4).locator("td.w").count();
+    ok(blanks === eng.league.rounds * 3,
+       "cheat sheet 5 leaves every data cell empty", String(blanks));
+    const blankText = (await page.locator(".sheet").nth(4)
+      .locator("td.w").allTextContents()).join("");
+    ok(blankText.trim() === "", "cheat sheet 5 pre-fills nothing");
+
+    // BANNED CONTENT. These are live or untrusted numbers and the paper cannot
+    // correct itself once printed.
+    const body = await page.evaluate(() => document.body.innerText);
+    ok(!/BULLISH|WATCH/.test(body), "cheat sheet carries no BULLISH/WATCH tag");
+    ok(!/survives|P surv|survival/i.test(body), "cheat sheet carries no survival number");
+    ok(!/VONA/.test(body), "cheat sheet carries no VONA content");
+
+    // PRINT CONTRACT. Measured at Letter width, where the screen breakpoints
+    // would otherwise collapse the columns and add a page.
+    await page.emulateMedia({ media: "print" });
+    await page.setViewportSize({ width: 816, height: 1056 });
+    await page.waitForTimeout(300);
+    const over = await page.evaluate(() => {
+      const LIMIT = 979;  // 11in - 0.8in margins at 96dpi
+      return [...document.querySelectorAll(".sheet")]
+        .map((s, i) => ({ i, h: Math.round(s.getBoundingClientRect().height) }))
+        .filter(x => x.h > LIMIT);
+    });
+    ok(over.length === 0, "every sheet fits one Letter side in print",
+       JSON.stringify(over));
+    const cols = await page.evaluate(() => {
+      const g = document.querySelector(".cols3");
+      return g ? getComputedStyle(g).gridTemplateColumns.split(" ").length : 0;
+    });
+    ok(cols === 3, "print keeps the three-column sheet at three columns",
+       String(cols));
+    const navHidden = await page.evaluate(() => {
+      const n = document.querySelector(".ynav");
+      const c = document.getElementById("ctl");
+      return { nav: n ? getComputedStyle(n).display : "absent",
+               ctl: c ? getComputedStyle(c).display : "absent" };
+    });
+    ok(navHidden.nav === "none" || navHidden.nav === "absent",
+       "print hides the app nav", JSON.stringify(navHidden));
+    ok(navHidden.ctl === "none", "print hides the on-screen controls",
+       JSON.stringify(navHidden));
+
+    ok(errors.length === 0, "cheat sheet: zero console errors",
+       errors.slice(0, 2).join(" | "));
+    await page.close();
+    srv.close();
   }
 
   await browser.close();
