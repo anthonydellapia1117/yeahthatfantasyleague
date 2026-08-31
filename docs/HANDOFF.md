@@ -17,7 +17,7 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 |---|---|
 | **Last touched** | 2026-08-31 by Codex - recorded Anthony's externally drawn **slot 4**, made its exact picks the primary planning geometry on every current slot-aware surface, retained all eleven reference slots, and added fail-closed reconciliation against Sleeper. Sleeper still exposes its complete identity placeholder, so official confirmation is visibly pending. The engine now carries raw n-labelled first-position history from all 13 seasons for the ten known seats; slots 3 (merged seat) and 7 (new manager) remain honest nulls, and the p=0.9932 tendency result remains description-only. |
 | **Next agent** | Review the open slot-4 PR; do not merge it unilaterally. Keep #54 OPEN, ON HOLD, and untouched. Open PR #69 (`cheatsheet`) still defaults to roster/seat 7 because its file is absent from main: after the core slot-4 PR lands, rebase #69 and make it consume `draft_order_context.primary_slot` before merging. Then continue the approved R-mislabel and vacated-carries assessment backlog only if Anthony has not redirected to the now-known draft seat. |
-| **Branch** | `codex/slot4-draft-order`, implementation commit `4c15ae7`, based on `origin/main` `7226ca7`. No merge or deploy has occurred. This baton update is intentionally the last commit. |
+| **Branch** | `codex/slot4-draft-order`, implementation commits `4c15ae7` and `4701b1f`, based on `origin/main` `7226ca7`. No merge or deploy has occurred. This baton update is intentionally the last commit. |
 | **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - still reflects main `7226ca7`, not this branch. Published data was reported fresh at 24h during the branch verification. |
 | **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. `src/check_draft_order.py` reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)` on 2026-08-31. A complete official agreement promotes the source; any conflict blocks loudly. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
@@ -165,7 +165,14 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     guessed. The branch battery ran the gate-runner self-test, all fifteen gated
     suites at 114/0/22/51/70/17/16/106/63/173/48/1818/23/373/38 guards, all five
     deterministic analysis reruns with zero skips, browser smoke at 378 guards,
-    and `MATH DIFF PROOF: EMPTY`.
+    and `MATH DIFF PROOF: EMPTY`. A final attribution audit caught the first
+    BULLISH rebuild using a local Week-1 HISTORY file pulled 2026-08-28, older than
+    main's 2026-08-30 input. The branch did not ship that mixed state: it refreshed
+    HISTORY to 2026-08-31, resynced the forward schedule, rebuilt the full lineage,
+    and reran the entire battery. The horizon stays Weeks 1-6 / 93 games and is
+    honestly labelled `REPRICED`. Slot selection itself changes no player value or
+    tag; the fresh-feed delta versus main is separately attributable (Kyren
+    Williams WATCH -> BULLISH and Sam Darnold newly WATCH).
 
 ### In flight / nothing blocked
 
