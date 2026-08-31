@@ -15,11 +15,11 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-31 by Codex - recorded Anthony's externally drawn **slot 4**, made its exact picks the primary planning geometry, and then audited the actual Gibbs/Bijan/Chase-gone decision through complete 4/21/28 continuations. The model says McCaffrey/Puka **tie** (+2.08 inside a derived 7.0 band; sensitivity reverses by 0.15). Anthony chooses Puka as an explicitly external zero-IR/durability override, not model output. The same audit found that PATHS' zero forks is a false-negative: its unconditional position-level action space never represented the question. |
-| **Next agent** | After #70 lands, rebase open PR #69 (`cheatsheet`) and make it consume `draft_order_context.primary_slot` before considering merge. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched: its Pareto branch remains position-level and does not repair the observed-board/player-action false-negative. Monitor Puka's practice participation through September 5; if he is still not practicing, withdraw the external tie-break and return to an honest CMC/Puka coin flip. |
-| **Branch** | `codex/slot4-draft-order`, based on `origin/main` `7226ca7`; PR #70 carries the slot-4 work plus the post-draw decision audit. This baton update remains the final commit on the branch before merge. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - still reflects main `7226ca7`, not this branch. Published data was reported fresh at 24h during the branch verification. |
-| **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. `src/check_draft_order.py` reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)` on 2026-08-31. A complete official agreement promotes the source; any conflict blocks loudly. |
+| **Last touched** | 2026-08-31 by Codex - rehearsed the still-unconsumed Sleeper placeholder-to-confirmed transition in one browser page. The real payload was still `pre_draft` / null user order / identity roster map / zero picks. The realistic publication has 11 users plus 12 roster slots because roster 3 is ownerless; main rejected it and, even under an idealized payload, could mix a confirmed banner with stale pending/reference content. The resolver and repaint contract now consume that exact transition coherently without weakening fail-closed disagreement handling. |
+| **Next agent** | Review and merge the order-transition PR before Rich publishes if possible, then observe the actual server transition: it must print `DRAFT ORDER DRAWN - Anthony has slot 4 (matches external report)` and the deployed room must confirm slot 4 without reload or mixed labels. This branch proves the captured pre-state plus a source-derived post-state fixture; it does **not** claim the real transition has happened. Afterward, rebase open PR #69 (`cheatsheet`) onto current main and make it consume `draft_order_context.primary_slot`. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. |
+| **Branch** | `codex/test-order-transition`, based on `origin/main` `3334020` (#70 merged). The transition fix and exact regression are the only executable changes. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - reflects main `3334020`, not this branch. The live room still showed slot 4 with Sleeper confirmation pending during the 18:31 UTC capture. |
+| **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. At 2026-08-31 18:31 UTC, `src/check_draft_order.py` still reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)`. A complete non-identity roster permutation may be corroborated by a shorter well-formed user order when a roster is ownerless; no partial user map resolves alone, and any owner-seat disagreement blocks loudly. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
 
@@ -221,16 +221,37 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     suites including an empty mathdiff proof. Browser smoke passed 378 guards on
     the workflow-installed Chromium. No test or analysis run changed a committed
     artifact.
+18. **The one-time order transition is now tested as a transition, not inferred
+    from two fresh loads.** The real endpoint was captured twice before Rich
+    entered the order: `pre_draft`, `draft_order: null`, exact identity
+    `slot_to_roster_id`, and `picks: []`. Roster 3 is ownerless, and this league's
+    2024 shell already demonstrates Sleeper's resulting 11-user/12-roster shape.
+    Pre-fix main rejected the realistic payload as `incomplete_draft_order`; the
+    smoke then lost `#ohyp-card` to the blocked surface and exited 1. Independently,
+    the pre-draft repaint was gated on a local hypothesis that cannot exist once
+    the external report is committed, so an idealized confirmation could update
+    the banner while leaving pending labels and a selected slot-7 reference.
+    The repaired contract accepts a well-formed partial user order only beside a
+    complete non-identity roster permutation, requires Anthony in both, and blocks
+    disagreement. The same-page regression opens slot 7, transitions to the exact
+    expected 11+12 payload via the public focus-return refresh, and proves slot 4,
+    picks 4/21/28, confirmation provenance, all twelve reference chips, no clock,
+    no conflict, no reload, and zero page errors. The full battery is gate-runner
+    16 plus 120/0/22/51/70/17/16/105/63/173/48/1818/23/373/38 guards across the
+    fifteen suites (2,937), analysis 38 with zero skips, browser smoke 385, and
+    `MATH DIFF PROOF: EMPTY` for all ten frozen functions.
 
 ### In flight / nothing blocked
 
-PR #70 is the slot-4 merge candidate authorized by Anthony. PR #54 remains OPEN,
+PR #70 is merged at `3334020`. The order-transition branch is the next merge
+candidate; the real Sleeper transition was still pending at its final capture.
+PR #54 remains OPEN,
 PARKED THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
 mergeability is unresolved against moving `main`. Its PATHS policy is still the
 data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the conditional spread
 floor, but its Pareto action space remains one action per position and cannot
 answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
-draft. Open PR #69 must not merge with its
+draft. Open PR #69 remains conflicting and must not merge with its
 retired slot-7 cheat-sheet default; rebase it after the core slot context lands and
 consume the engine's primary slot. The `docs/ffopportunity/` R export
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already

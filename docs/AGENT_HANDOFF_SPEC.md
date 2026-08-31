@@ -79,6 +79,14 @@ producer-to-published-artifact dependency path fires before calling the feature
 current. A correct first build proves only the snapshot; it does not prove the
 feature can stay current.
 
+The same question applies to state machines: **have I tested the transition, or
+only both endpoint screenshots?** On 2026-08-31 the pre-draw identity placeholder
+and a fresh-load confirmed order each had green browser fixtures, while the real
+same-page transition between them both rejected Sleeper's ownerless-roster payload
+and could leave confirmed and pending labels on one page. Exercise every one-time
+operational transition in one process, with no reload, before the operator consumes
+it. Two passing endpoint fixtures do not establish a transition contract.
+
 ### 1.5 The corollary that ties them together
 
 Twenty-six of those first 50 defects were **silent** - the system looked healthy
@@ -463,6 +471,12 @@ still operationally important.
    McCaffrey, Puka, and Taylor were separable after Gibbs/Bijan/Chase left the
    board. A successful empty result must state what universe was queried; absence
    is not evidence that no decision exists.
+9. **Endpoint snapshots without the transition (1).** Separate fixtures proved the
+   undrawn identity placeholder and a confirmed slot-4 page, but not the one-page
+   change between them. The untested seam rejected a legitimate 11-user/12-roster
+   Sleeper payload and otherwise left mixed pending/confirmed DOM. Any state used
+   once operationally must be rehearsed through the transition, not inferred from
+   two fresh loads.
 
 ---
 
@@ -473,8 +487,8 @@ still operationally important.
 | **Archive PII in git HISTORY** | Removed from HEAD by the 2026-08-26 prune; still reachable in history at/before `bd8aff7`. Repo is public. | **Anthony's call, deferred to after the draft.** (a) accept, (b) `git filter-repo` + force-push (invalidates clones), (c) private repo - rejected for now, Pages would go dark. |
 | **Live browser-to-Sleeper path** | **VERIFIED 2026-08-26** by Anthony against a real live draft - see §11. Automated browser smoke remains hermetic and stubs the Sleeper API, so this is a human-verified path, not a regression-protected one. | Optional: a Playwright run against a live public mock would make the verification repeatable. Not required - the path is known good. |
 | **Keeper status** | `use_keepers` is on for 2025-2026 but the 2025 draft had zero keeper picks and `keeper_results.csv` is 2 bytes. | OPEN QUESTION for the commissioner. **Do not resolve by inference.** |
-| **Draft order** | **EXTERNALLY DRAWN 2026-08-31: Anthony is slot 4**, picks 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. Sleeper still has `draft_order: null` and the identity `slot_to_roster_id` placeholder, so official confirmation is pending. `start_time=1788912025000` is **2026-09-09 00:00:25 UTC / 2026-09-08 20:00:25 ET**. Slots 3 (merged managers) and 7 (new manager) have unresolved history. | Slot 4 is primary on every slot-conditional surface; the other eleven remain reference views. The watch now waits for Sleeper publication and requires exact agreement. A conflicting, partial, or malformed official order fails loud. Historical tendencies remain description-only (backtest p=0.9932) and slots 3/7 remain honest nulls. |
-| **Conviction-overlay seat provenance** | **RESOLVED and now exercised against a non-7 draw.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. The external slot-4 draw supplies the primary basis while Sleeper remains unpublished. | `src/draft_order.py` requires complete official permutations, reconciles them with the external draw, and fails loud on conflict. Pending/unavailable official data uses externally reported slot 4 visibly and retains all twelve survival windows. Keep the synthetic non-7, resolver-precedence, partial-map, duplicate-map, and source-conflict guards. |
+| **Draft order** | **EXTERNALLY DRAWN 2026-08-31: Anthony is slot 4**, picks 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. At 2026-08-31 18:31 UTC Sleeper still had `draft_order: null`, the exact identity `slot_to_roster_id` placeholder, and zero picks, so official confirmation remained pending. `start_time=1788912025000` is **2026-09-09 00:00:25 UTC / 2026-09-08 20:00:25 ET**. Roster 3 is ownerless; a legitimate publication can therefore carry 11 user-order entries beside a complete 12-roster permutation. | Slot 4 is primary on every slot-conditional surface; the other eleven remain reference views. The exact one-page identity -> 11-user/12-roster transition is regression-tested: it advances every label and selected surface atomically to slot 4 without reload. A partial user map remains unusable alone or beside identity/malformed roster evidence; only a complete non-identity roster permutation may corroborate it, and disagreement fails loud. Actual server publication still needs observation when it happens. |
+| **Conviction-overlay seat provenance** | **RESOLVED and now exercised against a non-7 draw plus the ownerless-roster publication shape.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. The external slot-4 draw supplies the primary basis while Sleeper remains unpublished. | `src/draft_order.py` requires a complete official roster permutation. A well-formed shorter user order may corroborate that complete source because Sleeper omits ownerless rosters; it cannot resolve independently. Pending/unavailable official data uses externally reported slot 4 visibly and retains all twelve survival windows. Keep the non-7, ownerless-seat, absent/identity/malformed fallback, duplicate-map, and source-conflict guards. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
 | **RB vacated-carries signal** | **ASSESSMENT ONLY.** The repaired `backfield_command` applies the existing all-week 2025 carry-share basis consistently to historical teams; it does not measure 2026 carries opened by departures. `teams.html` displays thresholded raw departure/arrival rows from the trimmed season shard, not a complete net transition signal from the new ledger. The analogous WR `adj_vac` is confirmed rookie-blind because an incoming player with no 2025 NFL row subtracts zero. | Compute vacated carries from the same player-team source, quantify every 2026 backfield, test correlation and incremental value against ADP, and explicitly model rookies. If strongly ADP-redundant, drop it. A same-method carry signal would inherit `adj_vac`'s rookie gap, so fix `adj_vac` and any carry implementation under one rookie policy or do not wire carries. |
@@ -533,9 +547,12 @@ Observed:
 **Caveat 1 - the settings verified are not the league's settings.** This was 19
 teams / 120s / 2 flex. The real league is **12 teams / 60s / 1 flex** and Anthony
 has been externally drawn at **slot 4**, but Sleeper has not published the order.
-The code paths are exercised; the exact real-league configuration and a complete
-official slot-4 permutation have not yet run live. That remains the first required
-test when Sleeper publishes the order.
+The current real pre-transition payload was captured twice and the exact
+identity-placeholder -> expected 11-user/12-roster transition now passes in one
+hermetic browser page, but the post-transition response is necessarily a fixture.
+The exact real-league configuration and official slot-4 permutation have still not
+run end-to-end from Sleeper. Observe that actual publication when it happens; do not
+promote the rehearsal into live-path evidence.
 
 **Caveat 2 - the board warned that its values do not transfer, and they did not.**
 Anthony used it for player ordering only. That is the correct use and the correct

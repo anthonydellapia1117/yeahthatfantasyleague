@@ -50,6 +50,27 @@ function completeDraftOrder(ownerSlot, teams = 12){
   return order;
 }
 
+// The externally reported 2026 draw expressed in Sleeper's stable roster ids.
+// The live endpoint remains on its identity placeholder until the commissioner
+// publishes this permutation; keeping the exact transition here proves the
+// room can consume the first official payload without a reload.
+function reportedSlotMap(){
+  return {1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12};
+}
+
+// Roster 3 is currently ownerless, so Sleeper's legitimate user order has
+// eleven entries while its roster-slot permutation still covers all twelve.
+function reportedUserOrder(){
+  return {
+    "1076422875726299136":1, "741129160759619584":2,
+    "740765967986204672":3, "345197760305307648":4,
+    "741128841325649920":5, "1131785934086807552":6,
+    "1092593997857673216":8, "860741469600854016":9,
+    "460972700463001600":10, "1092594720267702272":11,
+    "1132354082896986112":12,
+  };
+}
+
 (async () => {
   const browser = await chromium.launch({
     // this image ships the browser at a fixed path; CI overrides it
@@ -139,7 +160,91 @@ function completeDraftOrder(ownerSlot, teams = 12){
     await page.close();
   }
 
-  // ---- scenario 1c: a later Sleeper disagreement blocks visibly
+  // ---- scenario 1c: the live pre-draw identity placeholder becomes the
+  // official permutation in the SAME page. This is the transition Rich will
+  // trigger once, so separate page-load fixtures are not sufficient proof.
+  {
+    const page = await browser.newPage();
+    const errors = [];
+    page.on("pageerror", e => errors.push(String(e)));
+    page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
+    const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
+    let official = false, draftFetches = 0;
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().includes("/picks")) return r.fallback();
+      draftFetches++;
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "pre_draft",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          draft_order: official ? reportedUserOrder() : null,
+          slot_to_roster_id: official ? reportedSlotMap() : idSlots }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    const beforeCards = await page.locator(".rowcard .rc-pick, .rowcard .rc-name").allTextContents();
+    ok(/confirmation is pending/.test(await page.textContent("#banner")) &&
+       /confirmation is pending/.test(await page.textContent("#ohyp-card")),
+       "placeholder-to-confirmed: exact live placeholder renders one coherent pending state");
+    await page.click('.chips button[data-slot="7"]');
+    await page.waitForTimeout(200);
+    ok(/Slot 7 - REFERENCE/.test(await page.textContent("#app h2")),
+       "placeholder-to-confirmed: transition starts while a reference is open");
+    await page.evaluate(() => {
+      document.documentElement.dataset.orderTransitionToken = "same-page";
+      window.__orderTransitionTrace = [];
+      const snap = () => window.__orderTransitionTrace.push({
+        mode: document.querySelector("#mode")?.textContent || "",
+        banner: document.querySelector("#banner")?.textContent || "",
+        heading: document.querySelector("#app h2")?.textContent || "",
+      });
+      new MutationObserver(snap).observe(document.body,
+        { subtree: true, childList: true, characterData: true, attributes: true });
+      snap();
+    });
+    official = true;
+    // Drive the public focus-return path; no room internals are exposed to the test.
+    const transitionResponse = page.waitForResponse(r =>
+      /\/v1\/draft\/[^/?]+\?cb=/.test(r.url()), { timeout: 5000 });
+    await page.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+    await transitionResponse;
+    await page.waitForTimeout(100);
+    const orderCard = await page.locator("#ohyp-card").count()
+      ? await page.textContent("#ohyp-card") : "";
+    const gapText = (await page.locator(".gap").allTextContents()).join("\n");
+    ok(/Sleeper has confirmed/.test(orderCard) &&
+       !/confirmation is pending/.test(orderCard) &&
+       /Sleeper-confirmed external order/.test(gapText) &&
+       !/confirmation is pending/.test(gapText) &&
+       /slot 3[\s\S]*history unresolved/.test(orderCard) &&
+       /slot 7[\s\S]*history unresolved/.test(orderCard),
+       "placeholder-to-confirmed: every rendered order source advances with the banner",
+       (orderCard + " | " + gapText).slice(0, 300));
+    const trace = await page.evaluate(() => window.__orderTransitionTrace);
+    ok(trace.every(s => !/Sleeper confirms/.test(s.banner) ||
+       (/Slot 4 - PRIMARY/.test(s.heading) && !/CONFLICT/.test(s.mode + s.banner))) &&
+       !trace.some(s => /slot 7/i.test(s.banner) || /CONFLICT/.test(s.mode + s.banner)),
+       "placeholder-to-confirmed: confirmation never accompanies a stale slot-7 or conflict state",
+       JSON.stringify(trace));
+    ok(beforeCards.length > 0 &&
+       /MODE 1 - PRE-DRAFT - SLOT 4 PRIMARY/.test(await page.textContent("#mode")) &&
+       /Slot 4 - PRIMARY - your picks 4, 21, 28/.test(await page.textContent("#app h2")) &&
+       await page.locator('.chips button[data-slot="4"].on').count() === 1 &&
+       await page.locator(".chips button").count() === 12 &&
+       await page.locator("#order-conflict-state").count() === 0 &&
+       await page.locator("#clock, .bignm").count() === 0 &&
+       await page.getAttribute("html", "data-order-transition-token") === "same-page" &&
+       draftFetches >= 2,
+       "placeholder-to-confirmed: slot-4 cards become primary, references survive, and no live clock starts without reload");
+    ok(errors.length === 0, "placeholder-to-confirmed: zero page errors",
+       errors[0] || "");
+    await page.close();
+  }
+
+  // ---- scenario 1d: a later Sleeper disagreement blocks visibly
   {
     const page = await browser.newPage();
     await page.route("**/v1/draft/*/picks*", r => r.fulfill({
@@ -178,6 +283,12 @@ function completeDraftOrder(ownerSlot, teams = 12){
         return [slot, slot === 3 ? 7 : slot === 7 ? 3 : slot];
       })),
     }, /draft_order slot 4, slot map slot 3/],
+    ["ownerless user-order conflict", {
+      status: "pre_draft",
+      draft_order: {...reportedUserOrder(),
+        "345197760305307648":5, "741128841325649920":4},
+      slot_to_roster_id: reportedSlotMap(),
+    }, /draft_order slot 5, slot map slot 4/],
     ["partial draft_order", {
       status: "pre_draft", draft_order: { "345197760305307648": 4 },
       slot_to_roster_id: Object.fromEntries(Array.from({length:12}, (_, i) => [i + 1, i + 1])),
