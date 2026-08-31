@@ -28,15 +28,19 @@ eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 prov = m["provenance"]
 ok(all(k in prov for k in ("generated", "engine_generated",
                            "engine_content_sha256", "method",
-                           "kdef_window", "finding", "scope")),
+                           "kdef_window", "finding", "scope",
+                           "primary_slot", "reference_slots")),
    "provenance complete, the naive-VOR finding stated")
 ok(prov["engine_content_sha256"] == eng["content_sha256"],
    "mock records the exact engine content it consumed")
 ok(prov["kdef_window"]["observed_n"] > 0,
    "opponent K/DEF window derived from observed league drafts")
 
-ok(set(m["slots"].keys()) == {"1", "6", "12"},
-   "the three review-named slots are simulated")
+ok(prov["primary_slot"] == 4 and
+   list(m["slots"].keys())[0] == "4" and
+   set(m["slots"].keys()) == {str(s) for s in range(1, 13)} and
+   set(prov["reference_slots"]) == ({*range(1, 13)} - {4}),
+   "real slot 4 leads while all eleven reference slots are simulated")
 
 CAPS = {"QB": 2, "RB": 4, "WR": 4, "TE": 2, "K": 1, "DEF": 1}
 for slot, s in m["slots"].items():

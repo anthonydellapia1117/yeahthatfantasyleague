@@ -96,9 +96,11 @@ Fix it before you ship the feature.
 ## 2. WHAT THIS IS
 
 A single-owner, single-league fantasy football draft assistant for a 12-team,
-14-round, full-PPR, **6-point passing TD** Sleeper league, drafting **2026-09-08**.
-Owner and only user: Anthony DellaPia (Sleeper user `345197760305307648`, roster
-7, franchise "Antdell & Ernie", league `1389378429505241088`, draft
+14-round, full-PPR, **6-point passing TD** Sleeper league, drafting
+**2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. Owner and only user:
+Anthony DellaPia (Sleeper user `345197760305307648`, stable roster id 7,
+externally drawn draft slot 4 pending Sleeper confirmation, franchise
+"Antdell & Ernie", league `1389378429505241088`, draft
 `1389378429505241089`).
 
 It is a static site - HTML with embedded JSON payloads, deployed to GitHub Pages,
@@ -276,7 +278,7 @@ new evidence wastes a cycle.
 
 | Rejected | Why, with the number |
 |---|---|
-| **Opponent tendencies inside the probability model** | Real and persistent, but folding them into the arithmetic was rejected. The backtest that settled it: p=0.99 - no predictive gain. They ship as display only, and the guard enforcing that is the most important test in `test_survival.py`. |
+| **Opponent tendencies inside the probability model** | Real and persistent, but folding them into the arithmetic was rejected. The backtest that settled it: p=0.9932 - no predictive gain. They ship as description only with n, and the guard enforcing that is the most important test in `test_survival.py`. Slots 3 and 7 remain null while their history identities are unresolved. |
 | **Power-law sd curve** | Adopted, then LOST ITS OWN BACKTEST. Leave-one-season-out over 2,039 picks: it did not beat the step function it replaced (10 of 13 seasons to the step, two-sided p=0.092 - a wash). Its capped tail misfits the real decline past ADP 115. |
 | **Step-function sd (4-band)** | The original. Adjacent-ADP survival differed **8,284x** at pick 48. Cliff drove verdicts at exactly the boundaries where wait-or-reach flips. |
 | **INTERP sd - ADOPTED, do not replace casually** | 12-bin piecewise linear. Beats the step 12 of 13 seasons, two-sided p=0.0034 - the only significant comparison in the backtest. A calibration benchmark guard now blocks any sd change that predicts worse out of sample. |
@@ -389,9 +391,10 @@ new evidence wastes a cycle.
   containing the word "FAILURES" produced a false positive.
 - **Sleeper's `slot_to_roster_id` returns the identity map before the draw.** A
   genuine draw landing on identity is 1 in 12!, so identity means "not drawn".
-- **`roster_id == 7` and Anthony's expected `slot == 7` are the same integer by
-  coincidence.** They are different things. `draft_room.html:461` maps them
-  correctly; do not let an edit conflate them.
+- **Anthony's stable `roster_id == 7`; his externally drawn `slot == 4`.** They are
+  different identities, and the draw now makes that distinction observable rather
+  than theoretical. Never use roster id as a draft slot. Slots 3 and 7 have
+  unresolved history labels; leave their tendency descriptions null.
 - **`out/data/heartbeat.txt`** exists to guarantee a diff so the daily cron commit
   keeps the scheduled workflow alive past GitHub's 60-day inactivity disable.
 - **Three artifacts differ by 0.01 across Python builds** (`points_left_per_week`),
@@ -456,8 +459,8 @@ still operationally important.
 | **Archive PII in git HISTORY** | Removed from HEAD by the 2026-08-26 prune; still reachable in history at/before `bd8aff7`. Repo is public. | **Anthony's call, deferred to after the draft.** (a) accept, (b) `git filter-repo` + force-push (invalidates clones), (c) private repo - rejected for now, Pages would go dark. |
 | **Live browser-to-Sleeper path** | **VERIFIED 2026-08-26** by Anthony against a real live draft - see §11. Automated browser smoke remains hermetic and stubs the Sleeper API, so this is a human-verified path, not a regression-protected one. | Optional: a Playwright run against a live public mock would make the verification repeatable. Not required - the path is known good. |
 | **Keeper status** | `use_keepers` is on for 2025-2026 but the 2025 draft had zero keeper picks and `keeper_results.csv` is 2 bytes. | OPEN QUESTION for the commissioner. **Do not resolve by inference.** |
-| **Draft order** | UNDRAWN as of 2026-08-28 04:06Z: `draft_order` is null and `slot_to_roster_id` is the identity placeholder. Sleeper now supplies `start_time=1788912025000` (2026-09-08 15:20 UTC / 11:20 AM ET). | A Routine runs `src/check_draft_order.py` every 2h and self-retires on the draw. The room collapses to the real seat automatically. The engine overlay now uses the same canonical resolver and preserves all twelve pick windows until a real seat exists. |
-| **Conviction-overlay seat provenance** | **RESOLVED in the post-#60 engine PR.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. A pre-fix audit classified all 63 textual bare-`7` matches under `src/`: 2 roster-id references, 5 draft-slot references (including the defective lookup and heading), and 56 unrelated round bounds, pick anchors, thresholds, dates, claims, or formatting values. | `src/draft_order.py` makes `draft_order[user_id]` primary and accepts the `slot_to_roster_id` fallback only as a complete permutation; the complete identity map is explicitly undrawn only while status is `pre_draft`. Started/malformed/drawn-but-unresolvable payloads fail loud. Undrawn or visibly unavailable builds assume no seat and retain all twelve survival windows. Keep the synthetic non-7, resolver-precedence, partial-map, and duplicate-map guards. |
+| **Draft order** | **EXTERNALLY DRAWN 2026-08-31: Anthony is slot 4**, picks 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. Sleeper still has `draft_order: null` and the identity `slot_to_roster_id` placeholder, so official confirmation is pending. `start_time=1788912025000` is **2026-09-09 00:00:25 UTC / 2026-09-08 20:00:25 ET**. Slots 3 (merged managers) and 7 (new manager) have unresolved history. | Slot 4 is primary on every slot-conditional surface; the other eleven remain reference views. The watch now waits for Sleeper publication and requires exact agreement. A conflicting, partial, or malformed official order fails loud. Historical tendencies remain description-only (backtest p=0.9932) and slots 3/7 remain honest nulls. |
+| **Conviction-overlay seat provenance** | **RESOLVED and now exercised against a non-7 draw.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. The external slot-4 draw supplies the primary basis while Sleeper remains unpublished. | `src/draft_order.py` requires complete official permutations, reconciles them with the external draw, and fails loud on conflict. Pending/unavailable official data uses externally reported slot 4 visibly and retains all twelve survival windows. Keep the synthetic non-7, resolver-precedence, partial-map, duplicate-map, and source-conflict guards. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
 | **RB vacated-carries signal** | **ASSESSMENT ONLY.** The repaired `backfield_command` applies the existing all-week 2025 carry-share basis consistently to historical teams; it does not measure 2026 carries opened by departures. `teams.html` displays thresholded raw departure/arrival rows from the trimmed season shard, not a complete net transition signal from the new ledger. The analogous WR `adj_vac` is confirmed rookie-blind because an incoming player with no 2025 NFL row subtracts zero. | Compute vacated carries from the same player-team source, quantify every 2026 backfield, test correlation and incremental value against ADP, and explicitly model rookies. If strongly ADP-redundant, drop it. A same-method carry signal would inherit `adj_vac`'s rookie gap, so fix `adj_vac` and any carry implementation under one rookie policy or do not wire carries. |
@@ -513,10 +516,11 @@ Observed:
 | survival table, tier cliffs, pick engine, best-available | all rendered live | the decision surfaces populate from a real feed |
 
 **Caveat 1 - the settings verified are not the league's settings.** This was 19
-teams / 120s / 2 flex. The real league is **12 teams / 60s / 1 flex, with a drawn
-order**. The code paths are exercised; those exact values are not. In particular
-nothing has yet run against a drawn order for roster 7, because the order is still
-undrawn.
+teams / 120s / 2 flex. The real league is **12 teams / 60s / 1 flex** and Anthony
+has been externally drawn at **slot 4**, but Sleeper has not published the order.
+The code paths are exercised; the exact real-league configuration and a complete
+official slot-4 permutation have not yet run live. That remains the first required
+test when Sleeper publishes the order.
 
 **Caveat 2 - the board warned that its values do not transfer, and they did not.**
 Anthony used it for player ordering only. That is the correct use and the correct

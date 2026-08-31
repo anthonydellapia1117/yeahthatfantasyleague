@@ -197,12 +197,17 @@ async function boot(){
     return;
   }
 
-  // countdown - draft date from the payload, never hardcoded twice
-  const draft = new Date((E.league.draft_date || "2026-09-08") + "T19:00:00");
-  const days = Math.max(0, (draft - Date.now()) / 86400000);
-  document.getElementById("countdown").innerHTML =
-    days > 0 ? `${Math.floor(days)}<span class="small"> days</span> ${Math.floor((days % 1) * 24)}<span class="small"> hours</span>`
-             : "DRAFT DAY";
+  // Countdown to Sleeper's exact epoch. A date plus a guessed local hour
+  // silently shifted this surface by an hour; without the epoch, say so.
+  const draftStart = Number(E.league.draft_start_time);
+  if (Number.isFinite(draftStart) && draftStart > 0){
+    const days = Math.max(0, (draftStart - Date.now()) / 86400000);
+    document.getElementById("countdown").innerHTML =
+      days > 0 ? `${Math.floor(days)}<span class="small"> days</span> ${Math.floor((days % 1) * 24)}<span class="small"> hours</span>`
+               : "DRAFT DAY";
+  } else {
+    document.getElementById("countdown").textContent = "DRAFT TIME UNAVAILABLE";
+  }
 
   // staleness board - every shard plus the engine build itself
   let rows = `<table><tr><th>Shard</th><th>Source</th><th>Age</th></tr>`;

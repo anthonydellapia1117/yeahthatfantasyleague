@@ -13,8 +13,10 @@ repo-relative. The local clone lives at /Users/anthony/ff-hub; any older referen
 1. AUDIT. Full scan of every formula, script, and derived table in this repo. Confirm
    the math is right before extending it.
 2. ANSWER. What should Anthony DellaPia do differently, with defensible evidence.
-3. BUILD. The 2026 draft engine: per-slot decision cards for all 12 snake slots,
-   opponent-aware, upside-weighted. Draft is 2026-09-08. Order NOT set.
+3. BUILD. The 2026 draft engine: slot 4 primary, with per-slot decision cards for
+   all eleven other snake slots retained as reference. Draft is
+   2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC. The external draw reports
+   slot 4; Sleeper confirmation is pending.
 
 # START HERE
 
@@ -83,14 +85,16 @@ rush_td 6, rec_td 6, fum_lost -2.0. EXCLUDE league 1092592577628426240 (empty sh
 
 1. VALUE LAYER. VOR from raw-stat projections x league scoring. Positional tiers with
    explicit tier breaks. Wait-or-reach math per round.
-2. OPPONENT MODEL. From `out/picks.csv` grouped by franchise-ERA (never franchise
-   alone - `out/franchise_eras.csv` has the split rules). Per era: positional timing
-   distributions, reach tendency vs ADP, QB/TE urgency. Output survival probability
-   for any player to any future pick. Report every probability with its n; eras with
-   fewer than 3 drafts get league-average priors, labelled as such.
-3. DECISION CARDS. One per draft slot 1-12, since the order is unknown. Per round:
-   primary target tier, fallback tier, deviation triggers (position run, tier cliff,
-   opponent QB/TE urgency), and what board state changes the call.
+2. OPPONENT DESCRIPTION. From `out/picks.csv` grouped by franchise-ERA (never
+   franchise alone - `out/franchise_eras.csv` has the split rules), display
+   positional timing, reach tendency versus ADP, and QB/TE timing with n. These
+   descriptions do not enter availability, simulation, or verdicts: the tendency
+   forecast backtest is null at p=0.9932. Slots 3 (merged managers) and 7 (new
+   manager) remain honest nulls until their history identities are resolved.
+3. DECISION CARDS. Make slot 4 the primary view at picks 4, 21, 28, 45, 52, 69,
+   76, 93, 100, 117, 124, 141, 148, and 165. Keep one reference card per other
+   slot. Per round: primary target tier, fallback tier, deviation triggers
+   (position run and tier cliff), and what board state changes the call.
 4. UPSIDE TILT. This is a high-stakes league and the owner's stated preference is
    bullish - ceiling over floor. Where two candidates are within one tier, prefer the
    higher-variance profile. Ground every tilt in VOR and tier math, never in champion

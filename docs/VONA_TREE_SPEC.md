@@ -33,9 +33,11 @@ do not" logic expressed as a number.
 
 ## 2. Structure
 
-- **Input:** draft slot 1-12, rendered slot-conditional (the order is
-  undrawn; the tab defaults to a slot picker exactly like the room's
-  pre-draft view).
+- **Input:** draft slot 1-12, rendered slot-conditional. The externally reported
+  2026 draw makes **slot 4 primary** while Sleeper confirmation is pending; the
+  other eleven slots remain selectable reference views. A later official order
+  must reconcile exactly or fail loud. This changes the default and provenance,
+  not the per-slot arithmetic.
 - **Root:** the round-1 pick at that slot. When one option dominates -
   no rival within the branch threshold - render a SINGLE node and state
   why ("VONA gap 34.1 pts over the next position; not a decision").

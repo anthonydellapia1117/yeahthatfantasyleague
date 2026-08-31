@@ -772,10 +772,16 @@ ok(not any(t["pos"] == "TE" for t in d["tags"]) and
    "TE rows are omitted while the five-row computed shadow ledger remains")
 te_evidence = te_susp.get("evidence", {})
 mismatches = te_evidence.get("historical_share_current_team_mismatches", [])
+input_tes = [row for row in inp["players"] if row.get("pos") == "TE"]
+input_te_veterans = sum(
+    row.get("on_field_dropback_share") is not None and
+    row.get("yms_2025") is not None
+    for row in input_tes)
 ok(te_susp.get("status") == "SUSPENDED" and
-   te_evidence.get("draftable_tes") == 20 and
-   te_evidence.get("veterans_with_both_inputs") == 19 and
-   te_evidence.get("market_share_probability_counts") == {"0.9": 19, "0.2": 0},
+   te_evidence.get("draftable_tes") == len(input_tes) and
+   te_evidence.get("veterans_with_both_inputs") == input_te_veterans and
+   te_evidence.get("market_share_probability_counts") == {
+       "0.9": input_te_veterans, "0.2": 0},
    "TE suspension proves the former second criterion was constant")
 ok(len(mismatches) == 1 and
    mismatches[0].get("share_team") == "BAL" and

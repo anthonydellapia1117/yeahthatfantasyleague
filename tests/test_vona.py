@@ -30,6 +30,11 @@ engine_artifact = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
 ok(prov.get("engine_content_sha256") == engine_artifact.get("content_sha256") and
    len(prov.get("engine_content_sha256", "")) == 64,
    "tree records the exact engine content it consumed")
+ok(prov.get("primary_slot") == 4 and
+   prov.get("primary_slot") ==
+   engine_artifact.get("draft_order_context", {}).get("primary_slot") and
+   prov.get("slot_coverage") == "all_slots",
+   "PATHS makes engine slot 4 primary while retaining all slot coverage")
 
 # --- the approved decisions ---
 ok(prov["depth"] == 7, "depth is 7")
@@ -152,6 +157,10 @@ ok("BULLISH" not in pg.upper().replace("BULLISH_ON_NODES", ""),
    "the paths page renders no BULLISH marker")
 ok("bias_direction" in pg, "the page surfaces the correlation caveat")
 ok("deviations" in pg, "the page surfaces the stated deviations")
+ok("j.provenance.primary_slot" in pg and
+   "externally reported draw" in pg and
+   "SLOT = 1" not in pg,
+   "paths page derives its default from slot-4 artifact provenance")
 nav = open(os.path.join(ROOT, "out", "nav.js")).read()
 ok('"paths.html"' in nav, "nav carries the PATHS tab")
 

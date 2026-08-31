@@ -2,8 +2,9 @@
 """Post-merge item 1: mock-draft validation - does the VOR board produce
 sensible DRAFTS, not just sensible rankings?
 
-Three deterministic 12-team, 14-round snake simulations from the committed
-engine payload, one per review-named slot (1, 6, 12). Our seat drafts by
+Deterministic 12-team, 14-round snake simulations from the committed engine
+payload: the real primary seat first, plus all eleven reference slots. Our
+seat drafts by
 the board's MARGINAL policy: each candidate is scored by the improvement
 to the optimal starting lineup where every empty slot holds a
 replacement-level phantom (the engine's own baselines), VOR as the bench
@@ -53,9 +54,6 @@ OUT = os.path.join(D, "mock_drafts_2026.json")
 
 STARTERS = ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX", "K", "DEF"]
 FLEX_OK = ("RB", "WR", "TE")
-OUR_SLOTS = (1, 6, 12)
-
-
 def kdef_window(rounds_total):
     """Opponents' K/DEF window start, from observed league behavior."""
     rows = [r for r in csv.DictReader(open(os.path.join(ROOT, "out", "picks.csv")))
@@ -210,13 +208,18 @@ def main():
     engine_digest = require_engine_digest(eng)
     lg = eng["league"]
     rounds_total, teams_n = lg["rounds"], lg["teams"]
+    primary_slot = (eng.get("draft_order_context") or {}).get("primary_slot")
+    if primary_slot not in range(1, teams_n + 1):
+        raise ValueError("engine does not carry a valid primary draft slot")
+    sim_slots = [primary_slot] + [s for s in range(1, teams_n + 1)
+                                  if s != primary_slot]
     players = [p for p in eng["players"] if p.get("adp") is not None]
     window_start, window_prov = kdef_window(rounds_total)
 
     baselines = eng["baselines"]
     caps = roster_caps(eng.get("flex_allocation", {}))
     sims = {}
-    for slot in OUR_SLOTS:
+    for slot in sim_slots:
         board_team, board_log = run_sim(players, rounds_total, teams_n, slot,
                                         "marginal", window_start, baselines,
                                         caps)
@@ -247,6 +250,8 @@ def main():
             "generated": datetime.date.today().isoformat(),
             "engine_generated": eng["generated"],
             "engine_content_sha256": engine_digest,
+            "primary_slot": primary_slot,
+            "reference_slots": [s for s in sim_slots if s != primary_slot],
             "method": ("deterministic snake sim from the committed engine "
                        "payload; our seat scores candidates by optimal-"
                        "lineup improvement over replacement-level phantoms "

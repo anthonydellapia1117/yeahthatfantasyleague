@@ -129,6 +129,9 @@ def build():
     m = json.load(open(PAYLOAD))
     engine_digest = require_engine_digest(m)
     draft_date = m["league"]["draft_date"]
+    draft_start = m["league"].get("draft_start_time")
+    if type(draft_start) is not int or draft_start <= 0:
+        raise ValueError("engine payload lacks Sleeper's exact draft start")
     players = sorted(m["players"], key=lambda p: -p["vor"])
     top = lambda pos, n: [p for p in players if p["pos"] == pos][:n]
     show = {"QB": top("QB", 3), "RB": top("RB", 3), "WR": top("WR", 3),
@@ -149,7 +152,7 @@ def build():
 {locked_card("The one history fact worth a card", 2)}
 <script>
 (function(){{
-  var t = Date.parse("{draft_date}T19:00:00");
+  var t = {draft_start};
   var d = Math.max(0, (t - Date.now()) / 864e5);
   document.getElementById("cd").innerHTML =
     d > 0 ? Math.floor(d) + '<span class="u"> days</span> ' +

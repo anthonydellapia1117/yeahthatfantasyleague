@@ -1,5 +1,12 @@
 # Draft morning runbook - 2026-09-08
 
+Draft start: **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**.
+Anthony is externally drawn in **slot 4**, with picks 4, 21, 28, 45, 52, 69,
+76, 93, 100, 117, 124, 141, 148, 165. Sleeper confirmation is still pending;
+an official conflict is a hard stop, not an invitation to choose a source. The
+complete reported order and unresolved-history labels live in
+`data/draft_order_2026.json`.
+
 Rehearsed end-to-end on 2026-08-19; timings below are from that
 rehearsal on the remote container. The compute is under two minutes;
 with the ship steps and the deploy wait, budget about ten minutes
@@ -118,8 +125,10 @@ with `PAGES=https://anthonydellapia1117.github.io/yeahthatfantasyleague`.
       BOTH today; walter sha matches the current guide; config echo says
       cap 10%, walter_enabled true.
 - [ ] Draft room on the phone (430pt): live pill goes LIVE when the
-      party opens; seat auto-detects to 7; the pick engine card renders
-      below the verdict card.
+      party opens; the primary seat is 4 from the external draw while Sleeper is
+      unpublished, then reconciles to the official complete permutation when it
+      posts; the pick engine card renders below the verdict card. A disagreement
+      between sources must block the board visibly.
 - [ ] `E.league.draft_id` in the sentinel payload matches the Sleeper
       draft lobby id.
 - [ ] Big board WALTER LAYER toggle set to the decided state.
@@ -149,15 +158,13 @@ red it diagnoses the failure, opens or updates a repair PR, and reports. It does
 not push to main; a 6:00 AM failure leaves the whole day to land the fix, and the
 deployed build is never in a broken state while that happens.
 
-LAYER 3 - the draft-order draw watch. A Claude Routine runs
-`python3 src/check_draft_order.py` every two hours until the draw (or
-2026-09-08, whichever first). The script mirrors the room's own
-detection semantics - the identity slot map counts as NOT drawn - and
-the Routine stays silent until the order is real, then push-notifies
-Anthony with his slot and retires itself. The room needs nothing from
-it: it already collapses to the detected seat live (the order-hypothesis
-card retires, renderPre follows the real slot); the watch exists so
-Anthony hears about the draw without opening the app.
+LAYER 3 - the Sleeper publication watch. The external draw is already recorded as
+slot 4, so the watch now runs `python3 src/check_draft_order.py` every two hours
+until Sleeper publishes a complete order (or 2026-09-08, whichever first). The
+identity slot map still counts as unpublished. Agreement confirms slot 4 and
+retires the watch; disagreement or a malformed partial order alerts and blocks.
+The room can operate from the external draw during the pending state, while all
+eleven other slot windows remain available as reference.
 
 LAYER 4 - the publication watch. The pages-data cron failed 8 of its
 first 14 scheduled runs (the last four consecutively) and nothing

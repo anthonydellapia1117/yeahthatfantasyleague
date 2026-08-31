@@ -27,11 +27,11 @@
  "judgment_count": 117,
  "figures_count": 19,
  "structural_count": 2,
- "top200_coverage_pct": 49.5,
- "top200_covered": 99,
+ "top200_coverage_pct": 49.0,
+ "top200_covered": 98,
  "unresolved_count": 0,
  "resolved_tag_count": 167,
- "conflict_count": 1,
+ "conflict_count": 2,
  "changelog_entries": 12,
  "changelog_players": 14
 }

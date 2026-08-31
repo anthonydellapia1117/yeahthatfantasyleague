@@ -75,7 +75,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,
   function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-var T = null, SLOT = 1;
+var T = null, SLOT = null;
 
 function nodeHtml(n){
   var fork = !n.forced;
@@ -165,7 +165,11 @@ Promise.all([
         j.provenance.engine_content_sha256 !== digest)
       throw new Error("draft path data was built from a different engine payload");
     T = j;
-    $("hdr").textContent = "the order is undrawn - pick a slot";
+    SLOT = Number(j.provenance.primary_slot);
+    if (!T.slots[String(SLOT)]) throw new Error("primary slot missing from path data");
+    $("hdr").textContent = "slot " + SLOT + " primary - externally reported draw; " +
+      (Object.keys(T.slots).length - 1) + " reference slots retained; Sleeper " +
+      j.provenance.sleeper_confirmation;
     $("foot").textContent = "generated " + j.provenance.generated +
       " from engine " + j.provenance.engine_generated +
       " - survival from the frozen pre-draft model (the live room applies the adopted calibration) - " +

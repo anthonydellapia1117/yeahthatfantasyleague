@@ -300,6 +300,10 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
 def main():
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
     engine_digest = require_engine_digest(eng)
+    order_ctx = eng.get("draft_order_context") or {}
+    primary_slot = order_ctx.get("primary_slot")
+    if primary_slot not in range(1, TEAMS + 1):
+        raise ValueError("engine does not carry a valid primary draft slot")
     players = [p for p in eng["players"]
                if p["pos"] in SKILL and p.get("adp", 999) < 900]
     players.sort(key=lambda p: -p["vor"])
@@ -369,6 +373,10 @@ def main():
             "generated": datetime.date.today().isoformat(),
             "engine_generated": eng["generated"],
             "engine_content_sha256": engine_digest,
+            "primary_slot": primary_slot,
+            "primary_slot_source": order_ctx.get("source", {}).get("kind"),
+            "sleeper_confirmation": order_ctx.get("sleeper_confirmation"),
+            "slot_coverage": "all_slots",
             "objective": ("VONA(pos) = E[best available at this pick] - "
                           "E[best available at my next pick], both survival-"
                           "weighted over the whole positional pool"),

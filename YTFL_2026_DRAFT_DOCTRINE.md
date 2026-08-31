@@ -2,19 +2,29 @@
 
 **Anthony DellaPia, roster 7 (with ernie706). League 1389378429505241088. Board built 2026-08-11.**
 
+> **Operational override, 2026-08-31:** the externally reported draw puts Anthony
+> in **slot 4**, with picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124,
+> 141, 148, 165**. Sleeper has not published the order yet, so the external draw
+> remains pending official confirmation. Draft start is
+> **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. The slot-7 arithmetic
+> below is retained only as a dated scenario; use the current slot-4 engine and
+> draft room for decisions. The other eleven slots remain reference views.
+
 ---
 
 ## The one change
 
 **Stop asking "is this player good value at this pick" and start pricing every pick as a two-pick swap - what this player returns *minus* what the same capital would have bought at your next turn - because every single conclusion in this analysis that survived contact with the numbers survived on that arithmetic, and every one that died, died without it.**
 
-The proof, at slot-7 pick numbers: taking Jayden Daniels at 55 and the best non-QB left at 90 returns 3.2 + 8.9 = **12.1 VOR**. Taking a running back at 55 and Dak Prescott at 90 returns 44.6 + 18.4 = **63.0 VOR**. Net **+50.9 VOR, 2.83 points per game over 18 games**. Only 15.2 of that is the quarterback swap. The other 35.7 is the running back you get instead, which is the half nobody prices. [E]
+The dated proof, at the former slot-7 pick numbers: taking Jayden Daniels at 55 and the best non-QB left at 90 returns 3.2 + 8.9 = **12.1 VOR**. Taking a running back at 55 and Dak Prescott at 90 returns 44.6 + 18.4 = **63.0 VOR**. Net **+50.9 VOR, 2.83 points per game over 18 games**. Only 15.2 of that is the quarterback swap. The other 35.7 is the running back you get instead, which is the half nobody prices. This example explains the method; it is not the current slot-4 board. [E]
 
 ---
 
-## The board, read at your actual picks
+## Historical slot-7 board - superseded by the current slot-4 engine
 
-This is one engine run, best-available-by-VOR among skill players expected to survive to each pick. It is the spine of everything below.
+This is the dated 2026-08-11 engine run, best-available-by-VOR among skill players
+expected to survive to each former slot-7 pick. It documents the method, but the
+current slot-4 engine supersedes its names and pick windows.
 
 | Pick | #1 on the board | #2 | #3 |
 |---|---|---|---|
@@ -82,7 +92,7 @@ Same doctrine everywhere: **rounds 1 through 5 buy skill capital, round 6 buys t
 
 Also note the superlative is fragile: hold QB12 and walk the RB replacement baseline six slots deeper and Breece Hall passes Allen. "Highest VOR on the board" is a modeling convention, not a fact about football.
 
-### Middle slot (5 through 8) - your documented seat
+### Middle slot (5 through 8) - historical slot-7 scenario
 
 | Rd | Pick (slot 7) | Best on board | Posture |
 |---|---|---|---|
@@ -148,7 +158,7 @@ Two things are true at once, and the interesting one is second.
 
 **Round 8. Prescott. That is the whole fix.**
 
-And the value of the reshuffle at your specific picks, if slot 7 holds: **+19.6 at pick 55** (Burrow over Hurts), **+13.4 at pick 66** (Prescott over Hurts), and **exactly +0.0 at all twelve of your other picks**, including round 10, where the broken board and the corrected board both say Bo Nix. [S]
+And the value of the reshuffle in the superseded slot-7 scenario was: **+19.6 at pick 55** (Burrow over Hurts), **+13.4 at pick 66** (Prescott over Hurts), and **exactly +0.0 at all twelve other picks**, including round 10, where the broken board and the corrected board both said Bo Nix. Recompute at slot 4 before using this operationally. [S]
 
 ---
 
@@ -176,14 +186,16 @@ And the value of the reshuffle at your specific picks, if slot 7 holds: **+19.6 
 
 ---
 
-## Still unknown, and blocking
+## Current draw state
 
 | Item | Status | What it blocks |
 |---|---|---|
-| **Draft slot** | **Unassigned.** Sleeper draft 1389378429505241089 returns `draft_order: null`, `status: pre_draft`. The `slot_to_roster_id` map is a bare identity placeholder (1→1 … 12→12), which is *not* a slot assignment | Every pick number in this document. The slot-7 arithmetic (55, 66, 79, 90, 103, 114) is the assumption the whole analysis was priced on, and the seat effect is sign-unstable across slots. The early-slot Allen cell exists at slots 1-4 and nowhere else |
-| **Draft date and time** | **Unset.** `start_time: null` | When to re-pull the board. Projections and injury statuses both move daily, and the injury field above changed by 3 players between the analysis pass and today. Re-run the engine the morning of |
+| **Draft slot** | **Externally drawn: slot 4. Sleeper confirmation pending.** Anthony's picks are 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. Sleeper still returns `draft_order: null` with the identity `slot_to_roster_id` placeholder. | Slot 4 is the primary operational view. Keep all eleven other slots for reference. If Sleeper later publishes a conflicting order, fail loudly rather than choosing a source silently. Slots 3 and 7 have unresolved historical identity and remain honest nulls for tendency descriptions. |
+| **Draft date and time** | **Set:** `start_time: 1788912025000`, or **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. | Re-pull projections and injury status on draft morning and verify the live payload still agrees. |
 
-Confirmed from the same call: **snake, 14 rounds, 12 teams.** Send the slot the moment it posts and this collapses to one column instead of three.
+Confirmed format: **snake, 14 rounds, 12 teams.** The operational surfaces now
+lead with slot 4 while preserving the other eleven as reference; official Sleeper
+publication is a reconciliation event, not permission to keep using slot 7.
 
 ---
 
