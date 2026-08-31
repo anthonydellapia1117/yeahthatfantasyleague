@@ -15,11 +15,11 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-31 by Codex - squash-merged the order-transition fix as #71 at `3d5d41a`, then rebased #69 onto it. The printable five-side cheat sheet now fails closed without a valid engine `draft_order_context.primary_slot`, defaults exactly to slot 4, prints slot 4 in its document title, sheet title, footer, selected control, and 4/21/28/... pick ledger, and keeps the other eleven slots only as explicitly selected references. The Pages manifest already carries `out/cheatsheet.html`; a direct guard now pins that fact. |
-| **Next agent** | PR #69 is authorized and its full local battery is green; squash-merge it, wait for Pages, byte-compare the deployed manifest against main, and verify the live slot-4 title/footer before treating the printable surface as delivered. Observe the actual Sleeper transition when it happens: it must print `DRAFT ORDER DRAWN - Anthony has slot 4 (matches external report)` and all slot-conditioned surfaces must remain coherent without reload or mixed labels. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. |
-| **Branch** | PR #71 is merged at `3d5d41a`; this is rebased PR #69 (`cheatsheet`) with executable follow-up `Default cheat sheet to primary draft slot`. Gate-runner self-test 16; gated suites 120/0/22/51/70/17/16/105/63/173/48/1818/23/377/38 (2,941); analysis zero skips; browser smoke 414; `MATH DIFF PROOF: EMPTY`. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #71 is on main; the cheat sheet remains 404 until this PR's Pages deployment is byte-verified. |
-| **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. At 2026-08-31 18:31 UTC, `src/check_draft_order.py` still reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)`. A complete non-identity roster permutation may be corroborated by a shorter well-formed user order when a roster is ownerless; no partial user map resolves alone, and any owner-seat disagreement blocks loudly. |
+| **Last touched** | 2026-08-31 by Codex - opened #72 after auditing printable Sheet 4's method. Its names came from the engine's static median-availability checkpoints, not the ADP-chalk mock or 100,000-board paired simulation. Bijan enters the pick-4 candidate set at 50.319% individual survival; the renderer hid that knife edge and called the path "Board expects." #72 labels the method **NOT A FORECAST**, prints exact artifact availability plus tier/injury/coin-flip cues, distinguishes individual survival from path frequency, and omits the unsolved engine `fallback` rather than calling it "Next best." Model ordering and Anthony's Puka durability override are unchanged. |
+| **Next agent** | Review #72. If authorized, squash-merge it, wait for Pages, byte-compare the deployed manifest against main, and verify the live Sheet 4 method note, exact availability, Breece coin-flip cue, and absence of `Board expects` / `Next best`. The live Sleeper order transition is still pending and remains a separate observation. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. |
+| **Branch** | PR #72, `codex/cheatsheet-method-honesty`; functional commit `72b9642`, followed only by this baton commit. Gate-runner self-test 16; fourteen gated suites 120/22/51/70/17/16/107/63/173/48/1818/23/378/38 (2,944 guards); analysis 38 with zero skips and all five deterministic reruns; browser smoke 418; `MATH DIFF PROOF: EMPTY`; `git diff --check` clean. The unchanged renderer failed the new method-boundary smoke before the fix. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `d89af11` with #69 deployed. The cheat sheet is live and slot-4-correct, but its old categorical Sheet 4 labels remain until #72 is merged and byte-verified. |
+| **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. At 2026-08-31 20:16 UTC, `src/check_draft_order.py` still reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)`. A complete non-identity roster permutation may be corroborated by a shorter well-formed user order when a roster is ownerless; no partial user map resolves alone, and any owner-seat disagreement blocks loudly. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
 
@@ -242,20 +242,42 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     16 plus 120/0/22/51/70/17/16/105/63/173/48/1818/23/373/38 guards across the
     fifteen suites (2,937), analysis 38 with zero skips, browser smoke 385, and
     `MATH DIFF PROOF: EMPTY` for all ten frozen functions.
+19. **Printable Sheet 4 is a qualified checkpoint ledger, not a draft forecast.**
+    It reads `engine_2026.json.slots[primary_slot]`. At each owner pick that engine
+    keeps players with at least 0.5 individual modeled survival, consumes its
+    earlier listed anchors, and runs the shared marginal-lineup policy. It neither
+    runs `mock_draft.py` nor samples opponent boards. Bijan's ADP 2.2 yields
+    50.319% survival at pick 4, while Gibbs is 48.226%; that is why Bijan barely
+    becomes the highest-VOR eligible anchor. Javonte's printed 69.0% is his
+    individual survival to pick 28, not the frequency of the complete
+    Bijan/Bowers/Javonte path and not the paired simulation's modal result. The
+    old page stripped those qualifiers, called the path "Board expects," and
+    called a VOR-sorted, non-marginal `fallback` "Next best." #72 prints the
+    method boundary, exact availability, tier/injury/coin-flip cues, and live
+    re-solve instruction; the unsolved fallback is omitted. A synthetic coin-flip
+    browser fixture prevents the new guard from passing vacuously after ADP moves.
+    A source-boundary audit found zero production use of Copilot/R analysis
+    exports. The sole production path under `docs/ffopportunity/` is the
+    machine-refreshed schedule snapshot, independently priced in Python and used
+    only by display-only BULLISH QB environment and WR opportunity. It never
+    enters VOR, survival, PATHS, the cheat selection, or the audited room verdict.
+    Big Board and the additive room pick engine still carry their older explicit
+    CVS/Walter layer and typed proxy coefficients; do not describe those complete
+    surfaces as engine-only.
 
 ### In flight / nothing blocked
 
-PR #71 is merged at `3d5d41a`. The exact placeholder-to-confirmed transition is
-covered, but the real Sleeper transition was still pending at its final capture.
-PR #54 remains OPEN,
+PR #69 is merged at `d89af11`; the five-side slot-4 cheat sheet is live. PR #72 is
+the current merge candidate and changes only Sheet 4's method honesty, guards, and
+the external-input audit record; it does not change engine bytes, player ordering,
+or owner preferences. The exact placeholder-to-confirmed transition is covered,
+but the real Sleeper transition is still pending. PR #54 remains OPEN,
 PARKED THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
 mergeability is unresolved against moving `main`. Its PATHS policy is still the
 data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the conditional spread
 floor, but its Pareto action space remains one action per position and cannot
 answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
-draft. PR #69 is rebased and green: it consumes the engine's primary slot, retains
-all references, is explicitly present in the Pages copy list, and is the current
-authorized merge candidate. The `docs/ffopportunity/` R export
+draft. The `docs/ffopportunity/` R export
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already
 correct, and the shipped QB table did not inherit the R file's `-2` interception
 error. Do not consume unreviewed local regenerated exports. The forward-Vegas and
