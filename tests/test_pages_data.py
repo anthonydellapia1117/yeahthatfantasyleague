@@ -753,6 +753,13 @@ ok("out/cheatsheet.html" in _pgy,
 ok("draft_order_context" in _cheat_src and "context.primary_slot" in _cheat_src and
    "anthony_roster_id ||" not in _cheat_src,
    "the cheat sheet defaults from shared draft_order_context.primary_slot, not roster id")
+ok("NOT A FORECAST" in _cheat_src and
+   "p.p_available_now" in _cheat_src and "r.coin_flips" in _cheat_src and
+   "r.fallback" not in _cheat_src and
+   "Board expects" not in _cheat_src and "Next best" not in _cheat_src and
+   "Alternate" not in _cheat_src,
+   "the cheat sheet preserves availability/coin-flip context and never labels "
+   "the static checkpoint path as a forecast or prints an unsolved fallback")
 
 # 9. Heartbeat exists (Actions keepalive)
 ok(os.path.exists(os.path.join(D, "heartbeat.txt")), "heartbeat file present")

@@ -124,10 +124,11 @@ archetype, usage, and opportunity layers are auxiliary evidence built mostly fro
 claims separate: backward-looking limitations in the auxiliary layer do not
 describe the core projection source.
 
-Seven surfaces, all in `out/`: `home.html` (hub), `big_board.html`,
+Eight surfaces, all in `out/`: `home.html` (hub), `big_board.html`,
 `players.html`, `teams.html`, `draft_room.html` (the draft-night surface),
 `paths.html` (the VONA decision tree), `ff-hub.html` (the retrospective dashboard
-for the 2013-2025 history analysis).
+for the 2013-2025 history analysis), and `cheatsheet.html` (the printable
+engine/VOR board and median-availability checkpoints).
 
 ### What it deliberately does NOT do
 
@@ -330,6 +331,12 @@ new evidence wastes a cycle.
   and big board render. Reads the engine payload; the engine never reads CVS.
 - `out/draft_room.html` - ~2,400 lines. Live polling, clock, pick engine, DRAFT
   MODE, simulator. The single most defect-dense file in the repo.
+- `out/cheatsheet.html` - five printable Letter sides. Sheets 1-3 and 4 read
+  engine players/slots; CVS is loaded only to enforce content lineage. Sheet 4
+  is a static median-availability planning path, not a mock or forecast, and
+  must retain the engine's availability, tier-cliff, and coin-flip qualifiers.
+  Do not render its `fallback`: that field is not re-solved by the marginal policy
+  and carries no availability, so it is not an actionable alternate.
 
 **Coupling that is not obvious:**
 - `engine_2026.json` is **embedded** in `draft_room.html`, not fetched. Rebuilding
@@ -350,7 +357,7 @@ new evidence wastes a cycle.
 - Producer workflows explicitly dispatch `pages.yml` after pushing. A push made
   with their `GITHUB_TOKEN` does not fire another workflow's push trigger; the
   Pages workflow repeats the declared downstream invariant guards before assembly.
-- `nav.js` is the single source for navigation and the kicker style. Seven items.
+- `nav.js` is the single source for navigation and the kicker style. Eight items.
 - The engine must NOT import from the pages-data layer; guard N1 enforces it.
 - BULLISH keeps two Vegas sources separate. HISTORY `games.csv` Week 1 feeds only
   RB expected-TD equity. `docs/ffopportunity/schedule_2026.csv` supplies a
@@ -358,6 +365,15 @@ new evidence wastes a cycle.
   opportunity only. The artifact states the weeks, priced/scheduled game counts,
   32-team reconciliation, top-five environments, source digest, and activation
   delta. Do not mechanically replace the Week-1 dictionary; that would move RBs.
+- The 2026-08-31 external-input boundary audit found no Copilot/R value in any
+  threshold, weight, rank, or displayed numeric field. The only production read
+  under `docs/ffopportunity/` is the schedule snapshot plus metadata; pages-data
+  regenerates it from nflverse `games.csv`, Python independently derives the
+  forward totals, and only display-only BULLISH `QB.environment` and
+  `WR.opportunity` consume it. The engine, VOR, survival, PATHS and cheat-sheet
+  selection do not. Big Board and the additive room pick engine still have the
+  older, explicit CVS/Walter layer and typed proxy coefficients; do not call
+  those complete surfaces engine-only merely because the newer audit was clean.
 
 **Analysis layer** (needs the `HISTORY` cache; not on the draft-night path):
 `ingest.py`, `phase2_value.py`, `phase3_lineup.py`, `phase3_remainder.py`,
@@ -477,6 +493,14 @@ still operationally important.
    Sleeper payload and otherwise left mixed pending/confirmed DOM. Any state used
    once operationally must be rehearsed through the transition, not inferred from
    two fresh loads.
+10. **Qualifier loss / representative path as forecast (1).** Printable Sheet 4
+   stripped availability and deviation context from a static checkpoint path,
+   then labelled the names "Board expects." Bijan's 50.3% inclusion and
+   Javonte/Breece coin flip disappeared, so a knife-edge representative became a
+   categorical prediction. Any renderer of a model-selected representative must
+   carry its individual availability, method boundary, and deviation cues; otherwise
+   omit the name rather than let missing context read as certainty. Individual
+   survival to a pick is not a joint-path or selection frequency.
 
 ---
 

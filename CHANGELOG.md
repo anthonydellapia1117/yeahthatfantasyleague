@@ -1,5 +1,42 @@
 # Changelog
 
+## Cheat-sheet checkpoint honesty and external-input boundary (2026-08-31)
+
+Printable Sheet 4 was arithmetically faithful to `engine_2026.json` but described
+the wrong thing. It renders the engine's static median-availability path: at each
+owner pick the engine retains players at or above even odds of availability,
+consumes its earlier listed anchors, then applies marginal lineup value. It is not
+the ADP-chalk mock and it is not a sampled opponent board. Bijan Robinson's ADP
+2.2 yields 50.3% modeled availability at pick 4, so he barely enters this method's
+pool; Gibbs at 48.2% barely misses it. The page had stripped those probabilities,
+tier-cliff and coin-flip cues and relabelled the remaining names "Board expects."
+It also called the engine contingency "Next best" even though that field is not
+the second-best marginal action.
+
+Sheet 4 now calls itself **Median-Availability Checkpoints - Not a Forecast**,
+prints exact payload availability beside every named anchor, preserves tier-cliff,
+injury and coin-flip cues (including Breece Hall beside Javonte Williams), and
+omits the old fallback because the engine neither re-solves it through the marginal
+policy nor assigns it an availability value. It says that the printed percentage is
+individual survival rather than a path frequency, that opponents are not simulated,
+and directs the operator to re-solve live after every actual pick. No
+name, model ordering or user preference changed. The prior smoke guard had banned
+survival context while permitting names selected by survival; it now requires the
+context and method boundary. The unchanged page failed that new scenario before
+the renderer changed; a deterministic synthetic coin-flip row keeps the guard from
+becoming vacuous when upstream ADP moves.
+
+A source-path audit found no Copilot/R value in an application threshold, weight,
+rank or displayed numeric field. The only production read under
+`docs/ffopportunity/` is the schedule snapshot and metadata, regenerated from
+nflverse `games.csv` and independently priced by Python. It feeds display-only
+BULLISH QB environment and WR opportunity, never VOR, survival, PATHS, the cheat
+sheet, or the audited room verdict. Puka durability remains documentation-only;
+`data/my_board.csv` has zero calls and the shipped engine has no preference
+overlay. Big Board and the additive room pick engine are not wholly engine-only:
+their older CVS/Walter layer and typed proxy coefficients predate the R/Copilot
+upload and remain explicit, attributed, and kill-switchable.
+
 ## BULLISH input integrity, TE suspension, and forward Vegas activation (2026-08-28)
 
 The percentile-population sweep found one live absence-as-zero defect.

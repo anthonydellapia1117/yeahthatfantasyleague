@@ -97,6 +97,10 @@ table{border-collapse:collapse;width:100%}
 .pk td.exp{font-size:10px}
 .pk td.exp b{font-weight:700}
 .pk td.exp .alt{color:#555;font-size:9px}
+.method-note{font-size:8.5px;line-height:1.35;color:#333;border:1px solid #999;
+  padding:4px 6px;margin-bottom:6px}
+.method-note b{color:#000;letter-spacing:.03em}
+.checkpoint-cue,.coin-cue{font-size:8px;color:#333;font-weight:700;margin-top:1px}
 .pk tr.kd td{background:#f6f6f6;color:#333;font-style:italic}
 .blank .pk td{height:30px}
 .blank .pk td.w{border-bottom:1px solid #000}
@@ -296,28 +300,45 @@ function build(){
       floorBlock("DEF", "Defense / DST") + "</div>",
     "Heavy rule = tier break. K and DST projections are floors, not ranks.");
 
-  // ---- SHEET 4: my 14 picks for the assumed slot
+  // ---- SHEET 4: engine median-availability planning checkpoints.
+  // This is neither the ADP-chalk mock nor a sampled opponent board. Preserve
+  // the availability and coin-flip context that makes each static anchor
+  // interpretable; a bare name would turn a representative path into a false
+  // forecast. The engine's `fallback` is neither re-solved through the
+  // marginal policy nor assigned an availability value, so it is deliberately
+  // omitted rather than made to look like an actionable substitute.
   var rounds = E.slots[String(D.slot)] || [];
-  var body4 = '<table class="pk"><tr><th>Rd</th><th>Pick</th>' +
-    "<th>Board expects</th><th>Next best</th></tr>";
+  var body4 = '<div class="method-note"><b>NOT A FORECAST.</b> At each checkpoint ' +
+    'the engine keeps players at or above even odds of modeled availability, consumes ' +
+    'earlier listed anchors, then maximizes marginal lineup value. Opponent boards ' +
+    'are not simulated. Each percentage is that player\'s individual survival to ' +
+    'this pick, not a path or selection frequency.</div><table class="pk"><tr>' +
+    '<th>Rd</th><th>Pick</th><th>Planning anchor &middot; individual availability</th></tr>';
   rounds.forEach(function(r){
     if (r.kdef){
       body4 += '<tr class="kd"><td class="rd">' + r.round + '</td><td class="pn">' +
-        r.pick + '</td><td class="exp" colspan="2">K / DST &mdash; best available</td></tr>';
+        r.pick + '</td><td class="exp">K / DST &mdash; best available</td></tr>';
       return;
     }
-    var p = r.primary, f = r.fallback;
+    var p = r.primary;
+    var cues = [];
+    if (r.tier_cliff) cues.push('<div class="checkpoint-cue">Tier cliff before pick ' +
+      esc(r.next_pick) + "</div>");
+    if ((r.coin_flips || []).length) cues.push('<div class="coin-cue">Coin flip: ' +
+      r.coin_flips.map(esc).join(", ") + "</div>");
+    if (p && p.injury) cues.push('<div class="checkpoint-cue">' + esc(p.injury) +
+      " &mdash; re-check before drafting</div>");
     body4 += '<tr><td class="rd">' + r.round + '</td><td class="pn">' + r.pick + "</td>" +
-      '<td class="exp">' + (p ? "<b>" + esc(p.name) + "</b> <span class=\"alt\">" +
-        esc(p.pos) + " &middot; VOR " + num(p.vor, 0) + "</span>" : "&mdash;") + "</td>" +
-      '<td class="exp">' + (f ? esc(f.name) + ' <span class="alt">' + esc(f.pos) +
-        "</span>" : "&mdash;") + "</td></tr>";
+      '<td class="exp anchor">' + (p ? "<b>" + esc(p.name) + "</b> <span class=\"alt\">" +
+        esc(p.pos) + " &middot; VOR " + num(p.vor, 0) + " &middot; " +
+        num(100 * p.p_available_now, 1) + "% available</span>" + cues.join("") :
+        "&mdash;") + "</td></tr>";
   });
   body4 += "</table>";
-  var s4 = sheet("My 14 Picks &middot; Slot " + D.slot +
+  var s4 = sheet("Median-Availability Checkpoints &middot; Slot " + D.slot +
     (D.slot === D.primarySlot ? " &middot; Primary" : " &middot; Reference"), meta, body4,
-    esc(D.slotNote) +
-    " Names are the pre-draft board, not a live read - the room handles live.");
+    esc(D.slotNote) + " Re-solve live after every actual pick; this is not a " +
+    "single simulated draft path.");
 
   // ---- SHEET 5: blank grid. Round numbers are row labels; every data cell
   // is empty by design.

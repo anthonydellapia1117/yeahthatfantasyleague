@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """C5 stage 1: every computed input the BULLISH matrices consume.
 
-Nothing here is imported from any document. Proportions carry k and n so the
-tag engine can put Wilson intervals on them; continuous metrics carry weekly
-SEs. Team state resolves from current depth charts; role stats (inside-5
-share, receiving market share) are 2025-role priors and say so.
+No analyzed figure is imported from a narrative document or R export. The one
+path under ``docs/ffopportunity`` is a machine-refreshed 2026 schedule snapshot;
+this module independently validates and prices it from literal game lines.
+Proportions carry k and n so the tag engine can put Wilson intervals on them;
+continuous metrics carry weekly SEs. Team state resolves from current depth
+charts; role stats (inside-5 share, receiving market share) are 2025-role priors
+and say so.
 
 Blocks:
   players   per-player computed metrics by position group
