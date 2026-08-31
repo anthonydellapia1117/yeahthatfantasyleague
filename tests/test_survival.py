@@ -3,7 +3,7 @@
 
 Run: python3 tests/test_survival.py
 """
-import importlib.util, math, os, sys, csv
+import hashlib, importlib.util, math, os, sys, csv, tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -11,7 +11,11 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 spec = importlib.util.spec_from_file_location("eng", os.path.join(ROOT, "src", "engine_2026.py"))
 eng = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(eng)
-from draft_order import _complete_slot_map
+from draft_order import (DraftOrderResolutionError, _complete_slot_map,
+                         load_reported_order, reconcile_owner_slot,
+                         reported_order_basis, snake_picks,
+                         validate_reported_order)
+from check_draft_order import format_reconcile_error
 
 fails = []
 
@@ -304,6 +308,11 @@ ok(_brow["matched"] and all(
     0.0 <= s <= 1.0 and abs(s - round(eng.survival(_brow["adp"], k), 3)) < 1e-9
     for picks in _brow["survival_to_slots"].values() for k, s in picks),
    "bull survival-to-slot-picks recomputes exactly from frozen survival()")
+ok([k for k, _s in _brow.get("survival_to_my_picks", [])] ==
+   [r["pick"] for r in m0["slots"]["4"][:4]] and
+   set(_brow.get("survival_to_slots", {})) ==
+   {str(s) for s in range(1, 13)},
+   "reported slot 4 aliases my picks while all twelve overlay windows remain")
 
 # 10e. Owner draft slot is identity, not roster_id. The real league's stable
 #      roster_id happens to be 7, so a slot-7 implementation looks correct until
@@ -345,19 +354,364 @@ ok("no seat is assumed" in eng.render_markdown(_undrawn) and
    "undrawn rendering labels the all-slot coverage instead of a default")
 _unavailable = copy.deepcopy(_undrawn)
 _unavailable["overlay_pick_basis"] = {
-    "status": "unavailable", "slot": None,
-    "source": "draft_endpoint_unavailable", "coverage": "all_slots",
+    "status": "reported_pending_sleeper", "slot": 4,
+    "source": "owner_reported_external_draw",
+    "reported_source": "owner_reported_external_draw",
+    "reported_date": "2026-08-31", "official_check": "unavailable",
+    "sleeper_source": "draft_endpoint_unavailable", "coverage": "all_slots",
 }
-ok("endpoint was unavailable" in eng.render_markdown(_unavailable),
-   "draft-order endpoint failure is visible in the generated decision cards")
+ok("endpoint was unavailable" in eng.render_markdown(_unavailable) and
+   "externally reported owner slot 4 remains" in
+   eng.render_markdown(_unavailable),
+   "endpoint failure visibly retains the externally reported slot-4 basis")
 
 _uid, _rid = m0["league"]["anthony_user_id"], m0["league"]["anthony_roster_id"]
+def _complete_user_order(owner_slot):
+    order = {_uid: owner_slot}
+    fake = 1
+    for slot in range(1, 13):
+        if slot == owner_slot:
+            continue
+        order[f"test-user-{fake}"] = slot
+        fake += 1
+    return order
+
+
+_reported = load_reported_order(
+    os.path.join(ROOT, "data", "draft_order_2026.json"),
+    m0["league"]["draft_id"], _uid, m0["league"]["teams"],
+    m0["league"]["rounds"])
+_reported_picks = [4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124,
+                   141, 148, 165]
+ok(_reported["owner"]["slot"] == 4 and
+   _reported["owner"]["picks"] == _reported_picks and
+   snake_picks(4, 12, 14) == _reported_picks and
+   _reported["draft_start"] == {
+       "epoch_ms": 1788912025000,
+       "source_kind": "sleeper_draft_endpoint",
+       "observed_at": "2026-08-31"},
+   "external draw carries exact slot-4 snake geometry and Sleeper start epoch")
+ok(eng.reconcile_draft_start({}, _reported) == 1788912025000 and
+   eng.reconcile_draft_start(
+       {"start_time": 1788912025000}, _reported) == 1788912025000,
+   "draft start uses the verified snapshot when absent and accepts exact live agreement")
+for _bad_start in ("1788912025000", True, 0, 1788912025001):
+    try:
+        eng.reconcile_draft_start({"start_time": _bad_start}, _reported)
+        _bad_start_blocked = False
+    except RuntimeError:
+        _bad_start_blocked = True
+    ok(_bad_start_blocked,
+       f"present malformed/conflicting draft start {_bad_start!r} fails closed")
+_reported_rows = {r["slot"]: r for r in _reported["slots"]}
+ok(set(_reported_rows) == set(range(1, 13)) and
+   _reported_rows[3]["history_status"] == "unresolved_merge" and
+   _reported_rows[3]["history_franchise"] is None and
+   _reported_rows[7]["history_status"] == "unresolved_new_manager" and
+   _reported_rows[7]["history_franchise"] is None and
+   sum(r["history_status"] in ("known", "owner")
+       for r in _reported_rows.values()) == 10,
+   "reported order keeps ten known histories and two honest unresolved seats")
+_identity_payload = {
+    "status": "pre_draft", "draft_order": None,
+    "slot_to_roster_id": {str(s): s for s in range(1, 13)}}
+_reported_pending = reconcile_owner_slot(
+    _identity_payload, _reported, _uid, _rid, 12)
+ok(_reported_pending["slot"] == 4 and
+   _reported_pending["official_check"] == "pending" and
+   _reported_pending["source"] == "owner_reported_external_draw" and
+   _reported_pending["coverage"] == "all_slots",
+   "identity placeholder uses external slot 4 without discarding references",
+   str(_reported_pending))
+for _official_payload, _official_source in [
+    ({"status": "pre_draft", "draft_order": _complete_user_order(4),
+      "slot_to_roster_id": _identity_payload["slot_to_roster_id"]},
+     "draft_order"),
+    ({"status": "pre_draft", "draft_order": None,
+      "slot_to_roster_id": {
+          str(s): (7 if s == 4 else 4 if s == 7 else s)
+          for s in range(1, 13)}}, "slot_to_roster_id"),
+]:
+    _agrees = reconcile_owner_slot(
+        _official_payload, _reported, _uid, _rid, 12)
+    ok(_agrees["slot"] == 4 and _agrees["official_check"] == "agrees" and
+       _agrees["source"] == _official_source,
+       f"Sleeper {_official_source} confirms external slot 4", str(_agrees))
+for _conflict_payload in [
+    {"status": "pre_draft", "draft_order": _complete_user_order(7),
+     "slot_to_roster_id": _identity_payload["slot_to_roster_id"]},
+    {"status": "pre_draft", "draft_order": None,
+     "slot_to_roster_id": {
+         str(s): (7 if s == 3 else 3 if s == 7 else s)
+         for s in range(1, 13)}},
+    {"status": "pre_draft", "draft_order": _complete_user_order(4),
+     "slot_to_roster_id": {
+         str(s): (7 if s == 3 else 3 if s == 7 else s)
+         for s in range(1, 13)}},
+]:
+    try:
+        reconcile_owner_slot(_conflict_payload, _reported, _uid, _rid, 12)
+        _conflict_loud = False
+    except RuntimeError as _exc:
+        _conflict_loud = "reported slot 4" in str(_exc)
+    ok(_conflict_loud,
+       "Sleeper disagreement names reported slot 4 and fails loud")
+try:
+    reconcile_owner_slot(
+        {"status": "drafting", "draft_order": None,
+         "slot_to_roster_id": {"1": 1}},
+        _reported, _uid, _rid, 12)
+    _reported_unresolved_source = None
+except DraftOrderResolutionError as _exc:
+    _reported_unresolved_source = _exc.source
+ok(_reported_unresolved_source == "incomplete_slot_to_roster_id",
+   "external slot never masks a partial official map or loses its cause",
+   str(_reported_unresolved_source))
+for _bad_order, _source in [
+    ({_uid: 4}, "incomplete_draft_order"),
+    ({**_complete_user_order(4), "test-user-1": 4},
+     "incomplete_draft_order"),
+]:
+    _bad_official = eng.resolve_owner_slot(
+        {"status": "pre_draft", "draft_order": _bad_order,
+         "slot_to_roster_id": _identity_payload["slot_to_roster_id"]},
+        _uid, _rid, 12)
+    ok(_bad_official == {"drawn": True, "slot": None,
+                         "source": _source},
+       "partial or duplicate draft_order cannot confirm a plausible owner seat",
+       str(_bad_official))
+_missing_owner_order = {
+    f"missing-owner-{slot}": slot for slot in range(1, 13)}
+_resolution_cases = [
+    ("incomplete_draft_order",
+     {"status": "pre_draft", "draft_order": {_uid: 4},
+      "slot_to_roster_id": _identity_payload["slot_to_roster_id"]}, 12),
+    ("incomplete_slot_to_roster_id",
+     {"status": "drafting", "draft_order": None,
+      "slot_to_roster_id": {"1": 1}}, 12),
+    ("incomplete_draft_order",
+     {"status": "drafting", "draft_order": [4],
+      "slot_to_roster_id": {
+          str(s): (7 if s == 4 else 4 if s == 7 else s)
+          for s in range(1, 13)}}, 12),
+    ("incomplete_slot_to_roster_id",
+     {"status": "drafting", "draft_order": _complete_user_order(4),
+      "slot_to_roster_id": "malformed"}, 12),
+    ("draft_order_owner_missing",
+     {"status": "drafting", "draft_order": _missing_owner_order,
+      "slot_to_roster_id": None}, 12),
+    ("team_count_unavailable", _identity_payload, None),
+    ("drawn_unresolved",
+     {"status": "drafting", "draft_order": None,
+      "slot_to_roster_id": None}, 12),
+    ("official_sources_conflict",
+     {"status": "pre_draft", "draft_order": _complete_user_order(4),
+      "slot_to_roster_id": {
+          str(s): (7 if s == 3 else 3 if s == 7 else s)
+          for s in range(1, 13)}}, 12),
+    ("external_report_conflict",
+     {"status": "pre_draft", "draft_order": _complete_user_order(7),
+      "slot_to_roster_id": _identity_payload["slot_to_roster_id"]}, 12),
+]
+for _expected_source, _payload, _teams in _resolution_cases:
+    try:
+        reconcile_owner_slot(_payload, _reported, _uid, _rid, _teams)
+        _resolution_error = None
+    except DraftOrderResolutionError as _exc:
+        _resolution_error = _exc
+    _formatted = format_reconcile_error(_resolution_error) \
+        if _resolution_error else ""
+    _prefix = ("DRAFT ORDER CONFLICT -" if "conflict" in _expected_source
+               else "DRAFT ORDER DRAWN - Anthony's slot not resolvable:")
+    ok(_resolution_error is not None and
+       _resolution_error.source == _expected_source and
+       _formatted.startswith(_prefix) and
+       (_expected_source in _formatted or "conflict" in _expected_source),
+       f"seat-resolution cause survives reconciliation: {_expected_source}",
+       _formatted)
+_outage_basis = reported_order_basis(
+    _reported, "unavailable", "draft_endpoint_unavailable")
+ok(_outage_basis["slot"] == 4 and
+   _outage_basis["official_check"] == "unavailable" and
+   _outage_basis["source"] == "owner_reported_external_draw",
+   "endpoint outage retains external slot 4 and labels confirmation unavailable")
+
+for _mutator, _label in [
+    (lambda x: x["owner"].update(slot=13), "out-of-range owner slot"),
+    (lambda x: x["owner"]["picks"].__setitem__(1, 20),
+     "wrong snake pick vector"),
+    (lambda x: x["slots"].__setitem__(6, dict(x["slots"][6],
+                                               history_franchise="Richie")),
+     "unresolved seat inheriting a franchise"),
+    (lambda x: x["slots"].__setitem__(4, dict(
+        x["slots"][4], history_franchise="Ronnie")),
+     "duplicate history franchise"),
+]:
+    _bad_report = copy.deepcopy(_reported)
+    _mutator(_bad_report)
+    try:
+        validate_reported_order(
+            _bad_report, m0["league"]["draft_id"], _uid, 12, 14)
+        _bad_report_loud = False
+    except ValueError:
+        _bad_report_loud = True
+    ok(_bad_report_loud, f"reported-order contract rejects {_label}")
+
+ok(m0["overlay_pick_basis"]["slot"] == 4 and
+   m0["overlay_pick_basis"]["official_check"] in
+   ("pending", "agrees", "unavailable") and
+   m0["draft_order_context"]["primary_picks"] == _reported_picks and
+   set(m0["slots"]) == {str(s) for s in range(1, 13)},
+   "shipped engine makes slot 4 primary and retains every slot")
+_history_prov = m0["draft_order_context"]["manager_history_provenance"]
+_history_bytes = open(os.path.join(ROOT, "out", "positional_timing.csv"),
+                      "rb").read()
+_history_rows = list(csv.DictReader(_history_bytes.decode().splitlines()))
+_history_seasons = {int(r["season"]) for r in _history_rows}
+_history_franchises = {r["franchise"] for r in _history_rows}
+ok(_history_prov == {
+       "path": "out/positional_timing.csv",
+       "source_content_sha256": hashlib.sha256(_history_bytes).hexdigest(),
+       "schema": list(eng.POSITIONAL_TIMING_COLUMNS),
+       "key": ["season", "franchise"],
+       "rows": len(_history_rows),
+       "franchises": len(_history_franchises),
+       "seasons": len(_history_seasons),
+       "season_min": min(_history_seasons),
+       "season_max": max(_history_seasons), "duplicate_keys": 0,
+       "source": "out/picks.csv", "confidence": "verified"},
+   "raw manager-history table carries digest, row count, span, and source",
+   str(_history_prov))
+# Recompute the complete positional-timing ledger from its named source. This
+# checks that a reproducible aggregate used the right input, not only that its
+# own bytes are stable.
+_expected_first = {}
+for _pick in csv.DictReader(open(os.path.join(ROOT, "out", "picks.csv"))):
+    _key = (int(_pick["season"]), _pick["member_name"])
+    _pos = _pick["pos"].lower()
+    if _pos not in ("qb", "rb", "wr", "te", "k", "def"):
+        continue
+    _round = int(_pick["round"])
+    _expected_first.setdefault(_key, {})[_pos] = min(
+        _round, _expected_first.setdefault(_key, {}).get(_pos, _round))
+_champions = {int(r["season"]): r["champion"]
+              for r in csv.DictReader(open(os.path.join(ROOT, "out", "champions.csv")))}
+_actual_first = {(int(r["season"]), r["franchise"]): r
+                 for r in _history_rows}
+_history_mismatches = []
+if set(_actual_first) != set(_expected_first):
+    _history_mismatches.append("key set")
+for _key, _positions in _expected_first.items():
+    _row = _actual_first.get(_key, {})
+    for _pos in ("qb", "rb", "wr", "te", "k", "def"):
+        _expected = str(_positions.get(_pos, ""))
+        if _row.get(f"first_{_pos}") != _expected:
+            _history_mismatches.append(f"{_key} first_{_pos}")
+    if _row.get("is_champion") != str(int(_champions.get(_key[0]) == _key[1])):
+        _history_mismatches.append(f"{_key} champion")
+ok(not _history_mismatches,
+   "raw manager history reproduces every key/value from picks and champions",
+   "; ".join(_history_mismatches[:4]))
+_hist_lines = _history_bytes.decode().splitlines()
+with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as _tmp:
+    _tmp.write("\n".join([_hist_lines[0], _hist_lines[1], _hist_lines[1]]) + "\n")
+    _dupe_history_path = _tmp.name
+try:
+    eng.load_first_position_history(_dupe_history_path)
+    _dupe_history_blocked = False
+except RuntimeError:
+    _dupe_history_blocked = True
+finally:
+    os.unlink(_dupe_history_path)
+ok(_dupe_history_blocked,
+   "raw manager-history loader rejects duplicate season/franchise rows")
+with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as _tmp:
+    _tmp.write(_hist_lines[0] + ",unexpected\n" + _hist_lines[1] + ",x\n")
+    _schema_history_path = _tmp.name
+try:
+    eng.load_first_position_history(_schema_history_path)
+    _schema_history_blocked = False
+except RuntimeError:
+    _schema_history_blocked = True
+finally:
+    os.unlink(_schema_history_path)
+ok(_schema_history_blocked,
+   "raw manager-history loader rejects schema and extra-cell drift")
+_history_by_franchise = {r["franchise"]: r.get("history_first")
+                         for r in m0["rosters"]}
+ok(_history_by_franchise["Cambrias"]["seasons"] == 13 and
+   _history_by_franchise["Cambrias"]["positions"]["qb"] == {
+       "median_round": 9.0, "min_round": 6.0, "max_round": 10.0,
+       "n": 13} and
+   _history_by_franchise["John Juliano"]["seasons"] == 5,
+   "drawn-order history carries raw median, range, and n rather than n_eff",
+   str({k: _history_by_franchise[k]
+        for k in ("Cambrias", "John Juliano")}))
+_context_rosters = [{"franchise": row["history_franchise"],
+                     "roster_id": (_rid if row["history_status"] == "owner"
+                                   else row["slot"]),
+                     "owner_id": (_uid if row["history_status"] == "owner"
+                                  else f"fixture-owner-{row['slot']}"),
+                     "thin": False, "prior": None}
+                    for row in _reported["slots"]
+                    if row["history_franchise"]]
+_context_rosters.append({"franchise": "Richie", "roster_id": 3,
+                         "owner_id": "fixture-richie", "thin": False,
+                         "prior": None})
+_raw_history, _raw_history_prov = eng.load_first_position_history(
+    with_provenance=True)
+_valid_slots, _valid_lookup = eng.reported_slot_context(
+    _reported, _context_rosters, _raw_history)
+ok(_valid_lookup[4]["history_franchise"] == "Antdell & Ernie",
+   "reported owner history resolves through Anthony's user identity")
+_bad_owner_report = copy.deepcopy(_reported)
+_bad_owner_report["slots"][3]["history_franchise"] = "Richie"
+try:
+    eng.reported_slot_context(
+        _bad_owner_report, _context_rosters, _raw_history)
+    _owner_history_blocked = False
+except RuntimeError:
+    _owner_history_blocked = True
+ok(_owner_history_blocked,
+   "owner history cannot silently map to a valid franchise owned by someone else")
+ok("raw median round with n observed seasons" in md_shipped and
+   "Cambrias | 13 | 1 (range 1-2; n 13)" in md_shipped and
+   "history unresolved | - | - | - | - | -" in md_shipped,
+   "decision-card history is n-labelled description with honest unresolved seats")
+_tier_calls = []
+_original_cond_survival = eng.cond_survival
+try:
+    eng.cond_survival = lambda adp, to_pick, from_pick: (
+        _tier_calls.append((adp, to_pick, from_pick)) or 0.6)
+    _tier_count = eng.tier_survivors_at_next(
+        [{"adp": 10.0}, {"adp": 20.0}], 4, 21)
+finally:
+    eng.cond_survival = _original_cond_survival
+ok(_tier_count == 2 and _tier_calls == [(10.0, 21, 4), (20.0, 21, 4)],
+   "tier-cliff helper uses the owner's actual 4-to-21 next-pick horizon",
+   str(_tier_calls))
+ok(all(r.get("urgent") == [] for rounds in m0["slots"].values()
+       for r in rounds if not r.get("kdef")) and
+   "p=0.9932" in m0["tendency_note"],
+   "rejected manager tendency remains n-labelled description, never urgency")
+_headings = [ln for ln in md_shipped.splitlines() if ln.startswith("## Slot ")]
+ok(len(_headings) == 12 and _headings[0].startswith("## Slot 4 - PRIMARY") and
+   all(any(h.startswith(f"## Slot {s} ") for h in _headings)
+       for s in range(1, 13)),
+   "decision cards lead with slot 4 and retain eleven references")
 _primary = eng.resolve_owner_slot(
-    {"status": "pre_draft", "draft_order": {_uid: 11},
-     "slot_to_roster_id": {"3": _rid}},
+    {"status": "pre_draft", "draft_order": _complete_user_order(11),
+     "slot_to_roster_id": None},
     _uid, _rid, 12)
 ok(_primary == {"drawn": True, "slot": 11, "source": "draft_order"},
-   "draft_order user mapping outranks a conflicting slot map", str(_primary))
+   "complete draft_order resolves when the fallback map is absent", str(_primary))
+_partial_secondary = eng.resolve_owner_slot(
+    {"status": "pre_draft", "draft_order": _complete_user_order(11),
+     "slot_to_roster_id": {"3": _rid}}, _uid, _rid, 12)
+ok(_partial_secondary == {"drawn": True, "slot": None,
+                           "source": "incomplete_slot_to_roster_id"},
+   "partial secondary seat evidence fails closed instead of being ignored",
+   str(_partial_secondary))
 _fallback = eng.resolve_owner_slot(
     {"status": "pre_draft", "draft_order": None,
      "slot_to_roster_id": {
@@ -387,7 +741,8 @@ ok(_complete_slot_map({"1": 2, "2": 3}, None) is None,
    "complete-permutation helper rejects unique partial maps without team count")
 try:
     eng.resolve_owner_slot(
-        {"status": "pre_draft", "draft_order": {_uid: 1}}, _uid, _rid)
+        {"status": "pre_draft", "draft_order": _complete_user_order(1)},
+        _uid, _rid)
     _omitted_team_count_rejected = False
 except TypeError:
     _omitted_team_count_rejected = True
@@ -396,7 +751,7 @@ ok(_omitted_team_count_rejected,
 for _invalid_teams in (None, 0, -1, True, 12.9, "12", float("inf")):
     try:
         _invalid_team_result = eng.resolve_owner_slot(
-            {"status": "pre_draft", "draft_order": {_uid: 1},
+            {"status": "pre_draft", "draft_order": _complete_user_order(1),
              "slot_to_roster_id": {str(s): s for s in range(1, 13)}},
             _uid, _rid, _invalid_teams)
     except Exception as exc:
@@ -417,7 +772,7 @@ ok(_unknown_teams_complete == {
    "unknown team count refuses even a plausible full-looking slot map",
    str(_unknown_teams_complete))
 _unknown_teams_order = eng.resolve_owner_slot(
-    {"status": "pre_draft", "draft_order": {_uid: 3},
+    {"status": "pre_draft", "draft_order": _complete_user_order(3),
      "slot_to_roster_id": None},
     _uid, _rid, None)
 ok(_unknown_teams_order == {
@@ -425,12 +780,15 @@ ok(_unknown_teams_order == {
    "unknown team count cannot validate a draft_order slot either",
    str(_unknown_teams_order))
 for _invalid_slot in (True, 3.5, float("inf")):
+    _invalid_order = _complete_user_order(1)
+    _invalid_order[_uid] = _invalid_slot
     _invalid_slot_result = eng.resolve_owner_slot(
-        {"status": "drafting", "draft_order": {_uid: _invalid_slot},
+        {"status": "drafting", "draft_order": _invalid_order,
          "slot_to_roster_id": None},
         _uid, _rid, 12)
     ok(_invalid_slot_result == {
-           "drawn": True, "slot": None, "source": "drawn_unresolved"},
+           "drawn": True, "slot": None,
+           "source": "incomplete_draft_order"},
        f"malformed draft_order slot {_invalid_slot!r} fails closed",
        str(_invalid_slot_result))
 _boolean_roster_map = {str(s): s for s in range(1, 13)}

@@ -1,5 +1,12 @@
 # Draft morning runbook - 2026-09-08
 
+Draft start: **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**.
+Anthony is externally drawn in **slot 4**, with picks 4, 21, 28, 45, 52, 69,
+76, 93, 100, 117, 124, 141, 148, 165. Sleeper confirmation is still pending;
+an official conflict is a hard stop, not an invitation to choose a source. The
+complete reported order and unresolved-history labels live in
+`data/draft_order_2026.json`.
+
 Rehearsed end-to-end on 2026-08-19; timings below are from that
 rehearsal on the remote container. The compute is under two minutes;
 with the ship steps and the deploy wait, budget about ten minutes
@@ -8,6 +15,27 @@ stops the line, and the draft room keeps serving the last committed
 build until the whole sequence is green.
 
 ## The night before
+
+- [ ] **Owner tie-break at pick 4:** only if Gibbs, Bijan Robinson, and Ja'Marr
+      Chase are gone, treat McCaffrey and Puka as tied. The complete 4/21/28
+      policy is CMC 290.75 versus Puka 288.67, a 2.08 difference inside the
+      derived 7.0-point coin-flip band; a survival-calibration sensitivity flips
+      the order by 0.15. Anthony's Puka choice is an external zero-IR/durability
+      override, not model output.
+- [ ] **September 5 Puka practice check:** verify an official Rams practice
+      report manually. If Puka is still not practicing, withdraw the durability
+      tie-break and return to a genuine CMC/Puka coin flip. The engine will carry
+      and render a changed Sleeper `injury_status`, but that field does not prove
+      practice participation and cannot satisfy this check by itself.
+- [ ] **If Puka is the pick, solve 21 before 28:** the paired simulation says the
+      pick-21 choice is unchanged from CMC-first in 99,997 of 100,000 states. On
+      the ordinary board, the model orders Achane, Chase Brown, Bowers, then
+      Henry, while treating adjacent choices as close. At 28 rerun marginal
+      lineup value: after Bowers, take the best RB/WR and do not double TE; after
+      an RB, Bowers is usually next if present, but a higher-VOR surviving RB
+      still wins and a second RB still receives full RB2 value. Frequencies
+      describe availability, not priority: Nico is the most
+      common pick-28 outcome, but Walker wins if both are actually present.
 
 - [ ] `data/my_board.csv` - every BULL/BEAR call in, each with a reason
       and a source. Unsourced conviction does not get graded.
@@ -118,8 +146,10 @@ with `PAGES=https://anthonydellapia1117.github.io/yeahthatfantasyleague`.
       BOTH today; walter sha matches the current guide; config echo says
       cap 10%, walter_enabled true.
 - [ ] Draft room on the phone (430pt): live pill goes LIVE when the
-      party opens; seat auto-detects to 7; the pick engine card renders
-      below the verdict card.
+      party opens; the primary seat is 4 from the external draw while Sleeper is
+      unpublished, then reconciles to the official complete permutation when it
+      posts; the pick engine card renders below the verdict card. A disagreement
+      between sources must block the board visibly.
 - [ ] `E.league.draft_id` in the sentinel payload matches the Sleeper
       draft lobby id.
 - [ ] Big board WALTER LAYER toggle set to the decided state.
@@ -149,15 +179,13 @@ red it diagnoses the failure, opens or updates a repair PR, and reports. It does
 not push to main; a 6:00 AM failure leaves the whole day to land the fix, and the
 deployed build is never in a broken state while that happens.
 
-LAYER 3 - the draft-order draw watch. A Claude Routine runs
-`python3 src/check_draft_order.py` every two hours until the draw (or
-2026-09-08, whichever first). The script mirrors the room's own
-detection semantics - the identity slot map counts as NOT drawn - and
-the Routine stays silent until the order is real, then push-notifies
-Anthony with his slot and retires itself. The room needs nothing from
-it: it already collapses to the detected seat live (the order-hypothesis
-card retires, renderPre follows the real slot); the watch exists so
-Anthony hears about the draw without opening the app.
+LAYER 3 - the Sleeper publication watch. The external draw is already recorded as
+slot 4, so the watch now runs `python3 src/check_draft_order.py` every two hours
+until Sleeper publishes a complete order (or 2026-09-08, whichever first). The
+identity slot map still counts as unpublished. Agreement confirms slot 4 and
+retires the watch; disagreement or a malformed partial order alerts and blocks.
+The room can operate from the external draw during the pending state, while all
+eleven other slot windows remain available as reference.
 
 LAYER 4 - the publication watch. The pages-data cron failed 8 of its
 first 14 scheduled runs (the last four consecutively) and nothing

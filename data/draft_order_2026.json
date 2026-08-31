@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "draft_id": "1389378429505241089",
+  "teams": 12,
+  "rounds": 14,
+  "draft_type": "snake",
+  "draft_start": {
+    "epoch_ms": 1788912025000,
+    "source_kind": "sleeper_draft_endpoint",
+    "observed_at": "2026-08-31"
+  },
+  "source": {
+    "kind": "owner_reported_external_draw",
+    "reported_date": "2026-08-31",
+    "sleeper_publication_at_report": "pending"
+  },
+  "owner": {
+    "user_id": "345197760305307648",
+    "slot": 4,
+    "picks": [4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165]
+  },
+  "slots": [
+    {"slot": 1, "reported_label": "Flacco/Greg", "history_franchise": "Rob & GregBo", "history_status": "known"},
+    {"slot": 2, "reported_label": "Malandro", "history_franchise": "Ronnie", "history_status": "known"},
+    {"slot": 3, "reported_label": "Nolfi/Long", "history_franchise": null, "history_status": "unresolved_merge"},
+    {"slot": 4, "reported_label": "Anthony", "history_franchise": "Antdell & Ernie", "history_status": "owner"},
+    {"slot": 5, "reported_label": "Pung/Traile", "history_franchise": "Pung & Tralie", "history_status": "known"},
+    {"slot": 6, "reported_label": "Baldino", "history_franchise": "Phil Baldino", "history_status": "known"},
+    {"slot": 7, "reported_label": "new manager", "history_franchise": null, "history_status": "unresolved_new_manager"},
+    {"slot": 8, "reported_label": "Beetle", "history_franchise": "John Juliano", "history_status": "known"},
+    {"slot": 9, "reported_label": "Ying Yang", "history_franchise": "Frank & Julian", "history_status": "known"},
+    {"slot": 10, "reported_label": "Cambria", "history_franchise": "Cambrias", "history_status": "known"},
+    {"slot": 11, "reported_label": "Gatta/Nolan", "history_franchise": "Nolan & Vinny", "history_status": "known"},
+    {"slot": 12, "reported_label": "Chris & Dom", "history_franchise": "Chris & Dom", "history_status": "known"}
+  ]
+}

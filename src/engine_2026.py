@@ -33,22 +33,27 @@ Honesty constraints, per the audit and the null results:
 Run (draft morning - projections and ADP move daily):
 
     python3 src/engine_2026.py                 # all 12 slots
-    python3 src/engine_2026.py --slot 7        # one card printed
+    python3 src/engine_2026.py --slot 4        # primary card printed
 """
 
 import argparse
 import csv
+import hashlib
+import io
 import json
 import math
 import os
 import sys
 import datetime
+import statistics
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from forward_policy import pick_marginal, roster_caps  # noqa: E402
 from engine_lineage import stamp as stamp_engine  # noqa: E402
 from player_names import PlayerIdentityResolver, comparison_key  # noqa: E402
-from draft_order import resolve_owner_slot  # noqa: E402
+from draft_order import (DraftOrderResolutionError, load_reported_order,
+                         reconcile_owner_slot, reported_order_basis,
+                         resolve_owner_slot)  # noqa: E402
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -84,6 +89,11 @@ ADP_SD_BINS = 12
 MD_PATH = "out/decision_cards_2026.md"
 JSON_PATH = "out/engine_2026.json"
 APP_PATH = "out/draft_room.html"
+REPORTED_ORDER_PATH = "data/draft_order_2026.json"
+POSITIONAL_TIMING_PATH = "out/positional_timing.csv"
+POSITIONAL_TIMING_COLUMNS = (
+    "season", "franchise", "first_qb", "first_rb", "first_wr", "first_te",
+    "first_k", "first_def", "is_champion", "source", "confidence")
 SENTINEL_OPEN = "<script id=\"engine-data\" type=\"application/json\">"
 SENTINEL_CLOSE = "</script><!--engine-data-end-->"
 
@@ -207,13 +217,105 @@ def snake_picks(slot):
             for r in range(1, ROUNDS + 1)]
 
 
-def derive_overlay_pick_basis(draft):
+def load_first_position_history(path=POSITIONAL_TIMING_PATH,
+                                with_provenance=False):
+    """Raw descriptive first-position medians and n by franchise.
+
+    These are deliberately separate from the recency-weighted, shrunk priors.
+    The user-facing drawn-order table asks what each known seat did, with raw
+    sample size; this evidence never enters survival or a verdict.
+    """
+    raw = open(path, "rb").read()
+    reader = csv.DictReader(io.StringIO(raw.decode("utf-8-sig")))
+    if tuple(reader.fieldnames or ()) != POSITIONAL_TIMING_COLUMNS:
+        raise RuntimeError(
+            "positional timing schema moved; raw manager-history table blocked")
+    rows = list(reader)
+    if not rows:
+        raise RuntimeError("positional timing is empty")
+    grouped = defaultdict(lambda: defaultdict(list))
+    seasons = defaultdict(set)
+    seen = set()
+    all_seasons = set()
+    for row in rows:
+        if None in row or any(value is None for value in row.values()):
+            raise RuntimeError("positional timing row disagrees with its schema")
+        franchise = row["franchise"].strip()
+        try:
+            season = int(row["season"])
+        except (TypeError, ValueError) as exc:
+            raise RuntimeError("positional timing has a non-integer season") from exc
+        key = (season, franchise)
+        if (not franchise or franchise != row["franchise"] or
+                str(season) != row["season"] or key in seen):
+            raise RuntimeError(
+                "positional timing has a noncanonical or duplicate "
+                "season/franchise row")
+        if row["source"] != "out/picks.csv" or row["confidence"] != "verified":
+            raise RuntimeError(
+                "positional timing lost its verified out/picks.csv provenance")
+        seen.add(key)
+        all_seasons.add(season)
+        seasons[franchise].add(season)
+        if row["is_champion"] not in ("0", "1"):
+            raise RuntimeError("positional timing has invalid champion status")
+        for pos in ("qb", "rb", "wr", "te", "k", "def"):
+            value = row.get(f"first_{pos}")
+            if value in (None, ""):
+                continue
+            try:
+                observed = float(value)
+            except (TypeError, ValueError) as exc:
+                raise RuntimeError(
+                    f"positional timing has a non-numeric first_{pos}") from exc
+            if not math.isfinite(observed) or not observed.is_integer() or observed < 1:
+                raise RuntimeError(
+                    f"positional timing first_{pos} is not a positive round")
+            if pos in ("qb", "rb", "wr", "te"):
+                grouped[franchise][pos].append(observed)
+    out = {}
+    for franchise in set(grouped) | set(seasons):
+        out[franchise] = {
+            "seasons": len(seasons[franchise]),
+            "positions": {
+                pos: ({"median_round": statistics.median(values),
+                       "min_round": min(values),
+                       "max_round": max(values),
+                       "n": len(values)} if values else None)
+                for pos in ("qb", "rb", "wr", "te")
+                for values in [grouped[franchise][pos]]
+            },
+        }
+    provenance = {
+        "path": path,
+        "source_content_sha256": hashlib.sha256(raw).hexdigest(),
+        "schema": list(POSITIONAL_TIMING_COLUMNS),
+        "key": ["season", "franchise"],
+        "rows": len(rows),
+        "franchises": len(seasons),
+        "seasons": len(all_seasons),
+        "season_min": min(all_seasons),
+        "season_max": max(all_seasons),
+        "duplicate_keys": 0,
+        "source": "out/picks.csv",
+        "confidence": "verified",
+    }
+    return (out, provenance) if with_provenance else out
+
+
+def derive_overlay_pick_basis(draft, reported_order=None):
     """Provenance for conviction-overlay pick windows from one draft payload."""
+    if reported_order is not None:
+        return reconcile_owner_slot(
+            draft, reported_order, ANTHONY_USER_ID, ANTHONY_ROSTER_ID,
+            TEAMS)
     resolved = resolve_owner_slot(
         draft, ANTHONY_USER_ID, ANTHONY_ROSTER_ID, TEAMS)
     if resolved["drawn"] and resolved["slot"] is None:
-        raise RuntimeError(
-            "draft order is drawn but Anthony's slot is not resolvable")
+        raise DraftOrderResolutionError(
+            resolved["source"],
+            "draft order is drawn but Anthony's slot is not resolvable: "
+            f"{resolved['source']}")
     return {
         "status": "drawn" if resolved["drawn"] else "undrawn",
         "slot": resolved["slot"], "source": resolved["source"],
@@ -223,11 +325,82 @@ def derive_overlay_pick_basis(draft):
     }
 
 
+def reconcile_draft_start(draft, reported_order):
+    """Return the verified epoch, rejecting present malformed/live conflicts."""
+    verified = reported_order["draft_start"]["epoch_ms"]
+    live = (draft if isinstance(draft, dict) else {}).get("start_time")
+    if live is None:
+        return verified
+    if type(live) is not int or live <= 0:
+        raise RuntimeError("Sleeper draft start is present but malformed")
+    if live != verified:
+        raise RuntimeError(
+            "Sleeper draft start disagrees with the committed verified "
+            f"snapshot: {live} vs {verified}")
+    return live
+
+
+def reported_slot_context(reported_order, rosters, first_position_history):
+    """Partial display map for the externally drawn manager order.
+
+    This deliberately is not a Sleeper roster-id permutation. Slots 3 and 7
+    have unresolved 2026 identities and remain unresolved; known franchises
+    contribute description-only history and never enter survival arithmetic.
+    """
+    by_franchise = {r["franchise"]: r for r in rosters}
+    owner_rosters = [r for r in rosters
+                     if str(r.get("owner_id")) == ANTHONY_USER_ID]
+    if len(owner_rosters) != 1:
+        raise RuntimeError(
+            "live rosters do not identify Anthony's user exactly once")
+    owner_franchise = owner_rosters[0]["franchise"]
+    slots, lookup = [], {}
+    for raw in reported_order["slots"]:
+        row = dict(raw)
+        franchise = row.get("history_franchise")
+        historical = by_franchise.get(franchise) if franchise else None
+        if franchise and historical is None:
+            raise RuntimeError(
+                f"reported slot {row['slot']} history franchise is unmapped: "
+                f"{franchise}")
+        if franchise and franchise not in first_position_history:
+            raise RuntimeError(
+                f"reported slot {row['slot']} lacks raw positional history: "
+                f"{franchise}")
+        if (row["history_status"] == "owner" and
+                (historical is None or
+                 historical.get("roster_id") != ANTHONY_ROSTER_ID or
+                 franchise != owner_franchise)):
+            raise RuntimeError(
+                "reported owner history does not map to Anthony's user and "
+                f"stable roster id {ANTHONY_ROSTER_ID}")
+        row["history_available"] = historical is not None
+        slots.append(row)
+        lookup[row["slot"]] = {
+            "handle": row["reported_label"],
+            "reported_label": row["reported_label"],
+            "franchise": franchise,
+            "history_franchise": franchise,
+            "history_status": row["history_status"],
+            "thin": bool(historical and historical["thin"]),
+            "prior": historical["prior"] if historical else None,
+        }
+    return slots, lookup
+
+
 def load_opponents():
-    priors = {r["franchise"]: r
-              for r in csv.DictReader(open("out/opponent_priors.csv"))}
+    prior_rows = list(csv.DictReader(open("out/opponent_priors.csv")))
+    identity_rows = list(csv.DictReader(open("out/identity_map.csv")))
+    for rows, key, label in (
+            (prior_rows, "franchise", "opponent prior franchise"),
+            (identity_rows, "sleeper_display_name", "Sleeper display name"),
+            (identity_rows, "archive_member_name", "archive franchise")):
+        values = [r.get(key, "").strip() for r in rows]
+        if any(not value for value in values) or len(set(values)) != len(values):
+            raise RuntimeError(f"duplicate or blank {label} in identity inputs")
+    priors = {r["franchise"]: r for r in prior_rows}
     handle_to_fr = {r["sleeper_display_name"]: r["archive_member_name"]
-                    for r in csv.DictReader(open("out/identity_map.csv"))}
+                    for r in identity_rows}
     return priors, handle_to_fr
 
 
@@ -248,6 +421,7 @@ def live_rosters(priors, handle_to_fr):
         fr = handle_to_fr.get(handle)
         row = priors.get(fr) if fr else None
         out.append({"roster_id": r["roster_id"], "handle": handle,
+                    "owner_id": r.get("owner_id"),
                     "team_name": team,
                     "franchise": fr or "(unmapped)",
                     "prior": row,
@@ -298,26 +472,25 @@ def gap_seats(rosters, slot_map, pick, nxt, pos, tend):
         seat = slot_map.get(slot)
         if not seat:
             continue
-        t = tend.get((seat["franchise"], band_of(rnd), pos))
-        out.append({"pick": overall, "slot": slot, "handle": seat["handle"],
-                    "franchise": seat["franchise"],
+        franchise = seat.get("history_franchise", seat.get("franchise"))
+        t = (tend.get((franchise, band_of(rnd), pos))
+             if franchise else None)
+        out.append({"pick": overall, "slot": slot,
+                    "handle": seat.get("handle"),
+                    "label": seat.get("reported_label", seat.get("handle")),
+                    "franchise": franchise,
+                    "history_status": seat.get("history_status", "known"),
                     "lift": round(t["lift"], 2) if t else None,
+                    "n": int(t["n"]) if t else None,
                     "thin": bool(t and t["thin"])})
     lifts = [s["lift"] for s in out if s["lift"] is not None]
     return out, (round(sum(lifts) / len(lifts), 3) if lifts else None)
 
 
-def urgency_list(rosters, pos, rnd):
-    key = f"first_{pos.lower()}_shrunk"
-    out = []
-    for r in rosters:
-        if not r["prior"]:
-            continue
-        prior_rnd = float(r["prior"][key])
-        if prior_rnd <= rnd + 0.5:
-            out.append({"franchise": r["franchise"], "round": prior_rnd,
-                        "n_eff": float(r["prior"][f"first_{pos.lower()}_neff"])})
-    return sorted(out, key=lambda t: t["round"])
+def tier_survivors_at_next(tier, pick, nxt):
+    """Count median-or-better tier survivors at the owner's actual next pick."""
+    return sum(1 for player in tier
+               if cond_survival(player["adp"], nxt, pick) >= 0.5)
 
 
 def pick_history():
@@ -339,7 +512,8 @@ def pick_history():
 
 def pos_base_rates():
     """League position share per round band, from the 2,339 archive picks.
-    The simulator's sampling base - lifts multiply these, display/sim only."""
+    The simulator's sampling base. Manager lifts remain display only after
+    their probability fold failed out of sample (p=0.9932)."""
     from collections import Counter
     bands = {"rd1-3": (1, 3), "rd4-6": (4, 6), "rd7-10": (7, 10), "rd11-14": (11, 14)}
     agg = {b: Counter() for b in bands}
@@ -370,8 +544,12 @@ def build_model():
     priors, handle_to_fr = load_opponents()
     rosters = live_rosters(priors, handle_to_fr)
     tend = load_tendency()
-    # 2026 order is not drawn yet, so seat N is roster N until Sleeper says otherwise.
-    slot_map = {r["roster_id"]: r for r in rosters}
+    first_position_history, first_position_provenance = \
+        load_first_position_history(with_provenance=True)
+    reported_order = load_reported_order(
+        REPORTED_ORDER_PATH, DRAFT, ANTHONY_USER_ID, TEAMS, ROUNDS)
+    reported_slots, slot_map = reported_slot_context(
+        reported_order, rosters, first_position_history)
     tiers = {p: db.tiers(by_pos[p]) for p in SKILL}
     tier_no = {}
     for p in SKILL:
@@ -393,11 +571,11 @@ def build_model():
         consumed = set()
         proj_roster = []
         for rnd, pick in enumerate(picks, 1):
-            nxt = picks[rnd] if rnd < ROUNDS else pick + 2 * TEAMS
             if rnd >= ROUNDS - 1:
                 rounds.append({"round": rnd, "pick": pick,
                                "kdef": True, "primary": None})
                 continue
+            nxt = picks[rnd]
             avail = [(r, survival(r["adp"], pick)) for p in SKILL
                      for r in by_pos[p] if r["adp"] < 900
                      and r["name"] not in consumed]
@@ -439,13 +617,13 @@ def build_model():
                        else "TAKE NOW")
             tier_of = next((t for t in tiers[prim["pos"]]
                             if any(x["name"] == prim["name"] for x in t)), [])
-            cliff = sum(1 for x in tier_of
-                        if cond_survival(x["adp"], pick + 2 * TEAMS, pick) >= 0.5)
+            # The snake gap is seat-specific. ``pick + 2*teams`` is only the
+            # same seat two rounds later; at slot 4 it turns a 4->21 question
+            # into 4->28 and can invent a cliff in the seven-pick difference.
+            cliff = tier_survivors_at_next(tier_of, pick, nxt)
             coin = [r["name"] for r, s in others[:3]
                     if r["pos"] == prim["pos"]
                     and prim["vor"] - r["vor"] <= COMPARABLE_VOR]
-            urgent = (urgency_list(rosters, prim["pos"], rnd)
-                      if prim["pos"] in ("QB", "TE") else [])
             seats, gap_lift = gap_seats(rosters, slot_map, pick, nxt,
                                         prim["pos"], tend)
             rounds.append({
@@ -461,7 +639,10 @@ def build_model():
                 "wait_or_reach": {"verdict": verdict, "comparable": comp},
                 "tier_cliff": cliff == 0 and bool(tier_of),
                 "coin_flips": coin[:2],
-                "urgent": urgent[:3],
+                # Tendency prediction was rejected out of sample (p=0.9932).
+                # Raw, n-labelled history stays in gap_seats and the order
+                # table, but it creates no thresholded urgency trigger.
+                "urgent": [],
                 "gap_seats": seats,
                 "gap_lift": gap_lift,
             })
@@ -485,18 +666,33 @@ def build_model():
     except Exception as exc:  # preserve all hypotheses, but never hide the outage
         print(f"WARNING: draft-order endpoint unavailable: {exc}",
               file=sys.stderr)
-        overlay_pick_basis = {
-            "status": "unavailable", "slot": None,
-            "source": "draft_endpoint_unavailable", "coverage": "all_slots",
-        }
+        overlay_pick_basis = reported_order_basis(
+            reported_order, "unavailable",
+            sleeper_source="draft_endpoint_unavailable")
     else:
-        overlay_pick_basis = derive_overlay_pick_basis(draft)
+        reconcile_draft_start(draft, reported_order)
+        overlay_pick_basis = derive_overlay_pick_basis(draft, reported_order)
+
+    draft_order_context = {
+        "status": "externally_drawn",
+        "primary_slot": reported_order["owner"]["slot"],
+        "primary_picks": reported_order["owner"]["picks"],
+        "source": reported_order["source"],
+        "sleeper_confirmation": overlay_pick_basis["official_check"],
+        "coverage": "all_slots",
+        "slots": reported_slots,
+        "description_only": ("manager history never enters survival, VOR, "
+                             "or a verdict; slots 3 and 7 remain unresolved"),
+        "manager_history_provenance": first_position_provenance,
+    }
 
     return {
         "generated": datetime.date.today().isoformat(),
         "league": {"id": LEAGUE, "draft_id": DRAFT, "name": lg["name"],
                    "teams": TEAMS, "rounds": ROUNDS,
                    "draft_date": "2026-09-08",
+                   "draft_start_time": reported_order["draft_start"]["epoch_ms"],
+                   "draft_start_source": reported_order["draft_start"],
                    "anthony_user_id": ANTHONY_USER_ID,
                    "anthony_roster_id": ANTHONY_ROSTER_ID,
                    "scoring": "full PPR, 6-pt pass TD",
@@ -509,6 +705,7 @@ def build_model():
         "flex_allocation": lg.get("flex_alloc", {}),
         "flex_source": lg.get("flex_source", ""),
         "overlay_pick_basis": overlay_pick_basis,
+        "draft_order_context": draft_order_context,
         "adp_sd_curve": [[round(a, 2), round(s, 4)] for a, s in ADP_SD_CURVE],
         "survival_calibration": SURVIVAL_CALIBRATION,
         "survival_calibration_enabled": SURVIVAL_CALIBRATION_ENABLED,
@@ -542,6 +739,8 @@ def build_model():
                      # never set one. `franchise` stays the history join key.
                      "team_name": r["team_name"],
                      "franchise": r["franchise"], "thin": r["thin"],
+                     "history_first": first_position_history.get(
+                         r["franchise"]),
                      "first_qb": (float(r["prior"]["first_qb_shrunk"])
                                   if r["prior"] else None),
                      "first_te": (float(r["prior"]["first_te_shrunk"])
@@ -670,29 +869,60 @@ def render_markdown(m):
     say(f"Engine content SHA-256: `{m['content_sha256']}`.")
     say("")
     say("Survival = P(available), normal pick-error model, sd fitted per ADP "
-        "band to 2,039 of this league's own picks. Opponent urgency from "
-        "Phase 3H priors (recency-weighted, shrunk; thin eras labelled). "
+        "band to 2,039 of this league's own picks. Live-seat dossiers use "
+        "recency-weighted, current-era shrunk history with n_eff; the order "
+        "table separately reports raw full-franchise medians and n. Both are "
+        "description only: "
+        "the tendency probability fold was rejected (p=0.9932), so history "
+        "creates no urgency trigger. "
         "No champion mimicry - every call is VOR and tier math. Where two "
         "candidates sit in one tier the card says COIN FLIP: the projection "
         "feed has no variance measure, so break ties toward ceiling yourself.")
     say("")
-    say("## The table, as mapped today")
+    order_ctx = m.get("draft_order_context") or {}
+    primary_slot = order_ctx.get("primary_slot")
+    if primary_slot is not None:
+        say(f"**Primary planning seat: slot {primary_slot}** - externally "
+            f"reported draw, Sleeper confirmation "
+            f"{order_ctx.get('sleeper_confirmation')}. The other "
+            f"{m['league']['teams'] - 1} slot calculations remain below as "
+            "references; manager history is description only and never "
+            "enters a probability or verdict.")
+        say("")
+    say("## Historical first-position timing, as mapped today")
     say("")
-    say("| Roster | Handle | Franchise era | 1st QB prior | 1st TE prior | n_eff |")
-    say("|---|---|---|---|---|---|")
-    for r in m["rosters"]:
-        if r["first_qb"] is not None:
-            say(f"| {r['roster_id']} | {r['handle']} | {r['franchise']} | "
-                f"{r['first_qb']:g} | {r['first_te']:g} | "
-                f"{r['n_eff']:g}{' (thin)' if r['thin'] else ''} |")
+    say("Description only; raw median round with n observed seasons. The "
+        "tendency backtest remains null (p=0.9932), so none of this enters "
+        "survival or a verdict.")
+    say("")
+    say("| Slot | Drawn seat | History franchise | Seasons | 1st RB | 1st WR | 1st QB | 1st TE |")
+    say("|---|---|---|---|---|---|---|---|")
+    by_franchise = {r["franchise"]: r for r in m["rosters"]}
+    for seat in order_ctx.get("slots", []):
+        r = by_franchise.get(seat.get("history_franchise"))
+        history = r.get("history_first") if r else None
+        if history:
+            cells = []
+            for pos in ("rb", "wr", "qb", "te"):
+                observed = history["positions"].get(pos)
+                cells.append((f"{observed['median_round']:g} "
+                              f"(range {observed['min_round']:g}-"
+                              f"{observed['max_round']:g}; n {observed['n']})")
+                             if observed else "-")
+            say(f"| {seat['slot']} | {seat['reported_label']} | "
+                f"{r['franchise']} | {history['seasons']} | " +
+                " | ".join(cells) + " |")
         else:
-            say(f"| {r['roster_id']} | {r['handle']} | (unmapped - league prior) "
-                f"| - | - | - |")
+            say(f"| {seat['slot']} | {seat['reported_label']} | "
+                "history unresolved | - | - | - | - | - |")
     say("")
-    for slot in range(1, TEAMS + 1):
+    slot_order = ([primary_slot] if primary_slot is not None else []) + [
+        slot for slot in range(1, TEAMS + 1) if slot != primary_slot]
+    for slot in slot_order:
         rounds = m["slots"].get(slot) or m["slots"][str(slot)]
         first8 = ", ".join(str(r["pick"]) for r in rounds[:8])
-        say(f"## Slot {slot} - picks {first8} ...")
+        primary_mark = " - PRIMARY" if slot == primary_slot else " - reference"
+        say(f"## Slot {slot}{primary_mark} - picks {first8} ...")
         say("")
         say("| Rd | Pick | Primary (VOR, P surv) | Fallback | Deviation trigger |")
         say("|---|---|---|---|---|")
@@ -738,16 +968,20 @@ def render_markdown(m):
             "tie-break toward bulls.")
         basis = m.get("overlay_pick_basis") or {}
         selected_slot = basis.get("slot")
-        if basis.get("status") == "unavailable":
-            say("Draft-order endpoint was unavailable at build time; no seat "
-                "is assumed. Survival windows for all twelve slots are retained "
-                "in the JSON artifact.")
+        if basis.get("official_check") == "unavailable":
+            say(f"Draft-order endpoint was unavailable at build time; the "
+                f"externally reported owner slot {selected_slot} remains the "
+                "planning basis, with confirmation visibly unavailable. "
+                "Survival windows for all twelve slots are retained in the "
+                "JSON artifact.")
         elif selected_slot is None:
             say("Draft order is not resolved; no seat is assumed. Survival "
                 "windows for all twelve slots are retained in the JSON artifact.")
         else:
             say(f"Draft-order source: {basis.get('source')}; owner slot "
-                f"{selected_slot}. All twelve slot windows remain in the JSON.")
+                f"{selected_slot}; Sleeper check "
+                f"{basis.get('official_check', 'not recorded')}. All twelve "
+                "slot windows remain in the JSON.")
         say("")
         survival_head = (f"Survival to picks (slot {selected_slot})"
                          if selected_slot is not None
@@ -816,8 +1050,9 @@ def main():
 
     if a.slot:
         start = md.index(f"## Slot {a.slot} ")
-        end = md.index("## Slot", start + 1) if a.slot < TEAMS else md.index("---", start)
-        print(md[:md.index("## Slot 1 ")] + md[start:end])
+        next_heading = md.find("## Slot", start + 1)
+        end = next_heading if next_heading >= 0 else md.index("---", start)
+        print(md[:md.index("## Slot")] + md[start:end])
     print(f"wrote {MD_PATH} ({len(md.splitlines())} lines)")
     print(f"wrote {JSON_PATH} ({os.path.getsize(JSON_PATH)//1024} KB)")
     print(f"draft room app {'updated in place' if injected else 'not present'}")

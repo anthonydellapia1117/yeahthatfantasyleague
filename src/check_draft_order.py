@@ -5,13 +5,14 @@ Mirrors the draft room's own detection semantics (out/draft_room.html
 realSlotMap/detectSeat): slot_to_roster_id returns the identity map
 {1:1,...,12:12} before the draw and a real permutation after; a genuine
 draw landing on identity is 1 in 12!, so identity is treated as "not
-drawn yet". draft_order (keyed by user id) is the primary signal when
-present; slot_to_roster_id is the fallback via Anthony's stable
-roster_id 7.
+drawn yet". ``draft_order`` and a non-identity ``slot_to_roster_id`` are
+independent official evidence; either complete field can resolve Anthony and
+both must agree when present.
 
 Prints exactly one status line for the alert Routine to act on:
-  DRAFT ORDER UNDRAWN (status <status>)
-  DRAFT ORDER DRAWN - Anthony has slot <N>
+  DRAFT ORDER EXTERNAL - Anthony has slot <N>; Sleeper confirmation pending
+  DRAFT ORDER DRAWN - Anthony has slot <N> (matches external report)
+  DRAFT ORDER CONFLICT - external slot <N>, Sleeper slot <M>
   DRAFT ORDER DRAWN - Anthony's slot not resolvable (see payload)
 
 The unresolved drawn state exits nonzero after printing its payload. It is an
@@ -38,9 +39,26 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from preflight_draft import check as preflight_check
-from draft_order import resolve_owner_slot
+from draft_order import (DraftOrderResolutionError, load_reported_order,
+                         reconcile_owner_slot)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def format_reconcile_error(exc):
+    """Stable alert text for every fail-closed reconciliation state."""
+    if isinstance(exc, DraftOrderResolutionError):
+        if exc.source in ("official_sources_conflict",
+                          "external_report_conflict"):
+            return "DRAFT ORDER CONFLICT -" + str(exc).split(":", 1)[1]
+        return ("DRAFT ORDER DRAWN - Anthony's slot not resolvable: "
+                f"{exc.source} (see payload)")
+    message = str(exc)
+    if message.startswith("draft-order conflict:"):
+        return "DRAFT ORDER CONFLICT -" + message.split(":", 1)[1]
+    if "order is drawn" in message and "not resolvable" in message:
+        return "DRAFT ORDER DRAWN - Anthony's slot not resolvable (see payload)"
+    return "DRAFT ORDER ERROR - " + message
 
 
 def main():
@@ -51,29 +69,35 @@ def main():
 
     eng = json.load(open(os.path.join(ROOT, "out", "engine_2026.json")))
     lg = eng["league"]
+    report = load_reported_order(
+        os.path.join(ROOT, "data", "draft_order_2026.json"),
+        lg["draft_id"], lg["anthony_user_id"], lg["teams"], lg["rounds"])
     url = f"https://api.sleeper.app/v1/draft/{lg['draft_id']}"
     with urllib.request.urlopen(url, timeout=30) as r:
         draft = json.load(r)
 
-    resolved = resolve_owner_slot(
-        draft, lg["anthony_user_id"], lg["anthony_roster_id"], lg["teams"])
+    try:
+        basis = reconcile_owner_slot(
+            draft, report, lg["anthony_user_id"],
+            lg["anthony_roster_id"], lg["teams"])
+    except RuntimeError as exc:
+        print(format_reconcile_error(exc))
+        # Preserve malformed falsey values verbatim. Rewriting []/""/0/false
+        # as {} would make a correct fail-closed result look inexplicable.
+        print(json.dumps({"draft_order": draft.get("draft_order"),
+                          "slot_to_roster_id":
+                              draft.get("slot_to_roster_id")}))
+        sys.exit(1)
 
-    if not resolved["drawn"]:
-        print(f"DRAFT ORDER UNDRAWN (status {draft.get('status')})")
+    slot = basis["slot"]
+    if basis["official_check"] == "pending":
+        print(f"DRAFT ORDER EXTERNAL - Anthony has slot {slot}; Sleeper "
+              f"confirmation pending (status {draft.get('status')})")
         if not pre_ok:
             sys.exit(1)
         return
-
-    slot = resolved["slot"]
-    if slot is not None:
-        print(f"DRAFT ORDER DRAWN - Anthony has slot {slot}")
-    else:
-        print("DRAFT ORDER DRAWN - Anthony's slot not resolvable "
-              "(see payload)")
-        print(json.dumps({"draft_order": draft.get("draft_order") or {},
-                          "slot_to_roster_id":
-                              draft.get("slot_to_roster_id") or {}}))
-        sys.exit(1)
+    print(f"DRAFT ORDER DRAWN - Anthony has slot {slot} "
+          "(matches external report)")
     if not pre_ok:
         sys.exit(1)
 

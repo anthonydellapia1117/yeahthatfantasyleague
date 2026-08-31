@@ -9,6 +9,15 @@
    "line": 214,
    "section": "Regression",
    "resolution": "live source wins; guide value logged only"
+  },
+  {
+   "player": "Kaleb Johnson",
+   "field": "team",
+   "guide_value": "PIT",
+   "live_value": "GB",
+   "line": 1142,
+   "section": "Sleepers",
+   "resolution": "live source wins; guide value logged only"
   }
  ]
 }

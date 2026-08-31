@@ -96,15 +96,25 @@ Fix it before you ship the feature.
 ## 2. WHAT THIS IS
 
 A single-owner, single-league fantasy football draft assistant for a 12-team,
-14-round, full-PPR, **6-point passing TD** Sleeper league, drafting **2026-09-08**.
-Owner and only user: Anthony DellaPia (Sleeper user `345197760305307648`, roster
-7, franchise "Antdell & Ernie", league `1389378429505241088`, draft
+14-round, full-PPR, **6-point passing TD** Sleeper league, drafting
+**2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. Owner and only user:
+Anthony DellaPia (Sleeper user `345197760305307648`, stable roster id 7,
+externally drawn draft slot 4 pending Sleeper confirmation, franchise
+"Antdell & Ernie", league `1389378429505241088`, draft
 `1389378429505241089`).
 
 It is a static site - HTML with embedded JSON payloads, deployed to GitHub Pages,
 no server, no database, no build step. Python scripts compute artifacts into
 `out/`; the pages read them. **The live site IS the build**: every ship ends with
 a byte-comparison of the deployed files against the repo.
+
+**Projection boundary:** the core board is not prior-year production relabelled
+for 2026. It scores Sleeper's 2026 raw-stat projection feed under the league's
+exact rules, then derives replacement and VOR. The ceiling, availability,
+archetype, usage, and opportunity layers are auxiliary evidence built mostly from
+2025 production (availability also uses 2024) mapped to 2026 rosters. Keep those
+claims separate: backward-looking limitations in the auxiliary layer do not
+describe the core projection source.
 
 Seven surfaces, all in `out/`: `home.html` (hub), `big_board.html`,
 `players.html`, `teams.html`, `draft_room.html` (the draft-night surface),
@@ -276,7 +286,7 @@ new evidence wastes a cycle.
 
 | Rejected | Why, with the number |
 |---|---|
-| **Opponent tendencies inside the probability model** | Real and persistent, but folding them into the arithmetic was rejected. The backtest that settled it: p=0.99 - no predictive gain. They ship as display only, and the guard enforcing that is the most important test in `test_survival.py`. |
+| **Opponent tendencies inside the probability model** | Real and persistent, but folding them into the arithmetic was rejected. The backtest that settled it: p=0.9932 - no predictive gain. They ship as description only with n, and the guard enforcing that is the most important test in `test_survival.py`. Slots 3 and 7 remain null while their history identities are unresolved. |
 | **Power-law sd curve** | Adopted, then LOST ITS OWN BACKTEST. Leave-one-season-out over 2,039 picks: it did not beat the step function it replaced (10 of 13 seasons to the step, two-sided p=0.092 - a wash). Its capped tail misfits the real decline past ADP 115. |
 | **Step-function sd (4-band)** | The original. Adjacent-ADP survival differed **8,284x** at pick 48. Cliff drove verdicts at exactly the boundaries where wait-or-reach flips. |
 | **INTERP sd - ADOPTED, do not replace casually** | 12-bin piecewise linear. Beats the step 12 of 13 seasons, two-sided p=0.0034 - the only significant comparison in the backtest. A calibration benchmark guard now blocks any sd change that predicts worse out of sample. |
@@ -285,7 +295,7 @@ new evidence wastes a cycle.
 | **Calling the BULLISH-vs-ADP result NULL** | It is INCONCLUSIVE. In the current RB/WR scope, +10.4pp with a 95% CI of [-7.3, +28.2], p=0.261, permits harm and useful lift alike. |
 | **Quoting the pooled BULLISH tagged-vs-untagged rate** | It measures ADP: 92.1% of RB/WR tags land in the pos1-12 band. |
 | **Shipping the former TE 2-of-2 gate** | Its market-share input was 0.9 for all 19 eligible veterans, while the other input counted pass-block-inclusive on-field dropbacks. Isaiah Likely's BAL-2025 share was also ranked in his NYG-2026 group. TE rows are suspended and omitted until two genuine, season-consistent criteria exist and N.1 is rerun. |
-| **Durability fade as a draft signal** | Dropped under a pre-registered rule after investigation. |
+| **Durability fade as a draft signal** | Dropped under a pre-registered rule after investigation. This does not prohibit an owner from using durability outside the model after the model itself declares two complete-roster paths equivalent. Anthony's Puka-over-CMC pick-4 choice is recorded as exactly that external tie-break, not as a new engine signal. |
 | **Recency-bias coefficient** | No effect found, therefore not used. |
 | **Injury-market inefficiency** | None established; one candidate flagged, nothing shipped. |
 | **Optimizing for drafted-share of starter points** | Champions draw 71.0% from drafted players, the field 68.7%: +2.3pp, CI [-5.2, +9.7], overlapping zero in both eras. What separates champions is total production (+203.3, CI [163.4, 243.0]). Targeting drafted share targets the one quantity that does not distinguish winners. |
@@ -389,9 +399,10 @@ new evidence wastes a cycle.
   containing the word "FAILURES" produced a false positive.
 - **Sleeper's `slot_to_roster_id` returns the identity map before the draw.** A
   genuine draw landing on identity is 1 in 12!, so identity means "not drawn".
-- **`roster_id == 7` and Anthony's expected `slot == 7` are the same integer by
-  coincidence.** They are different things. `draft_room.html:461` maps them
-  correctly; do not let an edit conflate them.
+- **Anthony's stable `roster_id == 7`; his externally drawn `slot == 4`.** They are
+  different identities, and the draw now makes that distinction observable rather
+  than theoretical. Never use roster id as a draft slot. Slots 3 and 7 have
+  unresolved history labels; leave their tendency descriptions null.
 - **`out/data/heartbeat.txt`** exists to guarantee a diff so the daily cron commit
   keeps the scheduled workflow alive past GitHub's 60-day inactivity disable.
 - **Three artifacts differ by 0.01 across Python builds** (`points_left_per_week`),
@@ -446,6 +457,12 @@ still operationally important.
    explicit. The RB denominator is repaired with an untrimmed player-team ledger
    and same-build attribution. Its inverse gap is still open: the matrix measures
    the existing all-week 2025 command basis but not 2026 carries vacated.
+8. **Surface absence as finding (1).** PATHS rendered zero forks at the actual
+   slot-4 decision and labelled the root "not a decision," but its action space
+   was one unconditional representative per position. It had never asked whether
+   McCaffrey, Puka, and Taylor were separable after Gibbs/Bijan/Chase left the
+   board. A successful empty result must state what universe was queried; absence
+   is not evidence that no decision exists.
 
 ---
 
@@ -456,8 +473,8 @@ still operationally important.
 | **Archive PII in git HISTORY** | Removed from HEAD by the 2026-08-26 prune; still reachable in history at/before `bd8aff7`. Repo is public. | **Anthony's call, deferred to after the draft.** (a) accept, (b) `git filter-repo` + force-push (invalidates clones), (c) private repo - rejected for now, Pages would go dark. |
 | **Live browser-to-Sleeper path** | **VERIFIED 2026-08-26** by Anthony against a real live draft - see §11. Automated browser smoke remains hermetic and stubs the Sleeper API, so this is a human-verified path, not a regression-protected one. | Optional: a Playwright run against a live public mock would make the verification repeatable. Not required - the path is known good. |
 | **Keeper status** | `use_keepers` is on for 2025-2026 but the 2025 draft had zero keeper picks and `keeper_results.csv` is 2 bytes. | OPEN QUESTION for the commissioner. **Do not resolve by inference.** |
-| **Draft order** | UNDRAWN as of 2026-08-28 04:06Z: `draft_order` is null and `slot_to_roster_id` is the identity placeholder. Sleeper now supplies `start_time=1788912025000` (2026-09-08 15:20 UTC / 11:20 AM ET). | A Routine runs `src/check_draft_order.py` every 2h and self-retires on the draw. The room collapses to the real seat automatically. The engine overlay now uses the same canonical resolver and preserves all twelve pick windows until a real seat exists. |
-| **Conviction-overlay seat provenance** | **RESOLVED in the post-#60 engine PR.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. A pre-fix audit classified all 63 textual bare-`7` matches under `src/`: 2 roster-id references, 5 draft-slot references (including the defective lookup and heading), and 56 unrelated round bounds, pick anchors, thresholds, dates, claims, or formatting values. | `src/draft_order.py` makes `draft_order[user_id]` primary and accepts the `slot_to_roster_id` fallback only as a complete permutation; the complete identity map is explicitly undrawn only while status is `pre_draft`. Started/malformed/drawn-but-unresolvable payloads fail loud. Undrawn or visibly unavailable builds assume no seat and retain all twelve survival windows. Keep the synthetic non-7, resolver-precedence, partial-map, and duplicate-map guards. |
+| **Draft order** | **EXTERNALLY DRAWN 2026-08-31: Anthony is slot 4**, picks 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. Sleeper still has `draft_order: null` and the identity `slot_to_roster_id` placeholder, so official confirmation is pending. `start_time=1788912025000` is **2026-09-09 00:00:25 UTC / 2026-09-08 20:00:25 ET**. Slots 3 (merged managers) and 7 (new manager) have unresolved history. | Slot 4 is primary on every slot-conditional surface; the other eleven remain reference views. The watch now waits for Sleeper publication and requires exact agreement. A conflicting, partial, or malformed official order fails loud. Historical tendencies remain description-only (backtest p=0.9932) and slots 3/7 remain honest nulls. |
+| **Conviction-overlay seat provenance** | **RESOLVED and now exercised against a non-7 draw.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. The external slot-4 draw supplies the primary basis while Sleeper remains unpublished. | `src/draft_order.py` requires complete official permutations, reconciles them with the external draw, and fails loud on conflict. Pending/unavailable official data uses externally reported slot 4 visibly and retains all twelve survival windows. Keep the synthetic non-7, resolver-precedence, partial-map, duplicate-map, and source-conflict guards. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
 | **RB vacated-carries signal** | **ASSESSMENT ONLY.** The repaired `backfield_command` applies the existing all-week 2025 carry-share basis consistently to historical teams; it does not measure 2026 carries opened by departures. `teams.html` displays thresholded raw departure/arrival rows from the trimmed season shard, not a complete net transition signal from the new ledger. The analogous WR `adj_vac` is confirmed rookie-blind because an incoming player with no 2025 NFL row subtracts zero. | Compute vacated carries from the same player-team source, quantify every 2026 backfield, test correlation and incremental value against ADP, and explicitly model rookies. If strongly ADP-redundant, drop it. A same-method carry signal would inherit `adj_vac`'s rookie gap, so fix `adj_vac` and any carry implementation under one rookie policy or do not wire carries. |
@@ -469,6 +486,7 @@ still operationally important.
 | **Leon Johnson crosswalk maps to the wrong era** | **OPEN LIVE DEFECT, logged 2026-08-27; deliberately not fixed in #58 or the draft-room PR because crosswalk fallback policy is separate scope.** Sleeper `11863` is a WR entering in 2024, but `crosswalk.prospect["11863"]` resolves to nflverse `00-0008568`, an RB drafted in 1997 (round 4, pick 104). This is the same defect shape as the Marvin Harrison collision: a normalized name attaches a current player to a different-era identity. Harrison is protected because same-position father/son candidates carry complete, distinct draft years, so the resolver can choose the unique newest year. Leon has only one normalized-name candidate and its position disagrees; `allow_unique_position_mismatch=True` bypasses the collision/draft-year path and accepts that sole wrong candidate. | Replace the permissive unique-name position-mismatch fallback with an explicit audited cross-provider position-compatibility rule; otherwise fail closed and leave the prospect unmapped. Pin Leon as a resolver contract case. |
 | **DEF touchdown projection aliases** | **KNOWN 3B FLOOR, quantified 2026-08-28; no engine change.** The feed uses `def_fum_td`, `def_kr_td`, `pass_int_td`, and `pr_td`; league scoring pays aggregate `def_td`, `def_st_td`, and `st_td`. No alias layer exists. The current feed leaves 96 of 3,115 mapped-known points unscored (3.08% overall); 11/32 defenses are affected, with 5.00%-13.43% of their mapped-known totals omitted. | Keep K/DEF labelled as floors and off CVS. If addressed after the draft, define and fixture a feed-to-league alias contract that refuses to double-count aggregate and component TD keys. Do not add an undocumented last-minute mapping for a last-two-round position. |
 | **Dormant FLEX-fallback divergence** | **LATENT RISK, not a current artifact defect.** The committed engine reads `flex_usage_2025.json` and uses observed RB4/WR8/TE0, so `greedy_flex_alloc()` is not executed. Fallback activates only if that file is absent or its `allocation` is missing, null, or otherwise falsy; malformed JSON aborts loudly. On the same projection pool the fallback chooses RB0/WR12/TE0, moving replacement from RB28/169.0 and WR32/186.2 to RB24/174.8 and WR36/177.3. That subtracts 5.8 VOR from every RB and adds 8.9 to every WR, a 14.7-point cross-position swing; 103 of 110 players inside the 168-pick window change ordinal rank. A raw engine run would label the payload `flex_source: projection_greedy`, but no user-facing page shows that field, so the repricing itself would be silent. | The scheduled 06:00 rebuild checks out the committed observed artifact and does not regenerate or delete it. Its mandatory `test_vor.py` gate opens the file unconditionally and asserts both `flex_source: observed_2025` and exact allocation equality, so missing/falsy data cannot publish through the draft-morning path; this existing guard is sufficient for fallback activation before the draft. It does not independently recompute a truthy allocation from counts/shares, which remains separate artifact-integrity hardening. Do not replace the fallback with `forward_policy.pick_marginal`: that function selects one roster's next player using already-defined baselines, while this fallback estimates the league-wide pool that defines them. After the draft, fail closed or surface the fallback visibly, then consider a multi-season behavioral fallback. |
+| **PATHS observed-board/player-action redesign** | **OFFSEASON. Current surface has a live false-negative at slot 4.** The shipped tree has nine nodes and zero rendered forks because it compares aggregate positional VONA from an unconditional pool. It cannot accept "Gibbs, Bijan, Chase gone" and cannot place McCaffrey beside Taylor because both are RBs. On that observed board, conditioned positional VONA is Puka/WR 45.83 versus McCaffrey/RB 41.29; the 4.54 gap still exceeds a recomputed 3.58 epsilon, so PATHS would render Puka alone. The complete 4/21/28 marginal-lineup policy gives McCaffrey only +2.08 over Puka, inside the board-derived 7.0 coin-flip band. PR #54's Pareto work remains one action per position and does **not** fix this. | Park #54 through the 2026 draft. Redesign PATHS with an explicit unavailable-player state, player-level actions, and complete owner-turn continuations through `forward_policy`; retain VONA as an urgency/diagnostic coordinate rather than the sole branch generator. Add a behavior test for the exact Gibbs/Bijan/Chase-gone slot-4 board. Do not patch epsilon: the missing question is structural. |
 
 ---
 
@@ -513,10 +531,11 @@ Observed:
 | survival table, tier cliffs, pick engine, best-available | all rendered live | the decision surfaces populate from a real feed |
 
 **Caveat 1 - the settings verified are not the league's settings.** This was 19
-teams / 120s / 2 flex. The real league is **12 teams / 60s / 1 flex, with a drawn
-order**. The code paths are exercised; those exact values are not. In particular
-nothing has yet run against a drawn order for roster 7, because the order is still
-undrawn.
+teams / 120s / 2 flex. The real league is **12 teams / 60s / 1 flex** and Anthony
+has been externally drawn at **slot 4**, but Sleeper has not published the order.
+The code paths are exercised; the exact real-league configuration and a complete
+official slot-4 permutation have not yet run live. That remains the first required
+test when Sleeper publishes the order.
 
 **Caveat 2 - the board warned that its values do not transfer, and they did not.**
 Anthony used it for player ordering only. That is the correct use and the correct

@@ -2,7 +2,16 @@
 
 **Written 2026-08-11 for a successor Claude Code session. Self-contained: read this plus `out/`, no chat history needed.**
 
-Verifier: Anthony DellaPia. Draft is **2026-09-08**, 28 days out.
+Verifier: Anthony DellaPia. Draft is **2026-09-08**.
+
+> **Current operational state, 2026-08-31:** Anthony is externally drawn at
+> **slot 4**, with picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124,
+> 141, 148, 165**. Sleeper publication is still pending. Draft start is
+> **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. Slot 4 is primary;
+> all eleven other slots remain reference views. Slots 3 and 7 have unresolved
+> historical ownership, so their tendency descriptions stay null. Tendencies are
+> descriptive only; the prediction backtest remains null at p=0.9932. The full
+> reported order and its source state are in `data/draft_order_2026.json`.
 
 ---
 
@@ -78,8 +87,10 @@ That is not proof of causation, and Chris & Dom won twice at 88.21% while John J
 
 ### The league
 12 teams, snake, full PPR, 13 completed seasons 2013-2025. Yahoo 2013-2024, Sleeper 2025-2026.
-2026 league `1389378429505241088`, draft `1389378429505241089`, **order NOT set**.
-Anthony is roster 7 "Taylor Made", co-owner ernie706.
+2026 league `1389378429505241088`, draft `1389378429505241089`. The external
+draw has Anthony at **slot 4**; Sleeper still shows an unpublished identity map.
+Anthony's stable roster id is 7 ("Taylor Made"), co-owner ernie706. Roster id and
+draft slot are different identities.
 2026 scoring: `rec 1.0, pass_td 6.0, pass_yd 0.04, pass_int -1.0, rush_td 6, rec_td 6, fum_lost -2.0`.
 Starters `QB RB RB WR WR TE FLEX K DEF` + 5 bench.
 **EXCLUDE** Sleeper `1092592577628426240`: empty trial shell, 0 picks, 0 transactions.
@@ -158,7 +169,7 @@ Cambria wins on raw strength. Baldino outperforms his all-play. **Anthony has no
 
 1. **Yahoo Fantasy API is CLOSED.** Fantasy Sports scope no longer exists in Yahoo's developer console. A valid OAuth token returns `oauth_problem="additional_authorization_required"`. Verified on two apps, screenshot-confirmed. No Python wrapper routes around it. Yahoo now requires written application and review.
 2. **The 5% bonus gap is ACCEPTED.** Six 40-yard long-play bonuses, Yahoo 2013-2024 only, 6.14 pts/team-week, present in team totals, absent from per-player rows. Flips 47 of 1,128 games (4.17%). The Phase 2 ratio is unaffected - both sides bonus-exclusive. Owner confirmed these were a **deliberate rule change to raise difficulty**. Keep as a product idea for a rules-evolution feature; not an analysis blocker.
-3. **Rule 3.3 (draft order = reverse prior finish) is NOT FOLLOWED.** 17 of 141 slot assignments match, 12.1% vs 8.3% random. Slot is unpredictable until it posts.
+3. **Rule 3.3 (draft order = reverse prior finish) is NOT FOLLOWED.** 17 of 141 slot assignments match, 12.1% vs 8.3% random. The slot was not predictable from standings; the external draw now reports slot 4 pending Sleeper confirmation.
 4. **Browser scraping Yahoo works but rate-limits** at ~50 fetches with HTTP 999.
 5. **Quarantined fields**, no traceable derivation: `value`, `adp_consensus_score`, `adp_differential_pct`, `risk_tolerance`, and LeagueLegacy's `scoring_format` (says half-ppr for all 14 seasons; Sleeper says `rec=1.0` full PPR).
 6. **`adp_effective_pick` is NULL on all 2,339 rows.** ADP is recoverable only as `overall_pick - adp_differential`, valid on 2,039 of 2,339.
@@ -175,7 +186,10 @@ Cambria wins on raw strength. Baldino outperforms his all-play. **Anthony has no
 
 **D. Anthony's actual leak.** Not draft position, not drafted share, not luck. Candidates: start-sit, FAAB sizing, roster construction late.
 
-**E. Phase 5 simulator.** All 12 slots, since order is unknown. Survival probability, run probability, opportunity cost, per-slot decision cards.
+**E. Phase 5 simulator.** Slot 4 is now primary, with the other eleven retained as
+reference. Availability comes from the audited league survival model. Manager
+history is description only (p=0.9932), never a probability or verdict input; slots
+3 and 7 remain null until their history identities are resolved.
 
 ---
 

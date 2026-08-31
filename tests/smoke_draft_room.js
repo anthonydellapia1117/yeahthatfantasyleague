@@ -40,12 +40,22 @@ function currentRosterLabels(){
     [r.handle, r.team_name, r.franchise].filter(Boolean)))];
 }
 
+function completeDraftOrder(ownerSlot, teams = 12){
+  const order = { "345197760305307648": ownerSlot };
+  let fake = 1;
+  for (let slot = 1; slot <= teams; slot++){
+    if (slot === ownerSlot) continue;
+    order["smoke-user-" + fake++] = slot;
+  }
+  return order;
+}
+
 (async () => {
   const browser = await chromium.launch({
     // this image ships the browser at a fixed path; CI overrides it
     executablePath: process.env.PW_CHROMIUM || "/opt/pw-browsers/chromium" });
 
-  // ---- scenario 1: pre_draft, order not drawn (mocked - hermetic, no network)
+  // ---- scenario 1: external draw known, Sleeper confirmation pending
   {
     const page = await browser.newPage();
     const errors = [];
@@ -62,14 +72,22 @@ function currentRosterLabels(){
     await page.waitForTimeout(4000);
     const mode = await page.textContent("#mode");
     ok(/PRE-DRAFT/.test(mode), "mode 1 detected: " + mode.trim());
+    ok(/SLOT 4 PRIMARY/.test(mode), "external draw makes slot 4 primary: " + mode.trim());
     ok(await page.locator(".chips button").count() === 12, "12 seat chips in the thumb bar");
+    ok(/Slot 4 - PRIMARY - your picks/.test(await page.textContent("body")),
+       "slot 4 renders first while Sleeper is still on the identity placeholder");
+    ok(/Sleeper confirmation is pending/.test(await page.textContent("#banner")),
+       "external draw is visible and explicitly pending Sleeper confirmation");
     ok(await page.locator(".rowcard").count() > 8, "verdict-first round cards");
     const body = await page.textContent("body");
     ok(/WAIT|TAKE NOW/.test(body), "verdicts rendered");
     ok(/to last to your next pick/.test(body), "explicit wait comparison text");
     ok(/COIN FLIP/.test(body), "coin flips surfaced");
     ok(/FLOOR/.test(body), "K/DEF floor label");
-    ok(/n_eff/.test(body), "opponent priors table");
+    ok(/raw median first-draft round/.test(body) &&
+       /range 6-10; n 13/.test(body) &&
+       await page.locator("#app table tr").count() === 13,
+       "drawn-order history is raw, range-and-n labelled for all twelve seats");
     // visible text, not script source - the pick engine's honest
     // "championship lens" label lives in the live-mode template string
     const vis1 = await page.evaluate(() => document.body.innerText);
@@ -77,49 +95,25 @@ function currentRosterLabels(){
     // click another slot tab
     await page.click('.chips button[data-slot="3"]');
     await page.waitForTimeout(300);
-    ok(/Slot 3 - your picks/.test(await page.textContent("body")), "slot tab switch");
-    // ORDER HYPOTHESIS: card renders with 12 selects x 12 franchises; a
-    // change persists, remaps the strips, and jumps to my hypothesized seat
-    ok(await page.locator("#ohyp-card [data-ohyp]").count() === 12,
-       "order hypothesis: 12 slot selects render");
-    ok(await page.locator('[data-ohyp="1"] option').count() === 12,
-       "order hypothesis: each select offers the 12 real franchises");
+    ok(/Slot 3 - REFERENCE - hypothetical picks/.test(await page.textContent("body")),
+       "slot tab switches to an explicitly labelled reference");
+    // The reported order is not forced into a fake roster-id permutation:
+    // all 12 seats render, while the merge and newcomer remain unresolved.
     const ohypTxt = await page.textContent("#ohyp-card");
-    const engR = JSON.parse(require("fs").readFileSync(
-      path.resolve("out/engine_2026.json"), "utf8")).rosters;
-    ok(engR.every(r => ohypTxt.includes(r.handle)),
-       "order hypothesis: every option carries its sleeper handle");
-    ok(engR.every(r => ohypTxt.includes(r.franchise)),
-       "order hypothesis: every option still carries its franchise era");
-    await page.selectOption('[data-ohyp="1"]', "10");
-    await page.waitForTimeout(400);
-    const t1h = await page.textContent("body");
-    ok(/hypothesis active/.test(t1h), "order hypothesis: active note renders");
-    ok(/Slot 7 - your picks/.test(t1h),
-       "order hypothesis: view follows my seat under the hypothesis");
-    ok(/your hypothesis order/.test(t1h),
-       "order hypothesis: gap strips relabel to the hypothesis");
-    // swap semantics: roster 10 moved to slot 1, so slot 10 got roster 1 -
-    // the order stays a permutation and no duplicate warning appears
-    ok(await page.locator('[data-ohyp="10"]').inputValue() === "1",
-       "order hypothesis: assignment swaps, never duplicates");
-    ok(!/duplicates:/.test(await page.textContent("#ohyp-card")),
-       "order hypothesis: no duplicate state from the UI");
-    await page.reload();
-    await page.waitForTimeout(3000);
-    ok(await page.locator('[data-ohyp="1"]').inputValue() === "10",
-       "order hypothesis: persists across reload");
-    await page.evaluate(() => localStorage.removeItem("ytfl_order_hyp"));
+    ok(await page.locator("#ohyp-card .ohyp-grid > div").count() === 12,
+       "externally reported order lists all twelve slots");
+    ok(/slot 3[\s\S]*history unresolved/.test(ohypTxt) &&
+       /slot 7[\s\S]*history unresolved/.test(ohypTxt),
+       "merge and newcomer retain honest unresolved history");
     ok(errors.length === 0, "zero console errors" + (errors.length ? ": " + errors[0] : ""));
     await page.close();
   }
 
-  // ---- scenario 1b: order DRAWN but draft not started - the hypothesis
-  // retires visibly and Sleeper's order labels the strips
+  // ---- scenario 1b: Sleeper confirms the external draw before the start
   {
     const page = await browser.newPage();
     await page.evaluate(() => {}).catch(() => {});
-    const drawn = {1:5,2:9,3:7,4:1,5:12,6:3,7:2,8:11,9:4,10:8,11:6,12:10};
+    const drawn = {1:1,2:2,3:3,4:7,5:5,6:6,7:4,8:8,9:9,10:10,11:11,12:12};
     await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" }, body: "[]" }));
@@ -133,12 +127,90 @@ function currentRosterLabels(){
     await page.goto(FILE);
     await page.waitForTimeout(4000);
     const t1b = await page.textContent("body");
-    ok(/draw is live - the hypothesis is retired/.test(t1b),
-       "drawn order: hypothesis card retires itself");
-    ok(/Sleeper's drawn order/.test(t1b),
-       "drawn order: gap strips credit the real draw");
-    ok(/seat 3/.test(await page.textContent("#banner")),
+    ok(/Sleeper confirms the externally reported/.test(t1b),
+       "official order visibly confirms the external draw");
+    ok(/Sleeper-confirmed external order/.test(t1b),
+       "drawn order: gap strips credit the confirmed external draw");
+    ok(/slot 3[\s\S]*history unresolved/.test(t1b) &&
+       /slot 7[\s\S]*history unresolved/.test(t1b),
+       "official confirmation does not fabricate history for the merge or newcomer");
+    ok(/seat 4/.test(await page.textContent("#banner")),
        "drawn order: my real seat detected from the permutation");
+    await page.close();
+  }
+
+  // ---- scenario 1c: a later Sleeper disagreement blocks visibly
+  {
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" }, body: "[]" }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().includes("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "pre_draft",
+          draft_order: completeDraftOrder(7),
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    const warning = await page.textContent("#banner");
+    ok(/DRAFT-ORDER CONFLICT/.test(warning) && /slot 4/.test(warning) &&
+       /slot 7/.test(warning) && /Board blocked/.test(warning),
+       "official mismatch blocks and names both external and Sleeper slots",
+       warning.trim());
+    ok(/BLOCKED - DRAFT ORDER CONFLICT/.test(await page.textContent("#mode")) &&
+       await page.locator(".bignm").count() === 0,
+       "seat conflict renders no fresh live recommendation");
+    await page.close();
+  }
+
+  // ---- scenario 2: Sleeper unreachable - honest fallback
+  // First, official fields must agree with each other before either may
+  // confirm the external draw. Complete-but-conflicting and partial evidence
+  // both block rather than exercising a precedence rule.
+  for (const [label, payload, detail] of [
+    ["dual-source conflict", {
+      status: "pre_draft", draft_order: completeDraftOrder(4),
+      slot_to_roster_id: Object.fromEntries(Array.from({length:12}, (_, i) => {
+        const slot = i + 1;
+        return [slot, slot === 3 ? 7 : slot === 7 ? 3 : slot];
+      })),
+    }, /draft_order slot 4, slot map slot 3/],
+    ["partial draft_order", {
+      status: "pre_draft", draft_order: { "345197760305307648": 4 },
+      slot_to_roster_id: Object.fromEntries(Array.from({length:12}, (_, i) => [i + 1, i + 1])),
+    }, /incomplete draft_order/],
+    ["boolean slot-map value", {
+      status: "pre_draft", draft_order: null,
+      slot_to_roster_id: Object.fromEntries(Array.from({length:12}, (_, i) =>
+        [i + 1, i === 0 ? true : i + 1])),
+    }, /incomplete slot_to_roster_id/],
+    ["non-object draft_order", {
+      status: "pre_draft", draft_order: [4],
+      slot_to_roster_id: Object.fromEntries(Array.from({length:12}, (_, i) => {
+        const slot = i + 1;
+        return [slot, slot === 4 ? 7 : slot === 7 ? 4 : slot];
+      })),
+    }, /incomplete draft_order/],
+    ["non-object slot map", {
+      status: "pre_draft", draft_order: completeDraftOrder(4),
+      slot_to_roster_id: "malformed",
+    }, /incomplete slot_to_roster_id/],
+  ]){
+    const page = await browser.newPage();
+    await page.route("**/v1/draft/*", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(payload),
+    }));
+    await page.goto(FILE);
+    await page.waitForTimeout(1800);
+    const warning = await page.textContent("#banner");
+    ok(/BLOCKED - DRAFT ORDER CONFLICT/.test(await page.textContent("#mode")) &&
+       detail.test(warning) && await page.locator(".rowcard, .bignm").count() === 0,
+       label + " fails closed and renders no decision board", warning.trim());
     await page.close();
   }
 
@@ -153,13 +225,15 @@ function currentRosterLabels(){
     ok(/sleeper (FAILED|TIMEOUT) after \d+ms/.test(await page.textContent("#conn")),
        "offline: the connection diagnostic names the failure and its timing");
     ok(await page.locator(".chips button").count() === 12, "offline still renders scenarios");
+    ok(/Slot 4 - PRIMARY - your picks/.test(await page.textContent("body")),
+       "offline fallback keeps the externally reported slot 4");
     await page.close();
   }
 
   // ---- scenario 3: mocked live draft
   {
     const page = await browser.newPage();
-    const order = {}; order["345197760305307648"] = 7;
+    const order = completeDraftOrder(4);
     const slotToRoster = {}; for (let i = 1; i <= 12; i++) slotToRoster[i] = i;
     await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
@@ -183,7 +257,7 @@ function currentRosterLabels(){
     await page.waitForTimeout(3000);
     const mode = await page.textContent("#mode");
     ok(/LIVE/.test(mode), "mode 2 detected");
-    ok(/seat 7/.test(mode), "Anthony's seat auto-detected from the draw");
+    ok(/seat 4/.test(mode), "Anthony's seat auto-detected from the draw");
     ok(/sleeper 200 - \d+ms/.test(await page.textContent("#conn")),
        "live: the connection diagnostic shows status and round-trip");
     ok(/data \d+s old/.test(await page.textContent("#conn")),
@@ -196,6 +270,12 @@ function currentRosterLabels(){
     ok(/Survival to your pick/.test(body), "conditional survival table");
     ok(/actually gone/.test(body), "live recompute labelled");
     ok(/PICK 4/i.test(body), "current pick derived from picks gone (3+1)");
+    ok(/your pick 21/.test(await page.textContent("#lv-surv")) &&
+       /pick 21/.test(await page.textContent("#f-cliff")),
+       "on pick 4 every forward panel skips the current clock and targets pick 21");
+    ok(!/pick 4/.test(await page.textContent("#lv-surv")) &&
+       !/pick 4/.test(await page.textContent("#f-cliff")),
+       "on pick 4 no survival or cliff panel compares waiting against the current pick");
     ok(await page.locator("#lv-dot").count() === 1, "freshness dot present");
     ok(/ON THE CLOCK/.test(body), "on-the-clock lower third");
     // SURVIVAL CALIBRATION: wrapper parity with the payload table, the
@@ -230,10 +310,65 @@ function currentRosterLabels(){
     await page.close();
   }
 
+  // ---- scenario 3b: a live, coherent board is removed if the next poll
+  // reports a conflicting seat. A banner over the old recommendation is
+  // still a silent wrong answer, so this must be one page across two polls.
+  {
+    const page = await browser.newPage();
+    let officialSlot = 4;
+    const coherentLastPicked = Date.now() - 5000;
+    const picks = [
+      { metadata: { first_name: "Jahmyr", last_name: "Gibbs", position: "RB" } },
+      { metadata: { first_name: "Bijan", last_name: "Robinson", position: "RB" } },
+      { metadata: { first_name: "Ja'Marr", last_name: "Chase", position: "WR" } },
+    ];
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(picks),
+    }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().includes("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: coherentLastPicked,
+          draft_order: completeDraftOrder(officialSlot),
+          slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(2500);
+    ok(await page.locator(".bignm").count() === 1 &&
+       /LIVE/.test(await page.textContent("#mode")),
+       "live-to-conflict: coherent slot-4 recommendation renders first");
+    officialSlot = 7;
+    await page.waitForTimeout(5500);
+    const blocked = await page.textContent("#order-conflict-state");
+    ok(/board blocked/i.test(blocked) && /slot 4/.test(blocked) && /slot 7/.test(blocked),
+       "live-to-conflict: the next poll visibly blocks and names both seats");
+    ok(await page.locator(".bignm, #clock, #lv-surv, #f-cliff").count() === 0 &&
+       /BLOCKED - DRAFT ORDER CONFLICT/.test(await page.textContent("#mode")),
+       "live-to-conflict: stale recommendation, clock, and horizons are removed");
+    officialSlot = 4;
+    await page.waitForFunction(() =>
+      document.querySelectorAll(".bignm").length === 1 &&
+      /LIVE - you are seat 4/.test(document.querySelector("#mode")?.textContent || "") &&
+      /your pick 21/.test(document.querySelector("#lv-surv")?.textContent || "") &&
+      /\d:\d\d/.test(document.querySelector("#clock")?.textContent || ""),
+      null, {timeout: 12000});
+    ok(await page.locator(".bignm").count() === 1 &&
+       /LIVE - you are seat 4/.test(await page.textContent("#mode")) &&
+       /your pick 21/.test(await page.textContent("#lv-surv")) &&
+       /\d:\d\d/.test(await page.textContent("#clock")),
+       "conflict-to-live: an agreeing retry immediately rebuilds the same coherent slot-4 board");
+    await page.close();
+  }
+
   // ---- scenario 4: order drawn but draft_order null - seat must still resolve
   {
     const page = await browser.newPage();
-    const drawn = {1:5,2:9,3:7,4:1,5:12,6:3,7:2,8:11,9:4,10:8,11:6,12:10};
+    const drawn = {1:1,2:2,3:3,4:7,5:5,6:6,7:4,8:8,9:9,10:10,11:11,12:12};
     await page.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
@@ -248,8 +383,65 @@ function currentRosterLabels(){
     await page.goto(FILE);
     await page.waitForTimeout(3000);
     const mode = await page.textContent("#mode");
-    // roster 7 sits at slot 3 in this permutation
-    ok(/seat 3/.test(mode), "seat resolved from slot_to_roster_id when draft_order is null: " + mode.trim());
+    // stable roster identity 7 sits at externally reported slot 4
+    ok(/seat 4/.test(mode), "seat resolved from slot_to_roster_id when draft_order is null: " + mode.trim());
+    await page.close();
+  }
+
+  // ---- scenario 4b: Anthony's final turn has no later owner pick. Every
+  // survival consumer must say that plainly instead of fabricating cur+24.
+  {
+    const page = await browser.newPage();
+    const errors = [];
+    page.on("pageerror", e => errors.push(String(e)));
+    await page.addInitScript(() => {
+      localStorage.setItem("ytfl_queue", JSON.stringify(["Breece Hall"]));
+      localStorage.setItem("ytfl_overrides", "[]");
+    });
+    const picks = Array.from({length: 164}, (_, i) => ({
+      player_id: "final-horizon-fixture-" + (i + 1),
+      metadata: { first_name: "Fixture", last_name: String(i + 1), position: "RB" },
+    }));
+    await page.route("**/v1/draft/*/picks*", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify(picks),
+    }));
+    await page.route("**/v1/draft/*", r => {
+      if (r.request().url().includes("/picks")) return r.fallback();
+      r.fulfill({ contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "drafting",
+          settings: { teams: 12, rounds: 14, pick_timer: 60 },
+          last_picked: Date.now() - 5000,
+          draft_order: completeDraftOrder(4), slot_to_roster_id: null }) });
+    });
+    await page.goto(FILE);
+    await page.waitForTimeout(3000);
+    const finalPanels = await page.evaluate(() => ({
+      survival: document.querySelector("#lv-surv")?.textContent || "",
+      bypos: document.querySelector("#f-bypos")?.textContent || "",
+      cliff: document.querySelector("#f-cliff")?.textContent || "",
+      queue: document.querySelector("#f-queue")?.textContent || "",
+      board: document.querySelector("#f-board")?.textContent || "",
+      engine: document.querySelector("#pe-body")?.textContent || "",
+      recs: document.querySelector("#recs-cards")?.textContent || "",
+    }));
+    const finalText = Object.values(finalPanels).join("\n");
+    ok(/No turns remain/.test(finalPanels.survival) &&
+       /no later survival horizon/.test(finalPanels.bypos) &&
+       /no tier-cliff horizon/.test(finalPanels.cliff) &&
+       /Breece Hall.*final turn; no later survival horizon/s.test(finalPanels.queue) &&
+       /final turn - no later horizon/.test(finalPanels.board) &&
+       /does not invent a waiting horizon/.test(finalPanels.engine) &&
+       /there are no waiting alternatives to price/.test(finalPanels.recs),
+       "final slot-4 turn renders honest nulls in every survival panel",
+       JSON.stringify(finalPanels));
+    ok(!/\b189\b|to null|lasts to null/.test(finalText),
+       "final turn never invents pick 189 or a null-labelled horizon",
+       finalText.slice(0, 240));
+    ok(errors.length === 0, "final-turn null horizon has zero page errors",
+       errors[0] || "");
     await page.close();
   }
 
@@ -273,6 +465,7 @@ function currentRosterLabels(){
       mk("Bucky", "Irving", "RB"), mk("Kyren", "Williams", "RB"), mk("Ashton", "Jeanty", "RB"),
       mk("James", "Cook", "RB"), mk("De'Von", "Achane", "RB"), mk("Chase", "Brown", "RB"),
       mk("Trey", "McBride", "TE"), mk("Tyreek", "Hill", "WR"),
+      mk("Nico", "Collins", "WR"),
     ];
     const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
     await page.route("**/v1/players/nfl/trending/**", r => r.fulfill({
@@ -285,7 +478,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -293,9 +486,9 @@ function currentRosterLabels(){
     await page.evaluate(() => document.querySelectorAll("details").forEach(d => d.open = true));
     await page.waitForTimeout(200);
     const body = await page.textContent("body");
-    // f1: roster tracker - seat 7 owns picks 7 and 18
+    // f1: roster tracker - the reported seat 4 owns picks 4 and 21
     const roster = await page.textContent("#f-myroster");
-    ok(/pick 7.*Taylor/s.test(roster) && /pick 18.*Brown/s.test(roster), "f1 roster tracker lists my picks");
+    ok(/pick 4.*Gibbs/s.test(roster) && /pick 21.*Collins/s.test(roster), "f1 roster tracker lists my picks");
     ok(/needs:/.test(roster), "f1 roster needs surfaced");
     // f2: best available by position - 4 minis
     ok(await page.locator("#f-bypos .mini").count() === 4, "f2 best-by-position strip");
@@ -327,7 +520,7 @@ function currentRosterLabels(){
     await page.click('#f-horizon button[data-h="1"]');
     await page.waitForTimeout(400);
     const cap2 = await page.textContent("#lv-surv");
-    ok(/your pick 31/.test(cap1) && /your pick 42/.test(cap2), "f8 horizon toggle moves the target pick");
+    ok(/your pick 28/.test(cap1) && /your pick 45/.test(cap2), "f8 horizon toggle moves the target pick");
     // f9: queue preloaded with a target, shows survival
     ok(/Breece Hall/.test(await page.textContent("#f-queue")), "f9 queue shows target");
     // f10: manual override marks a player drafted
@@ -361,7 +554,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "complete", draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "complete", draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -375,7 +568,8 @@ function currentRosterLabels(){
     await page.close();
   }
 
-  // ---- scenario 4b: SPECTATOR fallback - live draft, seat unknown, never blank
+  // ---- scenario 4b: the real draft starts without a resolvable official seat
+  // The external draw is not permission to guess silently once play begins.
   {
     const page = await browser.newPage();
     const idSlots = {}; for (let i = 1; i <= 12; i++) idSlots[i] = i;
@@ -391,11 +585,11 @@ function currentRosterLabels(){
     });
     await page.goto(FILE);
     await page.waitForTimeout(2500);
-    ok(!(await page.locator("#lv-spectator").isHidden()), "spectator seat picker shown when seat unknown");
-    ok(await page.locator("#lv-seatpick button").count() === 12, "12 manual seat buttons");
-    await page.click('#lv-seatpick button[data-slot="5"]');
-    await page.waitForTimeout(1200);
-    ok(/seat 5/.test(await page.textContent("#mode")), "manual seat selection takes effect");
+    ok(/cannot resolve your seat/.test(await page.textContent("#banner")),
+       "started-but-unresolved order fails loudly instead of opening a guessed seat");
+    ok(/BLOCKED - DRAFT ORDER CONFLICT/.test(await page.textContent("#mode")) &&
+       await page.locator(".bignm").count() === 0,
+       "started-but-unresolved order renders no recommendation");
     await page.close();
   }
 
@@ -411,7 +605,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -509,7 +703,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -562,7 +756,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots }) });
     });
     await page.goto(FILE);
@@ -661,7 +855,11 @@ function currentRosterLabels(){
     const alive9 = payload.players
       .filter(x => !gone9.has(x.name) && x.pos !== "K" && x.pos !== "DEF")
       .sort((x, y) => y.vor - x.vor);
-    const runnerUp = alive9[1].name;
+    const coinRunner = alive9.slice(1, 3).find(x =>
+      x.pos === alive9[0].pos && alive9[0].vor - x.vor <= 8);
+    ok(!!coinRunner,
+       "overlay fixture derives a real same-position coin flip from today's board");
+    const runnerUp = coinRunner.name;
     payload.my_board = [mkCall(runnerUp, "BULL", "+1 tier"),
                         mkCall(alive9[8].name, "BEAR", "-1 tier")];
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "ytfl-overlay-smoke-"));
@@ -683,7 +881,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots9 }) });
     });
     await p9.goto("file://" + tmp);
@@ -897,7 +1095,7 @@ function currentRosterLabels(){
     await hpg.waitForTimeout(1500);
     const htxt = await hpg.textContent("body");
     ok(/\d+ days/.test(await hpg.textContent("#countdown")) || /DRAFT DAY/.test(htxt),
-       "home: countdown renders from the payload date");
+       "home: countdown renders from Sleeper's exact start epoch");
     ok(await hpg.locator("#stale table tr").count() >= 7,
        "home: staleness board lists the engine plus every shard");
     ok(/0 calls recorded/.test(htxt), "home: overlay completeness on the empty board");
@@ -1162,7 +1360,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots13 }) });
     });
     await lv.goto(base + "/out/draft_room.html");
@@ -1458,7 +1656,7 @@ function currentRosterLabels(){
     const errs16 = [];
     pe.on("pageerror", e => errs16.push(String(e)));
     pe.on("console", m => { if (m.type() === "error") errs16.push(m.text()); });
-    const order16 = {}; order16["345197760305307648"] = 7;
+    const order16 = completeDraftOrder(4);
     const s2r16 = {}; for (let i = 1; i <= 12; i++) s2r16[i] = i;
     await pe.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
@@ -1595,13 +1793,12 @@ function currentRosterLabels(){
     ok(errs16.length === 0, "pick engine: zero console errors", errs16[0] || "");
     await pe.close();
 
-    // on the clock (6 picks gone, seat 7 up at pick 7): the card must look
-    // to my NEXT turn (pick 18) - never the degenerate survival-to-now
+    // on the clock (3 picks gone, seat 4 up at pick 4): the card must look
+    // to my NEXT turn (pick 21) - never the degenerate survival-to-now
     const oc = await browser.newPage();
     const errsOc = [];
     oc.on("pageerror", e => errsOc.push(String(e)));
-    const ocPicks = ["Jahmyr Gibbs RB", "Bijan Robinson RB", "Ja'Marr Chase WR",
-      "Saquon Barkley RB", "Justin Jefferson WR", "CeeDee Lamb WR"].map(s => {
+    const ocPicks = ["Jahmyr Gibbs RB", "Bijan Robinson RB", "Ja'Marr Chase WR"].map(s => {
         const parts = s.split(" ");
         return { metadata: { first_name: parts[0], last_name: parts.slice(1, -1).join(" "),
                              position: parts[parts.length - 1] } };
@@ -1619,28 +1816,28 @@ function currentRosterLabels(){
     });
     await oc.goto(base + "/out/draft_room.html");
     await oc.waitForTimeout(3500);
-    ok(/ON THE CLOCK - PICK 7/.test(await oc.textContent("body")),
-       "on-the-clock fixture: seat 7 is up at pick 7");
+    ok(/ON THE CLOCK - PICK 4/.test(await oc.textContent("body")),
+       "on-the-clock fixture: seat 4 is up at pick 4");
     const octxt = await oc.textContent("#pe-body");
-    ok(/your pick 18/.test(octxt),
+    ok(/your pick 21/.test(octxt),
        "on my clock the card targets my NEXT turn, not the current pick");
     ok(!/: 0% gone by your pick/.test(octxt),
        "survival on my clock is not the degenerate 100%-safe");
     ok(!/NaN/.test(octxt), "on-the-clock card renders no NaN");
-    // UPNEXT: seat 7 is up at pick 7, so the strip must say so outright
+    // UPNEXT: seat 4 is up at pick 4, so the strip must say so outright
     const upNow = await oc.textContent("#lv-upnext");
     ok(/YOU ARE ON THE CLOCK/.test(upNow),
        "up-next says you are on the clock when it is your pick", upNow.trim());
     ok(await oc.locator("#lv-upnext.now").count() === 1,
        "the on-the-clock strip takes its clock-state treatment");
     ok(errsOc.length === 0, "on-the-clock: zero console errors", errsOc[0] || "");
-    // RUNDETECT negative case: 3 RB + 3 WR in round 1 IS the archive's normal
-    // diet (~45%/41% base) - the derived detector must stay silent where the
-    // old 4-of-8 constant would soon have fired on noise
+    // RUNDETECT's six-pick normal-board negative remains exercised by f6
+    // above. This on-clock fixture has only the three picks that actually
+    // precede slot 4, so it also must not manufacture a premature run.
     ok((await oc.textContent("#f-run")).trim() === "",
-       "no run banner when the mix matches the archive's base rates");
+       "no run banner before the minimum observed window exists");
     // phone-width net: the survival table's verdict tags fire here (target
-    // pick 18 makes most top rows sub-40%), so this state is exactly where
+    // pick 21 makes most top rows sub-40%), so this state is exactly where
     // the table used to widen the page at 375
     await oc.setViewportSize({ width: 375, height: 667 });
     await oc.waitForTimeout(400);
@@ -1674,7 +1871,7 @@ function currentRosterLabels(){
       if (r.request().url().includes("/picks")) return r.fallback();
       r.fulfill({ contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: { "345197760305307648": 7 },
+        body: JSON.stringify({ status: "drafting", settings: { teams: 12, rounds: 14, pick_timer: 90 }, last_picked: Date.now() - 12000, draft_order: completeDraftOrder(4),
                                slot_to_roster_id: idSlots2 }) });
     });
     await pr2.goto(base + "/out/draft_room.html");
@@ -1824,7 +2021,7 @@ function currentRosterLabels(){
     const mockDraft = { league_id: null, status: "drafting",
       last_picked: Date.now() - 10000,
       creators: ["345197760305307648"],
-      draft_order: { "345197760305307648": 3 },
+      draft_order: completeDraftOrder(3, 10),
       slot_to_roster_id: ident(10),
       settings: { teams: 10, rounds: 15, slots_flex: 2, pick_timer: 120 },
       metadata: { scoring_type: "ppr" } };
@@ -1924,14 +2121,17 @@ function currentRosterLabels(){
     await pg.goto(base + "/out/paths.html");
     await pg.waitForTimeout(900);
     const body = await pg.textContent("#content");
-    ok(/Slot 1 - picks/.test(body), "paths: renders a slot tree");
+    ok(/Slot 4 - picks/.test(body), "paths: renders the externally reported primary slot first");
     ok(await pg.locator(".tnode").count() > 3, "paths: the tree has nodes");
     ok(!/BULLISH|WATCH/.test(body),
        "paths: no BULLISH marker anywhere on the decision surface");
     ok(/real decision points/.test(body) && /pruned as dominated/.test(body),
        "paths: fork and prune accounting is on screen, never silent");
-    ok(/undrawn/.test(await pg.textContent("#hdr")),
-       "paths: slot-conditional, states the order is undrawn");
+    const pathsHeader = await pg.textContent("#hdr");
+    ok(/slot 4 primary/.test(pathsHeader) && /externally reported/.test(pathsHeader) &&
+       /11 reference slots retained/.test(pathsHeader) && /Sleeper pending/.test(pathsHeader) &&
+       await pg.locator("#slots button").count() === 12,
+       "paths: identifies slot 4 as externally reported primary and retains references");
     // switching slots re-renders a different tree
     const t1 = await pg.textContent("#content");
     await pg.click('#slots button[data-slot="8"]');
@@ -1995,7 +2195,7 @@ function currentRosterLabels(){
         body: JSON.stringify({ status: "drafting",
           settings: { teams: 12, rounds: 14, pick_timer: 60 },
           last_picked: Date.now() - 20000,
-          draft_order: { "345197760305307648": 7 },
+          draft_order: completeDraftOrder(4),
           slot_to_roster_id: null }) });
     });
     await page.goto(FILE);
@@ -2023,7 +2223,7 @@ function currentRosterLabels(){
         body: JSON.stringify({ status: "drafting",
           settings: { teams: 12, rounds: 14, pick_timer: 60 },
           last_picked: null,
-          draft_order: { "345197760305307648": 7 },
+          draft_order: completeDraftOrder(4),
           slot_to_roster_id: null }) });
     });
     await page.goto(FILE);
@@ -2047,7 +2247,7 @@ function currentRosterLabels(){
         body: JSON.stringify({ status: "drafting",
           settings: { teams: 12, rounds: 14, pick_timer: 60 },
           last_picked: Date.now() - 300000,
-          draft_order: { "345197760305307648": 7 },
+          draft_order: completeDraftOrder(4),
           slot_to_roster_id: null }) });
     });
     await page.goto(FILE);
@@ -2070,7 +2270,7 @@ function currentRosterLabels(){
       status: "drafting",
       settings: { teams: 12, rounds: 14, pick_timer: timer },
       last_picked: lastPicked,
-      draft_order: { [ANTHONY]: 7 },
+      draft_order: completeDraftOrder(4),
       slot_to_roster_id: null,
       ...extra,
     });
@@ -2348,18 +2548,15 @@ function currentRosterLabels(){
         window.webkitAudioContext = FakeAudioContext;
       }, FIXED_NOW);
       const redBoundarySecond = Math.ceil(timer / 4);
-      const sixPicks = [
+      const threePicks = [
         pick(1, "p1", "One", "Player", "RB"),
         pick(2, "p2", "Two", "Player", "WR"),
         pick(3, "p3", "Three", "Player", "RB"),
-        pick(4, "p4", "Four", "Player", "WR"),
-        pick(5, "p5", "Five", "Player", "QB"),
-        pick(6, "p6", "Six", "Player", "TE"),
       ];
       await page.route("**/v1/draft/*/picks*", r => r.fulfill({
         contentType: "application/json",
         headers: { "access-control-allow-origin": "*" },
-        body: JSON.stringify(sixPicks),
+        body: JSON.stringify(threePicks),
       }));
       await page.route("**/v1/draft/*", r => {
         if (r.request().url().includes("/picks")) return r.fallback();

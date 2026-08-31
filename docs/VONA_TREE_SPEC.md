@@ -1,7 +1,9 @@
-# Draft Path Tree (VONA) - APPROVED, decisions resolved
+# Draft Path Tree (VONA) - shipped positional spec; offseason redesign required
 
-Status: **approved to build.** The three open decisions were resolved by
-Anthony and are recorded in section 7; the body below reflects them.
+Status: **the position-level tree shipped, but the 2026-08-31 slot-4 decision
+proved that zero rendered forks can be a false-negative.** The original three
+decisions remain recorded in section 7. Section 8 records the required offseason
+redesign; PR #54's Pareto branch does not supply it.
 
 ## 1. The objective function
 
@@ -15,27 +17,31 @@ do not" logic expressed as a number.
 
 **How each term is computed, from existing repo machinery:**
 
-- `E[best available at THIS pick]`: over players at that position with
-  `survival(adp, pick) >= FLOOR`, the survival-weighted expectation of
-  the best VOR still on the board. Concretely, order the position's pool
+- `E[best available at THIS pick]`: over the whole remaining positional pool,
+  the survival-weighted expectation of the best VOR still on the board. The
+  survival floor is presentation-only and never truncates the expectation.
+  Concretely, order the position's pool
   by VOR descending and take
   `sum_i VOR_i * P(i available) * prod_{j<i} (1 - P(j available))` -
   the expected VOR of the top survivor, not the top name's VOR.
 - `E[best available at MY NEXT pick]`: the same expectation computed with
-  `cond_survival(adp, next_pick, this_pick)` - the frozen, calibrated
-  conditional survival already used by the room's wait-or-reach verdict.
-  The math functions are the frozen five; the tree calls them, never
-  reimplements them.
+  unconditional `survival(adp, next_pick)` from the **same pre-draft information
+  frame**. Mixing unconditional now with conditional next made 28% of the first
+  artifact's nodes negative; one frame makes `E[next] <= E[now]` structural for
+  above-replacement pools. The frozen math is called, never reimplemented.
 - Both terms are computed against the pool as the PATH left it: a node's
-  ancestors' picks are removed first, using `src/forward_policy.py` -
-  the same shared layer that fixed the duplicate-pick bug. A tree that
-  ignores its own path is the same defect one dimension up.
+  ancestors' players are removed first. Shared `src/forward_policy.py` supplies
+  roster feasibility and lineup-value pruning - the same layer that fixed the
+  duplicate-pick bug. A tree that ignores its own path is the same defect one
+  dimension up.
 
 ## 2. Structure
 
-- **Input:** draft slot 1-12, rendered slot-conditional (the order is
-  undrawn; the tab defaults to a slot picker exactly like the room's
-  pre-draft view).
+- **Input:** draft slot 1-12, rendered slot-conditional. The externally reported
+  2026 draw makes **slot 4 primary** while Sleeper confirmation is pending; the
+  other eleven slots remain selectable reference views. A later official order
+  must reconcile exactly or fail loud. This changes the default and provenance,
+  not the per-slot arithmetic.
 - **Root:** the round-1 pick at that slot. When one option dominates -
   no rival within the branch threshold - render a SINGLE node and state
   why ("VONA gap 34.1 pts over the next position; not a decision").
@@ -142,3 +148,40 @@ by hand.
   marker on a decision surface nudges regardless of its label, and the
   N.1 concentration means it would re-mark only what the board already
   ranks highly.
+
+## 8. 2026-08-31 false-negative and offseason redesign
+
+The actual slot-4 premise was Gibbs, Bijan Robinson, and Ja'Marr Chase gone,
+leaving McCaffrey, Puka, and Jonathan Taylor. The complete adaptive 4/21/28
+marginal-lineup comparison produced McCaffrey 290.75, Puka 288.67, and Taylor
+272.05: McCaffrey's nominal +2.08 over Puka sits inside the same artifact's
+derived 7.0-point coin-flip band. Anthony therefore correctly read the first two
+as tied and made a separately labelled durability override to Puka.
+
+PATHS rendered zero forks because it had never represented that question:
+
+- actions are positions, so McCaffrey and Taylor can never be siblings;
+- the root accepts no explicit unavailable-player state, so the observed first
+  three selections cannot condition it; and
+- even deleting those three players by hand gives Puka/WR VONA 45.83 and
+  McCaffrey/RB 41.29. The 4.54 gap exceeds both the shipped 1.39 round-one
+  epsilon and the 3.58 epsilon recomputed on the depleted board, so the page
+  would still render Puka alone and say there was no decision.
+
+This is **SURFACE ABSENCE AS FINDING**: zero forks looks like "no decision here"
+but meant "the player-level, observed-board question was never asked." It is
+worse than a loud unsupported state because a successful empty result reads as
+evidence. PR #54 replaces the branch rule with a Pareto frontier but retains one
+action per position and therefore does not fix this defect. It stays parked for
+the 2026 draft.
+
+The offseason replacement is a redesign, not an epsilon patch:
+
+1. accept an explicit unavailable-player board state at the root;
+2. expose player-level actions among actual survivors;
+3. evaluate each action through the owner's complete next-turn continuation
+   (slot 4 means picks 4, 21, and 28) using shared `forward_policy` lineup value;
+4. retain VONA as an urgency/position-loss diagnostic coordinate, not the sole
+   branch generator; and
+5. add a behavior fixture for this exact observed board that must render the
+   McCaffrey/Puka tie and Taylor as the separated third option.

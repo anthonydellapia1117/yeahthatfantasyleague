@@ -144,6 +144,13 @@ ok(pr["RB"] == 24 + fx["allocation"]["RB"] and pr["WR"] == 24 + fx["allocation"]
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from forward_policy import roster_caps
 caps = roster_caps(eng.get("flex_allocation", {}))
+_primary = eng.get("draft_order_context", {}).get("primary_slot")
+_reported_picks = eng.get("draft_order_context", {}).get("primary_picks")
+ok(_primary == 4 and _reported_picks ==
+   [4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165] and
+   [r["pick"] for r in eng["slots"]["4"]] == _reported_picks,
+   "primary forward sequence is the exact reported slot-4 snake geometry",
+   str((_primary, _reported_picks)))
 for slot, rounds in eng["slots"].items():
     names = [r["primary"]["name"] for r in rounds if r.get("primary")]
     ok(len(set(names)) == len(names),

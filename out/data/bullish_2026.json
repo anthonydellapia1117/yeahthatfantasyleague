@@ -1,10 +1,10 @@
 {
  "provenance": {
-  "generated": "2026-08-30",
-  "computed_at": "2026-08-30T16:13:47+00:00",
-  "engine_generated": "2026-08-28",
-  "engine_content_sha256": "b1401aca6bcba7d3718637a2a05bcf166dbbde0b77ac46e56f02a60e6c37cc12",
-  "inputs_content_sha256": "89c2fbeb5ab467dcdde8cd5402082fe21b904bd94fe042a3b247e33d590eb31d",
+  "generated": "2026-08-31",
+  "computed_at": "2026-08-31T16:10:07+00:00",
+  "engine_generated": "2026-08-31",
+  "engine_content_sha256": "9391e9ce040ca9363161d22b4b775d59efb0503c4eab7cf4249d89adb25735aa",
+  "inputs_content_sha256": "7700e4452f564b4c456a3edf80f24631d8098d9329b42ade34197529457d5e61",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -15,17 +15,17 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-08-30T16:13:13+00:00",
-   "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-   "snapshot_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-   "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
-   "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
+   "pulled_at": "2026-08-31T16:08:16+00:00",
+   "source_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+   "snapshot_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+   "upstream_content_sha256": "040421a0f0b3ef1b9dd8c7a47aa9d164ce43cbbac21cbcaea3bbed94b30968c1",
+   "decision_input_sha256": "0eb9779e3b87133faf59fd47ce65b35347b134035e193a13ba6aef61b7d2b31a",
    "pricing_by_week_sha256": {
-    "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "1": "d67ca91288842b70a358d6d11e69c7f01fa1d2d8901f5836181d7562b27d9edd",
+    "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
+    "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
@@ -237,16 +237,16 @@
     "event": "REPRICED",
     "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+     "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
+     "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
      "pricing_by_week_sha256": {
       "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-      "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+      "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
       "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
@@ -270,16 +270,16 @@
      }
     },
     "current": {
-     "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-     "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
+     "source_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+     "upstream_content_sha256": "040421a0f0b3ef1b9dd8c7a47aa9d164ce43cbbac21cbcaea3bbed94b30968c1",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
+     "decision_input_sha256": "0eb9779e3b87133faf59fd47ce65b35347b134035e193a13ba6aef61b7d2b31a",
      "pricing_by_week_sha256": {
-      "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "1": "d67ca91288842b70a358d6d11e69c7f01fa1d2d8901f5836181d7562b27d9edd",
+      "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
+      "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
       "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
@@ -328,19 +328,11 @@
     "gap": 15
    },
    {
-    "name": "D'Andre Swift",
-    "pos": "RB",
-    "status": "WATCH",
-    "score_rank": 10,
-    "pos_adp_rank": 24,
-    "gap": 14
-   },
-   {
     "name": "Javonte Williams",
     "pos": "RB",
     "status": "BULLISH",
-    "score_rank": 3,
-    "pos_adp_rank": 17,
+    "score_rank": 1,
+    "pos_adp_rank": 15,
     "gap": 14
    },
    {
@@ -350,6 +342,14 @@
     "score_rank": 2,
     "pos_adp_rank": 16,
     "gap": 14
+   },
+   {
+    "name": "D'Andre Swift",
+    "pos": "RB",
+    "status": "WATCH",
+    "score_rank": 9,
+    "pos_adp_rank": 22,
+    "gap": 13
    },
    {
     "name": "Brock Purdy",
@@ -363,9 +363,9 @@
     "name": "Jordan Love",
     "pos": "QB",
     "status": "BULLISH",
-    "score_rank": 5,
+    "score_rank": 6,
     "pos_adp_rank": 18,
-    "gap": 13
+    "gap": 12
    },
    {
     "name": "Derrick Henry",
@@ -374,6 +374,30 @@
     "score_rank": 1,
     "pos_adp_rank": 12,
     "gap": 11
+   },
+   {
+    "name": "Sam Darnold",
+    "pos": "QB",
+    "status": "WATCH",
+    "score_rank": 9,
+    "pos_adp_rank": 20,
+    "gap": 11
+   },
+   {
+    "name": "Chase Brown",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 1,
+    "pos_adp_rank": 10,
+    "gap": 9
+   },
+   {
+    "name": "Kyren Williams",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 14,
+    "gap": 9
    },
    {
     "name": "Matthew Stafford",
@@ -392,12 +416,12 @@
     "gap": 8
    },
    {
-    "name": "Chase Brown",
-    "pos": "RB",
+    "name": "Patrick Mahomes",
+    "pos": "QB",
     "status": "BULLISH",
-    "score_rank": 3,
-    "pos_adp_rank": 10,
-    "gap": 7
+    "score_rank": 5,
+    "pos_adp_rank": 13,
+    "gap": 8
    },
    {
     "name": "Ashton Jeanty",
@@ -406,26 +430,10 @@
     "score_rank": 1,
     "pos_adp_rank": 8,
     "gap": 7
-   },
-   {
-    "name": "Kyren Williams",
-    "pos": "RB",
-    "status": "WATCH",
-    "score_rank": 8,
-    "pos_adp_rank": 14,
-    "gap": 6
-   },
-   {
-    "name": "Patrick Mahomes",
-    "pos": "QB",
-    "status": "BULLISH",
-    "score_rank": 7,
-    "pos_adp_rank": 13,
-    "gap": 6
    }
   ],
-  "spearman_score_vs_adp_tagged": 0.75,
-  "statement": "13 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.75; a value near 1.0 would mean the tag merely restates the market."
+  "spearman_score_vs_adp_tagged": 0.662,
+  "statement": "14 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.662; a value near 1.0 would mean the tag merely restates the market."
  },
  "te_scarcity_adjudication": {
   "basis": "league-exact PPG, 8+ game TEs, 2023-2025",
@@ -464,7 +472,7 @@
   ],
   "effective_test_before_suspension": "P(2025 on-field dropback share >= TE p75) multiplied by 0.9 for every veteran TE; the advertised 2-of-2 gate had one varying criterion.",
   "evidence": {
-   "draftable_tes": 20,
+   "draftable_tes": 19,
    "veterans_with_both_inputs": 19,
    "market_share_probability_counts": {
     "0.9": 19,
@@ -489,7 +497,7 @@
     "name": "Trey McBride",
     "pos": "TE",
     "sleeper_id": "8130",
-    "adp": 21.0,
+    "adp": 24.3,
     "status": "BULLISH",
     "score": 90.0,
     "gate": "P(>= 2 of 2)",
@@ -500,14 +508,14 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-30T16:13:47+00:00",
+    "computed_at": "2026-08-31T16:10:07+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Tyler Warren",
     "pos": "TE",
     "sleeper_id": "12518",
-    "adp": 47.2,
+    "adp": 49.7,
     "status": "BULLISH",
     "score": 90.0,
     "gate": "P(>= 2 of 2)",
@@ -520,14 +528,14 @@
     ],
     "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-30T16:13:47+00:00",
+    "computed_at": "2026-08-31T16:10:07+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Kyle Pitts",
     "pos": "TE",
     "sleeper_id": "7553",
-    "adp": 69.1,
+    "adp": 68.6,
     "status": "BULLISH",
     "score": 90.0,
     "gate": "P(>= 2 of 2)",
@@ -538,14 +546,14 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-30T16:13:47+00:00",
+    "computed_at": "2026-08-31T16:10:07+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Travis Kelce",
     "pos": "TE",
     "sleeper_id": "1466",
-    "adp": 92.2,
+    "adp": 89.1,
     "status": "BULLISH",
     "score": 88.9,
     "gate": "P(>= 2 of 2)",
@@ -556,14 +564,14 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-30T16:13:47+00:00",
+    "computed_at": "2026-08-31T16:10:07+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Hunter Henry",
     "pos": "TE",
     "sleeper_id": "3214",
-    "adp": 139.8,
+    "adp": 141.6,
     "status": "WATCH",
     "score": 45.0,
     "gate": "P(>= 2 of 2)",
@@ -576,7 +584,7 @@
     ],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-08-30T16:13:47+00:00",
+    "computed_at": "2026-08-31T16:10:07+00:00",
     "ttl_hours": 72
    }
   ],
@@ -605,23 +613,23 @@
   },
   "thresholds": {
    "before": {
-    "n": 46,
+    "n": 44,
     "zero_n": 0,
-    "excluded_unobserved_n": 3,
+    "excluded_unobserved_n": 5,
     "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
     "percentile_method": "nearest index: round(q * (n - 1))",
-    "p50": 0.5194,
-    "p75": 0.7342,
-    "p80": 0.7632,
+    "p50": 0.5326,
+    "p75": 0.7632,
+    "p80": 0.7666,
     "p50_method": "upper middle observation for even n; retired stage-2 baseline"
    },
    "after": {
-    "n": 46,
+    "n": 44,
     "zero_n": 0,
-    "excluded_unobserved_n": 3,
+    "excluded_unobserved_n": 5,
     "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
     "percentile_method": "nearest index: round(q * (n - 1))",
-    "p50": 0.5072,
+    "p50": 0.5135,
     "p75": 0.6538,
     "p80": 0.6946,
     "p50_method": "upper middle observation for even n; preserved stage-2 convention"
@@ -800,19 +808,36 @@
    },
    {
     "player": "Ashton Jeanty|RB",
-    "before": 0.9603,
+    "before": 1.0,
     "after": 0.8664,
     "before_sample": {
      "season": 2025,
      "current_roster_team": "LV",
      "player_carries": 266,
-     "current_roster_team_rb_carries": 277
+     "current_roster_team_rb_carries": 266
     },
     "after_sample": {
      "season": 2025,
      "historical_team": "LV",
      "player_carries": 266,
      "historical_team_rb_carries": 307
+    }
+   },
+   {
+    "player": "Javonte Williams|RB",
+    "before": 0.8289,
+    "after": 0.658,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DAL",
+     "player_carries": 252,
+     "current_roster_team_rb_carries": 304
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DAL",
+     "player_carries": 252,
+     "historical_team_rb_carries": 383
     }
    },
    {
@@ -884,23 +909,6 @@
     }
    },
    {
-    "player": "Javonte Williams|RB",
-    "before": 0.7262,
-    "after": 0.658,
-    "before_sample": {
-     "season": 2025,
-     "current_roster_team": "DAL",
-     "player_carries": 252,
-     "current_roster_team_rb_carries": 347
-    },
-    "after_sample": {
-     "season": 2025,
-     "historical_team": "DAL",
-     "player_carries": 252,
-     "historical_team_rb_carries": 383
-    }
-   },
-   {
     "player": "David Montgomery|RB",
     "before": 0.3674,
     "after": 0.3882,
@@ -914,23 +922,6 @@
      "season": 2025,
      "historical_team": "DET",
      "player_carries": 158,
-     "historical_team_rb_carries": 407
-    }
-   },
-   {
-    "player": "Josh Jacobs|RB",
-    "before": 0.9004,
-    "after": 0.6216,
-    "before_sample": {
-     "season": 2025,
-     "current_roster_team": "GB",
-     "player_carries": 253,
-     "current_roster_team_rb_carries": 281
-    },
-    "after_sample": {
-     "season": 2025,
-     "historical_team": "GB",
-     "player_carries": 253,
      "historical_team_rb_carries": 407
     }
    },
@@ -1071,14 +1062,31 @@
     }
    },
    {
+    "player": "J.K. Dobbins|RB",
+    "before": 0.4679,
+    "after": 0.4113,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DEN",
+     "player_carries": 153,
+     "current_roster_team_rb_carries": 327
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DEN",
+     "player_carries": 153,
+     "historical_team_rb_carries": 372
+    }
+   },
+   {
     "player": "Tony Pollard|RB",
-    "before": 0.5961,
+    "before": 0.7707,
     "after": 0.7378,
     "before_sample": {
      "season": 2025,
      "current_roster_team": "TEN",
      "player_carries": 242,
-     "current_roster_team_rb_carries": 406
+     "current_roster_team_rb_carries": 314
     },
     "after_sample": {
      "season": 2025,
@@ -1106,13 +1114,13 @@
    },
    {
     "player": "Jordan Mason|RB",
-    "before": 0.4923,
+    "before": 0.5464,
     "after": 0.4609,
     "before_sample": {
      "season": 2025,
      "current_roster_team": "MIN",
      "player_carries": 159,
-     "current_roster_team_rb_carries": 323
+     "current_roster_team_rb_carries": 291
     },
     "after_sample": {
      "season": 2025,
@@ -1156,14 +1164,31 @@
     }
    },
    {
+    "player": "RJ Harvey|RB",
+    "before": 0.5046,
+    "after": 0.4435,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DEN",
+     "player_carries": 165,
+     "current_roster_team_rb_carries": 327
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DEN",
+     "player_carries": 165,
+     "historical_team_rb_carries": 372
+    }
+   },
+   {
     "player": "Aaron Jones|RB",
-    "before": 0.4087,
+    "before": 0.4536,
     "after": 0.3826,
     "before_sample": {
      "season": 2025,
      "current_roster_team": "MIN",
      "player_carries": 132,
-     "current_roster_team_rb_carries": 323
+     "current_roster_team_rb_carries": 291
     },
     "after_sample": {
      "season": 2025,
@@ -1242,13 +1267,13 @@
    },
    {
     "player": "Tyjae Spears|RB",
-    "before": 0.1773,
+    "before": 0.2293,
     "after": 0.2195,
     "before_sample": {
      "season": 2025,
      "current_roster_team": "TEN",
      "player_carries": 72,
-     "current_roster_team_rb_carries": 406
+     "current_roster_team_rb_carries": 314
     },
     "after_sample": {
      "season": 2025,
@@ -1258,20 +1283,20 @@
     }
    },
    {
-    "player": "Tyrone Tracy|RB",
-    "before": 0.4282,
-    "after": 0.4444,
+    "player": "Josh Jacobs|RB",
+    "before": 0.9004,
+    "after": 0.6216,
     "before_sample": {
      "season": 2025,
-     "current_roster_team": "NYG",
-     "player_carries": 176,
-     "current_roster_team_rb_carries": 411
+     "current_roster_team": "GB",
+     "player_carries": 253,
+     "current_roster_team_rb_carries": 281
     },
     "after_sample": {
      "season": 2025,
-     "historical_team": "NYG",
-     "player_carries": 176,
-     "historical_team_rb_carries": 396
+     "historical_team": "GB",
+     "player_carries": 253,
+     "historical_team_rb_carries": 407
     }
    },
    {
@@ -1306,23 +1331,6 @@
      "historical_team": "ATL",
      "player_carries": 143,
      "historical_team_rb_carries": 439
-    }
-   },
-   {
-    "player": "Brian Robinson|RB",
-    "before": 0.2487,
-    "after": 0.2169,
-    "before_sample": {
-     "season": 2025,
-     "current_roster_team": "ATL",
-     "player_carries": 95,
-     "current_roster_team_rb_carries": 382
-    },
-    "after_sample": {
-     "season": 2025,
-     "historical_team": "SF",
-     "player_carries": 95,
-     "historical_team_rb_carries": 438
     }
    },
    {
@@ -1361,7 +1369,9 @@
    }
   ],
   "gained": [],
-  "lost": [],
+  "lost": [
+   "Zach Charbonnet|RB"
+  ],
   "status_changed": [],
   "score_changed": [
    {
@@ -1371,6 +1381,11 @@
    }
   ],
   "gate_score_changed": [
+   {
+    "player": "Aaron Jones|RB",
+    "before": 4.3,
+    "after": 1.7
+   },
    {
     "player": "Alvin Kamara|RB",
     "before": 0.9,
@@ -1383,18 +1398,18 @@
    },
    {
     "player": "Chuba Hubbard|RB",
-    "before": 7.7,
-    "after": 1.7
-   },
-   {
-    "player": "J.K. Dobbins|RB",
-    "before": 0.9,
+    "before": 11.0,
     "after": 2.5
    },
    {
-    "player": "Jacory Croskey-Merritt|RB",
-    "before": 7.7,
-    "after": 11.0
+    "player": "De'Von Achane|RB",
+    "before": 19.4,
+    "after": 24.1
+   },
+   {
+    "player": "J.K. Dobbins|RB",
+    "before": 2.5,
+    "after": 0.9
    },
    {
     "player": "Jahmyr Gibbs|RB",
@@ -1407,24 +1422,34 @@
     "after": 8.9
    },
    {
-    "player": "Kenneth Walker|RB",
-    "before": 5.5,
-    "after": 4.4
+    "player": "Jordan Mason|RB",
+    "before": 6.2,
+    "after": 4.3
    },
    {
-    "player": "Tony Pollard|RB",
-    "before": 12.7,
-    "after": 15.7
+    "player": "Kenneth Walker|RB",
+    "before": 13.6,
+    "after": 11.0
+   },
+   {
+    "player": "Kyle Monangai|RB",
+    "before": 5.5,
+    "after": 13.6
+   },
+   {
+    "player": "Rhamondre Stevenson|RB",
+    "before": 6.2,
+    "after": 2.5
+   },
+   {
+    "player": "Rico Dowdle|RB",
+    "before": 13.6,
+    "after": 19.4
    },
    {
     "player": "Travis Etienne|RB",
     "before": 2.5,
     "after": 4.4
-   },
-   {
-    "player": "TreVeyon Henderson|RB",
-    "before": 15.7,
-    "after": 11.0
    },
    {
     "player": "Tyler Allgeier|RB",
@@ -1433,30 +1458,30 @@
    },
    {
     "player": "Zach Charbonnet|RB",
-    "before": 33.6,
-    "after": 11.0
+    "before": 41.1,
+    "after": 13.6
    }
   ],
   "component_attribution": {
    "grouping_only": {
     "before_threshold": {
-     "n": 46,
+     "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 3,
+     "excluded_unobserved_n": 5,
      "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
      "percentile_method": "nearest index: round(q * (n - 1))",
-     "p50": 0.5194,
-     "p75": 0.7342,
-     "p80": 0.7632,
+     "p50": 0.5326,
+     "p75": 0.7632,
+     "p80": 0.7666,
      "p50_method": "upper middle observation for even n; retired stage-2 baseline"
     },
     "after_threshold": {
-     "n": 46,
+     "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 3,
+     "excluded_unobserved_n": 5,
      "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
      "percentile_method": "nearest index: round(q * (n - 1))",
-     "p50": 0.5072,
+     "p50": 0.5465,
      "p75": 0.658,
      "p80": 0.6674,
      "p50_method": "upper middle observation for even n; grouping-only intermediate"
@@ -1464,13 +1489,18 @@
     "gate_score_changed": [
      {
       "player": "Aaron Jones|RB",
-      "before": 1.7,
-      "after": 4.3
+      "before": 4.3,
+      "after": 1.7
      },
      {
       "player": "Alvin Kamara|RB",
       "before": 0.9,
       "after": 2.5
+     },
+     {
+      "player": "Bucky Irving|RB",
+      "before": 11.0,
+      "after": 4.4
      },
      {
       "player": "Chris Rodriguez|RB",
@@ -1479,18 +1509,13 @@
      },
      {
       "player": "Chuba Hubbard|RB",
-      "before": 7.7,
-      "after": 1.7
-     },
-     {
-      "player": "J.K. Dobbins|RB",
-      "before": 0.9,
+      "before": 11.0,
       "after": 2.5
      },
      {
-      "player": "Jacory Croskey-Merritt|RB",
-      "before": 7.7,
-      "after": 11.0
+      "player": "J.K. Dobbins|RB",
+      "before": 2.5,
+      "after": 0.9
      },
      {
       "player": "Jahmyr Gibbs|RB",
@@ -1503,24 +1528,44 @@
       "after": 11.0
      },
      {
-      "player": "Kenneth Walker|RB",
-      "before": 5.5,
-      "after": 4.4
+      "player": "Jordan Mason|RB",
+      "before": 6.2,
+      "after": 4.3
      },
      {
-      "player": "Tony Pollard|RB",
-      "before": 12.7,
+      "player": "Josh Jacobs|RB",
+      "before": 19.4,
       "after": 15.7
+     },
+     {
+      "player": "Kenneth Walker|RB",
+      "before": 13.6,
+      "after": 11.0
+     },
+     {
+      "player": "Kyren Williams|RB",
+      "before": 69.0,
+      "after": 56.6
+     },
+     {
+      "player": "RJ Harvey|RB",
+      "before": 33.6,
+      "after": 15.7
+     },
+     {
+      "player": "Rhamondre Stevenson|RB",
+      "before": 6.2,
+      "after": 2.5
+     },
+     {
+      "player": "Rico Dowdle|RB",
+      "before": 13.6,
+      "after": 19.4
      },
      {
       "player": "Travis Etienne|RB",
       "before": 2.5,
       "after": 3.5
-     },
-     {
-      "player": "TreVeyon Henderson|RB",
-      "before": 15.7,
-      "after": 11.0
      },
      {
       "player": "Tyler Allgeier|RB",
@@ -1529,54 +1574,92 @@
      },
      {
       "player": "Zach Charbonnet|RB",
-      "before": 33.6,
-      "after": 11.0
+      "before": 41.1,
+      "after": 13.6
      }
     ],
     "gained": [],
-    "lost": [],
-    "status_changed": [],
+    "lost": [
+     "Zach Charbonnet|RB"
+    ],
+    "status_changed": [
+     {
+      "player": "Kyren Williams|RB",
+      "before": "BULLISH",
+      "after": "WATCH"
+     }
+    ],
     "score_changed": [
      {
       "player": "Jahmyr Gibbs|RB",
       "before": 84.0,
       "after": 69.0
+     },
+     {
+      "player": "Kyren Williams|RB",
+      "before": 69.0,
+      "after": 56.6
      }
     ]
    },
    "untrimmed_split_ledger": {
     "before_threshold": {
-     "n": 46,
+     "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 3,
+     "excluded_unobserved_n": 5,
      "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
      "percentile_method": "nearest index: round(q * (n - 1))",
-     "p50": 0.5072,
+     "p50": 0.5465,
      "p75": 0.658,
      "p80": 0.6674,
      "p50_method": "upper middle observation for even n; grouping-only intermediate"
     },
     "after_threshold": {
-     "n": 46,
+     "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 3,
+     "excluded_unobserved_n": 5,
      "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
      "percentile_method": "nearest index: round(q * (n - 1))",
-     "p50": 0.5072,
+     "p50": 0.5135,
      "p75": 0.6538,
      "p80": 0.6946,
      "p50_method": "upper middle observation for even n; preserved stage-2 convention"
     },
     "gate_score_changed": [
      {
-      "player": "Aaron Jones|RB",
-      "before": 4.3,
-      "after": 1.7
+      "player": "Bucky Irving|RB",
+      "before": 4.4,
+      "after": 11.0
+     },
+     {
+      "player": "De'Von Achane|RB",
+      "before": 19.4,
+      "after": 24.1
      },
      {
       "player": "Jaylen Warren|RB",
       "before": 11.0,
       "after": 8.9
+     },
+     {
+      "player": "Josh Jacobs|RB",
+      "before": 15.7,
+      "after": 19.4
+     },
+     {
+      "player": "Kyle Monangai|RB",
+      "before": 5.5,
+      "after": 13.6
+     },
+     {
+      "player": "Kyren Williams|RB",
+      "before": 56.6,
+      "after": 69.0
+     },
+     {
+      "player": "RJ Harvey|RB",
+      "before": 15.7,
+      "after": 33.6
      },
      {
       "player": "Travis Etienne|RB",
@@ -1586,13 +1669,25 @@
     ],
     "gained": [],
     "lost": [],
-    "status_changed": [],
-    "score_changed": []
+    "status_changed": [
+     {
+      "player": "Kyren Williams|RB",
+      "before": "WATCH",
+      "after": "BULLISH"
+     }
+    ],
+    "score_changed": [
+     {
+      "player": "Kyren Williams|RB",
+      "before": 56.6,
+      "after": 69.0
+     }
+    ]
    }
   },
   "non_rb_invariance": {
-   "before_count": 16,
-   "after_count": 16,
+   "before_count": 17,
+   "after_count": 17,
    "tag_records_identical": true
   },
   "open_inverse_gap": "backfield_command now measures 2025 team shares accurately; it still does not measure 2026 carries opened by departures. Vacated carries remains assessment-only pending an ADP-redundancy test and explicit no-prior-NFL-sample handling."
@@ -1611,17 +1706,17 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-08-30T16:13:13+00:00",
-   "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-   "snapshot_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-   "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
-   "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
+   "pulled_at": "2026-08-31T16:08:16+00:00",
+   "source_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+   "snapshot_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+   "upstream_content_sha256": "040421a0f0b3ef1b9dd8c7a47aa9d164ce43cbbac21cbcaea3bbed94b30968c1",
+   "decision_input_sha256": "0eb9779e3b87133faf59fd47ce65b35347b134035e193a13ba6aef61b7d2b31a",
    "pricing_by_week_sha256": {
-    "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "1": "d67ca91288842b70a358d6d11e69c7f01fa1d2d8901f5836181d7562b27d9edd",
+    "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
+    "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
@@ -1833,16 +1928,16 @@
     "event": "REPRICED",
     "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+     "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
+     "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
      "pricing_by_week_sha256": {
       "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-      "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+      "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
       "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
@@ -1866,16 +1961,16 @@
      }
     },
     "current": {
-     "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-     "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
+     "source_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+     "upstream_content_sha256": "040421a0f0b3ef1b9dd8c7a47aa9d164ce43cbbac21cbcaea3bbed94b30968c1",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
+     "decision_input_sha256": "0eb9779e3b87133faf59fd47ce65b35347b134035e193a13ba6aef61b7d2b31a",
      "pricing_by_week_sha256": {
-      "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+      "1": "d67ca91288842b70a358d6d11e69c7f01fa1d2d8901f5836181d7562b27d9edd",
+      "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
+      "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
       "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
@@ -1928,9 +2023,9 @@
     "after": "WATCH"
    },
    {
-    "player": "Patrick Mahomes|QB",
-    "before": "WATCH",
-    "after": "BULLISH"
+    "player": "Sam Darnold|QB",
+    "before": "BULLISH",
+    "after": "WATCH"
    }
   ],
   "score_changed": [
@@ -1956,8 +2051,13 @@
    },
    {
     "player": "Patrick Mahomes|QB",
-    "before": 45.0,
-    "after": 75.0
+    "before": 61.9,
+    "after": 84.4
+   },
+   {
+    "player": "Sam Darnold|QB",
+    "before": 75.4,
+    "after": 55.0
    }
   ],
   "rb_invariance": {
@@ -1980,18 +2080,18 @@
  "forward_vegas_delta": {
   "event": "REPRICED",
   "attribution": "SCHEDULE_INPUT",
-  "pulled_at": "2026-08-30T16:13:13+00:00",
+  "pulled_at": "2026-08-31T16:08:16+00:00",
   "prior": {
-   "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+   "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
    "upstream_content_sha256": null,
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
+   "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
    "pricing_by_week_sha256": {
     "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-    "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+    "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "weeks": [
@@ -2015,16 +2115,16 @@
    }
   },
   "current": {
-   "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-   "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
+   "source_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+   "upstream_content_sha256": "040421a0f0b3ef1b9dd8c7a47aa9d164ce43cbbac21cbcaea3bbed94b30968c1",
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
+   "decision_input_sha256": "0eb9779e3b87133faf59fd47ce65b35347b134035e193a13ba6aef61b7d2b31a",
    "pricing_by_week_sha256": {
-    "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-    "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+    "1": "d67ca91288842b70a358d6d11e69c7f01fa1d2d8901f5836181d7562b27d9edd",
+    "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
+    "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "weeks": [
@@ -2072,18 +2172,18 @@
   "last_material_event": {
    "event": "REPRICED",
    "attribution": "SCHEDULE_INPUT",
-   "pulled_at": "2026-08-30T16:13:13+00:00",
+   "pulled_at": "2026-08-31T16:08:16+00:00",
    "prior": {
-    "source_content_sha256": "eb6a512208b153e7ad2147dd0d93435bdb5de44f79ea765672fa6d1875b24627",
+    "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
     "upstream_content_sha256": null,
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-    "decision_input_sha256": "aa2f5a69c63058317967eedc8ab373dd535db5a384c90ba0536edf75594358f9",
+    "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
     "pricing_by_week_sha256": {
      "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-     "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+     "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-     "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+     "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
     },
     "weeks": [
@@ -2107,16 +2207,16 @@
     }
    },
    "current": {
-    "source_content_sha256": "3434f1e1dfacdaa2a5aab5542712367287637be4b4dbf1a1e5ac7b4f6d29c24c",
-    "upstream_content_sha256": "b73e79133973ec89aba6f590573e9109d5ab9a824b430e26a3940dc6c5b4888c",
+    "source_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+    "upstream_content_sha256": "040421a0f0b3ef1b9dd8c7a47aa9d164ce43cbbac21cbcaea3bbed94b30968c1",
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-    "decision_input_sha256": "2b10efce2d1c6d01432c7fecc51b38b4deaf6d34720ea795d63eabbece794849",
+    "decision_input_sha256": "0eb9779e3b87133faf59fd47ce65b35347b134035e193a13ba6aef61b7d2b31a",
     "pricing_by_week_sha256": {
-     "1": "ad0068872324c942d9235a19412d9005b33536d1abf0669992bf276e2846424b",
-     "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
+     "1": "d67ca91288842b70a358d6d11e69c7f01fa1d2d8901f5836181d7562b27d9edd",
+     "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-     "5": "4f4bcf9580af59dc2c92df0f939ca4803fb8dd5d17ddca4fe3a40d5e91c38e7a",
+     "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
     },
     "weeks": [
@@ -2201,7 +2301,7 @@
   }
  },
  "delta": {
-  "previous": "2026-08-29",
+  "previous": "2026-08-31",
   "gained": [],
   "lost": [],
   "status_changed": []
@@ -2211,7 +2311,7 @@
    "name": "Jahmyr Gibbs",
    "pos": "RB",
    "sleeper_id": "9221",
-   "adp": 1.3,
+   "adp": 1.9,
    "status": "BULLISH",
    "score": 69.0,
    "gate": "P(>= 4 of 5)",
@@ -2225,7 +2325,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
@@ -2248,14 +2348,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Puka Nacua",
    "pos": "WR",
    "sleeper_id": "9493",
-   "adp": 4.1,
+   "adp": 4.4,
    "status": "BULLISH",
    "score": 97.8,
    "gate": "P(>= 4 of 5)",
@@ -2271,14 +2371,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ja'Marr Chase",
    "pos": "WR",
    "sleeper_id": "7564",
-   "adp": 3.6,
+   "adp": 3.2,
    "status": "WATCH",
    "score": 55.7,
    "gate": "P(>= 4 of 5)",
@@ -2295,7 +2395,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
@@ -2318,14 +2418,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jaxon Smith-Njigba",
    "pos": "WR",
    "sleeper_id": "9488",
-   "adp": 6.6,
+   "adp": 6.2,
    "status": "BULLISH",
    "score": 96.0,
    "gate": "P(>= 4 of 5)",
@@ -2339,14 +2439,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Amon-Ra St. Brown",
    "pos": "WR",
    "sleeper_id": "7547",
-   "adp": 8.9,
+   "adp": 8.8,
    "status": "BULLISH",
    "score": 97.2,
    "gate": "P(>= 4 of 5)",
@@ -2360,35 +2460,35 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chase Brown",
    "pos": "RB",
    "sleeper_id": "9224",
-   "adp": 16.1,
+   "adp": 16.7,
    "status": "BULLISH",
-   "score": 69.0,
+   "score": 84.0,
    "gate": "P(>= 4 of 5)",
    "criteria": {
     "receiving_volume": 0.95,
     "expected_td_equity": 0.95,
     "line_quality": 0.15,
-    "availability": 0.75,
+    "availability": 0.95,
     "backfield_command": 0.95
    },
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Derrick Henry",
    "pos": "RB",
    "sleeper_id": "3198",
-   "adp": 20.9,
+   "adp": 20.0,
    "status": "BULLISH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -2402,14 +2502,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Saquon Barkley",
    "pos": "RB",
    "sleeper_id": "4866",
-   "adp": 13.4,
+   "adp": 12.6,
    "status": "WATCH",
    "score": 58.2,
    "gate": "P(>= 4 of 5)",
@@ -2425,33 +2525,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Josh Allen",
-   "pos": "QB",
-   "sleeper_id": "4984",
-   "adp": 22.1,
-   "status": "BULLISH",
-   "score": 99.3,
-   "gate": "P(>= 2 of 3)",
-   "criteria": {
-    "rushing": 0.95,
-    "environment": 0.95,
-    "efficiency": 0.95
-   },
-   "reasons": [],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ashton Jeanty",
    "pos": "RB",
    "sleeper_id": "12527",
-   "adp": 14.1,
+   "adp": 14.2,
    "status": "WATCH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -2467,14 +2548,54 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Josh Allen",
+   "pos": "QB",
+   "sleeper_id": "4984",
+   "adp": 21.0,
+   "status": "BULLISH",
+   "score": 99.3,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.95,
+    "environment": 0.95,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-08-31T16:10:07+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Javonte Williams",
+   "pos": "RB",
+   "sleeper_id": "7588",
+   "adp": 33.5,
+   "status": "BULLISH",
+   "score": 84.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.15,
+    "expected_td_equity": 0.95,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chris Olave",
    "pos": "WR",
    "sleeper_id": "8144",
-   "adp": 30.8,
+   "adp": 30.1,
    "status": "BULLISH",
    "score": 63.8,
    "gate": "P(>= 4 of 5)",
@@ -2488,14 +2609,58 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Kyren Williams",
+   "pos": "RB",
+   "sleeper_id": "8150",
+   "adp": 28.5,
+   "status": "BULLISH",
+   "score": 69.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.15,
+    "expected_td_equity": 0.75,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-08-31T16:10:07+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "sleeper_id": "6790",
+   "adp": 52.6,
+   "status": "WATCH",
+   "score": 56.6,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.15,
+    "expected_td_equity": 0.75,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.75
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Zay Flowers",
    "pos": "WR",
    "sleeper_id": "9997",
-   "adp": 42.0,
+   "adp": 41.8,
    "status": "BULLISH",
    "score": 68.8,
    "gate": "P(>= 4 of 5)",
@@ -2511,81 +2676,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Kyren Williams",
-   "pos": "RB",
-   "sleeper_id": "8150",
-   "adp": 29.2,
-   "status": "WATCH",
-   "score": 56.6,
-   "gate": "P(>= 4 of 5)",
-   "criteria": {
-    "receiving_volume": 0.15,
-    "expected_td_equity": 0.75,
-    "line_quality": 0.95,
-    "availability": 0.75,
-    "backfield_command": 0.95
-   },
-   "reasons": [
-    "near-miss: gate probability in the watch band"
-   ],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "D'Andre Swift",
-   "pos": "RB",
-   "sleeper_id": "6790",
-   "adp": 55.1,
-   "status": "WATCH",
-   "score": 46.4,
-   "gate": "P(>= 4 of 5)",
-   "criteria": {
-    "receiving_volume": 0.15,
-    "expected_td_equity": 0.75,
-    "line_quality": 0.95,
-    "availability": 0.75,
-    "backfield_command": 0.75
-   },
-   "reasons": [
-    "near-miss: gate probability in the watch band"
-   ],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
-   "ttl_hours": 72
-  },
-  {
-   "name": "Javonte Williams",
-   "pos": "RB",
-   "sleeper_id": "7588",
-   "adp": 35.5,
-   "status": "BULLISH",
-   "score": 69.0,
-   "gate": "P(>= 4 of 5)",
-   "criteria": {
-    "receiving_volume": 0.15,
-    "expected_td_equity": 0.95,
-    "line_quality": 0.95,
-    "availability": 0.75,
-    "backfield_command": 0.95
-   },
-   "reasons": [],
-   "capital_tiebreak": null,
-   "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Lamar Jackson",
    "pos": "QB",
    "sleeper_id": "4881",
-   "adp": 32.8,
+   "adp": 31.2,
    "status": "WATCH",
    "score": 55.0,
    "gate": "P(>= 2 of 3)",
@@ -2599,14 +2697,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Drake Maye",
    "pos": "QB",
    "sleeper_id": "11564",
-   "adp": 48.3,
+   "adp": 47.1,
    "status": "WATCH",
    "score": 55.0,
    "gate": "P(>= 2 of 3)",
@@ -2620,14 +2718,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Joe Burrow",
    "pos": "QB",
    "sleeper_id": "6770",
-   "adp": 51.6,
+   "adp": 51.4,
    "status": "BULLISH",
    "score": 61.9,
    "gate": "P(>= 2 of 3)",
@@ -2639,14 +2737,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Dak Prescott",
    "pos": "QB",
    "sleeper_id": "3294",
-   "adp": 78.4,
+   "adp": 77.5,
    "status": "BULLISH",
    "score": 75.4,
    "gate": "P(>= 2 of 3)",
@@ -2658,14 +2756,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Brock Purdy",
    "pos": "QB",
    "sleeper_id": "8183",
-   "adp": 121.2,
+   "adp": 123.3,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -2677,19 +2775,19 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Patrick Mahomes",
    "pos": "QB",
    "sleeper_id": "4046",
-   "adp": 107.1,
+   "adp": 110.0,
    "status": "BULLISH",
-   "score": 75.0,
+   "score": 84.4,
    "gate": "P(>= 2 of 3)",
    "criteria": {
-    "rushing": 0.5,
+    "rushing": 0.75,
     "environment": 0.75,
     "efficiency": 0.75
    },
@@ -2698,14 +2796,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Matthew Stafford",
    "pos": "QB",
    "sleeper_id": "421",
-   "adp": 96.2,
+   "adp": 95.3,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -2717,14 +2815,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jared Goff",
    "pos": "QB",
    "sleeper_id": "3163",
-   "adp": 133.3,
+   "adp": 131.7,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -2736,14 +2834,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jordan Love",
    "pos": "QB",
    "sleeper_id": "6804",
-   "adp": 149.5,
+   "adp": 150.7,
    "status": "BULLISH",
    "score": 75.4,
    "gate": "P(>= 2 of 3)",
@@ -2755,7 +2853,28 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-08-30T16:13:47+00:00",
+   "computed_at": "2026-08-31T16:10:07+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Sam Darnold",
+   "pos": "QB",
+   "sleeper_id": "4943",
+   "adp": 163.0,
+   "status": "WATCH",
+   "score": 55.0,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.5,
+    "efficiency": 0.95
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-08-31T16:10:07+00:00",
    "ttl_hours": 72
   }
  ]

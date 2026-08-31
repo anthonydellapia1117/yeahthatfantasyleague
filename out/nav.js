@@ -170,18 +170,18 @@
   // The pill reuses the app's existing state, never re-detects it:
   // - on the draft room, the page's own #mode chip already announces LIVE and
   //   #lv-dot already tracks feed freshness; the pill mirrors both.
-  // - elsewhere, the countdown reads draft_date from the engine payload
+  // - elsewhere, the countdown reads Sleeper's exact start epoch from the engine
   //   (sentinel JSON when present, the deployed engine_2026.json otherwise).
-  function daysText(dateStr){
-    var t = Date.parse(dateStr + "T19:00:00");
-    if (isNaN(t)) return null;
+  function daysText(epochMs){
+    var t = Number(epochMs);
+    if (!isFinite(t) || t <= 0) return null;
     var d = Math.max(0, Math.ceil((t - Date.now()) / 86400000));
     return d === 0 ? "DRAFT DAY" : d + " DAYS";
   }
   function countdownFrom(text){
-    var m = /"draft_date":"([0-9-]+)"/.exec(text || "");
+    var m = /"draft_start_time":([0-9]+)/.exec(text || "");
     var label = m && daysText(m[1]);
-    if (label) pill.textContent = label;
+    pill.textContent = label || "DRAFT TIME ?";
   }
   function statePill(){
     var sentinel = document.getElementById("engine-data");

@@ -879,13 +879,15 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     drp = open(os.path.join(ROOT, "out", "draft_room.html")).read()
     ok("ytfl_walter_live" in drp and "cvs_base" in drp,
        "pick engine reads the same kill-switch and pure-model variant")
-    # the draft-order hypothesis: quarantined, persisted, and explicitly
-    # subordinate to Sleeper's real draw
+    # the old draft-order hypothesis is quarantined; the externally reported
+    # draw is first-class and a later official mismatch blocks rather than
+    # silently replacing one plausible seat with another.
     ok("ORDERHYP-BEGIN" in drp and "ORDERHYP-END" in drp
        and "ytfl_order_hyp" in drp,
        "order hypothesis is marker-quarantined and persisted")
-    ok("THE LIVE SOURCE WINS" in drp and "hypothesis is retired" in drp,
-       "order hypothesis states that Sleeper's draw wins, and retires visibly")
+    ok("SLEEPER MUST CONFIRM THE REPORTED DRAW" in drp and
+       "DRAFT-ORDER CONFLICT" in drp and "Board blocked" in drp,
+       "reported draw requires Sleeper agreement and blocks a conflict visibly")
     ok(drp.index("ORDERHYP-BEGIN") > drp.index("engine-data-end"),
        "order hypothesis code sits outside the engine sentinels")
     # the survival calibration layer (ADOPTED, scope ii): payload table is
@@ -1014,10 +1016,12 @@ if os.path.exists(bb_page) and os.path.exists(cvs_path):
     _up = drp[drp.index("UPNEXT-BEGIN"):drp.index("UPNEXT-END")]
     ok("YOU ARE ON THE CLOCK" in _up and "UP IN " in _up and "before you:" in _up,
        "the up-next strip states the clock, the count, and who picks first")
-    ok("teamLabel(" in _up, "the up-next queue names teams, not bare slot numbers")
+    ok("seatContext(" in _up,
+       "the up-next queue names drawn managers, not bare slot numbers")
     # display only: identity must not reach the score or the grade
     _pe2 = drp[drp.index("function peScore"):drp.index("function peCondition")]
-    ok("teamLabel" not in _pe2 and "team_name" not in _pe2,
+    ok("teamLabel" not in _pe2 and "seatContext" not in _pe2 and
+       "team_name" not in _pe2,
        "the Sleeper team name never enters the pick-engine score")
     for pg_ in ("big_board.html", "home.html"):
         _t = open(os.path.join(ROOT, "out", pg_)).read()
@@ -1040,8 +1044,8 @@ hp = os.path.join(ROOT, "out", "home.html")
 ok(os.path.exists(hp), "home.html exists")
 if os.path.exists(hp):
     hpage = open(hp).read()
-    ok("E.league.draft_date" in hpage,
-       "countdown reads the draft date from the engine payload")
+    ok("E.league.draft_start_time" in hpage and "T19:00:00" not in hpage,
+       "countdown reads Sleeper's exact start epoch, never a guessed hour")
     ok("Fresh under 36h" in hpage and "aging under 7 days" in hpage,
        "staleness thresholds stated on the board")
     ok(all(f'href="{s}"' in hpage for s in
@@ -1604,6 +1608,11 @@ _close = '</script><!--engine-data-end-->'
 _embedded = json.loads(_room_src.split(_open, 1)[1].split(_close, 1)[0])
 ok(_embedded == _eng,
    "draft room embeds the exact engine object that ships beside it")
+ok(_eng.get("draft_order_context", {}).get("primary_slot") == 4 and
+   _eng.get("overlay_pick_basis", {}).get("slot") == 4 and
+   set(_eng.get("slots", {})) == {str(s) for s in range(1, 13)} and
+   "primaryPlanningSlot()" in _room_src,
+   "shared publication boundary carries slot 4 primary plus all references")
 ok("CVS.engine_content_sha256" in _room_src and
    "cvsDigest !== engineDigest" in _room_src and
    "pick engine is offline until both rebuild together" in _room_src and

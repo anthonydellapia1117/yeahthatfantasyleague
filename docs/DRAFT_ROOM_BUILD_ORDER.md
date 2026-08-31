@@ -2,7 +2,10 @@
 
 > **Historical build record, not an operational runbook.** The mapped lineage
 > chain in `docs/DRAFT_MORNING.md` supersedes every engine-only rebuild or ship
-> instruction below. Do not execute this document top to bottom.
+> instruction below. Do not execute this document top to bottom. Current state:
+> Anthony is externally drawn in slot 4 (Sleeper confirmation pending), slot 4 is
+> primary, and the other eleven slots are reference views. Slots 3 and 7 have
+> unresolved history and remain null in opponent descriptions.
 
 **For the Claude Code Web session. Execute top to bottom. All git work is yours: branch, commit, PR, merge on green. Anthony merges and pushes nothing. Report at each gate.**
 
@@ -12,7 +15,10 @@ Draft is 2026-09-08. This order was assembled from three research streams: a fea
 
 1. **No number appears anywhere that cannot be computed from this repo's verified data or the free Sleeper feed.** No invented stats, no fabricated variance, no scraped paid content.
 2. **No champion mimicry.** Eight draft-day hypotheses are null. Nothing in the UI implies champions share a pattern.
-3. **Tendency lifts never enter a displayed availability probability.** Backtested: fold-in made forecasts worse (p=0.99). Lifts are display chips and simulator sampling only. Guard 6 in tests/test_survival.py enforces this - it must survive every commit.
+3. **Tendency lifts never enter a displayed availability probability, simulator,
+   or verdict.** Backtested: fold-in made forecasts worse (p=0.9932). Historical
+   timing is description only, always with n. Guard 6 in tests/test_survival.py
+   enforces this - it must survive every commit.
 4. **The calibration benchmark guard stands**: no change to the survival math ships without beating the frozen step baseline out of sample.
 5. **All 18 Python guards and the full smoke suite (incl. 42 JS-parity anchors) pass at every merge.** Regenerating with `python3 src/engine_2026.py` must stay the single rebuild command.
 6. Hyphens only, no em dashes, no emojis in repo files.
@@ -74,9 +80,17 @@ The gap audit found the single most valuable miss: **the live recommendation is 
 
 ## PHASE 4 - The signature feature: the league-mate mock simulator
 
-No commercial tool has this: **mock drafts where the 11 opponents are the actual league mates**, sampling each seat's positional choice from their measured tendency lifts (out/positional_tendency.csv) and their pick-error distribution (the fitted sd curve), then picking within-position by ADP order. Run N sims from Anthony's seat, show: distribution of his likely roster, which targets most often survive to each of his picks, and where the board typically breaks.
+No commercial tool has this: **mock drafts arranged around the actual league's
+seats**, with slot 4 primary and the other eleven reference views. Availability and
+pick selection use the audited league-wide survival and marginal-lineup policy,
+not manager tendencies. Historical manager timing may be shown beside a seat as
+description with n; slots 3 and 7 are null until their history identities resolve.
 
-**QUARANTINE RULE**: everything simulator-powered gets a dashed border, a `SIM` badge in amber, and the caption "scenario, not a forecast". Sampling from tendencies for illustration is legitimate; presenting it as calibrated probability is the exact thing the backtest rejected. The decision numbers on the main cards remain the audited survival model only. Add a guard test asserting simulator output never feeds the verdict logic.
+**QUARANTINE RULE**: everything simulator-powered gets a dashed border, a `SIM`
+badge in amber, and the caption "scenario, not a forecast". Tendencies are not
+sampled even for illustration; the p=0.9932 null stands. Decision numbers remain
+the audited survival model only. Keep a guard asserting simulator and historical
+descriptions never feed verdict logic.
 
 **Gate 4**: sim runs client-side in under 2s for 500 drafts, quarantine styling verified in the smoke test.
 

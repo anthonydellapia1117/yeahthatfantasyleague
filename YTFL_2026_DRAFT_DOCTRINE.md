@@ -2,19 +2,60 @@
 
 **Anthony DellaPia, roster 7 (with ernie706). League 1389378429505241088. Board built 2026-08-11.**
 
+> **Operational override, 2026-08-31:** the externally reported draw puts Anthony
+> in **slot 4**, with picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124,
+> 141, 148, 165**. Sleeper has not published the order yet, so the external draw
+> remains pending official confirmation. Draft start is
+> **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. The slot-7 arithmetic
+> below is retained only as a dated scenario; use the current slot-4 engine and
+> draft room for decisions. The other eleven slots remain reference views.
+
+> **Pick-4 owner decision, recorded outside the model:** if Gibbs, Bijan Robinson,
+> and Ja'Marr Chase go 1-2-3, the complete 4/21/28 marginal-lineup policy scores
+> McCaffrey **290.75**, Puka **288.67**, and Jonathan Taylor **272.05**. CMC's
+> nominal **+2.08** over Puka is inside the board-derived **7.0** coin-flip band,
+> and a documented survival-calibration sensitivity reverses it to Puka by 0.15.
+> The model therefore says **CMC/Puka tie**, not CMC. Anthony chooses **Puka** as
+> an explicit external tie-break because CMC is age 30, missed 13 of 34 games,
+> carried 450 touches in 2025, and this league has zero IR slots. That durability
+> judgment is not a projection, VOR input, BULLISH tag, or model verdict. If Puka
+> is still not practicing by September 5, withdraw the override and return to the
+> honest coin flip; Sleeper's injury label alone cannot establish practice status.
+
+> **Projection boundary:** the core board scores Sleeper's 2026 raw-stat
+> projection feed under this league's rules. The backward-looking limitation
+> applies to auxiliary ceiling, availability, usage, archetype, and opportunity
+> evidence built mostly from 2025 data on 2026 rosters, not to the core player
+> projection itself.
+
+> **Puka-path turn plan (100,000 paired survival states, seed 20260831):**
+> taking Puka changes pick 21 in only 3 of 100,000 states versus taking CMC.
+> Excluding true shock fallers, the current marginal-policy order is **Achane →
+> Chase Brown → Bowers → Derrick Henry → Saquon → Lamb → Kenneth Walker →
+> Hampton → Nico → Jeanty → McBride → Josh Allen** at 21; adjacent choices through Henry
+> are themselves within or near the 7.0 coin-flip band. At 28, apply the
+> marginal-lineup policy again rather than forcing a position. If Bowers was the
+> pick, take the best RB/WR (Nico, Henry, Javonte, and Walker are the common
+> outcomes) and do not double TE. If an RB was the pick, Bowers is usually the
+> next target, but any higher-VOR surviving RB still wins; a second RB remains
+> fully live because Puka + RB leaves RB2 open. The deterministic Bowers-to-Javonte
+> mock is one path, not the plan.
+
 ---
 
 ## The one change
 
 **Stop asking "is this player good value at this pick" and start pricing every pick as a two-pick swap - what this player returns *minus* what the same capital would have bought at your next turn - because every single conclusion in this analysis that survived contact with the numbers survived on that arithmetic, and every one that died, died without it.**
 
-The proof, at slot-7 pick numbers: taking Jayden Daniels at 55 and the best non-QB left at 90 returns 3.2 + 8.9 = **12.1 VOR**. Taking a running back at 55 and Dak Prescott at 90 returns 44.6 + 18.4 = **63.0 VOR**. Net **+50.9 VOR, 2.83 points per game over 18 games**. Only 15.2 of that is the quarterback swap. The other 35.7 is the running back you get instead, which is the half nobody prices. [E]
+The dated proof, at the former slot-7 pick numbers: taking Jayden Daniels at 55 and the best non-QB left at 90 returns 3.2 + 8.9 = **12.1 VOR**. Taking a running back at 55 and Dak Prescott at 90 returns 44.6 + 18.4 = **63.0 VOR**. Net **+50.9 VOR, 2.83 points per game over 18 games**. Only 15.2 of that is the quarterback swap. The other 35.7 is the running back you get instead, which is the half nobody prices. This example explains the method; it is not the current slot-4 board. [E]
 
 ---
 
-## The board, read at your actual picks
+## Historical slot-7 board - superseded by the current slot-4 engine
 
-This is one engine run, best-available-by-VOR among skill players expected to survive to each pick. It is the spine of everything below.
+This is the dated 2026-08-11 engine run, best-available-by-VOR among skill players
+expected to survive to each former slot-7 pick. It documents the method, but the
+current slot-4 engine supersedes its names and pick windows.
 
 | Pick | #1 on the board | #2 | #3 |
 |---|---|---|---|
@@ -71,7 +112,7 @@ Same doctrine everywhere: **rounds 1 through 5 buy skill capital, round 6 buys t
 
 | Rd | Pick (slot 2) | Best on board | Posture |
 |---|---|---|---|
-| 1 | 2 | McCaffrey RB 129.9 | Elite RB or WR. No decision to make |
+| 1 | 2 | McCaffrey RB 129.9 | Historical forced-board example; it did not test player-level alternatives or an observed board state |
 | 2 | 23 | Derrick Henry RB 85.8 | Henry 85.8 over Allen 68.0. Take the back |
 | 3 | 26 | **Josh Allen QB 68.0** | The one live early-QB cell. See the warning below before you take it |
 | 4 | 47 | Skattebo RB 48.4 | Running back |
@@ -82,7 +123,7 @@ Same doctrine everywhere: **rounds 1 through 5 buy skill capital, round 6 buys t
 
 Also note the superlative is fragile: hold QB12 and walk the RB replacement baseline six slots deeper and Breece Hall passes Allen. "Highest VOR on the board" is a modeling convention, not a fact about football.
 
-### Middle slot (5 through 8) - your documented seat
+### Middle slot (5 through 8) - historical slot-7 scenario
 
 | Rd | Pick (slot 7) | Best on board | Posture |
 |---|---|---|---|
@@ -148,7 +189,7 @@ Two things are true at once, and the interesting one is second.
 
 **Round 8. Prescott. That is the whole fix.**
 
-And the value of the reshuffle at your specific picks, if slot 7 holds: **+19.6 at pick 55** (Burrow over Hurts), **+13.4 at pick 66** (Prescott over Hurts), and **exactly +0.0 at all twelve of your other picks**, including round 10, where the broken board and the corrected board both say Bo Nix. [S]
+And the value of the reshuffle in the superseded slot-7 scenario was: **+19.6 at pick 55** (Burrow over Hurts), **+13.4 at pick 66** (Prescott over Hurts), and **exactly +0.0 at all twelve other picks**, including round 10, where the broken board and the corrected board both said Bo Nix. Recompute at slot 4 before using this operationally. [S]
 
 ---
 
@@ -157,9 +198,10 @@ And the value of the reshuffle at your specific picks, if slot 7 holds: **+19.6 
 | Defect | What it means | Src |
 |---|---|---|
 | `ppg` is fake | `gp` is hardcoded 18.0 for **all 242 drafted offensive players**. `ppg` is exactly `pts/18` and carries zero information beyond total points. Sorting by pts versus ppg produces 2 order differences, both float-rounding ties. **Delete this column from your decision loop.** The 32 `gp=1.0` rows are defenses with a placeholder game count | [S] |
-| Injury status is discarded | **39 of 242 drafted offensive players carry a non-null `injury_status` in the same Sleeper payload the engine reads, and the engine throws it away at lines 71-78.** Eight sit inside ADP 50, including the **number 1 ADP pick (Jahmyr Gibbs, Questionable) and the number 5 (Christian McCaffrey, Questionable)**, plus Nabers, Jacobs, Burden, Flowers, DeVonta Smith and Waddle. Injured players project a median 0.4 points *below* healthy same-position peers within 25 ADP slots, so the risk is priced into neither `pts` nor `gp`. This is the only availability signal that exists and it is not external - it is sitting in the file, unused. Check it manually on every pick inside round 4 | [S][E] |
+| Injury status is displayed, not valued | The current engine carries Sleeper's `injury_status` into player rows and the room renders it, but neither projected points nor VOR applies an injury penalty. The label is a warning, not a priced risk model, and it does not report practice participation. Check an authoritative practice report manually for every early-round injury; specifically, re-check Puka by September 5 before applying the owner override above | [S][E] |
 
-*The injured-player count was 42 when the finding was written and reads 39 on today's pull; Sleeper's status field churns daily. Re-pull it on draft morning.*
+*Sleeper's status field churns daily. Re-pull it on draft morning, but do not
+mistake a current `Questionable` label for evidence that a player practiced.*
 
 ---
 
@@ -176,14 +218,16 @@ And the value of the reshuffle at your specific picks, if slot 7 holds: **+19.6 
 
 ---
 
-## Still unknown, and blocking
+## Current draw state
 
 | Item | Status | What it blocks |
 |---|---|---|
-| **Draft slot** | **Unassigned.** Sleeper draft 1389378429505241089 returns `draft_order: null`, `status: pre_draft`. The `slot_to_roster_id` map is a bare identity placeholder (1→1 … 12→12), which is *not* a slot assignment | Every pick number in this document. The slot-7 arithmetic (55, 66, 79, 90, 103, 114) is the assumption the whole analysis was priced on, and the seat effect is sign-unstable across slots. The early-slot Allen cell exists at slots 1-4 and nowhere else |
-| **Draft date and time** | **Unset.** `start_time: null` | When to re-pull the board. Projections and injury statuses both move daily, and the injury field above changed by 3 players between the analysis pass and today. Re-run the engine the morning of |
+| **Draft slot** | **Externally drawn: slot 4. Sleeper confirmation pending.** Anthony's picks are 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. Sleeper still returns `draft_order: null` with the identity `slot_to_roster_id` placeholder. | Slot 4 is the primary operational view. Keep all eleven other slots for reference. If Sleeper later publishes a conflicting order, fail loudly rather than choosing a source silently. Slots 3 and 7 have unresolved historical identity and remain honest nulls for tendency descriptions. |
+| **Draft date and time** | **Set:** `start_time: 1788912025000`, or **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. | Re-pull projections and injury status on draft morning and verify the live payload still agrees. |
 
-Confirmed from the same call: **snake, 14 rounds, 12 teams.** Send the slot the moment it posts and this collapses to one column instead of three.
+Confirmed format: **snake, 14 rounds, 12 teams.** The operational surfaces now
+lead with slot 4 while preserving the other eleven as reference; official Sleeper
+publication is a reconciliation event, not permission to keep using slot 7.
 
 ---
 
