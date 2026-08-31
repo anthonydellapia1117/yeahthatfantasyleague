@@ -2390,15 +2390,24 @@ function completeSlotMap(draft){
     new Set(vals).size === teams && expected.every(x => keys.includes(x) && vals.includes(x));
   return complete ? m : null;
 }
-function completeDraftOrder(draft){
+function validDraftOrder(draft){
   const order = draft.draft_order;
   if (!plainOfficialObject(order) || !Object.keys(order).length) return null;
   const teams = Number(E.league.teams);
-  const vals = Object.values(order).map(exactInt);
+  const entries = Object.entries(order).map(([uid, slot]) =>
+    [String(uid), exactInt(slot)]);
+  const vals = entries.map(([_uid, slot]) => slot);
   const expected = Array.from({length:teams}, (_, i) => i + 1);
-  const complete = Object.keys(order).length === teams &&
-    new Set(vals).size === teams && expected.every(x => vals.includes(x));
-  return complete ? order : null;
+  const valid = entries.length <= teams && entries.every(([uid, slot]) =>
+    !!uid && slot != null && slot >= 1 && slot <= teams) &&
+    new Set(vals).size === vals.length;
+  if (!valid) return null;
+  return { order, complete: entries.length === teams &&
+    expected.every(x => vals.includes(x)) };
+}
+function completeDraftOrder(draft){
+  const info = validDraftOrder(draft);
+  return info && info.complete ? info.order : null;
 }
 // slot_to_roster_id returns the identity map {1:1,...,12:12} before the draw.
 function realSlotMap(draft){
@@ -2412,9 +2421,10 @@ function officialSeatState(draft){
   const rawSlots = draft.slot_to_roster_id;
   const orderPresent = officialFieldPresent(rawOrder);
   const slotsPresent = officialFieldPresent(rawSlots);
-  const order = completeDraftOrder(draft);
+  const orderInfo = validDraftOrder(draft);
+  const order = orderInfo && orderInfo.order;
   const completeSlots = completeSlotMap(draft);
-  if (orderPresent && !order)
+  if (orderPresent && !orderInfo)
     return { drawn:true, slot:null, source:"incomplete draft_order" };
   if (slotsPresent && !completeSlots)
     return { drawn:true, slot:null, source:"incomplete slot_to_roster_id" };
@@ -2423,12 +2433,21 @@ function officialSeatState(draft){
   let byRoster = null;
   if (m) for (const slot of Object.keys(m))
     if (Number(m[slot]) === Number(E.league.anthony_roster_id)) byRoster = Number(slot);
+  // Sleeper omits ownerless rosters from draft_order. Such a partial user
+  // map may corroborate a complete non-identity roster permutation, but it
+  // remains unsafe by itself or beside the pre-draw identity placeholder.
+  if (orderInfo && !orderInfo.complete && !m)
+    return { drawn:true, slot:null, source:"incomplete draft_order" };
+  if (orderInfo && !byUser)
+    return { drawn:true, slot:null, source:"owner missing from draft_order" };
+  if (m && !byRoster)
+    return { drawn:true, slot:null, source:"owner missing from slot map" };
   if (byUser && byRoster && byUser !== byRoster)
     return { drawn:true, slot:null,
       source:`official fields disagree: draft_order slot ${byUser}, slot map slot ${byRoster}` };
   if (byUser) return { drawn:true, slot:byUser,
-    source:byRoster ? "draft_order + slot_to_roster_id" : "draft_order" };
-  if (order) return { drawn:true, slot:null, source:"owner missing from draft_order" };
+    source:byRoster ? (orderInfo.complete ? "draft_order + slot_to_roster_id" :
+      "partial draft_order + slot_to_roster_id") : "draft_order" };
   if (byRoster) return { drawn:true, slot:byRoster, source:"slot_to_roster_id" };
   if (m) return { drawn:true, slot:null, source:"owner missing from slot map" };
   const identity = !!completeSlots && Object.keys(completeSlots).every(
@@ -2682,9 +2701,12 @@ async function refreshOnce(){
     if (!MOCK_MODE){
       const rm = realSlotMap(draft);
       const hadHyp = OrderHyp.active();
+      const wasConfirmed = OrderHyp.confirmed;
       OrderHyp.realMap = rm;
       OrderHyp.confirmed = !!seat && isRealOrder(draft);
-      if (rm && hadHyp && document.querySelector(".rowcard"))
+      const confirmationChanged = OrderHyp.confirmed !== wasConfirmed;
+      if ((confirmationChanged || (rm && hadHyp)) &&
+          document.querySelector(".rowcard"))
         renderPre(LiveState.mySlot || primaryPlanningSlot() || 1);
     }
     $("mode").textContent = (MOCK_MODE ? "DRAFT MODE - MOCK WAITING" :

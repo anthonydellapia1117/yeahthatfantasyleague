@@ -678,6 +678,41 @@ plausible partial season can also pass.
   fails closed.
 - Decision: no correctness guard now, by Anthony's direction nine days out.
 
+**P2-10. The draft-order endpoint states were tested separately; the one-time
+placeholder-to-confirmed transition was not.** RESOLVED on the 2026-08-31
+transition branch before Sleeper published the order.
+
+At 18:02 and again at 18:31 UTC the real draft still returned `pre_draft`,
+`draft_order: null`, the exact identity roster map, and zero picks. Roster 3 was
+ownerless. Historical Sleeper evidence from this league's 2024 shell and the live
+2026 roster state show that a legitimate publication can therefore contain 11
+`draft_order` users plus a complete 12-entry `slot_to_roster_id` permutation.
+The resolver required 12 users and rejected that realistic payload as
+`incomplete_draft_order`, before considering the complete roster evidence.
+
+A second defect survived even under the idealized null-user-order/full-roster-map
+fixture: the top banner advanced to confirmed, but `OrderHyp.active()` is always
+false when an external report exists, so the already-rendered order card, gap
+strips, active reference chip, and decision geometry were not repainted. Two green
+fresh-load fixtures had proved both endpoint states while missing the broken seam.
+The pre-fix same-page smoke removed `#ohyp-card` into a blocked state and exited 1.
+
+The fix permits a well-formed partial user map only as corroboration for a complete
+non-identity roster permutation. It still rejects partial+absent, identity,
+incomplete, or malformed fallbacks; owner absence and any slot disagreement still
+block. A confirmation-state change now repaints the pre-draft surface to slot 4 in
+the same document. The regression starts on the exact captured placeholder, opens
+slot 7 as a reference, switches to the realistic 11+12 payload, and proves all
+labels, pick geometry, and the active chip advance together without a reload,
+conflict, live clock, or transient slot-7 primary. This is automated transition
+evidence, not a claim that the still-pending real server transition has occurred.
+
+- Severity: **HIGH and draft-critical before the fix.** The first real order poll
+  could have blocked or displayed a split state immediately before the draft.
+- Defect class: **endpoint snapshots without transition coverage.** The question
+  to ask is not only “do both states render?” but “does the same consumer move
+  between them coherently?”
+
 ### Hunted and found clean (stated so the next agent does not redo it)
 
 - **Injection.** `MOCK_ID` is sanitized at the source (`.replace(/\D/g,"")`) and

@@ -2,7 +2,8 @@
 
 ``draft_order`` (user id -> slot) and a non-identity
 ``slot_to_roster_id`` map are independent official evidence. Either complete
-field may resolve the seat, but two complete fields must agree. Sleeper
+field may resolve the seat, and an ownerless-seat user map may corroborate a
+complete roster permutation, but two resolving fields must agree. Sleeper
 publishes the identity map before this league's order is drawn, so roster id
 must never be treated as a draft slot merely because both happen to be 7 today.
 
@@ -67,15 +68,35 @@ def _complete_slot_map(slot_map, teams):
     return pairs
 
 
-def _complete_draft_order(order, teams):
-    """Return user/slot pairs only for a complete slot permutation."""
+def _valid_draft_order(order, teams):
+    """Return well-formed user/slot pairs, including ownerless-seat draws.
+
+    Sleeper omits an ownerless roster from ``draft_order`` while retaining a
+    complete ``slot_to_roster_id`` permutation. A shorter user map is valid
+    corroborating evidence only when that complete roster map is also present;
+    it is never independently sufficient to resolve a seat.
+    """
     team_count = _team_count(teams)
     if team_count is None or not isinstance(order, dict) or not order:
         return None
     pairs = [(str(user_id), _int(slot)) for user_id, slot in order.items()]
+    slots = [slot for _user_id, slot in pairs]
+    if (len(pairs) > team_count or
+            any(not user_id or slot is None or slot < 1 or slot > team_count
+                for user_id, slot in pairs) or
+            len(set(slots)) != len(slots)):
+        return None
+    return pairs
+
+
+def _complete_draft_order(order, teams):
+    """Return user/slot pairs only for a complete slot permutation."""
+    team_count = _team_count(teams)
+    pairs = _valid_draft_order(order, teams)
+    if pairs is None:
+        return None
     expected = set(range(1, team_count + 1))
     if (len(pairs) != team_count or
-            any(not user_id or slot is None for user_id, slot in pairs) or
             {slot for _user_id, slot in pairs} != expected):
         return None
     return pairs
@@ -107,7 +128,8 @@ def resolve_owner_slot(draft, user_id, roster_id, teams):
     # A list/string/number is malformed evidence, not permission to ignore one
     # official source and trust the other.
     order_present = raw_order is not None and raw_order != {}
-    order_pairs = _complete_draft_order(order, team_count)
+    order_pairs = _valid_draft_order(order, team_count)
+    complete_order = _complete_draft_order(order, team_count)
     if order_present and (not isinstance(raw_order, dict) or not order_pairs):
         return {"drawn": True, "slot": None,
                 "source": "incomplete_draft_order"}
@@ -120,9 +142,24 @@ def resolve_owner_slot(draft, user_id, roster_id, teams):
         return {"drawn": True, "slot": None,
                 "source": "incomplete_slot_to_roster_id"}
     identity = bool(pairs) and all(k == v for k, v in pairs)
+    real_pairs = pairs if pairs and not identity else None
     wanted = _int(roster_id)
-    by_roster = (next((key for key, value in (pairs or [])
-                       if value == wanted), None) if not identity else None)
+    by_roster = next((key for key, value in (real_pairs or [])
+                      if value == wanted), None)
+
+    # A partial user order is the documented Sleeper shape when one or more
+    # rosters are ownerless. It may corroborate a complete non-identity roster
+    # permutation, but absent that complete source it remains indistinguishable
+    # from a truncated response and must fail closed.
+    if order_pairs and not complete_order and not real_pairs:
+        return {"drawn": True, "slot": None,
+                "source": "incomplete_draft_order"}
+    if order_pairs and by_user is None:
+        return {"drawn": True, "slot": None,
+                "source": "draft_order_owner_missing"}
+    if real_pairs and by_roster is None:
+        return {"drawn": True, "slot": None,
+                "source": "slot_map_owner_missing"}
 
     # Both official payload fields are independent evidence once complete.
     # Precedence is safe only when the fallback is absent/identity; accepting
@@ -134,11 +171,10 @@ def resolve_owner_slot(draft, user_id, roster_id, teams):
                 "slot_map_slot": by_roster}
     if by_user is not None:
         return {"drawn": True, "slot": by_user,
-                "source": ("draft_order+slot_to_roster_id"
+                "source": (("draft_order" if complete_order
+                            else "partial_draft_order") +
+                           "+slot_to_roster_id"
                            if by_roster is not None else "draft_order")}
-    if order_pairs:
-        return {"drawn": True, "slot": None,
-                "source": "draft_order_owner_missing"}
     if by_roster is not None:
         return {"drawn": True, "slot": by_roster,
                 "source": "slot_to_roster_id"}

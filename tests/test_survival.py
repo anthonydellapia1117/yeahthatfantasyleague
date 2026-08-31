@@ -437,6 +437,53 @@ for _official_payload, _official_source in [
     ok(_agrees["slot"] == 4 and _agrees["official_check"] == "agrees" and
        _agrees["source"] == _official_source,
        f"Sleeper {_official_source} confirms external slot 4", str(_agrees))
+
+# The live 2026 league currently has one ownerless roster. Sleeper's valid
+# publication shape therefore has eleven user assignments but a complete
+# twelve-roster permutation; an older league shell has emitted this shape too.
+_ownerless_user_order = {
+    "1076422875726299136": 1, "741129160759619584": 2,
+    "740765967986204672": 3, _uid: 4,
+    "741128841325649920": 5, "1131785934086807552": 6,
+    "1092593997857673216": 8, "860741469600854016": 9,
+    "460972700463001600": 10, "1092594720267702272": 11,
+    "1132354082896986112": 12,
+}
+_reported_roster_map = {
+    "1": 10, "2": 11, "3": 1, "4": 7, "5": 6, "6": 9,
+    "7": 3, "8": 2, "9": 8, "10": 5, "11": 4, "12": 12,
+}
+_ownerless_payload = {
+    "status": "pre_draft", "draft_order": _ownerless_user_order,
+    "slot_to_roster_id": _reported_roster_map,
+}
+_ownerless_resolved = eng.resolve_owner_slot(
+    _ownerless_payload, _uid, _rid, 12)
+ok(_ownerless_resolved == {
+       "drawn": True, "slot": 4,
+       "source": "partial_draft_order+slot_to_roster_id"},
+   "ownerless-seat user order corroborates the complete roster permutation",
+   str(_ownerless_resolved))
+_ownerless_agrees = reconcile_owner_slot(
+    _ownerless_payload, _reported, _uid, _rid, 12)
+ok(_ownerless_agrees["slot"] == 4 and
+   _ownerless_agrees["official_check"] == "agrees" and
+   _ownerless_agrees["source"] ==
+       "partial_draft_order+slot_to_roster_id",
+   "realistic eleven-user/twelve-roster publication confirms slot 4",
+   str(_ownerless_agrees))
+_ownerless_conflict = copy.deepcopy(_ownerless_payload)
+_ownerless_conflict["draft_order"][_uid] = 5
+_ownerless_conflict["draft_order"]["741128841325649920"] = 4
+try:
+    reconcile_owner_slot(
+        _ownerless_conflict, _reported, _uid, _rid, 12)
+    _ownerless_conflict_source = None
+except DraftOrderResolutionError as _exc:
+    _ownerless_conflict_source = _exc.source
+ok(_ownerless_conflict_source == "official_sources_conflict",
+   "partial user order may corroborate the complete map but never defeat it",
+   str(_ownerless_conflict_source))
 for _conflict_payload in [
     {"status": "pre_draft", "draft_order": _complete_user_order(7),
      "slot_to_roster_id": _identity_payload["slot_to_roster_id"]},
@@ -480,6 +527,18 @@ for _bad_order, _source in [
                          "source": _source},
        "partial or duplicate draft_order cannot confirm a plausible owner seat",
        str(_bad_official))
+for _fallback, _source in [
+    (None, "incomplete_draft_order"),
+    ({"1": 1}, "incomplete_slot_to_roster_id"),
+    ("malformed", "incomplete_slot_to_roster_id"),
+]:
+    _partial_without_complete_map = eng.resolve_owner_slot(
+        {"status": "pre_draft", "draft_order": {_uid: 4},
+         "slot_to_roster_id": _fallback}, _uid, _rid, 12)
+    ok(_partial_without_complete_map == {
+           "drawn": True, "slot": None, "source": _source},
+       "partial user order cannot resolve without a complete roster permutation",
+       str(_partial_without_complete_map))
 _missing_owner_order = {
     f"missing-owner-{slot}": slot for slot in range(1, 13)}
 _resolution_cases = [
