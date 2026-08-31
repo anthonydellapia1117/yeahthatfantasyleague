@@ -77,7 +77,7 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 52 | `backfield_share` grouped the existing all-week 2025 carry basis by each player's 2026 depth-chart team; David Montgomery's 158 DET carries moved into HOU, removing them from Gibbs's denominator. The aggregate usage shard also trimmed low-PPR backs and collapsed multi-team rows, so historical regrouping alone still left PHI/JAX denominators wrong | **REVIEWER** (RB input-denominator audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (2) + INCOMPLETE/COALESCED SOURCE** |
 | 53 | `adj_vac` subtracts an incoming player only when he has 2025 NFL targets; a 2026 rookie therefore subtracts zero, overstating the destination team's open opportunity while producing a plausible value | **REVIEWER** (opportunity-input audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (3)** |
 | 54 | At the actual slot-4 decision, PATHS rendered zero forks and labelled the root "not a decision" while its action space contained one unconditional representative per position: it could neither condition on Gibbs/Bijan/Chase being gone nor compare McCaffrey with Taylor inside RB. On the observed board it would still render Puka alone (WR VONA 45.83 vs RB 41.29, gap 4.54 above a recomputed 3.58 epsilon) even though the complete 4/21/28 policy placed McCaffrey only 2.08 lineup points above Puka, inside the artifact's 7.0 coin-flip band | **REVIEWER** (slot-4 decision audit) | since PATHS shipped | yes | **SURFACE ABSENCE AS FINDING** |
-| 55 | Printable Sheet 4 took the engine's static median-availability checkpoints, stripped `p_available_now`, tier-cliff and coin-flip qualifiers, then labelled the remaining names "Board expects" and the unsolved `fallback` "Next best." Bijan entered the pick-4 pool at 50.3% while Gibbs missed it at 48.2%. The sheet was not sourced from the paired simulation at all; in the current committed Puka-path run Javonte appears at pick 28 in only 7.652% of states. Individual survival had silently become a joint-path forecast, and the fallback had never been re-solved through the marginal policy | **ANTHONY** (read the live printed surface) | since cheat sheet shipped | yes | **QUALIFIER LOSS / REPRESENTATIVE PATH AS FORECAST** |
+| 55 | Printable Sheet 4 took the engine's static median-availability checkpoints, stripped `p_available_now`, tier-cliff and coin-flip qualifiers, then labelled the remaining names "Board expects" and the unsolved `fallback` "Next best." Bijan entered the pick-4 pool at 50.3% while Gibbs missed it at 48.2%. The sheet was not sourced from the paired simulation at all; in the current committed Puka-path run Javonte appears at pick 28 in only 7.652% of states. Individual survival had silently become a joint-path forecast, and the fallback had never been re-solved through the marginal policy | **ANTHONY** (read the live printed surface) | since cheat sheet shipped | yes | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
@@ -261,6 +261,48 @@ question. For PATHS, the offseason repair is an explicit unavailable-player stat
 player-level actions, and complete turn continuations through the shared forward
 policy; changing epsilon cannot ask the missing question.
 
+The immediate renderer repair is deliberately smaller than that offseason model
+work: PATHS now counts "rendered position-level forks," names the action-space
+boundary beside the count, and replaces "not a decision" with "no position-level
+fork under this rule." Zero can no longer masquerade as a player-level finding,
+but the missing player-action computation remains open and PR #54 remains parked.
+
+**MISLABELED DERIVED VALUE - four analysis-layer instances.** The ffopportunity
+audit found `route_participation_proxy == receptions_exp`, a
+`team_implied_total` that summed QB expected fantasy points, a `prior_epa_proxy`
+that copied expected fantasy points, and a `team_targets` field that actually
+held team pass attempts. These files did not feed the production engine; the live
+team-supply surface now uses pass-attempt terminology and the TE gate that leaned
+on the first family is suspended. The defect is semantic identity: the stored
+number can be reproducible and still not be the quantity its name asserts.
+
+**CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS - one shared producer-contract
+defect across three production renderers (#55).**
+This is the presentation-layer sibling of a mislabeled column. The engine
+correctly computed a static checkpoint selected from individually at-least-even
+availability after consuming prior listed anchors. The renderer removed the
+individual availability and method boundary, then called the representative
+"Board expects." It also called an unsolved different-position residue "Next
+best," although no marginal runner-up had been computed. The printable Sheet 4,
+Draft Room pre-draft cards, and generated decision-card markdown all consumed
+that same under-specified renderer contract; the latter two retained different
+pieces of context but still presented the checkpoints as a planned sequence and
+rendered the same unsolved fallback. The UI therefore
+asserted a joint-path forecast and an ordering that no producer supplied. A
+mislabel gives a computed value the wrong identity; claim-strength escalation
+keeps the value but upgrades its certainty, scope, or ordering. The rule is that
+every decision noun and verb must map to a producer field and method. Threshold
+passage is not a forecast; a selected representative is not an expected path;
+fallback is not runner-up. If no producer computes the sentence, weaken it,
+carry the qualifiers, or omit it. A correct number cannot authorize a stronger
+claim.
+
+The same sweep found an adjacent live label: the Pick Engine called thresholds
+on its uncalibrated weighted-score gap `confidence HIGH/MEDIUM/LOW`. The score
+already disclosed its heuristic basis, but provenance does not turn a typed
+margin into confidence. The on-face band is now `composite margin
+HIGH/MEDIUM/LOW`; no threshold or ranking changed.
+
 **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING - 3 occurrences (#46,
 #52, #53), plus one inverse gap.** Likely's BAL-2025 receiving share was ranked
 among NYG-2026 TEs. RB shares rebuilt 2025 carry denominators from 2026 depth
@@ -310,7 +352,7 @@ reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
 #15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43,
-#44, #45, #46, #47, #48, #49, #52, #53, #54. Twenty-nine of 54, and
+#44, #45, #46, #47, #48, #49, #52, #53, #54, #55. Thirty of 55, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it

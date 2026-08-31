@@ -115,7 +115,7 @@ function render(){
     '<div class="card">' +
       "<h2>Slot " + SLOT + " - picks " + v.picks.join(", ") + "</h2>" +
       '<div class="stat">' +
-        "<span><b>" + v.rendered_forks + "</b> real decision points</span>" +
+        "<span><b>" + v.rendered_forks + "</b> rendered position-level forks</span>" +
         "<span><b>" + pr.dominated + "</b> branches pruned as dominated</span>" +
         "<span><b>" + pr.narrow_kept + "</b> kept as coin flips</span>" +
         "<span><b>" + v.forks_collapsed_by_pruning + "</b> forks collapsed</span>" +
@@ -133,6 +133,7 @@ function render(){
         .map(function(d){ return "R" + (Number(d) + 1) + " " +
           th.branch_eps_by_depth[d]; }).join(", ") + ". " +
       esc(th.branch_eps_source) + '</p>' +
+      '<p class="small"><b>Action-space boundary.</b> Zero rendered forks is not evidence that no player-level decision exists. This tree compares one representative per position on an unconditional board; it cannot compare two players at the same position or condition on observed unavailable players.</p>' +
       '<p class="small"><b>Pruning.</b> ' + esc(th.prune_rule) +
       " Coin-flip band " + th.narrow_band + " lineup points, " +
       esc(th.narrow_band_source) + '</p>' +

@@ -330,7 +330,9 @@ new evidence wastes a cycle.
 - `src/build_cvs.py` + `build_cvs_inputs.py` -> `out/cvs.json` - the board the room
   and big board render. Reads the engine payload; the engine never reads CVS.
 - `out/draft_room.html` - ~2,400 lines. Live polling, clock, pick engine, DRAFT
-  MODE, simulator. The single most defect-dense file in the repo.
+  MODE, simulator. The single most defect-dense file in the repo. Its pre-draft
+  cards are median-availability checkpoints, not a forecast; they render exact
+  individual availability and never render the engine's unsolved `fallback`.
 - `out/cheatsheet.html` - five printable Letter sides. Sheets 1-3 and 4 read
   engine players/slots; CVS is loaded only to enforce content lineage. Sheet 4
   is a static median-availability planning path, not a mock or forecast, and
@@ -493,14 +495,17 @@ still operationally important.
    Sleeper payload and otherwise left mixed pending/confirmed DOM. Any state used
    once operationally must be rehearsed through the transition, not inferred from
    two fresh loads.
-10. **Qualifier loss / representative path as forecast (1).** Printable Sheet 4
-   stripped availability and deviation context from a static checkpoint path,
-   then labelled the names "Board expects." Bijan's 50.3% inclusion and
-   Javonte/Breece coin flip disappeared, so a knife-edge representative became a
-   categorical prediction. Any renderer of a model-selected representative must
-   carry its individual availability, method boundary, and deviation cues; otherwise
-   omit the name rather than let missing context read as certainty. Individual
-   survival to a pick is not a joint-path or selection frequency.
+10. **Claim-strength escalation / qualifier loss (1).** Treat UI nouns and verbs
+   as model claims. `expected`, `likely`, `next best`, `recommendation`, and
+   `no decision` each require an artifact field produced by the corresponding
+   joint, ordered, or action-space computation. Printable Sheet 4 upgraded a
+   50.3% static checkpoint to "Board expects" and an unsolved residue to "Next
+   best." Individual survival is not a joint-path frequency; fallback is not a
+   runner-up; zero position-level forks is not evidence of no player-level
+   decision. Carry the producer's method, availability, and deviation qualifiers
+   into every renderer, or omit the name. This is the presentation-layer sibling
+   of a mislabeled derived column: correct arithmetic cannot support a stronger
+   sentence than the producer computed.
 
 ---
 
@@ -517,7 +522,7 @@ still operationally important.
 | **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
 | **RB vacated-carries signal** | **ASSESSMENT ONLY.** The repaired `backfield_command` applies the existing all-week 2025 carry-share basis consistently to historical teams; it does not measure 2026 carries opened by departures. `teams.html` displays thresholded raw departure/arrival rows from the trimmed season shard, not a complete net transition signal from the new ledger. The analogous WR `adj_vac` is confirmed rookie-blind because an incoming player with no 2025 NFL row subtracts zero. | Compute vacated carries from the same player-team source, quantify every 2026 backfield, test correlation and incremental value against ADP, and explicitly model rookies. If strongly ADP-redundant, drop it. A same-method carry signal would inherit `adj_vac`'s rookie gap, so fix `adj_vac` and any carry implementation under one rookie policy or do not wire carries. |
 | **Stale R position exports** | The corrected TE writer now produces 6,730 valid rows and no fake route alias. The committed RB/WR exports still retain 2,530 NA-subsetting junk rows; RB also retains `target_volume` despite corrected source saying otherwise. Python consumes none of these files. | Regenerate and independently compare before any use. Do not treat corrected script text as artifact evidence. |
-| **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Honest on the card, but the largest exception to R1. | Backtest or keep labelled. |
+| **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Every displayed 0-100 grade now carries `HEURISTIC GRADE - judgment weights, not backtested` on its face; the Pick Engine headline carries `HEURISTIC COMPOSITE` plus the same caveat. Exact weights, grade bands, composite-margin cutoffs, and the grade's limited role ordering only `Also consider` are adjacent or in the number's title. The Big Board likewise says `CONFIGURED CVS, NOT ENGINE VOR` and names whether Walter is on. | Backtest or retain these on-face labels. Do not call the no-Walter CVS variant "pure model": configured factor weights remain. |
 | **Optional-shard silent degradation** | `base_rates`/`ceiling`/archetypes/bullish fetch failures vanish columns with no notice. | Add a visible "unavailable" state + a smoke scenario. |
 | **12-team geometry inside DRAFT MODE** | **CONFIRMED IN PRODUCTION 2026-08-26**, no longer a prediction: the room rendered `rd11-14` band labels against a live 19-team draft, where boundaries 36/72/120 are 12-team arithmetic. `sleeperListHtml` and `simBand` hardcode that geometry, so the labels are also wrong in a 10-team mock. Cosmetic - this mislabels sleeper bands; it does not affect ordering. | Derive both bands from `GEO`. Not draft-critical: the real league IS 12x14. |
 | **`ff-hub.html` N.1** | PR #53 verified N.1 absent on main before PR #55 and recorded that absence as deliberate (§6). PR #55 supersedes that state by publishing N.1 as a dedicated artifact-backed tab with honest loading and failure states. | Keep the reviewed artifact as the single source; do not duplicate its verdict in HTML. |

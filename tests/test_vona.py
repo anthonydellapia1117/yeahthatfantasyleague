@@ -144,7 +144,7 @@ for slot, v in t["slots"].items():
 # the branch rule must actually discriminate: some slots open, some forced
 opens = [int(s) for s, v in t["slots"].items() if v["rendered_forks"] > 0]
 forced = [int(s) for s, v in t["slots"].items() if v["rendered_forks"] == 0]
-ok(branch_total > 0, "the tree finds real decision points somewhere")
+ok(branch_total > 0, "the tree finds position-level fork candidates somewhere")
 ok(opens and forced,
    "branching discriminates - some slots fork, some are forced",
    f"open {sorted(opens)} forced {sorted(forced)}")

@@ -212,10 +212,15 @@ button.tag{appearance:none;-webkit-appearance:none;background:var(--s2)}
 /* pick-grade gear: three bands carry the meaning, the number breaks ties.
    Band colors are the verdict palette by design - the gear IS a verdict-shaped
    summary, and color is never the only signal (number + band word in aria). */
-.gear{display:inline-flex;gap:10px}
+.gear{display:inline-flex;gap:10px;align-items:center}
 .gear svg{flex:0 0 auto}
+.gear .gcopy{display:inline-flex;flex-direction:column;align-items:flex-start}
 .gear .gnum{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
 .gear .gband{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+.gear .gprov,.provchip{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink3);border:1px solid var(--line);border-radius:999px;
+  padding:2px 6px;background:var(--s2)}
+.gear .gsource{font-size:9px;color:var(--ink3);letter-spacing:.02em;margin-top:2px}
 .chips-ev{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .evc{font-size:10px;border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--ink2)}
 .evc .rep{color:var(--warn);font-weight:700}
@@ -628,11 +633,14 @@ function renderPre(activeSlot){
   const rounds = E.slots[activeSlot];
   const isPrimary = activeSlot === primaryPlanningSlot();
   let h = `<div class="card"><h2>Slot ${activeSlot} - ${
-    isPrimary ? "PRIMARY - your picks" : "REFERENCE - hypothetical picks"} ${
+    isPrimary ? "PRIMARY" : "REFERENCE"} - MEDIAN-AVAILABILITY CHECKPOINTS ${
     rounds.slice(0, 6).map(r => r.pick).join(", ")} ...</h2>
-    <p class="small">pre-draft verdicts use the frozen survival model; the
-    live room applies the adopted calibration - its one-tap toggle lives
-    there.</p>`;
+    <p class="small"><b>NOT A FORECAST.</b> These static planning checkpoints
+    consume the prior listed anchors, then apply the marginal-lineup policy
+    among players modeled at or above even odds individually. The opponent boards
+    are not simulated; individual survival is not a path or selection frequency.
+    Re-solve live after every actual pick; pre-draft verdicts use the frozen survival model;
+    the live room applies the adopted calibration.</p>`;
   for (const r of rounds){
     if (r.kdef){
       h += `<div class="rowcard"><div class="rc-top"><div>
@@ -651,11 +659,11 @@ function renderPre(activeSlot){
     let body;
     if (w.comparable){
       const c = w.comparable;
-      body = `Take <b>${esc(p.name)}</b> now - ${pct(p.p_gone_by_next)} he is gone by pick ${r.next_pick}.
+      body = `On this anchor path, take <b>${esc(p.name)}</b> now - ${pct(p.p_gone_by_next)} he is gone by pick ${r.next_pick}.
         Or wait: <b>${esc(c.name)}</b> projects within ${Math.abs(c.pts_gap).toFixed(0)} pts and is
         ${pct(c.p_survives_next)} to last to your next pick.`;
     } else {
-      body = `No comparable ${p.pos} is likely to survive to pick ${r.next_pick} -
+      body = `On this anchor path, no comparable ${p.pos} is likely to survive to pick ${r.next_pick} -
         ${pct(p.p_gone_by_next)} that ${esc(p.name)} himself is gone.`;
     }
     const watch = [];
@@ -667,7 +675,7 @@ function renderPre(activeSlot){
         <div>
           <div class="rc-pick">Rd ${r.round} - pick ${r.pick}</div>
           <div class="rc-name">${esc(p.name)}${injBadge(p)}</div>
-          <div class="rc-meta">${p.pos} - VOR <span class="num">${p.vor.toFixed(0)}</span> - tier ${p.tier ?? "-"} - ADP <span class="num">${p.adp.toFixed(1)}</span> - <span class="num">${pct(surv)}</span> available${r.fallback ? " - fallback " + esc(r.fallback.name) + " " + r.fallback.pos : ""}${yourCallChip(p)}</div>
+          <div class="rc-meta">${p.pos} - VOR <span class="num">${p.vor.toFixed(0)}</span> - tier ${p.tier ?? "-"} - ADP <span class="num">${p.adp.toFixed(1)}</span> - <span class="num">${pct(surv)}</span> available${yourCallChip(p)}</div>
         </div>
         ${verdictChip(r)}
       </div>
@@ -1671,7 +1679,7 @@ const PE = {
   FLEX: 6,         // base slots full but the flex is open (RB/WR/TE)
   SCARCITY: 8,     // x P(his whole tier is gone by my next pick)
   PLAYOFF: 3,      // x weeks-15-17 SOS z within position - the proxy tilt
-  HI: 10, MED: 4,  // score margin over the best alternate -> confidence band
+  HI: 10, MED: 4,  // score margin over the best alternate -> composite-margin band
 };
 const PE_SIG = { personal_dnd: "MY DND", consensus_dnd: "walter+model DND",
   single_dnd: "DND (one source)", consensus_target: "walter+model TARGET",
@@ -1764,7 +1772,8 @@ function peTierRisk(p, alive, myNext, cur){
   return pAllGone;
 }
 // the live kill-switch (set on the big board) - shared localStorage key.
-// When off, the engine scores from the server-ranked pure-model variant.
+// When off, the engine scores from the server-ranked no-Walter CVS variant;
+// configured non-projection factor weights remain in cvs_base.
 function peWalterOn(){
   try { return localStorage.getItem("ytfl_walter_live") !== "off"; }
   catch { return true; }
@@ -1852,9 +1861,10 @@ function renderPickEngine(alive, cur, myNext, R){
     : pick.s.need > 0 ? "base slots full - takes the open flex"
     : "depth - no open slot filled";
   body.innerHTML = `
-    ${wl ? "" : '<p class="small">WALTER LAYER OFF (live toggle, set on the big board) - pure model scores.</p>'}
-    <div class="rname">${esc(pick.p.name)} <span class="num">${pick.s.total.toFixed(1)}</span>
-      <span class="tag">${band ? "confidence " + band : "no alternate on the CVS board"}</span>
+    ${wl ? "" : '<p class="small">WALTER LAYER OFF (live toggle, set on the big board); configured CVS factor weights remain.</p>'}
+    <div class="rname">${esc(pick.p.name)} composite <span class="num">${pick.s.total.toFixed(1)}</span>
+      <span class="provchip">HEURISTIC COMPOSITE - judgment weights, not backtested - ${wl ? "Walter ON" : "Walter OFF"}</span>
+      <span class="tag">${band ? "composite margin " + band : "no alternate on the CVS board"}</span>
       ${pick.v.signal ? `<span class="tag">${PE_SIG[pick.v.signal] || esc(pick.v.signal)}</span>` : ""}
       ${pick.v.signal_conflict ? '<span class="tag">SIGNAL CONFLICT - see the big board</span>' : ""}</div>
     <div class="small">1. Value: CVS <span class="num">${pick.v.cvs}</span>
@@ -1877,8 +1887,10 @@ function renderPickEngine(alive, cur, myNext, R){
     <p class="small">${margin === null ? "Only one CVS-covered player remains - nothing to rank against."
       : `What changes this card: the margin is <span class="num">${margin.toFixed(1)}</span> pts -
       a position run before pick ${myNext} or a faller flips it.`} Additive lens only:
-      the verdict above stays the audited VOR model. Weights: need ${PE.NEED},
-      flex ${PE.FLEX}, scarcity ${PE.SCARCITY}, playoff ${PE.PLAYOFF}/z.</p>`;
+      the verdict above stays the audited VOR model. Judgment weights, not backtested:
+      need +${PE.NEED}, flex +${PE.FLEX}, scarcity ${PE.SCARCITY} x P(tier gone),
+      playoff ${PE.PLAYOFF} x SOS z. Composite-margin bands:
+      HIGH &gt;= ${PE.HI}, MEDIUM &gt;= ${PE.MED}, LOW otherwise.</p>`;
 }
 // ======== PICKENGINE-END ========
 
@@ -1959,9 +1971,10 @@ function buildRecap(){
 }
 
 // ======== GRADE-BEGIN ========
-// THE PICK GRADE. Presentation, not decision: a 0-100 summary of numbers the
+// THE PICK GRADE. A presentation heuristic: a 0-100 summary of numbers the
 // audited engine already computes. It never feeds a verdict, a survival
-// probability, or any ordering a verdict depends on (guarded). Inputs are
+// probability, or the main VOR recommendation; it orders only the
+// "Also consider" panel (guarded). Inputs are
 // EXACTLY the five sanctioned families: value at cost, market gap, survival
 // urgency, roster need, tier scarcity. Tendency lifts, play-caller/PROE/
 // vacated intel, and everything on the reject list are structurally absent -
@@ -2032,7 +2045,13 @@ function gearSvg(g){
     const p1 = [cx + r * Math.sin(a1 * Math.PI / 180), cy - r * Math.cos(a1 * Math.PI / 180)];
     return `<path d="M${p0[0].toFixed(1)} ${p0[1].toFixed(1)} A20 20 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${p1[0].toFixed(1)} ${p1[1].toFixed(1)}" stroke="${color}" stroke-width="6" fill="none" stroke-linecap="round" opacity=".85"/>`;
   };
-  return `<span class="gear" role="img" aria-label="pick grade ${g}, ${band} band">
+  const provenance = `Judgment weights, not backtested: value ${GRADE_W.VALUE}; ` +
+    `market ${GRADE_W.MARKET}; frozen-survival urgency ${GRADE_W.URGENCY}; ` +
+    `roster need ${GRADE_W.NEED}; tier scarcity ${GRADE_W.SCARCITY}. ` +
+    `Bands: 0-${GRADE_RED_MAX}, ${GRADE_RED_MAX + 1}-${GRADE_AMBER_MAX}, ` +
+    `${GRADE_AMBER_MAX + 1}-100. This grade does not select the main VOR ` +
+    `recommendation; it orders only Also consider.`;
+  return `<span class="gear" role="img" aria-label="heuristic pick grade ${g}, ${band} band" title="${esc(provenance)}">
     <svg width="48" height="42" viewBox="0 0 48 42">
       ${arc(-120, -120 + 240 * 0.395, "var(--stop)")}
       ${arc(-120 + 240 * 0.405, -120 + 240 * 0.695, "var(--warn)")}
@@ -2040,7 +2059,7 @@ function gearSvg(g){
       <line x1="24" y1="24" x2="${(24 + 13 * Math.sin(ang * Math.PI / 180)).toFixed(1)}" y2="${(24 - 13 * Math.cos(ang * Math.PI / 180)).toFixed(1)}" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
       <circle cx="24" cy="24" r="2.5" fill="var(--ink)"/>
     </svg>
-    <span><span class="gnum">${g}</span><br><span class="gband">${band === "red" ? "not at this price" : band === "amber" ? "defensible" : "take him"}</span></span>
+    <span class="gcopy"><span class="gprov">HEURISTIC GRADE</span><span class="gnum">${g}</span><span class="gband">${band === "red" ? "not at this price" : band === "amber" ? "defensible" : "take him"}</span><span class="gsource">judgment weights, not backtested</span></span>
   </span>`;
 }
 // ======== GRADE-END ========

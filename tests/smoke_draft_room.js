@@ -95,13 +95,31 @@ function reportedUserOrder(){
     ok(/PRE-DRAFT/.test(mode), "mode 1 detected: " + mode.trim());
     ok(/SLOT 4 PRIMARY/.test(mode), "external draw makes slot 4 primary: " + mode.trim());
     ok(await page.locator(".chips button").count() === 12, "12 seat chips in the thumb bar");
-    ok(/Slot 4 - PRIMARY - your picks/.test(await page.textContent("body")),
-       "slot 4 renders first while Sleeper is still on the identity placeholder");
+    ok(/Slot 4 - PRIMARY - MEDIAN-AVAILABILITY CHECKPOINTS/.test(await page.textContent("body")),
+       "slot 4 renders first as median-availability checkpoints while Sleeper is pending");
     ok(/Sleeper confirmation is pending/.test(await page.textContent("#banner")),
        "external draw is visible and explicitly pending Sleeper confirmation");
     ok(await page.locator(".rowcard").count() > 8, "verdict-first round cards");
     const body = await page.textContent("body");
     ok(/WAIT|TAKE NOW/.test(body), "verdicts rendered");
+    ok(/NOT A FORECAST/.test(body) && /opponent boards\s+are not simulated/i.test(body) &&
+       /individual survival is not a path or selection frequency/i.test(body),
+       "pre-draft cards preserve the checkpoint method boundary");
+    const syntheticFallbackHidden = await page.evaluate(() => {
+      const row = E.slots[4].find(r => r.primary);
+      const hadFallback = Object.prototype.hasOwnProperty.call(row, "fallback");
+      const prior = row.fallback;
+      row.fallback = { name: "Synthetic Unsolved Fallback", pos: "TE", vor: 999 };
+      renderPre(4);
+      const hidden = !document.getElementById("app").innerText.includes(
+        "Synthetic Unsolved Fallback");
+      if (hadFallback) row.fallback = prior;
+      else delete row.fallback;
+      renderPre(4);
+      return hidden;
+    });
+    ok(syntheticFallbackHidden,
+       "pre-draft renderer behaviorally omits a synthetic unsolved fallback residue");
     ok(/to last to your next pick/.test(body), "explicit wait comparison text");
     ok(/COIN FLIP/.test(body), "coin flips surfaced");
     ok(/FLOOR/.test(body), "K/DEF floor label");
@@ -116,7 +134,7 @@ function reportedUserOrder(){
     // click another slot tab
     await page.click('.chips button[data-slot="3"]');
     await page.waitForTimeout(300);
-    ok(/Slot 3 - REFERENCE - hypothetical picks/.test(await page.textContent("body")),
+    ok(/Slot 3 - REFERENCE - MEDIAN-AVAILABILITY CHECKPOINTS/.test(await page.textContent("body")),
        "slot tab switches to an explicitly labelled reference");
     // The reported order is not forced into a fake roster-id permutation:
     // all 12 seats render, while the merge and newcomer remain unresolved.
@@ -231,7 +249,8 @@ function reportedUserOrder(){
        JSON.stringify(trace));
     ok(beforeCards.length > 0 &&
        /MODE 1 - PRE-DRAFT - SLOT 4 PRIMARY/.test(await page.textContent("#mode")) &&
-       /Slot 4 - PRIMARY - your picks 4, 21, 28/.test(await page.textContent("#app h2")) &&
+       /Slot 4 - PRIMARY - MEDIAN-AVAILABILITY CHECKPOINTS 4, 21, 28/.test(
+         await page.textContent("#app h2")) &&
        await page.locator('.chips button[data-slot="4"].on').count() === 1 &&
        await page.locator(".chips button").count() === 12 &&
        await page.locator("#order-conflict-state").count() === 0 &&
@@ -336,7 +355,8 @@ function reportedUserOrder(){
     ok(/sleeper (FAILED|TIMEOUT) after \d+ms/.test(await page.textContent("#conn")),
        "offline: the connection diagnostic names the failure and its timing");
     ok(await page.locator(".chips button").count() === 12, "offline still renders scenarios");
-    ok(/Slot 4 - PRIMARY - your picks/.test(await page.textContent("body")),
+    ok(/Slot 4 - PRIMARY - MEDIAN-AVAILABILITY CHECKPOINTS/.test(
+         await page.textContent("body")),
        "offline fallback keeps the externally reported slot 4");
     await page.close();
   }
@@ -825,6 +845,14 @@ function reportedUserOrder(){
     ok(/^\d{1,3}$/.test(gnum), "F1 grade is an integer, no false precision: " + gnum);
     ok(/not at this price|defensible|take him/.test(await page.textContent("#lv-gear")),
        "F1 band word carries the meaning beside the color");
+    ok((await page.textContent("#lv-gear .gprov")).trim() === "HEURISTIC GRADE" &&
+       /judgment weights, not backtested/.test(await page.textContent("#lv-gear .gsource")),
+       "F1 grade carries typed-weight provenance on its face");
+    const gradeTitle = await page.locator("#lv-gear .gear").getAttribute("title");
+    ok(/value 30/.test(gradeTitle) && /market 30/.test(gradeTitle) &&
+       /urgency 20/.test(gradeTitle) && /need 12/.test(gradeTitle) &&
+       /scarcity 8/.test(gradeTitle) && /orders only Also consider/.test(gradeTitle),
+       "F1 grade title names every judgment weight and its limited ordering role");
     // F2 correctness in the OTHER direction: at this board state the verdict
     // is TAKE NOW with no coin flip, so the panel must stay hidden
     ok(await page.locator("#f-recs").isHidden(), "F2 panel hidden on a clean TAKE NOW");
@@ -883,6 +911,9 @@ function reportedUserOrder(){
     ok(await page.locator("#recs-cards .rec").count() === 6, "F2 search appends a sixth card");
     ok(/Kelce/.test(await page.textContent("#recs-cards")), "F2 searched player rendered");
     ok(await page.locator("#recs-cards .gear").count() === 6, "F2 every card carries its own gear");
+    ok(await page.locator("#recs-cards .gear .gprov", {hasText:"HEURISTIC GRADE"}).count() === 6 &&
+       await page.locator("#recs-cards .gear .gsource", {hasText:"judgment weights, not backtested"}).count() === 6,
+       "F2 every alternative grade carries the same on-face provenance");
     await page.click("#recs-clear");
     await page.waitForTimeout(400);
     ok(await page.locator("#recs-cards .rec").count() === 5, "F2 clear removes only the appended card");
@@ -1528,6 +1559,14 @@ function reportedUserOrder(){
     await pg.goto(base + "/out/big_board.html");
     await pg.waitForTimeout(1500);
     ok(await pg.locator("#board .brow").count() >= 150, "big board renders the CVS pool");
+    const rankBasisOn = await pg.textContent("#rank-basis");
+    const cvsForBasis = JSON.parse(require("fs").readFileSync(
+      path.resolve("out/cvs.json"), "utf8"));
+    ok(/CONFIGURED CVS, NOT ENGINE VOR/.test(rankBasisOn) &&
+       /Walter judgment ON/.test(rankBasisOn) &&
+       rankBasisOn.includes(cvsForBasis.config.walter_cap_pct + "%") &&
+       /prospectively unvalidated/.test(rankBasisOn),
+       "big board puts the configured CVS/Walter provenance beside the scores");
     // the order on screen must be the payload's CVS order - fetch and compare
     const orderOk = await pg.evaluate(async () => {
       const C = await fetch("cvs.json").then(r => r.json());
@@ -1625,15 +1664,19 @@ function reportedUserOrder(){
        "position filter persists across reload");
     ok((await pg.textContent("#board")).indexOf("QB - ") === -1,
        "reloaded board still filtered");
-    // the live kill-switch: order becomes the server-ranked pure-model
-    // board, the note renders, and the state survives a reload
+    // the live kill-switch: order becomes the server-ranked no-Walter CVS
+    // board, the remaining factor weights stay named, and state survives reload
     await pg.click('#posf button[data-pos="ALL"]');
     await pg.click("#wl-toggle");
     await pg.waitForTimeout(300);
     ok(/WALTER LAYER OFF/.test(await pg.textContent("#togf")),
        "kill-switch toggle flips to OFF");
-    ok(/pure model board/.test(await pg.textContent("#board")),
-       "off-mode note renders on the board");
+    ok(/configured factor weights remain/.test(await pg.textContent("#board")),
+       "off-mode note says the configured CVS factor weights remain");
+    ok(/Walter judgment OFF/.test(await pg.textContent("#rank-basis")) &&
+       /Turning Walter off does not remove the CVS factor weights/.test(
+         await pg.textContent("#rank-basis")),
+       "off-mode rank chip does not mislabel no-Walter CVS as engine-only");
     const nwOrderOk = await pg.evaluate(async () => {
       const C = await fetch("cvs.json").then(r => r.json());
       const want = C.players.slice().sort((a, b) => a.no_walter.cvs_rank - b.no_walter.cvs_rank)
@@ -1648,7 +1691,7 @@ function reportedUserOrder(){
        "kill-switch state survives a reload");
     await pg.click("#wl-toggle");
     await pg.waitForTimeout(300);
-    ok(!/pure model board/.test(await pg.textContent("#board")),
+    ok(!/configured factor weights remain/.test(await pg.textContent("#board")),
        "toggling back restores the walter board");
     ok(/floors/.test(await pg.textContent("#kdef-card")),
        "K/DST floor card renders off the CVS board");
@@ -1794,9 +1837,17 @@ function reportedUserOrder(){
     ok((petxt.match(/alt \d:/g) || []).length === 2, "two alternates with conditions");
     ok(/take him if|take him /.test(petxt), "each alternate carries its condition");
     ok(/Cost of waiting/.test(petxt), "cost of waiting from the survival model");
-    ok(/confidence (HIGH|MEDIUM|LOW)/.test(await pe.textContent("#pe-card")),
-       "confidence band stated");
+    ok(/composite margin (HIGH|MEDIUM|LOW)/.test(await pe.textContent("#pe-card")),
+       "composite-margin band stated without upgrading it to confidence");
     ok(/not a title-odds simulation/.test(petxt), "the proxy is labelled honestly");
+    ok(/HEURISTIC COMPOSITE/.test(petxt) &&
+       /judgment weights, not backtested/.test(petxt) && /Walter ON/.test(petxt) &&
+       /composite \d/.test(petxt),
+       "pick-engine headline carries its typed-weight provenance and scale");
+    ok(/need \+12/.test(petxt) && /flex \+6/.test(petxt) &&
+       /scarcity 8 x P\(tier gone\)/.test(petxt) && /playoff 3 x SOS z/.test(petxt) &&
+       /HIGH >= 10, MEDIUM >= 4, LOW otherwise/.test(petxt),
+       "pick-engine disclosure names all weights and composite-margin cutoffs");
     ok(/wk15-17/.test(petxt), "weeks 15-17 lens on the card");
     // isolation: the audited verdict card never mentions the lens
     const lvtxt = await pe.textContent("#lv");
@@ -1865,7 +1916,7 @@ function reportedUserOrder(){
        String(goneSig.badged));
     await pe.evaluate(() => document.getElementById("vb-rm").click());
     // the shared kill-switch: with the layer off, the card says so and
-    // scores from the pure-model variant with no walter percentages
+    // scores from the no-Walter CVS variant with no Walter percentages
     await pe.evaluate(() => localStorage.setItem("ytfl_walter_live", "off"));
     await pe.reload();
     await pe.waitForTimeout(3500);
@@ -1877,6 +1928,8 @@ function reportedUserOrder(){
        `${sigOn.badges} -> ${sigOff}`);
     const offtxt = await pe.textContent("#pe-body");
     ok(/WALTER LAYER OFF/.test(offtxt), "pick engine honors the live kill-switch");
+    ok(/configured CVS factor weights remain/.test(offtxt) && /Walter OFF/.test(offtxt),
+       "pick engine OFF state keeps its remaining configured-weight provenance visible");
     ok(!/walter [+-]/.test(offtxt), "off-mode card carries no walter percentages");
     ok(!/NaN/.test(offtxt), "off-mode card renders no NaN");
     await pe.evaluate(() => localStorage.removeItem("ytfl_walter_live"));
@@ -2236,8 +2289,11 @@ function reportedUserOrder(){
     ok(await pg.locator(".tnode").count() > 3, "paths: the tree has nodes");
     ok(!/BULLISH|WATCH/.test(body),
        "paths: no BULLISH marker anywhere on the decision surface");
-    ok(/real decision points/.test(body) && /pruned as dominated/.test(body),
-       "paths: fork and prune accounting is on screen, never silent");
+    ok(/rendered position-level forks/.test(body) && /pruned as dominated/.test(body),
+       "paths: position-level fork and prune accounting is on screen, never silent");
+    ok(/Zero rendered forks is not evidence/.test(body) &&
+       /cannot compare two players at the same position/.test(body),
+       "paths: zero output is not presented as a player-level no-decision finding");
     const pathsHeader = await pg.textContent("#hdr");
     ok(/slot 4 primary/.test(pathsHeader) && /externally reported/.test(pathsHeader) &&
        /11 reference slots retained/.test(pathsHeader) && /Sleeper pending/.test(pathsHeader) &&
