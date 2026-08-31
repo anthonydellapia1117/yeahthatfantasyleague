@@ -15,11 +15,11 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-28 by Copilot - renamed the ffopportunity team supply column to pass-attempt terminology. `rec_attempt_team` carries pass attempts, not receiver targets: `pass_attempt_team == rec_attempt_team` in 36,063/36,063 rows, constant within all 3,386 team-games, and rebuilding from it reproduces all 192 rows exactly. Header and producer only - the 192 data rows are byte-identical. Six guards in `test_pages_data.py` now re-derive the identity from source instead of trusting the label. Also recorded the CRLF regeneration hazard as a sharp edge in `AGENT_HANDOFF_SPEC.md` §7. |
-| **Next agent** | #68 is MERGED to `main` at `abfa5b5` and the Pages deploy is green; nothing is pending review. Keep #54 OPEN, ON HOLD, and untouched. The `team_targets`/`targets_pg` rename is DONE. Next in the approved order: audit the remaining R mislabels - `route_participation_proxy`, `team_implied_total`, `prior_epa_proxy` (`team_targets` is now closed), and enumerate the rest, which is its own task. Then assess (do not build) vacated carries against ADP and the shared rookie gap; keep team supply shadow/display-only. |
-| **Branch** | none pending - #68 squash-merged to `main` at `abfa5b5`. Deployed manifest byte-matches main 48/48; note this PR touched no deployed file, so the site is intentionally unchanged. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #66 is merged and was verified live in the preceding cycle. The RB historical-denominator repair is branch-only until its PR is reviewed and merged. |
-| **Draft order** | UNDRAWN as checked 2026-08-28 16:37 UTC (`status pre_draft`). A Routine checks every 2h and self-retires on the draw. |
+| **Last touched** | 2026-08-31 by Codex - recorded Anthony's externally drawn **slot 4**, made its exact picks the primary planning geometry on every current slot-aware surface, retained all eleven reference slots, and added fail-closed reconciliation against Sleeper. Sleeper still exposes its complete identity placeholder, so official confirmation is visibly pending. The engine now carries raw n-labelled first-position history from all 13 seasons for the ten known seats; slots 3 (merged seat) and 7 (new manager) remain honest nulls, and the p=0.9932 tendency result remains description-only. |
+| **Next agent** | Review the open slot-4 PR; do not merge it unilaterally. Keep #54 OPEN, ON HOLD, and untouched. Open PR #69 (`cheatsheet`) still defaults to roster/seat 7 because its file is absent from main: after the core slot-4 PR lands, rebase #69 and make it consume `draft_order_context.primary_slot` before merging. Then continue the approved R-mislabel and vacated-carries assessment backlog only if Anthony has not redirected to the now-known draft seat. |
+| **Branch** | `codex/slot4-draft-order`, implementation commit `4c15ae7`, based on `origin/main` `7226ca7`. No merge or deploy has occurred. This baton update is intentionally the last commit. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - still reflects main `7226ca7`, not this branch. Published data was reported fresh at 24h during the branch verification. |
+| **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. `src/check_draft_order.py` reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)` on 2026-08-31. A complete official agreement promotes the source; any conflict blocks loudly. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
 
@@ -150,15 +150,34 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
    Browser smoke ran 365; `MATH DIFF PROOF: EMPTY` for all ten frozen function
    bodies. `src/preflight_draft.py` remains green at 12 teams / 60 seconds / one
    flex, but that is configuration validation, not a live drawn-order room test.
+13. **Slot 4 is the one primary planning seat; all eleven alternatives remain
+    references.** `data/draft_order_2026.json` records the complete externally
+    reported order, exact snake picks, and the Sleeper-sourced start epoch
+    (2026-09-08 20:00:25 ET). The engine, room, PATHS, VONA provenance, mock drafts,
+    nav/countdown, doctrine, morning runbook, and operator docs consume that
+    context. Main had no selected engine overlay seat while Sleeper was undrawn:
+    its actual bad default was the room's pre-draft slot 7 render; PATHS defaulted
+    to slot 1. The open, unmerged #69 cheat sheet still has a separate slot 7
+    default and must follow this PR in merge order. The engine uses 156 raw
+    franchise-seasons from `out/positional_timing.csv`, byte-linked by SHA-256 and
+    independently reconciled to `out/picks.csv`; history is displayed with n and
+    never enters survival or a verdict. Slots 3 and 7 remain null rather than being
+    guessed. The branch battery ran the gate-runner self-test, all fifteen gated
+    suites at 114/0/22/51/70/17/16/106/63/173/48/1818/23/373/38 guards, all five
+    deterministic analysis reruns with zero skips, browser smoke at 378 guards,
+    and `MATH DIFF PROOF: EMPTY`.
 
 ### In flight / nothing blocked
 
-The RB historical-denominator branch is green and its PR awaits Anthony's review;
-do not merge it unilaterally. PR #54 remains OPEN, ON HOLD, and untouched at remote
-head `4bd541e`; its mergeability is currently unresolved against moving `main`. Its PATHS
+The slot-4 branch is green and its PR awaits Anthony's review; do not merge it
+unilaterally. PR #54 remains OPEN, ON HOLD, and untouched at remote head `4bd541e`;
+its mergeability is currently unresolved against moving `main`. Its PATHS
 policy is still the data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the
 conditional spread floor. Do not rebase, resolve, or merge it until the order is
-drawn and Anthony asks to inspect his actual slot. The `docs/ffopportunity/` R export
+drawn and Anthony asks to inspect his actual slot. The order is now externally
+drawn at slot 4, but this PR does not alter #54. Open PR #69 must not merge with its
+retired slot-7 cheat-sheet default; rebase it after the core slot context lands and
+consume the engine's primary slot. The `docs/ffopportunity/` R export
 is an analysis source, not app truth: the app's Week-1 Vegas sign was already
 correct, and the shipped QB table did not inherit the R file's `-2` interception
 error. Do not consume unreviewed local regenerated exports. The forward-Vegas and
@@ -263,7 +282,8 @@ That is not proof of causation, and Chris & Dom won twice at 88.21% while John J
 
 ### The league
 12 teams, snake, full PPR, 13 completed seasons 2013-2025. Yahoo 2013-2024, Sleeper 2025-2026.
-2026 league `1389378429505241088`, draft `1389378429505241089`, **order NOT set**.
+2026 league `1389378429505241088`, draft `1389378429505241089`. The external draw
+puts Anthony at **slot 4**; Sleeper confirmation is still pending.
 Anthony is roster 7 "Taylor Made", co-owner ernie706.
 2026 scoring: `rec 1.0, pass_td 6.0, pass_yd 0.04, pass_int -1.0, rush_td 6, rec_td 6, fum_lost -2.0`.
 Starters `QB RB RB WR WR TE FLEX K DEF` + 5 bench.
@@ -360,7 +380,9 @@ Cambria wins on raw strength. Baldino outperforms his all-play. **Anthony has no
 
 **D. Anthony's actual leak.** Not draft position, not drafted share, not luck. Candidates: start-sit, FAAB sizing, roster construction late.
 
-**E. Phase 5 simulator.** All 12 slots, since order is unknown. Survival probability, run probability, opportunity cost, per-slot decision cards.
+**E. Phase 5 simulator.** Slot 4 is primary after the external draw; the other 11
+slots remain references. Survival probability, run probability, opportunity cost,
+per-slot decision cards.
 
 ---
 
@@ -428,8 +450,9 @@ every merge):
 Conviction overlay (Expansion Phase B): `data/my_board.csv` - schema and the
 pre-registered scoring rule live in the file header. The engine applies it
 AFTER build_model as a pure transform (apply_overlay): YOUR CALL chips beside
-model VOR on every surface, survival of each bull to the slot-7 picks in the
-MY BOARD markdown section, within-tier resort on positional panels (display),
+model VOR on every surface, survival of each bull to every slot's picks plus the
+externally reported slot-4 primary when the board is populated, within-tier resort
+on positional panels (display),
 and its ONE decision role - the coin-flip tie-break toward bulls. The model
 primary is always the wait-or-reach subject; guard 10 (10 checks) proves the
 overlay reaches no other arithmetic and that an empty board is byte-identical
