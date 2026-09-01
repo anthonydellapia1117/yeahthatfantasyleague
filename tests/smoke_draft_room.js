@@ -1292,7 +1292,8 @@ function reportedUserOrder(){
     const base = "http://127.0.0.1:" + srv.address().port;
     const ACTIVE = { "big_board.html": "BIG BOARD", "players.html": "PLAYERS",
                      "teams.html": "TEAMS", "home.html": "HUB",
-                     "ff-hub.html": "FINDINGS", "cheatsheet.html": "CHEAT SHEET" };
+                     "ff-hub.html": "FINDINGS", "cheatsheet.html": "CHEAT SHEET",
+                     "rxr.html": "RxR" };
     for (const [file, label] of Object.entries(ACTIVE)){
       const pg = await browser.newPage();
       const shellErrors = [];
@@ -2368,6 +2369,186 @@ function reportedUserOrder(){
     await stalePaths.close();
     ok(perr.length === 0, "paths: zero console errors", perr[0] || "");
     await pg.close();
+
+    // RxR replaces PATHS in public navigation. It is an explicit prep
+    // scenario: opponent picks form one contiguous ADP-chalk prefix, and the
+    // one-step Marginal Policy appears only when that prefix reaches our turn.
+    const rxr = await browser.newPage();
+    const rxrErrors = [];
+    rxr.on("pageerror", e => rxrErrors.push(String(e)));
+    rxr.on("console", m => { if (m.type() === "error") rxrErrors.push(m.text()); });
+    await rxr.goto(base + "/out/rxr.html");
+    await rxr.waitForSelector('#rxr-state[data-slot="4"]');
+    await rxr.evaluate(() => localStorage.removeItem("ytfl_rxr_scenario_v1"));
+    await rxr.reload();
+    await rxr.waitForSelector('#rxr-state[data-slot="4"]');
+    const rxrBody = await rxr.textContent("body");
+    ok(/RxR PREP/.test(rxrBody) && /ADP-CHALK SCENARIO — NOT A FORECAST/.test(rxrBody) &&
+       /MARGINAL POLICY — ONE STEP/.test(rxrBody) &&
+       /ACTION UNCERTAINTY NOT CALIBRATED/.test(rxrBody),
+       "RxR: model and uncertainty boundaries render on the page");
+    ok(!/BULLISH|WATCH|VONA|CONFIGURED CVS/.test(rxrBody),
+       "RxR: no overlay, tree, or configured-composite producer crosses in");
+    const engRxR = JSON.parse(fs.readFileSync(path.resolve("out/engine_2026.json"), "utf8"));
+    const rxrInjuryNote = (await rxr.textContent("#injury-status-provenance")).trim();
+    const rxrNonQ = engRxR.players.find(p => p.injury && p.injury !== "Q");
+    ok(rxrInjuryNote.includes("Sleeper injury_status") &&
+       rxrInjuryNote.includes(`snapshot ${engRxR.generated}`) &&
+       /designation date unavailable/i.test(rxrInjuryNote) &&
+       /not an official practice\/game designation/i.test(rxrInjuryNote) &&
+       !!rxrNonQ &&
+       (await rxr.textContent(`#players [data-player-id="${rxrNonQ.sleeper_id}"]`))
+         .includes(`S:${rxrNonQ.injury}`),
+       "RxR: injury status preserves identity and carries source, snapshot date, and scope",
+       rxrInjuryNote);
+    const expectedRail = engRxR.draft_order_context.primary_picks.map(Number);
+    const actualRail = await rxr.locator("[data-rxr-turn]").evaluateAll(nodes =>
+      nodes.map(n => Number(n.dataset.overall)));
+    ok(JSON.stringify(actualRail) === JSON.stringify(expectedRail) && actualRail.length === 14,
+       "RxR: 14-turn rail derives exactly from the engine primary slot",
+       actualRail.join("/"));
+    const expectedOrder = engRxR.players.slice().sort((a,b) => a.vor_rank-b.vor_rank)
+      .map(p => String(p.sleeper_id));
+    const boardOrder = () => rxr.locator("#players tr[data-player-id]").evaluateAll(nodes =>
+      nodes.map(n => n.dataset.playerId));
+    ok(JSON.stringify(await boardOrder()) === JSON.stringify(expectedOrder),
+       "RxR: one full player board starts in exact engine-VOR order");
+    ok(await rxr.locator('[data-policy-rank="1"]').count() === 0,
+       "RxR: no policy mark before the prefix reaches our pick");
+
+    for (const name of ["Jahmyr Gibbs", "Bijan Robinson", "Ja'Marr Chase"]){
+      const player = engRxR.players.find(p => p.name === name);
+      if (!player) throw new Error(`RxR scenario fixture missing ${name}`);
+      await rxr.click(`[data-player-id="${player.sleeper_id}"] [data-action="draft"]`);
+    }
+    await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "3");
+    ok(await rxr.getAttribute("#rxr-state", "data-next-pick") === "4" &&
+       await rxr.locator('[data-policy-rank="1"]').count() === 1,
+       "RxR: picks 1-3 create one fully conditioned mark at pick 4");
+    ok(await rxr.locator("#round-strip [data-round-slot]").count() === 12 &&
+       await rxr.locator('#round-strip [data-filled="true"]').count() === 3 &&
+       await rxr.locator('#round-strip [data-overall="4"].current').count() === 1,
+       "RxR: the side board keeps all twelve seats and the current scenario pick visible");
+    ok(JSON.stringify(await boardOrder()) === JSON.stringify(expectedOrder),
+       "RxR: policy overlay does not reorder the board at pick 4");
+
+    await rxr.click('[data-player-id="9493"] [data-action="draft"]');
+    await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "4");
+    ok(await rxr.getAttribute("#rxr-state", "data-next-pick") === "5" &&
+       await rxr.locator('[data-policy-rank="1"]').count() === 0,
+       "RxR: Puka alone does not fabricate a pick-21 recommendation");
+    ok(await rxr.locator('#players [data-player-id="9493"]').count() === 1 &&
+       await rxr.getAttribute('#players [data-player-id="9493"]', "data-drafted") === "true",
+       "RxR: a selected player stays on the board as visibly drafted");
+
+    await rxr.click('[data-action="fill"]');
+    await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "20");
+    const leader21 = await rxr.getAttribute('[data-policy-rank="1"]', "data-player-id");
+    ok(await rxr.getAttribute("#rxr-state", "data-next-pick") === "21" && !!leader21 &&
+       await rxr.locator('[data-policy-rank="1"]').count() === 1 &&
+       /Puka Nacua/.test(await rxr.textContent("#roster")) &&
+       await rxr.locator('#round-strip [data-overall="21"].current').count() === 1,
+       "RxR: complete picks 1-20 re-solve pick 21 from the Puka roster");
+
+    await rxr.click(`[data-player-id="${leader21}"] [data-action="draft"]`);
+    await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "21");
+    ok(await rxr.getAttribute("#rxr-state", "data-next-pick") === "22" &&
+       await rxr.locator('[data-policy-rank="1"]').count() === 0,
+       "RxR: Puka plus the observed pick-21 policy leader still waits for picks 22-27");
+    await rxr.click('[data-action="fill"]');
+    await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "27");
+    const leader28 = await rxr.getAttribute('[data-policy-rank="1"]', "data-player-id");
+    ok(await rxr.getAttribute("#rxr-state", "data-next-pick") === "28" && !!leader28 &&
+       leader28 !== leader21 && await rxr.locator('[data-policy-rank="1"]').count() === 1,
+       "RxR: complete picks 1-27 produce a newly conditioned pick-28 leader",
+       `${leader21} -> ${leader28}`);
+    ok(JSON.stringify(await boardOrder()) === JSON.stringify(expectedOrder) &&
+       await rxr.locator('#players tr[data-player-id]:not(.hidden)').count() === expectedOrder.length,
+       "RxR: every player remains present and visible after two selections");
+    const prefix = await rxr.locator("#ledger .pickline").count();
+    ok(prefix === 27 && await rxr.locator("#snake .snake-cell[data-player-id]:not([data-player-id=''])").count() === 27,
+       "RxR: ledger and 12-team board expose one contiguous 27-pick scenario");
+
+    await rxr.click('[data-action="reset"]');
+    await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "0");
+    ok(await rxr.getAttribute("#rxr-state", "data-next-pick") === "1" &&
+       await rxr.locator('[data-policy-rank="1"]').count() === 0 &&
+       JSON.stringify(await boardOrder()) === JSON.stringify(expectedOrder),
+       "RxR: reset restores the untouched full board and removes every mark");
+    await rxr.evaluate(() => localStorage.setItem("ytfl_rxr_scenario_v1",
+      JSON.stringify({engine:"superseded-engine",picks:[{overall:1}]})));
+    await rxr.reload();
+    await rxr.waitForSelector('#rxr-state[data-slot="4"]');
+    ok(await rxr.getAttribute("#rxr-state", "data-prefix-count") === "0" &&
+       await rxr.evaluate(() => localStorage.getItem("ytfl_rxr_scenario_v1")) === null,
+       "RxR: an engine refresh invalidates and removes the saved scenario");
+    ok(rxrErrors.length === 0, "RxR: zero console errors", rxrErrors[0] || "");
+    await rxr.close();
+
+    const rxrMobile = await browser.newPage({ viewport: { width:390, height:844 } });
+    await rxrMobile.goto(base + "/out/rxr.html");
+    await rxrMobile.waitForSelector('#rxr-state[data-slot="4"]');
+    const mobileFit = await rxrMobile.evaluate(() => ({
+      page: document.documentElement.scrollWidth <= window.innerWidth + 1,
+      actions: [...document.querySelectorAll("[data-action]")].every(b =>
+        getComputedStyle(b).display === "none" || b.getBoundingClientRect().height >= 44),
+      rows: document.querySelectorAll("#players tr[data-player-id]").length,
+      boardScrolls: document.querySelector("#board-wrap").scrollHeight >
+        document.querySelector("#board-wrap").clientHeight,
+      pageScreens: document.documentElement.scrollHeight / window.innerHeight,
+      recordVisible: (() => {
+        const r = document.querySelector("#players [data-action='draft']").getBoundingClientRect();
+        return r.left >= 0 && r.right <= window.innerWidth + 1;
+      })(),
+      headerSticky: getComputedStyle(document.querySelector("#players").closest("table").tHead.rows[0].cells[1]).position === "sticky"
+    }));
+    ok(mobileFit.page && mobileFit.actions && mobileFit.rows === expectedOrder.length &&
+       mobileFit.boardScrolls && mobileFit.pageScreens < 8 && mobileFit.recordVisible && mobileFit.headerSticky,
+       "RxR: 390px layout keeps a usable internal board, visible 44px actions, and every player",
+       JSON.stringify(mobileFit));
+    await rxrMobile.close();
+
+    for (const viewport of [{width:768,height:1024},{width:900,height:900}]){
+      const tablet = await browser.newPage({viewport});
+      await tablet.goto(base + "/out/rxr.html");
+      await tablet.waitForSelector('#rxr-state[data-slot="4"]');
+      const fit = await tablet.evaluate(() => {
+        const board = document.querySelector("#board-wrap");
+        return {
+          width: window.innerWidth,
+          page: document.documentElement.scrollWidth <= window.innerWidth + 1,
+          rows: document.querySelectorAll("#players tr[data-player-id]").length,
+          boardScrolls: board.scrollHeight > board.clientHeight,
+          pageScreens: document.documentElement.scrollHeight / window.innerHeight,
+          recordVisible: (() => {
+            const r = document.querySelector("#players [data-action='draft']").getBoundingClientRect();
+            return r.left >= 0 && r.right <= window.innerWidth + 1;
+          })()
+        };
+      });
+      ok(fit.page && fit.rows === expectedOrder.length && fit.boardScrolls &&
+         fit.pageScreens < 8 && fit.recordVisible,
+         `RxR: ${viewport.width}px layout keeps the full board inside a usable scroller`,
+         JSON.stringify(fit));
+      await tablet.close();
+    }
+
+    const rxrMismatch = await browser.newPage();
+    const badRef = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/rxr_policy_reference.json"), "utf8"));
+    badRef.engine_content_sha256 = "deliberate-mismatch";
+    await rxrMismatch.route("**/out/data/rxr_policy_reference.json", r => r.fulfill({
+      contentType:"application/json", body:JSON.stringify(badRef)
+    }));
+    await rxrMismatch.goto(base + "/out/rxr.html");
+    await rxrMismatch.waitForFunction(() =>
+      document.querySelector("#state strong").textContent === "RxR blocked");
+    const mismatchText = await rxrMismatch.textContent("#state");
+    ok(/different engine payload/i.test(mismatchText) &&
+       await rxrMismatch.locator("#players [data-action='draft']").count() === 0,
+       "RxR: a stale policy corpus blocks the page before any action renders",
+       mismatchText.trim());
+    await rxrMismatch.close();
     srv.close();
   }
 

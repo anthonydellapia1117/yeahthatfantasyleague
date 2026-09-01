@@ -63,6 +63,7 @@ rehearsal's `real` times.
 | 1 | `git fetch origin main && git switch -C <repair-branch> origin/main` | 5 s | clean branch from main; never commit directly to main |
 | 1b | `python3 src/preflight_draft.py` | 1 s | geometry preflight: asserts the LIVE draft is still snake, no third-round reversal, and the teams/rounds the payload ships. Stop here on a mismatch - every computed pick number depends on it |
 | 2 | `python3 src/engine_2026.py` | 3.7 s | live ADP + projections; rewrites the sentinel payload, engine_2026.json, decision cards |
+| 2a | `python3 src/build_rxr_reference.py` | <0.1 s | rebuilds RxR's Python-canonical browser parity corpus against the exact new engine digest; an old corpus blocks RxR rather than scoring silently against different inputs |
 | 3 | `python3 src/build_cvs_inputs.py` | 2.0 s | nflverse volatility, TD rates, 2026 SOS |
 | 4 | `python3 src/build_cvs.py` | 0.3 s | the CVS board payload |
 | 4a | `python3 src/build_vona_tree.py` | 1.0 s | the PATHS tree - derives from the engine payload, so it MUST be rebuilt with it; the page guards fail if it falls behind |
@@ -84,7 +85,7 @@ rehearsal's `real` times.
 | 7k | `sh tests/run_gate.sh python3 tests/test_draft_vs_acquired.py` | 0.2 s | drafted-vs-acquired: champions-vs-field intervals, era flags, the two results kept distinct |
 | 8 | `sh tests/run_gate.sh python3 tests/test_pages_data.py` | 0.5 s | 321 page/data guards incl. content lineage, contrast, and teaser |
 | 9 | `GATE_ALLOW_SKIP=1 sh tests/run_gate.sh python3 tests/test_analysis.py` | 0.3 s | analysis guards. The five determinism reruns are cache-gated; without the HISTORY cache they skip, and run_gate now FAILS on a skip unless you say it is expected - hence the explicit `GATE_ALLOW_SKIP=1`. Coverage lost when you use it: 5 of 38 checks in this suite, and they are the ones proving the artifacts reproduce. With the cache they run and take ~25 min - merge-gate territory, not morning territory |
-| 10 | full smoke (see the Playwright note below) | 94 s + install | 350 browser guards, including same-day lineage mismatches, DRAFT MODE, the forward-pick law, and PATHS |
+| 10 | full smoke (see the Playwright note below) | browser-dependent + install | browser guards including same-day lineage mismatches, DRAFT MODE, the forward-pick law, PATHS reconstruction, and the complete RxR Puka -> Bowers conditioned scenario on desktop and mobile |
 | 11 | commit (convention below), push, draft PR, ready, squash-merge on green, reset branch | ~3 min | ship |
 | 12 | deploy byte-compare (loop below) | ~2 min | the live site IS the build |
 
@@ -137,7 +138,7 @@ Commit convention: author `Anthony DellaPia <anthonydellapia@gmail.com>`,
 hyphens not em dashes, no emojis. Deploy compare loop:
 
     until curl -sS "$PAGES/out/cvs.json" | cmp -s - out/cvs.json; do sleep 10; done
-    for f in out/engine_2026.json out/cvs.json out/draft_room.html out/big_board.html; do
+    for f in out/engine_2026.json out/cvs.json out/draft_room.html out/big_board.html out/rxr.html out/rxr_policy.js out/data/rxr_policy_reference.json; do
       curl -sS "$PAGES/$f" | cmp -s - "$f" && echo "BYTE-IDENTICAL  $f" || echo "DIFFERS  $f"
     done
 
@@ -145,6 +146,10 @@ with `PAGES=https://anthonydellapia1117.github.io/yeahthatfantasyleague`.
 
 ## Before the clock starts
 
+- [ ] RxR opens without a blocked-lineage state, says `SLOT 4` and
+      `SLEEPER CONFIRMED`, and shows all 14 owner turns. Reset any saved prep
+      scenario before using it for a fresh what-if; RxR is explicit
+      `ADP-CHALK SCENARIO - NOT A FORECAST`, not the live Sleeper poller.
 - [ ] Big board footer: cvs generated date and engine generated date are
       BOTH today; walter sha matches the current guide; config echo says
       cap 10%, walter_enabled true.

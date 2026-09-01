@@ -46,7 +46,7 @@ import statistics
 from collections import Counter, defaultdict
 
 from engine_lineage import require as require_engine_digest
-from forward_policy import phantom_lineup_pts, roster_caps
+from forward_policy import phantom_lineup_pts, player_id, roster_caps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "out", "data")
@@ -124,7 +124,7 @@ def run_sim(players, rounds_total, teams_n, our_slot, our_policy,
     for rnd, slot in snake(teams_n, rounds_total):
         t = teams[slot]
         picks_left = rounds_total - len(t.players)
-        avail = [p for p in players if p["name"] + "|" + p["pos"] not in taken]
+        avail = [p for p in players if player_id(p) not in taken]
         ours = slot == our_slot and our_policy != "adp"
         pool = [p for p in avail
                 if t.feasible(p["pos"], picks_left,
@@ -149,7 +149,7 @@ def run_sim(players, rounds_total, teams_n, our_slot, our_policy,
             pick = max(pool, key=lambda p: (
                 round(phantom_lineup_pts(t.players + [p], baselines) - base, 4),
                 p["vor"]))
-        taken.add(pick["name"] + "|" + pick["pos"])
+        taken.add(player_id(pick))
         t.players.append(pick)
         if slot == our_slot:
             log.append({"round": rnd,
@@ -173,7 +173,7 @@ def optimal_starters(team):
         for p in by_pos.get(pos, []):
             if got == n:
                 break
-            k = p["name"] + "|" + p["pos"]
+            k = player_id(p)
             if k not in used:
                 used.add(k)
                 lineup.append((pos, p))
@@ -181,10 +181,10 @@ def optimal_starters(team):
 
     take("QB", 1), take("RB", 2), take("WR", 2), take("TE", 1)
     flex = [p for pos in FLEX_OK for p in by_pos.get(pos, [])
-            if p["name"] + "|" + p["pos"] not in used]
+            if player_id(p) not in used]
     if flex:
         p = max(flex, key=lambda x: x["pts"])
-        used.add(p["name"] + "|" + p["pos"])
+        used.add(player_id(p))
         lineup.append(("FLEX", p))
     take("K", 1), take("DEF", 1)
     return round(sum(p["pts"] for _, p in lineup), 1), [
@@ -194,7 +194,7 @@ def optimal_starters(team):
 
 def sanity(team, rounds_total):
     c = team.counts()
-    names = [p["name"] + "|" + p["pos"] for p in team.players]
+    names = [player_id(p) for p in team.players]
     return {
         "picks": len(team.players) == rounds_total,
         "no_duplicates": len(set(names)) == len(names),

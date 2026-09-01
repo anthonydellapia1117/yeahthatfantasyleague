@@ -1,8 +1,8 @@
-# Turn Planner - approved offseason replacement for PATHS
+# Turn Planner - approved replacement for PATHS
 
-Status: **APPROVED DESIGN ONLY. DO NOT IMPLEMENT BEFORE THE 2026 DRAFT ON
-SEPTEMBER 8.** The current production build remains stable. PR #54 stays parked
-and is not an implementation base for this work.
+Status: **THE FULL LIVE DESIGN REMAINS OFFSEASON WORK. A BOUNDED `RxR PREP`
+SUBSET WAS EXPLICITLY AUTHORIZED ON 2026-09-01.** PR #54 stays parked and is not
+an implementation base for either surface.
 
 Written 2026-08-31 after the confirmed slot-4 order exposed the difference
 between the question PATHS answered and the player decision Anthony actually
@@ -10,10 +10,64 @@ faced. This document supersedes the replacement outline in section 8 of
 `docs/VONA_TREE_SPEC.md` and the older PATHS open-item wording in
 `docs/AGENT_HANDOFF_SPEC.md`.
 
-The implementation may begin only after the draft. A future agent may not ship a
-cheaper substitute by omitting the action-uncertainty study, copying the current
-VONA band, showing fourteen independent recommendations, or relabelling the
-existing tree.
+The original approval froze all implementation until after the draft. On
+2026-09-01 Anthony explicitly superseded that timing for one constrained,
+immediately usable prep surface named **RxR**. That authorization did not convert
+the prep subset into the full live planner and did not waive the calibration or
+coherent-live-state requirements below. A future agent may not call RxR Prep the
+completed Turn Planner, add a tie claim, copy the current VONA band, show fourteen
+independent recommendations, or relabel the existing tree.
+
+### 0.1 The authorized pre-draft subset
+
+`out/rxr.html` is a scenario planner, not a live draft feed:
+
+- one 14-turn rail and one persistent engine-VOR board;
+- manual player selections plus an explicit `ADP-CHALK SCENARIO — NOT A
+  FORECAST` fill for every intervening opponent pick;
+- a Marginal Policy mark only when that synthetic ledger is a complete prefix
+  ending at Anthony's current scenario turn;
+- canonical Python `score_candidates` with a parity-checked JavaScript mirror;
+- no player-action tie/equivalence claim, no survival estimate, no future-turn
+  recommendation, no opponent-history probability, and no hidden path; and
+- local browser persistence bound to the engine content digest, so a refreshed
+  engine invalidates the old scenario instead of silently reusing it.
+
+The full player list stays visible in engine-VOR order. Drafted rows remain on the
+same board and become visibly struck through; policy scores and the neutral leader
+outline never filter or reorder it. K/DEF remain visible projection floors and are
+not policy-scored. The page deliberately says `ACTION UNCERTAINTY NOT CALIBRATED`:
+it publishes a deterministic one-step ordering, not a separated winner or optimal
+multi-round path.
+
+RxR Prep does **not** extract or duplicate the Draft Room poller. Live Sleeper
+conditioning, future marginal survival, historical descriptions, action-error
+calibration, and the Draft Room recommendation reconciliation remain governed by
+the complete requirements below. The existing PATHS artifact stays deployed but
+is removed from public navigation; VONA remains an internal audit artifact.
+
+One pre-existing mock boundary remains explicit. `mock_draft.py` currently permits
+its legacy marginal sequence to score K/DEF and takes them at rounds 7 and 9 for
+slot 4; excluding those floors would move six slot-4 picks and 6-8 picks in every
+slot. RxR does not consume those selected-player sequences. It consumes only the
+mock artifact's league-derived opponent K/DEF timing window and applies its own
+documented ADP-chalk fill. The mock now shares canonical player-id identity, but
+changing its K/DEF objective is a separate reviewed model change, not a hidden RxR
+refactor.
+
+Pre-release measurements on the committed 417-player engine ran 200 browser-
+mirror scores at each of three roster states. Empty-roster p50/p95 was
+0.345/0.483 ms; Puka was 0.369/0.465 ms; Puka+Bowers was 0.441/0.534 ms.
+Across the pick-4, pick-21 and pick-28 states, the final 1440x900 page measured
+1,994-2,016 px (2.22-2.24 screens). At 390x844 it measured 3,156-3,352 px
+(3.74-3.97 screens) with a 340x523 internal board scroller, no horizontal
+overflow, and the Record action visible. The first mobile build was 31,623 px
+and hid the action column; the final browser guard measures the internal-scroller
+and visible-action behavior so that failure cannot recur silently. Independent
+pre-merge review then found a second breakpoint defect: widths 641-900 removed
+the scroller and expanded the page to 26,018-31,192 px. The final 768px and
+900px states are 2.55 and 2.65 screens with the full player list inside its
+scroller, and both widths now have browser guards.
 
 ## 1. Decision and product boundary
 
@@ -482,7 +536,9 @@ never creates a probability or recommendation.
 
 ## 10. Page and artifact disposition
 
-Build a new `out/turn_planner.html` after the draft. Keep Cheat Sheet Sheet 4
+The authorized prep subset is `out/rxr.html`. The complete live implementation
+remains post-draft work and may either extend RxR after satisfying this spec or
+replace it through an explicitly reviewed migration. Keep Cheat Sheet Sheet 4
 static and printable. A future print/export button may snapshot the planner's
 current explicit state, but the cheat sheet must not become a polling live app.
 
@@ -608,9 +664,10 @@ Do not build any of the following:
 - an interactive rewrite of the printable Cheat Sheet;
 - a public Turn Planner that omits the calibration attempt merely to reduce
   scope; or
-- any implementation, scaffold, feature flag, shadow production path, workflow,
-  or migration before the September 8 draft is complete and its started-feed
-  evidence has been recorded.
+- any live poller, future-survival layer, uncertainty claim, historical-probability
+  layer, or migration that presents RxR Prep as the completed live planner before
+  the September 8 draft is complete and its started-feed evidence has been
+  recorded. The bounded §0.1 prep subset is the sole pre-draft exception.
 
 ## 14. Effort and sequencing
 
@@ -628,9 +685,10 @@ corpus can support the action-error reconstruction.
 skip it. If the corpus yields an honest null, the no-uncertainty state is part of
 the completed product rather than a reason to invent a band.
 
-No phase begins merely because the calendar reaches September 8. Implementation
-requires the draft to be complete and the actual started-feed evidence from draft
-night to be added to the live-state requirements first.
+No **full-live** phase begins merely because the calendar reaches September 8.
+Implementation beyond the bounded §0.1 prep subset requires the draft to be
+complete and the actual started-feed evidence from draft night to be added to the
+live-state requirements first.
 
 ## 15. Separate deferred automation gap
 
