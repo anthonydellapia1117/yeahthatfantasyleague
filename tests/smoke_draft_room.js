@@ -2413,12 +2413,17 @@ function reportedUserOrder(){
       nodes.map(n => n.dataset.playerId));
     ok(JSON.stringify(await boardOrder()) === JSON.stringify(expectedOrder),
        "RxR: one full player board starts in exact engine-VOR order");
+    ok(!await rxr.isChecked("#show-drafted") &&
+       await rxr.locator('#players tr[data-player-id]:not(.hidden)').count() === expectedOrder.length,
+       "RxR: drafted-player audit view is off by default and the untouched board is fully visible");
     ok(await rxr.locator('[data-policy-rank="1"]').count() === 0,
        "RxR: no policy mark before the prefix reaches our pick");
 
+    const openingIds = [];
     for (const name of ["Jahmyr Gibbs", "Bijan Robinson", "Ja'Marr Chase"]){
       const player = engRxR.players.find(p => p.name === name);
       if (!player) throw new Error(`RxR scenario fixture missing ${name}`);
+      openingIds.push(String(player.sleeper_id));
       await rxr.click(`[data-player-id="${player.sleeper_id}"] [data-action="draft"]`);
     }
     await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "3");
@@ -2437,9 +2442,21 @@ function reportedUserOrder(){
     ok(await rxr.getAttribute("#rxr-state", "data-next-pick") === "5" &&
        await rxr.locator('[data-policy-rank="1"]').count() === 0,
        "RxR: Puka alone does not fabricate a pick-21 recommendation");
+    const pickedIds = new Set([...openingIds, "9493"]);
+    const topAvailable = expectedOrder.find(id => !pickedIds.has(id));
     ok(await rxr.locator('#players [data-player-id="9493"]').count() === 1 &&
-       await rxr.getAttribute('#players [data-player-id="9493"]', "data-drafted") === "true",
-       "RxR: a selected player stays on the board as visibly drafted");
+       await rxr.getAttribute('#players [data-player-id="9493"]', "data-drafted") === "true" &&
+       await rxr.locator('#players [data-player-id="9493"].hidden').count() === 1 &&
+       await rxr.locator('#players tr[data-player-id]:not(.hidden)').first().getAttribute("data-player-id") === topAvailable,
+       "RxR: a selected player hides by default and the top available player rises to the first visible row");
+    await rxr.check("#show-drafted");
+    ok(await rxr.locator('#players [data-player-id="9493"]:not(.hidden)').count() === 1 &&
+       await rxr.evaluate(() => getComputedStyle(
+         document.querySelector('#players [data-player-id="9493"]')).textDecorationLine.includes("line-through")),
+       "RxR: Show drafted players restores the selected row with its struck-through audit treatment");
+    await rxr.uncheck("#show-drafted");
+    ok(await rxr.locator('#players [data-player-id="9493"].hidden').count() === 1,
+       "RxR: turning the audit view back off hides drafted rows again");
 
     await rxr.click('[data-action="fill"]');
     await rxr.waitForFunction(() => document.querySelector("#rxr-state").dataset.prefixCount === "20");
@@ -2463,8 +2480,8 @@ function reportedUserOrder(){
        "RxR: complete picks 1-27 produce a newly conditioned pick-28 leader",
        `${leader21} -> ${leader28}`);
     ok(JSON.stringify(await boardOrder()) === JSON.stringify(expectedOrder) &&
-       await rxr.locator('#players tr[data-player-id]:not(.hidden)').count() === expectedOrder.length,
-       "RxR: every player remains present and visible after two selections");
+       await rxr.locator('#players tr[data-player-id]:not(.hidden)').count() === expectedOrder.length - 27,
+       "RxR: every player remains in VOR order while the 27 drafted rows stay hidden by default");
     const prefix = await rxr.locator("#ledger .pickline").count();
     ok(prefix === 27 && await rxr.locator("#snake .snake-cell[data-player-id]:not([data-player-id=''])").count() === 27,
        "RxR: ledger and 12-team board expose one contiguous 27-pick scenario");

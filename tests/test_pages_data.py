@@ -767,6 +767,10 @@ ok("Sleeper injury_status" in _rxr_src and
    "designation date unavailable" in _rxr_src and
    "not an official practice/game designation" in _rxr_src,
    "RxR qualifies its undated preseason injury snapshot on the page")
+ok('id="show-drafted"' in _rxr_src and
+   "Show drafted players" in _rxr_src and
+   "showDrafted:false" in _rxr_src,
+   "RxR hides drafted rows by default and exposes an explicit audit-view toggle")
 ok(all(term not in _rxr_src.upper() for term in
        ("BULLISH", "WATCH", "VONA", "WALTER", "CONFIGURED CVS")),
    "RxR imports no overlay, tree, research-guide, or configured-CVS producer")
