@@ -1,13 +1,13 @@
 # 2026 Decision Cards - YeahThatFantasyLeague!
 
 Generated 2026-08-31 from live Sleeper projections and ADP. **Regenerate the morning of 2026-09-08** - both move daily, and injury statuses churn.
-Engine content SHA-256: `9391e9ce040ca9363161d22b4b775d59efb0503c4eab7cf4249d89adb25735aa`.
+Engine content SHA-256: `adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31`.
 
 Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,039 of this league's own picks. Live-seat dossiers use recency-weighted, current-era shrunk history with n_eff; the order table separately reports raw full-franchise medians and n. Both are description only: the tendency probability fold was rejected (p=0.9932), so history creates no urgency trigger. No champion mimicry - every call is VOR and tier math. Where two candidates sit in one tier the card says COIN FLIP: the projection feed has no variance measure, so break ties toward ceiling yourself.
 
 **Median-availability checkpoints - NOT A FORECAST.** Each listed anchor is selected by the marginal-lineup policy from players whose individual modeled availability is at least even odds after prior listed anchors are consumed. Opponent boards are not simulated; an individual survival probability is not a joint path or selection frequency. Re-solve after every actual pick. The raw JSON retains a descriptive fallback residue for audit provenance; it is unsolved by the marginal policy and is deliberately not rendered here.
 
-**Primary planning seat: slot 4** - externally reported draw, Sleeper confirmation pending. The other 11 slot calculations remain below as references; manager history is description only and never enters a probability or verdict.
+**Primary planning seat: slot 4** - externally reported draw, Sleeper confirmation agrees. The other 11 slot calculations remain below as references; manager history is description only and never enters a probability or verdict.
 
 ## Historical first-position timing, as mapped today
 

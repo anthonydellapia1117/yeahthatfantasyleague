@@ -79,6 +79,13 @@ producer-to-published-artifact dependency path fires before calling the feature
 current. A correct first build proves only the snapshot; it does not prove the
 feature can stay current.
 
+A correct build can also become stale after publication when a mutable server fact
+changes. For every watch, ask whether detection triggers the dependent rebuild or
+only reports to a human. A byte-identical deploy and matching lineage digests
+establish internal coherence, not current agreement with the external world. If the
+watched fact affects generated artifacts, prove the event-to-rebuild edge or label
+the process human-gated.
+
 The same question applies to state machines: **have I tested the transition, or
 only both endpoint screenshots?** On 2026-08-31 the pre-draw identity placeholder
 and a fresh-load confirmed order each had green browser fixtures, while the real
@@ -107,7 +114,7 @@ A single-owner, single-league fantasy football draft assistant for a 12-team,
 14-round, full-PPR, **6-point passing TD** Sleeper league, drafting
 **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. Owner and only user:
 Anthony DellaPia (Sleeper user `345197760305307648`, stable roster id 7,
-externally drawn draft slot 4 pending Sleeper confirmation, franchise
+Sleeper-confirmed draft slot 4, franchise
 "Antdell & Ernie", league `1389378429505241088`, draft
 `1389378429505241089`).
 
@@ -295,7 +302,7 @@ new evidence wastes a cycle.
 
 | Rejected | Why, with the number |
 |---|---|
-| **Opponent tendencies inside the probability model** | Real and persistent, but folding them into the arithmetic was rejected. The backtest that settled it: p=0.9932 - no predictive gain. They ship as description only with n, and the guard enforcing that is the most important test in `test_survival.py`. Slots 3 and 7 remain null while their history identities are unresolved. |
+| **Opponent tendencies inside the probability model** | Real and persistent, but folding them into the arithmetic was rejected. The backtest that settled it: p=0.9932 - no predictive gain. They ship as description only with n, and the guard enforcing that is the most important test in `test_survival.py`. Slots 3 and 7 remain null while their history identities are unresolved; that isolation held through the real 12/12 owner/order transition. |
 | **Power-law sd curve** | Adopted, then LOST ITS OWN BACKTEST. Leave-one-season-out over 2,039 picks: it did not beat the step function it replaced (10 of 13 seasons to the step, two-sided p=0.092 - a wash). Its capped tail misfits the real decline past ADP 115. |
 | **Step-function sd (4-band)** | The original. Adjacent-ADP survival differed **8,284x** at pick 48. Cliff drove verdicts at exactly the boundaries where wait-or-reach flips. |
 | **INTERP sd - ADOPTED, do not replace casually** | 12-bin piecewise linear. Beats the step 12 of 13 seasons, two-sided p=0.0034 - the only significant comparison in the backtest. A calibration benchmark guard now blocks any sd change that predicts worse out of sample. |
@@ -425,7 +432,7 @@ new evidence wastes a cycle.
   containing the word "FAILURES" produced a false positive.
 - **Sleeper's `slot_to_roster_id` returns the identity map before the draw.** A
   genuine draw landing on identity is 1 in 12!, so identity means "not drawn".
-- **Anthony's stable `roster_id == 7`; his externally drawn `slot == 4`.** They are
+- **Anthony's stable `roster_id == 7`; his Sleeper-confirmed `slot == 4`.** They are
   different identities, and the draw now makes that distinction observable rather
   than theoretical. Never use roster id as a draft slot. Slots 3 and 7 have
   unresolved history labels; leave their tendency descriptions null.
@@ -460,7 +467,10 @@ still operationally important.
    divergent implementations, then Unicode quote variants. Python now has one
    blind comparison key plus one collision-aware resolver; browser copies are held
    to its contract corpus by parity tests. Do not add a local normalizer.
-3. **Silent cron / stale publication (5).** Alert on the published artifact.
+3. **Silent cron / stale publication (6).** Alert on the published artifact and
+   verify that a watched mutable-world transition triggers its dependent rebuild;
+   notification alone left a coherent pending-state build live after Sleeper
+   confirmed the order.
 4. **Fail-open guards / controls (5).** A failed poll that falls through, a guard
    that builds evidence and never asserts, a wrapper that swallows an exit code, a
    suite that skips and says ALL PASS, and a date-linkage check that collides on
@@ -516,8 +526,9 @@ still operationally important.
 | **Archive PII in git HISTORY** | Removed from HEAD by the 2026-08-26 prune; still reachable in history at/before `bd8aff7`. Repo is public. | **Anthony's call, deferred to after the draft.** (a) accept, (b) `git filter-repo` + force-push (invalidates clones), (c) private repo - rejected for now, Pages would go dark. |
 | **Live browser-to-Sleeper path** | **VERIFIED 2026-08-26** by Anthony against a real live draft - see §11. Automated browser smoke remains hermetic and stubs the Sleeper API, so this is a human-verified path, not a regression-protected one. | Optional: a Playwright run against a live public mock would make the verification repeatable. Not required - the path is known good. |
 | **Keeper status** | `use_keepers` is on for 2025-2026 but the 2025 draft had zero keeper picks and `keeper_results.csv` is 2 bytes. | OPEN QUESTION for the commissioner. **Do not resolve by inference.** |
-| **Draft order** | **EXTERNALLY DRAWN 2026-08-31: Anthony is slot 4**, picks 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. At 2026-08-31 18:31 UTC Sleeper still had `draft_order: null`, the exact identity `slot_to_roster_id` placeholder, and zero picks, so official confirmation remained pending. `start_time=1788912025000` is **2026-09-09 00:00:25 UTC / 2026-09-08 20:00:25 ET**. Roster 3 is ownerless; a legitimate publication can therefore carry 11 user-order entries beside a complete 12-roster permutation. | Slot 4 is primary on every slot-conditional surface; the other eleven remain reference views. The exact one-page identity -> 11-user/12-roster transition is regression-tested: it advances every label and selected surface atomically to slot 4 without reload. A partial user map remains unusable alone or beside identity/malformed roster evidence; only a complete non-identity roster permutation may corroborate it, and disagreement fails loud. Actual server publication still needs observation when it happens. |
-| **Conviction-overlay seat provenance** | **RESOLVED and now exercised against a non-7 draw plus the ownerless-roster publication shape.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. The external slot-4 draw supplies the primary basis while Sleeper remains unpublished. | `src/draft_order.py` requires a complete official roster permutation. A well-formed shorter user order may corroborate that complete source because Sleeper omits ownerless rosters; it cannot resolve independently. Pending/unavailable official data uses externally reported slot 4 visibly and retains all twelve survival windows. Keep the non-7, ownerless-seat, absent/identity/malformed fallback, duplicate-map, and source-conflict guards. |
+| **Draft order** | **SLEEPER-CONFIRMED 2026-08-31: Anthony is slot 4**, picks 4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165. Sleeper published 12/12 user assignments plus the complete non-identity roster permutation `{1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12}`; the resolver source is `draft_order+slot_to_roster_id` and both official sources agree. `start_time=1788912025000` is **2026-09-09 00:00:25 UTC / 2026-09-08 20:00:25 ET**. | Slot 4 is primary on every slot-conditional surface; the other eleven remain reference views. The real same-page transition advanced the banner, order card, gap strips, seat chip, and slot-4 geometry without reload. Keep the shorter 11-user/12-roster rehearsal branch: it is valid coverage for an ownerless state that did not materialize in this publication. Partial, identity, malformed, duplicate, and source-conflict guards remain fail-loud. |
+| **Draft-order transition rebuild trigger** | **OPEN AUTOMATION GAP.** `src/check_draft_order.py` and the draw watch detected the pending -> confirmed transition, but neither writes artifacts nor dispatches a build. A human had to notice, run the full dependency chain, and deploy. Until then, byte-identical Pages and matching lineage digests coherently described the old world state. | Add an idempotent scheduled watcher that dispatches the existing `draft-refresh.yml` with `dry_run=false` only when live reconciliation says `agrees` and the committed engine does not. Never dispatch on conflict or unresolved evidence. Do not duplicate the rebuild chain inside the watcher. |
+| **Conviction-overlay seat provenance** | **RESOLVED and now exercised against the real non-7 official draw.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. The confirmed slot-4 draw now supplies the primary basis through `draft_order+slot_to_roster_id`. | `src/draft_order.py` requires a complete official roster permutation. A well-formed shorter user order may corroborate that complete source because Sleeper can omit ownerless rosters; it cannot resolve independently. Keep the non-7, ownerless-seat, absent/identity/malformed fallback, duplicate-map, and source-conflict guards. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
 | **RB vacated-carries signal** | **ASSESSMENT ONLY.** The repaired `backfield_command` applies the existing all-week 2025 carry-share basis consistently to historical teams; it does not measure 2026 carries opened by departures. `teams.html` displays thresholded raw departure/arrival rows from the trimmed season shard, not a complete net transition signal from the new ledger. The analogous WR `adj_vac` is confirmed rookie-blind because an incoming player with no 2025 NFL row subtracts zero. | Compute vacated carries from the same player-team source, quantify every 2026 backfield, test correlation and incremental value against ADP, and explicitly model rookies. If strongly ADP-redundant, drop it. A same-method carry signal would inherit `adj_vac`'s rookie gap, so fix `adj_vac` and any carry implementation under one rookie policy or do not wire carries. |
@@ -573,15 +584,14 @@ Observed:
 | snake math | `UP IN 8 PICKS - your pick 13 ... then pick 26 (13 later)` | correct 19-team snake geometry from `GEO`, derived from the loaded draft |
 | survival table, tier cliffs, pick engine, best-available | all rendered live | the decision surfaces populate from a real feed |
 
-**Caveat 1 - the settings verified are not the league's settings.** This was 19
-teams / 120s / 2 flex. The real league is **12 teams / 60s / 1 flex** and Anthony
-has been externally drawn at **slot 4**, but Sleeper has not published the order.
-The current real pre-transition payload was captured twice and the exact
-identity-placeholder -> expected 11-user/12-roster transition now passes in one
-hermetic browser page, but the post-transition response is necessarily a fixture.
-The exact real-league configuration and official slot-4 permutation have still not
-run end-to-end from Sleeper. Observe that actual publication when it happens; do not
-promote the rehearsal into live-path evidence.
+**Caveat 1 - the started-draft feed remains unverified.** The real pre-draft
+12-team / 60-second / one-FLEX configuration and official slot-4 permutation have
+now been observed from Sleeper. The same-page transition repainted the confirmed
+banner, order card, gap strips, seat chip, and slot-4 geometry without reload. This
+does **not** verify the started-draft path. Until the real draft begins, no live
+evidence exists for actual `last_picked` and picks timing, intermediary cache
+behavior, audio, wake lock, background-tab behavior, or recovery under the
+production feed. The controlled started-draft smoke is hermetic evidence only.
 
 **Caveat 2 - the board warned that its values do not transfer, and they did not.**
 Anthony used it for player ordering only. That is the correct use and the correct
