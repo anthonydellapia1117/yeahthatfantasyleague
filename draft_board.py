@@ -74,7 +74,8 @@ def projections(lg):
             adp = st.get(f"adp_{key}")
             # gp is a hardcoded 18.0 placeholder for every drafted offensive player,
             # so any per-game rate derived from it is pts/18 and carries no information.
-            # injury_status is the only availability signal Sleeper actually supplies.
+            # injury_status is undated Sleeper preseason/player metadata, not an
+            # official practice/game designation. It is displayed, never priced.
             rows.append({
                 "name": f"{pl.get('first_name','')} {pl.get('last_name','')}".strip(),
                 "sleeper_id": str(r.get("player_id") or ""),

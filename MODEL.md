@@ -208,18 +208,23 @@ out/data/injury_market.json.
 Item 5 - replay backtest, honestly scoped (one-step deviations at actual
 board states; live projections, the walter layer, and curated inputs
 stated non-replayable, never approximated): over 169 of Anthony's actual
-skill picks, his choices beat the blind ADP-best baseline by +35.6
-realized points per pick (CI [+4.0, +69.4]); the proxy replay engine
-(prior-season-points VOR, rookies priced at zero) also beats ADP
-(+42.7, CI [+8.3, +76.9]) and does NOT distinguishably beat Anthony
-(-7.1 against him, CI [-47.2, +32.2] spans zero). Beat-or-report: the
-engine does not beat the drafter; both beat the market-order baseline.
-The frozen cond_survival, calibrated on 17,068 player-pick pairs across
-13 drafts, shows real skill (+19.6% Brier improvement over base rate)
-BUT is systematically overconfident about removal: players it gives
-under 50% survival actually survive ~50% of the time, and the modern-era
-split (2023-2025: predicted 0.32 vs observed 0.51 in that bucket) shows
-this is not an old-era artifact. FLAGGED: the wait-or-reach card is
+skill picks, his choices score +23.08 realized points per pick against
+the blind ADP-best baseline, but the 95% CI crosses zero
+[-0.44, +46.88]. The proxy replay engine (prior-season-points VOR,
+rookies priced at zero) is +28.92 against ADP with a CI that also crosses
+zero [-7.18, +67.15]. Anthony minus replay is -5.84, CI
+[-46.15, +33.20]. Beat-or-report: neither Anthony nor the replay engine
+establishes an advantage over the market-order baseline, and neither is
+distinguishable from the other. #58's identity correction removed 119
+alias player-pick identities from the replay frame and moved both
+ADP-comparison intervals across zero; the earlier positive-interval
+"both beat ADP" conclusion is retired. The frozen cond_survival,
+evaluated on 16,949 player-pick pairs across 13 drafts, shows real skill
+(24.66% Brier improvement over base rate) BUT is systematically
+overconfident about removal: players it gives under 50% survival actually
+survive 47.8% of the time, and the modern-era split (2023-2025:
+predicted 0.319 vs observed 0.495 in that bucket) shows this is not an
+old-era artifact. FLAGGED: the wait-or-reach card is
 conservative - it says "reach" somewhat more often than the observed
 history justifies. Recalibrating touches the frozen math and happens
 only with explicit approval. Payload: out/data/replay_backtest.json.

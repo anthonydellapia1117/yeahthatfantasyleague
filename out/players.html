@@ -101,6 +101,8 @@ input[type=search]{width:100%;font:inherit;color:var(--ink);background:var(--s2)
 .cols{display:grid;grid-template-columns:1fr;gap:0 24px}
 @media(min-width:800px){.cols{grid-template-columns:1fr 1fr}}
 footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+.injprov{font-size:11px;color:var(--ink2);margin:8px 0;padding:7px 9px;
+  border:1px solid var(--line);border-radius:8px;background:var(--s2)}
 .gap-pos{color:var(--go)}.gap-neg{color:var(--stop)}
 .arch{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0}
 .arch-t{border-left:3px solid var(--go)}
@@ -118,6 +120,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 </header>
 <div id="banner" class="banner" hidden></div>
 <div id="bull-status" class="small" hidden></div>
+<div id="injury-status-provenance" class="injprov" hidden></div>
 <div id="content"><p class="small">loading shards...</p></div>
 <footer id="foot"></footer>
 </div>
@@ -139,6 +142,14 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
 const esc = s => String(s).replace(/[&<>"']/g,
   c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const norm = playerComparisonKey;
+function injuryProvenanceText(generated){
+  return `Sleeper injury_status · snapshot ${generated || "unknown"} · designation date unavailable. ` +
+    "Preseason metadata, not an official practice/game designation; verify the team report.";
+}
+function injuryCode(status){ return status === "Questionable" ? "Q" : status; }
+function injuryBadge(p){
+  return p.injury ? `<span class="inj" title="${esc(injuryProvenanceText(D.engine && D.engine.generated))}">Sleeper · ${esc(injuryCode(p.injury))}</span>` : "";
+}
 
 // Every number on this page is tappable and names its shard, field, source,
 // and fetch time (pattern 1 from the platform research - built first).
@@ -199,6 +210,9 @@ async function boot(){
     // page renders identically without them, and neither gates boot
     try { D.arch = await get("data/archetypes_2026.json"); } catch (e) { D.arch = null; }
     try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
+    const injuryNote = document.getElementById("injury-status-provenance");
+    injuryNote.textContent = injuryProvenanceText(D.engine.generated);
+    injuryNote.hidden = false;
     renderBullStatus();
   } catch (e) {
     const b = document.getElementById("banner");
@@ -439,7 +453,7 @@ function renderPlayer(p){
 
   let h = `<div class="card">
     <div class="small">${esc(p.pos === "DEF" ? "DST" : p.pos)} - ${esc(p.team || "-")}${p.tier ? " - tier " + p.tier : ""}</div>
-    <div class="pname">${esc(p.name)}${p.injury ? `<span class="inj">${esc(p.injury)}</span>` : ""}${p.floor ? '<span class="floor">projection = floor</span>' : ""}${ycChip(p)}</div>
+    <div class="pname">${esc(p.name)}${injuryBadge(p)}${p.floor ? '<span class="floor">projection = floor</span>' : ""}${ycChip(p)}</div>
     <div class="pmeta">model VOR ${pv(p.vor.toFixed(1), "engine_2026.json", "vor")}
       - projected ${pv(p.pts.toFixed(1), "engine_2026.json", "pts")} pts
       - ADP ${pv(p.adp < 900 ? p.adp.toFixed(1) : "-", "engine_2026.json", "adp")} <span class="small">(sleeper)</span></div>

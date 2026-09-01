@@ -57,6 +57,7 @@ a{color:var(--info);text-decoration:none}
 .sheet-m{font-size:9px;color:#333;font-variant-numeric:tabular-nums}
 .sheet-f{margin-top:8px;border-top:1px solid #999;padding-top:4px;
   font-size:8px;color:#444;display:flex;justify-content:space-between;gap:10px}
+.injury-status-provenance{margin-top:3px;font-size:7px;color:#444;line-height:1.25}
 
 /* multi-column bodies */
 .cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 14px}
@@ -76,7 +77,7 @@ table{border-collapse:collapse;width:100%}
 .r .ad{width:30px;text-align:right;font-variant-numeric:tabular-nums;color:#222}
 .r .ti{width:16px;text-align:right;font-variant-numeric:tabular-nums;color:#444}
 .r .by{width:20px;text-align:right;font-variant-numeric:tabular-nums;color:#444}
-.r.inj .nm::after{content:" Q";font-weight:800;font-size:7.6px;letter-spacing:.02em}
+.r .injmark{font-weight:800;font-size:7.6px;letter-spacing:.02em;margin-left:2px}
 .colhd td{font-size:7px;font-weight:800;letter-spacing:.05em;color:#555;
   text-transform:uppercase;border-bottom:1px solid #bbb;padding-bottom:1px}
 
@@ -195,6 +196,16 @@ var KDEF_ROWS = 4;
 
 function num(v, d){ return (typeof v === "number" && isFinite(v)) ? v.toFixed(d) : "-"; }
 function adpTxt(p){ return (p.adp != null && p.adp < 900) ? num(p.adp, 1) : "-"; }
+function injuryProvenanceText(generated){
+  return "Sleeper injury_status · snapshot " + (generated || "unknown") +
+    " · designation date unavailable. Preseason metadata, not an official practice/game designation; verify the team report.";
+}
+function injuryCode(status){ return status === "Questionable" ? "Q" : status; }
+function injuryMark(p){
+  return p.injury ? '<span class="injmark" title="' +
+    esc(injuryProvenanceText(D.eng && D.eng.generated)) + '">S:' +
+    esc(injuryCode(p.injury)) + "</span>" : "";
+}
 
 // bye weeks live in the ADP shard, keyed by the same sleeper id the engine
 // carries; name is a labelled fallback and "-" is shown rather than guessed
@@ -228,7 +239,7 @@ function rowsHtml(list, opts){
     }
     out += '<tr class="r' + (p.injury ? " inj" : "") + '">' +
       '<td class="rk">' + (opts.rankFrom ? ((opts.rankOffset || 0) + i + 1) : (p.vor_rank || i + 1)) + "</td>" +
-      '<td class="nm">' + esc(p.name) + "</td>" +
+      '<td class="nm">' + esc(p.name) + injuryMark(p) + "</td>" +
       (opts.hidePos ? "" : '<td class="po">' + esc(p.pos === "DEF" ? "DST" : p.pos) + "</td>") +
       '<td class="tm">' + esc(p.team || "-") + "</td>" +
       '<td class="ad">' + adpTxt(p) + "</td>" +
@@ -243,7 +254,9 @@ function sheet(title, meta, body, foot){
     '<div class="sheet-t">' + title + "</div>" +
     '<div class="sheet-m">' + meta + "</div></div>" + body +
     '<div class="sheet-f"><span>' + (foot || "") + "</span>" +
-    "<span>YTFL 2026 &middot; engine " + esc(D.eng.generated) + "</span></div></section>";
+    "<span>YTFL 2026 &middot; engine " + esc(D.eng.generated) + "</span></div>" +
+    '<div class="injury-status-provenance">' +
+    esc(injuryProvenanceText(D.eng.generated)) + "</div></section>";
 }
 
 function build(){
@@ -269,7 +282,7 @@ function build(){
   }
   var s1 = sheet("Top " + top.length + " Overall &middot; by VOR", meta,
     '<div class="cols3">' + c1 + "</div>",
-    "Rank is this sheet's order by VOR. ADP is market. Q = questionable on the engine build.");
+    "Rank is this sheet's order by VOR. ADP is market. S: = Sleeper status on the engine snapshot.");
 
   // ---- SHEETS 2-3: by position with tier rules. A position group is never
   // split across a page, so four groups of forty take two sides rather than
@@ -326,8 +339,8 @@ function build(){
       esc(r.next_pick) + "</div>");
     if ((r.coin_flips || []).length) cues.push('<div class="coin-cue">Coin flip: ' +
       r.coin_flips.map(esc).join(", ") + "</div>");
-    if (p && p.injury) cues.push('<div class="checkpoint-cue">' + esc(p.injury) +
-      " &mdash; re-check before drafting</div>");
+    if (p && p.injury) cues.push('<div class="checkpoint-cue">Sleeper ' + esc(p.injury) +
+      " &mdash; designation date unavailable; verify the team report</div>");
     body4 += '<tr><td class="rd">' + r.round + '</td><td class="pn">' + r.pick + "</td>" +
       '<td class="exp anchor">' + (p ? "<b>" + esc(p.name) + "</b> <span class=\"alt\">" +
         esc(p.pos) + " &middot; VOR " + num(p.vor, 0) + " &middot; " +

@@ -201,10 +201,11 @@ And the value of the reshuffle in the superseded slot-7 scenario was: **+19.6 at
 | Defect | What it means | Src |
 |---|---|---|
 | `ppg` is fake | `gp` is hardcoded 18.0 for **all 242 drafted offensive players**. `ppg` is exactly `pts/18` and carries zero information beyond total points. Sorting by pts versus ppg produces 2 order differences, both float-rounding ties. **Delete this column from your decision loop.** The 32 `gp=1.0` rows are defenses with a placeholder game count | [S] |
-| Injury status is displayed, not valued | The current engine carries Sleeper's `injury_status` into player rows and the room renders it, but neither projected points nor VOR applies an injury penalty. The label is a warning, not a priced risk model, and it does not report practice participation. Check an authoritative practice report manually for every early-round injury; specifically, re-check Puka by September 5 before applying the owner override above | [S][E] |
+| Undated preseason injury status is displayed, not valued | The current engine carries Sleeper's `injury_status` snapshot into player rows and the room renders it, but neither projected points nor VOR applies an injury penalty. Sleeper supplies no injury-specific designation date/week for this cohort and its practice fields are empty. Every page now prints the engine snapshot date and says this is not an official practice/game designation. Check an authoritative practice report manually for every early-round injury; specifically, re-check Puka by September 5 before applying the owner override above | [S][E] |
 
 *Sleeper's status field churns daily. Re-pull it on draft morning, but do not
-mistake a current `Questionable` label for evidence that a player practiced.*
+mistake its undated preseason `Questionable` snapshot for an official game
+designation or for evidence that a player practiced.*
 
 ---
 

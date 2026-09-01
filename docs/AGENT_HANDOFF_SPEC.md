@@ -10,12 +10,15 @@ it is the least important part of this document.
 
 ---
 
-## 1. THE THREE FAILURE MODES YOU ARE INHERITING
+## 1. THE FOUR FAILURE MODES YOU ARE INHERITING
 
-These are not general advice. They are the mechanisms behind the defects that
-actually reached this project's live site, derived in `docs/SELF_AUDIT_2026-08-26.md`
-from the first 50 recorded entries. An outside reviewer found twenty-four of them,
-including six of the eight that shipped and stayed. This section is why.
+These are not general advice. The first three are the mechanisms behind the defects
+that actually reached this project's live site, derived in
+`docs/SELF_AUDIT_2026-08-26.md` from the first 50 recorded entries. The fourth was
+added when a later dependency audit found that correct approvals could lose their
+support without changing any accepted byte. An outside reviewer found twenty-four
+of the first 50 defects, including six of the eight that shipped and stayed. This
+section is why.
 
 ### 1.1 "I verify against my own intent rather than the source of truth"
 
@@ -62,7 +65,37 @@ world.
 including this one - as a claim with an owner and a date, not as a fact. If you
 cannot name the computation or the API field behind a number, it is unverified.
 
-### 1.4 The prospective question that catches them
+### 1.4 "I let an approval outlive its evidence"
+
+A frozen value can remain byte-correct while the evidence that justified its
+approval changes underneath it. #58 was an identity repair, not a survival-model
+change, but removing 119 alias player-pick identities changed the calibration fit
+beneath the deliberately frozen survival table and changed four other analytical
+evidence packages. Rebuilding the frozen object would have violated the freeze;
+doing nothing left the old support claim in place after its evidence moved.
+
+The repository-wide register in `docs/TURN_PLANNER_SPEC.md` §16 shows this was not
+isolated. As of 2026-09-01, sixteen frozen or review-approved dependency families
+represent 32 individually accepted decisions, tables, or results. Seven families
+have partial local checks, nine have no drift detection, and **zero** completely
+binds immutable supporting evidence to the accepted object with a required
+re-review edge. Seven carried stale support or narrative when the register was
+written; this follow-up corrects the replay claim in `MODEL.md`, leaving six
+unresolved while the missing detection edge remains.
+
+This is **AN APPROVAL THAT OUTLIVES ITS EVIDENCE**. It differs from ordinary
+staleness: the accepted object correctly does not rebuild, while the basis for
+continuing to trust it moves.
+
+**The rule this generates:** before approving or retaining any frozen value,
+threshold, table, verdict, or reviewed wording, ask **"what evidence justified
+this, and would I know if it moved?"** Inventory frozen-evidence dependents as
+well as normal rebuild dependents whenever an upstream correction lands. A
+deterministic rebuild proves current arithmetic; it does not prove that an older
+approval remains supported. The detector is deliberately deferred until after
+the draft; the absence of one does not license an unsupported approval claim.
+
+### 1.5 The prospective question that catches them
 
 Twice on 2026-08-28, asking **"could this go stale, or could this fail to
 update?"** found a defect in new work before it shipped: the vacuous-pass audit
@@ -86,16 +119,6 @@ establish internal coherence, not current agreement with the external world. If 
 watched fact affects generated artifacts, prove the event-to-rebuild edge or label
 the process human-gated.
 
-There is a second question for deliberately frozen objects: **could this correction
-change the evidence that justified the frozen value or verdict?** #58 was an
-identity repair, not a survival change, but removing 119 erroneous replay
-player-pick pairs changed the fit beneath the approved survival table and changed
-four other analytical evidence packages. Rebuilding the frozen object would have
-violated the freeze; doing nothing left its support claim stale. Before accepting
-an upstream correction, inventory both ordinary rebuild dependents and
-frozen-evidence dependents. A deterministic rebuild proves new arithmetic, not
-that an old approval remains supported.
-
 The same question applies to state machines: **have I tested the transition, or
 only both endpoint screenshots?** On 2026-08-31 the pre-draw identity placeholder
 and a fresh-load confirmed order each had green browser fixtures, while the real
@@ -104,7 +127,7 @@ and could leave confirmed and pending labels on one page. Exercise every one-tim
 operational transition in one process, with no reload, before the operator consumes
 it. Two passing endpoint fixtures do not establish a transition contract.
 
-### 1.5 The corollary that ties them together
+### 1.6 The corollary that ties them together
 
 Twenty-six of those first 50 defects were **silent** - the system looked healthy
 and was wrong - and the silent set contains **every defect that reached the live
@@ -517,7 +540,7 @@ still operationally important.
    Sleeper payload and otherwise left mixed pending/confirmed DOM. Any state used
    once operationally must be rehearsed through the transition, not inferred from
    two fresh loads.
-10. **Claim-strength escalation / qualifier loss (2).** Treat UI nouns and verbs
+10. **Claim-strength escalation / qualifier loss (3).** Treat UI nouns and verbs
    as model claims. `expected`, `likely`, `next best`, `recommendation`, and
    `no decision` each require an artifact field produced by the corresponding
    joint, ordered, or action-space computation. Printable Sheet 4 upgraded a
@@ -529,7 +552,10 @@ still operationally important.
    of a mislabeled derived column: correct arithmetic cannot support a stronger
    sentence than the producer computed. The second occurrence promoted the VONA
    tree's p25 of current strict-domination margins into a player-level tie or
-   uncertainty band despite having no held-out action-error evidence.
+   uncertainty band despite having no held-out action-error evidence. The third
+   rendered an undated preseason `injury_status` as a current-looking designation
+   and collapsed every truthy Cheat Sheet status to `Q`; source provenance and
+   status identity now stay on the display.
 11. **Upstream correction invalidates frozen evidence (2).** A frozen value can
    remain byte-correct while a repair in identity, scoring, or source population
    changes the evidence that justified its approval. Inventory frozen dependents
@@ -551,6 +577,7 @@ still operationally important.
 | **Conviction-overlay seat provenance** | **RESOLVED and now exercised against the real non-7 official draw.** `apply_overlay()` had silently used slot 7 because Anthony's stable roster id is also 7. The confirmed slot-4 draw now supplies the primary basis through `draft_order+slot_to_roster_id`. | `src/draft_order.py` requires a complete official roster permutation. A well-formed shorter user order may corroborate that complete source because Sleeper can omit ownerless rosters; it cannot resolve independently. Keep the non-7, ownerless-seat, absent/identity/malformed fallback, duplicate-map, and source-conflict guards. |
 | **`transaction_items.csv` / FAAB bids** | Deleted in the prune; the FAAB-discipline question still lacks bid-level data. | Restore from history if the work is wanted. |
 | **TE BULLISH matrix** | **SUSPENDED.** All five former TE tags are omitted, with an artifact-driven neutral explanation on all three tag surfaces. The shadow ledger preserves the former outputs and the Likely BAL-to-NYG grouping error. | Reintroduce only with two genuine, season-consistent inputs, then rerun the reviewed N.1 test. |
+| **Sleeper preseason injury-status semantics** | **SOURCE CURRENTNESS IS UNSUPPORTED, NOT PROVEN 2025 CARRYOVER.** Every engine/CVS injury value has one source: the season-projection row's nested Sleeper `player.injury_status`. The engine's top-190 skill pool contains 39 raw `Questionable` players plus one `NA` and one `IR`. The committed five-sheet view covers 36 unique flagged players (34 raw `Questionable`, one `PUP`, one `IR`) and previously rewrote every truthy status it rendered as `Q`. Current Sleeper rows have recent generic `news_updated` timestamps, so universal untouched-2025 carryover is refuted; they have no injury-specific effective date/week, and practice plus injury-start fields are empty. Sleeper-retained 2025 draft snapshots show the preseason population itself is unstable: 205/1,271 skill picks were `Questionable` on Aug 20-26 UTC (16.13%), versus 72/1,029 on Sep 3-4 UTC (7.00%; Sep 2-3 Eastern, before the opener). Exact draft ids, the pick-level counting rule and the absence of a committed immutable snapshot are recorded with entry #60 in `docs/SELF_AUDIT_2026-08-26.md`. | Keep the raw status and all score/VOR/rank math unchanged. Every injury-bearing page now labels it as a Sleeper snapshot, prints the engine snapshot date, says the designation date is unavailable, and warns that it is not an official practice/game designation. The Cheat Sheet preserves `IR`, `NA`, and other non-Q statuses instead of rewriting every truthy value as `Q`. Verify official team reports for draft decisions. |
 | **RB vacated-carries signal** | **ASSESSMENT ONLY.** The repaired `backfield_command` applies the existing all-week 2025 carry-share basis consistently to historical teams; it does not measure 2026 carries opened by departures. `teams.html` displays thresholded raw departure/arrival rows from the trimmed season shard, not a complete net transition signal from the new ledger. The analogous WR `adj_vac` is confirmed rookie-blind because an incoming player with no 2025 NFL row subtracts zero. | Compute vacated carries from the same player-team source, quantify every 2026 backfield, test correlation and incremental value against ADP, and explicitly model rookies. If strongly ADP-redundant, drop it. A same-method carry signal would inherit `adj_vac`'s rookie gap, so fix `adj_vac` and any carry implementation under one rookie policy or do not wire carries. |
 | **Stale R position exports** | The corrected TE writer now produces 6,730 valid rows and no fake route alias. The committed RB/WR exports still retain 2,530 NA-subsetting junk rows; RB also retains `target_volume` despite corrected source saying otherwise. Python consumes none of these files. | Regenerate and independently compare before any use. Do not treat corrected script text as artifact evidence. |
 | **Typed grade weights** | `GRADE_W` and `PE` are judgment constants, never backtested. Every displayed 0-100 grade now carries `HEURISTIC GRADE - judgment weights, not backtested` on its face; the Pick Engine headline carries `HEURISTIC COMPOSITE` plus the same caveat. Exact weights, grade bands, composite-margin cutoffs, and the grade's limited role ordering only `Also consider` are adjacent or in the number's title. The Big Board likewise says `CONFIGURED CVS, NOT ENGINE VOR` and names whether Walter is on. | Backtest or retain these on-face labels. Do not call the no-Walter CVS variant "pure model": configured factor weights remain. |
@@ -562,7 +589,7 @@ still operationally important.
 | **Dormant FLEX-fallback divergence** | **LATENT RISK, not a current artifact defect.** The committed engine reads `flex_usage_2025.json` and uses observed RB4/WR8/TE0, so `greedy_flex_alloc()` is not executed. Fallback activates only if that file is absent or its `allocation` is missing, null, or otherwise falsy; malformed JSON aborts loudly. On the same projection pool the fallback chooses RB0/WR12/TE0, moving replacement from RB28/169.0 and WR32/186.2 to RB24/174.8 and WR36/177.3. That subtracts 5.8 VOR from every RB and adds 8.9 to every WR, a 14.7-point cross-position swing; 103 of 110 players inside the 168-pick window change ordinal rank. A raw engine run would label the payload `flex_source: projection_greedy`, but no user-facing page shows that field, so the repricing itself would be silent. | The scheduled 06:00 rebuild checks out the committed observed artifact and does not regenerate or delete it. Its mandatory `test_vor.py` gate opens the file unconditionally and asserts both `flex_source: observed_2025` and exact allocation equality, so missing/falsy data cannot publish through the draft-morning path; this existing guard is sufficient for fallback activation before the draft. It does not independently recompute a truthy allocation from counts/shares, which remains separate artifact-integrity hardening. Do not replace the fallback with `forward_policy.pick_marginal`: that function selects one roster's next player using already-defined baselines, while this fallback estimates the league-wide pool that defines them. After the draft, fail closed or surface the fallback visibly, then consider a multi-season behavioral fallback. |
 | **Turn Planner replacement for PATHS** | **APPROVED OFFSEASON DESIGN; `docs/TURN_PLANNER_SPEC.md` is authoritative.** The shipped tree has nine nodes and zero rendered forks because it compares aggregate positional VONA from an unconditional pool. It cannot accept "Gibbs, Bijan, Chase gone" or place McCaffrey beside Taylor because both are RBs. Conditioned positional VONA would still render Puka alone. The complete 4/21/28 policy gives McCaffrey a nominal +2.08 over Puka, but player-action uncertainty is uncalibrated. The tree's 7.0 is p25 of 71 current-tree strict-domination margins, not a tie or forecast-error band. PR #54 remains one action per position and does **not** fix either problem. | **DO NOT IMPLEMENT BEFORE SEPTEMBER 8.** After the draft, build the rail-plus-one-board Turn Planner, extract canonical `score_candidates`, reuse one coherent live-state module, and attempt the mandatory held-out player-action error calibration. Only the next fully conditioned turn gets a policy mark. If calibration is unsupported, publish an honest deterministic order with no tie claim. Keep #54 parked. |
 | **Adopted survival lookup lost exact evidence lineage after #58** | **OPEN DOCUMENT/ARTIFACT DIVERGENCE; no automatic model change authorized.** The 2026-08-19 adopted 20-bin constant exactly matched that day's modern-fit proposal. #58 repaired identity and regenerated `survival_recalibration.json` from a 16,949-pair all-era frame; its 2019-2025 fit uses 9,492 pairs and moves 15 bins by up to 0.0468, while the approved engine constant intentionally stayed frozen pending reapproval. The engine comment and `MODEL.md` still cited the mutable regenerated file as the older table's full evidence. Separate guards prove the old constant deploys and the new proposal reproduces, but no guard links deployed values to immutable evidence. | Do not swap the table during the pre-draft freeze. Before Turn Planner availability work, preserve the exact adopted fit by digest, rerun/review the corrected-identity calibration, and explicitly approve retention or replacement. Any displayed bin `n` or Wilson interval must come from the exact deployed lookup's evidence unit and share its digest and kill-switch lineage. |
-| **Frozen-evidence dependency register** | **OPEN SYSTEMIC GAP; documentation only.** `docs/TURN_PLANNER_SPEC.md` §16 inventories sixteen other frozen/review-approved dependency families representing 32 individual accepted decisions, tables or results: seven families have partial local checks, nine have none, and zero binds immutable support to the accepted object with a re-review edge. Seven already carry stale support or narrative. The material one is the replay conclusion: after #58 both ADP-comparison intervals cross zero while `MODEL.md` still says both beat ADP. This analysis record does not feed draft math. | **DO NOT BUILD BEFORE THE DRAFT.** Afterwards, add an evidence manifest that records evidence-input, accepted-object and reviewed-claim digests. A changed evidence digest must retain the frozen object and mark it `REVIEW REQUIRED`; it must never adopt a replacement automatically. Keep this separate from the draw-watch rebuild automation. |
+| **Frozen-evidence dependency register** | **OPEN SYSTEMIC GAP; documentation only.** `docs/TURN_PLANNER_SPEC.md` §16 inventories sixteen other frozen/review-approved dependency families representing 32 individual accepted decisions, tables or results: seven families have partial local checks, nine have none, and zero binds immutable support to the accepted object with a re-review edge. Seven already carried stale support or narrative when audited. The material replay divergence is now corrected in `MODEL.md`: after #58 both ADP-comparison intervals cross zero, so neither Anthony nor replay establishes an ADP advantage. This analysis record does not feed draft math. | **DO NOT BUILD BEFORE THE DRAFT.** Afterwards, add an evidence manifest that records evidence-input, accepted-object and reviewed-claim digests. A changed evidence digest must retain the frozen object and mark it `REVIEW REQUIRED`; it must never adopt a replacement automatically. Keep this separate from the draw-watch rebuild automation. |
 
 ---
 
@@ -576,8 +603,8 @@ still operationally important.
    (§1.2). What would be impossible in this data? Check for it.
 6. Ask of any new guard: what change would make this fail? (§8.4)
 7. For any new feature reading a committed snapshot or scheduled input, identify
-   its producer, change one input, and prove the dependency path fires (§1.4).
-8. Ask of any new feature: how would this look if it were broken? (§1.5)
+   its producer, change one input, and prove the dependency path fires (§1.5).
+8. Ask of any new feature: how would this look if it were broken? (§1.6)
 9. Rebuilt the engine? Rebuild CVS, VONA, mock, and teaser in the same pass; the
    engine command also rewrites decision cards and the room's embedded payload.
 10. After merge, byte-compare the deployed files. The live site IS the build.
