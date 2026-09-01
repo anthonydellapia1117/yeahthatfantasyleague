@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-08-31",
+  "generated": "2026-09-01",
   "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
   "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
  },
@@ -13,7 +13,7 @@
   "touch_fade": 400,
   "injury_weeks_max": 12,
   "note": "percentile thresholds computed from 2025 usage (min 8 weeks); the 140-target and 400-touch thresholds carry their own 2016-2025 verification blocks in this artifact",
-  "ambiguous_top_share_median": 0.655
+  "ambiguous_top_share_median": 0.6731
  },
  "verification": {
   "wr_140_targets": {
@@ -184,7 +184,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "MIN returning-RB carry concentration below league median (66%); his ADP round is 11 - path to volume if cheap, committee risk at a premium"
+     "reason": "MIN returning-RB carry concentration below league median (67%); his ADP round is 11 - path to volume if cheap, committee risk at a premium"
     },
     {
      "tag": "post_injury_discount",
@@ -206,7 +206,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "NO returning-RB carry concentration below league median (66%); his ADP round is 14 - path to volume if cheap, committee risk at a premium"
+     "reason": "NO returning-RB carry concentration below league median (67%); his ADP round is 14 - path to volume if cheap, committee risk at a premium"
     },
     {
      "tag": "post_injury_discount",
@@ -245,7 +245,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "JAX returning-RB carry concentration below league median (66%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
+     "reason": "JAX returning-RB carry concentration below league median (67%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -267,7 +267,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "LA returning-RB carry concentration below league median (66%); his ADP round is 9 - path to volume if cheap, committee risk at a premium"
+     "reason": "LA returning-RB carry concentration below league median (67%); his ADP round is 9 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -289,7 +289,7 @@
     {
      "tag": "late_te_dart",
      "orientation": "target",
-     "reason": "TE18 at ADP round 13; the report's punt path is two late darts, never mid-tier"
+     "reason": "TE18 at ADP round 14; the report's punt path is two late darts, never mid-tier"
     }
    ]
   },
@@ -334,7 +334,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "TB returning-RB carry concentration below league median (66%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
+     "reason": "TB returning-RB carry concentration below league median (67%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
     },
     {
      "tag": "post_injury_discount",
@@ -356,7 +356,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "NYG returning-RB carry concentration below league median (66%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
+     "reason": "NYG returning-RB carry concentration below league median (67%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -389,7 +389,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "JAX returning-RB carry concentration below league median (66%); his ADP round is 12 - path to volume if cheap, committee risk at a premium"
+     "reason": "JAX returning-RB carry concentration below league median (67%); his ADP round is 12 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -421,7 +421,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "CHI returning-RB carry concentration below league median (66%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
+     "reason": "CHI returning-RB carry concentration below league median (67%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -443,7 +443,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "HOU returning-RB carry concentration below league median (66%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
+     "reason": "HOU returning-RB carry concentration below league median (67%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -459,7 +459,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "MIA returning-RB carry concentration below league median (66%); his ADP round is 2 - path to volume if cheap, committee risk at a premium"
+     "reason": "MIA returning-RB carry concentration below league median (67%); his ADP round is 2 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -540,7 +540,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "DEN returning-RB carry concentration below league median (66%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
+     "reason": "DEN returning-RB carry concentration below league median (67%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
     },
     {
      "tag": "post_injury_discount",
@@ -568,7 +568,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "WAS returning-RB carry concentration below league median (66%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
+     "reason": "WAS returning-RB carry concentration below league median (67%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -584,7 +584,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "SEA returning-RB carry concentration below league median (66%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
+     "reason": "SEA returning-RB carry concentration below league median (67%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -651,7 +651,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "PIT returning-RB carry concentration below league median (66%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
+     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -667,7 +667,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "ARI returning-RB carry concentration below league median (66%); his ADP round is 3 - path to volume if cheap, committee risk at a premium"
+     "reason": "ARI returning-RB carry concentration below league median (67%); his ADP round is 3 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -701,7 +701,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "MIN returning-RB carry concentration below league median (66%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
+     "reason": "MIN returning-RB carry concentration below league median (67%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -728,7 +728,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "TB returning-RB carry concentration below league median (66%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
+     "reason": "TB returning-RB carry concentration below league median (67%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -739,7 +739,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "CHI returning-RB carry concentration below league median (66%); his ADP round is 9 - path to volume if cheap, committee risk at a premium"
+     "reason": "CHI returning-RB carry concentration below league median (67%); his ADP round is 9 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -767,7 +767,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "LA returning-RB carry concentration below league median (66%); his ADP round is 3 - path to volume if cheap, committee risk at a premium"
+     "reason": "LA returning-RB carry concentration below league median (67%); his ADP round is 3 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -840,7 +840,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "LAC returning-RB carry concentration below league median (66%); his ADP round is 2 - path to volume if cheap, committee risk at a premium"
+     "reason": "LAC returning-RB carry concentration below league median (67%); his ADP round is 2 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -889,7 +889,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "DEN returning-RB carry concentration below league median (66%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+     "reason": "DEN returning-RB carry concentration below league median (67%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -900,7 +900,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "WAS returning-RB carry concentration below league median (66%); his ADP round is 12 - path to volume if cheap, committee risk at a premium"
+     "reason": "WAS returning-RB carry concentration below league median (67%); his ADP round is 12 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -911,7 +911,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "NE returning-RB carry concentration below league median (66%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+     "reason": "NE returning-RB carry concentration below league median (67%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -922,7 +922,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "PIT returning-RB carry concentration below league median (66%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
+     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -995,7 +995,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "NO returning-RB carry concentration below league median (66%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
+     "reason": "NO returning-RB carry concentration below league median (67%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -1017,7 +1017,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "NE returning-RB carry concentration below league median (66%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
+     "reason": "NE returning-RB carry concentration below league median (67%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -1062,7 +1062,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "ARI returning-RB carry concentration below league median (66%); his ADP round is 13 - path to volume if cheap, committee risk at a premium"
+     "reason": "ARI returning-RB carry concentration below league median (67%); his ADP round is 13 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -1084,7 +1084,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "HOU returning-RB carry concentration below league median (66%); his ADP round is 14 - path to volume if cheap, committee risk at a premium"
+     "reason": "HOU returning-RB carry concentration below league median (67%); his ADP round is 13 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -1095,7 +1095,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "SEA returning-RB carry concentration below league median (66%); his ADP round is 13 - path to volume if cheap, committee risk at a premium"
+     "reason": "SEA returning-RB carry concentration below league median (67%); his ADP round is 13 - path to volume if cheap, committee risk at a premium"
     }
    ]
   }

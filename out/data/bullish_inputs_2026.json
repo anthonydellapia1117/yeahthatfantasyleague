@@ -4,13 +4,13 @@
   "engine_generated": "2026-08-31",
   "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
   "input_content_sha256": {
-   "ceiling_2026.json": "3439352b6e7f7047daed46f61532c17adb3d4d14fd9b0eb8e687cb5a8f40a4a6",
+   "ceiling_2026.json": "b3a050450052b8eb4e30ae6222b12b8c2add07253ce9da0435297ad5548d02b7",
    "usage_2025.json": "932cfec8d625eb662326d34d16533d079357f2fd15de1dc95f101051f5c8cb00",
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
-   "depth_charts.json": "eda4141383ef75feef1056813ec11b53a93dff3818b1ed6647986e75caa3ea62",
+   "depth_charts.json": "5e89d1649a2f532421a34e05b122db7e1131d53387902d3f06faa1f46cc1de00",
    "crosswalk.json": "88adde22d76c469860ec70bee2bf698cd34d3118bef1e0a280302bfd329a120d",
-   "docs/ffopportunity/schedule_2026.csv": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
-   "docs/ffopportunity/schedule_2026.meta.json": "31b140c4793f7adfaa6befd14c4fad6a2fac746ec6e7a0bf8ed8b181245b271e"
+   "docs/ffopportunity/schedule_2026.csv": "4bc22006841d251e847f5c241fc92b60a176b13dda6fccde240bd0a5a760ae18",
+   "docs/ffopportunity/schedule_2026.meta.json": "3123378bee4632ac43f5b48b85f94f311b4129031ee923078cdb475a3b1cc857"
   },
   "vegas": {
    "week1_rb": {
@@ -25,18 +25,18 @@
     "source": "docs/ffopportunity/schedule_2026.csv",
     "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
     "upstream_source": "http://www.habitatring.com/games.csv",
-    "pulled_at": "2026-09-01T01:54:43+00:00",
-    "source_content_sha256": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
-    "snapshot_content_sha256": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
-    "upstream_content_sha256": "58d637afe1dd5f93d993f3e364e62d83e854eccc758c59427085dfc650cb531f",
-    "decision_input_sha256": "ac131da7c7a3637bddca7ce45c613e118d69ea1721998632b5c11fdfe2a38eac",
+    "pulled_at": "2026-09-01T16:12:14+00:00",
+    "source_content_sha256": "4bc22006841d251e847f5c241fc92b60a176b13dda6fccde240bd0a5a760ae18",
+    "snapshot_content_sha256": "4bc22006841d251e847f5c241fc92b60a176b13dda6fccde240bd0a5a760ae18",
+    "upstream_content_sha256": "0db55bec1ffd666403ebe1c4ff88971124776db8f3cc838b19932656a6ca0dc0",
+    "decision_input_sha256": "44453515674ae31072302d9e8f50e07a07cfe4f6c7d427129145f87aa8c303e5",
     "pricing_by_week_sha256": {
      "1": "64da7bce79904c2b281f0cfcfbbeb16f35c6adee593ab9c6cc752381a3736cca",
      "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
      "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
-     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+     "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
     },
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
     "season": 2026,
@@ -138,7 +138,7 @@
      },
      {
       "week": 7,
-      "priced_games": 7,
+      "priced_games": 6,
       "scheduled_games": 14,
       "partial_line_games": 0,
       "complete": false
@@ -223,7 +223,7 @@
     ],
     "next_partial_week": {
      "week": 7,
-     "priced_games": 7,
+     "priced_games": 6,
      "scheduled_games": 14,
      "partial_line_games": 0,
      "complete": false
@@ -247,13 +247,13 @@
      "event": "REPRICED",
      "attribution": "SCHEDULE_INPUT",
      "prior": {
-      "source_content_sha256": "cf80326d4e0af902db06a6553965028b068db7bd6e851107fca4989aa9fc1218",
+      "source_content_sha256": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
       "upstream_content_sha256": null,
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-      "decision_input_sha256": "1b015767f24d16b96d74aa7fd3e17c697c44bfef0121c62d50116bcea6b361d9",
+      "decision_input_sha256": "ac131da7c7a3637bddca7ce45c613e118d69ea1721998632b5c11fdfe2a38eac",
       "pricing_by_week_sha256": {
        "1": "64da7bce79904c2b281f0cfcfbbeb16f35c6adee593ab9c6cc752381a3736cca",
-       "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+       "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
        "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
        "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
        "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
@@ -280,17 +280,17 @@
       }
      },
      "current": {
-      "source_content_sha256": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
-      "upstream_content_sha256": "58d637afe1dd5f93d993f3e364e62d83e854eccc758c59427085dfc650cb531f",
+      "source_content_sha256": "4bc22006841d251e847f5c241fc92b60a176b13dda6fccde240bd0a5a760ae18",
+      "upstream_content_sha256": "0db55bec1ffd666403ebe1c4ff88971124776db8f3cc838b19932656a6ca0dc0",
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-      "decision_input_sha256": "ac131da7c7a3637bddca7ce45c613e118d69ea1721998632b5c11fdfe2a38eac",
+      "decision_input_sha256": "44453515674ae31072302d9e8f50e07a07cfe4f6c7d427129145f87aa8c303e5",
       "pricing_by_week_sha256": {
        "1": "64da7bce79904c2b281f0cfcfbbeb16f35c6adee593ab9c6cc752381a3736cca",
        "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
        "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
        "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
        "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
-       "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
+       "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
       },
       "weeks": [
        1,
@@ -306,7 +306,7 @@
       "team_games_priced": 186,
       "next_partial_week": {
        "week": 7,
-       "priced_games": 7,
+       "priced_games": 6,
        "scheduled_games": 14,
        "partial_line_games": 0,
        "complete": false
@@ -314,7 +314,7 @@
      },
      "flags": {
       "source_changed": true,
-      "coverage_changed": false,
+      "coverage_changed": true,
       "horizon_changed": false,
       "implied_totals_changed": true,
       "decision_pricing_changed": true,
@@ -421,7 +421,7 @@
    "CIN": 25.65,
    "CLE": 18.42,
    "DAL": 25.46,
-   "DEN": 21.33,
+   "DEN": 21.25,
    "DET": 26.85,
    "GB": 25.17,
    "HOU": 23.08,
@@ -439,7 +439,7 @@
    "NYJ": 18.5,
    "PHI": 23.75,
    "PIT": 22.21,
-   "SEA": 24.83,
+   "SEA": 24.92,
    "SF": 25.83,
    "TB": 23.67,
    "TEN": 20.21,
@@ -447,10 +447,10 @@
   },
   "forward_counterfactual_implied_total": {
    "ARI": 18.17,
-   "ATL": 21.33,
+   "ATL": 21.25,
    "BAL": 26.67,
    "BUF": 25.83,
-   "CAR": 21.05,
+   "CAR": 20.95,
    "CHI": 24.83,
    "CIN": 25.65,
    "CLE": 18.42,
@@ -582,8 +582,8 @@
    "excluded_unobserved_n": 5,
    "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
    "percentile_method": "nearest index: round(q * (n - 1))",
-   "p50": 0.5326,
-   "p75": 0.7632,
+   "p50": 0.5464,
+   "p75": 0.7513,
    "p80": 0.7666,
    "p50_method": "upper middle observation for even n; retired stage-2 baseline"
   },
@@ -728,12 +728,12 @@
     "player_carries": 243,
     "historical_team_rb_carries": 407
    },
-   "backfield_share_counterfactual_current_roster": 0.655,
+   "backfield_share_counterfactual_current_roster": 0.6731,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "DET",
     "player_carries": 243,
-    "current_roster_team_rb_carries": 371
+    "current_roster_team_rb_carries": 361
    },
    "backfield_share_counterfactual_historical_trimmed": 0.606,
    "backfield_share_historical_trimmed_sample": {
@@ -1033,7 +1033,7 @@
    "team_line_ybc": 2.477,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
-   "forward_implied_total": 24.83,
+   "forward_implied_total": 24.92,
    "routes_proxy": 485,
    "tprr_proxy": {
     "k": 163,
@@ -1403,12 +1403,12 @@
     "player_carries": 286,
     "historical_team_rb_carries": 510
    },
-   "backfield_share_counterfactual_current_roster": 0.7647,
+   "backfield_share_counterfactual_current_roster": 0.8667,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "KC",
     "player_carries": 286,
-    "current_roster_team_rb_carries": 374
+    "current_roster_team_rb_carries": 330
    },
    "backfield_share_counterfactual_historical_trimmed": 0.5697,
    "backfield_share_historical_trimmed_sample": {
@@ -1458,12 +1458,12 @@
     "player_carries": 125,
     "historical_team_rb_carries": 371
    },
-   "backfield_share_counterfactual_current_roster": 0.3197,
+   "backfield_share_counterfactual_current_roster": 0.3571,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "LAC",
     "player_carries": 125,
-    "current_roster_team_rb_carries": 391
+    "current_roster_team_rb_carries": 350
    },
    "backfield_share_counterfactual_historical_trimmed": 0.3342,
    "backfield_share_historical_trimmed_sample": {
@@ -1809,12 +1809,12 @@
     "player_carries": 252,
     "historical_team_rb_carries": 383
    },
-   "backfield_share_counterfactual_current_roster": 0.8289,
+   "backfield_share_counterfactual_current_roster": 0.7241,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "DAL",
     "player_carries": 252,
-    "current_roster_team_rb_carries": 304
+    "current_roster_team_rb_carries": 348
    },
    "backfield_share_counterfactual_historical_trimmed": 0.658,
    "backfield_share_historical_trimmed_sample": {
@@ -2155,12 +2155,12 @@
     "player_carries": 158,
     "historical_team_rb_carries": 407
    },
-   "backfield_share_counterfactual_current_roster": 0.3674,
+   "backfield_share_counterfactual_current_roster": 0.4083,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "HOU",
     "player_carries": 158,
-    "current_roster_team_rb_carries": 430
+    "current_roster_team_rb_carries": 387
    },
    "backfield_share_counterfactual_historical_trimmed": 0.394,
    "backfield_share_historical_trimmed_sample": {
@@ -2645,7 +2645,7 @@
    "team_line_ybc": 2.592,
    "gp_rate_2yr": 0.9118,
    "exp_missed": 1.5,
-   "forward_implied_total": 21.33,
+   "forward_implied_total": 21.25,
    "routes_proxy": 406,
    "tprr_proxy": {
     "k": 100,
@@ -3665,7 +3665,7 @@
    "team_line_ybc": 2.592,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
-   "forward_implied_total": 21.33,
+   "forward_implied_total": 21.25,
    "routes_proxy": 676,
    "tprr_proxy": {
     "k": 1,
@@ -4504,7 +4504,7 @@
    "team_line_ybc": 2.592,
    "gp_rate_2yr": 0.9706,
    "exp_missed": 0.5,
-   "forward_implied_total": 21.33,
+   "forward_implied_total": 21.25,
    "routes_proxy": 624,
    "tprr_proxy": {
     "k": 125,
@@ -5447,7 +5447,7 @@
    "team_line_ybc": 2.477,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
-   "forward_implied_total": 24.83,
+   "forward_implied_total": 24.92,
    "routes_proxy": 517,
    "tprr_proxy": {
     "k": 0,
@@ -5643,7 +5643,7 @@
    "team_line_ybc": 2.477,
    "gp_rate_2yr": 0.7059,
    "exp_missed": 5.0,
-   "forward_implied_total": 24.83,
+   "forward_implied_total": 24.92,
    "routes_proxy": 480,
    "tprr_proxy": {
     "k": 92,
@@ -5793,12 +5793,12 @@
     "player_carries": 229,
     "historical_team_rb_carries": 446
    },
-   "backfield_share_counterfactual_current_roster": 0.5326,
+   "backfield_share_counterfactual_current_roster": 0.5917,
    "backfield_share_counterfactual_sample": {
     "season": 2025,
     "current_roster_team": "HOU",
     "player_carries": 229,
-    "current_roster_team_rb_carries": 430
+    "current_roster_team_rb_carries": 387
    },
    "backfield_share_counterfactual_historical_trimmed": 0.5465,
    "backfield_share_historical_trimmed_sample": {

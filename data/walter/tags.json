@@ -1907,7 +1907,7 @@
    "player_id": "11653",
    "player": "Charlie Smyth",
    "pos": "K",
-   "team_live": "NO",
+   "team_live": null,
    "round_context": "Round 8 & 9"
   },
   {
