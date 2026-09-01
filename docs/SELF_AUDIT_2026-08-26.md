@@ -76,22 +76,24 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 51 | Forward Vegas read a committed `schedule_2026.csv` snapshot that no workflow refreshed, so its dynamic horizon would have stayed at Weeks 1-6 while live games priced further out | **SELF-PRE** (new-feature update-path audit) | 0 | no - caught before first stale build | **SILENT STALENESS (5)** |
 | 52 | `backfield_share` grouped the existing all-week 2025 carry basis by each player's 2026 depth-chart team; David Montgomery's 158 DET carries moved into HOU, removing them from Gibbs's denominator. The aggregate usage shard also trimmed low-PPR backs and collapsed multi-team rows, so historical regrouping alone still left PHI/JAX denominators wrong | **REVIEWER** (RB input-denominator audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (2) + INCOMPLETE/COALESCED SOURCE** |
 | 53 | `adj_vac` subtracts an incoming player only when he has 2025 NFL targets; a 2026 rookie therefore subtracts zero, overstating the destination team's open opportunity while producing a plausible value | **REVIEWER** (opportunity-input audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (3)** |
-| 54 | At the actual slot-4 decision, PATHS rendered zero forks and labelled the root "not a decision" while its action space contained one unconditional representative per position: it could neither condition on Gibbs/Bijan/Chase being gone nor compare McCaffrey with Taylor inside RB. On the observed board it would still render Puka alone (WR VONA 45.83 vs RB 41.29, gap 4.54 above a recomputed 3.58 epsilon) even though the complete 4/21/28 policy placed McCaffrey only 2.08 lineup points above Puka, inside the artifact's 7.0 coin-flip band | **REVIEWER** (slot-4 decision audit) | since PATHS shipped | yes | **SURFACE ABSENCE AS FINDING** |
+| 54 | At the actual slot-4 decision, PATHS rendered zero forks and labelled the root "not a decision" while its action space contained one unconditional representative per position: it could neither condition on Gibbs/Bijan/Chase being gone nor compare McCaffrey with Taylor inside RB. On the observed board it would still render Puka alone (WR VONA 45.83 vs RB 41.29, gap 4.54 above a recomputed 3.58 epsilon), while the complete 4/21/28 policy placed McCaffrey only 2.08 lineup points above Puka. No held-out player-action error interval exists, so the narrow deterministic gap cannot establish either equivalence or meaningful separation | **REVIEWER** (slot-4 decision audit) | since PATHS shipped | yes | **SURFACE ABSENCE AS FINDING** |
 | 55 | Printable Sheet 4 took the engine's static median-availability checkpoints, stripped `p_available_now`, tier-cliff and coin-flip qualifiers, then labelled the remaining names "Board expects" and the unsolved `fallback` "Next best." Bijan entered the pick-4 pool at 50.3% while Gibbs missed it at 48.2%. The sheet was not sourced from the paired simulation at all; in the current committed Puka-path run Javonte appears at pick 28 in only 7.652% of states. Individual survival had silently become a joint-path forecast, and the fallback had never been re-solved through the marginal policy | **ANTHONY** (read the live printed surface) | since cheat sheet shipped | yes | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS** |
 | 56 | Sleeper published the complete official order after a correct pending-state build had deployed. The dynamic room read the new state, but committed engine/VONA derivatives and static Cheat Sheet/PATHS continued saying `Sleeper pending`; Pages was byte-identical to main and every content digest agreed because all artifacts descended consistently from the same now-stale engine input | **REVIEWER** (live transition verification) | exact event time unavailable; <5h 41m from last observed pending sample to rebuild | yes | **SILENT STALENESS (6): MUTABLE WORLD STATE AFTER BUILD** |
+| 57 | The VONA tree's 7.0 `narrow_band` is p25 of 71 positive strict-domination margins from the current budget-conditioned position-tree probe, but PATHS, operational docs, and the decision record called it a player-level coin-flip or uncertainty band and used it to declare McCaffrey/Puka equivalent. It contains no held-out player-action errors, paired residuals, confidence interval, or calibration | **REVIEWER** (Turn Planner design audit) | since V1 / since the slot-4 decision record | yes | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS (2)** |
+| 58 | #58's identity consolidation correctly regenerated `survival_recalibration.json` from a 16,949-pair all-era stable-id frame; its 2019-2025 modern fit used 9,492 pairs and moved 15 of 20 bins by up to 0.0468. The approved engine lookup deliberately stayed frozen at its pre-#58 values pending model reapproval, but `engine_2026.py` and `MODEL.md` continued naming the newly regenerated JSON as the exact evidence for that older table. One guard proves the payload equals the old constant and another proves the new analysis reproduces; none links deployed values to their actual evidence | **REVIEWER** (Turn Planner availability-source audit) | since #58, ~3 days | yes (model evidence/provenance; no automatic table change authorized) | **DOC/ARTIFACT DIVERGENCE (5)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 56 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **8.9%**. The first
+Of the 58 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **8.6%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
 the first spontaneous instance: before shipping a newly wired input, I asked
 whether its source could actually update and found that it could not.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 28, ANTHONY 2.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 30, ANTHONY 2.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -100,10 +102,10 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Twenty-eight of 56 - the largest single share, and disproportionately the severe
-ones - came from outside review. Of the eleven defects now known to have reached
+Thirty of 58 - the largest single share, and disproportionately the severe
+ones - came from outside review. Of the thirteen defects now known to have reached
 the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
-#43, #45, #46, #52, #53, #54), **nine were found by someone other than me.**
+#43, #45, #46, #52, #53, #54, #57, #58), **eleven were found by someone other than me.**
 
 ### 1.3 Which classes recur, and why the first fix did not generalize
 
@@ -212,7 +214,7 @@ mistake (conditional where unconditional was needed) in new code, and the artifa
 advertised it - 28% of nodes had negative VONA, an impossibility - for as long as it
 took an outsider to look.
 
-**DOC/ARTIFACT DIVERGENCE - 4 occurrences (#4, #37, #40, #47).** The written record
+**DOC/ARTIFACT DIVERGENCE - 5 occurrences (#4, #37, #40, #47, #58).** The written record
 can be internally stale (#4), absent from its consuming surface (#37), or disagree
 with the committed artifact (#40). At `04d3dd3`, `CHANGELOG.md` reports 39
 rendered forks, 29 dominated branches pruned, and 15 coin flips.
@@ -227,6 +229,16 @@ counts recursively after pruning is complete.
 the RB export had been regenerated, while the committed CSV retained the old
 schema and 2,530 junk rows. Correct source code is not evidence that the artifact
 was rebuilt. The contract is source **plus** regenerated bytes, verified together.
+
+#58 is the inverse edge: an approved deployed lookup was intentionally frozen,
+but the evidence file named by its source comment was regenerated after player
+identity repair. Fifteen of 20 modern-fit bins changed, by up to 0.0468. Retaining
+the approved table until explicit model review is deliberate; allowing a mutable
+proposal artifact to keep posing as its exact evidence is not. The tests prove
+each half independently - deployed payload equals the hardcoded constant, current
+analysis reproduces the new proposal - and therefore both stay green while the
+lineage between them is false. A frozen parameter needs immutable evidence by
+digest, not a path whose contents can be rebuilt underneath it.
 
 **MISSING OBSERVATION AS ZERO - one live instance (#45), after a full percentile
 population sweep.** `dict.get(id, 0)` put players with no 2025 usage into a
@@ -261,8 +273,10 @@ pool does not repair the action space: Puka's WR VONA is 45.83 versus McCaffrey'
 RB VONA 41.29, a 4.54 gap above both the current 1.39 epsilon and the 3.58 epsilon
 recomputed on that depleted board, so the page would still render Puka alone.
 The complete adaptive 4/21/28 policy instead puts McCaffrey only 2.08 lineup
-points above Puka, inside the artifact's own 7.0-point coin-flip band. This is the
-same silence shape as optional-shard degradation, but the fetch and rendering
+points above Puka. That is a narrow deterministic gap, but no held-out
+player-action error interval exists, so it cannot establish either equivalence or
+meaningful separation. This is the same silence shape as optional-shard
+degradation, but the fetch and rendering
 both succeeded: the omitted action space itself became a false finding. The rule
 is that every zero-result surface must name the universe it actually queried and
 must carry a behavioral fixture in which a known actionable state produces an
@@ -287,8 +301,7 @@ team-supply surface now uses pass-attempt terminology and the TE gate that leane
 on the first family is suspended. The defect is semantic identity: the stored
 number can be reproducible and still not be the quantity its name asserts.
 
-**CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS - one shared producer-contract
-defect across three production renderers (#55).**
+**CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS - 2 occurrences (#55, #57).**
 This is the presentation-layer sibling of a mislabeled column. The engine
 correctly computed a static checkpoint selected from individually at-least-even
 availability after consuming prior listed anchors. The renderer removed the
@@ -307,6 +320,18 @@ passage is not a forecast; a selected representative is not an expected path;
 fallback is not runner-up. If no producer computes the sentence, weaken it,
 carry the qualifiers, or omit it. A correct number cannot authorize a stronger
 claim.
+
+#57 is the same defect at the model-interpretation boundary. The VONA builder
+derived 7.0 as p25 of 71 positive strict-domination margins from its current
+all-slot, node-budgeted position-tree probe. That value can govern how the tree
+retains a narrowly dominated position action. It has no held-out player-action
+errors, paired residuals, calibration coverage, or interval, so it cannot be
+transported into a player-equivalence, tie, confidence, or uncertainty claim.
+The live PATHS legend and artifact still use the older `coin flip` wording; they
+are deliberately frozen through the September 8 draft and logged for offseason
+correction. Operational docs now state the narrower truth, and
+`docs/TURN_PLANNER_SPEC.md` prohibits any future tie mark without the held-out
+action-error study. Current-board spread is not forecast uncertainty.
 
 The same sweep found an adjacent live label: the Pick Engine called thresholds
 on its uncalibrated weighted-score gap `confidence HIGH/MEDIUM/LOW`. The score
@@ -381,7 +406,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Twenty-seven finds, including nine of the eleven long-lived live defects. The mechanism is
+Thirty finds, including eleven of the thirteen long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 

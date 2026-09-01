@@ -2,10 +2,10 @@
 
 **Anthony DellaPia, roster 7 (with ernie706). League 1389378429505241088. Board built 2026-08-11.**
 
-> **Operational override, 2026-08-31:** the externally reported draw puts Anthony
+> **Operational override, 2026-08-31:** Sleeper's confirmed draw puts Anthony
 > in **slot 4**, with picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124,
-> 141, 148, 165**. Sleeper has not published the order yet, so the external draw
-> remains pending official confirmation. Draft start is
+> 141, 148, 165**. Both official order sources agree with the earlier external
+> report. Draft start is
 > **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**. The slot-7 arithmetic
 > below is retained only as a dated scenario; use the current slot-4 engine and
 > draft room for decisions. The other eleven slots remain reference views.
@@ -13,14 +13,17 @@
 > **Pick-4 owner decision, recorded outside the model:** if Gibbs, Bijan Robinson,
 > and Ja'Marr Chase go 1-2-3, the complete 4/21/28 marginal-lineup policy scores
 > McCaffrey **290.75**, Puka **288.67**, and Jonathan Taylor **272.05**. CMC's
-> nominal **+2.08** over Puka is inside the board-derived **7.0** coin-flip band,
-> and a documented survival-calibration sensitivity reverses it to Puka by 0.15.
-> The model therefore says **CMC/Puka tie**, not CMC. Anthony chooses **Puka** as
-> an explicit external tie-break because CMC is age 30, missed 13 of 34 games,
+> nominal **+2.08** over Puka is the deterministic ordering. The board-derived
+> **7.0** value is p25 of 71 position-tree domination margins, not held-out
+> player-action error, so it cannot declare a tie. A documented
+> survival-calibration sensitivity reverses the ordering to Puka by 0.15; that
+> establishes rank instability, not calibrated equivalence. Anthony chooses
+> **Puka** as an explicit external override because CMC is age 30, missed 13 of 34 games,
 > carried 450 touches in 2025, and this league has zero IR slots. That durability
 > judgment is not a projection, VOR input, BULLISH tag, or model verdict. If Puka
-> is still not practicing by September 5, withdraw the override and return to the
-> honest coin flip; Sleeper's injury label alone cannot establish practice status.
+> is still not practicing by September 5, withdraw the override and reassess the
+> current deterministic model ordering; Sleeper's injury label alone cannot
+> establish practice status. Player-action uncertainty remains uncalibrated.
 
 > **Projection boundary:** the core board scores Sleeper's 2026 raw-stat
 > projection feed under this league's rules. The backward-looking limitation
@@ -33,7 +36,7 @@
 > Excluding true shock fallers, the current marginal-policy order is **Achane →
 > Chase Brown → Bowers → Derrick Henry → Saquon → Lamb → Kenneth Walker →
 > Hampton → Nico → Jeanty → McBride → Josh Allen** at 21; adjacent choices through Henry
-> are themselves within or near the 7.0 coin-flip band. At 28, apply the
+> have deterministic order but no held-out player-action error interval. At 28, apply the
 > marginal-lineup policy again rather than forcing a position. If Bowers was the
 > pick, take the best RB/WR (Nico, Henry, Javonte, and Walker are the common
 > outcomes) and do not double TE. If an RB was the pick, Bowers is usually the

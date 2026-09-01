@@ -2,8 +2,9 @@
 
 Status: **the position-level tree shipped, but the 2026-08-31 slot-4 decision
 proved that zero rendered forks can be a false-negative.** The original three
-decisions remain recorded in section 7. Section 8 records the required offseason
-redesign; PR #54's Pareto branch does not supply it.
+decisions remain recorded in section 7. Section 8 records why the public surface
+must retire; `docs/TURN_PLANNER_SPEC.md` is the authoritative approved offseason
+replacement. PR #54's Pareto branch does not supply it.
 
 ## 1. The objective function
 
@@ -37,11 +38,11 @@ do not" logic expressed as a number.
 
 ## 2. Structure
 
-- **Input:** draft slot 1-12, rendered slot-conditional. The externally reported
-  2026 draw makes **slot 4 primary** while Sleeper confirmation is pending; the
-  other eleven slots remain selectable reference views. A later official order
-  must reconcile exactly or fail loud. This changes the default and provenance,
-  not the per-slot arithmetic.
+- **Input:** draft slot 1-12, rendered slot-conditional. Sleeper's confirmed 2026
+  draw makes **slot 4 primary** and agrees with the earlier external report; the
+  other eleven slots remain selectable reference views. Any later source conflict
+  must fail loud. This changes the default and provenance, not the per-slot
+  arithmetic.
 - **Root:** the round-1 pick at that slot. When one option dominates -
   no rival within the branch threshold - render a SINGLE node and state
   why ("VONA gap 34.1 pts over the next position; no position-level fork
@@ -156,9 +157,12 @@ by hand.
 The actual slot-4 premise was Gibbs, Bijan Robinson, and Ja'Marr Chase gone,
 leaving McCaffrey, Puka, and Jonathan Taylor. The complete adaptive 4/21/28
 marginal-lineup comparison produced McCaffrey 290.75, Puka 288.67, and Taylor
-272.05: McCaffrey's nominal +2.08 over Puka sits inside the same artifact's
-derived 7.0-point coin-flip band. Anthony therefore correctly read the first two
-as tied and made a separately labelled durability override to Puka.
+272.05: McCaffrey is the deterministic nominal leader by 2.08. The repository
+previously treated the tree's 7.0 narrow band as player-action uncertainty and
+therefore called the first two tied. That inference is unsupported. The 7.0 is
+p25 of 71 positive strict-domination margins from the current budget-conditioned
+position tree, not held-out player-action error. Anthony's durability choice is a
+separately labelled owner override; the model has no calibrated tie claim.
 
 PATHS rendered zero forks because it had never represented that question:
 
@@ -177,13 +181,11 @@ evidence. PR #54 replaces the branch rule with a Pareto frontier but retains one
 action per position and therefore does not fix this defect. It stays parked for
 the 2026 draft.
 
-The offseason replacement is a redesign, not an epsilon patch:
-
-1. accept an explicit unavailable-player board state at the root;
-2. expose player-level actions among actual survivors;
-3. evaluate each action through the owner's complete next-turn continuation
-   (slot 4 means picks 4, 21, and 28) using shared `forward_policy` lineup value;
-4. retain VONA as an urgency/position-loss diagnostic coordinate, not the sole
-   branch generator; and
-5. add a behavior fixture for this exact observed board that must render the
-   McCaffrey/Puka tie and Taylor as the separated third option.
+The approved offseason replacement is `docs/TURN_PLANNER_SPEC.md`, not an epsilon
+patch. It uses one persistent player board, an explicit observed state, and the
+shared one-step Marginal Policy only for the next fully conditioned owner turn.
+Its action-uncertainty study is mandatory: the exact observed-board fixture must
+render all three player actions and their deterministic scores, but may call them
+tied or separated only if held-out player-action calibration supports that claim.
+VONA remains an internal urgency and position-loss diagnostic rather than an
+action generator.
