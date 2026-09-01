@@ -81,20 +81,37 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 56 | Sleeper published the complete official order after a correct pending-state build had deployed. The dynamic room read the new state, but committed engine/VONA derivatives and static Cheat Sheet/PATHS continued saying `Sleeper pending`; Pages was byte-identical to main and every content digest agreed because all artifacts descended consistently from the same now-stale engine input | **REVIEWER** (live transition verification) | exact event time unavailable; <5h 41m from last observed pending sample to rebuild | yes | **SILENT STALENESS (6): MUTABLE WORLD STATE AFTER BUILD** |
 | 57 | The VONA tree's 7.0 `narrow_band` is p25 of 71 positive strict-domination margins from the current budget-conditioned position-tree probe, but PATHS, operational docs, and the decision record called it a player-level coin-flip or uncertainty band and used it to declare McCaffrey/Puka equivalent. It contains no held-out player-action errors, paired residuals, confidence interval, or calibration | **REVIEWER** (Turn Planner design audit) | since V1 / since the slot-4 decision record | yes | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS (2)** |
 | 58 | #58's identity consolidation correctly regenerated `survival_recalibration.json` from a 16,949-pair all-era stable-id frame; its 2019-2025 modern fit used 9,492 pairs and moved 15 of 20 bins by up to 0.0468. The approved engine lookup deliberately stayed frozen at its pre-#58 values pending model reapproval, but `engine_2026.py` and `MODEL.md` continued naming the newly regenerated JSON as the exact evidence for that older table. One guard proves the payload equals the old constant and another proves the new analysis reproduces; none links deployed values to their actual evidence | **REVIEWER** (Turn Planner availability-source audit) | since #58, ~3 days | yes (model evidence/provenance; no automatic table change authorized) | **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE (1) + DOC/ARTIFACT DIVERGENCE (5)** |
-| 59 | A repository-wide frozen-evidence inventory found sixteen other dependency families, seven already carrying stale support or narrative. The same #58 identity correction rebuilt four non-survival analysis artifacts while their approved narrative stayed fixed. Recency, injury and durability retained their verdicts under changed samples and estimates, but `MODEL.md` kept the old support figures. More materially, actual-vs-ADP moved from +35.64, CI [+4.02, +69.44] to +23.08, CI [-0.44, +46.88], and replay-vs-ADP moved from +42.71, CI [+8.30, +76.89] to +28.92, CI [-7.18, +67.15]; `MODEL.md` still says both beat ADP. Cache-backed determinism correctly reproduces the new artifacts and therefore does not detect that an old approved conclusion lost its support | **REVIEWER** (frozen-evidence dependency inventory) | since #58, ~3 days | yes (approved analysis record; no production rank or verdict input) | **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE (2)** |
+| 59 | A repository-wide frozen-evidence inventory found sixteen other dependency families, seven carrying stale support or narrative at audit time. The same #58 identity correction rebuilt four non-survival analysis artifacts while their approved narrative stayed fixed. Recency, injury and durability retained their verdicts under changed samples and estimates, but `MODEL.md` kept the old support figures. More materially, actual-vs-ADP moved from +35.64, CI [+4.02, +69.44] to +23.08, CI [-0.44, +46.88], and replay-vs-ADP moved from +42.71, CI [+8.30, +76.89] to +28.92, CI [-7.18, +67.15]; `MODEL.md` continued saying both beat ADP until the 2026-09-01 follow-up corrected the prose to the crossing-zero negative result. Cache-backed determinism correctly reproduced the new artifacts and therefore did not detect that an old approved conclusion lost its support | **REVIEWER** (frozen-evidence dependency inventory) | since #58, ~3 days | yes (approved analysis record; corrected 2026-09-01; no production rank or verdict input) | **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE (2)** |
+| 60 | The engine copied the season-projection row's nested Sleeper `player.injury_status` into every surface as a bare current-looking designation even though Sleeper supplies no injury-specific effective date/week and the cohort's practice plus injury-start fields are empty. The engine's top-190 skill pool had 39 raw `Questionable` rows plus one `NA` and one `IR`. The Cheat Sheet CSS rewrote every truthy status it rendered as `Q`; the committed five sheets covered 36 unique flagged players (34 raw `Questionable`, one `PUP`, one `IR`). Sleeper-retained 2025 draft snapshots show why the unqualified preseason label is unsafe: 205/1,271 skill picks were `Questionable` on Aug 20-26 UTC (16.13%), falling to 72/1,029 on Sep 3-4 UTC (7.00%; Sep 2-3 Eastern, before the opener). Recent generic `news_updated` values and 2026 rookies refute universal untouched-2025 carryover, but cannot establish an official current designation. The fix preserves the source values and all math while printing Sleeper provenance, engine snapshot date, missing designation date and the practice/game-report limitation; non-Q values are no longer collapsed to Q | **ANTHONY** (live injury-label challenge) | since injury badges shipped | yes (human risk interpretation and display-only BULLISH status; score/VOR/rank unchanged) | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS (3) + STATUS COLLAPSE** |
+
+Entry #60's historical evidence unit is the retained Sleeper
+`/v1/draft/{draft_id}/picks` response, with each draft's `start_time` read from
+`/v1/draft/{draft_id}` under the retrieval contract implemented in
+`src/fetch_yahoo.py` and `src/ingest.py`. Early-window draft ids:
+`1256056338354536448`, `1247955313613602816`, `1261483033618305024`,
+`1182952864052150273`, `1258802596571787264`, `1180190010254721025`,
+`1182416041191829505`, `1257466503335256065`. Late-window ids:
+`1253820951091494912`, `1262785829693042688`, `1268729189138178048`,
+`1245905122333040640`, `1260371868947320832`, `1266117895176331264`,
+`1269124914703511552`. The denominator is every pick whose metadata position is
+QB/RB/WR/TE; the numerator is exact `injury_status == "Questionable"`. This is a
+convenience sample of 15 complete drafts, not independent players: the same player
+can appear in multiple drafts. The aggregate is reproducible while Sleeper retains
+those payloads, but the repository has no immutable copy or digest of the full
+sample; that limitation is part of the evidence lineage, not omitted provenance.
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 59 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **8.5%**. The first
+Of the 60 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **8.3%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
 the first spontaneous instance: before shipping a newly wired input, I asked
 whether its source could actually update and found that it could not.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 31, ANTHONY 2.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 31, ANTHONY 3.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -103,7 +120,7 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Thirty-one of 59 - the largest single share, and disproportionately the severe
+Thirty-one of 60 - the largest single share, and disproportionately the severe
 ones - came from outside review. Of the thirteen defects now known to have reached
 the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
 #43, #45, #46, #52, #53, #54, #57, #58), **eleven were found by someone other than me.**
@@ -255,8 +272,9 @@ code changed, but the corrected replay player-pick corpus changed the modern
 calibration fit beneath the approved table. #59 proves the mechanism was not
 survival-specific: the same identity repair moved recency, injury, durability, and
 replay evidence. Three verdicts survived with stale support figures; the replay
-claim did not. Both formerly positive ADP-comparison intervals now cross zero,
-while the approved prose still says both Anthony and the replay proxy beat ADP.
+claim did not. Both formerly positive ADP-comparison intervals now cross zero;
+the approved prose continued saying both Anthony and the replay proxy beat ADP
+until the 2026-09-01 correction recorded in entry #59.
 
 The frozen-evidence register in `docs/TURN_PLANNER_SPEC.md` finds sixteen other
 dependency families beyond the adopted calibration, representing 32 individual
@@ -332,7 +350,7 @@ team-supply surface now uses pass-attempt terminology and the TE gate that leane
 on the first family is suspended. The defect is semantic identity: the stored
 number can be reproducible and still not be the quantity its name asserts.
 
-**CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS - 2 occurrences (#55, #57).**
+**CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS - 3 occurrences (#55, #57, #60).**
 This is the presentation-layer sibling of a mislabeled column. The engine
 correctly computed a static checkpoint selected from individually at-least-even
 availability after consuming prior listed anchors. The renderer removed the
@@ -350,7 +368,10 @@ every decision noun and verb must map to a producer field and method. Threshold
 passage is not a forecast; a selected representative is not an expected path;
 fallback is not runner-up. If no producer computes the sentence, weaken it,
 carry the qualifiers, or omit it. A correct number cannot authorize a stronger
-claim.
+claim. The third occurrence presented undated preseason Sleeper metadata as a
+current-looking injury designation and collapsed every truthy Cheat Sheet status
+it rendered to `Q`. The repair preserves source identity and adds the snapshot's
+date and limitation instead of upgrading it to an official practice/game report.
 
 #57 is the same defect at the model-interpretation boundary. The VONA builder
 derived 7.0 as p25 of 71 positive strict-domination margins from its current
@@ -419,7 +440,7 @@ reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
 #15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43,
-#44, #45, #46, #47, #48, #49, #52, #53, #54, #55, #56, #57, #58, #59. Thirty-four of 59, and
+#44, #45, #46, #47, #48, #49, #52, #53, #54, #55, #56, #57, #58, #59, #60. Thirty-five of 60, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it

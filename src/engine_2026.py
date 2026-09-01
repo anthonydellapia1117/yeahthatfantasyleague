@@ -865,7 +865,8 @@ def render_markdown(m):
     say("")
     say(f"Generated {m['generated']} from live Sleeper projections and ADP. "
         f"**Regenerate the morning of 2026-09-08** - both move daily, and "
-        f"injury statuses churn.")
+        f"injury statuses churn. Sleeper `injury_status` is an undated "
+        f"preseason snapshot, not an official practice/game designation.")
     say(f"Engine content SHA-256: `{m['content_sha256']}`.")
     say("")
     say("Survival = P(available), normal pick-error model, sd fitted per ADP "
@@ -961,8 +962,9 @@ def render_markdown(m):
                                 + (f"break toward your call - {cb['toward']}"
                                    if cb else "break toward ceiling"))
             if p["injury"]:
-                triggers.append(f"{p['name']} is {p['injury']} - "
-                                f"re-check draft morning")
+                triggers.append(f"Sleeper snapshot {m['generated']}: "
+                                f"{p['name']} = {p['injury']}; designation "
+                                f"date unavailable - verify team report")
             say(f"| {r['round']} | {r['pick']} | {p['name']} {p['pos']} "
                 f"{p['vor']:.0f} ({p['p_available_now']:.0%}) | "
                 f"{'; '.join(triggers) if triggers else 'none'} |")

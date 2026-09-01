@@ -692,19 +692,21 @@ re-review when the evidence changes**.
 | Recency rejection | Historical weekly production, ADP, picks and identity | **Partial:** cache-backed determinism reruns the artifact; fixed narrative is not compared | #58 moved `n` 1,677 to 1,686 and `b_late` +0.00021 to -0.00022; the null survives but `MODEL.md` quotes the old support |
 | Injury-market rejection | Injury, outcome, ADP, pick and identity joins | **Partial:** cache-backed rerun and interval logic; no narrative linkage | #58 moved `n` 1,697 to 1,706 and the effects/intervals; verdict survives while `MODEL.md` quotes the old support |
 | Durability-fade rejection | Injury evidence, age, PPG, era and identity joins | **Partial:** cache-backed rerun and verdict rule; no cross-artifact or prose link | #58 moved `n` 1,697 to 1,706 and the estimates; `MODEL.md` and the artifact's copied candidate sentence retain old figures |
-| Replay value/backtest conclusion | Picks, HISTORY/FFC ADP, outcome and player identity | **Partial:** cache-backed deterministic replay; no verdict field asserts the published conclusion | **Material divergence:** actual-vs-ADP is now +23.08, CI [-0.44,+46.88], and replay-vs-ADP +28.92, CI [-7.18,+67.15]; `MODEL.md` still says both beat ADP from the old positive intervals |
+| Replay value/backtest conclusion | Picks, HISTORY/FFC ADP, outcome and player identity | **Partial:** cache-backed deterministic replay; no verdict field asserts the published conclusion | #58 moved actual-vs-ADP to +23.08, CI [-0.44,+46.88], and replay-vs-ADP to +28.92, CI [-7.18,+67.15]. The dependency audit found `MODEL.md` still claiming both beat ADP; the 2026-09-01 follow-up now publishes the crossing-zero negative result, but no evidence-to-wording drift detector exists. |
 | Original eight dead-hypothesis ledger | Historical league analysis underlying the hardcoded `app_data` claims | **None:** three p-values still have no committed generator and no claim-to-evidence digest exists | Adjacent current divergence: `app_data` says drafted-share correlation +0.043 while `ff-hub.html` prints +0.055 |
 | Drafted-vs-acquired result | Archive champions, lineups, transactions, era definitions and identity | **None for evidence drift:** guards pin qualitative flags and internal shape, not a deterministic rebuild or reviewed prose | No current divergence established |
 | WS2 nine-claim audit | nflverse, FFC and HISTORY inputs | **None:** the cache-dependent builder is explicitly not rerun; tests check structure, arithmetic and canaries | No current divergence established |
 | Tendency exclusion (`p=0.9932`) | Historical picks, franchise mapping and the survival-pair construction | **None for the adoption evidence:** tests keep tendency out of probability and pin the committed result, but do not rerun the backtest | No current divergence established; the exclusion remains in force |
 | Lineup-efficiency permutation result | Historical started lineups, champions and franchise identity | **None:** `efficiency_test.json` is read as the canonical fixed result; no test reruns `phase3_lineup.py` | No current divergence established; findings-page analysis only |
 
-Seven of the sixteen families already show stale support or narrative: the base-rate
-review copy, N.1's duplicate research copy, recency, injury, durability, replay, and
-the original dead-hypothesis ledger. The recency, injury, durability and replay
-movements came from #58. The replay crossing is the only
-newly found inferential change; it is an analysis-record defect and does not feed
-engine VOR, survival, the Cheat Sheet, or a draft-night verdict. FLEX and the base
+Seven of the sixteen families showed stale support or narrative when this register
+was written: the base-rate review copy, N.1's duplicate research copy, recency,
+injury, durability, replay, and the original dead-hypothesis ledger. The recency,
+injury, durability and replay movements came from #58. The 2026-09-01 follow-up
+corrects the replay narrative, leaving six unresolved stale copies. The replay
+crossing is the only newly found inferential change; it is an analysis-record defect
+and does not feed engine VOR, survival, the Cheat Sheet, or a draft-night verdict.
+FLEX and the base
 survival `INTERP` selection are the latent families in this register that directly
 shape those decision numbers; the tendency result separately governs the exclusion
 of opponent tendency from survival. No evidence divergence is currently known for

@@ -1,6 +1,6 @@
 # 2026 Decision Cards - YeahThatFantasyLeague!
 
-Generated 2026-08-31 from live Sleeper projections and ADP. **Regenerate the morning of 2026-09-08** - both move daily, and injury statuses churn.
+Generated 2026-08-31 from live Sleeper projections and ADP. **Regenerate the morning of 2026-09-08** - both move daily, and injury statuses churn. Sleeper `injury_status` is an undated preseason snapshot, not an official practice/game designation.
 Engine content SHA-256: `adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31`.
 
 Survival = P(available), normal pick-error model, sd fitted per ADP band to 2,039 of this league's own picks. Live-seat dossiers use recency-weighted, current-era shrunk history with n_eff; the order table separately reports raw full-franchise medians and n. Both are description only: the tendency probability fold was rejected (p=0.9932), so history creates no urgency trigger. No champion mimicry - every call is VOR and tier math. Where two candidates sit in one tier the card says COIN FLIP: the projection feed has no variance measure, so break ties toward ceiling yourself.
@@ -36,7 +36,7 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 2 | 21 | Brock Bowers TE 91 (60%) | TE tier empties before your next turn - take now, do not wait |
 | 3 | 28 | Javonte Williams RB 51 (69%) | COIN FLIP with Breece Hall - break toward ceiling |
 | 4 | 45 | Garrett Wilson WR 39 (54%) | none |
-| 5 | 52 | Mike Evans WR 36 (72%) | Mike Evans is Questionable - re-check draft morning |
+| 5 | 52 | Mike Evans WR 36 (72%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 69 | Parker Washington WR 26 (59%) | COIN FLIP with Christian Watson - break toward ceiling |
 | 7 | 76 | Dak Prescott QB 18 (53%) | COIN FLIP with Brock Purdy - break toward ceiling |
 | 8 | 93 | Brock Purdy QB 16 (89%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
@@ -55,7 +55,7 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 2 | 24 | Nico Collins WR 76 (55%) | none |
 | 3 | 25 | Colston Loveland TE 53 (88%) | none |
 | 4 | 48 | D'Andre Swift RB 47 (61%) | COIN FLIP with David Montgomery - break toward ceiling |
-| 5 | 49 | Mike Evans WR 36 (77%) | Mike Evans is Questionable - re-check draft morning |
+| 5 | 49 | Mike Evans WR 36 (77%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 72 | Parker Washington WR 26 (53%) | none |
 | 7 | 73 | Dak Prescott QB 18 (58%) | COIN FLIP with Brock Purdy - break toward ceiling |
 | 8 | 96 | Brock Purdy QB 16 (86%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
@@ -73,7 +73,7 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 1 | 2 | Jahmyr Gibbs RB 170 (82%) | RB tier empties before your next turn - take now, do not wait; COIN FLIP with Bijan Robinson - break toward ceiling |
 | 2 | 23 | Brock Bowers TE 91 (51%) | none |
 | 3 | 26 | Javonte Williams RB 51 (75%) | COIN FLIP with Jeremiyah Love - break toward ceiling |
-| 4 | 47 | Mike Evans WR 36 (80%) | Mike Evans is Questionable - re-check draft morning |
+| 4 | 47 | Mike Evans WR 36 (80%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 5 | 50 | Terry McLaurin WR 28 (64%) | none |
 | 6 | 71 | Parker Washington WR 26 (55%) | none |
 | 7 | 74 | Dak Prescott QB 18 (56%) | COIN FLIP with Brock Purdy - break toward ceiling |
@@ -93,7 +93,7 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 2 | 22 | Brock Bowers TE 91 (56%) | none |
 | 3 | 27 | Javonte Williams RB 51 (72%) | COIN FLIP with Breece Hall - break toward ceiling |
 | 4 | 46 | Garrett Wilson WR 39 (51%) | none |
-| 5 | 51 | Mike Evans WR 36 (74%) | Mike Evans is Questionable - re-check draft morning |
+| 5 | 51 | Mike Evans WR 36 (74%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 70 | Parker Washington WR 26 (57%) | none |
 | 7 | 75 | Dak Prescott QB 18 (55%) | COIN FLIP with Brock Purdy - break toward ceiling |
 | 8 | 94 | Brock Purdy QB 16 (88%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
@@ -108,11 +108,11 @@ Description only; raw median round with n observed seasons. The tendency backtes
 
 | Rd | Pick | Planning anchor (individual P avail) | Deviation trigger |
 |---|---|---|---|
-| 1 | 5 | Christian McCaffrey RB 130 (62%) | RB tier empties before your next turn - take now, do not wait; Christian McCaffrey is Questionable - re-check draft morning |
+| 1 | 5 | Christian McCaffrey RB 130 (62%) | RB tier empties before your next turn - take now, do not wait; Sleeper snapshot 2026-08-31: Christian McCaffrey = Questionable; designation date unavailable - verify team report |
 | 2 | 20 | Brock Bowers TE 91 (65%) | TE tier empties before your next turn - take now, do not wait |
 | 3 | 29 | Javonte Williams RB 51 (66%) | COIN FLIP with Breece Hall - break toward ceiling |
 | 4 | 44 | Garrett Wilson WR 39 (57%) | none |
-| 5 | 53 | Mike Evans WR 36 (70%) | Mike Evans is Questionable - re-check draft morning |
+| 5 | 53 | Mike Evans WR 36 (70%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 68 | Parker Washington WR 26 (61%) | COIN FLIP with Christian Watson - break toward ceiling |
 | 7 | 77 | Dak Prescott QB 18 (51%) | COIN FLIP with Brock Purdy - break toward ceiling |
 | 8 | 92 | Brock Purdy QB 16 (90%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
@@ -131,7 +131,7 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 2 | 19 | Brock Bowers TE 91 (69%) | TE tier empties before your next turn - take now, do not wait |
 | 3 | 30 | Javonte Williams RB 51 (62%) | COIN FLIP with Breece Hall - break toward ceiling |
 | 4 | 43 | Garrett Wilson WR 39 (59%) | none |
-| 5 | 54 | Mike Evans WR 36 (68%) | Mike Evans is Questionable - re-check draft morning |
+| 5 | 54 | Mike Evans WR 36 (68%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 67 | Parker Washington WR 26 (63%) | COIN FLIP with Christian Watson - break toward ceiling |
 | 7 | 78 | Brock Purdy QB 16 (96%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
 | 8 | 91 | Jayden Reed WR 11 (77%) | none |
@@ -150,7 +150,7 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 2 | 18 | Brock Bowers TE 91 (73%) | TE tier empties before your next turn - take now, do not wait |
 | 3 | 31 | Javonte Williams RB 51 (59%) | COIN FLIP with Breece Hall, D'Andre Swift - break toward ceiling |
 | 4 | 42 | Garrett Wilson WR 39 (62%) | none |
-| 5 | 55 | Mike Evans WR 36 (66%) | Mike Evans is Questionable - re-check draft morning |
+| 5 | 55 | Mike Evans WR 36 (66%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 66 | Parker Washington WR 26 (64%) | COIN FLIP with Christian Watson - break toward ceiling |
 | 7 | 79 | Brock Purdy QB 16 (96%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
 | 8 | 90 | Jayden Reed WR 11 (78%) | none |
@@ -168,8 +168,8 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 1 | 8 | James Cook RB 100 (58%) | COIN FLIP with De'Von Achane, Chase Brown - break toward ceiling |
 | 2 | 17 | Brock Bowers TE 91 (77%) | TE tier empties before your next turn - take now, do not wait |
 | 3 | 32 | Javonte Williams RB 51 (55%) | COIN FLIP with Breece Hall, D'Andre Swift - break toward ceiling |
-| 4 | 41 | Zay Flowers WR 42 (52%) | Zay Flowers is Questionable - re-check draft morning |
-| 5 | 56 | Mike Evans WR 36 (64%) | Mike Evans is Questionable - re-check draft morning |
+| 4 | 41 | Zay Flowers WR 42 (52%) | Sleeper snapshot 2026-08-31: Zay Flowers = Questionable; designation date unavailable - verify team report |
+| 5 | 56 | Mike Evans WR 36 (64%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 65 | Parker Washington WR 26 (66%) | COIN FLIP with Christian Watson - break toward ceiling |
 | 7 | 80 | Brock Purdy QB 16 (96%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
 | 8 | 89 | Jayden Reed WR 11 (79%) | none |
@@ -187,8 +187,8 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 1 | 9 | De'Von Achane RB 96 (78%) | COIN FLIP with Chase Brown - break toward ceiling |
 | 2 | 16 | Chase Brown RB 94 (55%) | RB tier empties before your next turn - take now, do not wait |
 | 3 | 33 | Colston Loveland TE 53 (72%) | none |
-| 4 | 40 | Zay Flowers WR 42 (55%) | Zay Flowers is Questionable - re-check draft morning |
-| 5 | 57 | Mike Evans WR 36 (62%) | Mike Evans is Questionable - re-check draft morning |
+| 4 | 40 | Zay Flowers WR 42 (55%) | Sleeper snapshot 2026-08-31: Zay Flowers = Questionable; designation date unavailable - verify team report |
+| 5 | 57 | Mike Evans WR 36 (62%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 64 | Parker Washington WR 26 (68%) | COIN FLIP with Rome Odunze, Christian Watson - break toward ceiling |
 | 7 | 81 | Brock Purdy QB 16 (96%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
 | 8 | 88 | Jayden Reed WR 11 (80%) | none |
@@ -206,8 +206,8 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 1 | 10 | De'Von Achane RB 96 (72%) | COIN FLIP with Chase Brown - break toward ceiling |
 | 2 | 15 | Chase Brown RB 94 (60%) | RB tier empties before your next turn - take now, do not wait |
 | 3 | 34 | Colston Loveland TE 53 (69%) | none |
-| 4 | 39 | Zay Flowers WR 42 (58%) | Zay Flowers is Questionable - re-check draft morning |
-| 5 | 58 | Mike Evans WR 36 (60%) | Mike Evans is Questionable - re-check draft morning |
+| 4 | 39 | Zay Flowers WR 42 (58%) | Sleeper snapshot 2026-08-31: Zay Flowers = Questionable; designation date unavailable - verify team report |
+| 5 | 58 | Mike Evans WR 36 (60%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 63 | Parker Washington WR 26 (70%) | COIN FLIP with Rome Odunze, Christian Watson - break toward ceiling |
 | 7 | 82 | Brock Purdy QB 16 (95%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
 | 8 | 87 | Jayden Reed WR 11 (82%) | none |
@@ -225,8 +225,8 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 1 | 11 | De'Von Achane RB 96 (66%) | COIN FLIP with Chase Brown - break toward ceiling |
 | 2 | 14 | Chase Brown RB 94 (66%) | RB tier empties before your next turn - take now, do not wait |
 | 3 | 35 | Colston Loveland TE 53 (66%) | none |
-| 4 | 38 | Zay Flowers WR 42 (61%) | Zay Flowers is Questionable - re-check draft morning |
-| 5 | 59 | Mike Evans WR 36 (57%) | Mike Evans is Questionable - re-check draft morning |
+| 4 | 38 | Zay Flowers WR 42 (61%) | Sleeper snapshot 2026-08-31: Zay Flowers = Questionable; designation date unavailable - verify team report |
+| 5 | 59 | Mike Evans WR 36 (57%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 62 | Parker Washington WR 26 (71%) | COIN FLIP with Rome Odunze, Christian Watson - break toward ceiling |
 | 7 | 83 | Brock Purdy QB 16 (95%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
 | 8 | 86 | Jayden Reed WR 11 (83%) | none |
@@ -244,8 +244,8 @@ Description only; raw median round with n observed seasons. The tendency backtes
 | 1 | 12 | De'Von Achane RB 96 (59%) | COIN FLIP with Chase Brown - break toward ceiling |
 | 2 | 13 | Chase Brown RB 94 (71%) | RB tier empties before your next turn - take now, do not wait |
 | 3 | 36 | Colston Loveland TE 53 (64%) | none |
-| 4 | 37 | Zay Flowers WR 42 (64%) | Zay Flowers is Questionable - re-check draft morning |
-| 5 | 60 | Mike Evans WR 36 (55%) | Mike Evans is Questionable - re-check draft morning |
+| 4 | 37 | Zay Flowers WR 42 (64%) | Sleeper snapshot 2026-08-31: Zay Flowers = Questionable; designation date unavailable - verify team report |
+| 5 | 60 | Mike Evans WR 36 (55%) | Sleeper snapshot 2026-08-31: Mike Evans = Questionable; designation date unavailable - verify team report |
 | 6 | 61 | Parker Washington WR 26 (73%) | COIN FLIP with Rome Odunze, Christian Watson - break toward ceiling |
 | 7 | 84 | Brock Purdy QB 16 (94%) | COIN FLIP with Trevor Lawrence - break toward ceiling |
 | 8 | 85 | Jayden Reed WR 11 (84%) | none |

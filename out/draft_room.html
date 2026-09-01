@@ -150,6 +150,8 @@ tr:last-child td{border-bottom:0}
 @media (prefers-reduced-motion: reduce){#lv.flash{animation:none}}
 .prov{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);
   margin-top:16px;padding-top:10px;line-height:1.6}
+.injprov{font-size:11px;color:var(--ink2);margin:8px 0;padding:7px 9px;
+  border:1px solid var(--line);border-radius:8px;background:var(--s2)}
 /* phase 3 features */
 .strip{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 0}
 .strip::-webkit-scrollbar{display:none}
@@ -283,6 +285,7 @@ button.tag{appearance:none;-webkit-appearance:none;background:var(--s2)}
   <div id="banner" class="banner" hidden></div>
   <div id="mockbar" class="banner" hidden></div>
   <div id="bull-status" class="small" hidden></div>
+  <div id="injury-status-provenance" class="injprov"></div>
   <details class="dmopen" id="dm-open"><summary>DRAFT MODE - practice on a Sleeper mock</summary>
     <div class="small">Create a mock in Sleeper, paste its draft id (the long number in the
       lobby URL), and load. The board stays priced for the real league; any format
@@ -623,7 +626,18 @@ function gapStrip(r, pos){
   return `<div class="gap">${head}<br>${chips}</div>`;
 }
 
-function injBadge(p){ return p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""; }
+function injuryProvenanceText(generated){
+  return `Sleeper injury_status · snapshot ${generated || "unknown"} · designation date unavailable. ` +
+    "Preseason metadata, not an official practice/game designation; verify the team report.";
+}
+function injuryCode(status){ return status === "Questionable" ? "Q" : status; }
+function injurySnapshotDate(generated){
+  const m = String(generated || "").match(/^\d{4}-(\d{2})-(\d{2})$/);
+  return m ? `${Number(m[1])}/${Number(m[2])}` : "date ?";
+}
+function injBadge(p){
+  return p.injury ? ` <span class="inj" title="${esc(injuryProvenanceText(E.generated))}">Sleeper ${esc(injuryCode(p.injury))} · ${esc(injurySnapshotDate(E.generated))}</span>` : "";
+}
 
 // ---- Mode 1: verdict-first round cards for the twelve pre-draft scenarios
 function verdictChip(r){
@@ -850,6 +864,10 @@ function setLiveMode(){
   $("mode").textContent = (MOCK_MODE ? "DRAFT MODE - MOCK LIVE" : "MODE 2 - LIVE") +
     (LiveState.mySlot ? " - you are seat " + LiveState.mySlot : "");
   $("mode").classList.add("live");
+  // The live stack has a strict above-the-fold contract. Source and snapshot
+  // date stay on every injury badge; the longer scope sentence remains visible
+  // in pre-draft mode and in each badge's title.
+  $("injury-status-provenance").hidden = true;
 }
 
 // One-time DOM build for the fixed answer stack. Every poll after this patches
@@ -2736,6 +2754,7 @@ async function refreshOnce(){
        primaryPlanningSlot() + " PRIMARY + 11 REFERENCES" :
        "MODE 1 - PRE-DRAFT - all 12 scenarios"));
     $("mode").classList.remove("live");
+    $("injury-status-provenance").hidden = false;
     if (!MOCK_MODE && seat){
       $("banner").hidden = false;
       $("banner").className = "banner";
@@ -2937,6 +2956,7 @@ $("foot").innerHTML = "13 seasons - 2,339 picks - Sleeper live feed - generated 
   (E.league ? esc(E.league.draft_date) : "the draft") + ". " + esc(E.adp_sd_note || "") +
   ". No champion mimicry - every call here is VOR and tier math; eight draft-day " +
   "hypotheses are null and stay that way.";
+$("injury-status-provenance").textContent = injuryProvenanceText(E.generated);
 setInterval(tickClock, 1000);
 if (E.league) refresh(); else $("app").innerHTML =
   '<div class="banner err">No engine data embedded - run python3 src/engine_2026.py</div>';

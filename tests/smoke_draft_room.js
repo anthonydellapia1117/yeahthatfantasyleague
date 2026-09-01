@@ -397,6 +397,11 @@ function reportedUserOrder(){
     ok(await page.locator(".bignm").count() === 1, "one huge answer name");
     const big = await page.textContent(".bignm");
     ok(!/Gibbs|Bijan|Chase/.test(big), "drafted players removed from the answer: " + big.trim());
+    const liveInjuryBadge = await page.evaluate(() => injBadge({ injury: "IR" }));
+    ok(/Sleeper IR · \d{1,2}\/\d{1,2}/.test(liveInjuryBadge) &&
+       !/Sleeper Q/.test(liveInjuryBadge),
+       "live injury badge keeps Sleeper source, snapshot date, and non-Q status",
+       liveInjuryBadge);
     ok(/\d:\d\d/.test(await page.textContent("#clock")), "pick clock running");
     ok(/Survival to your pick/.test(body), "conditional survival table");
     ok(/actually gone/.test(body), "live recompute labelled");
@@ -1368,6 +1373,8 @@ function reportedUserOrder(){
     // states why. This remains separate from stale/missing optional-shard tests.
     const bullArtifact = JSON.parse(fs.readFileSync(
       path.resolve("out/data/bullish_2026.json"), "utf8"));
+    const injuryEngine = JSON.parse(fs.readFileSync(
+      path.resolve("out/engine_2026.json"), "utf8"));
     const teSusp = bullArtifact.te_gate_suspension;
     const omittedTe = teSusp.omitted_tags[0];
     const nonTe = bullArtifact.tags.find(t => t.status === "BULLISH");
@@ -1376,6 +1383,24 @@ function reportedUserOrder(){
       await pg.route("**/api.sleeper.app/**", r => r.abort());
       await pg.goto(base + "/out/" + file);
       await pg.waitForTimeout(file === "draft_room.html" ? 2500 : 1000);
+      const injuryNote = pg.locator("#injury-status-provenance");
+      const injuryNoteText = await injuryNote.count()
+        ? (await injuryNote.textContent()).trim() : "";
+      ok(await injuryNote.count() === 1 && await injuryNote.isVisible() &&
+         injuryNoteText.includes("Sleeper injury_status") &&
+         injuryNoteText.includes(`snapshot ${injuryEngine.generated}`) &&
+         /designation date unavailable/i.test(injuryNoteText) &&
+         /not an official practice\/game designation/i.test(injuryNoteText),
+         `${file}: injury provenance line carries source, snapshot date, and scope`,
+         injuryNoteText);
+      const syntheticInjuryBadge = await pg.evaluate(fileName =>
+        fileName === "draft_room.html"
+          ? injBadge({ injury: "IR" })
+          : injuryBadge({ injury: "IR" }), file);
+      ok(/Sleeper(?: ·)? IR/.test(syntheticInjuryBadge) &&
+         !/Sleeper(?: ·)? Q/.test(syntheticInjuryBadge),
+         `${file}: injury badge preserves a non-Questionable Sleeper status`,
+         syntheticInjuryBadge);
       const bullStatusText = (await pg.textContent("#bull-status")).trim();
       ok((file === "draft_room.html"
             ? bullStatusText.startsWith(teSusp.display_note) &&
@@ -2900,10 +2925,22 @@ function reportedUserOrder(){
        "cheat sheet omits the unsolved fallback and requires a live re-solve",
        sheet4Text);
 
+    const injuryNotes = await page.locator(".injury-status-provenance").allTextContents();
+    ok(injuryNotes.length === 5 && injuryNotes.every(text =>
+         text.includes("Sleeper injury_status") &&
+         text.includes(`snapshot ${eng.generated}`) &&
+         /designation date unavailable/i.test(text) &&
+         /not an official practice\/game designation/i.test(text)),
+       "cheat sheet prints injury-source provenance on all five sheets",
+       injuryNotes.join(" | "));
+
     // Synthetic bite: the committed payload may legitimately have no coin
     // flips after an ADP refresh. Force one into a single row and prove the
     // renderer carries it on that row rather than letting the guard go vacuous.
     const synthetic = JSON.parse(JSON.stringify(eng));
+    const syntheticTop = synthetic.players.filter(p => p.pos !== "K" && p.pos !== "DEF")
+      .sort((a, b) => b.vor - a.vor)[0];
+    syntheticTop.injury = "IR";
     const syntheticRounds = synthetic.slots[String(primarySlot)];
     const syntheticIndex = syntheticRounds.findIndex(x => !x.kdef && x.primary);
     const syntheticAnchorIndex = syntheticRounds.slice(0, syntheticIndex)
@@ -2921,6 +2958,11 @@ function reportedUserOrder(){
     ok(syntheticCue.trim() === "Coin flip: Synthetic Coin Flip",
        "cheat sheet coin-flip guard bites on a deterministic synthetic row",
        syntheticCue);
+    const syntheticInjury = await syntheticPage.locator(".sheet").nth(0)
+      .locator("tr.r").first().locator(".injmark").textContent();
+    ok(syntheticInjury.trim() === "S:IR",
+       "cheat sheet preserves a non-Questionable Sleeper status instead of rewriting it as Q",
+       syntheticInjury);
     await syntheticPage.close();
 
     // Other slots remain reference views, but only an explicit query may select

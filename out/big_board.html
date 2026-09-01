@@ -190,6 +190,7 @@ footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding
     <div class="activef" id="activef" hidden></div>
     <div class="legend" id="legend"></div>
     <div id="rank-basis" class="provline"></div>
+    <div id="injury-status-provenance" class="provline"></div>
     <div id="board"><p class="small">loading cvs.json...</p></div>
     <p class="small" style="margin-top:10px">Three numbers per row, never one:
     CVS (rank basis), confidence (share of factor weight backed by real data),
@@ -252,6 +253,14 @@ const esc = s => String(s).replace(/[&<>"']/g,
   c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const norm = playerComparisonKey;
 const pct = x => Math.round(x * 100) + "%";
+function injuryProvenanceText(generated){
+  return `Sleeper injury_status · snapshot ${generated || "unknown"} · designation date unavailable. ` +
+    "Preseason metadata, not an official practice/game designation; verify the team report.";
+}
+function injuryCode(status){ return status === "Questionable" ? "Q" : status; }
+function injuryBadge(p){
+  return p.injury ? ` <span class="inj" title="${esc(injuryProvenanceText(D.eng && D.eng.generated))}">Sleeper · ${esc(injuryCode(p.injury))}</span>` : "";
+}
 
 // signal encoding: three channels, always - container treatment (CSS above),
 // icon (inline SVG below), text label. Precedence is decided server-side in
@@ -324,6 +333,8 @@ async function boot(){
   try { D.rates = await get("data/base_rates.json"); } catch (e) { D.rates = null; }
   try { D.ceil = await get("data/ceiling_2026.json"); } catch (e) { D.ceil = null; }
   try { D.bull = await get("data/bullish_2026.json"); } catch (e) { D.bull = null; }
+  document.getElementById("injury-status-provenance").textContent =
+    injuryProvenanceText(D.eng.generated);
   renderBullStatus();
   renderViews(); renderFilters(); renderLegend();
   renderBoard(); renderDelta(); renderConflicts(); renderCeiling(); renderKdef(); renderFoot();
@@ -498,7 +509,7 @@ function renderBoard(){
     (list.map(p => `
     <div class="brow" data-sig="${S(p).signal || ""}">
       <div class="rk num">${S(p).cvs_rank}</div>
-      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${p.injury ? ` <span class="inj">${esc(p.injury)}</span>` : ""}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${bullishChip(p)}${D.drafted.has(String(p.sleeper_id || "")) ? '<span class="floor">drafted</span>' : ""}</div>
+      <div class="nm"><a href="players.html#p=${encodeURIComponent(p.sleeper_id || p.name)}">${esc(p.name)}</a>${injuryBadge(p)}${sigBadge(S(p).signal)}${S(p).signal_conflict ? '<span class="conf" title="opposing signals - see Conflicts view">!</span>' : ""}${wl && p.walter.tier_move ? `<span class="sig" style="color:#b45309;border-color:#b45309">TIER ${p.walter.tier_move.from}&gt;${p.walter.tier_move.to}</span>` : ""}${p.personal === "BULL" ? '<span class="yc bull">YOUR CALL - BULL</span>' : ""}${bullishChip(p)}${D.drafted.has(String(p.sleeper_id || "")) ? '<span class="floor">drafted</span>' : ""}</div>
       <div class="trio"><span class="c num">${val(p)}</span><br>
         <span class="sub num">conf ${pct(p.confidence)} - vol ${p.volatility ? p.volatility.sd : "-"}</span></div>
       <div class="meta">${p.pos} - <a href="teams.html#t=${encodeURIComponent(p.team || "")}">${esc(p.team || "-")}</a>
