@@ -65,6 +65,11 @@ jobs:
       # board. Pure stdlib - no pip install needed.
       - name: Rebuild engine payload
         run: python3 src/engine_2026.py
+      - name: Rebuild RxR Python/JavaScript parity corpus
+        # This corpus carries the engine digest and a real slot-4 geometry
+        # case. Rebuild it at the same dependency edge as the engine so RxR
+        # cannot validate itself against a stale snapshot.
+        run: python3 src/build_rxr_reference.py
       - name: Rebuild CVS inputs
         run: python3 src/build_cvs_inputs.py
       - name: Rebuild CVS board

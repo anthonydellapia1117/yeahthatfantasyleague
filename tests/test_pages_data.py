@@ -750,6 +750,29 @@ ok(not _missing_deploy,
 _cheat_src = open(os.path.join(ROOT, "out", "cheatsheet.html")).read()
 ok("out/cheatsheet.html" in _pgy,
    "the printable cheat sheet is explicitly present in the Pages copy list")
+_rxr_src = open(os.path.join(ROOT, "out", "rxr.html")).read()
+_rxr_policy_src = open(os.path.join(ROOT, "out", "rxr_policy.js")).read()
+ok("out/rxr.html" in _pgy and "out/rxr_policy.js" in _pgy,
+   "RxR page and its shared browser policy are explicit Pages assets")
+ok('fetch(url,{cache:"no-store"})' in _rxr_src and
+   "if(!r.ok)throw new Error" in _rxr_src and
+   "engine_content_sha256!==D.eng.content_sha256" in _rxr_src,
+   "RxR cache-busts inputs, checks HTTP status, and blocks split engine lineage")
+ok("ADP-CHALK SCENARIO — NOT A FORECAST" in _rxr_src and
+   "MARGINAL POLICY — ONE STEP" in _rxr_src and
+   "ACTION UNCERTAINTY NOT CALIBRATED" in _rxr_src and
+   "optimal path" in _rxr_src,
+   "RxR states scenario, one-step, and uncertainty boundaries on its face")
+ok("Sleeper injury_status" in _rxr_src and
+   "designation date unavailable" in _rxr_src and
+   "not an official practice/game designation" in _rxr_src,
+   "RxR qualifies its undated preseason injury snapshot on the page")
+ok(all(term not in _rxr_src.upper() for term in
+       ("BULLISH", "WATCH", "VONA", "WALTER", "CONFIGURED CVS")),
+   "RxR imports no overlay, tree, research-guide, or configured-CVS producer")
+ok("pythonRound4" in _rxr_policy_src and "BigInt" in _rxr_policy_src and
+   "projection_floor" in _rxr_policy_src,
+   "RxR browser mirror carries Python rounding and the K/DEF floor boundary")
 ok("draft_order_context" in _cheat_src and "context.primary_slot" in _cheat_src and
    "anthony_roster_id ||" not in _cheat_src,
    "the cheat sheet defaults from shared draft_order_context.primary_slot, not roster id")
@@ -1099,8 +1122,8 @@ if os.path.exists(hp):
     ok("Fresh under 36h" in hpage and "aging under 7 days" in hpage,
        "staleness thresholds stated on the board")
     ok(all(f'href="{s}"' in hpage for s in
-           ("draft_room.html", "big_board.html", "players.html", "teams.html",
-            "ff-hub.html")),
+           ("draft_room.html", "big_board.html", "players.html", "rxr.html",
+            "teams.html", "ff-hub.html")),
        "home links every surface")
     ok("0 times in 13 seasons" in hpage and "p=0.323" in hpage
        and "not significant" in hpage,
@@ -1185,7 +1208,7 @@ if os.path.exists(navp):
     ok(not missing, "every nav link target resolves to a real file",
        "; ".join(missing))
     PAGES = {"draft_room.html": "draft", "big_board.html": "board",
-             "players.html": "players", "paths.html": "paths",
+             "players.html": "players", "rxr.html": "rxr",
              "teams.html": "teams", "cheatsheet.html": "cheat",
              "ff-hub.html": "findings", "home.html": "hub"}
     seen_keys = []
@@ -1210,10 +1233,10 @@ if os.path.exists(navp):
 # 14. APP SHELL (Phase 2). Token, layout, and header consistency: one dark
 #     family (#0b1120, ff-hub's), one container width, one kicker treatment -
 #     and the semantic verdict colors did not move.
-ALL_PAGES = ["draft_room.html", "big_board.html", "players.html",
+ALL_PAGES = ["draft_room.html", "big_board.html", "players.html", "rxr.html",
              "teams.html", "home.html", "ff-hub.html"]
 _tokened = ["draft_room.html", "big_board.html", "players.html", "teams.html",
-            "home.html"]
+            "home.html", "rxr.html"]
 for fname in ALL_PAGES:
     psrc = open(os.path.join(ROOT, "out", fname)).read()
     ok("#0A0E1A" not in psrc and "0a0e1a" not in psrc.lower()

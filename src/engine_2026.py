@@ -48,7 +48,7 @@ import datetime
 import statistics
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from forward_policy import pick_marginal, roster_caps  # noqa: E402
+from forward_policy import pick_marginal, player_id, roster_caps  # noqa: E402
 from engine_lineage import stamp as stamp_engine  # noqa: E402
 from player_names import PlayerIdentityResolver, comparison_key  # noqa: E402
 from draft_order import (DraftOrderResolutionError, load_reported_order,
@@ -578,7 +578,7 @@ def build_model():
             nxt = picks[rnd]
             avail = [(r, survival(r["adp"], pick)) for p in SKILL
                      for r in by_pos[p] if r["adp"] < 900
-                     and r["name"] not in consumed]
+                     and player_id(r) not in consumed]
             likely = sorted([(r, s) for r, s in avail if s >= 0.5],
                             key=lambda t: -t[0]["vor"])
             if not likely:
@@ -587,14 +587,16 @@ def build_model():
                 continue
             prim = pick_marginal([r for r, _s in likely], proj_roster,
                                  baseline, caps)
-            if prim is None:      # every position capped: relax the caps
-                prim = pick_marginal([r for r, _s in likely], proj_roster,
-                                     baseline, None)
+            if prim is None:
+                rounds.append({"round": rnd, "pick": pick,
+                               "kdef": False, "primary": None})
+                continue
             ps = next(s for r, s in likely if r is prim)
             others = [(r, s) for r, s in likely if r is not prim]
-            consumed.add(prim["name"])
-            proj_roster.append({"name": prim["name"], "pos": prim["pos"],
-                                "pts": prim["pts"]})
+            consumed.add(player_id(prim))
+            proj_roster.append({"name": prim["name"],
+                                "sleeper_id": prim["sleeper_id"],
+                                "pos": prim["pos"], "pts": prim["pts"]})
             fall = next(((r, s) for r, s in others
                          if r["pos"] != prim["pos"]
                          or r["vor"] < prim["vor"] - COMPARABLE_VOR),

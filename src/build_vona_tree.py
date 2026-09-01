@@ -158,6 +158,7 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
     next_picks = full_picks[1:DEPTH + 1]
     nodes = {"count": 0}
     pos_of = {p["name"]: p["pos"] for p in players}
+    node_ids = {}
     pruned = {"dominated": 0, "budget": 0, "narrow_kept": 0}
     branches = {"count": 0, "collapsed": 0}
 
@@ -226,9 +227,11 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
                         if len(chosen) == 1 and len(ranked) > 1
                         else f"within {eps} of the best option - a position-level fork candidate"),
                 "children": walk(depth + 1, taken | {p["name"]},
-                                 roster + [{"name": p["name"], "pos": pos,
-                                            "pts": p["pts"]}]),
+                                 roster + [{"name": p["name"],
+                                            "sleeper_id": p["sleeper_id"],
+                                            "pos": pos, "pts": p["pts"]}]),
             }
+            node_ids[id(node)] = p["sleeper_id"]
             stats["vona_by_depth"][depth].append(d["vona"])
             made.append(node)
         # PRUNE dominated siblings. The comparison runs on LINEUP VALUE from
@@ -242,8 +245,9 @@ def build_slot(slot, players, eps_by_depth, stats, baselines, narrow_band,
         # worst attainable lineup.
         if len(made) > 1:
             def paths(n, acc):
-                roster = acc + [{"name": n["name"], "pos": n["pos"],
-                                 "pts": n["pts"]}]
+                roster = acc + [{"name": n["name"],
+                                 "sleeper_id": node_ids[id(n)],
+                                 "pos": n["pos"], "pts": n["pts"]}]
                 if not n["children"]:
                     return [phantom_lineup_pts(roster, baselines)]
                 out = []

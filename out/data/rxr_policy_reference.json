@@ -1,0 +1,1654 @@
+{
+ "contract": "src/forward_policy.py::score_candidates",
+ "browser_mirror": "out/rxr_policy.js::RxRPolicy.scoreCandidates",
+ "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
+ "primary_slot": 4,
+ "round4": [
+  {
+   "input": 1.23444,
+   "expected": 1.2344
+  },
+  {
+   "input": 1.23445,
+   "expected": 1.2345
+  },
+  {
+   "input": 1.23455,
+   "expected": 1.2346
+  },
+  {
+   "input": 2.67505,
+   "expected": 2.6751
+  },
+  {
+   "input": -1.23445,
+   "expected": -1.2345
+  },
+  {
+   "input": 10.00005,
+   "expected": 10.0
+  },
+  {
+   "input": 10.000049,
+   "expected": 10.0
+  },
+  {
+   "input": 5e-05,
+   "expected": 0.0001
+  },
+  {
+   "input": -5e-05,
+   "expected": -0.0001
+  }
+ ],
+ "cases": [
+  {
+   "name": "observed_slot4_empty",
+   "pool": [
+    {
+     "sleeper_id": "9221",
+     "name": "Jahmyr Gibbs",
+     "pos": "RB",
+     "pts": 331.4,
+     "vor": 170.3
+    },
+    {
+     "sleeper_id": "9509",
+     "name": "Bijan Robinson",
+     "pos": "RB",
+     "pts": 324.9,
+     "vor": 163.8
+    },
+    {
+     "sleeper_id": "4034",
+     "name": "Christian McCaffrey",
+     "pos": "RB",
+     "pts": 291.0,
+     "vor": 129.9
+    },
+    {
+     "sleeper_id": "9493",
+     "name": "Puka Nacua",
+     "pos": "WR",
+     "pts": 312.5,
+     "vor": 126.3
+    },
+    {
+     "sleeper_id": "7564",
+     "name": "Ja'Marr Chase",
+     "pos": "WR",
+     "pts": 311.1,
+     "vor": 124.9
+    },
+    {
+     "sleeper_id": "6813",
+     "name": "Jonathan Taylor",
+     "pos": "RB",
+     "pts": 272.3,
+     "vor": 111.2
+    },
+    {
+     "sleeper_id": "8138",
+     "name": "James Cook",
+     "pos": "RB",
+     "pts": 260.8,
+     "vor": 99.7
+    },
+    {
+     "sleeper_id": "9488",
+     "name": "Jaxon Smith-Njigba",
+     "pos": "WR",
+     "pts": 284.6,
+     "vor": 98.4
+    },
+    {
+     "sleeper_id": "9226",
+     "name": "De'Von Achane",
+     "pos": "RB",
+     "pts": 257.4,
+     "vor": 96.3
+    },
+    {
+     "sleeper_id": "7547",
+     "name": "Amon-Ra St. Brown",
+     "pos": "WR",
+     "pts": 280.5,
+     "vor": 94.3
+    },
+    {
+     "sleeper_id": "LAR",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "pts": 116.0,
+     "vor": 19.0
+    }
+   ],
+   "roster": [],
+   "baselines": {
+    "QB": 347.5,
+    "RB": 161.1,
+    "WR": 186.2,
+    "TE": 162.5,
+    "K": 105.0,
+    "DEF": 97.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "9221",
+     "name": "Jahmyr Gibbs",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 170.29999999999995,
+     "marginal_lineup_gain_key": 170.3,
+     "vor_tiebreak": 170.3,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "9509",
+     "name": "Bijan Robinson",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 163.79999999999995,
+     "marginal_lineup_gain_key": 163.8,
+     "vor_tiebreak": 163.8,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 2,
+     "raw_gap_from_leader": 6.5,
+     "policy_key_gap": 6.5
+    },
+    {
+     "player_id": "4034",
+     "name": "Christian McCaffrey",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 129.89999999999986,
+     "marginal_lineup_gain_key": 129.9,
+     "vor_tiebreak": 129.9,
+     "input_index": 2,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 3,
+     "raw_gap_from_leader": 40.40000000000009,
+     "policy_key_gap": 40.400000000000006
+    },
+    {
+     "player_id": "9493",
+     "name": "Puka Nacua",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 126.29999999999995,
+     "marginal_lineup_gain_key": 126.3,
+     "vor_tiebreak": 126.3,
+     "input_index": 3,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 4,
+     "raw_gap_from_leader": 44.0,
+     "policy_key_gap": 44.000000000000014
+    },
+    {
+     "player_id": "7564",
+     "name": "Ja'Marr Chase",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 124.89999999999986,
+     "marginal_lineup_gain_key": 124.9,
+     "vor_tiebreak": 124.9,
+     "input_index": 4,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 5,
+     "raw_gap_from_leader": 45.40000000000009,
+     "policy_key_gap": 45.400000000000006
+    },
+    {
+     "player_id": "6813",
+     "name": "Jonathan Taylor",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 111.19999999999982,
+     "marginal_lineup_gain_key": 111.2,
+     "vor_tiebreak": 111.2,
+     "input_index": 5,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 6,
+     "raw_gap_from_leader": 59.100000000000136,
+     "policy_key_gap": 59.10000000000001
+    },
+    {
+     "player_id": "8138",
+     "name": "James Cook",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 99.69999999999982,
+     "marginal_lineup_gain_key": 99.7,
+     "vor_tiebreak": 99.7,
+     "input_index": 6,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 7,
+     "raw_gap_from_leader": 70.60000000000014,
+     "policy_key_gap": 70.60000000000001
+    },
+    {
+     "player_id": "9488",
+     "name": "Jaxon Smith-Njigba",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 98.39999999999986,
+     "marginal_lineup_gain_key": 98.4,
+     "vor_tiebreak": 98.4,
+     "input_index": 7,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 8,
+     "raw_gap_from_leader": 71.90000000000009,
+     "policy_key_gap": 71.9
+    },
+    {
+     "player_id": "9226",
+     "name": "De'Von Achane",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 96.29999999999995,
+     "marginal_lineup_gain_key": 96.3,
+     "vor_tiebreak": 96.3,
+     "input_index": 8,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 9,
+     "raw_gap_from_leader": 74.0,
+     "policy_key_gap": 74.00000000000001
+    },
+    {
+     "player_id": "7547",
+     "name": "Amon-Ra St. Brown",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 94.29999999999995,
+     "marginal_lineup_gain_key": 94.3,
+     "vor_tiebreak": 94.3,
+     "input_index": 9,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 10,
+     "raw_gap_from_leader": 76.0,
+     "policy_key_gap": 76.00000000000001
+    },
+    {
+     "player_id": "LAR",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 19.0,
+     "input_index": 10,
+     "eligible": false,
+     "cap_reason": "projection_floor",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    }
+   ]
+  },
+  {
+   "name": "observed_slot4_puka",
+   "pool": [
+    {
+     "sleeper_id": "11604",
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "pts": 253.5,
+     "vor": 91.0
+    },
+    {
+     "sleeper_id": "3198",
+     "name": "Derrick Henry",
+     "pos": "RB",
+     "pts": 246.9,
+     "vor": 85.8
+    },
+    {
+     "sleeper_id": "8151",
+     "name": "Kenneth Walker",
+     "pos": "RB",
+     "pts": 244.0,
+     "vor": 82.9
+    },
+    {
+     "sleeper_id": "7569",
+     "name": "Nico Collins",
+     "pos": "WR",
+     "pts": 262.0,
+     "vor": 75.8
+    },
+    {
+     "sleeper_id": "7588",
+     "name": "Javonte Williams",
+     "pos": "RB",
+     "pts": 212.0,
+     "vor": 50.9
+    },
+    {
+     "sleeper_id": "LAR",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "pts": 116.0,
+     "vor": 19.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "9493",
+     "name": "Puka Nacua",
+     "pos": "WR",
+     "pts": 312.5,
+     "vor": 126.3
+    }
+   ],
+   "baselines": {
+    "QB": 347.5,
+    "RB": 161.1,
+    "WR": 186.2,
+    "TE": 162.5,
+    "K": 105.0,
+    "DEF": 97.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "11604",
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "marginal_lineup_gain_raw": 91.0,
+     "marginal_lineup_gain_key": 91.0,
+     "vor_tiebreak": 91.0,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "3198",
+     "name": "Derrick Henry",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 85.79999999999995,
+     "marginal_lineup_gain_key": 85.8,
+     "vor_tiebreak": 85.8,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 2,
+     "raw_gap_from_leader": 5.2000000000000455,
+     "policy_key_gap": 5.200000000000003
+    },
+    {
+     "player_id": "8151",
+     "name": "Kenneth Walker",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 82.89999999999986,
+     "marginal_lineup_gain_key": 82.9,
+     "vor_tiebreak": 82.9,
+     "input_index": 2,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 3,
+     "raw_gap_from_leader": 8.100000000000136,
+     "policy_key_gap": 8.099999999999994
+    },
+    {
+     "player_id": "7569",
+     "name": "Nico Collins",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 75.79999999999995,
+     "marginal_lineup_gain_key": 75.8,
+     "vor_tiebreak": 75.8,
+     "input_index": 3,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 4,
+     "raw_gap_from_leader": 15.200000000000045,
+     "policy_key_gap": 15.200000000000003
+    },
+    {
+     "player_id": "7588",
+     "name": "Javonte Williams",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 50.899999999999864,
+     "marginal_lineup_gain_key": 50.9,
+     "vor_tiebreak": 50.9,
+     "input_index": 4,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 5,
+     "raw_gap_from_leader": 40.100000000000136,
+     "policy_key_gap": 40.1
+    },
+    {
+     "player_id": "LAR",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 19.0,
+     "input_index": 5,
+     "eligible": false,
+     "cap_reason": "projection_floor",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    }
+   ]
+  },
+  {
+   "name": "observed_slot4_puka_bowers",
+   "pool": [
+    {
+     "sleeper_id": "3198",
+     "name": "Derrick Henry",
+     "pos": "RB",
+     "pts": 246.9,
+     "vor": 85.8
+    },
+    {
+     "sleeper_id": "8151",
+     "name": "Kenneth Walker",
+     "pos": "RB",
+     "pts": 244.0,
+     "vor": 82.9
+    },
+    {
+     "sleeper_id": "7569",
+     "name": "Nico Collins",
+     "pos": "WR",
+     "pts": 262.0,
+     "vor": 75.8
+    },
+    {
+     "sleeper_id": "7588",
+     "name": "Javonte Williams",
+     "pos": "RB",
+     "pts": 212.0,
+     "vor": 50.9
+    },
+    {
+     "sleeper_id": "8130",
+     "name": "Trey McBride",
+     "pos": "TE",
+     "pts": 234.9,
+     "vor": 72.4
+    },
+    {
+     "sleeper_id": "LAR",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "pts": 116.0,
+     "vor": 19.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "9493",
+     "name": "Puka Nacua",
+     "pos": "WR",
+     "pts": 312.5,
+     "vor": 126.3
+    },
+    {
+     "sleeper_id": "11604",
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "pts": 253.5,
+     "vor": 91.0
+    }
+   ],
+   "baselines": {
+    "QB": 347.5,
+    "RB": 161.1,
+    "WR": 186.2,
+    "TE": 162.5,
+    "K": 105.0,
+    "DEF": 97.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "3198",
+     "name": "Derrick Henry",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 85.79999999999995,
+     "marginal_lineup_gain_key": 85.8,
+     "vor_tiebreak": 85.8,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "8151",
+     "name": "Kenneth Walker",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 82.89999999999986,
+     "marginal_lineup_gain_key": 82.9,
+     "vor_tiebreak": 82.9,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 2,
+     "raw_gap_from_leader": 2.900000000000091,
+     "policy_key_gap": 2.8999999999999915
+    },
+    {
+     "player_id": "7569",
+     "name": "Nico Collins",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 75.79999999999995,
+     "marginal_lineup_gain_key": 75.8,
+     "vor_tiebreak": 75.8,
+     "input_index": 2,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 3,
+     "raw_gap_from_leader": 10.0,
+     "policy_key_gap": 10.0
+    },
+    {
+     "player_id": "7588",
+     "name": "Javonte Williams",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 50.899999999999864,
+     "marginal_lineup_gain_key": 50.9,
+     "vor_tiebreak": 50.9,
+     "input_index": 3,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 4,
+     "raw_gap_from_leader": 34.90000000000009,
+     "policy_key_gap": 34.9
+    },
+    {
+     "player_id": "8130",
+     "name": "Trey McBride",
+     "pos": "TE",
+     "marginal_lineup_gain_raw": 48.700000000000045,
+     "marginal_lineup_gain_key": 48.7,
+     "vor_tiebreak": 72.4,
+     "input_index": 4,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 5,
+     "raw_gap_from_leader": 37.09999999999991,
+     "policy_key_gap": 37.099999999999994
+    },
+    {
+     "player_id": "LAR",
+     "name": "Los Angeles Rams",
+     "pos": "DEF",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 19.0,
+     "input_index": 5,
+     "eligible": false,
+     "cap_reason": "projection_floor",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    }
+   ]
+  },
+  {
+   "name": "rounding_and_vor_tiebreak",
+   "pool": [
+    {
+     "sleeper_id": "r1",
+     "name": "Round A",
+     "pos": "QB",
+     "pts": 10.00005,
+     "vor": 1.0
+    },
+    {
+     "sleeper_id": "r2",
+     "name": "Round B",
+     "pos": "QB",
+     "pts": 10.000049,
+     "vor": 99.0
+    },
+    {
+     "sleeper_id": "r3",
+     "name": "Round C",
+     "pos": "QB",
+     "pts": 10.00005,
+     "vor": 1.0
+    }
+   ],
+   "roster": [],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "r1",
+     "name": "Round A",
+     "pos": "QB",
+     "marginal_lineup_gain_raw": 10.00005,
+     "marginal_lineup_gain_key": 10.0,
+     "vor_tiebreak": 1.0,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 2,
+     "raw_gap_from_leader": -9.999999992515995e-07,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "r2",
+     "name": "Round B",
+     "pos": "QB",
+     "marginal_lineup_gain_raw": 10.000049,
+     "marginal_lineup_gain_key": 10.0,
+     "vor_tiebreak": 99.0,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "r3",
+     "name": "Round C",
+     "pos": "QB",
+     "marginal_lineup_gain_raw": 10.00005,
+     "marginal_lineup_gain_key": 10.0,
+     "vor_tiebreak": 1.0,
+     "input_index": 2,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 3,
+     "raw_gap_from_leader": -9.999999992515995e-07,
+     "policy_key_gap": 0.0
+    }
+   ]
+  },
+  {
+   "name": "same_display_name_distinct_ids",
+   "pool": [
+    {
+     "sleeper_id": "same-b",
+     "name": "Same Name",
+     "pos": "WR",
+     "pts": 11.0,
+     "vor": 4.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "same-a",
+     "name": "Same Name",
+     "pos": "WR",
+     "pts": 12.0,
+     "vor": 5.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "same-b",
+     "name": "Same Name",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 11.0,
+     "marginal_lineup_gain_key": 11.0,
+     "vor_tiebreak": 4.0,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    }
+   ]
+  },
+  {
+   "name": "flex_filled_and_projection_floors",
+   "pool": [
+    {
+     "sleeper_id": "rb4",
+     "name": "Fourth RB",
+     "pos": "RB",
+     "pts": 8.0,
+     "vor": 8.0
+    },
+    {
+     "sleeper_id": "wr4",
+     "name": "Fourth WR",
+     "pos": "WR",
+     "pts": 7.0,
+     "vor": 7.0
+    },
+    {
+     "sleeper_id": "k1",
+     "name": "K Floor",
+     "pos": "K",
+     "pts": 99.0,
+     "vor": 99.0
+    },
+    {
+     "sleeper_id": "d1",
+     "name": "DEF Floor",
+     "pos": "DEF",
+     "pts": 99.0,
+     "vor": 99.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "rb1",
+     "name": "RB One",
+     "pos": "RB",
+     "pts": 15.0,
+     "vor": 15.0
+    },
+    {
+     "sleeper_id": "rb2",
+     "name": "RB Two",
+     "pos": "RB",
+     "pts": 14.0,
+     "vor": 14.0
+    },
+    {
+     "sleeper_id": "rb3",
+     "name": "RB Three",
+     "pos": "RB",
+     "pts": 13.0,
+     "vor": 13.0
+    },
+    {
+     "sleeper_id": "wr1",
+     "name": "WR One",
+     "pos": "WR",
+     "pts": 12.0,
+     "vor": 12.0
+    },
+    {
+     "sleeper_id": "wr2",
+     "name": "WR Two",
+     "pos": "WR",
+     "pts": 11.0,
+     "vor": 11.0
+    },
+    {
+     "sleeper_id": "te1",
+     "name": "TE One",
+     "pos": "TE",
+     "pts": 10.0,
+     "vor": 10.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "rb4",
+     "name": "Fourth RB",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 0.0,
+     "marginal_lineup_gain_key": 0.0,
+     "vor_tiebreak": 8.0,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "wr4",
+     "name": "Fourth WR",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 0.0,
+     "marginal_lineup_gain_key": 0.0,
+     "vor_tiebreak": 7.0,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 2,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "k1",
+     "name": "K Floor",
+     "pos": "K",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 99.0,
+     "input_index": 2,
+     "eligible": false,
+     "cap_reason": "projection_floor",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    },
+    {
+     "player_id": "d1",
+     "name": "DEF Floor",
+     "pos": "DEF",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 99.0,
+     "input_index": 3,
+     "eligible": false,
+     "cap_reason": "projection_floor",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    }
+   ]
+  },
+  {
+   "name": "cap_and_over_cap",
+   "pool": [
+    {
+     "sleeper_id": "rb-new",
+     "name": "RB Capped",
+     "pos": "RB",
+     "pts": 20.0,
+     "vor": 20.0
+    },
+    {
+     "sleeper_id": "wr-new",
+     "name": "WR Live",
+     "pos": "WR",
+     "pts": 9.0,
+     "vor": 9.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "rb-a",
+     "name": "RB A",
+     "pos": "RB",
+     "pts": 5.0,
+     "vor": 5.0
+    },
+    {
+     "sleeper_id": "rb-b",
+     "name": "RB B",
+     "pos": "RB",
+     "pts": 4.0,
+     "vor": 4.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 2,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "rb-new",
+     "name": "RB Capped",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 20.0,
+     "input_index": 0,
+     "eligible": false,
+     "cap_reason": "rb_cap",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    },
+    {
+     "player_id": "wr-new",
+     "name": "WR Live",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": 9.0,
+     "marginal_lineup_gain_key": 9.0,
+     "vor_tiebreak": 9.0,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    }
+   ]
+  },
+  {
+   "name": "cap_minus_one",
+   "pool": [
+    {
+     "sleeper_id": "rb-live",
+     "name": "RB Still Live",
+     "pos": "RB",
+     "pts": 20.0,
+     "vor": 20.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "rb-held",
+     "name": "RB Held",
+     "pos": "RB",
+     "pts": 4.0,
+     "vor": 4.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 2,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "rb-live",
+     "name": "RB Still Live",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 20.0,
+     "marginal_lineup_gain_key": 20.0,
+     "vor_tiebreak": 20.0,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    }
+   ]
+  },
+  {
+   "name": "over_cap_is_still_ineligible",
+   "pool": [
+    {
+     "sleeper_id": "rb-over-new",
+     "name": "RB Over",
+     "pos": "RB",
+     "pts": 20.0,
+     "vor": 20.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "rb-over-a",
+     "name": "RB Over A",
+     "pos": "RB",
+     "pts": 5.0,
+     "vor": 5.0
+    },
+    {
+     "sleeper_id": "rb-over-b",
+     "name": "RB Over B",
+     "pos": "RB",
+     "pts": 4.0,
+     "vor": 4.0
+    },
+    {
+     "sleeper_id": "rb-over-c",
+     "name": "RB Over C",
+     "pos": "RB",
+     "pts": 3.0,
+     "vor": 3.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 2,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "rb-over-new",
+     "name": "RB Over",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 20.0,
+     "input_index": 0,
+     "eligible": false,
+     "cap_reason": "rb_cap",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    }
+   ]
+  },
+  {
+   "name": "bench_heavy_roster",
+   "pool": [
+    {
+     "sleeper_id": "bench-rb",
+     "name": "Bench RB",
+     "pos": "RB",
+     "pts": 8.0,
+     "vor": 2.0
+    },
+    {
+     "sleeper_id": "bench-te",
+     "name": "Bench TE",
+     "pos": "TE",
+     "pts": 7.0,
+     "vor": 1.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "bench-qb-a",
+     "name": "Bench QB A",
+     "pos": "QB",
+     "pts": 20.0,
+     "vor": 20.0
+    },
+    {
+     "sleeper_id": "bench-qb-b",
+     "name": "Bench QB B",
+     "pos": "QB",
+     "pts": 19.0,
+     "vor": 19.0
+    },
+    {
+     "sleeper_id": "bench-wr-a",
+     "name": "Bench WR A",
+     "pos": "WR",
+     "pts": 18.0,
+     "vor": 18.0
+    },
+    {
+     "sleeper_id": "bench-wr-b",
+     "name": "Bench WR B",
+     "pos": "WR",
+     "pts": 17.0,
+     "vor": 17.0
+    },
+    {
+     "sleeper_id": "bench-wr-c",
+     "name": "Bench WR C",
+     "pos": "WR",
+     "pts": 16.0,
+     "vor": 16.0
+    },
+    {
+     "sleeper_id": "bench-wr-d",
+     "name": "Bench WR D",
+     "pos": "WR",
+     "pts": 15.0,
+     "vor": 15.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "bench-rb",
+     "name": "Bench RB",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 8.0,
+     "marginal_lineup_gain_key": 8.0,
+     "vor_tiebreak": 2.0,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    },
+    {
+     "player_id": "bench-te",
+     "name": "Bench TE",
+     "pos": "TE",
+     "marginal_lineup_gain_raw": 7.0,
+     "marginal_lineup_gain_key": 7.0,
+     "vor_tiebreak": 1.0,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 2,
+     "raw_gap_from_leader": 1.0,
+     "policy_key_gap": 1.0
+    }
+   ]
+  },
+  {
+   "name": "all_candidates_outside_domain",
+   "pool": [
+    {
+     "sleeper_id": "full-qb-new",
+     "name": "Full QB",
+     "pos": "QB",
+     "pts": 20.0,
+     "vor": 20.0
+    },
+    {
+     "sleeper_id": "full-rb-new",
+     "name": "Full RB",
+     "pos": "RB",
+     "pts": 20.0,
+     "vor": 20.0
+    },
+    {
+     "sleeper_id": "full-wr-new",
+     "name": "Full WR",
+     "pos": "WR",
+     "pts": 20.0,
+     "vor": 20.0
+    },
+    {
+     "sleeper_id": "full-te-new",
+     "name": "Full TE",
+     "pos": "TE",
+     "pts": 20.0,
+     "vor": 20.0
+    },
+    {
+     "sleeper_id": "full-k-new",
+     "name": "Full K",
+     "pos": "K",
+     "pts": 20.0,
+     "vor": 20.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "full-qb",
+     "name": "Full QB Held",
+     "pos": "QB",
+     "pts": 5.0,
+     "vor": 5.0
+    },
+    {
+     "sleeper_id": "full-rb",
+     "name": "Full RB Held",
+     "pos": "RB",
+     "pts": 5.0,
+     "vor": 5.0
+    },
+    {
+     "sleeper_id": "full-wr",
+     "name": "Full WR Held",
+     "pos": "WR",
+     "pts": 5.0,
+     "vor": 5.0
+    },
+    {
+     "sleeper_id": "full-te",
+     "name": "Full TE Held",
+     "pos": "TE",
+     "pts": 5.0,
+     "vor": 5.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 1,
+    "RB": 1,
+    "WR": 1,
+    "TE": 1,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "full-qb-new",
+     "name": "Full QB",
+     "pos": "QB",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 20.0,
+     "input_index": 0,
+     "eligible": false,
+     "cap_reason": "qb_cap",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    },
+    {
+     "player_id": "full-rb-new",
+     "name": "Full RB",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 20.0,
+     "input_index": 1,
+     "eligible": false,
+     "cap_reason": "rb_cap",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    },
+    {
+     "player_id": "full-wr-new",
+     "name": "Full WR",
+     "pos": "WR",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 20.0,
+     "input_index": 2,
+     "eligible": false,
+     "cap_reason": "wr_cap",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    },
+    {
+     "player_id": "full-te-new",
+     "name": "Full TE",
+     "pos": "TE",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 20.0,
+     "input_index": 3,
+     "eligible": false,
+     "cap_reason": "te_cap",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    },
+    {
+     "player_id": "full-k-new",
+     "name": "Full K",
+     "pos": "K",
+     "marginal_lineup_gain_raw": null,
+     "marginal_lineup_gain_key": null,
+     "vor_tiebreak": 20.0,
+     "input_index": 4,
+     "eligible": false,
+     "cap_reason": "projection_floor",
+     "policy_rank": null,
+     "raw_gap_from_leader": null,
+     "policy_key_gap": null
+    }
+   ]
+  },
+  {
+   "name": "mutation_bite",
+   "pool": [
+    {
+     "sleeper_id": "mut-qb",
+     "name": "High VOR Duplicate QB",
+     "pos": "QB",
+     "pts": 19.0,
+     "vor": 100.0
+    },
+    {
+     "sleeper_id": "mut-rb",
+     "name": "Lineup Improving RB",
+     "pos": "RB",
+     "pts": 18.0,
+     "vor": 5.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "mut-held",
+     "name": "Held QB",
+     "pos": "QB",
+     "pts": 20.0,
+     "vor": 20.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "expected": [
+    {
+     "player_id": "mut-qb",
+     "name": "High VOR Duplicate QB",
+     "pos": "QB",
+     "marginal_lineup_gain_raw": 0.0,
+     "marginal_lineup_gain_key": 0.0,
+     "vor_tiebreak": 100.0,
+     "input_index": 0,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 2,
+     "raw_gap_from_leader": 18.0,
+     "policy_key_gap": 18.0
+    },
+    {
+     "player_id": "mut-rb",
+     "name": "Lineup Improving RB",
+     "pos": "RB",
+     "marginal_lineup_gain_raw": 18.0,
+     "marginal_lineup_gain_key": 18.0,
+     "vor_tiebreak": 5.0,
+     "input_index": 1,
+     "eligible": true,
+     "cap_reason": null,
+     "policy_rank": 1,
+     "raw_gap_from_leader": 0.0,
+     "policy_key_gap": 0.0
+    }
+   ]
+  }
+ ],
+ "error_cases": [
+  {
+   "name": "duplicate_pool_id",
+   "pool": [
+    {
+     "sleeper_id": "dup",
+     "name": "Dup A",
+     "pos": "RB",
+     "pts": 1.0,
+     "vor": 1.0
+    },
+    {
+     "sleeper_id": "dup",
+     "name": "Dup B",
+     "pos": "WR",
+     "pts": 1.0,
+     "vor": 1.0
+    }
+   ],
+   "roster": [],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "error": "duplicate player id"
+  },
+  {
+   "name": "pool_roster_overlap",
+   "pool": [
+    {
+     "sleeper_id": "overlap",
+     "name": "Overlap",
+     "pos": "RB",
+     "pts": 1.0,
+     "vor": 1.0
+    }
+   ],
+   "roster": [
+    {
+     "sleeper_id": "overlap",
+     "name": "Overlap",
+     "pos": "RB",
+     "pts": 1.0,
+     "vor": 1.0
+    }
+   ],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "error": "overlaps roster"
+  },
+  {
+   "name": "missing_cap",
+   "pool": [
+    {
+     "sleeper_id": "cap",
+     "name": "Cap",
+     "pos": "RB",
+     "pts": 1.0,
+     "vor": 1.0
+    }
+   ],
+   "roster": [],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "K": 1,
+    "DEF": 1
+   },
+   "error": "caps incomplete"
+  },
+  {
+   "name": "unknown_position",
+   "pool": [
+    {
+     "sleeper_id": "unk",
+     "name": "Unknown",
+     "pos": "LS",
+     "pts": 1.0,
+     "vor": 1.0
+    }
+   ],
+   "roster": [],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "error": "unknown policy position"
+  },
+  {
+   "name": "numeric_string_is_not_a_score",
+   "pool": [
+    {
+     "sleeper_id": "str-pts",
+     "name": "String Points",
+     "pos": "RB",
+     "pts": "1",
+     "vor": 1.0
+    }
+   ],
+   "roster": [],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": 4,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "error": "non-finite pts"
+  },
+  {
+   "name": "boolean_is_not_a_cap",
+   "pool": [
+    {
+     "sleeper_id": "bool-cap",
+     "name": "Boolean Cap",
+     "pos": "RB",
+     "pts": 1.0,
+     "vor": 1.0
+    }
+   ],
+   "roster": [],
+   "baselines": {
+    "QB": 0.0,
+    "RB": 0.0,
+    "WR": 0.0,
+    "TE": 0.0,
+    "K": 0.0,
+    "DEF": 0.0
+   },
+   "caps": {
+    "QB": 2,
+    "RB": true,
+    "WR": 4,
+    "TE": 2,
+    "K": 1,
+    "DEF": 1
+   },
+   "error": "caps invalid"
+  }
+ ],
+ "mutation_case": "mutation_bite"
+}

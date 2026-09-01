@@ -151,7 +151,8 @@ ok(opens and forced,
 
 # --- page wiring ---
 pg = open(os.path.join(ROOT, "out", "paths.html")).read()
-ok('data-active="paths"' in pg, "paths page joins the shared nav")
+ok('src="nav.js"' in pg and 'data-active="paths"' in pg,
+   "unlinked paths audit page still loads the shared shell")
 ok("vona_tree_2026.json" in pg, "paths page reads the artifact")
 ok("BULLISH" not in pg.upper().replace("BULLISH_ON_NODES", ""),
    "the paths page renders no BULLISH marker")
@@ -162,7 +163,8 @@ ok("j.provenance.primary_slot" in pg and
    "SLOT = 1" not in pg,
    "paths page derives its default from slot-4 artifact provenance")
 nav = open(os.path.join(ROOT, "out", "nav.js")).read()
-ok('"paths.html"' in nav, "nav carries the PATHS tab")
+ok('"rxr.html"' in nav and '"paths.html"' not in nav,
+   "RxR replaces PATHS in public navigation; PATHS remains audit-only")
 
 # Exact current-input proof at the shared publication boundary. Generation dates
 # are useful display provenance but can collide when an engine moves twice in a
