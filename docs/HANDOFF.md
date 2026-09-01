@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-09-01 by Codex - opened #74 after Sleeper published the real order. A full dependency-aware rebuild, not a label patch, now resolves Anthony from the complete non-identity permutation as **slot 4 / drawn_confirmed**. Slot-4 picks and VONA/mock decision math are unchanged. The unexpected 12-user/12-roster publication did not leak history: slot 3 remains `unresolved_merge`, slot 7 remains `unresolved_new_manager`, and all 132 gap-seat observations for each are null. The build also refreshed three live injury states and the complete HISTORY-dependent ceiling/BULLISH chain so every dependent carries the new engine digest. This is silent-staleness occurrence **six**: deployed bytes and digests were coherent, but the mutable world state changed after the build and no rebuild edge fired. |
-| **Next agent** | Review #74. If authorized, squash-merge it, wait for Pages, byte-compare every deployed manifest file against main, and verify live engine/VONA/PATHS/Cheat Sheet provenance says Sleeper-confirmed slot 4. Run `check_publication.py` and `preflight_draft.py`. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. The started Sleeper feed remains honestly unverified: real `last_picked`, live pick/cache timing, audio, wake lock, background-tab behavior, and recovery cannot be exercised while the draft is `pre_draft`. |
-| **Branch** | PR #74, `codex/confirm-draft-order-refresh`; functional commit `dc09a4a`, followed only by this baton commit. Fifteen gated suites passed 16/122/22/51/70/17/16/107/63/173/48/1818/23/384/38 (2,968 guards); analysis 38 had zero skips and all five deterministic reruns; browser smoke 429; `MATH DIFF PROOF: EMPTY` across all ten frozen functions; `git diff --check` clean. One first-pass BULLISH gate used the wrong local HISTORY cache and stopped red; rerunning with the workflow's declared `HISTORY=/tmp/ytfl-history` passed without changing or weakening a guard. Smoke then caught and fixed two stale prior-state assumptions in the confirmed transition before commit. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `2d6c7e8` with #73 deployed and byte-verified. Its committed artifacts still describe the earlier confirmation-pending build until #74 merges and Pages publishes the dependency-aware rebuild. |
+| **Last touched** | 2026-08-31 by Codex - opened docs-only #75. `docs/TURN_PLANNER_SPEC.md` now records the approved offseason PATHS replacement as a 14-turn rail plus one complete engine-VOR board, with a one-step **Marginal Policy** mark only at the fully observed pre-pick state `1..k-1`. Held-out player-action calibration is the critical path; the tree's 7.0 p25 of 71 budget-conditioned position margins is explicitly barred from tie, confidence, equivalence, or uncertainty claims. Operational docs now call CMC +2.08 the deterministic nominal lead and Puka the external owner override. No runtime, output artifact, test, workflow, or deployed-page bytes changed. |
+| **Next agent** | Review #75. If authorized, squash-merge it; it is documentation-only and no Pages deploy is expected. Do **not** implement Turn Planner, its calibration, or the separately logged draw-watch dispatch before the September 8 draft is complete and real started-feed evidence is recorded. Do not touch #54. If nothing breaks before the draft, leave the stable build alone. |
+| **Branch** | PR #75, `codex/turn-planner-spec`; spec/audit commit `774630b`, followed only by this baton commit. Fifteen gated suites passed 16/122/22/51/70/17/16/107/63/173/48/1818/23/384/38 (2,968 guards); analysis 38 had zero skips and all five deterministic reruns; browser smoke 429; `MATH DIFF PROOF: EMPTY` across all ten frozen functions; `git diff --check` clean. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `603f52b` with #74 deployed and byte-verified after the full confirmed-order rebuild. The docs-only #75 changes no deployed file. Current checks: `PAGES DATA FRESH - published 2026-09-01T01:56Z (1h ago)` and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. |
 | **Draft order** | SLEEPER CONFIRMED: Anthony is **slot 4**, roster 7, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. Complete slot-to-roster permutation: `{1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12}`. Both `draft_order` and `slot_to_roster_id` resolve slot 4 and `src/check_draft_order.py` reports agreement. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PRE-DRAFT STATE VERIFIED against this league's real 12 teams / 60s / 1 flex and confirmed order for slot resolution, order provenance, gap strips, and history isolation. Same-page repaint is controlled no-reload coverage against the captured before/after payloads; no browser was demonstrably left open through the real publication moment. The only started-draft browser exercise remains the 2026-08-26 real Sleeper draft `1388575351239606272` at 19 teams / 120s / 2 flex. This league's actual started feed is **NOT** verified until September 8. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -175,15 +175,18 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     honestly labelled `REPRICED`. Slot selection itself changes no player value or
     tag; the fresh-feed delta versus main is separately attributable (Kyren
     Williams WATCH -> BULLISH and Sam Darnold newly WATCH).
-14. **The pick-4 model result is a tie; the owner decision is an external
-    override.** Under the stated Gibbs/Bijan/Chase-gone board, paired complete
+14. **The pick-4 model result is a narrow deterministic CMC lead; the owner
+    decision is an external override.** Under the stated Gibbs/Bijan/Chase-gone board, paired complete
     4/21/28 policy simulation scores McCaffrey 290.75, Puka 288.67, and Jonathan
-    Taylor 272.05. McCaffrey's +2.08 over Puka is inside the artifact's derived
-    7.0-point coin-flip band, and the documented survival-calibration sensitivity
-    reverses the result to Puka +0.15. Anthony will take Puka because CMC is age
+    Taylor 272.05. McCaffrey's nominal +2.08 over Puka is the deterministic
+    ordering. The tree's 7.0 value is p25 of 71 current-tree strict-domination
+    margins, not held-out player-action error, so it cannot establish equivalence
+    or materiality. The documented survival-calibration sensitivity reverses the
+    result to Puka +0.15, which establishes rank instability rather than a
+    calibrated tie. Anthony will take Puka because CMC is age
     30, missed 13 of 34 games, carried 450 touches in 2025, and the league has
     zero IR slots. This is deliberately absent from generated decision cards and
-    BULLISH data: it is an owner tie-break after the model declared equivalence.
+    BULLISH data: it is an owner override after a narrow, uncalibrated model gap.
     If Puka is still not practicing by September 5, the override is withdrawn.
     The core board itself uses Sleeper's 2026 raw-stat projections scored under
     league-exact rules; 2025-on-2026 limitations describe auxiliary risk,
@@ -194,9 +197,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     after removing Gibbs/Bijan/Chase by hand it would render Puka alone: WR VONA
     45.83 versus RB 41.29, a 4.54 gap above a recomputed 3.58 epsilon. Zero forks
     therefore meant the player-level question was never asked, not that no
-    decision existed. The offseason redesign needs an observed-board state,
-    player-level actions, and complete owner-turn continuations; VONA becomes a
-    diagnostic coordinate rather than the only branch generator.
+    decision existed. `docs/TURN_PLANNER_SPEC.md` now defines the approved
+    offseason replacement: a 14-pick rail plus one player board, exact observed
+    state, and a one-step Marginal Policy mark only for the next fully conditioned
+    turn. VONA becomes an internal diagnostic, not an action generator.
 16. **Puka-first leaves pick 21 unchanged and makes the second RB at 28 fully
     valuable.** A 100,000-state paired run (seed 20260831, Gibbs/Bijan/Chase gone,
     Puka forced, raw conditional survival, common uniforms) chose the same player
@@ -210,9 +214,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     rerun `pick_marginal`. Puka + one RB leaves RB2 open, so a second RB receives
     full RB replacement value; CMC + RB prices a third RB against the higher FLEX
     baseline. An exploratory two-turn stochastic lookahead changed pick 21 in
-    26.228% of states, mainly Bowers to a scarcer RB, but added only 0.686 expected
-    lineup points, far inside the 7.0 uncertainty band. It is offseason redesign
-    evidence, not a new draft-night verdict.
+    26.228% of states, mainly Bowers to a scarcer RB, and added 0.686 expected
+    lineup points. No held-out player-action error interval exists, so that number
+    cannot be labelled material, immaterial, tied, or separated. It is offseason
+    redesign evidence, not a new draft-night verdict.
 17. **The post-audit merge battery is green, including the coverage that first
     failed for environmental reasons.** The first analysis run correctly failed
     the gate at 33 guards plus five skips because no local HISTORY cache existed.
@@ -314,40 +319,67 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     same-build counterfactual. Three live injury states moved. Browser smoke also
     caught and fixed a split-state repaint where a confirmed built artifact plus
     a placeholder first live response could mix pending and confirmed labels.
+22. **Turn Planner is an approved offseason specification, not pre-draft work.**
+    `docs/TURN_PLANNER_SPEC.md` replaces the earlier PATHS redesign outline with
+    one persistent complete engine-VOR board and a 14-turn rail derived from the
+    confirmed slot. Only the next Anthony decision with a validated league-pick
+    prefix exactly `1..k-1` may receive a one-step Marginal Policy mark; future
+    turns show marginal availability only. The canonical scorer must preserve the
+    current rounded-gain/VOR/input-order contract and original-object return,
+    replace `name|pos` state identity with Sleeper id, fail loud at cap/domain
+    boundaries, and keep K/DEF outside the policy while preserving their separate
+    feasibility fill. One coherent poller implementation is extracted from the
+    room and instantiated once per page; cross-tab age differences remain visible.
+
+    The action-uncertainty study is mandatory and is the 9-14 day effort's critical
+    path. The VONA tree's 7.0 is p25 of 71 positive strict-domination margins from
+    the current budget-conditioned position probe. It is not held-out error and
+    cannot create a tie badge. If the historical corpus cannot support simultaneous
+    leader-relative error intervals, the completed product publishes the reviewed
+    honest null `ACTION UNCERTAINTY NOT CALIBRATED` and a deterministic order.
+    PR #54 remains parked; VONA becomes internal. No phase begins before the draft
+    is complete and real started-feed evidence is recorded.
+23. **The Turn Planner source audit found a pre-existing calibration evidence-link
+    defect; the live table did not change.** The lookup approved on 2026-08-19
+    exactly matched that day's modern fit. #58 then repaired identity and rebuilt
+    `survival_recalibration.json` from a 16,949-pair all-era frame; its 9,492-pair
+    2019-2025 fit moves 15 of 20 bins by up to 0.0468. The engine correctly retained
+    the explicitly approved constant pending reapproval, but its source comment and
+    `MODEL.md` kept calling the mutable regenerated JSON the older table's full
+    evidence. Separate guards prove both halves while never linking them. Freezing
+    the model was deliberate; the false evidence link was not. Do not swap the
+    table before the draft. Before Turn Planner availability work, preserve the
+    adopted fit by digest, rerun/review corrected-identity evidence, and explicitly
+    approve retention or replacement.
 
 ### In flight / nothing blocked
 
-PR #73 is merged at `2d6c7e8`; its decision-language and heuristic-provenance
-labels are live and byte-verified. PR #74 is the current merge candidate. It carries
-the real Sleeper-confirmed order through a full dependency-aware rebuild and records
-the absent draw-watch-to-rebuild edge. The real confirmed pre-draft endpoint is
-observed; same-page repaint is regression-tested against the exact captured
-before/after payloads. The actual started feed remains unverified. PR #54 remains OPEN,
-PARKED THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
+Main is `603f52b`; #74 is merged, deployed, and byte-verified. PR #75 is the
+current documentation-only review. It changes no executable or published bytes and
+authorizes no implementation. The build is deliberately frozen through the draft:
+if nothing breaks, change nothing. The real confirmed pre-draft endpoint is observed;
+same-page repaint is regression-tested against the exact captured before/after
+payloads. The actual started feed remains unverified. PR #54 remains OPEN, PARKED
+THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
 mergeability is unresolved against moving `main`. Its PATHS policy is still the
 data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the conditional spread
 floor, but its Pareto action space remains one action per position and cannot
 answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
-draft. The `docs/ffopportunity/` R export
-is an analysis source, not app truth: the app's Week-1 Vegas sign was already
-correct, and the shipped QB table did not inherit the R file's `-2` interception
-error. Do not consume unreviewed local regenerated exports. The forward-Vegas and
-TE items are complete on main; do not repeat them. The `team_targets`/`targets_pg`
-rename and validation is COMPLETE on `pass-attempt-terminology`; the next approved
-work is the four-mislabel audit (three remain: `route_participation_proxy`,
-`team_implied_total`, `prior_epa_proxy`).
-Vacated carries is assessment-only after those: quantify every backfield, test its
-ADP relationship and incremental value, and handle the rookie/no-prior-NFL-sample
-gap jointly with `adj_vac` before proposing any wiring.
+draft. The separately specified draw-watch-to-rebuild edge is logged only and needs
+separate approval regardless of date.
+
+Post-draft backlog remains: the three unenumerated `ALL_R_CODE` mislabels
+(`route_participation_proxy`, `team_implied_total`, `prior_epa_proxy`), vacated-carries
+assessment with the rookie gap handled jointly with `adj_vac`, team supply as
+shadow/display only, the Turn Planner, and the adopted-survival evidence decision.
+Do not consume unreviewed local R exports.
 
 ### The three things the next agent most needs to know
 
-1. **Historical command and future vacancy are separate questions.** The repaired
-   RB input answers the existing all-week 2025 share basis consistently; it does
-   not claim that a departure such as Montgomery's is a 2026 opportunity signal.
-   Keep prior production on prior teams, then model departures/arrivals separately.
-   A carry signal is rejected if it merely restates ADP, and the rookie gap in
-   `adj_vac` must not be copied into it.
+1. **The stable-build freeze is deliberate.** Turn Planner, its uncertainty
+   calibration, the draw-watch dispatch, the remaining R audit, vacated carries,
+   and team supply all wait until after the draft and separate authorization where
+   stated. #54 stays parked. If nothing breaks, leave the deployed build alone.
 2. **The browser-to-Sleeper live path is still only partially verified.** This
    league's real pre-draft 12-team / 60-second / 1-flex payload now verifies the
    confirmed seat, order provenance, and opponent-history isolation. Same-page
@@ -359,8 +391,12 @@ gap jointly with `adj_vac` before proposing any wiring.
    recovery on this league cannot be tested before the draft starts. Automated
    smoke is hermetic. Do not promote pre-draft confirmation into started-feed
    evidence.
-3. **PII is out of HEAD but still in git history.** Retention is Anthony's call,
-   deferred to after the draft. Do not act on it unilaterally.
+3. **The adopted survival table is frozen, but its exact evidence link is open.**
+   Retaining the approved values pending reapproval appears deliberate. The current
+   regenerated proposal is not their immutable evidence and cannot supply their
+   future bin counts or Wilson intervals. Resolve that by explicit post-draft model
+   review, not an incidental feature diff. Separately, PII is out of HEAD but still
+   in git history; retention is Anthony's call after the draft.
 
 ---
 
