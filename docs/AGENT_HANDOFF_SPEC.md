@@ -86,6 +86,16 @@ establish internal coherence, not current agreement with the external world. If 
 watched fact affects generated artifacts, prove the event-to-rebuild edge or label
 the process human-gated.
 
+There is a second question for deliberately frozen objects: **could this correction
+change the evidence that justified the frozen value or verdict?** #58 was an
+identity repair, not a survival change, but removing 119 erroneous replay
+player-pick pairs changed the fit beneath the approved survival table and changed
+four other analytical evidence packages. Rebuilding the frozen object would have
+violated the freeze; doing nothing left its support claim stale. Before accepting
+an upstream correction, inventory both ordinary rebuild dependents and
+frozen-evidence dependents. A deterministic rebuild proves new arithmetic, not
+that an old approval remains supported.
+
 The same question applies to state machines: **have I tested the transition, or
 only both endpoint screenshots?** On 2026-08-31 the pre-draw identity placeholder
 and a fresh-load confirmed order each had green browser fixtures, while the real
@@ -477,10 +487,12 @@ still operationally important.
    same-day builds. Ask of
    every new guard: *what change would make this fail?* If you cannot answer, it is
    decoration.
-5. **Doc/artifact divergence (4).** A written result can be stale, absent from its
+5. **Doc/artifact divergence (5).** A written result can be stale, absent from its
    consuming surface, counted before pruning changes the rendered artifact, or
-   describe corrected source whose committed output was never regenerated. Verify
-   source, artifact, and live page together.
+   describe corrected source whose committed output was never regenerated. It can
+   also keep citing a mutable evidence path after that path is rebuilt beneath an
+   intentionally frozen object. Verify source, artifact, evidence lineage, and live
+   page together.
 6. **Missing observation as zero (1 live instance).** Require source evidence for
    zero and carry excluded-null counts. The sweep found other current percentile
    populations clean; Bucky Irving's observed 0-of-n remains valid.
@@ -505,7 +517,7 @@ still operationally important.
    Sleeper payload and otherwise left mixed pending/confirmed DOM. Any state used
    once operationally must be rehearsed through the transition, not inferred from
    two fresh loads.
-10. **Claim-strength escalation / qualifier loss (1).** Treat UI nouns and verbs
+10. **Claim-strength escalation / qualifier loss (2).** Treat UI nouns and verbs
    as model claims. `expected`, `likely`, `next best`, `recommendation`, and
    `no decision` each require an artifact field produced by the corresponding
    joint, ordered, or action-space computation. Printable Sheet 4 upgraded a
@@ -515,7 +527,15 @@ still operationally important.
    decision. Carry the producer's method, availability, and deviation qualifiers
    into every renderer, or omit the name. This is the presentation-layer sibling
    of a mislabeled derived column: correct arithmetic cannot support a stronger
-   sentence than the producer computed.
+   sentence than the producer computed. The second occurrence promoted the VONA
+   tree's p25 of current strict-domination margins into a player-level tie or
+   uncertainty band despite having no held-out action-error evidence.
+11. **Upstream correction invalidates frozen evidence (2).** A frozen value can
+   remain byte-correct while a repair in identity, scoring, or source population
+   changes the evidence that justified its approval. Inventory frozen dependents
+   separately from ordinary rebuild dependents. Reproduction of the corrected
+   evidence is not proof that the old approval still holds; require explicit
+   retain-or-replace review after the draft, never automatic adoption.
 
 ---
 
@@ -542,6 +562,7 @@ still operationally important.
 | **Dormant FLEX-fallback divergence** | **LATENT RISK, not a current artifact defect.** The committed engine reads `flex_usage_2025.json` and uses observed RB4/WR8/TE0, so `greedy_flex_alloc()` is not executed. Fallback activates only if that file is absent or its `allocation` is missing, null, or otherwise falsy; malformed JSON aborts loudly. On the same projection pool the fallback chooses RB0/WR12/TE0, moving replacement from RB28/169.0 and WR32/186.2 to RB24/174.8 and WR36/177.3. That subtracts 5.8 VOR from every RB and adds 8.9 to every WR, a 14.7-point cross-position swing; 103 of 110 players inside the 168-pick window change ordinal rank. A raw engine run would label the payload `flex_source: projection_greedy`, but no user-facing page shows that field, so the repricing itself would be silent. | The scheduled 06:00 rebuild checks out the committed observed artifact and does not regenerate or delete it. Its mandatory `test_vor.py` gate opens the file unconditionally and asserts both `flex_source: observed_2025` and exact allocation equality, so missing/falsy data cannot publish through the draft-morning path; this existing guard is sufficient for fallback activation before the draft. It does not independently recompute a truthy allocation from counts/shares, which remains separate artifact-integrity hardening. Do not replace the fallback with `forward_policy.pick_marginal`: that function selects one roster's next player using already-defined baselines, while this fallback estimates the league-wide pool that defines them. After the draft, fail closed or surface the fallback visibly, then consider a multi-season behavioral fallback. |
 | **Turn Planner replacement for PATHS** | **APPROVED OFFSEASON DESIGN; `docs/TURN_PLANNER_SPEC.md` is authoritative.** The shipped tree has nine nodes and zero rendered forks because it compares aggregate positional VONA from an unconditional pool. It cannot accept "Gibbs, Bijan, Chase gone" or place McCaffrey beside Taylor because both are RBs. Conditioned positional VONA would still render Puka alone. The complete 4/21/28 policy gives McCaffrey a nominal +2.08 over Puka, but player-action uncertainty is uncalibrated. The tree's 7.0 is p25 of 71 current-tree strict-domination margins, not a tie or forecast-error band. PR #54 remains one action per position and does **not** fix either problem. | **DO NOT IMPLEMENT BEFORE SEPTEMBER 8.** After the draft, build the rail-plus-one-board Turn Planner, extract canonical `score_candidates`, reuse one coherent live-state module, and attempt the mandatory held-out player-action error calibration. Only the next fully conditioned turn gets a policy mark. If calibration is unsupported, publish an honest deterministic order with no tie claim. Keep #54 parked. |
 | **Adopted survival lookup lost exact evidence lineage after #58** | **OPEN DOCUMENT/ARTIFACT DIVERGENCE; no automatic model change authorized.** The 2026-08-19 adopted 20-bin constant exactly matched that day's modern-fit proposal. #58 repaired identity and regenerated `survival_recalibration.json` from a 16,949-pair all-era frame; its 2019-2025 fit uses 9,492 pairs and moves 15 bins by up to 0.0468, while the approved engine constant intentionally stayed frozen pending reapproval. The engine comment and `MODEL.md` still cited the mutable regenerated file as the older table's full evidence. Separate guards prove the old constant deploys and the new proposal reproduces, but no guard links deployed values to immutable evidence. | Do not swap the table during the pre-draft freeze. Before Turn Planner availability work, preserve the exact adopted fit by digest, rerun/review the corrected-identity calibration, and explicitly approve retention or replacement. Any displayed bin `n` or Wilson interval must come from the exact deployed lookup's evidence unit and share its digest and kill-switch lineage. |
+| **Frozen-evidence dependency register** | **OPEN SYSTEMIC GAP; documentation only.** `docs/TURN_PLANNER_SPEC.md` §16 inventories sixteen other frozen/review-approved dependency families representing 32 individual accepted decisions, tables or results: seven families have partial local checks, nine have none, and zero binds immutable support to the accepted object with a re-review edge. Seven already carry stale support or narrative. The material one is the replay conclusion: after #58 both ADP-comparison intervals cross zero while `MODEL.md` still says both beat ADP. This analysis record does not feed draft math. | **DO NOT BUILD BEFORE THE DRAFT.** Afterwards, add an evidence manifest that records evidence-input, accepted-object and reviewed-claim digests. A changed evidence digest must retain the frozen object and mark it `REVIEW REQUIRED`; it must never adopt a replacement automatically. Keep this separate from the draw-watch rebuild automation. |
 
 ---
 

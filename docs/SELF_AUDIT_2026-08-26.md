@@ -71,7 +71,7 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 46 | The advertised TE 2-of-2 gate was one varying on-field-dropback input times a constant 0.9 market-share input for all 19 veterans; Isaiah Likely's BAL-2025 share was ranked alone in his NYG-2026 group | **REVIEWER** (input-value audit) | since C5 | yes | **VACUOUS GATE + HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (1)** |
 | 47 | Corrected `ALL_R_CODE.R` said the RB export was regenerated, but the committed RB CSV still carried `target_volume` and 2,530 NA-subsetting junk rows | **REVIEWER** (script/artifact comparison) | <1 day | no (analysis artifact) | **DOC/ARTIFACT DIVERGENCE (4)** |
 | 48 | The R forward-Vegas export inverted the verified home-spread convention in 224/224 team-games; 31/32 aggregates were wrong and rank correlation with the correct table was -0.437 | **REVIEWER** (source-sign verification) | <1 day | no (caught before app wiring) | **ANALYSIS SOURCE REGRESSION** |
-| 49 | Fourteen Python and four browser name normalizers disagreed; consolidation removed 119 phantom replay identities and restored 16 current ADP joins | **REVIEWER** (normalizer inventory) | since the duplicated consumers diverged | yes | **NAME-NORM (4)** |
+| 49 | Fourteen Python and four browser name normalizers disagreed; consolidation removed 119 erroneous replay player-pick pairs and restored 16 current ADP joins | **REVIEWER** (normalizer inventory) | since the duplicated consumers diverged | yes | **NAME-NORM (4)** |
 | 50 | The canonical quote fold covered curly U+2019 but not modifier-letter apostrophe U+02BC; the contract, not one observed spelling, was incomplete | **REVIEWER** (Unicode corpus audit) | latent | no known current player impact | **NAME-NORM (5)** |
 | 51 | Forward Vegas read a committed `schedule_2026.csv` snapshot that no workflow refreshed, so its dynamic horizon would have stayed at Weeks 1-6 while live games priced further out | **SELF-PRE** (new-feature update-path audit) | 0 | no - caught before first stale build | **SILENT STALENESS (5)** |
 | 52 | `backfield_share` grouped the existing all-week 2025 carry basis by each player's 2026 depth-chart team; David Montgomery's 158 DET carries moved into HOU, removing them from Gibbs's denominator. The aggregate usage shard also trimmed low-PPR backs and collapsed multi-team rows, so historical regrouping alone still left PHI/JAX denominators wrong | **REVIEWER** (RB input-denominator audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (2) + INCOMPLETE/COALESCED SOURCE** |
@@ -80,20 +80,21 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 55 | Printable Sheet 4 took the engine's static median-availability checkpoints, stripped `p_available_now`, tier-cliff and coin-flip qualifiers, then labelled the remaining names "Board expects" and the unsolved `fallback` "Next best." Bijan entered the pick-4 pool at 50.3% while Gibbs missed it at 48.2%. The sheet was not sourced from the paired simulation at all; in the current committed Puka-path run Javonte appears at pick 28 in only 7.652% of states. Individual survival had silently become a joint-path forecast, and the fallback had never been re-solved through the marginal policy | **ANTHONY** (read the live printed surface) | since cheat sheet shipped | yes | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS** |
 | 56 | Sleeper published the complete official order after a correct pending-state build had deployed. The dynamic room read the new state, but committed engine/VONA derivatives and static Cheat Sheet/PATHS continued saying `Sleeper pending`; Pages was byte-identical to main and every content digest agreed because all artifacts descended consistently from the same now-stale engine input | **REVIEWER** (live transition verification) | exact event time unavailable; <5h 41m from last observed pending sample to rebuild | yes | **SILENT STALENESS (6): MUTABLE WORLD STATE AFTER BUILD** |
 | 57 | The VONA tree's 7.0 `narrow_band` is p25 of 71 positive strict-domination margins from the current budget-conditioned position-tree probe, but PATHS, operational docs, and the decision record called it a player-level coin-flip or uncertainty band and used it to declare McCaffrey/Puka equivalent. It contains no held-out player-action errors, paired residuals, confidence interval, or calibration | **REVIEWER** (Turn Planner design audit) | since V1 / since the slot-4 decision record | yes | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS (2)** |
-| 58 | #58's identity consolidation correctly regenerated `survival_recalibration.json` from a 16,949-pair all-era stable-id frame; its 2019-2025 modern fit used 9,492 pairs and moved 15 of 20 bins by up to 0.0468. The approved engine lookup deliberately stayed frozen at its pre-#58 values pending model reapproval, but `engine_2026.py` and `MODEL.md` continued naming the newly regenerated JSON as the exact evidence for that older table. One guard proves the payload equals the old constant and another proves the new analysis reproduces; none links deployed values to their actual evidence | **REVIEWER** (Turn Planner availability-source audit) | since #58, ~3 days | yes (model evidence/provenance; no automatic table change authorized) | **DOC/ARTIFACT DIVERGENCE (5)** |
+| 58 | #58's identity consolidation correctly regenerated `survival_recalibration.json` from a 16,949-pair all-era stable-id frame; its 2019-2025 modern fit used 9,492 pairs and moved 15 of 20 bins by up to 0.0468. The approved engine lookup deliberately stayed frozen at its pre-#58 values pending model reapproval, but `engine_2026.py` and `MODEL.md` continued naming the newly regenerated JSON as the exact evidence for that older table. One guard proves the payload equals the old constant and another proves the new analysis reproduces; none links deployed values to their actual evidence | **REVIEWER** (Turn Planner availability-source audit) | since #58, ~3 days | yes (model evidence/provenance; no automatic table change authorized) | **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE (1) + DOC/ARTIFACT DIVERGENCE (5)** |
+| 59 | A repository-wide frozen-evidence inventory found sixteen other dependency families, seven already carrying stale support or narrative. The same #58 identity correction rebuilt four non-survival analysis artifacts while their approved narrative stayed fixed. Recency, injury and durability retained their verdicts under changed samples and estimates, but `MODEL.md` kept the old support figures. More materially, actual-vs-ADP moved from +35.64, CI [+4.02, +69.44] to +23.08, CI [-0.44, +46.88], and replay-vs-ADP moved from +42.71, CI [+8.30, +76.89] to +28.92, CI [-7.18, +67.15]; `MODEL.md` still says both beat ADP. Cache-backed determinism correctly reproduces the new artifacts and therefore does not detect that an old approved conclusion lost its support | **REVIEWER** (frozen-evidence dependency inventory) | since #58, ~3 days | yes (approved analysis record; no production rank or verdict input) | **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE (2)** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 58 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **8.6%**. The first
+Of the 59 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **8.5%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
 the first spontaneous instance: before shipping a newly wired input, I asked
 whether its source could actually update and found that it could not.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 30, ANTHONY 2.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 31, ANTHONY 2.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -102,7 +103,7 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Thirty of 58 - the largest single share, and disproportionately the severe
+Thirty-one of 59 - the largest single share, and disproportionately the severe
 ones - came from outside review. Of the thirteen defects now known to have reached
 the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
 #43, #45, #46, #52, #53, #54, #57, #58), **eleven were found by someone other than me.**
@@ -239,6 +240,36 @@ each half independently - deployed payload equals the hardcoded constant, curren
 analysis reproduces the new proposal - and therefore both stay green while the
 lineage between them is false. A frozen parameter needs immutable evidence by
 digest, not a path whose contents can be rebuilt underneath it.
+
+**UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE - 2 recorded instances
+(#58, #59).** This is adjacent to silent staleness but is not the same failure.
+Silent staleness means an artifact was supposed to rebuild after its input moved
+and did not. Here the downstream parameter, verdict, or table is intentionally
+frozen and therefore correctly does **not** rebuild; what moved is the evidence
+that justified accepting it. The implementation can remain byte-correct while the
+claim about why it is trusted becomes false.
+
+#58 was the first observed instance. A player-identity repair removed 119
+erroneous replay player-pick pairs and restored 16 current ADP joins. No survival
+code changed, but the corrected replay player-pick corpus changed the modern
+calibration fit beneath the approved table. #59 proves the mechanism was not
+survival-specific: the same identity repair moved recency, injury, durability, and
+replay evidence. Three verdicts survived with stale support figures; the replay
+claim did not. Both formerly positive ADP-comparison intervals now cross zero,
+while the approved prose still says both Anthony and the replay proxy beat ADP.
+
+The frozen-evidence register in `docs/TURN_PLANNER_SPEC.md` finds sixteen other
+dependency families beyond the adopted calibration, representing 32 individual
+accepted decisions, tables or results. Seven families already have stale support
+or narrative: base rates, N.1's duplicate research copy, recency, injury,
+durability, replay, and the original dead-hypothesis ledger. Nine are latent
+exposures. Seven have partial local protection (for
+example, an exact artifact rerun or a fixed-verdict arithmetic cross-check), nine
+have none, and **zero has a complete evidence-lineage detector that binds immutable
+support to the accepted object and requires re-review when that support moves**.
+That absence is the finding. Do not confuse a deterministic rebuild with such a
+detector: reproduction proves the new arithmetic and can pass while the old
+approval claim has ceased to be true.
 
 **MISSING OBSERVATION AS ZERO - one live instance (#45), after a full percentile
 population sweep.** `dict.get(id, 0)` put players with no 2025 usage into a
@@ -388,7 +419,7 @@ reached Anthony.**
 
 **SILENT failures (the system looks healthy and is wrong):** #1, #3, #7, #8, #13,
 #15, #19, #22, #23, #31, #32, #33, #34, #35, #38, #39, #40, #41, #42, #43,
-#44, #45, #46, #47, #48, #49, #52, #53, #54, #55. Thirty of 55, and
+#44, #45, #46, #47, #48, #49, #52, #53, #54, #55, #56, #57, #58, #59. Thirty-four of 59, and
 they include **every single defect that reached the live site and stayed.**
 
 The pattern is unambiguous: **this project does not have a bug-finding problem, it
@@ -406,7 +437,7 @@ that is a defect in the feature, not a monitoring gap.**
 
 ### 1.5 What the outside reviewer saw that I did not
 
-Thirty finds, including eleven of the thirteen long-lived live defects. The mechanism is
+Thirty-one finds, including eleven of the thirteen long-lived live defects. The mechanism is
 not "too close to it" - that is the comfortable answer. Three specific mechanisms,
 each of which I can name from the record:
 

@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-31 by Codex - opened docs-only #75. `docs/TURN_PLANNER_SPEC.md` now records the approved offseason PATHS replacement as a 14-turn rail plus one complete engine-VOR board, with a one-step **Marginal Policy** mark only at the fully observed pre-pick state `1..k-1`. Held-out player-action calibration is the critical path; the tree's 7.0 p25 of 71 budget-conditioned position margins is explicitly barred from tie, confidence, equivalence, or uncertainty claims. Operational docs now call CMC +2.08 the deterministic nominal lead and Puka the external owner override. No runtime, output artifact, test, workflow, or deployed-page bytes changed. |
-| **Next agent** | Review #75. If authorized, squash-merge it; it is documentation-only and no Pages deploy is expected. Do **not** implement Turn Planner, its calibration, or the separately logged draw-watch dispatch before the September 8 draft is complete and real started-feed evidence is recorded. Do not touch #54. If nothing breaks before the draft, leave the stable build alone. |
-| **Branch** | PR #75, `codex/turn-planner-spec`; spec/audit commit `774630b`, followed only by this baton commit. Fifteen gated suites passed 16/122/22/51/70/17/16/107/63/173/48/1818/23/384/38 (2,968 guards); analysis 38 had zero skips and all five deterministic reruns; browser smoke 429; `MATH DIFF PROOF: EMPTY` across all ten frozen functions; `git diff --check` clean. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `603f52b` with #74 deployed and byte-verified after the full confirmed-order rebuild. The docs-only #75 changes no deployed file. Current checks: `PAGES DATA FRESH - published 2026-09-01T01:56Z (1h ago)` and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. |
+| **Last touched** | 2026-09-01 by Codex - opened docs-only #76. The repository now names **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE** as distinct from silent staleness and inventories every other frozen/review-approved dependency family. Sixteen families represent 32 accepted units: seven have partial checks, nine have none, and zero binds immutable support to the accepted object with a re-review edge. Seven already carry stale support or narrative. No detector, automatic reapproval, runtime, output artifact, workflow, model, verdict, or deployed-page byte changed. |
+| **Next agent** | Review #76. If authorized, squash-merge it; it is documentation-only and no Pages deploy is expected. Do **not** build the frozen-evidence manifest, Turn Planner, its calibration, or the separately logged draw-watch dispatch before the September 8 draft is complete and real started-feed evidence is recorded. Do not touch #54. If nothing breaks before the draft, leave the stable build alone. |
+| **Branch** | PR #76, `codex/frozen-evidence-dependency-audit`; evidence-register commit `8ad1e8f`, followed only by this baton commit. Independent fresh-reader review reconciled 16 families / 32 accepted units / 7 partial / 9 none / 0 complete; `git diff --check` is clean. No generator or runtime test was invoked because this is documentation-only and the requested pre-draft action is explicitly no build. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `0286ec2` with docs-only #75 merged; its Turn Planner specification changes no deployed file, so the stable runtime remains the byte-verified #74 build. Last recorded checks: `PAGES DATA FRESH - published 2026-09-01T01:56Z (1h ago)` and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. |
 | **Draft order** | SLEEPER CONFIRMED: Anthony is **slot 4**, roster 7, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. Complete slot-to-roster permutation: `{1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12}`. Both `draft_order` and `slot_to_roster_id` resolve slot 4 and `src/check_draft_order.py` reports agreement. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PRE-DRAFT STATE VERIFIED against this league's real 12 teams / 60s / 1 flex and confirmed order for slot resolution, order provenance, gap strips, and history isolation. Same-page repaint is controlled no-reload coverage against the captured before/after payloads; no browser was demonstrably left open through the real publication moment. The only started-draft browser exercise remains the 2026-08-26 real Sleeper draft `1388575351239606272` at 19 teams / 120s / 2 flex. This league's actual started feed is **NOT** verified until September 8. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -38,7 +38,7 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 2. **#58 consolidated player identity.** One Python comparison key plus the
    collision-aware identity resolver replaced fourteen Python definitions; four
    browser copies are held to Python by corpus parity. Replay survival pairs fell
-   17,068 -> 16,949 by removing 119 phantom alias identities; Brier improved
+   17,068 -> 16,949 by removing 119 erroneous replay player-pick pairs; Brier improved
    0.0745 -> 0.0710 and skill 0.1960 -> 0.2466. Sixteen current players recovered
    ADP fields. The known Leon Johnson wrong-era mapping remains logged and out of
    scope.
@@ -351,12 +351,32 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     table before the draft. Before Turn Planner availability work, preserve the
     adopted fit by digest, rerun/review corrected-identity evidence, and explicitly
     approve retention or replacement.
+24. **The survival finding is one instance of a separate systemic dependency
+    class.** An upstream correction can invalidate the evidence for a deliberately
+    frozen downstream object even when that object correctly does not rebuild. This
+    is not ordinary silent staleness: the accepted bytes remain intentionally fixed,
+    while the claim supporting their approval moves. The repository-wide register
+    in `docs/TURN_PLANNER_SPEC.md` §16 finds sixteen other dependency families,
+    representing 32 accepted decisions, tables, or results. Seven have partial local
+    checks, nine have none, and zero has complete immutable
+    evidence-to-accepted-object lineage plus a mandatory re-review edge. Seven
+    already show stale support or narrative; nine are latent.
+
+    The material current divergence is analytical, not operational. After #58,
+    actual-vs-ADP moved from +35.64, CI [+4.02, +69.44] to +23.08, CI
+    [-0.44, +46.88], and replay-vs-ADP moved from +42.71, CI [+8.30, +76.89] to
+    +28.92, CI [-7.18, +67.15]. Both intervals now cross zero while `MODEL.md`
+    still says both beat ADP. That conclusion does not feed engine VOR, survival,
+    the Cheat Sheet, or a draft-night verdict. The post-draft design is an evidence
+    manifest that retains the frozen object and marks it `REVIEW REQUIRED` when its
+    support digest moves; it must never auto-adopt a replacement. Do not build it
+    before the draft.
 
 ### In flight / nothing blocked
 
-Main is `603f52b`; #74 is merged, deployed, and byte-verified. PR #75 is the
-current documentation-only review. It changes no executable or published bytes and
-authorizes no implementation. The build is deliberately frozen through the draft:
+Main is `0286ec2`; docs-only #75 is merged. PR #76 is the current
+documentation-only review. It changes no executable or published bytes and
+authorizes no detector or model change. The build is deliberately frozen through the draft:
 if nothing breaks, change nothing. The real confirmed pre-draft endpoint is observed;
 same-page repaint is regression-tested against the exact captured before/after
 payloads. The actual started feed remains unverified. PR #54 remains OPEN, PARKED
@@ -368,7 +388,8 @@ answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
 draft. The separately specified draw-watch-to-rebuild edge is logged only and needs
 separate approval regardless of date.
 
-Post-draft backlog remains: the three unenumerated `ALL_R_CODE` mislabels
+Post-draft backlog remains: the frozen-evidence manifest and explicit review of its
+seven current divergences, the three unenumerated `ALL_R_CODE` mislabels
 (`route_participation_proxy`, `team_implied_total`, `prior_epa_proxy`), vacated-carries
 assessment with the rookie gap handled jointly with `adj_vac`, team supply as
 shadow/display only, the Turn Planner, and the adopted-survival evidence decision.
@@ -391,12 +412,16 @@ Do not consume unreviewed local R exports.
    recovery on this league cannot be tested before the draft starts. Automated
    smoke is hermetic. Do not promote pre-draft confirmation into started-feed
    evidence.
-3. **The adopted survival table is frozen, but its exact evidence link is open.**
+3. **The adopted survival table is frozen, and its evidence-link problem is
+   systemic.**
    Retaining the approved values pending reapproval appears deliberate. The current
    regenerated proposal is not their immutable evidence and cannot supply their
-   future bin counts or Wilson intervals. Resolve that by explicit post-draft model
-   review, not an incidental feature diff. Separately, PII is out of HEAD but still
-   in git history; retention is Anthony's call after the draft.
+   future bin counts or Wilson intervals. Sixteen other frozen/review-approved
+   families have the same dependency shape; none has complete evidence-to-approval
+   detection, and seven already have stale support or narrative. Resolve them by
+   explicit post-draft review, not an incidental feature diff or automatic rebuild.
+   Separately, PII is out of HEAD but still in git history; retention is Anthony's
+   call after the draft.
 
 ---
 
