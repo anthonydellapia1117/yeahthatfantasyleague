@@ -260,6 +260,16 @@ met below. The five frozen functions are untouched - the calibration is
 a monotone lookup applied AFTER them, kill-switchable at two levels
 (payload flag + a one-tap live toggle in the room).
 
+CURRENT LINEAGE CAVEAT (2026-08-31): the adopted lookup remains the exact
+2026-08-19 approved constant. #58 later corrected player identity and regenerated
+`out/data/survival_recalibration.json`; its modern-fit table now differs in 15 of
+20 bins, by up to 0.0468. Retaining the approved model pending explicit reapproval
+is deliberate. The regenerated proposal is no longer the exact evidence artifact
+for that frozen constant, despite older text below and the engine comment naming
+the path. Before any new calibration evidence is displayed, preserve the original
+adopted fit by digest and explicitly review retention versus the corrected-identity
+refit. Nothing in this note changes the deployed table.
+
 ERA ANALYSIS (Anthony's question, rule registered before computing):
 does the durability-style 2019 regime shift live in the calibration
 table? YES. The all-years and modern (2019-2025) tables differ by up to

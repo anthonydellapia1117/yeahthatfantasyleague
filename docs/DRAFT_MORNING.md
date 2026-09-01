@@ -1,10 +1,10 @@
 # Draft morning runbook - 2026-09-08
 
 Draft start: **2026-09-08 20:00:25 ET / 2026-09-09 00:00:25 UTC**.
-Anthony is externally drawn in **slot 4**, with picks 4, 21, 28, 45, 52, 69,
-76, 93, 100, 117, 124, 141, 148, 165. Sleeper confirmation is still pending;
-an official conflict is a hard stop, not an invitation to choose a source. The
-complete reported order and unresolved-history labels live in
+Anthony is Sleeper-confirmed in **slot 4**, with picks 4, 21, 28, 45, 52, 69,
+76, 93, 100, 117, 124, 141, 148, 165. Both official sources agree with the
+earlier external report; a future conflict remains a hard stop, not an invitation
+to choose a source. The complete reported order and unresolved-history labels live in
 `data/draft_order_2026.json`.
 
 Rehearsed end-to-end on 2026-08-19; timings below are from that
@@ -16,21 +16,24 @@ build until the whole sequence is green.
 
 ## The night before
 
-- [ ] **Owner tie-break at pick 4:** only if Gibbs, Bijan Robinson, and Ja'Marr
-      Chase are gone, treat McCaffrey and Puka as tied. The complete 4/21/28
-      policy is CMC 290.75 versus Puka 288.67, a 2.08 difference inside the
-      derived 7.0-point coin-flip band; a survival-calibration sensitivity flips
-      the order by 0.15. Anthony's Puka choice is an external zero-IR/durability
-      override, not model output.
+- [ ] **Owner override at pick 4:** only if Gibbs, Bijan Robinson, and Ja'Marr
+      Chase are gone, the complete 4/21/28 policy orders CMC 290.75 over Puka
+      288.67 by 2.08. The VONA tree's 7.0 value is p25 of 71 current-tree
+      domination margins, not held-out action error, so it cannot establish a
+      tie. A survival-calibration sensitivity reverses the order by 0.15, which
+      establishes rank instability rather than calibrated equivalence. Anthony's
+      Puka choice is an external zero-IR/durability override, not model output.
 - [ ] **September 5 Puka practice check:** verify an official Rams practice
       report manually. If Puka is still not practicing, withdraw the durability
-      tie-break and return to a genuine CMC/Puka coin flip. The engine will carry
+      override and reassess the current deterministic model ordering. The engine will carry
       and render a changed Sleeper `injury_status`, but that field does not prove
-      practice participation and cannot satisfy this check by itself.
+      practice participation and cannot satisfy this check by itself. Do not call
+      the result tied unless a held-out player-action calibration supports it.
 - [ ] **If Puka is the pick, solve 21 before 28:** the paired simulation says the
       pick-21 choice is unchanged from CMC-first in 99,997 of 100,000 states. On
       the ordinary board, the model orders Achane, Chase Brown, Bowers, then
-      Henry, while treating adjacent choices as close. At 28 rerun marginal
+      Henry. That is a deterministic order with no held-out player-action error
+      interval. At 28 rerun marginal
       lineup value: after Bowers, take the best RB/WR and do not double TE; after
       an RB, Bowers is usually next if present, but a higher-VOR surviving RB
       still wins and a second RB still receives full RB2 value. Frequencies
