@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-09-01 by Codex - opened docs-only #76. The repository now names **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE** as distinct from silent staleness and inventories every other frozen/review-approved dependency family. Sixteen families represent 32 accepted units: seven have partial checks, nine have none, and zero binds immutable support to the accepted object with a re-review edge. Seven already carry stale support or narrative. No detector, automatic reapproval, runtime, output artifact, workflow, model, verdict, or deployed-page byte changed. |
-| **Next agent** | Review #76. If authorized, squash-merge it; it is documentation-only and no Pages deploy is expected. Do **not** build the frozen-evidence manifest, Turn Planner, its calibration, or the separately logged draw-watch dispatch before the September 8 draft is complete and real started-feed evidence is recorded. Do not touch #54. If nothing breaks before the draft, leave the stable build alone. |
-| **Branch** | PR #76, `codex/frozen-evidence-dependency-audit`; evidence-register commit `8ad1e8f`, followed only by this baton commit. Independent fresh-reader review reconciled 16 families / 32 accepted units / 7 partial / 9 none / 0 complete; `git diff --check` is clean. No generator or runtime test was invoked because this is documentation-only and the requested pre-draft action is explicitly no build. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `0286ec2` with docs-only #75 merged; its Turn Planner specification changes no deployed file, so the stable runtime remains the byte-verified #74 build. Last recorded checks: `PAGES DATA FRESH - published 2026-09-01T01:56Z (1h ago)` and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. |
+| **Last touched** | 2026-09-01 by Codex - #76 is merged at `b6bcfda`; opened #77 to correct the replay evidence claim and qualify Sleeper preseason injury metadata without changing any decision number. `MODEL.md` now reports the current n=169 crossing-zero intervals after #58. Every injury-bearing surface names Sleeper, the 2026-08-31 engine snapshot, the unavailable designation date and the practice/game-report limitation; non-Q statuses retain their identity. The 16-family / 32-unit frozen-evidence register is now also failure mode four: **AN APPROVAL THAT OUTLIVES ITS EVIDENCE**. |
+| **Next agent** | Review #77. It changes labels, reviewed documentation, generated decision-card prose and browser guards; it does not change engine/CVS/replay/survival/BULLISH numeric artifacts. If authorized, squash-merge and perform the normal Pages byte/live checks on the five changed published surfaces. Do **not** build the frozen-evidence manifest, Turn Planner, its calibration, or the logged draw-watch dispatch before the September 8 draft is complete and real started-feed evidence is recorded. Do not touch #54. |
+| **Branch** | PR #77, `codex/injury-status-provenance`; work commit `96a3b57`, followed only by this baton commit. Full battery: gate self-test 16; Python guards survival 122, CVS 22, VOR 51, base rates 70, archetypes 17, ceiling 16, BULLISH 107, WS2 63, mock 173, BULLISH-vs-ADP 48, VONA 1,818, drafted-vs-acquired 23, pages/data 384, analysis 38 with zero skips; browser smoke 438; mathdiff EMPTY. Numeric artifacts are byte-identical to main. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `b6bcfda` with docs-only #76 merged. It changed no deployed page, so the stable runtime remains the byte-verified #74 build until #77 is reviewed and merged. The #77 provenance labels are not live yet. Last recorded checks remain `PAGES DATA FRESH - published 2026-09-01T01:56Z (1h ago)` and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. |
 | **Draft order** | SLEEPER CONFIRMED: Anthony is **slot 4**, roster 7, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. Complete slot-to-roster permutation: `{1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12}`. Both `draft_order` and `slot_to_roster_id` resolve slot 4 and `src/check_draft_order.py` reports agreement. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PRE-DRAFT STATE VERIFIED against this league's real 12 teams / 60s / 1 flex and confirmed order for slot resolution, order provenance, gap strips, and history isolation. Same-page repaint is controlled no-reload coverage against the captured before/after payloads; no browser was demonstrably left open through the real publication moment. The only started-draft browser exercise remains the 2026-08-26 real Sleeper draft `1388575351239606272` at 19 teams / 120s / 2 flex. This league's actual started feed is **NOT** verified until September 8. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -365,19 +365,40 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     The material current divergence is analytical, not operational. After #58,
     actual-vs-ADP moved from +35.64, CI [+4.02, +69.44] to +23.08, CI
     [-0.44, +46.88], and replay-vs-ADP moved from +42.71, CI [+8.30, +76.89] to
-    +28.92, CI [-7.18, +67.15]. Both intervals now cross zero while `MODEL.md`
-    still says both beat ADP. That conclusion does not feed engine VOR, survival,
-    the Cheat Sheet, or a draft-night verdict. The post-draft design is an evidence
-    manifest that retains the frozen object and marks it `REVIEW REQUIRED` when its
-    support digest moves; it must never auto-adopt a replacement. Do not build it
-    before the draft.
+    +28.92, CI [-7.18, +67.15]. Both intervals now cross zero. #77 corrects
+    `MODEL.md` to the negative result: neither Anthony nor replay establishes an
+    ADP advantage, and Anthony minus replay is -5.84, CI [-46.15, +33.20]. That
+    analytical conclusion does not feed engine VOR, survival, the Cheat Sheet, or
+    a draft-night verdict. The post-draft design is an evidence manifest that
+    retains the frozen object and marks it `REVIEW REQUIRED` when its support
+    digest moves; it must never auto-adopt a replacement. Do not build it before
+    the draft.
+25. **The 41 current-looking injury flags were one undated Sleeper field, not 41
+    official designations.** `draft_board.py` copies only the season-projection
+    row's nested `player.injury_status`; score, VOR and rank never consume it. The
+    full 417-player engine snapshot contains 64 `Questionable`, 12 `IR`, three
+    `PUP`, one `NA` and one `DNR`; the top-190 skill pool behind Anthony's count is
+    39 `Questionable` plus one `NA` and one `IR`. The Cheat Sheet then had a second
+    display defect: CSS rewrote every truthy status it rendered as `Q`. Current
+    committed values match the live player payload for all 417 rows, recent generic
+    `news_updated` timestamps and 2026 rookies refute universal untouched-2025
+    carryover, but Sleeper exposes no injury-specific effective date/week or
+    official-vs-camp discriminator. Retained 2025 draft payloads show the preseason
+    population falling from 205/1,271 Questionable skill picks on Aug 20-26 UTC to
+    72/1,029 on Sep 3-4 UTC (Sep 2-3 Eastern, before the opener). Exact 15-draft
+    ids, counting rule and the absence of a committed immutable snapshot are in
+    `docs/SELF_AUDIT_2026-08-26.md` entry #60. #77 preserves every raw status and
+    all math, adds source/snapshot/scope on every surface, and pins non-Q rendering
+    plus the live-room badge in smoke. Existing display-only BULLISH categorical
+    injury handling is disclosed and unchanged.
 
 ### In flight / nothing blocked
 
-Main is `0286ec2`; docs-only #75 is merged. PR #76 is the current
-documentation-only review. It changes no executable or published bytes and
-authorizes no detector or model change. The build is deliberately frozen through the draft:
-if nothing breaks, change nothing. The real confirmed pre-draft endpoint is observed;
+Main is `b6bcfda`; docs-only #76 is merged. PR #77 is the current review. Its
+published changes are provenance and status-identity labels only; all numeric
+artifacts remain byte-identical to main and it authorizes no detector or model
+change. The build is deliberately frozen through the draft: if nothing breaks,
+change nothing beyond this reviewed display correction. The real confirmed pre-draft endpoint is observed;
 same-page repaint is regression-tested against the exact captured before/after
 payloads. The actual started feed remains unverified. PR #54 remains OPEN, PARKED
 THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
