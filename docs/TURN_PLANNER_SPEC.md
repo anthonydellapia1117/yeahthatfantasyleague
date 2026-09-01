@@ -652,3 +652,71 @@ It must reuse the existing strict rebuild workflow rather than duplicate its
 dependency chain. **This automation is logged only. No Turn Planner PR may add a
 watcher, trigger, dispatch, runtime logger, or workflow change, regardless of
 date.** It requires separate approval and is not part of the Turn Planner scope.
+
+## 16. Separate deferred frozen-evidence dependency gap
+
+The survival-lineage finding exposed a dependency edge that the rebuild watcher
+above cannot cover. A correction can change the evidence supporting an approved
+object even when that object is deliberately frozen and therefore must not rebuild.
+That is **UPSTREAM CORRECTION INVALIDATES FROZEN EVIDENCE**, not silent staleness:
+
+- silent staleness: the dependent artifact should rebuild and does not;
+- frozen-evidence invalidation: the dependent artifact correctly stays fixed, but
+  the evidence justifying that fixed state changes.
+
+The count below uses one common producer/evidence/review bundle as one dependency
+family. Multiple page consumers do not multiply the count. A family may contain
+several separately accepted units: the two base-rate tables, eight dead-hypothesis
+conclusions and nine WS2 verdicts are grouped by their common dependency edge.
+Current-input artifacts that must rebuild (CVS, VONA, mock, ceiling and
+BULLISH tags), and typed judgment constants with no empirical support claim, are
+outside this class.
+
+Beyond the already-recorded adopted survival calibration, **sixteen other dependency
+families are exposed, representing 32 individual accepted decisions, tables or
+results**: thirteen single-unit families, two base-rate tables, eight dead-hypothesis
+conclusions and nine WS2 verdicts. Seven families have partial local checks, nine
+have none, and **zero has a
+complete detector that binds immutable evidence to the accepted object and requires
+re-review when the evidence changes**.
+
+| Frozen or approved package | Evidence that can move | Existing detection | Current state |
+|---|---|---|---|
+| Base survival `INTERP` model selection | `out/picks.csv`, identity and recoverable ADP behind the 12-of-13 leave-one-season-out result | **Partial:** frozen bodies and current in-sample behavior are guarded; the adoption comparison is not replayed or digested | No current value divergence established |
+| 2025 FLEX allocation (`RB4/WR8/TE0`) | Sleeper starter arrays and player-position identity | **None:** `test_vor.py` checks shape, sums and consumption, not the source reconstruction | No current divergence known; this latent package does feed replacement ranks, VOR and policy caps |
+| Market and league base-rate tables | FFC ADP, historical outcomes, league picks, scoring and identity joins | **None:** `test_baserates.py` checks internal arithmetic and wiring but does not rebuild or fingerprint inputs | #58's artifact rebuild changed only generation metadata and the live tables remain current/display-only; the earlier C.2 reviewed copy still says both tables cover 2016-2025 and quotes the superseded 1,448+26 league frame instead of 2013-2025 and 1,867+36 |
+| Approved 140-target WR archetype threshold | Historical target/outcome population and identity joins | **None for reapproval:** support is rebuilt daily, but a changed verification block cannot reject the accepted threshold | No current divergence established; display-only |
+| Approved 400-touch RB fade threshold | Historical touches and next-season outcomes | **None for reapproval:** the guard requires a coherent ledger, not continued support for 400 | No current divergence established; display-only |
+| Reviewed N.1 `INCONCLUSIVE` result | HISTORY/nflverse outcomes, FFC ADP, tag reconstruction and identity | **Partial:** the producer cross-checks every cited current-scope figure and fails when it is run; no input digest guarantees that run | Official artifact is current; the purported verbatim copy in `docs/research/gemini_independent_assessment.md` still carries the superseded mixed RB/WR/TE result |
+| Manager-profile approval | `out/picks.csv` and franchise-history identity | **Partial:** `test_analysis.py` exactly reruns the artifact from committed picks; it does not bind or re-review fixed figures in `MODEL.md` | No current divergence established |
+| Recency rejection | Historical weekly production, ADP, picks and identity | **Partial:** cache-backed determinism reruns the artifact; fixed narrative is not compared | #58 moved `n` 1,677 to 1,686 and `b_late` +0.00021 to -0.00022; the null survives but `MODEL.md` quotes the old support |
+| Injury-market rejection | Injury, outcome, ADP, pick and identity joins | **Partial:** cache-backed rerun and interval logic; no narrative linkage | #58 moved `n` 1,697 to 1,706 and the effects/intervals; verdict survives while `MODEL.md` quotes the old support |
+| Durability-fade rejection | Injury evidence, age, PPG, era and identity joins | **Partial:** cache-backed rerun and verdict rule; no cross-artifact or prose link | #58 moved `n` 1,697 to 1,706 and the estimates; `MODEL.md` and the artifact's copied candidate sentence retain old figures |
+| Replay value/backtest conclusion | Picks, HISTORY/FFC ADP, outcome and player identity | **Partial:** cache-backed deterministic replay; no verdict field asserts the published conclusion | **Material divergence:** actual-vs-ADP is now +23.08, CI [-0.44,+46.88], and replay-vs-ADP +28.92, CI [-7.18,+67.15]; `MODEL.md` still says both beat ADP from the old positive intervals |
+| Original eight dead-hypothesis ledger | Historical league analysis underlying the hardcoded `app_data` claims | **None:** three p-values still have no committed generator and no claim-to-evidence digest exists | Adjacent current divergence: `app_data` says drafted-share correlation +0.043 while `ff-hub.html` prints +0.055 |
+| Drafted-vs-acquired result | Archive champions, lineups, transactions, era definitions and identity | **None for evidence drift:** guards pin qualitative flags and internal shape, not a deterministic rebuild or reviewed prose | No current divergence established |
+| WS2 nine-claim audit | nflverse, FFC and HISTORY inputs | **None:** the cache-dependent builder is explicitly not rerun; tests check structure, arithmetic and canaries | No current divergence established |
+| Tendency exclusion (`p=0.9932`) | Historical picks, franchise mapping and the survival-pair construction | **None for the adoption evidence:** tests keep tendency out of probability and pin the committed result, but do not rerun the backtest | No current divergence established; the exclusion remains in force |
+| Lineup-efficiency permutation result | Historical started lineups, champions and franchise identity | **None:** `efficiency_test.json` is read as the canonical fixed result; no test reruns `phase3_lineup.py` | No current divergence established; findings-page analysis only |
+
+Seven of the sixteen families already show stale support or narrative: the base-rate
+review copy, N.1's duplicate research copy, recency, injury, durability, replay, and
+the original dead-hypothesis ledger. The recency, injury, durability and replay
+movements came from #58. The replay crossing is the only
+newly found inferential change; it is an analysis-record defect and does not feed
+engine VOR, survival, the Cheat Sheet, or a draft-night verdict. FLEX and the base
+survival `INTERP` selection are the latent families in this register that directly
+shape those decision numbers; the tendency result separately governs the exclusion
+of opponent tendency from survival. No evidence divergence is currently known for
+any of those three.
+
+The eventual detector is not an automatic model updater. It is an evidence manifest
+for each frozen package: immutable evidence-input digests, producer commit, accepted
+object digest, reviewed-claim digest, approval date and status. When an evidence
+digest changes, the object remains frozen and is marked **REVIEW REQUIRED** until an
+explicit retain-or-replace decision records a new lineage. Current artifact rebuilds
+and dependency dispatches remain separate concerns.
+
+**This gap is logged only. Do not add the manifest, a detector, a reapproval bot, a
+workflow edge, or any automatic parameter/verdict change before the September 8
+draft.** The stable production build remains frozen.
