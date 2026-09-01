@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-09-01 by Codex - #76 is merged at `b6bcfda`; opened #77 to correct the replay evidence claim and qualify Sleeper preseason injury metadata without changing any decision number. `MODEL.md` now reports the current n=169 crossing-zero intervals after #58. Every injury-bearing surface names Sleeper, the 2026-08-31 engine snapshot, the unavailable designation date and the practice/game-report limitation; non-Q statuses retain their identity. The 16-family / 32-unit frozen-evidence register is now also failure mode four: **AN APPROVAL THAT OUTLIVES ITS EVIDENCE**. |
-| **Next agent** | Review #77. It changes labels, reviewed documentation, generated decision-card prose and browser guards; it does not change engine/CVS/replay/survival/BULLISH numeric artifacts. If authorized, squash-merge and perform the normal Pages byte/live checks on the five changed published surfaces. Do **not** build the frozen-evidence manifest, Turn Planner, its calibration, or the logged draw-watch dispatch before the September 8 draft is complete and real started-feed evidence is recorded. Do not touch #54. |
-| **Branch** | PR #77, `codex/injury-status-provenance`; work commit `96a3b57`, followed only by this baton commit. Full battery: gate self-test 16; Python guards survival 122, CVS 22, VOR 51, base rates 70, archetypes 17, ceiling 16, BULLISH 107, WS2 63, mock 173, BULLISH-vs-ADP 48, VONA 1,818, drafted-vs-acquired 23, pages/data 384, analysis 38 with zero skips; browser smoke 438; mathdiff EMPTY. Numeric artifacts are byte-identical to main. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `b6bcfda` with docs-only #76 merged. It changed no deployed page, so the stable runtime remains the byte-verified #74 build until #77 is reviewed and merged. The #77 provenance labels are not live yet. Last recorded checks remain `PAGES DATA FRESH - published 2026-09-01T01:56Z (1h ago)` and `PREFLIGHT OK - snake, 12 teams, 14 rounds, 60s timer, no reversal`. |
+| **Last touched** | 2026-09-01 by Codex - #77 is merged and live at `d2e7e9b`. PR #78 adds the explicitly authorized bounded **RxR Prep** surface without changing any existing engine, decision-card, mock, VONA, CVS, replay, survival or BULLISH numeric artifact. The full live Turn Planner and its action-uncertainty calibration remain post-draft work. |
+| **Next agent** | Review and, if authorized, squash-merge #78. Then wait for Pages, byte-compare `rxr.html`, `rxr_policy.js`, `rxr_policy_reference.json`, `nav.js` and `home.html`, exercise the live Puka -> Bowers -> Javonte scenario, and run publication/preflight. Do not extend RxR into a live poller, future-turn path, tie claim or probability layer before the draft. Do not touch #54. |
+| **Branch** | PR #78, `codex/rxr-turn-planner`; work commit `4a8bd53`, followed only by this baton commit. Full battery: gate self-test 16; Python guards survival 122, CVS 22, VOR 51, base rates 70, archetypes 17, ceiling 16, BULLISH 107, WS2 63, mock 200, BULLISH-vs-ADP 48, VONA 1,818, drafted-vs-acquired 23, pages/data 398, analysis 38 with zero skips; 3,009 total Python checks; browser smoke 465; mathdiff EMPTY. The Python/JavaScript scorer corpus has 12 score cases and six fail-closed cases. Existing numeric artifacts are byte-identical to main. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `d2e7e9b` with #77 byte-verified. RxR is not live until #78 merges and Pages is byte-verified. The new page and policy files are already present in the explicit Pages copy list on #78. |
 | **Draft order** | SLEEPER CONFIRMED: Anthony is **slot 4**, roster 7, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. Complete slot-to-roster permutation: `{1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12}`. Both `draft_order` and `slot_to_roster_id` resolve slot 4 and `src/check_draft_order.py` reports agreement. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PRE-DRAFT STATE VERIFIED against this league's real 12 teams / 60s / 1 flex and confirmed order for slot resolution, order provenance, gap strips, and history isolation. Same-page repaint is controlled no-reload coverage against the captured before/after payloads; no browser was demonstrably left open through the real publication moment. The only started-draft browser exercise remains the 2026-08-26 real Sleeper draft `1388575351239606272` at 19 teams / 120s / 2 flex. This league's actual started feed is **NOT** verified until September 8. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -391,14 +391,42 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     all math, adds source/snapshot/scope on every surface, and pins non-Q rendering
     plus the live-room badge in smoke. Existing display-only BULLISH categorical
     injury handling is disclosed and unchanged.
+26. **#78 is the bounded RxR Prep implementation, not the completed live Turn
+    Planner.** Anthony explicitly superseded the pre-draft implementation freeze
+    for this one surface on 2026-09-01. RxR derives the slot-4 rail and all 417
+    rows from the engine, preserves engine-VOR order, records a complete manual or
+    labelled ADP-chalk 12-team prefix, and runs the canonical one-step Marginal
+    Policy only when that prefix reaches Anthony's next turn. Every row remains
+    visible; drafted rows are struck through; K/DEF are labelled unscored floors.
+    The page carries `NOT A FORECAST`, `ONE STEP`, and `ACTION UNCERTAINTY NOT
+    CALIBRATED` on its face. No future survival, tie, confidence, VONA, BULLISH,
+    CVS/Walter, opponent-history probability or owner preference enters the mark.
+
+    `forward_policy.score_candidates` is Python-canonical, keys all action state
+    by Sleeper id, preserves the existing rounded-gain/VOR/input-order law, and
+    fails on duplicate/overlapping ids, invalid domains, nonnumeric inputs and
+    incomplete caps. The JavaScript mirror must exactly reproduce a 12-case
+    engine-bound corpus plus six error cases; a stale corpus digest blocks the
+    page. Draft-refresh rebuilds it immediately after the engine. A saved browser
+    scenario is likewise engine-digest-bound and is removed when inputs move.
+
+    On the current deterministic scenario, Gibbs/Bijan/Chase produce McCaffrey as
+    the pick-4 one-step leader; choosing Puka and filling through pick 20 produces
+    Bowers at 21; choosing Bowers and filling through pick 27 produces Javonte at
+    28. These names are a reconstructable scenario, not an optimal-path claim.
+    PATHS remains deployed for audit but is removed from public navigation; #54
+    stays parked. Pre-merge visual review caught two walls before publication: the
+    first mobile build was 31,623 px, and the 641-900px breakpoint later expanded
+    to 26,018-31,192 px. Final pick-state ranges are 2.22-2.24 desktop screens,
+    3.74-3.97 mobile screens, 2.55 at 768px and 2.65 at 900px, with the complete
+    board inside an internal scroller and guards at every breakpoint.
 
 ### In flight / nothing blocked
 
-Main is `b6bcfda`; docs-only #76 is merged. PR #77 is the current review. Its
-published changes are provenance and status-identity labels only; all numeric
-artifacts remain byte-identical to main and it authorizes no detector or model
-change. The build is deliberately frozen through the draft: if nothing breaks,
-change nothing beyond this reviewed display correction. The real confirmed pre-draft endpoint is observed;
+Main is `d2e7e9b`; #77 is merged and live. PR #78 is the current review. It is the
+sole explicitly authorized exception to the pre-draft feature freeze and is
+bounded to offline scenario prep; all existing numeric artifacts remain
+byte-identical to main. The real confirmed pre-draft endpoint is observed;
 same-page repaint is regression-tested against the exact captured before/after
 payloads. The actual started feed remains unverified. PR #54 remains OPEN, PARKED
 THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
@@ -409,7 +437,8 @@ answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
 draft. The separately specified draw-watch-to-rebuild edge is logged only and needs
 separate approval regardless of date.
 
-Post-draft backlog remains: the frozen-evidence manifest and explicit review of its
+Post-draft backlog remains: the full live RxR Turn Planner with coherent Sleeper
+polling and held-out action-uncertainty calibration, the frozen-evidence manifest and explicit review of its
 seven current divergences, the three unenumerated `ALL_R_CODE` mislabels
 (`route_participation_proxy`, `team_implied_total`, `prior_epa_proxy`), vacated-carries
 assessment with the rookie gap handled jointly with `adj_vac`, team supply as
@@ -418,10 +447,12 @@ Do not consume unreviewed local R exports.
 
 ### The three things the next agent most needs to know
 
-1. **The stable-build freeze is deliberate.** Turn Planner, its uncertainty
+1. **RxR Prep is a bounded exception, not a waiver of the stable-build freeze.**
+   Anthony explicitly authorized the scenario-only subset on September 1. Live
+   polling, future-turn recommendations, survival, a tie band, uncertainty
    calibration, the draw-watch dispatch, the remaining R audit, vacated carries,
-   and team supply all wait until after the draft and separate authorization where
-   stated. #54 stays parked. If nothing breaks, leave the deployed build alone.
+   and team supply all still wait until after the draft and separate authorization
+   where stated. #54 stays parked.
 2. **The browser-to-Sleeper live path is still only partially verified.** This
    league's real pre-draft 12-team / 60-second / 1-flex payload now verifies the
    confirmed seat, order provenance, and opponent-history isolation. Same-page
