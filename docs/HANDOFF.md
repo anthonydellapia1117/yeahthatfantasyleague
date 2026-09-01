@@ -15,13 +15,13 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-08-31 by Codex - squash-merged #72 as `2b34879`, verified 49/49 deployed files byte-identical, then opened #73 after sweeping the same claim-strength defect across every decision renderer. Draft Room pre-draft cards and generated decision-card markdown now state **NOT A FORECAST**, show individual availability and anchor-path scope, and omit the unsolved engine `fallback`. PATHS says `rendered position-level forks` and explicitly refuses to turn zero forks into a player-level finding. Big Board and both Draft Room heuristic scores now carry their configured-weight provenance on the number's face. No weight, score, rank, player ordering, verdict, survival value, or frozen math changed. |
-| **Next agent** | Review #73. If authorized, squash-merge it, wait for Pages, byte-compare the deployed manifest against main, and verify the live Draft Room checkpoint boundary, Big Board `CONFIGURED CVS, NOT ENGINE VOR` chip, grade/composite provenance, and PATHS action-space caveat. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. The real Sleeper placeholder-to-confirmed transition remains a separate pending observation. |
-| **Branch** | PR #73, `codex/ui-claim-provenance`; functional commit `4d33b65`, followed only by this baton commit. Fifteen gated suites passed 16/122/22/51/70/17/16/107/63/173/48/1818/23/384/38 (2,968 guards); analysis 38 had zero skips and all five deterministic reruns; browser smoke 429; `MATH DIFF PROOF: EMPTY` across all ten frozen functions; `git diff --check` clean. Independent diff review found and the branch fixed two self-recurrences before commit: an uncalibrated score gap labelled `confidence`, and synthetic fallback tests that depended on today's artifact containing a fallback. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `2b34879` with #72 deployed. Pages workflow `33435791175` passed and all 49 manifest files were byte-identical. Live Sheet 4 says `NOT A FORECAST`, shows Bijan 50.3% and Javonte 69.0%, preserves the Breece coin flip, and contains no `Board expects` or `Next best`. #73's broader renderer and provenance corrections are not live until separately reviewed and merged. |
-| **Draft order** | EXTERNALLY DRAWN: Anthony is **slot 4**, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. At 2026-08-31 20:16 UTC, `src/check_draft_order.py` still reported `DRAFT ORDER EXTERNAL - Anthony has slot 4; Sleeper confirmation pending (status pre_draft)`. A complete non-identity roster permutation may be corroborated by a shorter well-formed user order when a roster is ownerless; no partial user map resolves alone, and any owner-seat disagreement blocks loudly. |
+| **Last touched** | 2026-09-01 by Codex - opened #74 after Sleeper published the real order. A full dependency-aware rebuild, not a label patch, now resolves Anthony from the complete non-identity permutation as **slot 4 / drawn_confirmed**. Slot-4 picks and VONA/mock decision math are unchanged. The unexpected 12-user/12-roster publication did not leak history: slot 3 remains `unresolved_merge`, slot 7 remains `unresolved_new_manager`, and all 132 gap-seat observations for each are null. The build also refreshed three live injury states and the complete HISTORY-dependent ceiling/BULLISH chain so every dependent carries the new engine digest. This is silent-staleness occurrence **six**: deployed bytes and digests were coherent, but the mutable world state changed after the build and no rebuild edge fired. |
+| **Next agent** | Review #74. If authorized, squash-merge it, wait for Pages, byte-compare every deployed manifest file against main, and verify live engine/VONA/PATHS/Cheat Sheet provenance says Sleeper-confirmed slot 4. Run `check_publication.py` and `preflight_draft.py`. Keep #54 OPEN, PARKED THROUGH THE DRAFT, and untouched. The started Sleeper feed remains honestly unverified: real `last_picked`, live pick/cache timing, audio, wake lock, background-tab behavior, and recovery cannot be exercised while the draft is `pre_draft`. |
+| **Branch** | PR #74, `codex/confirm-draft-order-refresh`; functional commit `dc09a4a`, followed only by this baton commit. Fifteen gated suites passed 16/122/22/51/70/17/16/107/63/173/48/1818/23/384/38 (2,968 guards); analysis 38 had zero skips and all five deterministic reruns; browser smoke 429; `MATH DIFF PROOF: EMPTY` across all ten frozen functions; `git diff --check` clean. One first-pass BULLISH gate used the wrong local HISTORY cache and stopped red; rerunning with the workflow's declared `HISTORY=/tmp/ytfl-history` passed without changing or weakening a guard. Smoke then caught and fixed two stale prior-state assumptions in the confirmed transition before commit. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main is `2d6c7e8` with #73 deployed and byte-verified. Its committed artifacts still describe the earlier confirmation-pending build until #74 merges and Pages publishes the dependency-aware rebuild. |
+| **Draft order** | SLEEPER CONFIRMED: Anthony is **slot 4**, roster 7, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. Complete slot-to-roster permutation: `{1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12}`. Both `draft_order` and `slot_to_roster_id` resolve slot 4 and `src/check_draft_order.py` reports agreement. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
-| **Live path** | PARTIALLY VERIFIED 2026-08-26 against real Sleeper draft `1388575351239606272`: 19 teams / 120s / 2 flex. It has **NOT** been verified against this league's real 12 teams / 60s / 1 flex with a drawn order. See `AGENT_HANDOFF_SPEC.md` §11. |
+| **Live path** | PRE-DRAFT STATE VERIFIED against this league's real 12 teams / 60s / 1 flex and confirmed order for slot resolution, order provenance, gap strips, and history isolation. Same-page repaint is controlled no-reload coverage against the captured before/after payloads; no browser was demonstrably left open through the real publication moment. The only started-draft browser exercise remains the 2026-08-26 real Sleeper draft `1388575351239606272` at 19 teams / 120s / 2 flex. This league's actual started feed is **NOT** verified until September 8. See `AGENT_HANDOFF_SPEC.md` §11. |
 
 ### What was done in the last session
 
@@ -226,8 +226,11 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 18. **The one-time order transition is now tested as a transition, not inferred
     from two fresh loads.** The real endpoint was captured twice before Rich
     entered the order: `pre_draft`, `draft_order: null`, exact identity
-    `slot_to_roster_id`, and `picks: []`. Roster 3 is ownerless, and this league's
-    2024 shell already demonstrates Sleeper's resulting 11-user/12-roster shape.
+    `slot_to_roster_id`, and `picks: []`. Roster 3 appeared ownerless before
+    publication, and this league's 2024 shell already demonstrates Sleeper's
+    possible 11-user/12-roster shape. The real publication instead supplied a
+    complete 12-user/12-roster mapping; keep the ownerless branch because it is
+    correct rehearsal coverage for a state that can still occur.
     Pre-fix main rejected the realistic payload as `incomplete_draft_order`; the
     smoke then lost `#ohyp-card` to the blocked surface and exited 1. Independently,
     the pre-draft repaint was gated on a local hypothesis that cannot exist once
@@ -289,16 +292,37 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     composite-margin cutoffs. `confidence` was itself too strong for that typed
     score gap and is gone from the band label. Neutral ink/line chips carry this
     provenance; no reserved verdict color was reused.
+21. **#74 rebuilds every dependent after the real order publication and records
+    the missing event edge.** Sleeper published a complete non-identity roster
+    permutation and both order sources resolve Anthony as slot 4. The previous
+    deployment was byte-correct and digest-coherent but stale about the mutable
+    world state, because the draw watch could report the transition but nothing
+    dispatched a rebuild. This is silent-staleness occurrence six. The smallest
+    durable follow-up is an idempotent watch edge that dispatches the existing
+    strict `draft-refresh.yml` only when live order status moves from unresolved
+    to `agrees`; conflicts and unresolved states stay loud and never dispatch.
+
+    The full strict plus HISTORY-dependent chain moved engine lineage and display
+    provenance together. Slot-4 picks, VONA values, and mock decisions are
+    unchanged. Slots 3 and 7 remain honestly unresolved across all 132 gap-seat
+    observations: the actual 12/12 payload did not cause slot 3 to inherit Richie's
+    history or slot 7 to inherit Mike Long's. That resilience came from keying
+    opponent evidence to the reported history mapping instead of the live roster
+    occupant, so an unforeseen payload shape was absorbed without contamination.
+    Week 1-6 forward Vegas remains 93 priced games; one source refresh repriced
+    four team values but produced zero BULLISH tag/status/score changes in the
+    same-build counterfactual. Three live injury states moved. Browser smoke also
+    caught and fixed a split-state repaint where a confirmed built artifact plus
+    a placeholder first live response could mix pending and confirmed labels.
 
 ### In flight / nothing blocked
 
-PR #72 is merged at `2b34879`; the five-side slot-4 cheat sheet and its qualified
-checkpoint method are live and byte-verified. PR #73 is the current merge
-candidate. It broadens that same producer contract to Draft Room, generated
-decision cards, and PATHS, and puts configured-weight provenance directly beside
-Big Board/CVS, 0-100 grade, and Pick Engine numbers. It changes no computation or
-ordering. The exact placeholder-to-confirmed transition is covered, but the real
-Sleeper transition is still pending. PR #54 remains OPEN,
+PR #73 is merged at `2d6c7e8`; its decision-language and heuristic-provenance
+labels are live and byte-verified. PR #74 is the current merge candidate. It carries
+the real Sleeper-confirmed order through a full dependency-aware rebuild and records
+the absent draw-watch-to-rebuild edge. The real confirmed pre-draft endpoint is
+observed; same-page repaint is regression-tested against the exact captured
+before/after payloads. The actual started feed remains unverified. PR #54 remains OPEN,
 PARKED THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
 mergeability is unresolved against moving `main`. Its PATHS policy is still the
 data-derived R1-2 / R3-4 / R5-7 coverage-valid bands with the conditional spread
@@ -324,12 +348,17 @@ gap jointly with `adj_vac` before proposing any wiring.
    Keep prior production on prior teams, then model departures/arrivals separately.
    A carry signal is rejected if it merely restates ADP, and the rookie gap in
    `adj_vac` must not be copied into it.
-2. **The browser-to-Sleeper live path is only partially verified.** Anthony ran the
-   deployed room against a real 19-team Sleeper draft (`1388575351239606272`) on
-   2026-08-26. It proved server-derived geometry at 19 teams / 120s / 2 flex, seat
-   detection, format warnings, and populated surfaces. It did **not** exercise the
-   league's real 12 teams / 60s / 1 flex with a drawn order. Automated smoke is
-   hermetic. Do not promote the partial run into evidence for the untested case.
+2. **The browser-to-Sleeper live path is still only partially verified.** This
+   league's real pre-draft 12-team / 60-second / 1-flex payload now verifies the
+   confirmed seat, order provenance, and opponent-history isolation. Same-page
+   repaint is controlled no-reload coverage against the exact captured before and
+   after payloads, not evidence that a browser stayed open through publication.
+   Anthony's only started-draft exercise remains the real 19-team Sleeper draft
+   (`1388575351239606272`) on 2026-08-26 at 120 seconds / 2 flex. Real
+   `last_picked`, pick-cache timing, audio, wake lock, background-tab behavior, and
+   recovery on this league cannot be tested before the draft starts. Automated
+   smoke is hermetic. Do not promote pre-draft confirmation into started-feed
+   evidence.
 3. **PII is out of HEAD but still in git history.** Retention is Anthony's call,
    deferred to after the draft. Do not act on it unilaterally.
 
@@ -409,8 +438,9 @@ That is not proof of causation, and Chris & Dom won twice at 88.21% while John J
 
 ### The league
 12 teams, snake, full PPR, 13 completed seasons 2013-2025. Yahoo 2013-2024, Sleeper 2025-2026.
-2026 league `1389378429505241088`, draft `1389378429505241089`. The external draw
-puts Anthony at **slot 4**; Sleeper confirmation is still pending.
+2026 league `1389378429505241088`, draft `1389378429505241089`. Sleeper's complete
+non-identity order map confirms Anthony at **slot 4**; `draft_order` and
+`slot_to_roster_id` agree.
 Anthony is roster 7 "Taylor Made", co-owner ernie706.
 2026 scoring: `rec 1.0, pass_td 6.0, pass_yd 0.04, pass_int -1.0, rush_td 6, rec_td 6, fum_lost -2.0`.
 Starters `QB RB RB WR WR TE FLEX K DEF` + 5 bench.
@@ -507,7 +537,7 @@ Cambria wins on raw strength. Baldino outperforms his all-play. **Anthony has no
 
 **D. Anthony's actual leak.** Not draft position, not drafted share, not luck. Candidates: start-sit, FAAB sizing, roster construction late.
 
-**E. Phase 5 simulator.** Slot 4 is primary after the external draw; the other 11
+**E. Phase 5 simulator.** Slot 4 is primary after the confirmed draw; the other 11
 slots remain references. Survival probability, run probability, opportunity cost,
 per-slot decision cards.
 
@@ -578,7 +608,7 @@ Conviction overlay (Expansion Phase B): `data/my_board.csv` - schema and the
 pre-registered scoring rule live in the file header. The engine applies it
 AFTER build_model as a pure transform (apply_overlay): YOUR CALL chips beside
 model VOR on every surface, survival of each bull to every slot's picks plus the
-externally reported slot-4 primary when the board is populated, within-tier resort
+Sleeper-confirmed slot-4 primary when the board is populated, within-tier resort
 on positional panels (display),
 and its ONE decision role - the coin-flip tie-break toward bulls. The model
 primary is always the wait-or-reach subject; guard 10 (10 checks) proves the

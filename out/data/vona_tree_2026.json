@@ -2,10 +2,10 @@
  "provenance": {
   "generated": "2026-08-31",
   "engine_generated": "2026-08-31",
-  "engine_content_sha256": "9391e9ce040ca9363161d22b4b775d59efb0503c4eab7cf4249d89adb25735aa",
+  "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
   "primary_slot": 4,
   "primary_slot_source": "owner_reported_external_draw",
-  "sleeper_confirmation": "pending",
+  "sleeper_confirmation": "agrees",
   "slot_coverage": "all_slots",
   "objective": "VONA(pos) = E[best available at this pick] - E[best available at my next pick], both survival-weighted over the whole positional pool",
   "survival": "frozen survival model called from src/engine_2026.py - the pre-draft convention every artifact uses; the adopted calibration applies to conditional survival in the LIVE room only, and after the one-frame fix this builder uses no conditional survival at all",

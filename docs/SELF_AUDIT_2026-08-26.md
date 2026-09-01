@@ -78,19 +78,20 @@ commissioned the audit), **GUARD** (an automated test caught it), **ANTHONY**,
 | 53 | `adj_vac` subtracts an incoming player only when he has 2025 NFL targets; a 2026 rookie therefore subtracts zero, overstating the destination team's open opportunity while producing a plausible value | **REVIEWER** (opportunity-input audit) | since C5 | yes | **HISTORICAL PRODUCTION INSIDE CURRENT-ROSTER GROUPING (3)** |
 | 54 | At the actual slot-4 decision, PATHS rendered zero forks and labelled the root "not a decision" while its action space contained one unconditional representative per position: it could neither condition on Gibbs/Bijan/Chase being gone nor compare McCaffrey with Taylor inside RB. On the observed board it would still render Puka alone (WR VONA 45.83 vs RB 41.29, gap 4.54 above a recomputed 3.58 epsilon) even though the complete 4/21/28 policy placed McCaffrey only 2.08 lineup points above Puka, inside the artifact's 7.0 coin-flip band | **REVIEWER** (slot-4 decision audit) | since PATHS shipped | yes | **SURFACE ABSENCE AS FINDING** |
 | 55 | Printable Sheet 4 took the engine's static median-availability checkpoints, stripped `p_available_now`, tier-cliff and coin-flip qualifiers, then labelled the remaining names "Board expects" and the unsolved `fallback` "Next best." Bijan entered the pick-4 pool at 50.3% while Gibbs missed it at 48.2%. The sheet was not sourced from the paired simulation at all; in the current committed Puka-path run Javonte appears at pick 28 in only 7.652% of states. Individual survival had silently become a joint-path forecast, and the fallback had never been re-solved through the marginal policy | **ANTHONY** (read the live printed surface) | since cheat sheet shipped | yes | **CLAIM-STRENGTH ESCALATION / QUALIFIER LOSS** |
+| 56 | Sleeper published the complete official order after a correct pending-state build had deployed. The dynamic room read the new state, but committed engine/VONA derivatives and static Cheat Sheet/PATHS continued saying `Sleeper pending`; Pages was byte-identical to main and every content digest agreed because all artifacts descended consistently from the same now-stale engine input | **REVIEWER** (live transition verification) | exact event time unavailable; <5h 41m from last observed pending sample to rebuild | yes | **SILENT STALENESS (6): MUTABLE WORLD STATE AFTER BUILD** |
 
 ### 1.2 Base rate: how often do I catch my own defects before committing?
 
 **Roughly 1 in 10, and the honest number is probably worse.**
 
-Of the 55 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **9.1%**. The first
+Of the 56 entries: 5 are SELF-PRE (#25, #26, #27, #30, #51) - **8.9%**. The first
 four are flattering to me. #25 was caught only because M1 had *already* published
 the finding that raw VOR sums are the wrong objective, so I was checking against a
 known answer. #27 was caught by an assertion I wrote in the same sitting. #51 is
 the first spontaneous instance: before shipping a newly wired input, I asked
 whether its source could actually update and found that it could not.
 
-The other categories: SELF-POST 12, GUARD 9, REVIEWER 27, ANTHONY 2.
+The other categories: SELF-POST 12, GUARD 9, REVIEWER 28, ANTHONY 2.
 
 The SELF-POST count is the one that needs the caveat. Every single SELF-POST find
 came from an audit **Anthony commissioned** - the 3B audit, the survival audit, the
@@ -99,7 +100,7 @@ came from me spontaneously re-examining shipped work. So the accurate statement 
 not "I catch about a third of my defects afterwards"; it is **"I catch defects when
 someone tells me to go look, and almost never otherwise."**
 
-Twenty-seven of 55 - the largest single share, and disproportionately the severe
+Twenty-eight of 56 - the largest single share, and disproportionately the severe
 ones - came from outside review. Of the eleven defects now known to have reached
 the live site and stayed there for more than a day (#19, #31, #34, #35, #39,
 #43, #45, #46, #52, #53, #54), **nine were found by someone other than me.**
@@ -134,8 +135,8 @@ contract corpus matters: current names used U+2019, while unobserved U+02BC stil
 split an otherwise identical name. The test now names the punctuation classes
 instead of waiting for the next player to expose one.
 
-**SILENT CRON / STALE PUBLICATION - 5 occurrences (#19, #35, P2-3's
-draft-morning rebuild gap, #41, and #51).**
+**SILENT CRON / STALE PUBLICATION - 6 occurrences (#19, #35, P2-3's
+draft-morning rebuild gap, #41, #51, and #56).**
 **Why it did not generalize:** after #19 the fix was a *guard inside the job* (a
 7-day as-of check). That makes the job fail loudly - but a failing job is exactly
 the state nobody was watching. The monitoring was pointed at the machine, not at the
@@ -156,6 +157,16 @@ source/snapshot/decision digests and explicit horizon events, and fails closed o
 contracted horizon. The distinctive lesson is prospective: inspect the update path
 of a new feature before trusting its first correct build. Every earlier occurrence
 was found only after the deliverable had already gone stale.
+
+#56 is a different edge of the same dependency graph. No cron failed, no
+downstream consumer was omitted, and the deployed bytes correctly reproduced the
+committed build. Sleeper changed a fact after that build: the order moved from
+pending to confirmed. The draw watch detected and reported the change but did not
+itself cause the full engine/VONA/static-page dependency chain to rebuild. Byte
+comparison proves deployment fidelity and the content digest proves internal
+lineage; neither proves that a mutable source still matches the world. For mutable
+operational facts, the required edge is source-state transition -> dependency-aware
+rebuild, not merely source-state transition -> human notification.
 
 **FAIL-OPEN GUARD / CONTROL - 5 occurrences (#14, #15, #22, the SKIP hole in
 Part 2, and #42).**
@@ -747,8 +758,20 @@ block. A confirmation-state change now repaints the pre-draft surface to slot 4 
 the same document. The regression starts on the exact captured placeholder, opens
 slot 7 as a reference, switches to the realistic 11+12 payload, and proves all
 labels, pick geometry, and the active chip advance together without a reload,
-conflict, live clock, or transient slot-7 primary. This is automated transition
-evidence, not a claim that the still-pending real server transition has occurred.
+conflict, live clock, or transient slot-7 primary. This was automated transition
+evidence before publication, not a claim that the then-pending real server
+transition had occurred.
+
+The actual publication did not take the rehearsed 11-user/12-roster form. Sleeper
+supplied 12/12 user assignments and a complete non-identity 12-roster permutation
+because roster 3 had acquired a new owner; the resolver accepted the complete
+official evidence and confirmed Anthony at slot 4. More importantly, the unexpected
+occupant mapping did not leak into opponent history. Slot 3 remained
+`unresolved_merge` and slot 7 `unresolved_new_manager`; each stayed null in 132/132
+gap-seat ledger occurrences. Slot 3 inherited none of Richie's history and slot 7
+inherited none of Mike Long's. History identity comes from the explicit
+reported-history mapping rather than the current roster occupant. That abstraction
+absorbed an unforeseen payload shape without corrupting descriptive history.
 
 - Severity: **HIGH and draft-critical before the fix.** The first real order poll
   could have blocked or displayed a split state immediately before the draft.
@@ -758,6 +781,10 @@ evidence, not a claim that the still-pending real server transition has occurred
 
 ### Hunted and found clean (stated so the next agent does not redo it)
 
+- **Opponent-history isolation under the real order transition.** The actual 12/12
+  owner publication differed from the rehearsed ownerless shape, yet slots 3 and 7
+  stayed null in 132/132 gap-seat occurrences. See P2-10 for the evidence and why
+  the reported-history mapping, not the live occupant, is the protecting boundary.
 - **Injection.** `MOCK_ID` is sanitized at the source (`.replace(/\D/g,"")`) and
   escaped at render. Member-controlled Sleeper team names are `esc()`'d at every
   interpolation site checked. No unescaped network string found in an `innerHTML`

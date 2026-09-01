@@ -168,7 +168,9 @@ Promise.all([
     T = j;
     SLOT = Number(j.provenance.primary_slot);
     if (!T.slots[String(SLOT)]) throw new Error("primary slot missing from path data");
-    $("hdr").textContent = "slot " + SLOT + " primary - externally reported draw; " +
+    var orderLabel = j.provenance.sleeper_confirmation === "agrees"
+      ? "Sleeper-confirmed external draw" : "externally reported draw";
+    $("hdr").textContent = "slot " + SLOT + " primary - " + orderLabel + "; " +
       (Object.keys(T.slots).length - 1) + " reference slots retained; Sleeper " +
       j.provenance.sleeper_confirmation;
     $("foot").textContent = "generated " + j.provenance.generated +

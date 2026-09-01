@@ -51,15 +51,15 @@ function completeDraftOrder(ownerSlot, teams = 12){
 }
 
 // The externally reported 2026 draw expressed in Sleeper's stable roster ids.
-// The live endpoint remains on its identity placeholder until the commissioner
-// publishes this permutation; keeping the exact transition here proves the
-// room can consume the first official payload without a reload.
+// Keep the exact pre-publication transition as a deterministic fixture even
+// after the real endpoint confirms it; endpoint-state coverage is not today's data.
 function reportedSlotMap(){
   return {1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12};
 }
 
-// Roster 3 is currently ownerless, so Sleeper's legitimate user order has
-// eleven entries while its roster-slot permutation still covers all twelve.
+// Historical/rehearsal shape: a valid user order may omit an ownerless roster
+// while the roster-slot permutation still covers all twelve. The real 2026
+// publication had twelve owners; keep this shorter valid transition fixture.
 function reportedUserOrder(){
   return {
     "1076422875726299136":1, "741129160759619584":2,
@@ -2285,7 +2285,7 @@ function reportedUserOrder(){
     await pg.goto(base + "/out/paths.html");
     await pg.waitForTimeout(900);
     const body = await pg.textContent("#content");
-    ok(/Slot 4 - picks/.test(body), "paths: renders the externally reported primary slot first");
+    ok(/Slot 4 - picks/.test(body), "paths: renders the artifact primary slot first");
     ok(await pg.locator(".tnode").count() > 3, "paths: the tree has nodes");
     ok(!/BULLISH|WATCH/.test(body),
        "paths: no BULLISH marker anywhere on the decision surface");
@@ -2295,10 +2295,15 @@ function reportedUserOrder(){
        /cannot compare two players at the same position/.test(body),
        "paths: zero output is not presented as a player-level no-decision finding");
     const pathsHeader = await pg.textContent("#hdr");
-    ok(/slot 4 primary/.test(pathsHeader) && /externally reported/.test(pathsHeader) &&
-       /11 reference slots retained/.test(pathsHeader) && /Sleeper pending/.test(pathsHeader) &&
+    const pathProvenance = JSON.parse(fs.readFileSync(
+      path.resolve("out/data/vona_tree_2026.json"), "utf8")).provenance;
+    const pathOrderLabel = pathProvenance.sleeper_confirmation === "agrees"
+      ? /Sleeper-confirmed external draw/ : /externally reported draw/;
+    ok(/slot 4 primary/.test(pathsHeader) && pathOrderLabel.test(pathsHeader) &&
+       /11 reference slots retained/.test(pathsHeader) &&
+       new RegExp("Sleeper " + pathProvenance.sleeper_confirmation).test(pathsHeader) &&
        await pg.locator("#slots button").count() === 12,
-       "paths: identifies slot 4 as externally reported primary and retains references");
+       "paths: identifies the artifact's slot-4 provenance and retains references");
     // switching slots re-renders a different tree
     const t1 = await pg.textContent("#content");
     await pg.click('#slots button[data-slot="8"]');

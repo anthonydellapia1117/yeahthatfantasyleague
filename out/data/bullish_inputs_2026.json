@@ -1,21 +1,21 @@
 {
  "provenance": {
-  "generated": "2026-08-31",
+  "generated": "2026-09-01",
   "engine_generated": "2026-08-31",
-  "engine_content_sha256": "9391e9ce040ca9363161d22b4b775d59efb0503c4eab7cf4249d89adb25735aa",
+  "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
   "input_content_sha256": {
-   "ceiling_2026.json": "847c917f75c57dd40858914d7a7fa72f3d96a06e7f06c2b540fce3a1dd7b9d81",
+   "ceiling_2026.json": "3439352b6e7f7047daed46f61532c17adb3d4d14fd9b0eb8e687cb5a8f40a4a6",
    "usage_2025.json": "932cfec8d625eb662326d34d16533d079357f2fd15de1dc95f101051f5c8cb00",
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
    "depth_charts.json": "eda4141383ef75feef1056813ec11b53a93dff3818b1ed6647986e75caa3ea62",
    "crosswalk.json": "88adde22d76c469860ec70bee2bf698cd34d3118bef1e0a280302bfd329a120d",
-   "docs/ffopportunity/schedule_2026.csv": "cf80326d4e0af902db06a6553965028b068db7bd6e851107fca4989aa9fc1218",
-   "docs/ffopportunity/schedule_2026.meta.json": "afc327ac372beaf92139138972544a63ab3ae55a7d697507c762868ed0a87842"
+   "docs/ffopportunity/schedule_2026.csv": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
+   "docs/ffopportunity/schedule_2026.meta.json": "31b140c4793f7adfaa6befd14c4fad6a2fac746ec6e7a0bf8ed8b181245b271e"
   },
   "vegas": {
    "week1_rb": {
     "source": "nflverse HISTORY games.csv, Week-1 2026 lines",
-    "pulled": "2026-08-31",
+    "pulled": "2026-09-01",
     "games": 16,
     "consumers": [
      "RB.expected_td_equity"
@@ -25,14 +25,14 @@
     "source": "docs/ffopportunity/schedule_2026.csv",
     "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
     "upstream_source": "http://www.habitatring.com/games.csv",
-    "pulled_at": "2026-08-31T18:53:52+00:00",
-    "source_content_sha256": "cf80326d4e0af902db06a6553965028b068db7bd6e851107fca4989aa9fc1218",
-    "snapshot_content_sha256": "cf80326d4e0af902db06a6553965028b068db7bd6e851107fca4989aa9fc1218",
-    "upstream_content_sha256": "12de30767cec4776c265723364bfeace207b4157f2b6f20f318c0ad1ee9d5491",
-    "decision_input_sha256": "1b015767f24d16b96d74aa7fd3e17c697c44bfef0121c62d50116bcea6b361d9",
+    "pulled_at": "2026-09-01T01:54:43+00:00",
+    "source_content_sha256": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
+    "snapshot_content_sha256": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
+    "upstream_content_sha256": "58d637afe1dd5f93d993f3e364e62d83e854eccc758c59427085dfc650cb531f",
+    "decision_input_sha256": "ac131da7c7a3637bddca7ce45c613e118d69ea1721998632b5c11fdfe2a38eac",
     "pricing_by_week_sha256": {
      "1": "64da7bce79904c2b281f0cfcfbbeb16f35c6adee593ab9c6cc752381a3736cca",
-     "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+     "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
      "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
@@ -247,12 +247,12 @@
      "event": "REPRICED",
      "attribution": "SCHEDULE_INPUT",
      "prior": {
-      "source_content_sha256": "f5968820e17a1f5d299c706dbe643afed37b897b9dac1467daa7bbd73414ab2f",
+      "source_content_sha256": "cf80326d4e0af902db06a6553965028b068db7bd6e851107fca4989aa9fc1218",
       "upstream_content_sha256": null,
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-      "decision_input_sha256": "0eb9779e3b87133faf59fd47ce65b35347b134035e193a13ba6aef61b7d2b31a",
+      "decision_input_sha256": "1b015767f24d16b96d74aa7fd3e17c697c44bfef0121c62d50116bcea6b361d9",
       "pricing_by_week_sha256": {
-       "1": "d67ca91288842b70a358d6d11e69c7f01fa1d2d8901f5836181d7562b27d9edd",
+       "1": "64da7bce79904c2b281f0cfcfbbeb16f35c6adee593ab9c6cc752381a3736cca",
        "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
        "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
        "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -280,13 +280,13 @@
       }
      },
      "current": {
-      "source_content_sha256": "cf80326d4e0af902db06a6553965028b068db7bd6e851107fca4989aa9fc1218",
-      "upstream_content_sha256": "12de30767cec4776c265723364bfeace207b4157f2b6f20f318c0ad1ee9d5491",
+      "source_content_sha256": "163a2dd92c6384605d28a1aeca244912dcb8bb61846f00f126ac9d11737e57db",
+      "upstream_content_sha256": "58d637afe1dd5f93d993f3e364e62d83e854eccc758c59427085dfc650cb531f",
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-      "decision_input_sha256": "1b015767f24d16b96d74aa7fd3e17c697c44bfef0121c62d50116bcea6b361d9",
+      "decision_input_sha256": "ac131da7c7a3637bddca7ce45c613e118d69ea1721998632b5c11fdfe2a38eac",
       "pricing_by_week_sha256": {
        "1": "64da7bce79904c2b281f0cfcfbbeb16f35c6adee593ab9c6cc752381a3736cca",
-       "2": "2c688b4a59e22f86e89ee85c8928ca16f44298fff9d670c5f0f6aa312116d2bd",
+       "2": "63eedd6c5e6e26a9ae8b23849727b5d8d7339f0493d94fc93890cdbe7bc77e67",
        "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
        "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
        "5": "4dd0608d09e4980618632f61eea89044dd72f61786270818630375d0e07b7d88",
@@ -413,10 +413,10 @@
   },
   "forward_implied_total": {
    "ARI": 18.17,
-   "ATL": 21.33,
+   "ATL": 21.25,
    "BAL": 26.67,
    "BUF": 25.83,
-   "CAR": 21.05,
+   "CAR": 20.95,
    "CHI": 24.83,
    "CIN": 25.65,
    "CLE": 18.42,
@@ -471,13 +471,13 @@
    "NO": 21.71,
    "NYG": 23.25,
    "NYJ": 18.5,
-   "PHI": 23.83,
+   "PHI": 23.75,
    "PIT": 22.21,
    "SEA": 24.83,
    "SF": 25.83,
    "TB": 23.67,
    "TEN": 20.21,
-   "WAS": 23.33
+   "WAS": 23.25
   },
   "line_ybc_2025": {
    "PHI": 2.642,
@@ -1659,7 +1659,7 @@
    "team_line_ybc": 2.522,
    "gp_rate_2yr": 0.8529,
    "exp_missed": 2.5,
-   "forward_implied_total": 21.33,
+   "forward_implied_total": 21.25,
    "routes_proxy": 394,
    "tprr_proxy": {
     "k": 113,
@@ -2475,7 +2475,7 @@
    "team_line_ybc": 2.49,
    "gp_rate_2yr": 1.0,
    "exp_missed": 0.0,
-   "forward_implied_total": 21.05,
+   "forward_implied_total": 20.95,
    "routes_proxy": 547,
    "tprr_proxy": {
     "k": 122,
@@ -4968,7 +4968,7 @@
    "team_line_ybc": 2.49,
    "gp_rate_2yr": 0.6471,
    "exp_missed": 6.0,
-   "forward_implied_total": 21.05,
+   "forward_implied_total": 20.95,
    "routes_proxy": 289,
    "tprr_proxy": {
     "k": 45,

@@ -448,9 +448,12 @@ for _official_payload, _official_source in [
        _agrees["source"] == _official_source,
        f"Sleeper {_official_source} confirms external slot 4", str(_agrees))
 
-# The live 2026 league currently has one ownerless roster. Sleeper's valid
-# publication shape therefore has eleven user assignments but a complete
-# twelve-roster permutation; an older league shell has emitted this shape too.
+# Historical/rehearsal shape: before publication roster 3 appeared ownerless,
+# and an older Sleeper league shell emitted eleven user assignments beside a
+# complete twelve-roster permutation. The actual 2026 order published with
+# twelve user assignments and a complete non-identity roster permutation after
+# roster 3 gained a new owner. Keep this fixture: the shorter valid shape can
+# still occur and must corroborate, never defeat, the complete roster evidence.
 _ownerless_user_order = {
     "1076422875726299136": 1, "741129160759619584": 2,
     "740765967986204672": 3, _uid: 4,
