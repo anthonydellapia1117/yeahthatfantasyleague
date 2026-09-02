@@ -164,11 +164,20 @@ archetype, usage, and opportunity layers are auxiliary evidence built mostly fro
 claims separate: backward-looking limitations in the auxiliary layer do not
 describe the core projection source.
 
-Eight surfaces, all in `out/`: `home.html` (hub), `big_board.html`,
-`players.html`, `teams.html`, `draft_room.html` (the draft-night surface),
-`paths.html` (the VONA decision tree), `ff-hub.html` (the retrospective dashboard
-for the 2013-2025 history analysis), and `cheatsheet.html` (the printable
-engine/VOR board and median-availability checkpoints).
+Eight **navigated** surfaces, all in `out/`: `home.html` (hub),
+`big_board.html`, `players.html`, `teams.html`, `draft_room.html` (the draft-night
+surface), `rxr.html` (the bounded prep-only scenario surface), `ff-hub.html` (the
+retrospective dashboard for the 2013-2025 history analysis), and
+`cheatsheet.html` (the printable engine/VOR board and median-availability
+checkpoints). `paths.html` remains deployed only as an unlinked audit renderer;
+it is not a supported decision destination and must not be restored to navigation.
+
+`docs/APP_INFORMATION_ARCHITECTURE_SPEC.md` is the approved post-draft page and
+navigation plan. It preserves separate HTML files as failure boundaries, groups
+the eight surfaces under DRAFT / BOARD / EVIDENCE sticky sub-tabs, and makes the
+competing-answer hierarchy the central Draft Room repair. It does not authorize
+runtime work before the 2026 draft is complete. `docs/TURN_PLANNER_SPEC.md`
+remains authoritative for the model and live-state replacement for PATHS.
 
 ### What it deliberately does NOT do
 
