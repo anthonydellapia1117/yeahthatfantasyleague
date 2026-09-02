@@ -15,10 +15,10 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
 
 | | |
 |---|---|
-| **Last touched** | 2026-09-01 by Codex - #78 is merged and deployed at `0b9204a`; the bounded **RxR Prep** surface is live. PR #79 is a display-only follow-up: drafted rows hide by default so the first visible row is the best available player, while an explicit toggle restores the original struck-through audit view. No engine, policy, survival, ranking, scenario or numeric artifact changed. |
-| **Next agent** | Review and, if authorized, squash-merge #79. Then wait for Pages, byte-compare deployed `rxr.html` against main, exercise default hide plus `Show drafted players` on the live page, and run publication/preflight. Do not extend RxR into a live poller, future-turn path, tie claim or probability layer before the draft. Do not touch #54. |
-| **Branch** | PR #79, `codex/rxr-hide-drafted`; work commit `727246a`, followed only by this baton commit. Full battery: gate self-test 16; Python guards survival 122, CVS 22, VOR 51, base rates 70, archetypes 17, ceiling 16, BULLISH 107, WS2 63, mock 200, BULLISH-vs-ADP 48, VONA 1,818, drafted-vs-acquired 23, pages/data 399, analysis 38 with zero skips; 3,010 total Python checks including the gate self-test; browser smoke 468; mathdiff EMPTY. Existing numeric artifacts are unchanged. |
-| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - main and deployed RxR are `0b9204a` with #78 live. PR #79's default-hide toggle is not live until it merges and Pages is byte-verified. `rxr.html` remains in the explicit Pages copy list. |
+| **Last touched** | 2026-09-02 by Codex - #79 is squash-merged at `c2a8931`; PR #80 is rebased behind it and documents the approved post-draft information architecture in `docs/APP_INFORMATION_ARCHITECTURE_SPEC.md`. #80 changes no runtime, model, artifact, navigation, build, or deployed byte. |
+| **Next agent** | Preserve the runtime freeze until the 2026 draft is complete unless Anthony separately authorizes the named Big Board polling hotfix. After the draft, the four shipped correctness defects in the architecture spec are the first implementation unit, separate from reorganization. Then implement the three-section navigation, then the Draft Room competing-answer hierarchy. Do not touch #54. |
+| **Branch** | PR #80, `codex/app-information-architecture-spec`; rebased documentation commits followed only by this resolved baton commit. #79's full battery remains recorded in item 27. #80's fresh-reader test recovered all ten governing decisions and its documentation diff check is clean. No runtime suite was invoked for #80 because executable, test, model, and artifact bytes are unchanged. |
+| **Live site** | https://anthonydellapia1117.github.io/yeahthatfantasyleague - #79 is live from main `c2a8931`: Pages completed successfully, deployed `rxr.html` is byte-identical, drafted rows hide by default, and `Show drafted players` restores the same row struck through. PR #80 is repository documentation only and has no Pages byte to publish. |
 | **Draft order** | SLEEPER CONFIRMED: Anthony is **slot 4**, roster 7, picks **4, 21, 28, 45, 52, 69, 76, 93, 100, 117, 124, 141, 148, 165**. Complete slot-to-roster permutation: `{1:10, 2:11, 3:1, 4:7, 5:6, 6:9, 7:3, 8:2, 9:8, 10:5, 11:4, 12:12}`. Both `draft_order` and `slot_to_roster_id` resolve slot 4 and `src/check_draft_order.py` reports agreement. |
 | **Live draft geometry** | snake, 12 teams, 14 rounds, 60s pick timer, no third-round reversal - asserted by `src/preflight_draft.py` |
 | **Live path** | PRE-DRAFT STATE VERIFIED against this league's real 12 teams / 60s / 1 flex and confirmed order for slot resolution, order provenance, gap strips, and history isolation. Same-page repaint is controlled no-reload coverage against the captured before/after payloads; no browser was demonstrably left open through the real publication moment. The only started-draft browser exercise remains the 2026-08-26 real Sleeper draft `1388575351239606272` at 19 teams / 120s / 2 flex. This league's actual started feed is **NOT** verified until September 8. See `AGENT_HANDOFF_SPEC.md` §11. |
@@ -429,13 +429,34 @@ the work.** Not afterwards, not "when things settle". If this block disagrees wi
     browser guard records Gibbs, Bijan, Chase and Puka, proves Puka hides and the
     next engine-VOR player rises to the top, restores Puka visibly struck through,
     hides it again, and then completes the conditioned pick-21/pick-28 path.
+28. **PR #80 freezes the post-draft application architecture without changing the
+    build.** The eight navigated pages become three user jobs with sticky
+    cross-document sub-tabs: DRAFT (Live Room / RxR Prep / Print), BOARD (CVS
+    Board / Player / Team), and EVIDENCE (Data Health / Findings). Separate HTML
+    files remain intentional failure boundaries; Draft Room's poller may not share
+    runtime fate with the printable sheet. PATHS remains a directly reachable but
+    unlinked audit renderer and never returns to public navigation. Alternate slots
+    remain available through a collapsed, visibly labelled Print reference path and
+    an optional Draft Room diagnostics drawer; RxR stays on the reconciled primary
+    slot.
+
+    The central Draft Room repair is the competing-answer hierarchy: canonical
+    marginal action, neutral engine-VOR board leader, numeric wait cost plus
+    same-producer alternatives, then configured CVS/grade/history diagnostics
+    behind details. Four shipped wrong-answer defects are explicitly a separate
+    first PR after the draft: Big Board rookie classification, Players search
+    truncation, Big Board's silent live-availability poll failure, and Home's
+    fabricated noon timestamp. Read-only routed-failure testing proved the Big
+    Board can show a drafted player as available without a warning. Preserve the
+    freeze if Big Board is treated as reference-only; a pre-draft repair requires
+    Anthony's explicit authorization for that defect alone.
 
 ### In flight / nothing blocked
 
-Main is `0b9204a`; #78 is merged and live. PR #79 is the current display-only
-review. RxR remains the sole explicitly authorized exception to the pre-draft
-feature freeze and remains bounded to offline scenario prep; all existing numeric
-artifacts are unchanged. The real confirmed pre-draft endpoint is observed;
+Main is `c2a8931`; #79 is merged. PR #80 is rebased behind it and is the
+documentation-only architecture freeze. #80 does not authorize the full live Turn
+Planner or architecture implementation. All existing numeric artifacts remain
+unchanged by #80. The real confirmed pre-draft endpoint is observed;
 same-page repaint is regression-tested against the exact captured before/after
 payloads. The actual started feed remains unverified. PR #54 remains OPEN, PARKED
 THROUGH THE DRAFT, and untouched at remote head `4bd541e`; its
@@ -446,7 +467,10 @@ answer the actual pick-4 question. Do not rebase, resolve, or merge it for this
 draft. The separately specified draw-watch-to-rebuild edge is logged only and needs
 separate approval regardless of date.
 
-Post-draft backlog remains: the full live RxR Turn Planner with coherent Sleeper
+Post-draft backlog begins with the four independent shipped correctness defects in
+`docs/APP_INFORMATION_ARCHITECTURE_SPEC.md`, then the approved three-section page
+reorganization and Draft Room competing-answer hierarchy. The broader backlog also
+includes the full live RxR Turn Planner with coherent Sleeper
 polling and held-out action-uncertainty calibration, the frozen-evidence manifest and explicit review of its
 seven current divergences, the three unenumerated `ALL_R_CODE` mislabels
 (`route_participation_proxy`, `team_implied_total`, `prior_epa_proxy`), vacated-carries

@@ -550,8 +550,8 @@ This architecture does not authorize:
   into canonical policy;
 - deletion, paraphrase, or weakening of an approved verdict, provenance line,
   method disclosure, limitation, null, or false-negative warning; or
-- runtime implementation before September 8 without a new explicit authorization
-  for a named production defect.
+- runtime implementation before the 2026 draft is complete without a new explicit
+  authorization for a named production defect.
 
 The implementation standard is not `everything still exists somewhere`. It is:
 the next decision is fast to find, every visible claim names its authority, and
