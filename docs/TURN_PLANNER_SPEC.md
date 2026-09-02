@@ -33,12 +33,14 @@ independent recommendations, or relabel the existing tree.
 - local browser persistence bound to the engine content digest, so a refreshed
   engine invalidates the old scenario instead of silently reusing it.
 
-The full player list stays visible in engine-VOR order. Drafted rows remain on the
-same board and become visibly struck through; policy scores and the neutral leader
-outline never filter or reorder it. K/DEF remain visible projection floors and are
-not policy-scored. The page deliberately says `ACTION UNCERTAINTY NOT CALIBRATED`:
-it publishes a deterministic one-step ordering, not a separated winner or optimal
-multi-round path.
+The full player list remains in the DOM and in engine-VOR order. Drafted rows hide
+by default, so the first visible row is always the highest-ranked available player.
+An explicit `Show drafted players` toggle restores those rows in their original
+positions with the struck-through audit treatment. Neither state reorders the board,
+and policy scores or the neutral leader outline never filter it. K/DEF remain visible
+projection floors and are not policy-scored. The page deliberately says `ACTION
+UNCERTAINTY NOT CALIBRATED`: it publishes a deterministic one-step ordering, not a
+separated winner or optimal multi-round path.
 
 RxR Prep does **not** extract or duplicate the Draft Room poller. Live Sleeper
 conditioning, future marginal survival, historical descriptions, action-error
