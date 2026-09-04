@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-09-03",
+  "generated": "2026-09-04",
   "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
   "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
  },
@@ -306,7 +306,7 @@
     {
      "tag": "elite_te",
      "orientation": "target",
-     "reason": "TE1 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
+     "reason": "TE2 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
     }
    ]
   },
@@ -684,6 +684,17 @@
    ]
   },
   {
+   "name": "Jonah Coleman",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "DEN returning-RB carry concentration below league median (67%); his ADP round is 14 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
    "name": "Jonathan Taylor",
    "pos": "RB",
    "tags": [
@@ -851,7 +862,7 @@
     {
      "tag": "late_te_dart",
      "orientation": "target",
-     "reason": "TE17 at ADP round 12; the report's punt path is two late darts, never mid-tier"
+     "reason": "TE17 at ADP round 13; the report's punt path is two late darts, never mid-tier"
     }
    ]
   },
@@ -1017,7 +1028,7 @@
     {
      "tag": "elite_te",
      "orientation": "target",
-     "reason": "TE2 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
+     "reason": "TE1 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
     }
    ]
   },
