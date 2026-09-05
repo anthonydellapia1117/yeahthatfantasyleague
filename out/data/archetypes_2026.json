@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-09-04",
+  "generated": "2026-09-05",
   "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
   "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
  },
@@ -306,7 +306,7 @@
     {
      "tag": "elite_te",
      "orientation": "target",
-     "reason": "TE2 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
+     "reason": "TE1 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
     }
    ]
   },
@@ -651,7 +651,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
+     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },
@@ -1028,7 +1028,7 @@
     {
      "tag": "elite_te",
      "orientation": "target",
-     "reason": "TE1 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
+     "reason": "TE2 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
     }
    ]
   },

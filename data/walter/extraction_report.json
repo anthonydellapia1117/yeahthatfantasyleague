@@ -16,12 +16,13 @@
   "sleeper": 19
  },
  "tags_by_pos": {
-  "WR": 58,
+  "WR": 57,
   "TE": 32,
   "RB": 44,
   "QB": 27,
   "DEF": 3,
-  "K": 3
+  "K": 3,
+  "DB": 1
  },
  "evidence_count": 50,
  "judgment_count": 117,
