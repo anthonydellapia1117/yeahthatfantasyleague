@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b1120">
+<script src="nav.js" data-active="rxr" defer></script>
+<script src="rxr_policy.js" defer></script>
+<title>RxR · Slot 4</title>
+<style>
+:root{--bg:#0b1120;--s1:#111827;--s2:#1A2332;--line:#2b374a;--ink:#eef2f7;
+  --ink2:#a8b3c3;--ink3:#748196;--paper:#f8fafc;--paper2:#eef2f6;--dark:#172033;
+  --mark:#c7a26b;--mark2:#f1dfbf;--blue:#77a9d7;--lilac:#a99acb;
+  --go:#34D399;--stop:#F87171;--warn:#FBBF24}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}.wrap{max-width:1100px;margin:auto;padding:18px 16px 48px}
+header{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;margin:8px 0 14px}
+h1{font-size:30px;letter-spacing:-.035em;line-height:1;margin:0}h2{font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;margin:0 0 10px;color:var(--ink2)}p{margin:0}.num{font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{border:1px solid var(--line);border-radius:999px;
+  color:var(--ink2);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px}
+.chip.mark{border-color:var(--mark);color:var(--mark2)}.card{border:1px solid var(--line);border-radius:12px;
+  background:var(--s1);padding:14px}.boundary{margin-bottom:12px;display:grid;gap:8px}
+.boundary p{color:var(--ink2);font-size:12px}.planner{display:grid;grid-template-columns:210px minmax(0,1fr) 270px;
+  gap:12px;align-items:start}.sticky{position:sticky;top:66px;max-height:calc(100vh - 82px);overflow:auto}
+.rail{display:grid;gap:5px}.turn{display:grid;grid-template-columns:32px 1fr auto;gap:7px;align-items:center;
+  border:1px solid var(--line);border-radius:8px;padding:7px;background:var(--s2);min-height:44px}
+.turn .round{font-weight:900;color:var(--ink)}.turn .pick{font-size:11px;color:var(--ink2)}
+.turn .taken{font-size:10px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.turn[data-status="current"]{border-color:var(--mark);box-shadow:inset 3px 0 0 var(--mark)}
+.turn[data-status="complete"]{opacity:.72}.roster{display:grid;gap:5px;margin-top:14px}
+.roster-row{display:grid;grid-template-columns:26px 1fr;gap:6px;font-size:11px;color:var(--ink2)}
+.roster-row b{color:var(--ink)}.controls{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.btn{border:1px solid var(--line);border-radius:8px;background:var(--s2);color:var(--ink);padding:8px 11px;
+  min-height:44px;cursor:pointer;font-weight:750}.btn:hover{border-color:var(--ink2)}.btn.primary{border-color:var(--mark);
+  color:var(--mark2)}.btn:disabled{cursor:not-allowed;opacity:.42}.toggle{display:flex;gap:8px;align-items:center;
+  min-height:44px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;color:var(--ink2);font-size:12px}
+.toggle input{width:18px;height:18px;accent-color:var(--mark)}.state{border-left:3px solid var(--mark);
+  background:var(--s2);padding:10px 11px;border-radius:0 8px 8px 0;margin-bottom:10px}
+.state strong{display:block;font-size:15px}.state span{display:block;color:var(--ink2);font-size:11px;margin-top:2px}
+.filters{display:grid;grid-template-columns:1fr 110px;gap:7px;margin-bottom:9px}.filters input,.filters select{
+  min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--s2);color:var(--ink);padding:8px}
+.board-wrap{border:1px solid var(--line);border-radius:9px;overflow:auto;max-height:calc(100vh - 300px)}
+table{border-collapse:collapse;width:100%}th{position:sticky;top:0;z-index:2;background:#172033;color:var(--ink2);
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:8px 7px;border-bottom:1px solid var(--line)}
+td{padding:8px 7px;border-bottom:1px solid #263244;vertical-align:middle}.player-row{background:var(--paper);color:var(--dark)}
+.player-row:nth-child(even){background:var(--paper2)}.player-row[data-drafted="true"]{opacity:.42;text-decoration:line-through}
+.player-row[data-policy-rank="1"]{background:#f4ead9;outline:2px solid var(--mark);outline-offset:-2px}
+.player-row td:last-child,th:last-child{position:sticky;right:0;z-index:1;background:inherit;
+  box-shadow:-7px 0 9px -9px #172033}th:last-child{z-index:3;background:#172033}
+.player-row[data-eligible="false"] .policy{color:#7d8797}.rank{font-weight:900;color:#526074;width:34px}.nm{font-weight:850}
+.meta{display:block;color:#677489;font-size:10px}.pos{font-size:10px;font-weight:900;letter-spacing:.08em;border:1px solid #9ba8bc;
+  border-radius:999px;padding:2px 5px;white-space:nowrap}.policy{font-variant-numeric:tabular-nums;font-size:11px;white-space:nowrap}
+.policy b{display:block;color:#5f4825}.draft-btn{border:1px solid #8190a4;border-radius:7px;background:transparent;color:#26354b;
+  min-height:36px;padding:5px 8px;font-size:10px;font-weight:850;cursor:pointer}.draft-btn:hover{border-color:#26354b}
+.rightcol{display:grid;gap:12px}.next-owner{font-size:13px;color:var(--ink2)}.next-owner b{color:var(--ink)}
+.round-strip{display:grid;grid-template-columns:1fr 1fr;gap:4px}.round-seat{border:1px solid var(--line);
+  border-radius:6px;padding:5px 6px;min-height:42px;color:var(--ink2);font-size:9px;overflow:hidden}
+.round-seat b{display:block;color:var(--ink);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.round-seat.current{border-color:var(--mark);box-shadow:inset 3px 0 0 var(--mark)}.round-seat.mine{color:var(--mark2)}
+.ledger{display:grid;gap:4px;max-height:310px;overflow:auto}.pickline{display:grid;grid-template-columns:35px 1fr;
+  gap:7px;padding:6px;border-bottom:1px solid var(--line);font-size:11px}.pickline b{color:var(--ink)}
+.pickline span{color:var(--ink2)}.pickline.mine{border-left:2px solid var(--mark);padding-left:8px}
+.snake-scroll{overflow:auto}.snake{display:grid;grid-template-columns:repeat(12,minmax(76px,1fr));gap:3px;min-width:950px}
+.snake-head,.snake-cell{border:1px solid var(--line);border-radius:5px;padding:5px;min-height:40px;font-size:9px}
+.snake-head{background:var(--s2);font-weight:850;color:var(--ink2);min-height:30px}.snake-cell{color:var(--ink3)}
+.snake-cell.filled{color:var(--ink2);background:var(--s2)}.snake-cell.mine{border-color:var(--mark)}
+.snake-cell b{display:block;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.why{font-size:11px;color:var(--ink2);margin-top:8px}.error{border-color:#bd8f91;color:#f3d4d4}.hidden{display:none!important}
+.prov{font-size:10px;color:var(--ink3);margin-top:12px;border-top:1px solid var(--line);padding-top:9px}
+@media(max-width:900px){.planner{grid-template-columns:180px minmax(0,1fr)}.rightcol{grid-column:1/-1;
+  grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.wrap{padding:12px 10px 32px}header{align-items:flex-start;flex-direction:column}
+  h1{font-size:27px}.planner{display:flex;flex-direction:column}.sticky{position:static;max-height:none;width:100%}
+  .rail{display:flex;overflow:auto;padding-bottom:4px}.turn{min-width:132px}.roster{grid-template-columns:1fr 1fr}
+  .middle,.rightcol{width:100%}.rightcol{display:grid;grid-template-columns:1fr}.board-wrap{max-height:62vh;
+    overscroll-behavior:contain;scroll-margin-top:62px}
+  th:nth-child(1),td:nth-child(1),th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4),
+  th:nth-child(6),td:nth-child(6){display:none}.filters{grid-template-columns:1fr 90px}
+  td{padding:7px 5px}.nm{font-size:12px}.policy{white-space:normal;min-width:94px;line-height:1.25}
+  .policy b{font-size:10px}.player-row td:last-child{min-width:60px}.draft-btn{min-height:44px;padding:5px 7px}
+  .controls .btn,.toggle{flex:1 1 130px}.snake{min-width:900px}}
+@media print{body{background:#fff;color:#111;padding-top:0}.ynav,.controls,.filters,.rightcol,.boundary{display:none!important}
+  .wrap{max-width:none;padding:0}.planner{display:block}.sticky{position:static;max-height:none}.rail{grid-template-columns:repeat(7,1fr)}
+  .card{background:#fff;color:#111;border-color:#bbb}.board-wrap{max-height:none}.player-row{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><div class="kick">YeahThatFantasyLeague</div><h1>RxR</h1></div>
+    <div class="chips"><span class="chip mark" id="slot-chip">SLOT —</span><span class="chip" id="order-chip">ORDER —</span></div>
+  </header>
+
+  <section class="card boundary">
+    <div class="chips"><span class="chip mark">RxR PREP</span><span class="chip">ADP-CHALK SCENARIO — NOT A FORECAST</span>
+      <span class="chip">MARGINAL POLICY — ONE STEP</span><span class="chip">ACTION UNCERTAINTY NOT CALIBRATED</span></div>
+    <p>RxR keeps the complete engine-VOR board available. Drafted players hide by default so the first row is the best available player; turn on <b>Show drafted players</b> to restore the struck-through audit view. Automatic opponent picks create one explicit, legal ADP-chalk scenario so your next turn can be fully conditioned. The policy marks only that next turn; it never invents a future path, probability cutoff, tie, or confidence claim.</p>
+    <p><b>Use it:</b> fill opponents to your turn, record the player actually taken in that scenario, then repeat. Undo or reset at any time.</p>
+    <p id="injury-status-provenance">Sleeper injury_status provenance loading…</p>
+  </section>
+
+  <div id="rxr-state" data-slot="" data-next-pick="1" data-prefix-count="0">
+    <div class="planner">
+      <aside class="card sticky">
+        <h2>Your 14 turns</h2>
+        <div class="rail" id="rail"></div>
+        <h2 style="margin-top:16px">Your scenario roster</h2>
+        <div class="roster" id="roster"><span class="why">No picks recorded.</span></div>
+      </aside>
+
+      <main class="middle">
+        <section class="card">
+          <div class="controls">
+            <button class="btn primary" type="button" data-action="fill" id="fill">Fill opponents to my turn</button>
+            <button class="btn" type="button" data-action="fill-one" id="fill-one">Fill one pick</button>
+            <button class="btn" type="button" data-action="undo" id="undo">Undo</button>
+            <button class="btn" type="button" data-action="reset" id="reset">Reset</button>
+            <label class="toggle"><input type="checkbox" id="policy-toggle" checked>Marginal Policy marks</label>
+            <label class="toggle"><input type="checkbox" id="show-drafted">Show drafted players</label>
+          </div>
+          <div class="state" id="state"><strong>Loading RxR…</strong><span>Validating engine, scenario, and Python/JavaScript parity.</span></div>
+          <div class="filters"><input id="search" type="search" placeholder="Search all players" aria-label="Search all players">
+            <select id="position" aria-label="Filter position"><option value="ALL">All positions</option><option>QB</option><option>RB</option><option>WR</option><option>TE</option><option>K</option><option>DEF</option></select></div>
+          <div class="board-wrap" id="board-wrap">
+            <table aria-label="RxR full player board"><thead><tr><th>#</th><th>Player</th><th>Pos</th><th>Proj</th><th>VOR</th><th>ADP</th><th>Marginal Policy</th><th>Record</th></tr></thead>
+              <tbody id="players"></tbody></table>
+          </div>
+          <p class="prov" id="provenance"></p>
+        </section>
+      </main>
+
+      <aside class="rightcol">
+        <section class="card"><h2>Current scenario pick</h2><p class="next-owner" id="current-owner">Loading…</p>
+          <p class="why">Click any available player to record the current pick. Automatic fill uses Sleeper ADP, legal starter feasibility, and the league-derived K/DEF window. It is a scenario, not opponent prediction.</p></section>
+        <section class="card"><h2 id="round-title">Current round</h2><div class="round-strip" id="round-strip"></div></section>
+        <section class="card"><h2>Pick ledger</h2><div class="ledger" id="ledger"><span class="why">No picks recorded.</span></div></section>
+      </aside>
+    </div>
+
+    <section class="card" style="margin-top:12px"><h2>12-team scenario board</h2><div class="snake-scroll"><div class="snake" id="snake"></div></div></section>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var D={eng:null,mock:null,ref:null,players:[],byId:new Map(),picks:[],policyOn:true,showDrafted:false,scoreById:new Map(),runs:0,lastMs:null};
+var STORE="ytfl_rxr_scenario_v1";
+var STARTERS=["QB","RB","RB","WR","WR","TE","FLEX","K","DEF"], FLEX_OK=["RB","WR","TE"];
+function esc(x){return String(x==null?"":x).replace(/[&<>"']/g,function(c){return({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]})}
+function fetchJson(url){return fetch(url,{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(url+" HTTP "+r.status);return r.json()})}
+function playerId(p){return String(p.sleeper_id)}
+function roundOf(overall){return Math.floor((overall-1)/D.eng.league.teams)+1}
+function slotOf(overall){var n=D.eng.league.teams,r=roundOf(overall),within=(overall-1)%n;return r%2?within+1:n-within}
+function slotInfo(slot){return D.eng.draft_order_context.slots.find(function(x){return Number(x.slot)===Number(slot)})||{reported_label:"Slot "+slot}}
+function nextOverall(){return D.picks.length+1}
+function isDone(){return D.picks.length>=D.eng.league.teams*D.eng.league.rounds}
+function nextMyPick(){var n=nextOverall();return D.eng.draft_order_context.primary_picks.find(function(p){return p>=n})||null}
+function takenSet(){return new Set(D.picks.map(function(p){return p.player_id}))}
+function rosterFor(slot){return D.picks.filter(function(p){return p.slot===slot}).map(function(p){return D.byId.get(p.player_id)}).filter(Boolean)}
+function ownRoster(){return rosterFor(D.eng.draft_order_context.primary_slot)}
+function activePool(){var used=takenSet();return D.players.filter(function(p){return !used.has(playerId(p))})}
+function counts(players){var c={QB:0,RB:0,WR:0,TE:0,K:0,DEF:0};players.forEach(function(p){if(c[p.pos]!=null)c[p.pos]++});return c}
+function unfilled(players){var c=counts(players),need=[];[["QB",1],["RB",2],["WR",2],["TE",1],["K",1],["DEF",1]].forEach(function(x){for(var i=Math.min(c[x[0]],x[1]);i<x[1];i++)need.push(x[0])});
+  var baseUsed={QB:Math.min(c.QB,1),RB:Math.min(c.RB,2),WR:Math.min(c.WR,2),TE:Math.min(c.TE,1),K:Math.min(c.K,1),DEF:Math.min(c.DEF,1)};
+  var flexSpare=FLEX_OK.reduce(function(s,p){return s+Math.max(0,c[p]-baseUsed[p])},0);if(flexSpare<1)need.push("FLEX");return need}
+function feasible(team,p,picksLeft){var c=counts(team);if((p.pos==="K"||p.pos==="DEF")&&c[p.pos]>=1)return false;var need=unfilled(team).slice(),i=need.indexOf(p.pos);
+  if(i>=0)need.splice(i,1);else if(FLEX_OK.indexOf(p.pos)>=0&&(i=need.indexOf("FLEX"))>=0)need.splice(i,1);return need.length<=picksLeft-1}
+function autoCandidate(){if(isDone())return null;var overall=nextOverall(),slot=slotOf(overall),round=roundOf(overall),team=rosterFor(slot),left=D.eng.league.rounds-team.length;
+  var pool=activePool().filter(function(p){return Number.isFinite(Number(p.adp))&&feasible(team,p,left)});if(!pool.length)throw new Error("no feasible ADP scenario candidate at pick "+overall);
+  var windowStart=Number(D.mock.provenance.kdef_window.opponents_start_round),c=counts(team),missing=["K","DEF"].filter(function(pos){return c[pos]===0}),cand;
+  if(round>=windowStart&&missing.length)cand=pool.filter(function(p){return missing.indexOf(p.pos)>=0});
+  if(!cand||!cand.length)cand=pool.filter(function(p){return p.pos!=="K"&&p.pos!=="DEF"});
+  if(!cand.length)cand=pool;return cand.slice().sort(function(a,b){return Number(a.adp)-Number(b.adp)||Number(b.vor)-Number(a.vor)||Number(a.vor_rank)-Number(b.vor_rank)})[0]}
+function record(p,source){var overall=nextOverall();if(isDone()||takenSet().has(playerId(p)))return;D.picks.push({overall:overall,round:roundOf(overall),slot:slotOf(overall),player_id:playerId(p),source:source});save();render()}
+function fillOne(){if(isDone())return;record(autoCandidate(),"adp_chalk")}
+function fillToMine(){var guard=0;while(!isDone()&&slotOf(nextOverall())!==D.eng.draft_order_context.primary_slot){var p=autoCandidate(),overall=nextOverall();D.picks.push({overall:overall,round:roundOf(overall),slot:slotOf(overall),player_id:playerId(p),source:"adp_chalk"});if(++guard>168)throw new Error("scenario fill exceeded draft geometry")}
+  save();render()}
+function save(){localStorage.setItem(STORE,JSON.stringify({engine:D.eng.content_sha256,picks:D.picks}))}
+function restore(){try{var s=JSON.parse(localStorage.getItem(STORE)||"null");if(!s)return;if(s.engine!==D.eng.content_sha256||!Array.isArray(s.picks)){localStorage.removeItem(STORE);return}var seen=new Set();
+  for(var i=0;i<s.picks.length;i++){var p=s.picks[i];if(p.overall!==i+1||p.slot!==slotOf(i+1)||!D.byId.has(String(p.player_id))||seen.has(String(p.player_id)))throw new Error("invalid saved prefix");seen.add(String(p.player_id))}
+  D.picks=s.picks.map(function(p){return Object.assign({},p,{player_id:String(p.player_id)})})}catch(e){localStorage.removeItem(STORE);D.picks=[]}}
+function parity(){if(D.ref.engine_content_sha256!==D.eng.content_sha256)throw new Error("RxR parity corpus belongs to a different engine payload");
+  D.ref.round4.forEach(function(x){if(RxRPolicy.pythonRound4(x.input)!==x.expected)throw new Error("Python round parity failed")});
+  D.ref.cases.forEach(function(c){var got=RxRPolicy.scoreCandidates(c.pool,c.roster,c.baselines,c.caps);if(JSON.stringify(got)!==JSON.stringify(c.expected))throw new Error("Python/JavaScript policy parity failed: "+c.name)})}
+function score(){D.scoreById=new Map();D.lastMs=null;var overall=nextOverall();if(!D.policyOn||isDone()||slotOf(overall)!==D.eng.draft_order_context.primary_slot)return;
+  var t=performance.now(),scores=RxRPolicy.scoreCandidates(activePool(),ownRoster(),D.eng.baselines,RxRPolicy.rosterCaps(D.eng.flex_allocation));D.lastMs=performance.now()-t;D.runs++;
+  scores.forEach(function(s){D.scoreById.set(s.player_id,s)})}
+function railHtml(){var next=nextOverall();return D.eng.draft_order_context.primary_picks.map(function(p,i){var log=D.picks[p-1],status=log?"complete":p===next?"current":p>next?"future":"waiting";
+  return '<div class="turn" data-rxr-turn="'+(i+1)+'" data-overall="'+p+'" data-status="'+status+'"><span class="round">R'+(i+1)+'</span><span><b class="pick num">Pick '+p+'</b><span class="taken">'+(log?esc((D.byId.get(log.player_id)||{}).name):status==="current"?"your turn":"pending")+'</span></span><span class="pick">'+(status==="complete"?"recorded":status==="current"?"NOW":"")+'</span></div>'}).join("")}
+function rosterHtml(){var r=ownRoster();if(!r.length)return '<span class="why">No picks recorded.</span>';return r.map(function(p,i){return '<div class="roster-row"><span>R'+(i+1)+'</span><b>'+esc(p.name)+' <span class="meta">'+esc(p.pos)+'</span></b></div>'}).join("")}
+function boardHtml(){var q=document.getElementById("search").value.trim().toLowerCase(),pos=document.getElementById("position").value,used=takenSet(),overall=nextOverall(),canDraft=!isDone();return D.players.map(function(p){var id=playerId(p),drafted=used.has(id),s=D.scoreById.get(id),visible=(!q||p.name.toLowerCase().indexOf(q)>=0||String(p.team||"").toLowerCase().indexOf(q)>=0)&&(pos==="ALL"||p.pos===pos)&&(D.showDrafted||!drafted),policy="";
+  if(s){if(s.eligible)policy='<b>#'+s.policy_rank+' · +'+Number(s.marginal_lineup_gain_key).toFixed(1)+'</b><span>lineup pts'+(s.policy_rank>1?' · gap '+Number(s.policy_key_gap).toFixed(1):'')+'</span>';else policy='<span>'+esc(s.cap_reason==="projection_floor"?"FLOOR · UNSCORED":"OUTSIDE "+s.pos+" CAP")+'</span>'}
+  else if(p.pos==="K"||p.pos==="DEF")policy='<span>PROJECTION FLOOR</span>';else policy='<span>—</span>';
+  return '<tr class="player-row'+(visible?'':' hidden')+'" data-player-id="'+esc(id)+'" data-vor-rank="'+p.vor_rank+'" data-drafted="'+drafted+'" data-policy-rank="'+(s&&s.policy_rank||'')+'" data-eligible="'+(s?s.eligible:'')+'"><td class="rank num">'+p.vor_rank+'</td><td><span class="nm">'+esc(p.name)+'</span><span class="meta">#'+p.vor_rank+' · '+esc(p.pos)+' · '+esc(p.team||'FA')+(p.injury?' · S:'+esc(p.injury):'')+'</span></td><td><span class="pos">'+esc(p.pos)+'</span></td><td class="num">'+Number(p.pts).toFixed(1)+'</td><td class="num"><b>'+Number(p.vor).toFixed(1)+'</b></td><td class="num">'+Number(p.adp).toFixed(1)+'</td><td class="policy">'+policy+'</td><td>'+(drafted?'<span class="meta">P'+D.picks.find(function(x){return x.player_id===id}).overall+'</span>':'<button class="draft-btn" type="button" data-action="draft" data-player="'+esc(id)+'" '+(canDraft?'':'disabled')+'>PICK '+overall+'</button>')+'</td></tr>'}).join("")}
+function ledgerHtml(){if(!D.picks.length)return '<span class="why">No picks recorded.</span>';return D.picks.slice().reverse().map(function(x){var p=D.byId.get(x.player_id),mine=x.slot===D.eng.draft_order_context.primary_slot;return '<div class="pickline'+(mine?' mine':'')+'"><b class="num">'+x.overall+'</b><span><b>'+esc(p.name)+'</b> · '+esc(p.pos)+' · slot '+x.slot+'<br>'+esc(x.source==="adp_chalk"?"ADP-chalk scenario":"manual selection")+'</span></div>'}).join("")}
+function roundStripHtml(){var n=D.eng.league.teams,r=isDone()?D.eng.league.rounds:roundOf(nextOverall()),current=nextOverall(),cells=[];for(var slot=1;slot<=n;slot++){var overall=(r-1)*n+(r%2?slot:n-slot+1),log=D.picks[overall-1],p=log&&D.byId.get(log.player_id),mine=slot===D.eng.draft_order_context.primary_slot;
+  cells.push('<div class="round-seat'+(overall===current&&!isDone()?' current':'')+(mine?' mine':'')+'" data-round-slot="'+slot+'" data-overall="'+overall+'" data-filled="'+Boolean(log)+'"><span>S'+slot+' · P'+overall+'</span><b>'+(p?esc(p.name):overall===current&&!isDone()?'ON CLOCK':'—')+'</b></div>')}return cells.join("")}
+function snakeHtml(){var n=D.eng.league.teams,heads=[];for(var s=1;s<=n;s++)heads.push('<div class="snake-head">S'+s+' · '+esc(slotInfo(s).reported_label)+'</div>');var cells=[];
+  for(var r=1;r<=D.eng.league.rounds;r++){for(var s2=1;s2<=n;s2++){var overall=(r-1)*n+(r%2?s2:n-s2+1),log=D.picks[overall-1],p=log&&D.byId.get(log.player_id),mine=s2===D.eng.draft_order_context.primary_slot;
+    cells.push('<div class="snake-cell'+(log?' filled':'')+(mine?' mine':'')+'" data-overall="'+overall+'" data-slot="'+s2+'" data-player-id="'+(log?esc(log.player_id):'')+'"><span>'+overall+'</span>'+(p?'<b>'+esc(p.name)+'</b><span>'+esc(p.pos)+'</span>':'')+'</div>')}}return heads.join("")+cells.join("")}
+function stateText(){if(isDone())return {a:"Scenario complete",b:"All 168 picks are recorded."};var overall=nextOverall(),slot=slotOf(overall),owner=slotInfo(slot).reported_label,mine=slot===D.eng.draft_order_context.primary_slot;
+  if(!mine)return {a:"Pick "+overall+" · "+owner+" · slot "+slot,b:"No policy mark: the prefix to your next turn is incomplete. Fill opponents or record the actual selection."};
+  var leader=[].concat(Array.from(D.scoreById.values())).find(function(s){return s.policy_rank===1});if(!D.policyOn)return {a:"Your pick "+overall+" · Marginal Policy off",b:"The engine-VOR board remains unchanged."};
+  if(!leader)return {a:"Your pick "+overall+" · policy outside defined domain",b:"No eligible skill action remains under the complete roster-cap contract. K/DEF floors are not policy-scored."};
+  var second=[].concat(Array.from(D.scoreById.values())).find(function(s){return s.policy_rank===2});return {a:"Your pick "+overall+" · Marginal Policy leader: "+leader.name,b:"Deterministic one-step lineup gain +"+Number(leader.marginal_lineup_gain_key).toFixed(1)+(second?" · policy-key margin "+Number(second.policy_key_gap).toFixed(1)+" over "+second.name:"")+". This is not confidence or an optimal path."}}
+function render(){score();var root=document.getElementById("rxr-state"),overall=nextOverall();root.dataset.slot=D.eng.draft_order_context.primary_slot;root.dataset.nextPick=isDone()?"complete":overall;root.dataset.prefixCount=D.picks.length;
+  document.getElementById("rail").innerHTML=railHtml();document.getElementById("roster").innerHTML=rosterHtml();document.getElementById("players").innerHTML=boardHtml();document.getElementById("ledger").innerHTML=ledgerHtml();document.getElementById("round-strip").innerHTML=roundStripHtml();document.getElementById("round-title").textContent="Round "+(isDone()?D.eng.league.rounds:roundOf(overall))+" board";document.getElementById("snake").innerHTML=snakeHtml();
+  var st=stateText();document.getElementById("state").innerHTML='<strong>'+esc(st.a)+'</strong><span>'+esc(st.b)+'</span>';var slot=isDone()?null:slotOf(overall),owner=slot==null?"Draft complete":slotInfo(slot).reported_label;
+  document.getElementById("current-owner").innerHTML=slot==null?'<b>Draft complete</b>':'Pick <b class="num">'+overall+'</b> · Round '+roundOf(overall)+' · Slot '+slot+' · <b>'+esc(owner)+'</b>';
+  var mine=slot===D.eng.draft_order_context.primary_slot;document.getElementById("fill").disabled=isDone()||mine;document.getElementById("fill-one").disabled=isDone()||mine;document.getElementById("undo").disabled=!D.picks.length;
+  document.getElementById("fill").textContent=mine?"Your turn — choose a player":"Fill opponents to pick "+nextMyPick();document.getElementById("provenance").textContent="Engine "+D.eng.generated+" · "+D.eng.content_sha256.slice(0,12)+" · slot "+D.eng.draft_order_context.primary_slot+" Sleeper "+D.eng.draft_order_context.sleeper_confirmation+" · policy runs "+D.runs+(D.lastMs==null?"":" · last "+D.lastMs.toFixed(2)+"ms")+" · scenario saved only in this browser."}
+function bind(){document.addEventListener("click",function(e){var b=e.target.closest("[data-action]");if(!b)return;try{if(b.dataset.action==="draft")record(D.byId.get(b.dataset.player),"manual");else if(b.dataset.action==="fill")fillToMine();else if(b.dataset.action==="fill-one")fillOne();else if(b.dataset.action==="undo"){D.picks.pop();save();render()}else if(b.dataset.action==="reset"){D.picks=[];localStorage.removeItem(STORE);render()}}catch(err){showError(err)}});
+  document.getElementById("policy-toggle").addEventListener("change",function(e){D.policyOn=e.target.checked;render()});document.getElementById("show-drafted").addEventListener("change",function(e){D.showDrafted=e.target.checked;document.getElementById("players").innerHTML=boardHtml()});document.getElementById("search").addEventListener("input",function(){document.getElementById("players").innerHTML=boardHtml()});document.getElementById("position").addEventListener("change",function(){document.getElementById("players").innerHTML=boardHtml()})}
+function showError(err){var st=document.getElementById("state");st.classList.add("error");st.innerHTML='<strong>RxR blocked</strong><span>'+esc(err&&err.message||err)+'</span>';["fill","fill-one"].forEach(function(id){document.getElementById(id).disabled=true})}
+function boot(){Promise.all([fetchJson("engine_2026.json"),fetchJson("data/mock_drafts_2026.json"),fetchJson("data/rxr_policy_reference.json")]).then(function(x){D.eng=x[0];D.mock=x[1];D.ref=x[2];var ctx=D.eng.draft_order_context||{},slot=Number(ctx.primary_slot),picks=ctx.primary_picks;
+    if(!Number.isInteger(slot)||slot<1||slot>Number(D.eng.league.teams)||!Array.isArray(picks)||picks.length!==Number(D.eng.league.rounds))throw new Error("engine lacks a complete primary-slot rail");
+    if(D.mock.provenance.engine_content_sha256!==D.eng.content_sha256)throw new Error("scenario timing and engine artifacts are out of sync");if(!window.RxRPolicy)throw new Error("RxR policy module did not load");parity();
+    D.players=D.eng.players.slice().sort(function(a,b){return Number(a.vor_rank)-Number(b.vor_rank)});D.players.forEach(function(p){var id=playerId(p);if(D.byId.has(id))throw new Error("duplicate engine player id "+id);D.byId.set(id,p)});restore();
+    document.getElementById("slot-chip").textContent="SLOT "+slot;document.getElementById("order-chip").textContent=ctx.sleeper_confirmation==="agrees"?"SLEEPER CONFIRMED":"ORDER "+String(ctx.sleeper_confirmation||"UNRESOLVED").toUpperCase();document.getElementById("injury-status-provenance").textContent="Sleeper injury_status · snapshot "+String(D.eng.generated||"unknown")+" · designation date unavailable. Preseason metadata, not an official practice/game designation; verify the team report.";document.title="RxR · Slot "+slot;bind();render()}).catch(showError)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1103 @@
+{
+ "provenance": {
+  "generated": "2026-09-06",
+  "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
+  "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
+ },
+ "thresholds": {
+  "qb_rush_ypg_p75": 23.58,
+  "rb_targets_pg_p75": 2.95,
+  "late_round_adp": 84,
+  "te_dart_adp": 120,
+  "wr_target_threshold": 140,
+  "touch_fade": 400,
+  "injury_weeks_max": 12,
+  "note": "percentile thresholds computed from 2025 usage (min 8 weeks); the 140-target and 400-touch thresholds carry their own 2016-2025 verification blocks in this artifact",
+  "ambiguous_top_share_median": 0.6731
+ },
+ "verification": {
+  "wr_140_targets": {
+   "claim": "140+ target WRs are safe (report: 96% top-24, 74% top-12 since 2000)",
+   "computed": {
+    "seasons": "2016-2025",
+    "n": 97,
+    "top24": {
+     "k": 92,
+     "rate": 0.9485,
+     "ci95": [
+      0.885,
+      0.9778
+     ]
+    },
+    "top12": {
+     "k": 72,
+     "rate": 0.7423,
+     "ci95": [
+      0.6472,
+      0.8189
+     ]
+    }
+   }
+  },
+  "rb_400_touches": {
+   "claim": "only 1 of the last 13 400+ touch RBs was top-5 the next year (report)",
+   "computed": {
+    "windows": "2013-2024 seasons -> following year",
+    "n": 3,
+    "next_top5": {
+     "k": 0,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.5615
+     ]
+    },
+    "ledger": [
+     {
+      "season": 2014,
+      "touches": 449,
+      "next_top5": false
+     },
+     {
+      "season": 2017,
+      "touches": 407,
+      "next_top5": false
+     },
+     {
+      "season": 2019,
+      "touches": 403,
+      "next_top5": false
+     }
+    ]
+   }
+  },
+  "goalline_conversion": {
+   "i5": {
+    "tds": 922,
+    "att": 2390,
+    "rate": 0.3858,
+    "ci95": [
+     0.3665,
+     0.4055
+    ]
+   },
+   "z6_10": {
+    "tds": 212,
+    "att": 1689,
+    "rate": 0.1255,
+    "ci95": [
+     0.1106,
+     0.1422
+    ]
+   },
+   "i10": {
+    "tds": 1134,
+    "att": 4079,
+    "rate": 0.278,
+    "ci95": [
+     0.2645,
+     0.292
+    ]
+   }
+  }
+ },
+ "fact_tables": {
+  "preseason_rb1_ledger": {
+   "fact": "preseason ADP RB1 converted to actual RB1 in 2 of 10 seasons 2016-2025 (both columns computed)",
+   "basis": "preseason = FFC PPR ADP RB1; actual = RB1 by league-exact full-PPR season total, recomputed per the review correction",
+   "rows": [
+    {
+     "year": 2016,
+     "preseason_rb1": "David Johnson",
+     "actual_rb1": "David Johnson",
+     "converted": true,
+     "source_dependency": "the 2016 cell is source-dependent: FFC ADP names one RB1, ESPN another; the conversion holds under the standard FFC consensus"
+    },
+    {
+     "year": 2017,
+     "preseason_rb1": "David Johnson",
+     "actual_rb1": "Todd Gurley",
+     "converted": false
+    },
+    {
+     "year": 2018,
+     "preseason_rb1": "Todd Gurley",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": false
+    },
+    {
+     "year": 2019,
+     "preseason_rb1": "Saquon Barkley",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": false
+    },
+    {
+     "year": 2020,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Alvin Kamara",
+     "converted": false
+    },
+    {
+     "year": 2021,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Jonathan Taylor",
+     "converted": false
+    },
+    {
+     "year": 2022,
+     "preseason_rb1": "Jonathan Taylor",
+     "actual_rb1": "Austin Ekeler",
+     "converted": false
+    },
+    {
+     "year": 2023,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": true
+    },
+    {
+     "year": 2024,
+     "preseason_rb1": "Christian McCaffrey",
+     "actual_rb1": "Jahmyr Gibbs",
+     "converted": false
+    },
+    {
+     "year": 2025,
+     "preseason_rb1": "Bijan Robinson",
+     "actual_rb1": "Christian McCaffrey",
+     "converted": false
+    }
+   ],
+   "flag": "the 2016 cell is source-dependent: FFC ADP names one RB1, ESPN another; the conversion holds under the standard FFC consensus"
+  }
+ },
+ "players": [
+  {
+   "name": "Aaron Jones",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.4 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "MIN returning-RB carry concentration below league median (67%); his ADP round is 11 - path to volume if cheap, committee risk at a premium"
+    },
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 12 weeks in 2025 with a recent top-24 finish (rank 15) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Alvin Kamara",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.5 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "NO returning-RB carry concentration below league median (67%); his ADP round is 14 - path to volume if cheap, committee risk at a premium"
+    },
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 11 weeks in 2025 with a recent top-24 finish (rank 9) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Amon-Ra St. Brown",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "wr_target_volume",
+     "orientation": "target",
+     "reason": "172 targets in 2025 >= 140; our 2016-2025 verification: top-24 95%, top-12 74% (n=97)"
+    }
+   ]
+  },
+  {
+   "name": "Ashton Jeanty",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "4.3 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Bhayshul Tuten",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "JAX returning-RB carry concentration below league median (67%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Bijan Robinson",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "6.1 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Blake Corum",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "LA returning-RB carry concentration below league median (67%); his ADP round is 9 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Breece Hall",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.0 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Brenton Strange",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "late_te_dart",
+     "orientation": "target",
+     "reason": "TE18 at ADP round 13; the report's punt path is two late darts, never mid-tier"
+    }
+   ]
+  },
+  {
+   "name": "Brock Bowers",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 12 weeks in 2025 with a recent top-24 finish (rank 11) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    },
+    {
+     "tag": "elite_te",
+     "orientation": "target",
+     "reason": "TE1 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
+    }
+   ]
+  },
+  {
+   "name": "Brock Purdy",
+   "pos": "QB",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 11 weeks in 2025 with a recent top-24 finish (rank 23) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Bucky Irving",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.5 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "TB returning-RB carry concentration below league median (67%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
+    },
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 10 weeks in 2025 with a recent top-24 finish (rank 13) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Cam Skattebo",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "4.0 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "NYG returning-RB carry concentration below league median (67%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Chase Brown",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "5.2 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Chris Olave",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "wr_target_volume",
+     "orientation": "target",
+     "reason": "156 targets in 2025 >= 140; our 2016-2025 verification: top-24 95%, top-12 74% (n=97)"
+    }
+   ]
+  },
+  {
+   "name": "Chris Rodriguez",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "JAX returning-RB carry concentration below league median (67%); his ADP round is 12 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Christian McCaffrey",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "7.5 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "rb1_curse",
+     "orientation": "fade",
+     "reason": "computed 2025 RB1 under league scoring; the prior-year RB1 declined in 6 of the last 7 seasons (report claim, ledger verified below for the touch half)"
+    },
+    {
+     "tag": "touch_400_fade",
+     "orientation": "fade",
+     "reason": "413 touches in 2025 >= 400; our 2013-2024 ledger: 0 of 3 such seasons produced a top-5 RB the next year"
+    }
+   ]
+  },
+  {
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "CHI returning-RB carry concentration below league median (67%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Dallas Goedert",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "late_te_dart",
+     "orientation": "target",
+     "reason": "TE14 at ADP round 11; the report's punt path is two late darts, never mid-tier"
+    }
+   ]
+  },
+  {
+   "name": "David Montgomery",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "HOU returning-RB carry concentration below league median (67%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "De'Von Achane",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "5.3 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "MIA returning-RB carry concentration below league median (67%); his ADP round is 2 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Drake London",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 12 weeks in 2025 with a recent top-24 finish (rank 19) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Emeka Egbuka",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "year2_wr",
+     "orientation": "target",
+     "reason": "drafted 2025 (year 2); the breakout archetype the report's ledger supports"
+    }
+   ]
+  },
+  {
+   "name": "Garrett Wilson",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 7 weeks in 2025 with a recent top-24 finish (rank 10) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "George Kittle",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 12 weeks in 2025 with a recent top-24 finish (rank 13) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Hunter Henry",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "late_te_dart",
+     "orientation": "target",
+     "reason": "TE16 at ADP round 12; the report's punt path is two late darts, never mid-tier"
+    }
+   ]
+  },
+  {
+   "name": "Isaiah Likely",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 12 weeks in 2025 with a recent top-24 finish (rank 16) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "J.K. Dobbins",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "DEN returning-RB carry concentration below league median (67%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
+    },
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 10 weeks in 2025 with a recent top-24 finish (rank 24) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Ja'Marr Chase",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "wr_target_volume",
+     "orientation": "target",
+     "reason": "185 targets in 2025 >= 140; our 2016-2025 verification: top-24 95%, top-12 74% (n=97)"
+    }
+   ]
+  },
+  {
+   "name": "Jacory Croskey-Merritt",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "WAS returning-RB carry concentration below league median (67%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Jadarian Price",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "rookie_rb_capital",
+     "orientation": "target",
+     "reason": "2026 NFL round 1 pick; capital is the opportunity proxy in years 1-2"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "SEA returning-RB carry concentration below league median (67%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Jahmyr Gibbs",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "5.5 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Javonte Williams",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.2 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Jaxon Smith-Njigba",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "wr_target_volume",
+     "orientation": "target",
+     "reason": "189 targets in 2025 >= 140; our 2016-2025 verification: top-24 95%, top-12 74% (n=97)"
+    }
+   ]
+  },
+  {
+   "name": "Jaxson Dart",
+   "pos": "QB",
+   "tags": [
+    {
+     "tag": "late_rushing_qb",
+     "orientation": "target",
+     "reason": "35 rush yds/g (>= p75 23.58) at ADP round 8"
+    }
+   ]
+  },
+  {
+   "name": "Jayden Daniels",
+   "pos": "QB",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 7 weeks in 2025 with a recent top-24 finish (rank 5) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Jaylen Warren",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Jeremiyah Love",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "rookie_rb_capital",
+     "orientation": "target",
+     "reason": "2026 NFL round 1 pick; capital is the opportunity proxy in years 1-2"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "ARI returning-RB carry concentration below league median (67%); his ADP round is 3 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Joe Burrow",
+   "pos": "QB",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 8 weeks in 2025 with a recent top-24 finish (rank 2) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Jonah Coleman",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "DEN returning-RB carry concentration below league median (67%); his ADP round is 14 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Jonathan Taylor",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.2 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Jordan Mason",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "MIN returning-RB carry concentration below league median (67%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Justin Jefferson",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "wr_target_volume",
+     "orientation": "target",
+     "reason": "141 targets in 2025 >= 140; our 2016-2025 verification: top-24 95%, top-12 74% (n=97)"
+    }
+   ]
+  },
+  {
+   "name": "Kenny Gainwell",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "5.1 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "TB returning-RB carry concentration below league median (67%); his ADP round is 10 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Kyle Monangai",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "CHI returning-RB carry concentration below league median (67%); his ADP round is 9 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Kyler Murray",
+   "pos": "QB",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 5 weeks in 2025 with a recent top-24 finish (rank 10) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Kyren Williams",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.0 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "LA returning-RB carry concentration below league median (67%); his ADP round is 3 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Luther Burden",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "year2_wr",
+     "orientation": "target",
+     "reason": "drafted 2025 (year 2); the breakout archetype the report's ledger supports"
+    }
+   ]
+  },
+  {
+   "name": "Malik Nabers",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 4 weeks in 2025 with a recent top-24 finish (rank 6) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Mark Andrews",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "late_te_dart",
+     "orientation": "target",
+     "reason": "TE15 at ADP round 11; the report's punt path is two late darts, never mid-tier"
+    }
+   ]
+  },
+  {
+   "name": "Matthew Golden",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "year2_wr",
+     "orientation": "target",
+     "reason": "drafted 2025 (year 2); the breakout archetype the report's ledger supports"
+    }
+   ]
+  },
+  {
+   "name": "Mike Evans",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 8 weeks in 2025 with a recent top-24 finish (rank 15) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Omarion Hampton",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.5 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "LAC returning-RB carry concentration below league median (67%); his ADP round is 2 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Oronde Gadsden",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "late_te_dart",
+     "orientation": "target",
+     "reason": "TE17 at ADP round 13; the report's punt path is two late darts, never mid-tier"
+    }
+   ]
+  },
+  {
+   "name": "Patrick Mahomes",
+   "pos": "QB",
+   "tags": [
+    {
+     "tag": "late_rushing_qb",
+     "orientation": "target",
+     "reason": "30 rush yds/g (>= p75 23.58) at ADP round 10"
+    }
+   ]
+  },
+  {
+   "name": "Puka Nacua",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "wr_target_volume",
+     "orientation": "target",
+     "reason": "208 targets in 2025 >= 140; our 2016-2025 verification: top-24 95%, top-12 74% (n=97)"
+    }
+   ]
+  },
+  {
+   "name": "RJ Harvey",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.7 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "DEN returning-RB carry concentration below league median (67%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Rachaad White",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "WAS returning-RB carry concentration below league median (67%); his ADP round is 12 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Rhamondre Stevenson",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "NE returning-RB carry concentration below league median (67%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Rico Dowdle",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 8 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Sam LaPorta",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 9 weeks in 2025 with a recent top-24 finish (rank 8) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Saquon Barkley",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.3 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "T.J. Hockenson",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "late_te_dart",
+     "orientation": "target",
+     "reason": "TE19 at ADP round 14; the report's punt path is two late darts, never mid-tier"
+    }
+   ]
+  },
+  {
+   "name": "Terry McLaurin",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 10 weeks in 2025 with a recent top-24 finish (rank 7) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Tetairoa McMillan",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "year2_wr",
+     "orientation": "target",
+     "reason": "drafted 2025 (year 2); the breakout archetype the report's ledger supports"
+    }
+   ]
+  },
+  {
+   "name": "Travis Etienne",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.2 targets/g in 2025 >= p75 of RB usage (2.95)"
+    },
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "NO returning-RB carry concentration below league median (67%); his ADP round is 4 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "TreVeyon Henderson",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "NE returning-RB carry concentration below league median (67%); his ADP round is 5 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Trey McBride",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "elite_te",
+     "orientation": "target",
+     "reason": "TE2 by market ADP; the elite-vs-streamer gap adjudication is queued (C5) - league rd1-3 TE hit12 is 83% [63,93] n=23"
+    }
+   ]
+  },
+  {
+   "name": "Tucker Kraft",
+   "pos": "TE",
+   "tags": [
+    {
+     "tag": "post_injury_discount",
+     "orientation": "context",
+     "reason": "played 8 weeks in 2025 with a recent top-24 finish (rank 24) on record",
+     "zero_ir_cost": "this league holds NO IR slot (5 bench); an injured hold consumes a startable spot, so the discount must clear a higher bar here"
+    }
+   ]
+  },
+  {
+   "name": "Tyjae Spears",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "pass_catching_rb",
+     "orientation": "target",
+     "reason": "3.8 targets/g in 2025 >= p75 of RB usage (2.95)"
+    }
+   ]
+  },
+  {
+   "name": "Tyler Allgeier",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "ARI returning-RB carry concentration below league median (67%); his ADP round is 12 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Wan'Dale Robinson",
+   "pos": "WR",
+   "tags": [
+    {
+     "tag": "wr_target_volume",
+     "orientation": "target",
+     "reason": "140 targets in 2025 >= 140; our 2016-2025 verification: top-24 95%, top-12 74% (n=97)"
+    }
+   ]
+  },
+  {
+   "name": "Woody Marks",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "HOU returning-RB carry concentration below league median (67%); his ADP round is 13 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  },
+  {
+   "name": "Zach Charbonnet",
+   "pos": "RB",
+   "tags": [
+    {
+     "tag": "ambiguous_backfield",
+     "orientation": "target_if_cheap_fade_if_premium",
+     "reason": "SEA returning-RB carry concentration below league median (67%); his ADP round is 13 - path to volume if cheap, committee risk at a premium"
+    }
+   ]
+  }
+ ]
+}

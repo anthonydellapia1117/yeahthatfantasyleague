@@ -1,0 +1,284 @@
+{
+ "provenance": {
+  "generated": "2026-08-28",
+  "question": "does the tag add information ADP does not already carry? Phase A: the fantasy-ADP gate makes the tag a confirmation device by construction unless it shows within-band lift",
+  "method": "per season 2017-2025, rebuild the opportunity + efficiency spine from the PRIOR season (per-game touches >= pool p75 and points per touch >= pool p75, thresholds recomputed per season and position), then compare tagged vs untagged hit rates WITHIN each preseason ADP band",
+  "scoring": "league-exact (full PPR, 6-pt pass TD)",
+  "limitation": "PROXY for the shipped 2026 matrix: route participation, first-read share, inside-5 equity, implied totals and line quality have no clean per-season history in this cache. What is tested is the opportunity+efficiency spine common to every criterion set - a lift is evidence for the spine, not proof of the full matrix; a null is evidence against it",
+  "positions": [
+   "RB",
+   "WR"
+  ],
+  "seasons": "2017-2025"
+ },
+ "within_band": {
+  "pos1-12": {
+   "tagged": {
+    "n": 35,
+    "hit12": {
+     "k": 22,
+     "rate": 0.6286,
+     "ci95": [
+      0.4634,
+      0.7683
+     ]
+    },
+    "hit24": {
+     "k": 27,
+     "rate": 0.7714,
+     "ci95": [
+      0.6098,
+      0.8793
+     ]
+    }
+   },
+   "untagged": {
+    "n": 164,
+    "hit12": {
+     "k": 86,
+     "rate": 0.5244,
+     "ci95": [
+      0.4483,
+      0.5994
+     ]
+    },
+    "hit24": {
+     "k": 120,
+     "rate": 0.7317,
+     "ci95": [
+      0.6592,
+      0.7936
+     ]
+    }
+   },
+   "lift_hit12": {
+    "diff": 0.1042,
+    "diff_ci95": [
+     -0.0732,
+     0.2816
+    ],
+    "z": 1.123,
+    "p_two_sided": 0.2614
+   },
+   "lift_hit24": {
+    "diff": 0.0397,
+    "diff_ci95": [
+     -0.115,
+     0.1945
+    ],
+    "z": 0.486,
+    "p_two_sided": 0.6273
+   }
+  },
+  "pos13-24": {
+   "tagged": {
+    "n": 3,
+    "hit12": {
+     "k": 1,
+     "rate": 0.3333,
+     "ci95": [
+      0.0615,
+      0.7923
+     ]
+    },
+    "hit24": {
+     "k": 2,
+     "rate": 0.6667,
+     "ci95": [
+      0.2077,
+      0.9385
+     ]
+    }
+   },
+   "untagged": {
+    "n": 184,
+    "hit12": {
+     "k": 39,
+     "rate": 0.212,
+     "ci95": [
+      0.1591,
+      0.2766
+     ]
+    },
+    "hit24": {
+     "k": 97,
+     "rate": 0.5272,
+     "ci95": [
+      0.4552,
+      0.598
+     ]
+    }
+   },
+   "lift_hit12": {
+    "diff": 0.1214,
+    "diff_ci95": [
+     -0.4153,
+     0.6581
+    ],
+    "z": 0.509,
+    "p_two_sided": 0.6111
+   },
+   "lift_hit24": {
+    "diff": 0.1395,
+    "diff_ci95": [
+     -0.3988,
+     0.6778
+    ],
+    "z": 0.48,
+    "p_two_sided": 0.6311
+   }
+  },
+  "pos25-48": {
+   "tagged": {
+    "n": 0,
+    "hit12": {
+     "k": 0,
+     "rate": null,
+     "ci95": null
+    },
+    "hit24": {
+     "k": 0,
+     "rate": null,
+     "ci95": null
+    }
+   },
+   "untagged": {
+    "n": 339,
+    "hit12": {
+     "k": 35,
+     "rate": 0.1032,
+     "ci95": [
+      0.0752,
+      0.1402
+     ]
+    },
+    "hit24": {
+     "k": 84,
+     "rate": 0.2478,
+     "ci95": [
+      0.2048,
+      0.2964
+     ]
+    }
+   },
+   "lift_hit12": null,
+   "lift_hit24": null
+  }
+ },
+ "pooled": {
+  "tagged": {
+   "n": 38,
+   "hit12": {
+    "k": 23,
+    "rate": 0.6053,
+    "ci95": [
+     0.4472,
+     0.744
+    ]
+   },
+   "hit24": {
+    "k": 29,
+    "rate": 0.7632,
+    "ci95": [
+     0.6079,
+     0.8701
+    ]
+   }
+  },
+  "untagged": {
+   "n": 687,
+   "hit12": {
+    "k": 160,
+    "rate": 0.2329,
+    "ci95": [
+     0.2028,
+     0.2659
+    ]
+   },
+   "hit24": {
+    "k": 301,
+    "rate": 0.4381,
+    "ci95": [
+     0.4015,
+     0.4755
+    ]
+   }
+  },
+  "lift_hit12": {
+   "diff": 0.3724,
+   "diff_ci95": [
+    0.2138,
+    0.531
+   ],
+   "z": 5.144,
+   "p_two_sided": 0.0
+  },
+  "lift_hit24": {
+   "diff": 0.325,
+   "diff_ci95": [
+    0.1848,
+    0.4652
+   ],
+   "z": 3.916,
+   "p_two_sided": 0.0001
+  }
+ },
+ "verdict": "INCONCLUSIVE \u2014 incremental value over ADP remains unresolved in the RB/WR scope after suspending the non-discriminating TE matrix. Among positional ADP ranks 1-12, tagged players finished top-12 in 22/35 cases (62.9%) vs 86/164 (52.4%), +10.4pp, 95% CI [-7.3, +28.2], p=0.261. Restricting the earlier mixed RB/WR/TE scope to RB/WR reduced the top-band sample from 300 to 199 players (43 to 35 tagged) and widened the interval from 31.0pp to 35.5pp. That is the expected direction when a non-discriminating group is removed: fewer observations mean more uncertainty. Because the verdict held while uncertainty increased, the unresolved limitation is the ADP-gated design, not one individual criterion. The current interval permits harm and useful lift alike. Only three tags occur at ranks 13-24 and none at 25-48, so those regions are not identifiable. Coarse bands do not adjust for exact ADP, position, season, or repeated players. Tags stay display-only pending continuous-ADP, season-held-out testing.",
+ "verdict_basis": "reported, fixed by review 2026-08-28 - not computed. Removing the non-discriminating TE matrix reduced the point estimate and widened the interval because the restricted scope has fewer observations; it did not rescue the result. That points to the ADP gate rather than one criterion. The prior three-state automation was removed as unsound: a post-hoc minimum-detectable-effect comparison is not an equivalence test, the significance branch searched six cells without multiplicity control, and its BEATS label was sign-blind. Every figure the current-scope figure the verdict cites is cross-checked against the computed cells at build time; the prior-scope comparison is pinned to the cited pre-suspension artifact. A mismatch fails the build for re-review instead of regenerating the text",
+ "verdict_cites": {
+  "pos1-12 tagged k/n": [
+   22,
+   35
+  ],
+  "pos1-12 tagged rate pct": 62.9,
+  "pos1-12 untagged k/n": [
+   86,
+   164
+  ],
+  "pos1-12 untagged rate pct": 52.4,
+  "pos1-12 diff pp": 10.4,
+  "pos1-12 diff ci95 pp": [
+   -7.3,
+   28.2
+  ],
+  "pos1-12 p two-sided": 0.261,
+  "pos1-12 total n": 199,
+  "pos1-12 diff ci95 width pp": 35.5,
+  "pos13-24 tagged n": 3,
+  "pos25-48 tagged n": 0
+ },
+ "scope_change": {
+  "prior": {
+   "scope": [
+    "RB",
+    "WR",
+    "TE"
+   ],
+   "top_band_total_n": 300,
+   "top_band_tagged_n": 43,
+   "diff_ci95_width_pp": 31.0,
+   "source_commit": "242ae6b284a82e81f575eb42805bcf638a65ebbf",
+   "source_artifact": "out/data/bullish_vs_adp.json",
+   "source_content_sha256": "405cac582f5b953d9ba46a53b670123c8870892b37dc79bdfb2e5ffe2ee172b4"
+  },
+  "current": {
+   "scope": [
+    "RB",
+    "WR"
+   ],
+   "top_band_total_n": 199,
+   "top_band_tagged_n": 35,
+   "diff_ci95_width_pp": 35.5
+  },
+  "interpretation": "Removing the non-discriminating TE group left fewer observations and therefore widened uncertainty. The INCONCLUSIVE verdict holding under that expected widening points to the ADP-gated design rather than one individual tag criterion."
+ },
+ "concentration": {
+  "tagged_by_band": {
+   "pos1-12": 35,
+   "pos13-24": 3,
+   "pos25-48": 0
+  },
+  "share_in_top12_band": 0.9211,
+  "note": "the pooled tagged-vs-untagged gap is dominated by this concentration - it measures ADP, not the tag. Only the within-band rows above test the tag itself"
+ }
+}

@@ -1,0 +1,1940 @@
+{
+ "players": [
+  {
+   "gsis_id": "00-0036244",
+   "name": "Colby Parkinson",
+   "pos": "TE",
+   "tds": 8,
+   "opportunities": 56,
+   "td_rate": 0.1429,
+   "pos_percentile": 1.0,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0034351",
+   "name": "Dallas Goedert",
+   "pos": "TE",
+   "tds": 11,
+   "opportunities": 82,
+   "td_rate": 0.1341,
+   "pos_percentile": 0.966,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0031381",
+   "name": "Davante Adams",
+   "pos": "WR",
+   "tds": 14,
+   "opportunities": 114,
+   "td_rate": 0.1228,
+   "pos_percentile": 1.0,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0036410",
+   "name": "Tee Higgins",
+   "pos": "WR",
+   "tds": 11,
+   "opportunities": 98,
+   "td_rate": 0.1122,
+   "pos_percentile": 0.985,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0033288",
+   "name": "George Kittle",
+   "pos": "TE",
+   "tds": 7,
+   "opportunities": 70,
+   "td_rate": 0.1,
+   "pos_percentile": 0.931,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0036259",
+   "name": "Jauan Jennings",
+   "pos": "WR",
+   "tds": 9,
+   "opportunities": 90,
+   "td_rate": 0.1,
+   "pos_percentile": 0.969,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0038544",
+   "name": "Quentin Johnston",
+   "pos": "WR",
+   "tds": 8,
+   "opportunities": 86,
+   "td_rate": 0.093,
+   "pos_percentile": 0.954,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0039793",
+   "name": "AJ Barner",
+   "pos": "TE",
+   "tds": 7,
+   "opportunities": 78,
+   "td_rate": 0.0897,
+   "pos_percentile": 0.897,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040130",
+   "name": "Jayden Higgins",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 68,
+   "td_rate": 0.0882,
+   "pos_percentile": 0.938,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0033090",
+   "name": "Hunter Henry",
+   "pos": "TE",
+   "tds": 7,
+   "opportunities": 87,
+   "td_rate": 0.0805,
+   "pos_percentile": 0.862,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039338",
+   "name": "Brock Bowers",
+   "pos": "TE",
+   "tds": 7,
+   "opportunities": 88,
+   "td_rate": 0.0795,
+   "pos_percentile": 0.828,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038041",
+   "name": "Jake Ferguson",
+   "pos": "TE",
+   "tds": 8,
+   "opportunities": 103,
+   "td_rate": 0.0777,
+   "pos_percentile": 0.793,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0026498",
+   "name": "Matthew Stafford",
+   "pos": "QB",
+   "tds": 46,
+   "opportunities": 597,
+   "td_rate": 0.0771,
+   "pos_percentile": 1.0,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0034753",
+   "name": "Mark Andrews",
+   "pos": "TE",
+   "tds": 6,
+   "opportunities": 80,
+   "td_rate": 0.075,
+   "pos_percentile": 0.759,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036894",
+   "name": "Pat Freiermuth",
+   "pos": "TE",
+   "tds": 4,
+   "opportunities": 54,
+   "td_rate": 0.0741,
+   "pos_percentile": 0.724,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040126",
+   "name": "Colston Loveland",
+   "pos": "TE",
+   "tds": 6,
+   "opportunities": 83,
+   "td_rate": 0.0723,
+   "pos_percentile": 0.69,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039067",
+   "name": "Rashee Rice",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 83,
+   "td_rate": 0.0723,
+   "pos_percentile": 0.923,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0037664",
+   "name": "Alec Pierce",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 84,
+   "td_rate": 0.0714,
+   "pos_percentile": 0.908,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0037816",
+   "name": "Romeo Doubs",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 85,
+   "td_rate": 0.0706,
+   "pos_percentile": 0.892,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037834",
+   "name": "Brock Purdy",
+   "pos": "QB",
+   "tds": 20,
+   "opportunities": 284,
+   "td_rate": 0.0704,
+   "pos_percentile": 0.976,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0034827",
+   "name": "DJ Moore",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 100,
+   "td_rate": 0.07,
+   "pos_percentile": 0.877,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0034796",
+   "name": "Lamar Jackson",
+   "pos": "QB",
+   "tds": 21,
+   "opportunities": 302,
+   "td_rate": 0.0695,
+   "pos_percentile": 0.951,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0035640",
+   "name": "DK Metcalf",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 101,
+   "td_rate": 0.0693,
+   "pos_percentile": 0.862,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035662",
+   "name": "Marquise Brown",
+   "pos": "WR",
+   "tds": 5,
+   "opportunities": 74,
+   "td_rate": 0.0676,
+   "pos_percentile": 0.846,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039847",
+   "name": "Theo Johnson",
+   "pos": "TE",
+   "tds": 5,
+   "opportunities": 74,
+   "td_rate": 0.0676,
+   "pos_percentile": 0.655,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039919",
+   "name": "Rome Odunze",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 90,
+   "td_rate": 0.0667,
+   "pos_percentile": 0.815,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039410",
+   "name": "Ryan Flournoy",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 60,
+   "td_rate": 0.0667,
+   "pos_percentile": 0.831,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037247",
+   "name": "George Pickens",
+   "pos": "WR",
+   "tds": 9,
+   "opportunities": 137,
+   "td_rate": 0.0657,
+   "pos_percentile": 0.8,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036442",
+   "name": "Joe Burrow",
+   "pos": "QB",
+   "tds": 17,
+   "opportunities": 259,
+   "td_rate": 0.0656,
+   "pos_percentile": 0.927,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0037744",
+   "name": "Trey McBride",
+   "pos": "TE",
+   "tds": 11,
+   "opportunities": 169,
+   "td_rate": 0.0651,
+   "pos_percentile": 0.621,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037240",
+   "name": "Jameson Williams",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 108,
+   "td_rate": 0.0648,
+   "pos_percentile": 0.785,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036252",
+   "name": "Michael Pittman",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 111,
+   "td_rate": 0.0631,
+   "pos_percentile": 0.769,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039851",
+   "name": "Drake Maye",
+   "pos": "QB",
+   "tds": 31,
+   "opportunities": 492,
+   "td_rate": 0.063,
+   "pos_percentile": 0.902,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0036963",
+   "name": "Amon-Ra St. Brown",
+   "pos": "WR",
+   "tds": 11,
+   "opportunities": 175,
+   "td_rate": 0.0629,
+   "pos_percentile": 0.754,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037238",
+   "name": "Drake London",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 112,
+   "td_rate": 0.0625,
+   "pos_percentile": 0.723,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039075",
+   "name": "Puka Nacua",
+   "pos": "WR",
+   "tds": 11,
+   "opportunities": 176,
+   "td_rate": 0.0625,
+   "pos_percentile": 0.738,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040663",
+   "name": "Harold Fannin Jr.",
+   "pos": "TE",
+   "tds": 7,
+   "opportunities": 114,
+   "td_rate": 0.0614,
+   "pos_percentile": 0.586,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033106",
+   "name": "Jared Goff",
+   "pos": "QB",
+   "tds": 34,
+   "opportunities": 578,
+   "td_rate": 0.0588,
+   "pos_percentile": 0.878,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036613",
+   "name": "Jaylen Waddle",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 102,
+   "td_rate": 0.0588,
+   "pos_percentile": 0.692,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038543",
+   "name": "Jaxon Smith-Njigba",
+   "pos": "WR",
+   "tds": 10,
+   "opportunities": 170,
+   "td_rate": 0.0588,
+   "pos_percentile": 0.708,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040730",
+   "name": "RJ Harvey",
+   "pos": "RB",
+   "tds": 12,
+   "opportunities": 204,
+   "td_rate": 0.0588,
+   "pos_percentile": 1.0,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0035676",
+   "name": "A.J. Brown",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 121,
+   "td_rate": 0.0579,
+   "pos_percentile": 0.677,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039165",
+   "name": "Zach Charbonnet",
+   "pos": "RB",
+   "tds": 12,
+   "opportunities": 208,
+   "td_rate": 0.0577,
+   "pos_percentile": 0.981,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0036554",
+   "name": "Nico Collins",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 122,
+   "td_rate": 0.0574,
+   "pos_percentile": 0.646,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040124",
+   "name": "Tetairoa McMillan",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 122,
+   "td_rate": 0.0574,
+   "pos_percentile": 0.662,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037239",
+   "name": "Chris Olave",
+   "pos": "WR",
+   "tds": 9,
+   "opportunities": 157,
+   "td_rate": 0.0573,
+   "pos_percentile": 0.631,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039915",
+   "name": "Ladd McConkey",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 106,
+   "td_rate": 0.0566,
+   "pos_percentile": 0.615,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0034348",
+   "name": "Courtland Sutton",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 124,
+   "td_rate": 0.0565,
+   "pos_percentile": 0.6,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0030061",
+   "name": "Zach Ertz",
+   "pos": "TE",
+   "tds": 4,
+   "opportunities": 72,
+   "td_rate": 0.0556,
+   "pos_percentile": 0.552,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038559",
+   "name": "Michael Wilson",
+   "pos": "WR",
+   "tds": 7,
+   "opportunities": 126,
+   "td_rate": 0.0556,
+   "pos_percentile": 0.585,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036389",
+   "name": "Jalen Hurts",
+   "pos": "QB",
+   "tds": 25,
+   "opportunities": 454,
+   "td_rate": 0.0551,
+   "pos_percentile": 0.854,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039868",
+   "name": "Troy Franklin",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 109,
+   "td_rate": 0.055,
+   "pos_percentile": 0.569,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039849",
+   "name": "Marvin Harrison Jr.",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 73,
+   "td_rate": 0.0548,
+   "pos_percentile": 0.554,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0034857",
+   "name": "Josh Allen",
+   "pos": "QB",
+   "tds": 25,
+   "opportunities": 460,
+   "td_rate": 0.0543,
+   "pos_percentile": 0.829,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036875",
+   "name": "Rhamondre Stevenson",
+   "pos": "RB",
+   "tds": 9,
+   "opportunities": 167,
+   "td_rate": 0.0539,
+   "pos_percentile": 0.963,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0039139",
+   "name": "Jahmyr Gibbs",
+   "pos": "RB",
+   "tds": 18,
+   "opportunities": 337,
+   "td_rate": 0.0534,
+   "pos_percentile": 0.944,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0036223",
+   "name": "Jonathan Taylor",
+   "pos": "RB",
+   "tds": 20,
+   "opportunities": 378,
+   "td_rate": 0.0529,
+   "pos_percentile": 0.926,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0040715",
+   "name": "Cam Skattebo",
+   "pos": "RB",
+   "tds": 7,
+   "opportunities": 133,
+   "td_rate": 0.0526,
+   "pos_percentile": 0.907,
+   "outlier": "high"
+  },
+  {
+   "gsis_id": "00-0034869",
+   "name": "Sam Darnold",
+   "pos": "QB",
+   "tds": 25,
+   "opportunities": 477,
+   "td_rate": 0.0524,
+   "pos_percentile": 0.78,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036264",
+   "name": "Jordan Love",
+   "pos": "QB",
+   "tds": 23,
+   "opportunities": 439,
+   "td_rate": 0.0524,
+   "pos_percentile": 0.805,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036212",
+   "name": "Tua Tagovailoa",
+   "pos": "QB",
+   "tds": 20,
+   "opportunities": 384,
+   "td_rate": 0.0521,
+   "pos_percentile": 0.756,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036971",
+   "name": "Trevor Lawrence",
+   "pos": "QB",
+   "tds": 29,
+   "opportunities": 560,
+   "td_rate": 0.0518,
+   "pos_percentile": 0.732,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035719",
+   "name": "Deebo Samuel Sr.",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 116,
+   "td_rate": 0.0517,
+   "pos_percentile": 0.538,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038611",
+   "name": "Chris Rodriguez Jr.",
+   "pos": "RB",
+   "tds": 6,
+   "opportunities": 116,
+   "td_rate": 0.0517,
+   "pos_percentile": 0.889,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036355",
+   "name": "Justin Herbert",
+   "pos": "QB",
+   "tds": 26,
+   "opportunities": 512,
+   "td_rate": 0.0508,
+   "pos_percentile": 0.707,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035700",
+   "name": "Josh Jacobs",
+   "pos": "RB",
+   "tds": 14,
+   "opportunities": 278,
+   "td_rate": 0.0504,
+   "pos_percentile": 0.87,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037263",
+   "name": "Tyler Allgeier",
+   "pos": "RB",
+   "tds": 8,
+   "opportunities": 159,
+   "td_rate": 0.0503,
+   "pos_percentile": 0.852,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033077",
+   "name": "Dak Prescott",
+   "pos": "QB",
+   "tds": 30,
+   "opportunities": 600,
+   "td_rate": 0.05,
+   "pos_percentile": 0.683,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035659",
+   "name": "Terry McLaurin",
+   "pos": "WR",
+   "tds": 3,
+   "opportunities": 60,
+   "td_rate": 0.05,
+   "pos_percentile": 0.508,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038618",
+   "name": "Xavier Hutchinson",
+   "pos": "WR",
+   "tds": 3,
+   "opportunities": 60,
+   "td_rate": 0.05,
+   "pos_percentile": 0.523,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038935",
+   "name": "Brenton Strange",
+   "pos": "TE",
+   "tds": 3,
+   "opportunities": 60,
+   "td_rate": 0.05,
+   "pos_percentile": 0.517,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035710",
+   "name": "Daniel Jones",
+   "pos": "QB",
+   "tds": 19,
+   "opportunities": 384,
+   "td_rate": 0.0495,
+   "pos_percentile": 0.659,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038994",
+   "name": "Jordan Addison",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 81,
+   "td_rate": 0.0494,
+   "pos_percentile": 0.492,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038606",
+   "name": "Parker Washington",
+   "pos": "WR",
+   "tds": 5,
+   "opportunities": 102,
+   "td_rate": 0.049,
+   "pos_percentile": 0.477,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0032764",
+   "name": "Derrick Henry",
+   "pos": "RB",
+   "tds": 16,
+   "opportunities": 328,
+   "td_rate": 0.0488,
+   "pos_percentile": 0.833,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039880",
+   "name": "Malik Washington",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 82,
+   "td_rate": 0.0488,
+   "pos_percentile": 0.462,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038563",
+   "name": "Tre Tucker",
+   "pos": "WR",
+   "tds": 5,
+   "opportunities": 103,
+   "td_rate": 0.0485,
+   "pos_percentile": 0.446,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0031408",
+   "name": "Mike Evans",
+   "pos": "WR",
+   "tds": 3,
+   "opportunities": 62,
+   "td_rate": 0.0484,
+   "pos_percentile": 0.431,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0023459",
+   "name": "Aaron Rodgers",
+   "pos": "QB",
+   "tds": 24,
+   "opportunities": 498,
+   "td_rate": 0.0482,
+   "pos_percentile": 0.634,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039150",
+   "name": "Bryce Young",
+   "pos": "QB",
+   "tds": 23,
+   "opportunities": 478,
+   "td_rate": 0.0481,
+   "pos_percentile": 0.61,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033923",
+   "name": "Kareem Hunt",
+   "pos": "RB",
+   "tds": 9,
+   "opportunities": 188,
+   "td_rate": 0.0479,
+   "pos_percentile": 0.815,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0034855",
+   "name": "Baker Mayfield",
+   "pos": "QB",
+   "tds": 26,
+   "opportunities": 543,
+   "td_rate": 0.0479,
+   "pos_percentile": 0.585,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033858",
+   "name": "Jonnu Smith",
+   "pos": "TE",
+   "tds": 3,
+   "opportunities": 63,
+   "td_rate": 0.0476,
+   "pos_percentile": 0.483,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039918",
+   "name": "Caleb Williams",
+   "pos": "QB",
+   "tds": 27,
+   "opportunities": 568,
+   "td_rate": 0.0475,
+   "pos_percentile": 0.561,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033119",
+   "name": "Jacoby Brissett",
+   "pos": "QB",
+   "tds": 23,
+   "opportunities": 485,
+   "td_rate": 0.0474,
+   "pos_percentile": 0.537,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040705",
+   "name": "Chimere Dike",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 85,
+   "td_rate": 0.0471,
+   "pos_percentile": 0.415,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039064",
+   "name": "Zay Flowers",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 128,
+   "td_rate": 0.0469,
+   "pos_percentile": 0.4,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040129",
+   "name": "Emeka Egbuka",
+   "pos": "WR",
+   "tds": 6,
+   "opportunities": 129,
+   "td_rate": 0.0465,
+   "pos_percentile": 0.385,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039342",
+   "name": "Xavier Legette",
+   "pos": "WR",
+   "tds": 3,
+   "opportunities": 65,
+   "td_rate": 0.0462,
+   "pos_percentile": 0.369,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0030506",
+   "name": "Travis Kelce",
+   "pos": "TE",
+   "tds": 5,
+   "opportunities": 109,
+   "td_rate": 0.0459,
+   "pos_percentile": 0.448,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039923",
+   "name": "J.J. McCarthy",
+   "pos": "QB",
+   "tds": 11,
+   "opportunities": 243,
+   "td_rate": 0.0453,
+   "pos_percentile": 0.512,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040734",
+   "name": "TreVeyon Henderson",
+   "pos": "RB",
+   "tds": 10,
+   "opportunities": 222,
+   "td_rate": 0.045,
+   "pos_percentile": 0.796,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036972",
+   "name": "Mac Jones",
+   "pos": "QB",
+   "tds": 13,
+   "opportunities": 289,
+   "td_rate": 0.045,
+   "pos_percentile": 0.488,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039163",
+   "name": "C.J. Stroud",
+   "pos": "QB",
+   "tds": 19,
+   "opportunities": 423,
+   "td_rate": 0.0449,
+   "pos_percentile": 0.463,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040170",
+   "name": "Elic Ayomanor",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 89,
+   "td_rate": 0.0449,
+   "pos_percentile": 0.354,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035229",
+   "name": "T.J. Hockenson",
+   "pos": "TE",
+   "tds": 3,
+   "opportunities": 67,
+   "td_rate": 0.0448,
+   "pos_percentile": 0.414,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038997",
+   "name": "Josh Downs",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 90,
+   "td_rate": 0.0444,
+   "pos_percentile": 0.338,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037157",
+   "name": "Bam Knight",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 113,
+   "td_rate": 0.0442,
+   "pos_percentile": 0.778,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040691",
+   "name": "Jaxson Dart",
+   "pos": "QB",
+   "tds": 15,
+   "opportunities": 339,
+   "td_rate": 0.0442,
+   "pos_percentile": 0.439,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0032268",
+   "name": "Marcus Mariota",
+   "pos": "QB",
+   "tds": 10,
+   "opportunities": 227,
+   "td_rate": 0.0441,
+   "pos_percentile": 0.415,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033873",
+   "name": "Patrick Mahomes",
+   "pos": "QB",
+   "tds": 22,
+   "opportunities": 502,
+   "td_rate": 0.0438,
+   "pos_percentile": 0.39,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040189",
+   "name": "Oronde Gadsden II",
+   "pos": "TE",
+   "tds": 3,
+   "opportunities": 69,
+   "td_rate": 0.0435,
+   "pos_percentile": 0.379,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036997",
+   "name": "Javonte Williams",
+   "pos": "RB",
+   "tds": 13,
+   "opportunities": 303,
+   "td_rate": 0.0429,
+   "pos_percentile": 0.759,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035685",
+   "name": "David Montgomery",
+   "pos": "RB",
+   "tds": 8,
+   "opportunities": 187,
+   "td_rate": 0.0428,
+   "pos_percentile": 0.741,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036900",
+   "name": "Ja'Marr Chase",
+   "pos": "WR",
+   "tds": 8,
+   "opportunities": 188,
+   "td_rate": 0.0426,
+   "pos_percentile": 0.323,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039910",
+   "name": "Jayden Daniels",
+   "pos": "QB",
+   "tds": 8,
+   "opportunities": 188,
+   "td_rate": 0.0426,
+   "pos_percentile": 0.366,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040242",
+   "name": "Jacory Croskey-Merritt",
+   "pos": "RB",
+   "tds": 8,
+   "opportunities": 188,
+   "td_rate": 0.0426,
+   "pos_percentile": 0.722,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0030565",
+   "name": "Geno Smith",
+   "pos": "QB",
+   "tds": 19,
+   "opportunities": 448,
+   "td_rate": 0.0424,
+   "pos_percentile": 0.341,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036970",
+   "name": "Kyle Pitts",
+   "pos": "TE",
+   "tds": 5,
+   "opportunities": 118,
+   "td_rate": 0.0424,
+   "pos_percentile": 0.31,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040128",
+   "name": "Tyler Warren",
+   "pos": "TE",
+   "tds": 5,
+   "opportunities": 118,
+   "td_rate": 0.0424,
+   "pos_percentile": 0.345,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037840",
+   "name": "Kyren Williams",
+   "pos": "RB",
+   "tds": 13,
+   "opportunities": 309,
+   "td_rate": 0.0421,
+   "pos_percentile": 0.704,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036973",
+   "name": "Travis Etienne",
+   "pos": "RB",
+   "tds": 13,
+   "opportunities": 312,
+   "td_rate": 0.0417,
+   "pos_percentile": 0.685,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037261",
+   "name": "Khalil Shakir",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 96,
+   "td_rate": 0.0417,
+   "pos_percentile": 0.308,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039732",
+   "name": "Bo Nix",
+   "pos": "QB",
+   "tds": 25,
+   "opportunities": 612,
+   "td_rate": 0.0408,
+   "pos_percentile": 0.317,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036919",
+   "name": "Kenny Gainwell",
+   "pos": "RB",
+   "tds": 8,
+   "opportunities": 199,
+   "td_rate": 0.0402,
+   "pos_percentile": 0.667,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037248",
+   "name": "James Cook",
+   "pos": "RB",
+   "tds": 14,
+   "opportunities": 349,
+   "td_rate": 0.0401,
+   "pos_percentile": 0.648,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0031588",
+   "name": "Stefon Diggs",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 102,
+   "td_rate": 0.0392,
+   "pos_percentile": 0.292,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033280",
+   "name": "Christian McCaffrey",
+   "pos": "RB",
+   "tds": 17,
+   "opportunities": 440,
+   "td_rate": 0.0386,
+   "pos_percentile": 0.63,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040704",
+   "name": "Dillon Gabriel",
+   "pos": "QB",
+   "tds": 7,
+   "opportunities": 185,
+   "td_rate": 0.0378,
+   "pos_percentile": 0.293,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039738",
+   "name": "Blake Corum",
+   "pos": "RB",
+   "tds": 6,
+   "opportunities": 159,
+   "td_rate": 0.0377,
+   "pos_percentile": 0.611,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035228",
+   "name": "Kyler Murray",
+   "pos": "QB",
+   "tds": 6,
+   "opportunities": 161,
+   "td_rate": 0.0373,
+   "pos_percentile": 0.268,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039040",
+   "name": "De'Von Achane",
+   "pos": "RB",
+   "tds": 12,
+   "opportunities": 323,
+   "td_rate": 0.0372,
+   "pos_percentile": 0.593,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0029604",
+   "name": "Kirk Cousins",
+   "pos": "QB",
+   "tds": 10,
+   "opportunities": 269,
+   "td_rate": 0.0372,
+   "pos_percentile": 0.244,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036275",
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "tds": 10,
+   "opportunities": 271,
+   "td_rate": 0.0369,
+   "pos_percentile": 0.574,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040584",
+   "name": "Gunnar Helm",
+   "pos": "TE",
+   "tds": 2,
+   "opportunities": 55,
+   "td_rate": 0.0364,
+   "pos_percentile": 0.276,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035250",
+   "name": "Devin Singletary",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 138,
+   "td_rate": 0.0362,
+   "pos_percentile": 0.556,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0026158",
+   "name": "Joe Flacco",
+   "pos": "QB",
+   "tds": 15,
+   "opportunities": 416,
+   "td_rate": 0.0361,
+   "pos_percentile": 0.22,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0032950",
+   "name": "Carson Wentz",
+   "pos": "QB",
+   "tds": 6,
+   "opportunities": 169,
+   "td_rate": 0.0355,
+   "pos_percentile": 0.195,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036912",
+   "name": "DeVonta Smith",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 113,
+   "td_rate": 0.0354,
+   "pos_percentile": 0.277,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038597",
+   "name": "Chase Brown",
+   "pos": "RB",
+   "tds": 11,
+   "opportunities": 320,
+   "td_rate": 0.0344,
+   "pos_percentile": 0.537,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036945",
+   "name": "Justin Fields",
+   "pos": "QB",
+   "tds": 7,
+   "opportunities": 204,
+   "td_rate": 0.0343,
+   "pos_percentile": 0.171,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037525",
+   "name": "Jordan Mason",
+   "pos": "RB",
+   "tds": 6,
+   "opportunities": 175,
+   "td_rate": 0.0343,
+   "pos_percentile": 0.519,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040668",
+   "name": "Shedeur Sanders",
+   "pos": "QB",
+   "tds": 7,
+   "opportunities": 212,
+   "td_rate": 0.033,
+   "pos_percentile": 0.146,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0030279",
+   "name": "Keenan Allen",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 122,
+   "td_rate": 0.0328,
+   "pos_percentile": 0.246,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038619",
+   "name": "Andrei Iosivas",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 61,
+   "td_rate": 0.0328,
+   "pos_percentile": 0.262,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039917",
+   "name": "Michael Penix Jr.",
+   "pos": "QB",
+   "tds": 9,
+   "opportunities": 276,
+   "td_rate": 0.0326,
+   "pos_percentile": 0.122,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039893",
+   "name": "Brian Thomas Jr.",
+   "pos": "WR",
+   "tds": 3,
+   "opportunities": 94,
+   "td_rate": 0.0319,
+   "pos_percentile": 0.231,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038976",
+   "name": "Marvin Mims Jr.",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 63,
+   "td_rate": 0.0317,
+   "pos_percentile": 0.215,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040666",
+   "name": "Omarion Hampton",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 159,
+   "td_rate": 0.0314,
+   "pos_percentile": 0.5,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036898",
+   "name": "Davis Mills",
+   "pos": "QB",
+   "tds": 5,
+   "opportunities": 159,
+   "td_rate": 0.0314,
+   "pos_percentile": 0.098,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0037228",
+   "name": "Jaylen Warren",
+   "pos": "RB",
+   "tds": 8,
+   "opportunities": 256,
+   "td_rate": 0.0312,
+   "pos_percentile": 0.481,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039376",
+   "name": "Spencer Rattler",
+   "pos": "QB",
+   "tds": 8,
+   "opportunities": 257,
+   "td_rate": 0.0311,
+   "pos_percentile": 0.073,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0040743",
+   "name": "Tyler Shough",
+   "pos": "QB",
+   "tds": 10,
+   "opportunities": 327,
+   "td_rate": 0.0306,
+   "pos_percentile": 0.049,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0033555",
+   "name": "Mack Hollins",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 66,
+   "td_rate": 0.0303,
+   "pos_percentile": 0.185,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040735",
+   "name": "Luther Burden III",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 66,
+   "td_rate": 0.0303,
+   "pos_percentile": 0.2,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040122",
+   "name": "Ashton Jeanty",
+   "pos": "RB",
+   "tds": 10,
+   "opportunities": 339,
+   "td_rate": 0.0295,
+   "pos_percentile": 0.463,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036040",
+   "name": "Juwan Johnson",
+   "pos": "TE",
+   "tds": 3,
+   "opportunities": 102,
+   "td_rate": 0.0294,
+   "pos_percentile": 0.241,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035208",
+   "name": "Olamide Zaccheaus",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 69,
+   "td_rate": 0.029,
+   "pos_percentile": 0.169,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033526",
+   "name": "Samaje Perine",
+   "pos": "RB",
+   "tds": 3,
+   "opportunities": 105,
+   "td_rate": 0.0286,
+   "pos_percentile": 0.444,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033908",
+   "name": "Cooper Kupp",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 70,
+   "td_rate": 0.0286,
+   "pos_percentile": 0.154,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0034383",
+   "name": "Dalton Schultz",
+   "pos": "TE",
+   "tds": 3,
+   "opportunities": 106,
+   "td_rate": 0.0283,
+   "pos_percentile": 0.207,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038542",
+   "name": "Bijan Robinson",
+   "pos": "RB",
+   "tds": 11,
+   "opportunities": 390,
+   "td_rate": 0.0282,
+   "pos_percentile": 0.426,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038117",
+   "name": "Wan'Dale Robinson",
+   "pos": "WR",
+   "tds": 4,
+   "opportunities": 143,
+   "td_rate": 0.028,
+   "pos_percentile": 0.138,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040676",
+   "name": "Cam Ward",
+   "pos": "QB",
+   "tds": 15,
+   "opportunities": 540,
+   "td_rate": 0.0278,
+   "pos_percentile": 0.024,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0034844",
+   "name": "Saquon Barkley",
+   "pos": "RB",
+   "tds": 9,
+   "opportunities": 330,
+   "td_rate": 0.0273,
+   "pos_percentile": 0.407,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039890",
+   "name": "Adonai Mitchell",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 75,
+   "td_rate": 0.0267,
+   "pos_percentile": 0.123,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040784",
+   "name": "Quinshon Judkins",
+   "pos": "RB",
+   "tds": 7,
+   "opportunities": 266,
+   "td_rate": 0.0263,
+   "pos_percentile": 0.389,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0034960",
+   "name": "Jakobi Meyers",
+   "pos": "WR",
+   "tds": 3,
+   "opportunities": 115,
+   "td_rate": 0.0261,
+   "pos_percentile": 0.108,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036358",
+   "name": "CeeDee Lamb",
+   "pos": "WR",
+   "tds": 3,
+   "opportunities": 118,
+   "td_rate": 0.0254,
+   "pos_percentile": 0.092,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0037809",
+   "name": "Chig Okonkwo",
+   "pos": "TE",
+   "tds": 2,
+   "opportunities": 79,
+   "td_rate": 0.0253,
+   "pos_percentile": 0.172,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040236",
+   "name": "Kyle Monangai",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 199,
+   "td_rate": 0.0251,
+   "pos_percentile": 0.37,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036139",
+   "name": "Rico Dowdle",
+   "pos": "RB",
+   "tds": 7,
+   "opportunities": 286,
+   "td_rate": 0.0245,
+   "pos_percentile": 0.352,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036158",
+   "name": "J.K. Dobbins",
+   "pos": "RB",
+   "tds": 4,
+   "opportunities": 167,
+   "td_rate": 0.024,
+   "pos_percentile": 0.333,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036555",
+   "name": "Chuba Hubbard",
+   "pos": "RB",
+   "tds": 4,
+   "opportunities": 173,
+   "td_rate": 0.0231,
+   "pos_percentile": 0.315,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037256",
+   "name": "Rachaad White",
+   "pos": "RB",
+   "tds": 4,
+   "opportunities": 177,
+   "td_rate": 0.0226,
+   "pos_percentile": 0.278,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039391",
+   "name": "Kimani Vidal",
+   "pos": "RB",
+   "tds": 4,
+   "opportunities": 177,
+   "td_rate": 0.0226,
+   "pos_percentile": 0.296,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040583",
+   "name": "Woody Marks",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 232,
+   "td_rate": 0.0216,
+   "pos_percentile": 0.259,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0034791",
+   "name": "Nick Chubb",
+   "pos": "RB",
+   "tds": 3,
+   "opportunities": 142,
+   "td_rate": 0.0211,
+   "pos_percentile": 0.222,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0038797",
+   "name": "Emanuel Wilson",
+   "pos": "RB",
+   "tds": 3,
+   "opportunities": 142,
+   "td_rate": 0.0211,
+   "pos_percentile": 0.241,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039066",
+   "name": "Michael Mayer",
+   "pos": "TE",
+   "tds": 1,
+   "opportunities": 50,
+   "td_rate": 0.02,
+   "pos_percentile": 0.138,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037545",
+   "name": "Rashid Shaheed",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 101,
+   "td_rate": 0.0198,
+   "pos_percentile": 0.077,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0038134",
+   "name": "Kenneth Walker III",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 257,
+   "td_rate": 0.0195,
+   "pos_percentile": 0.204,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0037746",
+   "name": "Brian Robinson",
+   "pos": "RB",
+   "tds": 2,
+   "opportunities": 104,
+   "td_rate": 0.0192,
+   "pos_percentile": 0.167,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0039361",
+   "name": "Bucky Irving",
+   "pos": "RB",
+   "tds": 4,
+   "opportunities": 208,
+   "td_rate": 0.0192,
+   "pos_percentile": 0.185,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0040162",
+   "name": "Dylan Sampson",
+   "pos": "RB",
+   "tds": 2,
+   "opportunities": 105,
+   "td_rate": 0.019,
+   "pos_percentile": 0.148,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0036407",
+   "name": "Jerry Jeudy",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 107,
+   "td_rate": 0.0187,
+   "pos_percentile": 0.062,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0039384",
+   "name": "Tyrone Tracy Jr.",
+   "pos": "RB",
+   "tds": 4,
+   "opportunities": 224,
+   "td_rate": 0.0179,
+   "pos_percentile": 0.13,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0035261",
+   "name": "Tony Pollard",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 283,
+   "td_rate": 0.0177,
+   "pos_percentile": 0.111,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033293",
+   "name": "Aaron Jones",
+   "pos": "RB",
+   "tds": 3,
+   "opportunities": 173,
+   "td_rate": 0.0173,
+   "pos_percentile": 0.093,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0038120",
+   "name": "Breece Hall",
+   "pos": "RB",
+   "tds": 5,
+   "opportunities": 291,
+   "td_rate": 0.0172,
+   "pos_percentile": 0.074,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0039032",
+   "name": "Tyjae Spears",
+   "pos": "RB",
+   "tds": 2,
+   "opportunities": 122,
+   "td_rate": 0.0164,
+   "pos_percentile": 0.056,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0035535",
+   "name": "Darius Slayton",
+   "pos": "WR",
+   "tds": 1,
+   "opportunities": 63,
+   "td_rate": 0.0159,
+   "pos_percentile": 0.046,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0040736",
+   "name": "Mason Taylor",
+   "pos": "TE",
+   "tds": 1,
+   "opportunities": 65,
+   "td_rate": 0.0154,
+   "pos_percentile": 0.103,
+   "outlier": null
+  },
+  {
+   "gsis_id": "00-0033357",
+   "name": "Taysom Hill",
+   "pos": "TE",
+   "tds": 1,
+   "opportunities": 68,
+   "td_rate": 0.0147,
+   "pos_percentile": 0.069,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0036322",
+   "name": "Justin Jefferson",
+   "pos": "WR",
+   "tds": 2,
+   "opportunities": 143,
+   "td_rate": 0.014,
+   "pos_percentile": 0.031,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0037197",
+   "name": "Isiah Pacheco",
+   "pos": "RB",
+   "tds": 2,
+   "opportunities": 144,
+   "td_rate": 0.0139,
+   "pos_percentile": 0.037,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0036309",
+   "name": "Darnell Mooney",
+   "pos": "WR",
+   "tds": 1,
+   "opportunities": 72,
+   "td_rate": 0.0139,
+   "pos_percentile": 0.015,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0040398",
+   "name": "Brady Cook",
+   "pos": "QB",
+   "tds": 2,
+   "opportunities": 153,
+   "td_rate": 0.0131,
+   "pos_percentile": 0.0,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0033881",
+   "name": "Evan Engram",
+   "pos": "TE",
+   "tds": 1,
+   "opportunities": 77,
+   "td_rate": 0.013,
+   "pos_percentile": 0.034,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0038129",
+   "name": "Cade Otton",
+   "pos": "TE",
+   "tds": 1,
+   "opportunities": 81,
+   "td_rate": 0.0123,
+   "pos_percentile": 0.0,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0039894",
+   "name": "Xavier Worthy",
+   "pos": "WR",
+   "tds": 1,
+   "opportunities": 84,
+   "td_rate": 0.0119,
+   "pos_percentile": 0.0,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0036924",
+   "name": "Michael Carter",
+   "pos": "RB",
+   "tds": 1,
+   "opportunities": 137,
+   "td_rate": 0.0073,
+   "pos_percentile": 0.019,
+   "outlier": "low"
+  },
+  {
+   "gsis_id": "00-0033906",
+   "name": "Alvin Kamara",
+   "pos": "RB",
+   "tds": 1,
+   "opportunities": 170,
+   "td_rate": 0.0059,
+   "pos_percentile": 0.0,
+   "outlier": "low"
+  }
+ ],
+ "provenance": {
+  "source": "nflverse stats_player_week 2025 (CC-BY-4.0)",
+  "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz",
+  "fetched_at": "2026-09-01T01:53:41Z",
+  "basis": "2025 REG TDs per opportunity: QB = passing TDs / attempts; RB/WR/TE = (rush+rec TDs) / (carries + targets); outliers = top/bottom decile within position at minimum-opportunity thresholds"
+ }
+}

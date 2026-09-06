@@ -1,0 +1,2855 @@
+{
+ "provenance": {
+  "generated": "2026-09-06",
+  "computed_at": "2026-09-06T15:04:57+00:00",
+  "engine_generated": "2026-08-31",
+  "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
+  "inputs_content_sha256": "37d99f7ac76b69a9b28e7a368dcfacf7c9461acadbaf7bf6035abe41f313deae",
+  "conventions": {
+   "bullish_p": 0.6,
+   "watch_p": 0.35,
+   "note": "decision-rule confidence levels, stated like p<0.05; every metric threshold is a computed percentile in bullish_inputs"
+  },
+  "ttl": "72h revalidation - the room degrades BULLISH to WATCH past it",
+  "forward_vegas": {
+   "source": "docs/ffopportunity/schedule_2026.csv",
+   "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
+   "upstream_source": "http://www.habitatring.com/games.csv",
+   "pulled_at": "2026-09-06T15:04:23+00:00",
+   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "snapshot_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+   "pricing_by_week_sha256": {
+    "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+    "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+    "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+   },
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "season": 2026,
+   "derivation": "maximal contiguous prefix from week 1 where every scheduled game has total_line and spread_line",
+   "spread_convention": "positive spread_line means home favored; home=total/2+spread/2, away=total/2-spread/2",
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games": 93,
+   "games_priced": 93,
+   "team_games": 186,
+   "team_games_priced": 186,
+   "teams": 32,
+   "full_schedule_games": 272,
+   "regular_season_games_per_team": 17,
+   "team_game_counts": {
+    "ARI": 6,
+    "ATL": 6,
+    "BAL": 6,
+    "BUF": 6,
+    "CAR": 5,
+    "CHI": 6,
+    "CIN": 5,
+    "CLE": 6,
+    "DAL": 6,
+    "DEN": 6,
+    "DET": 5,
+    "GB": 6,
+    "HOU": 6,
+    "IND": 6,
+    "JAX": 6,
+    "KC": 5,
+    "LAR": 6,
+    "LAC": 6,
+    "LV": 6,
+    "MIA": 5,
+    "MIN": 5,
+    "NE": 6,
+    "NO": 6,
+    "NYG": 6,
+    "NYJ": 6,
+    "PHI": 6,
+    "PIT": 6,
+    "SEA": 6,
+    "SF": 6,
+    "TB": 6,
+    "TEN": 6,
+    "WAS": 6
+   },
+   "coverage": [
+    {
+     "week": 1,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 2,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 3,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 4,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 5,
+     "priced_games": 15,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 6,
+     "priced_games": 14,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 7,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 8,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 9,
+     "priced_games": 1,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 10,
+     "priced_games": 1,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 11,
+     "priced_games": 1,
+     "scheduled_games": 13,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 12,
+     "priced_games": 5,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 13,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 14,
+     "priced_games": 0,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 15,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 16,
+     "priced_games": 4,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 17,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 18,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    }
+   ],
+   "next_partial_week": {
+    "week": 7,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "partial_line_games": 0,
+    "complete": false
+   },
+   "top_five_teams": [
+    "LAR",
+    "DET",
+    "BAL",
+    "BUF",
+    "SF"
+   ],
+   "top_five_tie_policy": "higher mean, then canonical team code",
+   "consumers": [
+    "QB.environment",
+    "WR.opportunity"
+   ],
+   "excluded_consumers": [
+    "RB.expected_td_equity"
+   ],
+   "delta_event": {
+    "event": "REPRICED",
+    "attribution": "SCHEDULE_INPUT",
+    "prior": {
+     "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
+     "upstream_content_sha256": null,
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+     "pricing_by_week_sha256": {
+      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "complete": false,
+      "partial_line_games": 0,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "week": 7
+     }
+    },
+    "current": {
+     "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+     "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+     "pricing_by_week_sha256": {
+      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+      "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "week": 7,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     }
+    },
+    "flags": {
+     "source_changed": true,
+     "coverage_changed": false,
+     "horizon_changed": false,
+     "implied_totals_changed": true,
+     "decision_pricing_changed": true,
+     "model_logic_changed": false,
+     "prior_horizon_repriced": true
+    },
+    "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
+   }
+  },
+  "te_tags": "suspended; see top-level te_gate_suspension for the computed shadow ledger and evidence"
+ },
+ "adp_edge": {
+  "question": "what do the tags find that ADP alone does not?",
+  "divergent": [
+   {
+    "name": "Javonte Williams",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 1,
+    "pos_adp_rank": 15,
+    "gap": 14
+   },
+   {
+    "name": "Zay Flowers",
+    "pos": "WR",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 19,
+    "gap": 14
+   },
+   {
+    "name": "Jared Goff",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 2,
+    "pos_adp_rank": 16,
+    "gap": 14
+   },
+   {
+    "name": "D'Andre Swift",
+    "pos": "RB",
+    "status": "WATCH",
+    "score_rank": 9,
+    "pos_adp_rank": 22,
+    "gap": 13
+   },
+   {
+    "name": "Brock Purdy",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 2,
+    "pos_adp_rank": 15,
+    "gap": 13
+   },
+   {
+    "name": "Jordan Love",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 6,
+    "pos_adp_rank": 18,
+    "gap": 12
+   },
+   {
+    "name": "Derrick Henry",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 1,
+    "pos_adp_rank": 12,
+    "gap": 11
+   },
+   {
+    "name": "Sam Darnold",
+    "pos": "QB",
+    "status": "WATCH",
+    "score_rank": 9,
+    "pos_adp_rank": 20,
+    "gap": 11
+   },
+   {
+    "name": "Chase Brown",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 1,
+    "pos_adp_rank": 10,
+    "gap": 9
+   },
+   {
+    "name": "Kyren Williams",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 14,
+    "gap": 9
+   },
+   {
+    "name": "Matthew Stafford",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 2,
+    "pos_adp_rank": 11,
+    "gap": 9
+   },
+   {
+    "name": "Patrick Mahomes",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 13,
+    "gap": 8
+   },
+   {
+    "name": "Ashton Jeanty",
+    "pos": "RB",
+    "status": "WATCH",
+    "score_rank": 1,
+    "pos_adp_rank": 8,
+    "gap": 7
+   },
+   {
+    "name": "Chris Olave",
+    "pos": "WR",
+    "status": "BULLISH",
+    "score_rank": 6,
+    "pos_adp_rank": 13,
+    "gap": 7
+   }
+  ],
+  "spearman_score_vs_adp_tagged": 0.688,
+  "statement": "14 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.688; a value near 1.0 would mean the tag merely restates the market."
+ },
+ "te_scarcity_adjudication": {
+  "basis": "league-exact PPG, 8+ game TEs, 2023-2025",
+  "gaps_ppg": {
+   "te1_te3": [
+    0.55,
+    0.54,
+    3.9
+   ],
+   "te1_te6": [
+    1.93,
+    2.86,
+    6.24
+   ],
+   "te1_te12": [
+    4.89,
+    5.73,
+    8.0
+   ]
+  },
+  "mean": {
+   "te1_te3": 1.66,
+   "te1_te6": 3.67,
+   "te1_te12": 6.21
+  },
+  "verdict": "TE1-TE3 mean gap 1.66 PPG, TE1-TE6 3.67, TE1-TE12 6.21. The Gemini doc's 'TE1-TE3 now under 1.0 PPG' is CONTRADICTED on our scoring; the director report's 'elite TE is a real edge' is SUPPORTED by the TE1-TE12 spread."
+ },
+ "te_gate_suspension": {
+  "status": "SUSPENDED",
+  "display_policy": "All TE rows are omitted from tags; pages render no per-player TE BULLISH, WATCH, or SUSPENDED chip.",
+  "display_note": "TE BULLISH/WATCH tags are suspended: the former 2-of-2 gate had one varying input.",
+  "reason_codes": [
+   "route_input_is_on_field_dropbacks_not_routes",
+   "market_share_criterion_is_constant",
+   "historical_share_grouped_by_current_team"
+  ],
+  "effective_test_before_suspension": "P(2025 on-field dropback share >= TE p75) multiplied by 0.9 for every veteran TE; the advertised 2-of-2 gate had one varying criterion.",
+  "evidence": {
+   "draftable_tes": 19,
+   "veterans_with_both_inputs": 19,
+   "market_share_probability_counts": {
+    "0.9": 19,
+    "0.2": 0
+   },
+   "route_basis": "Player membership in offense_players on 2025 regular-season team dropbacks; pass-block snaps are included and this is not routes run.",
+   "historical_share_current_team_mismatches": [
+    {
+     "name": "Isaiah Likely",
+     "sleeper_id": "8131",
+     "share_season": 2025,
+     "share_team": "BAL",
+     "share_value": 0.094,
+     "rank_group_team": "NYG",
+     "rank_group_size": 1,
+     "assigned_probability": 0.9
+    }
+   ]
+  },
+  "omitted_tags": [
+   {
+    "name": "Trey McBride",
+    "pos": "TE",
+    "sleeper_id": "8130",
+    "adp": 24.3,
+    "status": "BULLISH",
+    "score": 90.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 1.0,
+     "market_share": 0.9
+    },
+    "reasons": [],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-09-06T15:04:57+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Tyler Warren",
+    "pos": "TE",
+    "sleeper_id": "12518",
+    "adp": 49.7,
+    "status": "BULLISH",
+    "score": 90.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 1.0,
+     "market_share": 0.9
+    },
+    "reasons": [
+     "questionable - flagged, no demotion"
+    ],
+    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-09-06T15:04:57+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Kyle Pitts",
+    "pos": "TE",
+    "sleeper_id": "7553",
+    "adp": 68.6,
+    "status": "BULLISH",
+    "score": 90.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 1.0,
+     "market_share": 0.9
+    },
+    "reasons": [],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-09-06T15:04:57+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Travis Kelce",
+    "pos": "TE",
+    "sleeper_id": "1466",
+    "adp": 89.1,
+    "status": "BULLISH",
+    "score": 88.9,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 0.988,
+     "market_share": 0.9
+    },
+    "reasons": [],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-09-06T15:04:57+00:00",
+    "ttl_hours": 72
+   },
+   {
+    "name": "Hunter Henry",
+    "pos": "TE",
+    "sleeper_id": "3214",
+    "adp": 141.6,
+    "status": "WATCH",
+    "score": 45.0,
+    "gate": "P(>= 2 of 2)",
+    "criteria": {
+     "on_field_dropback_presence": 0.5005,
+     "market_share": 0.9
+    },
+    "reasons": [
+     "near-miss: gate probability in the watch band"
+    ],
+    "capital_tiebreak": null,
+    "source": "bullish_inputs_2026.json",
+    "computed_at": "2026-09-06T15:04:57+00:00",
+    "ttl_hours": 72
+   }
+  ],
+  "resume_requires": [
+   "A genuine routes-run input",
+   "A non-vacuous receiving-share criterion using a complete and season-consistent team universe",
+   "A reviewed rerun of N.1 after a repaired TE matrix is reintroduced"
+  ]
+ },
+ "rb_backfield_denominator_repair": {
+  "status": "ACTIVATED",
+  "scope": [
+   "RB.backfield_command"
+  ],
+  "source": "out/data/usage_2025.json#rb_player_team_carries",
+  "held_constant": "current code, current injury state, current player universe, and every non-backfield criterion; the component ledger separately exchanges historical grouping and complete player-team carry rows",
+  "replacement": {
+   "status": "ACTIVATED",
+   "source": "out/data/usage_2025.json#rb_player_team_carries",
+   "replacement": "2025 player carries divided by the complete untrimmed 2025 RB carry total on that historical team; multi-team rows stay split",
+   "retired_counterfactual": "the same committed usage rows grouped by each player's 2026 depth-chart team",
+   "grouping_only_intermediate": "the retired trimmed player rows regrouped by their stored historical team before adding the untrimmed split ledger",
+   "counterfactual_reproduces_committed_baseline": true,
+   "season_scope": "all 2025 season types present in the weekly source, preserving the prior all-week basis",
+   "multi_team_player_policy": "all split rows contribute to team denominators; a player with positive carries for multiple teams has a null individual share"
+  },
+  "thresholds": {
+   "before": {
+    "n": 44,
+    "zero_n": 0,
+    "excluded_unobserved_n": 5,
+    "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
+    "percentile_method": "nearest index: round(q * (n - 1))",
+    "p50": 0.5466,
+    "p75": 0.7513,
+    "p80": 0.7666,
+    "p50_method": "upper middle observation for even n; retired stage-2 baseline"
+   },
+   "after": {
+    "n": 44,
+    "zero_n": 0,
+    "excluded_unobserved_n": 5,
+    "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
+    "percentile_method": "nearest index: round(q * (n - 1))",
+    "p50": 0.5135,
+    "p75": 0.6538,
+    "p80": 0.6946,
+    "p50_method": "upper middle observation for even n; preserved stage-2 convention"
+   }
+  },
+  "input_changed": [
+   {
+    "player": "Jahmyr Gibbs|RB",
+    "before": 0.6731,
+    "after": 0.5971,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DET",
+     "player_carries": 243,
+     "current_roster_team_rb_carries": 361
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DET",
+     "player_carries": 243,
+     "historical_team_rb_carries": 407
+    }
+   },
+   {
+    "player": "Bijan Robinson|RB",
+    "before": 0.7513,
+    "after": 0.6538,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "ATL",
+     "player_carries": 287,
+     "current_roster_team_rb_carries": 382
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "ATL",
+     "player_carries": 287,
+     "historical_team_rb_carries": 439
+    }
+   },
+   {
+    "player": "Christian McCaffrey|RB",
+    "before": 1.0,
+    "after": 0.7694,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "SF",
+     "player_carries": 337,
+     "current_roster_team_rb_carries": 337
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "SF",
+     "player_carries": 337,
+     "historical_team_rb_carries": 438
+    }
+   },
+   {
+    "player": "Jonathan Taylor|RB",
+    "before": 1.0,
+    "after": 0.866,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "IND",
+     "player_carries": 323,
+     "current_roster_team_rb_carries": 323
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "IND",
+     "player_carries": 323,
+     "historical_team_rb_carries": 373
+    }
+   },
+   {
+    "player": "James Cook|RB",
+    "before": 0.7632,
+    "after": 0.7598,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "BUF",
+     "player_carries": 348,
+     "current_roster_team_rb_carries": 456
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "BUF",
+     "player_carries": 348,
+     "historical_team_rb_carries": 458
+    }
+   },
+   {
+    "player": "Chase Brown|RB",
+    "before": 0.7342,
+    "after": 0.6946,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CIN",
+     "player_carries": 232,
+     "current_roster_team_rb_carries": 316
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CIN",
+     "player_carries": 232,
+     "historical_team_rb_carries": 334
+    }
+   },
+   {
+    "player": "Derrick Henry|RB",
+    "before": 0.9247,
+    "after": 0.7832,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "BAL",
+     "player_carries": 307,
+     "current_roster_team_rb_carries": 332
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "BAL",
+     "player_carries": 307,
+     "historical_team_rb_carries": 392
+    }
+   },
+   {
+    "player": "Saquon Barkley|RB",
+    "before": 0.7907,
+    "after": 0.7766,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "PHI",
+     "player_carries": 306,
+     "current_roster_team_rb_carries": 387
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "PHI",
+     "player_carries": 306,
+     "historical_team_rb_carries": 394
+    }
+   },
+   {
+    "player": "Kenneth Walker|RB",
+    "before": 0.8667,
+    "after": 0.5608,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "KC",
+     "player_carries": 286,
+     "current_roster_team_rb_carries": 330
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "SEA",
+     "player_carries": 286,
+     "historical_team_rb_carries": 510
+    }
+   },
+   {
+    "player": "Omarion Hampton|RB",
+    "before": 0.3571,
+    "after": 0.3369,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LAC",
+     "player_carries": 125,
+     "current_roster_team_rb_carries": 350
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LAC",
+     "player_carries": 125,
+     "historical_team_rb_carries": 371
+    }
+   },
+   {
+    "player": "Ashton Jeanty|RB",
+    "before": 1.0,
+    "after": 0.8664,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LV",
+     "player_carries": 266,
+     "current_roster_team_rb_carries": 266
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LV",
+     "player_carries": 266,
+     "historical_team_rb_carries": 307
+    }
+   },
+   {
+    "player": "Javonte Williams|RB",
+    "before": 0.7241,
+    "after": 0.658,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DAL",
+     "player_carries": 252,
+     "current_roster_team_rb_carries": 348
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DAL",
+     "player_carries": 252,
+     "historical_team_rb_carries": 383
+    }
+   },
+   {
+    "player": "Breece Hall|RB",
+    "before": 0.7666,
+    "after": 0.7297,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NYJ",
+     "player_carries": 243,
+     "current_roster_team_rb_carries": 317
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NYJ",
+     "player_carries": 243,
+     "historical_team_rb_carries": 333
+    }
+   },
+   {
+    "player": "Kyren Williams|RB",
+    "before": 0.6392,
+    "after": 0.6273,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LAR",
+     "player_carries": 303,
+     "current_roster_team_rb_carries": 474
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LAR",
+     "player_carries": 303,
+     "historical_team_rb_carries": 483
+    }
+   },
+   {
+    "player": "D'Andre Swift|RB",
+    "before": 0.573,
+    "after": 0.5629,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CHI",
+     "player_carries": 255,
+     "current_roster_team_rb_carries": 445
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CHI",
+     "player_carries": 255,
+     "historical_team_rb_carries": 453
+    }
+   },
+   {
+    "player": "Travis Etienne|RB",
+    "before": 0.5466,
+    "after": 0.6959,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NO",
+     "player_carries": 270,
+     "current_roster_team_rb_carries": 494
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "JAX",
+     "player_carries": 270,
+     "historical_team_rb_carries": 388
+    }
+   },
+   {
+    "player": "David Montgomery|RB",
+    "before": 0.4083,
+    "after": 0.3882,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "HOU",
+     "player_carries": 158,
+     "current_roster_team_rb_carries": 387
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DET",
+     "player_carries": 158,
+     "historical_team_rb_carries": 407
+    }
+   },
+   {
+    "player": "Cam Skattebo|RB",
+    "before": 0.2457,
+    "after": 0.2551,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NYG",
+     "player_carries": 101,
+     "current_roster_team_rb_carries": 411
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NYG",
+     "player_carries": 101,
+     "historical_team_rb_carries": 396
+    }
+   },
+   {
+    "player": "Bucky Irving|RB",
+    "before": 0.4565,
+    "after": 0.4347,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TB",
+     "player_carries": 173,
+     "current_roster_team_rb_carries": 379
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TB",
+     "player_carries": 173,
+     "historical_team_rb_carries": 398
+    }
+   },
+   {
+    "player": "Quinshon Judkins|RB",
+    "before": 0.7143,
+    "after": 0.6516,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CLE",
+     "player_carries": 230,
+     "current_roster_team_rb_carries": 322
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CLE",
+     "player_carries": 230,
+     "historical_team_rb_carries": 353
+    }
+   },
+   {
+    "player": "Bhayshul Tuten|RB",
+    "before": 0.3671,
+    "after": 0.2242,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "JAX",
+     "player_carries": 87,
+     "current_roster_team_rb_carries": 237
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "JAX",
+     "player_carries": 87,
+     "historical_team_rb_carries": 388
+    }
+   },
+   {
+    "player": "TreVeyon Henderson|RB",
+    "before": 0.5276,
+    "after": 0.4575,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NE",
+     "player_carries": 210,
+     "current_roster_team_rb_carries": 398
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NE",
+     "player_carries": 210,
+     "historical_team_rb_carries": 459
+    }
+   },
+   {
+    "player": "Jaylen Warren|RB",
+    "before": 0.4806,
+    "after": 0.6011,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "PIT",
+     "player_carries": 223,
+     "current_roster_team_rb_carries": 464
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "PIT",
+     "player_carries": 223,
+     "historical_team_rb_carries": 371
+    }
+   },
+   {
+    "player": "Rhamondre Stevenson|RB",
+    "before": 0.4724,
+    "after": 0.4096,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NE",
+     "player_carries": 188,
+     "current_roster_team_rb_carries": 398
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NE",
+     "player_carries": 188,
+     "historical_team_rb_carries": 459
+    }
+   },
+   {
+    "player": "Rico Dowdle|RB",
+    "before": 0.5194,
+    "after": 0.5878,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "PIT",
+     "player_carries": 241,
+     "current_roster_team_rb_carries": 464
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CAR",
+     "player_carries": 241,
+     "historical_team_rb_carries": 410
+    }
+   },
+   {
+    "player": "J.K. Dobbins|RB",
+    "before": 0.4679,
+    "after": 0.4113,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DEN",
+     "player_carries": 153,
+     "current_roster_team_rb_carries": 327
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DEN",
+     "player_carries": 153,
+     "historical_team_rb_carries": 372
+    }
+   },
+   {
+    "player": "Tony Pollard|RB",
+    "before": 0.7707,
+    "after": 0.7378,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TEN",
+     "player_carries": 242,
+     "current_roster_team_rb_carries": 314
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TEN",
+     "player_carries": 242,
+     "historical_team_rb_carries": 328
+    }
+   },
+   {
+    "player": "Kyle Monangai|RB",
+    "before": 0.427,
+    "after": 0.4194,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CHI",
+     "player_carries": 190,
+     "current_roster_team_rb_carries": 445
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CHI",
+     "player_carries": 190,
+     "historical_team_rb_carries": 453
+    }
+   },
+   {
+    "player": "Jordan Mason|RB",
+    "before": 0.5464,
+    "after": 0.4609,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "MIN",
+     "player_carries": 159,
+     "current_roster_team_rb_carries": 291
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "MIN",
+     "player_carries": 159,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Kenny Gainwell|RB",
+    "before": 0.3166,
+    "after": 0.3235,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TB",
+     "player_carries": 120,
+     "current_roster_team_rb_carries": 379
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "PIT",
+     "player_carries": 120,
+     "historical_team_rb_carries": 371
+    }
+   },
+   {
+    "player": "Chuba Hubbard|RB",
+    "before": 0.875,
+    "after": 0.3585,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "CAR",
+     "player_carries": 147,
+     "current_roster_team_rb_carries": 168
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "CAR",
+     "player_carries": 147,
+     "historical_team_rb_carries": 410
+    }
+   },
+   {
+    "player": "RJ Harvey|RB",
+    "before": 0.5046,
+    "after": 0.4435,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "DEN",
+     "player_carries": 165,
+     "current_roster_team_rb_carries": 327
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "DEN",
+     "player_carries": 165,
+     "historical_team_rb_carries": 372
+    }
+   },
+   {
+    "player": "Aaron Jones|RB",
+    "before": 0.4536,
+    "after": 0.3826,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "MIN",
+     "player_carries": 132,
+     "current_roster_team_rb_carries": 291
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "MIN",
+     "player_carries": 132,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Blake Corum|RB",
+    "before": 0.3608,
+    "after": 0.354,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "LAR",
+     "player_carries": 171,
+     "current_roster_team_rb_carries": 474
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "LAR",
+     "player_carries": 171,
+     "historical_team_rb_carries": 483
+    }
+   },
+   {
+    "player": "Chris Rodriguez|RB",
+    "before": 0.4726,
+    "after": 0.3246,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "JAX",
+     "player_carries": 112,
+     "current_roster_team_rb_carries": 237
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "WAS",
+     "player_carries": 112,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Rachaad White|RB",
+    "before": 0.3761,
+    "after": 0.3317,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "WAS",
+     "player_carries": 132,
+     "current_roster_team_rb_carries": 351
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TB",
+     "player_carries": 132,
+     "historical_team_rb_carries": 398
+    }
+   },
+   {
+    "player": "Jacory Croskey-Merritt|RB",
+    "before": 0.4986,
+    "after": 0.5072,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "WAS",
+     "player_carries": 175,
+     "current_roster_team_rb_carries": 351
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "WAS",
+     "player_carries": 175,
+     "historical_team_rb_carries": 345
+    }
+   },
+   {
+    "player": "Tyjae Spears|RB",
+    "before": 0.2293,
+    "after": 0.2195,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "TEN",
+     "player_carries": 72,
+     "current_roster_team_rb_carries": 314
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "TEN",
+     "player_carries": 72,
+     "historical_team_rb_carries": 328
+    }
+   },
+   {
+    "player": "Josh Jacobs|RB",
+    "before": 0.9004,
+    "after": 0.6216,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "GB",
+     "player_carries": 253,
+     "current_roster_team_rb_carries": 281
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "GB",
+     "player_carries": 253,
+     "historical_team_rb_carries": 407
+    }
+   },
+   {
+    "player": "Woody Marks|RB",
+    "before": 0.5917,
+    "after": 0.5135,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "HOU",
+     "player_carries": 229,
+     "current_roster_team_rb_carries": 387
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "HOU",
+     "player_carries": 229,
+     "historical_team_rb_carries": 446
+    }
+   },
+   {
+    "player": "Tyler Allgeier|RB",
+    "before": 0.5,
+    "after": 0.3257,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "ARI",
+     "player_carries": 143,
+     "current_roster_team_rb_carries": 286
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "ATL",
+     "player_carries": 143,
+     "historical_team_rb_carries": 439
+    }
+   },
+   {
+    "player": "Zach Charbonnet|RB",
+    "before": 0.5526,
+    "after": 0.3706,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "SEA",
+     "player_carries": 189,
+     "current_roster_team_rb_carries": 342
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "SEA",
+     "player_carries": 189,
+     "historical_team_rb_carries": 510
+    }
+   },
+   {
+    "player": "Alvin Kamara|RB",
+    "before": 0.2652,
+    "after": 0.4367,
+    "before_sample": {
+     "season": 2025,
+     "current_roster_team": "NO",
+     "player_carries": 131,
+     "current_roster_team_rb_carries": 494
+    },
+    "after_sample": {
+     "season": 2025,
+     "historical_team": "NO",
+     "player_carries": 131,
+     "historical_team_rb_carries": 300
+    }
+   }
+  ],
+  "gained": [],
+  "lost": [
+   "Zach Charbonnet|RB"
+  ],
+  "status_changed": [
+   {
+    "player": "Kyren Williams|RB",
+    "before": "WATCH",
+    "after": "BULLISH"
+   }
+  ],
+  "score_changed": [
+   {
+    "player": "Jahmyr Gibbs|RB",
+    "before": 84.0,
+    "after": 69.0
+   },
+   {
+    "player": "Kyren Williams|RB",
+    "before": 56.6,
+    "after": 69.0
+   }
+  ],
+  "gate_score_changed": [
+   {
+    "player": "Aaron Jones|RB",
+    "before": 4.3,
+    "after": 1.7
+   },
+   {
+    "player": "Alvin Kamara|RB",
+    "before": 0.9,
+    "after": 2.5
+   },
+   {
+    "player": "Chris Rodriguez|RB",
+    "before": 0.6,
+    "after": 0.2
+   },
+   {
+    "player": "Chuba Hubbard|RB",
+    "before": 11.0,
+    "after": 2.5
+   },
+   {
+    "player": "De'Von Achane|RB",
+    "before": 19.4,
+    "after": 24.1
+   },
+   {
+    "player": "J.K. Dobbins|RB",
+    "before": 2.5,
+    "after": 0.9
+   },
+   {
+    "player": "Jahmyr Gibbs|RB",
+    "before": 84.0,
+    "after": 69.0
+   },
+   {
+    "player": "Jaylen Warren|RB",
+    "before": 6.2,
+    "after": 8.9
+   },
+   {
+    "player": "Kenneth Walker|RB",
+    "before": 13.6,
+    "after": 11.0
+   },
+   {
+    "player": "Kyle Monangai|RB",
+    "before": 5.5,
+    "after": 13.6
+   },
+   {
+    "player": "Kyren Williams|RB",
+    "before": 56.6,
+    "after": 69.0
+   },
+   {
+    "player": "Rhamondre Stevenson|RB",
+    "before": 6.2,
+    "after": 2.5
+   },
+   {
+    "player": "Rico Dowdle|RB",
+    "before": 13.6,
+    "after": 19.4
+   },
+   {
+    "player": "Travis Etienne|RB",
+    "before": 3.5,
+    "after": 4.4
+   },
+   {
+    "player": "Tyler Allgeier|RB",
+    "before": 11.0,
+    "after": 4.4
+   },
+   {
+    "player": "Zach Charbonnet|RB",
+    "before": 41.1,
+    "after": 13.6
+   }
+  ],
+  "component_attribution": {
+   "grouping_only": {
+    "before_threshold": {
+     "n": 44,
+     "zero_n": 0,
+     "excluded_unobserved_n": 5,
+     "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.5466,
+     "p75": 0.7513,
+     "p80": 0.7666,
+     "p50_method": "upper middle observation for even n; retired stage-2 baseline"
+    },
+    "after_threshold": {
+     "n": 44,
+     "zero_n": 0,
+     "excluded_unobserved_n": 5,
+     "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.5465,
+     "p75": 0.658,
+     "p80": 0.6674,
+     "p50_method": "upper middle observation for even n; grouping-only intermediate"
+    },
+    "gate_score_changed": [
+     {
+      "player": "Aaron Jones|RB",
+      "before": 4.3,
+      "after": 1.7
+     },
+     {
+      "player": "Alvin Kamara|RB",
+      "before": 0.9,
+      "after": 2.5
+     },
+     {
+      "player": "Bucky Irving|RB",
+      "before": 11.0,
+      "after": 4.4
+     },
+     {
+      "player": "Chris Rodriguez|RB",
+      "before": 0.6,
+      "after": 0.2
+     },
+     {
+      "player": "Chuba Hubbard|RB",
+      "before": 11.0,
+      "after": 2.5
+     },
+     {
+      "player": "J.K. Dobbins|RB",
+      "before": 2.5,
+      "after": 0.9
+     },
+     {
+      "player": "Jahmyr Gibbs|RB",
+      "before": 84.0,
+      "after": 69.0
+     },
+     {
+      "player": "Jaylen Warren|RB",
+      "before": 6.2,
+      "after": 11.0
+     },
+     {
+      "player": "Josh Jacobs|RB",
+      "before": 19.4,
+      "after": 15.7
+     },
+     {
+      "player": "Kenneth Walker|RB",
+      "before": 13.6,
+      "after": 11.0
+     },
+     {
+      "player": "RJ Harvey|RB",
+      "before": 33.6,
+      "after": 15.7
+     },
+     {
+      "player": "Rhamondre Stevenson|RB",
+      "before": 6.2,
+      "after": 2.5
+     },
+     {
+      "player": "Rico Dowdle|RB",
+      "before": 13.6,
+      "after": 19.4
+     },
+     {
+      "player": "Tyler Allgeier|RB",
+      "before": 11.0,
+      "after": 4.4
+     },
+     {
+      "player": "Zach Charbonnet|RB",
+      "before": 41.1,
+      "after": 13.6
+     }
+    ],
+    "gained": [],
+    "lost": [
+     "Zach Charbonnet|RB"
+    ],
+    "status_changed": [],
+    "score_changed": [
+     {
+      "player": "Jahmyr Gibbs|RB",
+      "before": 84.0,
+      "after": 69.0
+     }
+    ]
+   },
+   "untrimmed_split_ledger": {
+    "before_threshold": {
+     "n": 44,
+     "zero_n": 0,
+     "excluded_unobserved_n": 5,
+     "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.5465,
+     "p75": 0.658,
+     "p80": 0.6674,
+     "p50_method": "upper middle observation for even n; grouping-only intermediate"
+    },
+    "after_threshold": {
+     "n": 44,
+     "zero_n": 0,
+     "excluded_unobserved_n": 5,
+     "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
+     "percentile_method": "nearest index: round(q * (n - 1))",
+     "p50": 0.5135,
+     "p75": 0.6538,
+     "p80": 0.6946,
+     "p50_method": "upper middle observation for even n; preserved stage-2 convention"
+    },
+    "gate_score_changed": [
+     {
+      "player": "Bucky Irving|RB",
+      "before": 4.4,
+      "after": 11.0
+     },
+     {
+      "player": "De'Von Achane|RB",
+      "before": 19.4,
+      "after": 24.1
+     },
+     {
+      "player": "Jaylen Warren|RB",
+      "before": 11.0,
+      "after": 8.9
+     },
+     {
+      "player": "Josh Jacobs|RB",
+      "before": 15.7,
+      "after": 19.4
+     },
+     {
+      "player": "Kyle Monangai|RB",
+      "before": 5.5,
+      "after": 13.6
+     },
+     {
+      "player": "Kyren Williams|RB",
+      "before": 56.6,
+      "after": 69.0
+     },
+     {
+      "player": "RJ Harvey|RB",
+      "before": 15.7,
+      "after": 33.6
+     },
+     {
+      "player": "Travis Etienne|RB",
+      "before": 3.5,
+      "after": 4.4
+     }
+    ],
+    "gained": [],
+    "lost": [],
+    "status_changed": [
+     {
+      "player": "Kyren Williams|RB",
+      "before": "WATCH",
+      "after": "BULLISH"
+     }
+    ],
+    "score_changed": [
+     {
+      "player": "Kyren Williams|RB",
+      "before": 56.6,
+      "after": 69.0
+     }
+    ]
+   }
+  },
+  "non_rb_invariance": {
+   "before_count": 17,
+   "after_count": 17,
+   "tag_records_identical": true
+  },
+  "open_inverse_gap": "backfield_command now measures 2025 team shares accurately; it still does not measure 2026 carries opened by departures. Vacated carries remains assessment-only pending an ADP-redundancy test and explicit no-prior-NFL-sample handling."
+ },
+ "forward_vegas_activation": {
+  "status": "ACTIVATED",
+  "scope": [
+   "QB.environment",
+   "WR.opportunity"
+  ],
+  "baseline": {
+   "source": "nflverse HISTORY games.csv, Week-1 2026 lines",
+   "threshold": "implied_total"
+  },
+  "replacement": {
+   "source": "docs/ffopportunity/schedule_2026.csv",
+   "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
+   "upstream_source": "http://www.habitatring.com/games.csv",
+   "pulled_at": "2026-09-06T15:04:23+00:00",
+   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "snapshot_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+   "pricing_by_week_sha256": {
+    "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+    "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+    "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+   },
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "season": 2026,
+   "derivation": "maximal contiguous prefix from week 1 where every scheduled game has total_line and spread_line",
+   "spread_convention": "positive spread_line means home favored; home=total/2+spread/2, away=total/2-spread/2",
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games": 93,
+   "games_priced": 93,
+   "team_games": 186,
+   "team_games_priced": 186,
+   "teams": 32,
+   "full_schedule_games": 272,
+   "regular_season_games_per_team": 17,
+   "team_game_counts": {
+    "ARI": 6,
+    "ATL": 6,
+    "BAL": 6,
+    "BUF": 6,
+    "CAR": 5,
+    "CHI": 6,
+    "CIN": 5,
+    "CLE": 6,
+    "DAL": 6,
+    "DEN": 6,
+    "DET": 5,
+    "GB": 6,
+    "HOU": 6,
+    "IND": 6,
+    "JAX": 6,
+    "KC": 5,
+    "LAR": 6,
+    "LAC": 6,
+    "LV": 6,
+    "MIA": 5,
+    "MIN": 5,
+    "NE": 6,
+    "NO": 6,
+    "NYG": 6,
+    "NYJ": 6,
+    "PHI": 6,
+    "PIT": 6,
+    "SEA": 6,
+    "SF": 6,
+    "TB": 6,
+    "TEN": 6,
+    "WAS": 6
+   },
+   "coverage": [
+    {
+     "week": 1,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 2,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 3,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 4,
+     "priced_games": 16,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 5,
+     "priced_games": 15,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 6,
+     "priced_games": 14,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": true
+    },
+    {
+     "week": 7,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 8,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 9,
+     "priced_games": 1,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 10,
+     "priced_games": 1,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 11,
+     "priced_games": 1,
+     "scheduled_games": 13,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 12,
+     "priced_games": 5,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 13,
+     "priced_games": 0,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 14,
+     "priced_games": 0,
+     "scheduled_games": 15,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 15,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 16,
+     "priced_games": 4,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 17,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    },
+    {
+     "week": 18,
+     "priced_games": 0,
+     "scheduled_games": 16,
+     "partial_line_games": 0,
+     "complete": false
+    }
+   ],
+   "next_partial_week": {
+    "week": 7,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "partial_line_games": 0,
+    "complete": false
+   },
+   "top_five_teams": [
+    "LAR",
+    "DET",
+    "BAL",
+    "BUF",
+    "SF"
+   ],
+   "top_five_tie_policy": "higher mean, then canonical team code",
+   "consumers": [
+    "QB.environment",
+    "WR.opportunity"
+   ],
+   "excluded_consumers": [
+    "RB.expected_td_equity"
+   ],
+   "delta_event": {
+    "event": "REPRICED",
+    "attribution": "SCHEDULE_INPUT",
+    "prior": {
+     "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
+     "upstream_content_sha256": null,
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+     "pricing_by_week_sha256": {
+      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "complete": false,
+      "partial_line_games": 0,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "week": 7
+     }
+    },
+    "current": {
+     "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+     "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+     "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+     "pricing_by_week_sha256": {
+      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+      "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+     },
+     "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "first_week": 1,
+     "last_week": 6,
+     "games_priced": 93,
+     "team_games_priced": 186,
+     "next_partial_week": {
+      "week": 7,
+      "priced_games": 7,
+      "scheduled_games": 14,
+      "partial_line_games": 0,
+      "complete": false
+     }
+    },
+    "flags": {
+     "source_changed": true,
+     "coverage_changed": false,
+     "horizon_changed": false,
+     "implied_totals_changed": true,
+     "decision_pricing_changed": true,
+     "model_logic_changed": false,
+     "prior_horizon_repriced": true
+    },
+    "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
+   }
+  },
+  "gained": [
+   "Brock Purdy|QB",
+   "Jordan Love|QB"
+  ],
+  "lost": [
+   "Caleb Williams|QB",
+   "Jalen Hurts|QB",
+   "Justin Herbert|QB",
+   "Kyler Murray|QB",
+   "Trevor Lawrence|QB"
+  ],
+  "status_changed": [
+   {
+    "player": "Sam Darnold|QB",
+    "before": "BULLISH",
+    "after": "WATCH"
+   }
+  ],
+  "score_changed": [
+   {
+    "player": "Dak Prescott|QB",
+    "before": 91.7,
+    "after": 75.4
+   },
+   {
+    "player": "Joe Burrow|QB",
+    "before": 75.4,
+    "after": 61.9
+   },
+   {
+    "player": "Josh Allen|QB",
+    "before": 91.7,
+    "after": 99.3
+   },
+   {
+    "player": "Patrick Mahomes|QB",
+    "before": 61.9,
+    "after": 84.4
+   },
+   {
+    "player": "Sam Darnold|QB",
+    "before": 75.4,
+    "after": 55.0
+   }
+  ],
+  "rb_invariance": {
+   "before_count": 10,
+   "after_count": 10,
+   "tag_records_identical": true
+  },
+  "n1_after_activation": {
+   "scope": "RB/WR historical proxy; does not validate the live matrix",
+   "verdict": "INCONCLUSIVE",
+   "top_adp_band": "22/35 (62.9%) vs 86/164 (52.4%)",
+   "difference_pp": 10.4,
+   "ci95_pp": [
+    -7.3,
+    28.2
+   ],
+   "p_two_sided": 0.261
+  }
+ },
+ "forward_vegas_delta": {
+  "event": "REPRICED",
+  "attribution": "SCHEDULE_INPUT",
+  "pulled_at": "2026-09-06T15:04:23+00:00",
+  "prior": {
+   "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
+   "upstream_content_sha256": null,
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+   "pricing_by_week_sha256": {
+    "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+    "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+   },
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games_priced": 93,
+   "team_games_priced": 186,
+   "next_partial_week": {
+    "complete": false,
+    "partial_line_games": 0,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "week": 7
+   }
+  },
+  "current": {
+   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+   "pricing_by_week_sha256": {
+    "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+    "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+    "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+   },
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "first_week": 1,
+   "last_week": 6,
+   "games_priced": 93,
+   "team_games_priced": 186,
+   "next_partial_week": {
+    "week": 7,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "partial_line_games": 0,
+    "complete": false
+   }
+  },
+  "flags": {
+   "source_changed": true,
+   "coverage_changed": false,
+   "horizon_changed": false,
+   "implied_totals_changed": true,
+   "decision_pricing_changed": true,
+   "model_logic_changed": false,
+   "prior_horizon_repriced": true
+  },
+  "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
+  "same_build_counterfactual": {
+   "held_constant": "current code, current non-schedule inputs, current injury state, and current player universe; only the prior versus current forward schedule decision input and its derived QB threshold/top-five WR environment are exchanged",
+   "gained": [],
+   "lost": [],
+   "status_changed": [],
+   "score_changed": [],
+   "rb_invariance": {
+    "before_count": 10,
+    "after_count": 10,
+    "tag_records_identical": true
+   }
+  },
+  "last_material_event": {
+   "event": "REPRICED",
+   "attribution": "SCHEDULE_INPUT",
+   "pulled_at": "2026-09-06T15:04:23+00:00",
+   "prior": {
+    "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
+    "upstream_content_sha256": null,
+    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+    "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+    "pricing_by_week_sha256": {
+     "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+     "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+     "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+    },
+    "weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "first_week": 1,
+    "last_week": 6,
+    "games_priced": 93,
+    "team_games_priced": 186,
+    "next_partial_week": {
+     "complete": false,
+     "partial_line_games": 0,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "week": 7
+    }
+   },
+   "current": {
+    "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+    "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+    "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+    "pricing_by_week_sha256": {
+     "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+     "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+     "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+    },
+    "weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "first_week": 1,
+    "last_week": 6,
+    "games_priced": 93,
+    "team_games_priced": 186,
+    "next_partial_week": {
+     "week": 7,
+     "priced_games": 7,
+     "scheduled_games": 14,
+     "partial_line_games": 0,
+     "complete": false
+    }
+   },
+   "flags": {
+    "source_changed": true,
+    "coverage_changed": false,
+    "horizon_changed": false,
+    "implied_totals_changed": true,
+    "decision_pricing_changed": true,
+    "model_logic_changed": false,
+    "prior_horizon_repriced": true
+   },
+   "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
+   "same_build_counterfactual": {
+    "held_constant": "current code, current non-schedule inputs, current injury state, and current player universe; only the prior versus current forward schedule decision input and its derived QB threshold/top-five WR environment are exchanged",
+    "gained": [],
+    "lost": [],
+    "status_changed": [],
+    "score_changed": [],
+    "rb_invariance": {
+     "before_count": 10,
+     "after_count": 10,
+     "tag_records_identical": true
+    }
+   }
+  }
+ },
+ "qb_gap": {
+  "definition": "top-12 QB season finishes 2016-2025 (n=120), rushing class = rush yds/g >= that season's p75 among 8+ game QBs; season TOTAL points under each scoring",
+  "league_6pt": {
+   "rushing": {
+    "mean": 399.9,
+    "sd": 54.2,
+    "n": 49
+   },
+   "pocket": {
+    "mean": 378.0,
+    "sd": 48.0,
+    "n": 71
+   },
+   "gap": 22.0,
+   "gap_ci95": [
+    3.1,
+    40.8
+   ]
+  },
+  "counterfactual_4pt": {
+   "rushing": {
+    "mean": 339.6,
+    "sd": 45.2,
+    "n": 53
+   },
+   "pocket": {
+    "mean": 317.3,
+    "sd": 36.7,
+    "n": 67
+   },
+   "gap": 22.4,
+   "gap_ci95": [
+    7.3,
+    37.4
+   ]
+  }
+ },
+ "delta": {
+  "previous": "2026-09-05",
+  "gained": [],
+  "lost": [],
+  "status_changed": []
+ },
+ "tags": [
+  {
+   "name": "Jahmyr Gibbs",
+   "pos": "RB",
+   "sleeper_id": "9221",
+   "adp": 1.9,
+   "status": "BULLISH",
+   "score": 69.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.95,
+    "expected_td_equity": 0.15,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.75
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Bijan Robinson",
+   "pos": "RB",
+   "sleeper_id": "9509",
+   "adp": 2.2,
+   "status": "WATCH",
+   "score": 50.3,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.95,
+    "expected_td_equity": 0.15,
+    "line_quality": 0.5,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Puka Nacua",
+   "pos": "WR",
+   "sleeper_id": "9493",
+   "adp": 4.4,
+   "status": "BULLISH",
+   "score": 97.8,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "target_earning": 1.0,
+    "yprr": 0.95,
+    "first_read": 0.9401,
+    "opportunity": 0.9,
+    "on_field_dropback_presence": 0.9536
+   },
+   "reasons": [
+    "questionable - flagged, no demotion"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Ja'Marr Chase",
+   "pos": "WR",
+   "sleeper_id": "7564",
+   "adp": 3.2,
+   "status": "BULLISH",
+   "score": 90.6,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "target_earning": 0.9693,
+    "yprr": 0.5,
+    "first_read": 0.9436,
+    "opportunity": 0.9,
+    "on_field_dropback_presence": 1.0
+   },
+   "reasons": [
+    "questionable - flagged, no demotion"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Jonathan Taylor",
+   "pos": "RB",
+   "sleeper_id": "6813",
+   "adp": 7.2,
+   "status": "WATCH",
+   "score": 58.2,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.5,
+    "expected_td_equity": 0.95,
+    "line_quality": 0.5,
+    "availability": 0.75,
+    "backfield_command": 0.95
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Jaxon Smith-Njigba",
+   "pos": "WR",
+   "sleeper_id": "9488",
+   "adp": 6.2,
+   "status": "BULLISH",
+   "score": 96.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "target_earning": 0.9998,
+    "yprr": 0.95,
+    "first_read": 1.0,
+    "opportunity": 0.2,
+    "on_field_dropback_presence": 1.0
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Amon-Ra St. Brown",
+   "pos": "WR",
+   "sleeper_id": "7547",
+   "adp": 8.8,
+   "status": "BULLISH",
+   "score": 97.2,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "target_earning": 0.9889,
+    "yprr": 0.75,
+    "first_read": 1.0,
+    "opportunity": 0.9,
+    "on_field_dropback_presence": 1.0
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Chase Brown",
+   "pos": "RB",
+   "sleeper_id": "9224",
+   "adp": 16.7,
+   "status": "BULLISH",
+   "score": 84.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.95,
+    "expected_td_equity": 0.95,
+    "line_quality": 0.15,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Derrick Henry",
+   "pos": "RB",
+   "sleeper_id": "3198",
+   "adp": 20.0,
+   "status": "BULLISH",
+   "score": 84.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.15,
+    "expected_td_equity": 0.95,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Saquon Barkley",
+   "pos": "RB",
+   "sleeper_id": "4866",
+   "adp": 12.6,
+   "status": "WATCH",
+   "score": 58.2,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.5,
+    "expected_td_equity": 0.5,
+    "line_quality": 0.95,
+    "availability": 0.75,
+    "backfield_command": 0.95
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Ashton Jeanty",
+   "pos": "RB",
+   "sleeper_id": "12527",
+   "adp": 14.2,
+   "status": "WATCH",
+   "score": 84.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.95,
+    "expected_td_equity": 0.95,
+    "line_quality": 0.15,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [
+    "RB questionable (soft-tissue default): demoted, re-evaluate at final report"
+   ],
+   "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Josh Allen",
+   "pos": "QB",
+   "sleeper_id": "4984",
+   "adp": 21.0,
+   "status": "BULLISH",
+   "score": 99.3,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.95,
+    "environment": 0.95,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Javonte Williams",
+   "pos": "RB",
+   "sleeper_id": "7588",
+   "adp": 33.5,
+   "status": "BULLISH",
+   "score": 84.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.15,
+    "expected_td_equity": 0.95,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Chris Olave",
+   "pos": "WR",
+   "sleeper_id": "8144",
+   "adp": 30.1,
+   "status": "BULLISH",
+   "score": 63.8,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "target_earning": 0.6752,
+    "yprr": 0.15,
+    "first_read": 0.9581,
+    "opportunity": 0.9,
+    "on_field_dropback_presence": 1.0
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Kyren Williams",
+   "pos": "RB",
+   "sleeper_id": "8150",
+   "adp": 28.5,
+   "status": "BULLISH",
+   "score": 69.0,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.15,
+    "expected_td_equity": 0.75,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "sleeper_id": "6790",
+   "adp": 52.6,
+   "status": "WATCH",
+   "score": 56.6,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "receiving_volume": 0.15,
+    "expected_td_equity": 0.75,
+    "line_quality": 0.95,
+    "availability": 0.95,
+    "backfield_command": 0.75
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Zay Flowers",
+   "pos": "WR",
+   "sleeper_id": "9997",
+   "adp": 41.8,
+   "status": "BULLISH",
+   "score": 68.8,
+   "gate": "P(>= 4 of 5)",
+   "criteria": {
+    "target_earning": 0.2934,
+    "yprr": 0.95,
+    "first_read": 0.6773,
+    "opportunity": 0.9,
+    "on_field_dropback_presence": 1.0
+   },
+   "reasons": [
+    "questionable - flagged, no demotion"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Lamar Jackson",
+   "pos": "QB",
+   "sleeper_id": "4881",
+   "adp": 31.2,
+   "status": "WATCH",
+   "score": 55.0,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.95,
+    "efficiency": 0.5
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Drake Maye",
+   "pos": "QB",
+   "sleeper_id": "11564",
+   "adp": 47.1,
+   "status": "WATCH",
+   "score": 55.0,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.5,
+    "environment": 0.15,
+    "efficiency": 0.95
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Joe Burrow",
+   "pos": "QB",
+   "sleeper_id": "6770",
+   "adp": 51.4,
+   "status": "BULLISH",
+   "score": 61.9,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.75,
+    "efficiency": 0.75
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Dak Prescott",
+   "pos": "QB",
+   "sleeper_id": "3294",
+   "adp": 77.5,
+   "status": "BULLISH",
+   "score": 75.4,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.75,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Brock Purdy",
+   "pos": "QB",
+   "sleeper_id": "8183",
+   "adp": 123.3,
+   "status": "BULLISH",
+   "score": 91.7,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.95,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Patrick Mahomes",
+   "pos": "QB",
+   "sleeper_id": "4046",
+   "adp": 110.0,
+   "status": "BULLISH",
+   "score": 84.4,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.75,
+    "environment": 0.75,
+    "efficiency": 0.75
+   },
+   "reasons": [
+    "questionable - flagged, no demotion"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Matthew Stafford",
+   "pos": "QB",
+   "sleeper_id": "421",
+   "adp": 95.3,
+   "status": "BULLISH",
+   "score": 91.7,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.95,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Jared Goff",
+   "pos": "QB",
+   "sleeper_id": "3163",
+   "adp": 131.7,
+   "status": "BULLISH",
+   "score": 91.7,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.95,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Jordan Love",
+   "pos": "QB",
+   "sleeper_id": "6804",
+   "adp": 150.7,
+   "status": "BULLISH",
+   "score": 75.4,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.75,
+    "efficiency": 0.95
+   },
+   "reasons": [],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  },
+  {
+   "name": "Sam Darnold",
+   "pos": "QB",
+   "sleeper_id": "4943",
+   "adp": 163.0,
+   "status": "WATCH",
+   "score": 55.0,
+   "gate": "P(>= 2 of 3)",
+   "criteria": {
+    "rushing": 0.15,
+    "environment": 0.5,
+    "efficiency": 0.95
+   },
+   "reasons": [
+    "near-miss: gate probability in the watch band"
+   ],
+   "capital_tiebreak": null,
+   "source": "bullish_inputs_2026.json",
+   "computed_at": "2026-09-06T15:04:57+00:00",
+   "ttl_hours": 72
+  }
+ ]
+}
