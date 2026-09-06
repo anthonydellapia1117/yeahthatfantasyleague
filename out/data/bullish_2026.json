@@ -1,10 +1,10 @@
 {
  "provenance": {
-  "generated": "2026-09-05",
-  "computed_at": "2026-09-05T14:45:35+00:00",
+  "generated": "2026-09-06",
+  "computed_at": "2026-09-06T15:04:57+00:00",
   "engine_generated": "2026-08-31",
   "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
-  "inputs_content_sha256": "e9a052d8c865423c30e5e8b527256bbd6760b2654894650066e6a3023b12ab05",
+  "inputs_content_sha256": "37d99f7ac76b69a9b28e7a368dcfacf7c9461acadbaf7bf6035abe41f313deae",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -15,17 +15,17 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-09-05T14:45:00+00:00",
-   "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-   "snapshot_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-   "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
-   "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+   "pulled_at": "2026-09-06T15:04:23+00:00",
+   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "snapshot_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
    "pricing_by_week_sha256": {
     "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
     "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
    },
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
@@ -237,12 +237,12 @@
     "event": "REPRICED",
     "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "3c184b471d98f4f4cf9f8f024d880f0dfec46c7fc1285bcc4d98caf6011fc9fd",
+     "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "bb498a855c3f23a011b7a4915ff9167f074527b2293a914901559d3c9efb65c2",
+     "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
      "pricing_by_week_sha256": {
-      "1": "e85e504bce9eb0f59daee0eac0c918c986501aaacce6cdc9747709e51bbf7c50",
+      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -270,16 +270,16 @@
      }
     },
     "current": {
-     "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-     "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
+     "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+     "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+     "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
      "pricing_by_week_sha256": {
       "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
       "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
      },
      "weeks": [
@@ -508,7 +508,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-05T14:45:35+00:00",
+    "computed_at": "2026-09-06T15:04:57+00:00",
     "ttl_hours": 72
    },
    {
@@ -528,7 +528,7 @@
     ],
     "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-05T14:45:35+00:00",
+    "computed_at": "2026-09-06T15:04:57+00:00",
     "ttl_hours": 72
    },
    {
@@ -546,7 +546,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-05T14:45:35+00:00",
+    "computed_at": "2026-09-06T15:04:57+00:00",
     "ttl_hours": 72
    },
    {
@@ -564,7 +564,7 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-05T14:45:35+00:00",
+    "computed_at": "2026-09-06T15:04:57+00:00",
     "ttl_hours": 72
    },
    {
@@ -584,7 +584,7 @@
     ],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-05T14:45:35+00:00",
+    "computed_at": "2026-09-06T15:04:57+00:00",
     "ttl_hours": 72
    }
   ],
@@ -1691,17 +1691,17 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-09-05T14:45:00+00:00",
-   "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-   "snapshot_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-   "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
-   "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+   "pulled_at": "2026-09-06T15:04:23+00:00",
+   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "snapshot_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
    "pricing_by_week_sha256": {
     "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
     "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
    },
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
@@ -1913,12 +1913,12 @@
     "event": "REPRICED",
     "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "3c184b471d98f4f4cf9f8f024d880f0dfec46c7fc1285bcc4d98caf6011fc9fd",
+     "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "bb498a855c3f23a011b7a4915ff9167f074527b2293a914901559d3c9efb65c2",
+     "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
      "pricing_by_week_sha256": {
-      "1": "e85e504bce9eb0f59daee0eac0c918c986501aaacce6cdc9747709e51bbf7c50",
+      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -1946,16 +1946,16 @@
      }
     },
     "current": {
-     "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-     "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
+     "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+     "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+     "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
      "pricing_by_week_sha256": {
       "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
       "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
      },
      "weeks": [
@@ -2055,14 +2055,14 @@
  "forward_vegas_delta": {
   "event": "REPRICED",
   "attribution": "SCHEDULE_INPUT",
-  "pulled_at": "2026-09-05T14:45:00+00:00",
+  "pulled_at": "2026-09-06T15:04:23+00:00",
   "prior": {
-   "source_content_sha256": "3c184b471d98f4f4cf9f8f024d880f0dfec46c7fc1285bcc4d98caf6011fc9fd",
+   "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
    "upstream_content_sha256": null,
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "decision_input_sha256": "bb498a855c3f23a011b7a4915ff9167f074527b2293a914901559d3c9efb65c2",
+   "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
    "pricing_by_week_sha256": {
-    "1": "e85e504bce9eb0f59daee0eac0c918c986501aaacce6cdc9747709e51bbf7c50",
+    "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -2090,16 +2090,16 @@
    }
   },
   "current": {
-   "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-   "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
+   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
    "pricing_by_week_sha256": {
     "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
     "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
    },
    "weeks": [
@@ -2147,14 +2147,14 @@
   "last_material_event": {
    "event": "REPRICED",
    "attribution": "SCHEDULE_INPUT",
-   "pulled_at": "2026-09-05T14:45:00+00:00",
+   "pulled_at": "2026-09-06T15:04:23+00:00",
    "prior": {
-    "source_content_sha256": "3c184b471d98f4f4cf9f8f024d880f0dfec46c7fc1285bcc4d98caf6011fc9fd",
+    "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
     "upstream_content_sha256": null,
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-    "decision_input_sha256": "bb498a855c3f23a011b7a4915ff9167f074527b2293a914901559d3c9efb65c2",
+    "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
     "pricing_by_week_sha256": {
-     "1": "e85e504bce9eb0f59daee0eac0c918c986501aaacce6cdc9747709e51bbf7c50",
+     "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -2182,16 +2182,16 @@
     }
    },
    "current": {
-    "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
-    "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
+    "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+    "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-    "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+    "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
     "pricing_by_week_sha256": {
      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-     "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+     "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
      "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
     },
     "weeks": [
@@ -2276,7 +2276,7 @@
   }
  },
  "delta": {
-  "previous": "2026-09-04",
+  "previous": "2026-09-05",
   "gained": [],
   "lost": [],
   "status_changed": []
@@ -2300,7 +2300,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2323,7 +2323,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2346,7 +2346,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2369,7 +2369,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2392,7 +2392,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2413,7 +2413,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2434,7 +2434,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2455,7 +2455,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2476,7 +2476,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2499,7 +2499,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2522,7 +2522,7 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2541,7 +2541,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2562,7 +2562,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2583,7 +2583,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2604,7 +2604,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2627,7 +2627,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2650,7 +2650,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2671,7 +2671,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2692,7 +2692,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2711,7 +2711,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2730,7 +2730,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2749,7 +2749,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2770,7 +2770,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2789,7 +2789,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2808,7 +2808,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2827,7 +2827,7 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   },
   {
@@ -2848,7 +2848,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-05T14:45:35+00:00",
+   "computed_at": "2026-09-06T15:04:57+00:00",
    "ttl_hours": 72
   }
  ]

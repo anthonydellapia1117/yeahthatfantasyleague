@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-09-05",
+  "generated": "2026-09-06",
   "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
   "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
  },
@@ -651,7 +651,7 @@
     {
      "tag": "ambiguous_backfield",
      "orientation": "target_if_cheap_fade_if_premium",
-     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 7 - path to volume if cheap, committee risk at a premium"
+     "reason": "PIT returning-RB carry concentration below league median (67%); his ADP round is 6 - path to volume if cheap, committee risk at a premium"
     }
    ]
   },

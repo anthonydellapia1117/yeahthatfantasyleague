@@ -23,7 +23,7 @@
   "MIN": 23.0,
   "NE": 23.71,
   "NO": 21.71,
-  "NYG": 23.33,
+  "NYG": 23.25,
   "NYJ": 18.5,
   "PHI": 23.75,
   "PIT": 22.25,
@@ -31,9 +31,9 @@
   "SF": 25.83,
   "TB": 23.67,
   "TEN": 20.29,
-  "WAS": 23.0
+  "WAS": 23.08
  },
- "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
+ "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
  "games_priced": 93,
  "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
  "next_partial_week": {
@@ -48,22 +48,22 @@
   "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
   "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
   "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-  "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+  "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
   "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
  },
  "prior_implied_total": {
   "ARI": 18.17,
-  "ATL": 21.21,
+  "ATL": 21.29,
   "BAL": 26.67,
   "BUF": 25.83,
   "CAR": 21.05,
   "CHI": 24.83,
-  "CIN": 25.65,
+  "CIN": 25.55,
   "CLE": 18.42,
   "DAL": 25.46,
   "DEN": 21.29,
   "DET": 26.85,
-  "GB": 25.17,
+  "GB": 25.25,
   "HOU": 23.08,
   "IND": 22.92,
   "JAX": 22.71,
@@ -72,27 +72,70 @@
   "LAR": 27.0,
   "LV": 19.33,
   "MIA": 18.95,
-  "MIN": 22.9,
+  "MIN": 23.0,
   "NE": 23.71,
   "NO": 21.71,
   "NYG": 23.33,
-  "NYJ": 18.42,
-  "PHI": 23.83,
-  "PIT": 22.17,
+  "NYJ": 18.5,
+  "PHI": 23.75,
+  "PIT": 22.25,
   "SEA": 24.92,
   "SF": 25.83,
-  "TB": 23.75,
-  "TEN": 20.21,
-  "WAS": 23.08
+  "TB": 23.67,
+  "TEN": 20.29,
+  "WAS": 23.0
  },
- "pulled_at": "2026-09-05T14:45:00+00:00",
+ "pulled_at": "2026-09-06T15:04:23+00:00",
  "rows": 272,
  "season": 2026,
- "snapshot_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
+ "snapshot_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
  "sync_transition": {
   "attribution": "SCHEDULE_INPUT",
   "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window.",
   "current": {
+   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+   "first_week": 1,
+   "games_priced": 93,
+   "last_week": 6,
+   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
+   "next_partial_week": {
+    "complete": false,
+    "partial_line_games": 0,
+    "priced_games": 7,
+    "scheduled_games": 14,
+    "week": 7
+   },
+   "pricing_by_week_sha256": {
+    "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+    "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
+    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
+    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
+    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
+    "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+   },
+   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "team_games_priced": 186,
+   "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
+   "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  "event": "REPRICED",
+  "flags": {
+   "coverage_changed": false,
+   "decision_pricing_changed": true,
+   "horizon_changed": false,
+   "implied_totals_changed": true,
+   "model_logic_changed": false,
+   "prior_horizon_repriced": true,
+   "source_changed": true
+  },
+  "prior": {
    "decision_input_sha256": "3297e2896a89e1b47f22ec04fa90124b24ea5259d88ff05a3e5e9846daa25555",
    "first_week": 1,
    "games_priced": 93,
@@ -115,49 +158,6 @@
    },
    "source_content_sha256": "d8ef2d289e6d6f01665578fbe011f03c2d12f83bf4496e69ea9f4aed9a5005a5",
    "team_games_priced": 186,
-   "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
-   "weeks": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6
-   ]
-  },
-  "event": "REPRICED",
-  "flags": {
-   "coverage_changed": false,
-   "decision_pricing_changed": true,
-   "horizon_changed": false,
-   "implied_totals_changed": true,
-   "model_logic_changed": false,
-   "prior_horizon_repriced": true,
-   "source_changed": true
-  },
-  "prior": {
-   "decision_input_sha256": "bb498a855c3f23a011b7a4915ff9167f074527b2293a914901559d3c9efb65c2",
-   "first_week": 1,
-   "games_priced": 93,
-   "last_week": 6,
-   "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "next_partial_week": {
-    "complete": false,
-    "partial_line_games": 0,
-    "priced_games": 7,
-    "scheduled_games": 14,
-    "week": 7
-   },
-   "pricing_by_week_sha256": {
-    "1": "e85e504bce9eb0f59daee0eac0c918c986501aaacce6cdc9747709e51bbf7c50",
-    "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
-    "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
-    "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
-    "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
-   },
-   "source_content_sha256": "3c184b471d98f4f4cf9f8f024d880f0dfec46c7fc1285bcc4d98caf6011fc9fd",
-   "team_games_priced": 186,
    "upstream_content_sha256": null,
    "weeks": [
     1,
@@ -170,7 +170,7 @@
   }
  },
  "team_games_priced": 186,
- "upstream_content_sha256": "ef518999a592cefb83c5284f61feb218c66680fb2547501518c4097902257c43",
+ "upstream_content_sha256": "fc7af67e1950824e7219a4e26090c4f70e36bebf918c179578f5aad55bce613a",
  "upstream_source": "http://www.habitatring.com/games.csv",
  "weeks": [
   1,
