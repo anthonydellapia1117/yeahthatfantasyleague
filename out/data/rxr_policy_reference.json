@@ -1,7 +1,7 @@
 {
  "contract": "src/forward_policy.py::score_candidates",
  "browser_mirror": "out/rxr_policy.js::RxRPolicy.scoreCandidates",
- "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
+ "engine_content_sha256": "8432b49ed880773b9009e92460b6e2287e5e2289b46bbb2b51d33889fe7f9796",
  "primary_slot": 4,
  "round4": [
   {

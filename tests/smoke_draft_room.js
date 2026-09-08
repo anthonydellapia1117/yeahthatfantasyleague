@@ -1838,6 +1838,13 @@ function reportedUserOrder(){
     pe.on("console", m => { if (m.type() === "error") errs16.push(m.text()); });
     const order16 = completeDraftOrder(4);
     const s2r16 = {}; for (let i = 1; i <= 12; i++) s2r16[i] = i;
+    // Hermeticity: every scenario stubs all three Sleeper endpoints; this
+    // one had stubbed drafts and picks but let trending go to the live
+    // network, which only ever passed because CI runners have egress.
+    await pe.route("**/v1/players/nfl/trending/**", r => r.fulfill({
+      contentType: "application/json",
+      headers: { "access-control-allow-origin": "*" },
+      body: JSON.stringify([]) }));
     await pe.route("**/v1/draft/*/picks*", r => r.fulfill({
       contentType: "application/json",
       headers: { "access-control-allow-origin": "*" },
