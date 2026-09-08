@@ -9,8 +9,8 @@
    "goalline_2025.json": "1810b6f00c3f7163e59b917e37fdeac257668ff51b04f12e2aa930f4e59944aa",
    "depth_charts.json": "b9cd44e0fa30686cf65fc263da6792008cf2bb0457bc16583ac3add4ce28aa51",
    "crosswalk.json": "3831de3268f549608a1cad7ee5684cf78ea48204c90edec2c5d1228f31659b9c",
-   "docs/ffopportunity/schedule_2026.csv": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
-   "docs/ffopportunity/schedule_2026.meta.json": "0f1f8c13a039a7d092d0b86fa9686756889b82b644fe55214bc7800a348cf9bb"
+   "docs/ffopportunity/schedule_2026.csv": "bd1b9b0e01d6a810c3e7c15e7bb7689e0827a86a31514c97a236112381e102c8",
+   "docs/ffopportunity/schedule_2026.meta.json": "2e86a4de5bb2e4b872ae6ce639d8c9bc5dfc17a3f2018c0af4c1cc5d6086ce88"
   },
   "vegas": {
    "week1_rb": {
@@ -25,10 +25,10 @@
     "source": "docs/ffopportunity/schedule_2026.csv",
     "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
     "upstream_source": "http://www.habitatring.com/games.csv",
-    "pulled_at": "2026-09-08T15:05:56+00:00",
-    "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
-    "snapshot_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
-    "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
+    "pulled_at": "2026-09-08T16:10:37+00:00",
+    "source_content_sha256": "bd1b9b0e01d6a810c3e7c15e7bb7689e0827a86a31514c97a236112381e102c8",
+    "snapshot_content_sha256": "bd1b9b0e01d6a810c3e7c15e7bb7689e0827a86a31514c97a236112381e102c8",
+    "upstream_content_sha256": "edc35f7399306eb2cf96c18d92b591d8c6360421eda71d792114c9e63be65820",
     "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
     "pricing_by_week_sha256": {
      "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
@@ -244,15 +244,15 @@
      "RB.expected_td_equity"
     ],
     "delta_event": {
-     "event": "REPRICED",
-     "attribution": "SCHEDULE_INPUT",
+     "event": "UNCHANGED",
+     "attribution": "NO_FORWARD_DECISION_INPUT_CHANGE",
      "prior": {
-      "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
+      "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
       "upstream_content_sha256": null,
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-      "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
+      "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
       "pricing_by_week_sha256": {
-       "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
+       "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
        "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
        "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
        "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -280,8 +280,8 @@
       }
      },
      "current": {
-      "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
-      "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
+      "source_content_sha256": "bd1b9b0e01d6a810c3e7c15e7bb7689e0827a86a31514c97a236112381e102c8",
+      "upstream_content_sha256": "edc35f7399306eb2cf96c18d92b591d8c6360421eda71d792114c9e63be65820",
       "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
       "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
       "pricing_by_week_sha256": {
@@ -316,10 +316,10 @@
       "source_changed": true,
       "coverage_changed": false,
       "horizon_changed": false,
-      "implied_totals_changed": true,
-      "decision_pricing_changed": true,
+      "implied_totals_changed": false,
+      "decision_pricing_changed": false,
       "model_logic_changed": false,
-      "prior_horizon_repriced": true
+      "prior_horizon_repriced": false
      },
      "contracted_response": "FAIL CLOSED: do not overwrite the last verified snapshot or tags; a shorter priced horizon can reflect an unpriced game or source hiccup and must be reviewed before changing the decision window."
     }
@@ -447,37 +447,37 @@
   },
   "forward_counterfactual_implied_total": {
    "ARI": 18.29,
-   "ATL": 21.29,
+   "ATL": 21.33,
    "BAL": 26.58,
-   "BUF": 25.58,
-   "CAR": 20.9,
-   "CHI": 24.79,
+   "BUF": 25.83,
+   "CAR": 21.0,
+   "CHI": 24.88,
    "CIN": 25.55,
    "CLE": 18.33,
    "DAL": 25.5,
    "DEN": 21.46,
-   "DET": 26.95,
+   "DET": 26.85,
    "GB": 25.25,
-   "HOU": 23.33,
+   "HOU": 23.08,
    "IND": 22.83,
    "JAX": 22.79,
    "KC": 25.05,
    "LAC": 23.96,
    "LAR": 27.0,
-   "LV": 19.33,
-   "MIA": 18.95,
+   "LV": 19.42,
+   "MIA": 19.05,
    "MIN": 23.0,
-   "NE": 23.71,
-   "NO": 21.79,
+   "NE": 23.75,
+   "NO": 21.71,
    "NYG": 23.29,
    "NYJ": 18.5,
-   "PHI": 23.67,
-   "PIT": 22.25,
-   "SEA": 24.83,
+   "PHI": 23.75,
+   "PIT": 22.21,
+   "SEA": 24.79,
    "SF": 25.83,
    "TB": 23.67,
    "TEN": 20.29,
-   "WAS": 23.08
+   "WAS": 23.0
   },
   "line_ybc_2025": {
    "PHI": 2.642,
