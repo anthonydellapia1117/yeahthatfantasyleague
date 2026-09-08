@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<meta name="color-scheme" content="dark">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script src="nav.js" data-active="paths" data-reveal defer></script>
+<title>YTFL Draft Paths 2026</title>
+<style>
+:root{
+  --bg:#0b1120; --s1:#101828; --s2:#161f30; --s3:#0d1424; --line:#1e2d44;
+  --ink:#e8ecf1; --ink2:#7a8ba3; --ink3:#64748B;
+  --go:#34D399; --stop:#F87171; --warn:#FBBF24; --info:#60A5FA;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 -apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding-bottom:24px}
+.num{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{max-width:1100px;margin:0 auto;padding:12px 16px 24px;
+  padding-left:max(16px, env(safe-area-inset-left));padding-right:max(16px, env(safe-area-inset-right))}
+header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  border-bottom:1px solid var(--line);padding:8px 0 12px;margin-bottom:12px}
+h1{font-size:20px;font-weight:800;letter-spacing:-.03em;margin:0}
+h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink2);margin:0 0 8px}
+.kick{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase}
+a{color:var(--info);text-decoration:none}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin-bottom:12px}
+.card{
+  --s1:#f4f6fa; --s2:#e8edf5; --s3:#e8edf5; --line:#cbd5e1;
+  --ink:#0b1120; --ink2:#475569; --ink3:#52607a;
+  --go:#047857; --stop:#b91c1c; --warn:#b45309; --info:#0f766e;
+  color:var(--ink)}
+.small{font-size:12px;color:var(--ink3)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.filters button{background:var(--s2);border:1px solid var(--line);color:var(--ink2);
+  border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.filters button.on{background:var(--info);border-color:var(--info);color:#fff}
+/* the tree: indentation carries depth, a left rule carries lineage */
+.tnode{border-left:2px solid var(--line);padding:6px 0 0 12px;margin-left:2px}
+.tnode.fork{border-left-color:var(--info);border-left-width:3px}
+.trow{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:3px 0}
+.tpick{font-size:10px;font-weight:700;color:var(--ink3);letter-spacing:.05em;
+  min-width:74px}
+.tname{font-weight:700}
+.tpos{font-size:10px;font-weight:800;border:1px solid var(--line);border-radius:5px;
+  padding:1px 5px;color:var(--ink2)}
+.tnums{font-size:11px;color:var(--ink3)}
+.tvona{font-weight:800}
+.tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.05em;
+  border:1px solid var(--info);color:var(--info);border-radius:5px;padding:1px 5px}
+.tag.coin{border-color:var(--warn);color:var(--warn)}
+.twhy{font-size:11px;color:var(--ink3);font-style:italic}
+.stat{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:0 0 10px}
+.stat b{color:var(--ink)}
+footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><div class="kick">YeahThatFantasyLeague</div><h1>Draft Paths 2026</h1></div>
+  <div class="small" id="hdr"></div>
+</header>
+<div id="content"><p class="small">loading...</p></div>
+<footer id="foot"></footer>
+</div>
+<script>
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,
+  function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+var T = null, SLOT = null;
+
+function nodeHtml(n){
+  var fork = !n.forced;
+  var coin = n.narrowly_dominated != null;
+  return '<div class="tnode' + (fork ? " fork" : "") + '">' +
+    '<div class="trow">' +
+      '<span class="tpick num">R' + n.round + " - pick " + n.pick +
+        " to " + n.next_pick + '</span>' +
+      '<span class="tpos">' + esc(n.pos) + '</span>' +
+      '<span class="tname">' + esc(n.name) + '</span>' +
+      '<span class="tnums num">VOR ' + n.vor.toFixed(0) +
+        " - ADP " + n.adp.toFixed(1) +
+        " - there " + Math.round(n.p_available * 100) + "%" +
+        " - tier " + (n.tier == null ? "-" : n.tier) +
+        " (" + n.tier_left + " left)" + '</span>' +
+      '<span class="tnums">VONA <span class="tvona num">' +
+        (n.vona > 0 ? "+" : "") + n.vona.toFixed(1) + '</span></span>' +
+      (fork ? '<span class="tag">FORK</span>' : "") +
+      (coin ? '<span class="tag coin">COIN FLIP</span>' : "") +
+    '</div>' +
+    '<div class="twhy">' + esc(n.why) + '</div>' +
+    (n.children || []).map(nodeHtml).join("") +
+    '</div>';
+}
+
+function render(){
+  var v = T.slots[String(SLOT)];
+  var th = T.thresholds;
+  var c = $("content");
+  var chips = '<div class="filters" id="slots">' +
+    Object.keys(T.slots).map(Number).sort(function(a, b){ return a - b; })
+      .map(function(s){ return '<button data-slot="' + s + '"' +
+        (s === SLOT ? ' class="on"' : "") + ">" + s + "</button>"; }).join("") +
+    '</div>';
+  var pr = v.pruned;
+  c.innerHTML = chips +
+    '<div class="card">' +
+      "<h2>Slot " + SLOT + " - picks " + v.picks.join(", ") + "</h2>" +
+      '<div class="stat">' +
+        "<span><b>" + v.rendered_forks + "</b> rendered position-level forks</span>" +
+        "<span><b>" + pr.dominated + "</b> branches pruned as dominated</span>" +
+        "<span><b>" + pr.narrow_kept + "</b> kept as coin flips</span>" +
+        "<span><b>" + v.forks_collapsed_by_pruning + "</b> forks collapsed</span>" +
+        (pr.budget ? "<span><b>" + pr.budget + "</b> dropped at the render budget</span>" : "") +
+      '</div>' +
+      v.roots.map(nodeHtml).join("") +
+    '</div>' +
+    '<div class="card"><h2>How this is computed</h2>' +
+      '<p class="small">' + esc(T.provenance.objective) + " " +
+      esc(T.provenance.survival) + '</p>' +
+      '<p class="small"><b>Depth ' + T.provenance.depth + ".</b> " +
+      esc(T.provenance.depth_rationale) + '</p>' +
+      '<p class="small"><b>Branching.</b> ' + esc(T.provenance.branch_rule) +
+      " Threshold per round: " + Object.keys(th.branch_eps_by_depth)
+        .map(function(d){ return "R" + (Number(d) + 1) + " " +
+          th.branch_eps_by_depth[d]; }).join(", ") + ". " +
+      esc(th.branch_eps_source) + '</p>' +
+      '<p class="small"><b>Action-space boundary.</b> Zero rendered forks is not evidence that no player-level decision exists. This tree compares one representative per position on an unconditional board; it cannot compare two players at the same position or condition on observed unavailable players.</p>' +
+      '<p class="small"><b>Pruning.</b> ' + esc(th.prune_rule) +
+      " Coin-flip band " + th.narrow_band + " lineup points, " +
+      esc(th.narrow_band_source) + '</p>' +
+      '<p class="small"><b>A node is only shown if the player is at least ' +
+      Math.round(th.surv_floor * 100) + '% likely to be there</b> - ' +
+      esc(th.surv_floor_source) + '.</p>' +
+      '<p class="small"><b>Correlation caveat.</b> ' +
+      esc(T.correlation.bias_direction) + " Measured clustering: " +
+      Object.keys(T.correlation.by_pos).sort().map(function(p){
+        return p + " " + T.correlation.by_pos[p].ratio + "x"; }).join(", ") +
+      " (" + esc(T.correlation.method) + ").</p>" +
+      T.provenance.deviations.map(function(d){
+        return '<p class="small"><b>Stated deviation.</b> ' + esc(d) + "</p>"; }).join("") +
+    '</div>';
+  var sc = $("slots");
+  sc.querySelectorAll("button").forEach(function(b){
+    b.onclick = function(){ SLOT = Number(b.dataset.slot); render(); };
+  });
+}
+
+Promise.all([
+  fetch("data/vona_tree_2026.json").then(function(r){
+    if (!r.ok) throw new Error("VONA " + r.status); return r.json(); }),
+  fetch("engine_2026.json").then(function(r){
+    if (!r.ok) throw new Error("engine " + r.status); return r.json(); })
+]).then(function(pair){
+    var j = pair[0], engine = pair[1];
+    var digest = engine.content_sha256 || "";
+    if (!/^[0-9a-f]{64}$/.test(digest) ||
+        j.provenance.engine_content_sha256 !== digest)
+      throw new Error("draft path data was built from a different engine payload");
+    T = j;
+    SLOT = Number(j.provenance.primary_slot);
+    if (!T.slots[String(SLOT)]) throw new Error("primary slot missing from path data");
+    var orderLabel = j.provenance.sleeper_confirmation === "agrees"
+      ? "Sleeper-confirmed external draw" : "externally reported draw";
+    $("hdr").textContent = "slot " + SLOT + " primary - " + orderLabel + "; " +
+      (Object.keys(T.slots).length - 1) + " reference slots retained; Sleeper " +
+      j.provenance.sleeper_confirmation;
+    $("foot").textContent = "generated " + j.provenance.generated +
+      " from engine " + j.provenance.engine_generated +
+      " - survival from the frozen pre-draft model (the live room applies the adopted calibration) - " +
+      j.provenance.bullish_on_nodes;
+    render();
+  })
+  .catch(function(e){
+    $("content").innerHTML = '<div class="card"><p>Draft path data not ' +
+      'available - ' + esc(e.message || "run python3 src/build_vona_tree.py") + '</p></div>';
+  });
+</script>
+</body>
+</html>

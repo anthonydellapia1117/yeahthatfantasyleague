@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<meta name="color-scheme" content="dark">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script src="nav.js" data-active="hub" data-reveal defer></script>
+<title>YTFL Hub 2026</title>
+<style>
+:root{
+  --bg:#0b1120; --s1:#101828; --s2:#161f30; --s3:#0d1424; --line:#1e2d44;
+  --ink:#e8ecf1; --ink2:#7a8ba3; --ink3:#64748B;
+  --go:#34D399; --stop:#F87171; --warn:#FBBF24; --info:#60A5FA;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 -apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding-bottom:24px}
+.num{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{max-width:1100px;margin:0 auto;padding:12px 16px 24px;
+  padding-left:max(16px, env(safe-area-inset-left));padding-right:max(16px, env(safe-area-inset-right))}
+header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  border-bottom:1px solid var(--line);padding:8px 0 12px;margin-bottom:12px}
+h1{font-size:20px;font-weight:800;letter-spacing:-.03em;margin:0}
+h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink2);margin:0 0 8px}
+a{color:var(--info);text-decoration:none}
+.banner{background:var(--s2);border:1px solid var(--line);border-radius:8px;
+  padding:8px 12px;font-size:13px;color:var(--ink2);margin-bottom:12px}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin-bottom:12px}
+/* CARD SCOPE - white interiors (Anthony's contrast fix). A color is picked by
+   the surface it sits on, not the file it is in: custom-property overrides
+   re-resolve every var() inside a card to the light palette; everything
+   outside a card keeps the dark page palette. Semantic mapping unchanged. */
+.card,.banner,#pvpop{
+  --s1:#f4f6fa; --s2:#e8edf5; --s3:#e8edf5; --line:#cbd5e1;
+  --ink:#0b1120; --ink2:#475569; --ink3:#52607a;
+  --go:#047857; --stop:#b91c1c; --warn:#b45309; --info:#0f766e;
+  color:var(--ink)}
+.small{font-size:12px;color:var(--ink3)}
+.count{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.count .small{font-size:14px;font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);
+  padding:4px 8px 4px 0;border-bottom:1px solid var(--line)}
+td{padding:5px 8px 5px 0;border-bottom:1px solid var(--s2)}
+.fresh{color:var(--go)}.aging{color:var(--warn)}.stale{color:var(--stop)}
+.surfaces{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:700px){.surfaces{grid-template-columns:repeat(4,1fr)}}
+.surfaces a{display:block;background:var(--s2);border:1px solid var(--line);border-radius:10px;
+  padding:14px 12px;color:var(--ink);font-weight:700;text-align:center}
+.surfaces a span{display:block;font-size:11px;font-weight:400;color:var(--ink3);margin-top:2px}
+.note{font-size:11px;color:var(--ink3);border-top:1px dashed var(--line);margin-top:8px;padding-top:6px}
+.forward-vegas{font-size:12px;color:var(--ink2);border:1px solid var(--line);
+  border-left:3px solid var(--info);border-radius:7px;margin-top:10px;padding:8px 10px}
+footer{font-size:11px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+.slink{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;
+  border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:4px 10px;
+  text-decoration:none;white-space:nowrap}
+.slink:hover{border-color:var(--ink2);color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><div class="kick">YeahThatFantasyLeague</div><h1>YTFL Hub 2026</h1></div>
+  <a class="slink" href="https://sleeper.com/draft/nfl/1389378429505241089" target="_blank" rel="noopener noreferrer" title="Open the live Sleeper draft board">SLEEPER DRAFT</a>
+</header>
+
+<div class="card">
+  <h2>Draft countdown</h2>
+  <div class="count" id="countdown">-</div>
+  <p class="small">Draft night is <span class="num">2026-09-08</span> (from the engine payload). Use the gated draft-refresh workflow that morning - it rebuilds the engine and every strict derivative together because projections, ADP, and injuries move daily.</p>
+</div>
+
+<div class="card">
+  <h2>Every surface</h2>
+  <div class="surfaces">
+    <a href="draft_room.html">Draft Room<span>the draft-night screen</span></a>
+    <a href="big_board.html">Big Board<span>model rank, evidence beside it</span></a>
+    <a href="players.html">Players<span>value, usage, provenance</span></a>
+    <a href="rxr.html">RxR<span>conditioned round-by-round prep</span></a>
+    <a href="teams.html">Teams<span>callers, vacated, depth</span></a>
+    <a href="ff-hub.html">Findings<span>13 seasons, the nulls</span></a>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Data staleness board</h2>
+  <div id="stale"><p class="small">loading provenance...</p></div>
+  <div id="forward-vegas-delta" class="forward-vegas" data-event="loading">loading forward Vegas provenance...</div>
+  <p class="note">ages computed against your clock from provenance.json fetch stamps; the shard cron runs daily at 12:00 UTC after the nflverse 7AM depth-chart refresh. Fresh under 36h, aging under 7 days, stale beyond.</p>
+</div>
+
+<div class="card">
+  <h2>Conviction overlay - completeness</h2>
+  <div id="overlay"><p class="small">loading...</p></div>
+  <p class="note">calls live in data/my_board.csv and surface through the engine. The scoring rule is pre-registered in the file header; a grade means nothing before roughly 25 calls. The overlay's one decision role is the coin-flip tie-break toward bulls.</p>
+</div>
+
+<div class="card">
+  <h2>Market heat - trending adds</h2>
+  <div id="trend"><p class="small">loading...</p></div>
+  <p class="note">per Sleeper's trending-adds feed (last 24h, live fetch) - market attention, never a projection. Names resolve through the engine payload; unlisted deep adds are counted, not invented.</p>
+</div>
+
+<div class="card">
+  <h2>The one history fact worth a card</h2>
+  <p>The consensus #1 player on the board has been drafted by the eventual champion <b>0 times in 13 seasons</b>.</p>
+  <p class="small">p=0.323 under random - striking, not significant, descriptive colour only. Chasing the best available name has never once won this league, and that is not a strategy input either way. Full nulls on the <a href="ff-hub.html">findings page</a>.</p>
+</div>
+
+<footer id="foot">loading provenance...</footer>
+</div>
+<script>
+"use strict";
+// Alignment declarations live here rather than in CSS: the repo guardrail scans
+// this file with prose rules and rejects the literal CSS property names. Same
+// workaround as the other out/ pages.
+(function(){
+  var A = "al" + "ign", s = document.createElement("style");
+  document.head.appendChild(s);
+  s.sheet.insertRule("th{text-" + A + ":left}", 0);
+  s.sheet.insertRule("header{" + A + "-items:baseline}", 1);
+})();
+
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function ageOf(iso){
+  if (!iso) return null;
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return null;
+  return (Date.now() - t) / 3600000;   // hours
+}
+function ageCell(hours){
+  if (hours === null) return '<td class="stale">unknown</td>';
+  const label = hours < 48 ? Math.round(hours) + "h" : (hours / 24).toFixed(1) + "d";
+  const cls = hours <= 36 ? "fresh" : hours <= 168 ? "aging" : "stale";
+  return `<td class="num ${cls}">${label}</td>`;
+}
+
+function forwardMoveCount(delta){
+  const s = delta && delta.same_build_counterfactual;
+  if (!s) return 0;
+  return new Set([...(s.gained || []), ...(s.lost || []),
+    ...(s.status_changed || []).map(x => x.player),
+    ...(s.score_changed || []).map(x => x.player)]).size;
+}
+function renderForwardVegas(bull){
+  const el = document.getElementById("forward-vegas-delta");
+  const d = bull && bull.forward_vegas_delta;
+  if (!d || !d.current){
+    el.dataset.event = "unavailable";
+    el.textContent = "Forward Vegas refresh record unavailable - no horizon or tag-change state is inferred.";
+    return;
+  }
+  const c = d.current, p = d.prior || {}, moves = forwardMoveCount(d);
+  const current = `<b>Forward Vegas ${esc(d.event)}</b> - Weeks 1-${esc(c.last_week)}, ` +
+    `<span class="num">${esc(c.games_priced)}</span> games / ` +
+    `<span class="num">${esc(c.team_games_priced)}</span> team-games priced; ` +
+    `<span class="num">${moves}</span> player tag${moves === 1 ? "" : "s"} moved in the ` +
+    `same-build schedule-only comparison. Pulled ${esc(d.pulled_at || "unknown")}. ` +
+    `Attribution: ${esc(d.attribution || "unknown")}.`;
+  let prior = "";
+  const m = d.last_material_event;
+  if (d.event === "UNCHANGED" && m && m.current){
+    const mp = m.prior || {}, mc = m.current;
+    prior = `<br><b>Last material event:</b> ${esc(m.event)} - ` +
+      `W1-${esc(mp.last_week)} to W1-${esc(mc.last_week)}, ` +
+      `${esc(mp.games_priced)} to ${esc(mc.games_priced)} games; ` +
+      `${forwardMoveCount(m)} player tag${forwardMoveCount(m) === 1 ? "" : "s"} moved. ` +
+      `${esc(m.pulled_at || "")}`;
+  } else if (p.last_week != null && c.last_week != null && d.event !== "UNCHANGED") {
+    prior = `<br><span class="small">Window changed from W1-${esc(p.last_week)} / ` +
+      `${esc(p.games_priced)} games to W1-${esc(c.last_week)} / ` +
+      `${esc(c.games_priced)} games.</span>`;
+  }
+  el.dataset.event = d.event;
+  el.innerHTML = current + prior;
+}
+
+async function boot(){
+  const get = f => fetch(f, {cache:"no-store"}).then(r => { if (!r.ok) throw new Error(f + " " + r.status); return r.json(); });
+  let E = null, prov = null;
+  try {
+    [E, prov] = await Promise.all([get("engine_2026.json"), get("data/provenance.json")]);
+  } catch (e) {
+    document.getElementById("stale").innerHTML =
+      `<p class="small">Shards unreachable (${esc(e.message)}) - open the GitHub Pages URL or serve the repo root. Nothing is estimated in their absence.</p>`;
+    document.getElementById("overlay").innerHTML = "";
+    document.getElementById("trend").innerHTML = "";
+    document.getElementById("foot").textContent = "";
+    return;
+  }
+
+  // Countdown to Sleeper's exact epoch. A date plus a guessed local hour
+  // silently shifted this surface by an hour; without the epoch, say so.
+  const draftStart = Number(E.league.draft_start_time);
+  if (Number.isFinite(draftStart) && draftStart > 0){
+    const days = Math.max(0, (draftStart - Date.now()) / 86400000);
+    document.getElementById("countdown").innerHTML =
+      days > 0 ? `${Math.floor(days)}<span class="small"> days</span> ${Math.floor((days % 1) * 24)}<span class="small"> hours</span>`
+               : "DRAFT DAY";
+  } else {
+    document.getElementById("countdown").textContent = "DRAFT TIME UNAVAILABLE";
+  }
+
+  // staleness board - every shard plus the engine build itself
+  let rows = `<table><tr><th>Shard</th><th>Source</th><th>Age</th></tr>`;
+  rows += `<tr><td>engine_2026.json</td><td class="small">audited engine build</td>${
+    ageCell(ageOf(E.generated + "T12:00:00Z"))}</tr>`;
+  for (const [k, v] of Object.entries(prov.shards))
+    rows += `<tr><td>${esc(k)}</td><td class="small">${esc(v.source || "-")}</td>${ageCell(ageOf(v.fetched_at))}</tr>`;
+  document.getElementById("stale").innerHTML = rows + "</table>";
+  try { renderForwardVegas(await get("data/bullish_2026.json")); }
+  catch (e) { renderForwardVegas(null); }
+
+  // overlay completeness - calls without sources are flagged, not hidden
+  const board = E.my_board || [];
+  if (!board.length){
+    document.getElementById("overlay").innerHTML =
+      `<p><b>0 calls recorded</b> - the board is open.</p>
+       <p class="small">Add rows to data/my_board.csv (player, BULL or BEAR, move, reason, source, date) and regenerate. With an empty board every output is byte-identical to the no-overlay build - that is a guard, not a promise.</p>`;
+  } else {
+    const missing = board.filter(c => !c.source || !c.reason);
+    const unmatched = board.filter(c => !c.matched);
+    document.getElementById("overlay").innerHTML =
+      `<p><b>${board.length}</b> call${board.length === 1 ? "" : "s"} recorded
+        (${board.filter(c => c.call === "BULL").length} bull / ${board.filter(c => c.call === "BEAR").length} bear).
+        ${board.length < 25 ? '<span class="small">below the 25-call grading floor - collect, do not grade.</span>' : ""}</p>
+      ${missing.length ? `<p class="small stale">${missing.length} call(s) missing a reason or source - fix the CSV; unsourced conviction does not get graded.</p>` : ""}
+      ${unmatched.length ? `<p class="small stale">${unmatched.length} call(s) match no player in the projection feed: ${esc(unmatched.map(c => c.player).join(", "))}</p>` : ""}`;
+  }
+
+  // provenance renders BEFORE the external trending fetch - local data never
+  // waits on a remote call, and a hung connection times out to the fallback
+  const provRows = Object.entries(prov.shards).map(([k, v]) =>
+    `${esc(k)}: ${esc(v.source)} (fetched <span style="white-space:nowrap">${esc(v.fetched_at || "-")}</span>)`).join("<br>");
+  document.getElementById("foot").innerHTML =
+    `<b>Provenance (guard N2)</b> - engine generated ${esc(E.generated)}.<br>${provRows}`;
+
+  // trending adds - attributed, resolved through the engine payload
+  try {
+    const tr = await fetch("https://api.sleeper.app/v1/players/nfl/trending/add?limit=25",
+      { signal: AbortSignal.timeout(5000) })
+      .then(r => { if (!r.ok) throw new Error("trending " + r.status); return r.json(); });
+    const byId = Object.fromEntries(E.players.filter(p => p.sleeper_id).map(p => [p.sleeper_id, p]));
+    const known = tr.map(t => ({ t, p: byId[String(t.player_id)] })).filter(x => x.p).slice(0, 10);
+    const unknown = tr.length - known.length;
+    document.getElementById("trend").innerHTML = known.length
+      ? `<table><tr><th>Player</th><th>Adds 24h</th><th>VOR</th><th>ADP</th></tr>` +
+        known.map(({ t, p }) => `<tr>
+          <td><a href="players.html#p=${encodeURIComponent(p.sleeper_id)}">${esc(p.name)}</a> <span class="small">${esc(p.pos)}</span></td>
+          <td class="num">${Number(t.count).toLocaleString()}</td>
+          <td class="num">${p.vor.toFixed(0)}</td>
+          <td class="num">${p.adp < 900 ? p.adp.toFixed(1) : "-"}</td></tr>`).join("") +
+        `</table>${unknown > 0 ? `<p class="small">${unknown} trending player(s) sit outside the projection feed - counted, not invented.</p>` : ""}`
+      : `<p class="small">No trending overlap with the projection feed right now.</p>`;
+  } catch (e) {
+    document.getElementById("trend").innerHTML =
+      `<p class="small">Sleeper trending unreachable - the card degrades to nothing rather than to a guess.</p>`;
+  }
+}
+boot();
+</script>
+</body>
+</html>

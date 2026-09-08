@@ -1,0 +1,859 @@
+{
+ "provenance": {
+  "generated": "2026-08-27",
+  "scoring": "league-exact (6-pt pass TD, full PPR, -2 fumbles)",
+  "window": "2016-2025 REG unless a block states otherwise",
+  "adp_source": "FantasyFootballCalculator PPR, 12-team, late-preseason snapshot per year",
+  "governance": "cited values quarantined in CLAIMS; computation compares against them, never inherits them",
+  "workstream3": "methodology only - no analogs, opinions, or rankings imported; board stays engine-derived and slot-parameterized",
+  "unjoined_top12_adp_rows": {
+   "RB_2018": 1
+  }
+ },
+ "audits": {
+  "rb_vs_wr_top12": {
+   "claim": {
+    "cited": "RB 58.3% vs WR 44.0%, n=84 each, Z-test not significant",
+    "source": "The IDP Center via report WS2"
+   },
+   "computed": {
+    "RB": {
+     "k": 69,
+     "n": 120,
+     "rate": 0.575,
+     "ci95": [
+      0.4856,
+      0.6598
+     ]
+    },
+    "WR": {
+     "k": 60,
+     "n": 120,
+     "rate": 0.5,
+     "ci95": [
+      0.4119,
+      0.5881
+     ]
+    },
+    "z": 1.165,
+    "p_two_sided": 0.2439,
+    "significant_at_05": false
+   },
+   "basis": "preseason FFC positional ADP top-12 vs top-12 finish by league-exact season total, 2016-2025; missing season rows count as misses",
+   "verdict": "agrees",
+   "note": "direction and non-significance both checked against the cited framing; cited n=84/pos vs computed n=120/pos (window or source frame differs)"
+  },
+  "rb_2025_outlier": {
+   "claim": {
+    "cited": "2025: 9 of 12 top-drafted RBs finished RB1 (avg 16.08 games) vs 4 of 12 top-drafted WRs",
+    "source": "report WS2",
+    "rb_k": 9,
+    "wr_k": 4,
+    "avg_games": 16.08
+   },
+   "computed": {
+    "RB": {
+     "k": 9,
+     "n": 12,
+     "avg_games": 16.08
+    },
+    "WR": {
+     "k": 5,
+     "n": 12,
+     "avg_games": 14.17
+    }
+   },
+   "basis": "2025 FFC positional top-12 vs top-12 finish by league-exact total; games = REG weeks with a stat row",
+   "verdict": "agrees",
+   "note": "RB count and average games reproduce exactly under league scoring; the WR count lands within one of the citation (scoring-frame margin)"
+  },
+  "rb1_curse": {
+   "claim": {
+    "cited": "declined 6 of last 7 seasons, drops ~28-45% PPG (Gurley 26.6 to 14.6, Kamara 25.2 to 18.1, Taylor 22.0 to 13.3, Ekeler 21.9 to 13.2, Barkley 22.2 to 14.6)",
+    "source": "Yahoo Sports via report WS2",
+    "declined": 6,
+    "of": 7
+   },
+   "computed": {
+    "rows": [
+     {
+      "year": 2016,
+      "rb1": "david johnson",
+      "ppg": 25.49,
+      "games": 16,
+      "next_ppg": 13.0,
+      "next_games": 1,
+      "delta_pct": -49.0
+     },
+     {
+      "year": 2017,
+      "rb1": "todd gurley",
+      "ppg": 25.55,
+      "games": 15,
+      "next_ppg": 26.58,
+      "next_games": 14,
+      "delta_pct": 4.0
+     },
+     {
+      "year": 2018,
+      "rb1": "christian mccaffrey",
+      "ppg": 24.22,
+      "games": 16,
+      "next_ppg": 29.45,
+      "next_games": 16,
+      "delta_pct": 21.6
+     },
+     {
+      "year": 2019,
+      "rb1": "christian mccaffrey",
+      "ppg": 29.45,
+      "games": 16,
+      "next_ppg": 30.13,
+      "next_games": 3,
+      "delta_pct": 2.3
+     },
+     {
+      "year": 2020,
+      "rb1": "alvin kamara",
+      "ppg": 25.19,
+      "games": 15,
+      "next_ppg": 18.05,
+      "next_games": 13,
+      "delta_pct": -28.3
+     },
+     {
+      "year": 2021,
+      "rb1": "jonathan taylor",
+      "ppg": 21.95,
+      "games": 17,
+      "next_ppg": 13.31,
+      "next_games": 11,
+      "delta_pct": -39.4
+     },
+     {
+      "year": 2022,
+      "rb1": "austin ekeler",
+      "ppg": 21.92,
+      "games": 17,
+      "next_ppg": 13.24,
+      "next_games": 14,
+      "delta_pct": -39.6
+     },
+     {
+      "year": 2023,
+      "rb1": "christian mccaffrey",
+      "ppg": 24.46,
+      "games": 16,
+      "next_ppg": 11.95,
+      "next_games": 4,
+      "delta_pct": -51.1
+     },
+     {
+      "year": 2024,
+      "rb1": "jahmyr gibbs",
+      "ppg": 21.35,
+      "games": 17,
+      "next_ppg": 21.58,
+      "next_games": 17,
+      "delta_pct": 1.1
+     }
+    ],
+    "declined": 5,
+    "comparable": 9,
+    "rate": 0.5556
+   },
+   "basis": "RB1 by league-exact season total; PPG = total/games; next-year rows require >=1 game",
+   "verdict": "partial",
+   "note": "decline is the majority outcome but weaker than cited: the RB1's identity flips under full-PPR league scoring (2018 McCaffrey over Barkley by a hair; 2024 Gibbs over Barkley - and Gibbs did NOT decline in 2025), and PPG-in-played-games spares injury-shortened follow-ups the citation drops"
+  },
+  "elite_rb_gap": {
+   "claim": {
+    "cited": "RB1 PPG since 2016 = 24.9 vs RB12 = 15.1, gap +9.7",
+    "source": "Yahoo Sports via report WS2",
+    "gap": 9.7
+   },
+   "computed": {
+    "per_season": [
+     {
+      "year": 2016,
+      "rb1_ppg": 26.45,
+      "rb12_ppg": 14.78,
+      "gap": 11.67
+     },
+     {
+      "year": 2017,
+      "rb1_ppg": 25.55,
+      "rb12_ppg": 14.3,
+      "gap": 11.25
+     },
+     {
+      "year": 2018,
+      "rb1_ppg": 26.58,
+      "rb12_ppg": 15.05,
+      "gap": 11.53
+     },
+     {
+      "year": 2019,
+      "rb1_ppg": 29.45,
+      "rb12_ppg": 15.51,
+      "gap": 13.94
+     },
+     {
+      "year": 2020,
+      "rb1_ppg": 25.19,
+      "rb12_ppg": 15.42,
+      "gap": 9.77
+     },
+     {
+      "year": 2021,
+      "rb1_ppg": 24.41,
+      "rb12_ppg": 15.27,
+      "gap": 9.15
+     },
+     {
+      "year": 2022,
+      "rb1_ppg": 21.92,
+      "rb12_ppg": 14.19,
+      "gap": 7.73
+     },
+     {
+      "year": 2023,
+      "rb1_ppg": 24.46,
+      "rb12_ppg": 15.64,
+      "gap": 8.82
+     },
+     {
+      "year": 2024,
+      "rb1_ppg": 22.21,
+      "rb12_ppg": 16.47,
+      "gap": 5.73
+     },
+     {
+      "year": 2025,
+      "rb1_ppg": 24.51,
+      "rb12_ppg": 15.18,
+      "gap": 9.33
+     }
+    ],
+    "mean_rb1_ppg": 25.07,
+    "mean_rb12_ppg": 15.18,
+    "mean_gap": 9.89,
+    "gap_ci95": [
+     8.46,
+     11.32
+    ]
+   },
+   "basis": "PPG rank among RBs with >=8 games, league-exact scoring, 2016-2025; CI is a t-free normal approx over 10 seasons",
+   "verdict": "agrees"
+  },
+  "overall_rb1_late": {
+   "claim": {
+    "cited": "only three overall RB1s since 2005 (14%) from outside the top-24",
+    "source": "report WS2",
+    "frame": "since 2005; this repo's ADP cache starts 2016 for audit",
+    "rate": 0.14
+   },
+   "computed": {
+    "rows": [
+     {
+      "year": 2016,
+      "rb1": "david johnson",
+      "preseason_rank": 1,
+      "outside_top24": false
+     },
+     {
+      "year": 2017,
+      "rb1": "todd gurley",
+      "preseason_rank": 11,
+      "outside_top24": false
+     },
+     {
+      "year": 2018,
+      "rb1": "christian mccaffrey",
+      "preseason_rank": 10,
+      "outside_top24": false
+     },
+     {
+      "year": 2019,
+      "rb1": "christian mccaffrey",
+      "preseason_rank": 3,
+      "outside_top24": false
+     },
+     {
+      "year": 2020,
+      "rb1": "alvin kamara",
+      "preseason_rank": 4,
+      "outside_top24": false
+     },
+     {
+      "year": 2021,
+      "rb1": "jonathan taylor",
+      "preseason_rank": 11,
+      "outside_top24": false
+     },
+     {
+      "year": 2022,
+      "rb1": "austin ekeler",
+      "preseason_rank": 3,
+      "outside_top24": false
+     },
+     {
+      "year": 2023,
+      "rb1": "christian mccaffrey",
+      "preseason_rank": 1,
+      "outside_top24": false
+     },
+     {
+      "year": 2024,
+      "rb1": "jahmyr gibbs",
+      "preseason_rank": 4,
+      "outside_top24": false
+     },
+     {
+      "year": 2025,
+      "rb1": "christian mccaffrey",
+      "preseason_rank": 4,
+      "outside_top24": false
+     }
+    ],
+    "outside_top24": 0,
+    "n": 10,
+    "rate": 0.0,
+    "ci95": [
+     -0.0,
+     0.2775
+    ]
+   },
+   "basis": "league-exact total-points RB1 vs FFC preseason positional rank, 2016-2025 (cited frame is since 2005; windows differ)",
+   "verdict": "agrees",
+   "note": "consistent with 'almost never': in this window the overall RB1 was always drafted inside the positional top-24"
+  },
+  "first_time_wr1": {
+   "claim": {
+    "cited": "13 of the last 21 first-time WR1 finishers (62%) came from WR18-WR50 ADP; ~1 new WR1/season from outside top-50 since 2022",
+    "source": "FantasyPros/Sharp Football via report WS2",
+    "share": 0.62
+   },
+   "computed": {
+    "n_first_time": 47,
+    "in_wr18_50": 29,
+    "share_wr18_50": 0.617,
+    "ci95": [
+     0.4743,
+     0.7421
+    ],
+    "outside_top50_since_2022": {
+     "2022": 0,
+     "2023": 2,
+     "2024": 0,
+     "2025": 1
+    },
+    "rows": [
+     {
+      "year": 2016,
+      "name": "mike evans",
+      "preseason_rank": 9
+     },
+     {
+      "year": 2016,
+      "name": "michael thomas",
+      "preseason_rank": 49
+     },
+     {
+      "year": 2016,
+      "name": "davante adams",
+      "preseason_rank": null
+     },
+     {
+      "year": 2016,
+      "name": "brandin cooks",
+      "preseason_rank": 14
+     },
+     {
+      "year": 2016,
+      "name": "michael crabtree",
+      "preseason_rank": 36
+     },
+     {
+      "year": 2017,
+      "name": "keenan allen",
+      "preseason_rank": 12
+     },
+     {
+      "year": 2017,
+      "name": "tyreek hill",
+      "preseason_rank": 22
+     },
+     {
+      "year": 2017,
+      "name": "adam thielen",
+      "preseason_rank": 42
+     },
+     {
+      "year": 2017,
+      "name": "marvin jones",
+      "preseason_rank": 44
+     },
+     {
+      "year": 2018,
+      "name": "juju smith schuster",
+      "preseason_rank": 18
+     },
+     {
+      "year": 2018,
+      "name": "stefon diggs",
+      "preseason_rank": 11
+     },
+     {
+      "year": 2018,
+      "name": "robert woods",
+      "preseason_rank": 42
+     },
+     {
+      "year": 2019,
+      "name": "chris godwin",
+      "preseason_rank": 16
+     },
+     {
+      "year": 2019,
+      "name": "cooper kupp",
+      "preseason_rank": 19
+     },
+     {
+      "year": 2019,
+      "name": "julian edelman",
+      "preseason_rank": 14
+     },
+     {
+      "year": 2019,
+      "name": "kenny golladay",
+      "preseason_rank": 20
+     },
+     {
+      "year": 2019,
+      "name": "amari cooper",
+      "preseason_rank": 13
+     },
+     {
+      "year": 2019,
+      "name": "devante parker",
+      "preseason_rank": null
+     },
+     {
+      "year": 2020,
+      "name": "calvin ridley",
+      "preseason_rank": 16
+     },
+     {
+      "year": 2020,
+      "name": "justin jefferson",
+      "preseason_rank": 49
+     },
+     {
+      "year": 2020,
+      "name": "dk metcalf",
+      "preseason_rank": 19
+     },
+     {
+      "year": 2020,
+      "name": "tyler lockett",
+      "preseason_rank": 21
+     },
+     {
+      "year": 2020,
+      "name": "aj brown",
+      "preseason_rank": 18
+     },
+     {
+      "year": 2021,
+      "name": "deebo samuel",
+      "preseason_rank": 38
+     },
+     {
+      "year": 2021,
+      "name": "jamarr chase",
+      "preseason_rank": 31
+     },
+     {
+      "year": 2021,
+      "name": "diontae johnson",
+      "preseason_rank": 17
+     },
+     {
+      "year": 2021,
+      "name": "hunter renfrow",
+      "preseason_rank": null
+     },
+     {
+      "year": 2021,
+      "name": "jaylen waddle",
+      "preseason_rank": 41
+     },
+     {
+      "year": 2022,
+      "name": "ceedee lamb",
+      "preseason_rank": 6
+     },
+     {
+      "year": 2022,
+      "name": "amon ra st brown",
+      "preseason_rank": 31
+     },
+     {
+      "year": 2022,
+      "name": "devonta smith",
+      "preseason_rank": 35
+     },
+     {
+      "year": 2022,
+      "name": "christian kirk",
+      "preseason_rank": 40
+     },
+     {
+      "year": 2023,
+      "name": "puka nacua",
+      "preseason_rank": null
+     },
+     {
+      "year": 2023,
+      "name": "dj moore",
+      "preseason_rank": 22
+     },
+     {
+      "year": 2023,
+      "name": "nico collins",
+      "preseason_rank": 52
+     },
+     {
+      "year": 2024,
+      "name": "brian thomas",
+      "preseason_rank": 50
+     },
+     {
+      "year": 2024,
+      "name": "drake london",
+      "preseason_rank": 12
+     },
+     {
+      "year": 2024,
+      "name": "malik nabers",
+      "preseason_rank": 19
+     },
+     {
+      "year": 2024,
+      "name": "terry mclaurin",
+      "preseason_rank": 35
+     },
+     {
+      "year": 2024,
+      "name": "jaxon smith njigba",
+      "preseason_rank": 41
+     },
+     {
+      "year": 2024,
+      "name": "garrett wilson",
+      "preseason_rank": 7
+     },
+     {
+      "year": 2024,
+      "name": "courtland sutton",
+      "preseason_rank": 49
+     },
+     {
+      "year": 2025,
+      "name": "george pickens",
+      "preseason_rank": 29
+     },
+     {
+      "year": 2025,
+      "name": "chris olave",
+      "preseason_rank": 35
+     },
+     {
+      "year": 2025,
+      "name": "zay flowers",
+      "preseason_rank": 26
+     },
+     {
+      "year": 2025,
+      "name": "michael wilson",
+      "preseason_rank": 70
+     },
+     {
+      "year": 2025,
+      "name": "jameson williams",
+      "preseason_rank": 30
+     }
+    ]
+   },
+   "basis": "first top-12 league-scored WR finish with 2012-2015 history as the prior window; unranked in FFC counts as outside top-50",
+   "verdict": "agrees",
+   "note": "the headline WR18-50 share reproduces almost exactly; the 'one per season from outside top-50 since 2022' cadence is lumpier here (none in 2022 or 2024, two in 2023), and Jeudy does not qualify as a WR1 under league scoring"
+  },
+  "qb1_rush": {
+   "claim": {
+    "cited": "QB1 every year since 2019 ran 350+ yards and 4+ rushing TDs; top-12 QBs averaged 360 rush yards and 4.2 rush TDs over the past five years",
+    "source": "DraftSharks via report WS2",
+    "yds_threshold": 350,
+    "tds_threshold": 4,
+    "top12_yds": 360,
+    "top12_tds": 4.2
+   },
+   "computed": {
+    "qb1_rows": [
+     {
+      "year": 2019,
+      "qb1": "lamar jackson",
+      "rush_yds": 1206.0,
+      "rush_tds": 7,
+      "meets_cited_floor": true
+     },
+     {
+      "year": 2020,
+      "qb1": "aaron rodgers",
+      "rush_yds": 149.0,
+      "rush_tds": 3,
+      "meets_cited_floor": false
+     },
+     {
+      "year": 2021,
+      "qb1": "josh allen",
+      "rush_yds": 763.0,
+      "rush_tds": 6,
+      "meets_cited_floor": true
+     },
+     {
+      "year": 2022,
+      "qb1": "patrick mahomes",
+      "rush_yds": 358.0,
+      "rush_tds": 4,
+      "meets_cited_floor": true
+     },
+     {
+      "year": 2023,
+      "qb1": "josh allen",
+      "rush_yds": 524.0,
+      "rush_tds": 15,
+      "meets_cited_floor": true
+     },
+     {
+      "year": 2024,
+      "qb1": "lamar jackson",
+      "rush_yds": 915.0,
+      "rush_tds": 4,
+      "meets_cited_floor": true
+     },
+     {
+      "year": 2025,
+      "qb1": "matthew stafford",
+      "rush_yds": 1.0,
+      "rush_tds": 0,
+      "meets_cited_floor": false
+     }
+    ],
+    "years_meeting_floor": 5,
+    "years_checked": 7,
+    "top12_avg_rush_yds": 360.9,
+    "top12_avg_rush_tds": 4.28,
+    "top12_n": 60
+   },
+   "basis": "QB1 by league-exact total (6-pt pass TD - a pocket QB can top this list more easily than under the cited 4-pt frame); top-12 window 2021-2025",
+   "verdict": "partial",
+   "note": "every-year floor fails under league scoring in: 2020 (aaron rodgers), 2025 (matthew stafford); the top-12 rushing averages reproduce, and the C5 rushing-QB premium stands on its own CI - but 6-pt pass TDs mean a pocket QB CAN finish QB1 here"
+  },
+  "rb_band_conversion": {
+   "claim": {
+    "cited": "2023 illustration: RB1s 5/12 top-12, RB2s 5/12 top-24, RB3s 7/12 top-36, RB4s 8/12 top-48; later bands beat expectation more",
+    "source": "report WS2 (caveat: report itself asks the app to compute the full 2016-2025 aggregate)"
+   },
+   "computed": {
+    "rows": [
+     {
+      "band": "RB1-12",
+      "target": "top-12",
+      "k": 69,
+      "n": 120,
+      "rate": 0.575,
+      "ci95": [
+       0.4856,
+       0.6598
+      ]
+     },
+     {
+      "band": "RB13-24",
+      "target": "top-24",
+      "k": 64,
+      "n": 120,
+      "rate": 0.5333,
+      "ci95": [
+       0.4444,
+       0.6202
+      ]
+     },
+     {
+      "band": "RB25-36",
+      "target": "top-36",
+      "k": 62,
+      "n": 120,
+      "rate": 0.5167,
+      "ci95": [
+       0.4281,
+       0.6042
+      ]
+     },
+     {
+      "band": "RB37-48",
+      "target": "top-48",
+      "k": 68,
+      "n": 120,
+      "rate": 0.5667,
+      "ci95": [
+       0.4773,
+       0.6519
+      ]
+     }
+    ],
+    "monotone_increasing": false
+   },
+   "basis": "band-matched expectation (RBn band vs top-n*12 finish), league-exact totals, full 2016-2025 aggregate as the report's own caveat requests",
+   "verdict": "disagrees",
+   "note": "the full aggregate is flat across bands, not increasing: the 'later bands beat expectation more' pattern is an artifact of the single illustrative year, exactly the risk the report's own caveat flagged"
+  },
+  "team_success_folklore": {
+   "claim": {
+    "cited": "FOLKLORE: only 4 of top-12 2025 RBs made playoffs, avg 8.75 wins",
+    "source": "report WS2",
+    "playoffs": 4,
+    "avg_wins": 8.75
+   },
+   "computed": {
+    "rows": [
+     {
+      "name": "christian mccaffrey",
+      "team": "SF",
+      "wins": 12.0,
+      "playoffs": true
+     },
+     {
+      "name": "bijan robinson",
+      "team": "ATL",
+      "wins": 8.0,
+      "playoffs": false
+     },
+     {
+      "name": "jahmyr gibbs",
+      "team": "DET",
+      "wins": 9.0,
+      "playoffs": false
+     },
+     {
+      "name": "jonathan taylor",
+      "team": "IND",
+      "wins": 8.0,
+      "playoffs": false
+     },
+     {
+      "name": "devon achane",
+      "team": "MIA",
+      "wins": 7.0,
+      "playoffs": false
+     },
+     {
+      "name": "james cook",
+      "team": "BUF",
+      "wins": 12.0,
+      "playoffs": true
+     },
+     {
+      "name": "chase brown",
+      "team": "CIN",
+      "wins": 6.0,
+      "playoffs": false
+     },
+     {
+      "name": "derrick henry",
+      "team": "BAL",
+      "wins": 8.0,
+      "playoffs": false
+     },
+     {
+      "name": "kyren williams",
+      "team": "LA",
+      "wins": 12.0,
+      "playoffs": true
+     },
+     {
+      "name": "travis etienne",
+      "team": "JAX",
+      "wins": 13.0,
+      "playoffs": true
+     },
+     {
+      "name": "ashton jeanty",
+      "team": "LV",
+      "wins": 3.0,
+      "playoffs": false
+     },
+     {
+      "name": "javonte williams",
+      "team": "DAL",
+      "wins": 7.5,
+      "playoffs": false
+     }
+    ],
+    "made_playoffs": 4,
+    "avg_wins": 8.79
+   },
+   "basis": "2025 top-12 league-scored RBs; wins from nflverse games.csv REG results; playoffs = appears in any 2025 postseason game",
+   "verdict": "agrees",
+   "note": "the FOLKLORE verdict on 'team success is required for a top RB' is supported by our own computation"
+  }
+ },
+ "already_adjudicated": {
+  "wr_140_targets": {
+   "artifact": "archetypes_2026.json",
+   "path": "verification.wr_140_targets",
+   "result": "agrees (recomputed 2016-2025)"
+  },
+  "rb_400_touches": {
+   "artifact": "archetypes_2026.json",
+   "path": "verification.rb_400_touches",
+   "result": "direction agrees; cited n=13 not reproducible (n=3 in 2014-2025)"
+  },
+  "preseason_rb1_ledger": {
+   "artifact": "archetypes_2026.json",
+   "path": "fact_tables.preseason_rb1_ledger",
+   "result": "permitted fact table, 2016 source-dependency flagged"
+  },
+  "goalline_conversion": {
+   "artifact": "goalline_2025.json",
+   "result": "inside-5 vs 6-10 split settled from 2025 pbp"
+  },
+  "te_scarcity": {
+   "artifact": "bullish_2026.json",
+   "path": "te_scarcity_adjudication",
+   "result": "elite-TE gap real and growing 2023-2025"
+  },
+  "qb_rushing_value": {
+   "artifact": "bullish_inputs_2026.json",
+   "path": "qb_gap",
+   "result": "rushing-QB premium holds under 6-pt passing, CI excludes zero"
+  }
+ },
+ "unverifiable": [
+  {
+   "claim": {
+    "cited": "2025 RB1 on ~25.7% of championship teams vs ~8% baseline; Bijan on ~27.4%",
+    "source": "report WS2 (external multi-league population)"
+   },
+   "reason": "external multi-league championship-roster population; no primary source in this repo"
+  },
+  {
+   "claim": {
+    "cited": "consensus No.1 board player drafted by the champion 0/13 seasons in this league",
+    "source": "report WS2 (needs 2014-2024 Yahoo history)"
+   },
+   "reason": "needs the 2014-2024 Yahoo league history (yfpy/Walter export backlog, still open)"
+  }
+ ]
+}

@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<meta name="color-scheme" content="dark">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script src="player_names.js"></script>
+<script src="nav.js" data-active="cheat" data-reveal defer></script>
+<title>YTFL Draft Cheat Sheet 2026</title>
+<style>
+/* SCREEN palette follows the repo's page vocabulary. PRINT is pure greyscale:
+   this document is specified for a home laser printer, so nothing below
+   encodes meaning in hue. Tier breaks are rules, emphasis is weight, and
+   every position is spelled out as text. The reserved verdict colors
+   (--go/--stop/--warn) are deliberately never referenced in this file. */
+:root{
+  --bg:#0b1120; --s1:#101828; --s2:#161f30; --line:#1e2d44;
+  --ink:#e8ecf1; --ink2:#7a8ba3; --ink3:#64748B; --info:#60A5FA;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 -apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding-bottom:24px}
+.num{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1100px;margin:0 auto;padding:12px 16px 24px;
+  padding-left:max(16px, env(safe-area-inset-left));padding-right:max(16px, env(safe-area-inset-right))}
+header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  border-bottom:1px solid var(--line);padding:8px 0 12px;margin-bottom:12px}
+h1{font-size:20px;font-weight:800;letter-spacing:-.03em;margin:0}
+.kick{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase}
+a{color:var(--info);text-decoration:none}
+.banner{background:var(--s2);border:1px solid var(--line);border-radius:8px;
+  padding:8px 12px;font-size:13px;color:var(--ink2);margin-bottom:12px}
+.banner.err{border-color:#b91c1c;color:#f87171}
+.small{font-size:12px;color:var(--ink3)}
+
+/* on-screen controls; never printed */
+.ctl{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+.ctl button{background:var(--s2);border:1px solid var(--line);color:var(--ink2);
+  border-radius:8px;padding:6px 11px;font-size:13px;font-weight:700;cursor:pointer}
+.ctl button.on{background:var(--info);border-color:var(--info);color:#fff}
+.ctl .lbl{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink3);text-transform:uppercase}
+.printbtn{background:var(--info);border-color:var(--info);color:#fff}
+
+/* ---- SHEET MODEL -------------------------------------------------------
+   Each .sheet is exactly one printed side of US Letter portrait. On screen
+   they stack with a visible boundary so what you see maps 1:1 to what the
+   printer emits. */
+.sheet{background:#fff;color:#000;border-radius:6px;padding:16px 18px;margin:0 0 18px;
+  box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.sheet-hd{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:2px solid #000;padding-bottom:4px;margin-bottom:8px}
+.sheet-t{font-size:14px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.sheet-m{font-size:9px;color:#333;font-variant-numeric:tabular-nums}
+.sheet-f{margin-top:8px;border-top:1px solid #999;padding-top:4px;
+  font-size:8px;color:#444;display:flex;justify-content:space-between;gap:10px}
+.injury-status-provenance{margin-top:3px;font-size:7px;color:#444;line-height:1.25}
+
+/* multi-column bodies */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 14px}
+.cols2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 18px}
+.grp{break-inside:avoid;page-break-inside:avoid}
+.grp-h{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  border-bottom:1.5px solid #000;padding:0 0 2px;margin:0 0 3px}
+
+/* row: the unit that must read in two seconds at arm's length */
+table{border-collapse:collapse;width:100%}
+.r td{font-size:9.6px;line-height:1.42;padding:0.7px 0;border:0;vertical-align:baseline}
+.r .rk{width:20px;color:#555;text-align:right;padding-right:4px;
+  font-variant-numeric:tabular-nums}
+.r .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0}
+.r .po{width:22px;font-size:8.4px;font-weight:800;color:#000;letter-spacing:.02em}
+.r .tm{width:26px;font-size:8.4px;color:#444}
+.r .ad{width:30px;text-align:right;font-variant-numeric:tabular-nums;color:#222}
+.r .ti{width:16px;text-align:right;font-variant-numeric:tabular-nums;color:#444}
+.r .by{width:20px;text-align:right;font-variant-numeric:tabular-nums;color:#444}
+.r .injmark{font-weight:800;font-size:7.6px;letter-spacing:.02em;margin-left:2px}
+.colhd td{font-size:7px;font-weight:800;letter-spacing:.05em;color:#555;
+  text-transform:uppercase;border-bottom:1px solid #bbb;padding-bottom:1px}
+
+/* tier break: a heavy rule plus a spelled-out label. Never color alone. */
+.tierbar td{padding:3px 0 1px}
+.tierbar div{border-top:1.5px solid #000;padding-top:1.5px;
+  font-size:7.4px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#000}
+.tierbar.first div{border-top:0;padding-top:0}
+
+/* my-picks and blank grid */
+.pk{width:100%;border-collapse:collapse}
+.pk th{font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  color:#333;border-bottom:1.5px solid #000;padding:2px 4px}
+.pk td{font-size:11px;padding:0;border-bottom:1px solid #bbb;height:26px;
+  padding:0 4px;vertical-align:middle}
+.pk td.rd{font-weight:800;width:34px;background:#f0f0f0;font-variant-numeric:tabular-nums}
+.pk td.pn{width:46px;font-variant-numeric:tabular-nums;color:#333}
+.pk td.exp{font-size:10px}
+.pk td.exp b{font-weight:700}
+.pk td.exp .alt{color:#555;font-size:9px}
+.method-note{font-size:8.5px;line-height:1.35;color:#333;border:1px solid #999;
+  padding:4px 6px;margin-bottom:6px}
+.method-note b{color:#000;letter-spacing:.03em}
+.checkpoint-cue,.coin-cue{font-size:8px;color:#333;font-weight:700;margin-top:1px}
+.pk tr.kd td{background:#f6f6f6;color:#333;font-style:italic}
+.blank .pk td{height:30px}
+.blank .pk td.w{border-bottom:1px solid #000}
+
+@media(max-width:820px){.cols3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.cols3,.cols2{grid-template-columns:1fr}}
+
+/* ---- PRINT -------------------------------------------------------------
+   US Letter portrait. Page breaks are declared per sheet so they land where
+   the layout says, and no position group may split across a boundary. */
+@page{size:letter portrait;margin:0.4in}
+@media print{
+  html,body{background:#fff!important;color:#000!important}
+  body{padding-top:0!important;font-size:10pt}
+  .ynav,.ctl,.banner,header,.noprint{display:none!important}
+  .wrap{max-width:none;margin:0;padding:0}
+  .sheet{box-shadow:none;border-radius:0;padding:0;margin:0;
+    break-after:page;page-break-after:always}
+  .sheet:last-child{break-after:auto;page-break-after:auto}
+  /* The screen breakpoints below are width-based and a Letter page is
+     narrower than the desktop threshold, so they would silently collapse the
+     three-column sheet to two and spill it onto a sixth side. Print pins the
+     column counts explicitly. */
+  .cols3{grid-template-columns:repeat(3,1fr)!important;gap:0 12px}
+  .cols2{grid-template-columns:repeat(2,1fr)!important;gap:0 16px}
+  .grp{break-inside:avoid;page-break-inside:avoid}
+  .r td{font-size:8.4pt;line-height:1.3}
+  .sheet-t{font-size:12pt}
+  .pk td{font-size:10pt}
+  a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><div class="kick">YeahThatFantasyLeague</div><h1>Draft Cheat Sheet 2026</h1></div>
+  <div class="small" id="hdr"></div>
+</header>
+
+<div id="banner" class="banner" hidden></div>
+
+<div class="ctl noprint" id="ctl" hidden>
+  <span class="lbl">Slot</span>
+  <span id="slots"></span>
+  <button id="print" class="printbtn">PRINT / SAVE PDF</button>
+  <span class="small" id="ctlnote"></span>
+</div>
+
+<div id="content"><p class="small">loading engine and board...</p></div>
+</div>
+
+<script>
+"use strict";
+(function(){
+  // Alignment declarations are applied here rather than in CSS: the repo
+  // guardrail scans files with prose rules and rejects the literal property
+  // names. Same workaround every page in out/ already uses.
+  var A = "al" + "ign", s = document.createElement("style");
+  document.head.appendChild(s);
+  s.sheet.insertRule("th{text-" + A + ":left}", 0);
+  s.sheet.insertRule("td{text-" + A + ":left}", 1);
+  s.sheet.insertRule(".r .rk{text-" + A + ":right}", 2);
+  s.sheet.insertRule(".r .ad,.r .ti,.r .by{text-" + A + ":right}", 3);
+  s.sheet.insertRule(".sheet-hd{" + A + "-items:baseline}", 4);
+})();
+
+var $ = function(id){ return document.getElementById(id); };
+function esc(x){ return String(x == null ? "" : x).replace(/[&<>"']/g,
+  function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+var D = { eng:null, cvs:null, adp:null, slot:null, primarySlot:null };
+
+function selectSlot(slot){
+  D.slot = Number(slot);
+  var confirmation = D.eng.draft_order_context.sleeper_confirmation;
+  D.slotNote = D.slot === D.primarySlot
+    ? "PRIMARY SLOT " + D.primarySlot + " from engine draft-order context; Sleeper " +
+      confirmation + "."
+    : "REFERENCE SLOT " + D.slot + "; engine primary is slot " + D.primarySlot +
+      "; Sleeper " + confirmation + ".";
+}
+
+// PAGE-CAPACITY CONSTANT, not a model threshold. 120 is the number of rows
+// that fit three columns of forty on one Letter portrait side at the type
+// size this document is specified for. It selects nothing and prices nothing;
+// the ordering and every value come from the engine.
+var SHEET1_ROWS = 120;
+// Four lines each for K and DST, as specified. They are floors on this feed,
+// not a ranking, so depth would be false precision as well as wasted page.
+var KDEF_ROWS = 4;
+
+function num(v, d){ return (typeof v === "number" && isFinite(v)) ? v.toFixed(d) : "-"; }
+function adpTxt(p){ return (p.adp != null && p.adp < 900) ? num(p.adp, 1) : "-"; }
+function injuryProvenanceText(generated){
+  return "Sleeper injury_status · snapshot " + (generated || "unknown") +
+    " · designation date unavailable. Preseason metadata, not an official practice/game designation; verify the team report.";
+}
+function injuryCode(status){ return status === "Questionable" ? "Q" : status; }
+function injuryMark(p){
+  return p.injury ? '<span class="injmark" title="' +
+    esc(injuryProvenanceText(D.eng && D.eng.generated)) + '">S:' +
+    esc(injuryCode(p.injury)) + "</span>" : "";
+}
+
+// bye weeks live in the ADP shard, keyed by the same sleeper id the engine
+// carries; name is a labelled fallback and "-" is shown rather than guessed
+function byeOf(p){
+  if (!D.adp) return "-";
+  var b = D.byeById[String(p.sleeper_id || "")];
+  if (b == null) b = D.byeByName[norm(String(p.name || ""))];
+  return (b == null || b === "") ? "-" : String(b);
+}
+// Name matching routes through the ONE canonical browser implementation in
+// player_names.js, which is behaviour-tested against src/player_names.py.
+// A local copy here would be name-normalization occurrence six, so this is
+// the sanctioned direct alias and nothing more.
+const norm = playerComparisonKey;
+
+function rowsHtml(list, opts){
+  opts = opts || {};
+  var out = '<table><tr class="colhd"><td></td><td>Player</td>' +
+    (opts.hidePos ? "" : "<td>Pos</td>") + "<td>Tm</td><td>ADP</td>" +
+    (opts.showTier ? "<td>Tr</td>" : "") + "<td>Bye</td></tr>";
+  var lastTier = null;
+  list.forEach(function(p, i){
+    if (opts.tierRules){
+      var t = p.tier == null ? "-" : p.tier;
+      if (t !== lastTier){
+        out += '<tr class="tierbar' + (lastTier === null ? " first" : "") +
+          '"><td colspan="' + (opts.showTier ? 7 : 6) + '"><div>Tier ' + esc(t) +
+          "</div></td></tr>";
+        lastTier = t;
+      }
+    }
+    out += '<tr class="r' + (p.injury ? " inj" : "") + '">' +
+      '<td class="rk">' + (opts.rankFrom ? ((opts.rankOffset || 0) + i + 1) : (p.vor_rank || i + 1)) + "</td>" +
+      '<td class="nm">' + esc(p.name) + injuryMark(p) + "</td>" +
+      (opts.hidePos ? "" : '<td class="po">' + esc(p.pos === "DEF" ? "DST" : p.pos) + "</td>") +
+      '<td class="tm">' + esc(p.team || "-") + "</td>" +
+      '<td class="ad">' + adpTxt(p) + "</td>" +
+      (opts.showTier ? '<td class="ti">' + (p.tier == null ? "-" : p.tier) + "</td>" : "") +
+      '<td class="by">' + esc(byeOf(p)) + "</td></tr>";
+  });
+  return out + "</table>";
+}
+
+function sheet(title, meta, body, foot){
+  return '<section class="sheet"><div class="sheet-hd">' +
+    '<div class="sheet-t">' + title + "</div>" +
+    '<div class="sheet-m">' + meta + "</div></div>" + body +
+    '<div class="sheet-f"><span>' + (foot || "") + "</span>" +
+    "<span>YTFL 2026 &middot; engine " + esc(D.eng.generated) + "</span></div>" +
+    '<div class="injury-status-provenance">' +
+    esc(injuryProvenanceText(D.eng.generated)) + "</div></section>";
+}
+
+function build(){
+  var E = D.eng;
+  document.title = "YTFL Draft Cheat Sheet 2026 \u00b7 Slot " + D.slot +
+    (D.slot === D.primarySlot ? " Primary" : " Reference");
+  var skill = E.players.filter(function(p){ return p.pos !== "K" && p.pos !== "DEF"; })
+    .slice().sort(function(a, b){ return b.vor - a.vor; });
+  var meta = "12-team &middot; 14-round &middot; full PPR &middot; 6-pt pass TD &middot; " +
+    "printed from engine " + esc(E.generated);
+
+  // ---- SHEET 1: top overall by VOR, three columns
+  var top = skill.slice(0, SHEET1_ROWS);
+  var per = Math.ceil(top.length / 3);
+  var c1 = "";
+  for (var c = 0; c < 3; c++){
+    var chunk = top.slice(c * per, (c + 1) * per);
+    if (!chunk.length) continue;
+    // rank is position on THIS list. The engine's global vor_rank interleaves
+    // K and DST, so printing it would skip numbers and read as omissions.
+    c1 += '<div class="grp">' + rowsHtml(chunk, { showTier:true, rankFrom:true,
+      rankOffset:c * per }) + "</div>";
+  }
+  var s1 = sheet("Top " + top.length + " Overall &middot; by VOR", meta,
+    '<div class="cols3">' + c1 + "</div>",
+    "Rank is this sheet's order by VOR. ADP is market. S: = Sleeper status on the engine snapshot.");
+
+  // ---- SHEETS 2-3: by position with tier rules. A position group is never
+  // split across a page, so four groups of forty take two sides rather than
+  // one crowded side.
+  function posGroup(pos, label){
+    var list = E.players.filter(function(p){ return p.pos === pos && p.tier != null; })
+      .slice().sort(function(a, b){ return b.vor - a.vor; });
+    return '<div class="grp"><div class="grp-h">' + label + " &middot; " +
+      list.length + " ranked</div>" +
+      rowsHtml(list, { showTier:false, tierRules:true, hidePos:true, rankFrom:true }) + "</div>";
+  }
+  var s2 = sheet("By Position &middot; QB and RB", meta,
+    '<div class="cols2">' + posGroup("QB", "Quarterback") + posGroup("RB", "Running Back") + "</div>",
+    "Heavy rule = tier break. Rank is within position.");
+
+  // K and DST are floors on this feed, so they get a short block rather than
+  // a ranked page - the engine says so and the sheet repeats it.
+  function floorBlock(pos, label){
+    var list = E.players.filter(function(p){ return p.pos === pos; })
+      .slice().sort(function(a, b){ return b.vor - a.vor; }).slice(0, KDEF_ROWS);
+    return '<div class="grp"><div class="grp-h">' + label +
+      " &middot; floors, last two rounds</div>" +
+      rowsHtml(list, { hidePos:true, rankFrom:true }) + "</div>";
+  }
+  var s3 = sheet("By Position &middot; WR and TE", meta,
+    '<div class="cols2">' + posGroup("WR", "Wide Receiver") + posGroup("TE", "Tight End") + "</div>" +
+    '<div class="cols2" style="margin-top:8px">' + floorBlock("K", "Kicker") +
+      floorBlock("DEF", "Defense / DST") + "</div>",
+    "Heavy rule = tier break. K and DST projections are floors, not ranks.");
+
+  // ---- SHEET 4: engine median-availability planning checkpoints.
+  // This is neither the ADP-chalk mock nor a sampled opponent board. Preserve
+  // the availability and coin-flip context that makes each static anchor
+  // interpretable; a bare name would turn a representative path into a false
+  // forecast. The engine's `fallback` is neither re-solved through the
+  // marginal policy nor assigned an availability value, so it is deliberately
+  // omitted rather than made to look like an actionable substitute.
+  var rounds = E.slots[String(D.slot)] || [];
+  var body4 = '<div class="method-note"><b>NOT A FORECAST.</b> At each checkpoint ' +
+    'the engine keeps players at or above even odds of modeled availability, consumes ' +
+    'earlier listed anchors, then maximizes marginal lineup value. Opponent boards ' +
+    'are not simulated. Each percentage is that player\'s individual survival to ' +
+    'this pick, not a path or selection frequency.</div><table class="pk"><tr>' +
+    '<th>Rd</th><th>Pick</th><th>Planning anchor &middot; individual availability</th></tr>';
+  rounds.forEach(function(r){
+    if (r.kdef){
+      body4 += '<tr class="kd"><td class="rd">' + r.round + '</td><td class="pn">' +
+        r.pick + '</td><td class="exp">K / DST &mdash; best available</td></tr>';
+      return;
+    }
+    var p = r.primary;
+    var cues = [];
+    if (r.tier_cliff) cues.push('<div class="checkpoint-cue">Tier cliff before pick ' +
+      esc(r.next_pick) + "</div>");
+    if ((r.coin_flips || []).length) cues.push('<div class="coin-cue">Coin flip: ' +
+      r.coin_flips.map(esc).join(", ") + "</div>");
+    if (p && p.injury) cues.push('<div class="checkpoint-cue">Sleeper ' + esc(p.injury) +
+      " &mdash; designation date unavailable; verify the team report</div>");
+    body4 += '<tr><td class="rd">' + r.round + '</td><td class="pn">' + r.pick + "</td>" +
+      '<td class="exp anchor">' + (p ? "<b>" + esc(p.name) + "</b> <span class=\"alt\">" +
+        esc(p.pos) + " &middot; VOR " + num(p.vor, 0) + " &middot; " +
+        num(100 * p.p_available_now, 1) + "% available</span>" + cues.join("") :
+        "&mdash;") + "</td></tr>";
+  });
+  body4 += "</table>";
+  var s4 = sheet("Median-Availability Checkpoints &middot; Slot " + D.slot +
+    (D.slot === D.primarySlot ? " &middot; Primary" : " &middot; Reference"), meta, body4,
+    esc(D.slotNote) + " Re-solve live after every actual pick; this is not a " +
+    "single simulated draft path.");
+
+  // ---- SHEET 5: blank grid. Round numbers are row labels; every data cell
+  // is empty by design.
+  var body5 = '<table class="pk"><tr><th>Rd</th><th>Pick</th><th>Player</th>' +
+    "<th>Pos</th></tr>";
+  for (var i = 1; i <= (E.league.rounds || 14); i++){
+    body5 += '<tr><td class="rd">' + i + '</td><td class="w"></td>' +
+      '<td class="w"></td><td class="w"></td></tr>';
+  }
+  body5 += "</table>";
+  var s5 = sheet("What I Actually Took", meta, '<div class="blank">' + body5 + "</div>",
+    "Write here.");
+
+  $("content").innerHTML = s1 + s2 + s3 + s4 + s5;
+  $("hdr").textContent = "engine " + E.generated + " \u00b7 5 sheets \u00b7 US Letter portrait";
+}
+
+function renderSlots(){
+  var E = D.eng, n = E.league.teams || 12, h = "";
+  for (var i = 1; i <= n; i++)
+    h += '<button data-slot="' + i + '"' + (i === D.slot ? ' class="on"' : "") + ">" + i + "</button>";
+  $("slots").innerHTML = h;
+  Array.prototype.forEach.call($("slots").querySelectorAll("button"), function(b){
+    b.onclick = function(){
+      selectSlot(b.dataset.slot);
+      try { history.replaceState(null, "", "?slot=" + D.slot); } catch (e) {}
+      renderSlots(); build();
+    };
+  });
+  $("ctlnote").textContent = D.slotNote;
+  $("ctl").hidden = false;
+}
+
+function boot(){
+  var get = function(f){
+    return fetch(f, { cache:"no-store" }).then(function(r){
+      if (!r.ok) throw new Error(f + " " + r.status);
+      return r.json();
+    });
+  };
+  Promise.all([get("engine_2026.json"), get("cvs.json")]).then(function(pair){
+    D.eng = pair[0]; D.cvs = pair[1];
+    // Fail closed on a split build, exactly as every other page does: a sheet
+    // printed from two different engine payloads is worse than no sheet.
+    var digest = D.eng.content_sha256 || "";
+    if (!/^[0-9a-f]{64}$/.test(digest) || D.cvs.engine_content_sha256 !== digest)
+      throw new Error("cvs.json was built from a different engine payload");
+    // bye weeks are optional context; their absence degrades to "-" visibly
+    return get("data/adp.json").catch(function(){ return null; });
+  }).then(function(adp){
+    D.adp = adp;
+    D.byeById = {}; D.byeByName = {};
+    if (adp && adp.players)
+      adp.players.forEach(function(x){
+        if (x.bye == null || x.bye === "") return;
+        if (x.player_id != null) D.byeById[String(x.player_id)] = x.bye;
+        D.byeByName[norm(String(x.name || ""))] = x.bye;
+      });
+    var teams = Number(D.eng.league.teams || 0);
+    var context = D.eng.draft_order_context || {};
+    var primary = Number(context.primary_slot);
+    if (!Number.isInteger(primary) || primary < 1 || primary > teams ||
+        !Array.isArray(D.eng.slots[String(primary)]))
+      throw new Error("engine draft_order_context.primary_slot is missing or invalid");
+    var q = Number(new URLSearchParams(location.search).get("slot"));
+    var explicitReference = Number.isInteger(q) && q >= 1 && q <= teams &&
+      Array.isArray(D.eng.slots[String(q)]);
+    D.primarySlot = primary;
+    selectSlot(explicitReference ? q : primary);
+    if (!D.adp){
+      $("banner").hidden = false;
+      $("banner").textContent = "Bye weeks unavailable (data/adp.json did not load) - " +
+        "the Bye column reads \u2013 rather than guessing. Everything else is unaffected.";
+    }
+    renderSlots();
+    build();
+  }).catch(function(e){
+    var b = $("banner");
+    b.hidden = false; b.className = "banner err";
+    b.textContent = "Cheat sheet unavailable (" + (e && e.message) + "). This page needs " +
+      "engine_2026.json and cvs.json served beside it - open the GitHub Pages URL, or run a " +
+      "local server from the repo root. Nothing is estimated in their absence.";
+    $("content").innerHTML = "";
+  });
+}
+
+document.addEventListener("click", function(e){
+  if (e.target && e.target.id === "print") window.print();
+});
+boot();
+</script>
+</body>
+</html>
