@@ -1,8 +1,8 @@
 {
  "provenance": {
-  "generated": "2026-08-31",
-  "engine_generated": "2026-08-31",
-  "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
+  "generated": "2026-09-08",
+  "engine_generated": "2026-09-08",
+  "engine_content_sha256": "8432b49ed880773b9009e92460b6e2287e5e2289b46bbb2b51d33889fe7f9796",
   "primary_slot": 4,
   "reference_slots": [
    1,
@@ -45,7 +45,7 @@
      "overall": 21,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.2,
+     "adp": 23.4,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -55,7 +55,7 @@
      "overall": 28,
      "name": "Javonte Williams",
      "pos": "RB",
-     "adp": 33.5,
+     "adp": 32.5,
      "vor": 50.9,
      "pts": 212.0,
      "tier": 4
@@ -65,7 +65,7 @@
      "overall": 45,
      "name": "Garrett Wilson",
      "pos": "WR",
-     "adp": 46.4,
+     "adp": 45.9,
      "vor": 38.7,
      "pts": 224.9,
      "tier": 5
@@ -75,7 +75,7 @@
      "overall": 52,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -85,7 +85,7 @@
      "overall": 69,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -95,7 +95,7 @@
      "overall": 76,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -105,7 +105,7 @@
      "overall": 93,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -115,7 +115,7 @@
      "overall": 100,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -125,7 +125,7 @@
      "overall": 117,
      "name": "Mark Andrews",
      "pos": "TE",
-     "adp": 128.1,
+     "adp": 125.9,
      "vor": 0.0,
      "pts": 162.5,
      "tier": 4
@@ -135,7 +135,7 @@
      "overall": 124,
      "name": "Jared Goff",
      "pos": "QB",
-     "adp": 131.7,
+     "adp": 131.9,
      "vor": -4.0,
      "pts": 343.5,
      "tier": 2
@@ -143,31 +143,31 @@
     {
      "round": 12,
      "overall": 141,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 148,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 165,
+     "round": 13,
+     "overall": 148,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 165,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -229,8 +229,8 @@
    ],
    "starter_pts_board": 2011.2,
    "starter_pts_naive_vor": 1997.7,
-   "starter_pts_adp_chalk": 1938.6,
-   "board_minus_chalk": 72.6,
+   "starter_pts_adp_chalk": 1855.8,
+   "board_minus_chalk": 155.4,
    "board_minus_naive": 13.5,
    "naive_vor_picks": [
     {
@@ -295,13 +295,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -336,7 +336,7 @@
      "overall": 24,
      "name": "Nico Collins",
      "pos": "WR",
-     "adp": 25.1,
+     "adp": 23.8,
      "vor": 75.8,
      "pts": 262.0,
      "tier": 3
@@ -346,7 +346,7 @@
      "overall": 25,
      "name": "Trey McBride",
      "pos": "TE",
-     "adp": 24.3,
+     "adp": 25.5,
      "vor": 72.4,
      "pts": 234.9,
      "tier": 2
@@ -356,7 +356,7 @@
      "overall": 48,
      "name": "D'Andre Swift",
      "pos": "RB",
-     "adp": 52.6,
+     "adp": 50.9,
      "vor": 46.9,
      "pts": 208.0,
      "tier": 4
@@ -366,7 +366,7 @@
      "overall": 49,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -376,7 +376,7 @@
      "overall": 72,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -386,7 +386,7 @@
      "overall": 73,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -396,7 +396,7 @@
      "overall": 96,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -406,7 +406,7 @@
      "overall": 97,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -416,7 +416,7 @@
      "overall": 120,
      "name": "Mark Andrews",
      "pos": "TE",
-     "adp": 128.1,
+     "adp": 125.9,
      "vor": 0.0,
      "pts": 162.5,
      "tier": 4
@@ -426,7 +426,7 @@
      "overall": 121,
      "name": "Jared Goff",
      "pos": "QB",
-     "adp": 131.7,
+     "adp": 131.9,
      "vor": -4.0,
      "pts": 343.5,
      "tier": 2
@@ -434,31 +434,31 @@
     {
      "round": 12,
      "overall": 144,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 145,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 168,
+     "round": 13,
+     "overall": 145,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 168,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -519,10 +519,10 @@
     }
    ],
    "starter_pts_board": 2066.1,
-   "starter_pts_naive_vor": 2050.0,
-   "starter_pts_adp_chalk": 2010.3,
-   "board_minus_chalk": 55.8,
-   "board_minus_naive": 16.1,
+   "starter_pts_naive_vor": 2045.0,
+   "starter_pts_adp_chalk": 1934.3,
+   "board_minus_chalk": 131.8,
+   "board_minus_naive": 21.1,
    "naive_vor_picks": [
     {
      "round": 1,
@@ -546,8 +546,8 @@
     },
     {
      "round": 5,
-     "name": "David Montgomery",
-     "pos": "RB"
+     "name": "Tyler Warren",
+     "pos": "TE"
     },
     {
      "round": 6,
@@ -576,17 +576,17 @@
     },
     {
      "round": 11,
-     "name": "Mark Andrews",
-     "pos": "TE"
-    },
-    {
-     "round": 12,
      "name": "Brenton Strange",
      "pos": "TE"
     },
     {
-     "round": 13,
+     "round": 12,
      "name": "T.J. Hockenson",
+     "pos": "TE"
+    },
+    {
+     "round": 13,
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
@@ -617,7 +617,7 @@
      "overall": 2,
      "name": "Bijan Robinson",
      "pos": "RB",
-     "adp": 2.2,
+     "adp": 2.3,
      "vor": 163.8,
      "pts": 324.9,
      "tier": 1
@@ -627,7 +627,7 @@
      "overall": 23,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.2,
+     "adp": 23.4,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -637,7 +637,7 @@
      "overall": 26,
      "name": "Javonte Williams",
      "pos": "RB",
-     "adp": 33.5,
+     "adp": 32.5,
      "vor": 50.9,
      "pts": 212.0,
      "tier": 4
@@ -647,7 +647,7 @@
      "overall": 47,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -657,7 +657,7 @@
      "overall": 50,
      "name": "Terry McLaurin",
      "pos": "WR",
-     "adp": 56.2,
+     "adp": 55.4,
      "vor": 27.6,
      "pts": 213.8,
      "tier": 5
@@ -667,7 +667,7 @@
      "overall": 71,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -677,7 +677,7 @@
      "overall": 74,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -687,7 +687,7 @@
      "overall": 95,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -697,7 +697,7 @@
      "overall": 98,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -707,7 +707,7 @@
      "overall": 119,
      "name": "Mark Andrews",
      "pos": "TE",
-     "adp": 128.1,
+     "adp": 125.9,
      "vor": 0.0,
      "pts": 162.5,
      "tier": 4
@@ -717,7 +717,7 @@
      "overall": 122,
      "name": "Jared Goff",
      "pos": "QB",
-     "adp": 131.7,
+     "adp": 131.9,
      "vor": -4.0,
      "pts": 343.5,
      "tier": 2
@@ -725,31 +725,31 @@
     {
      "round": 12,
      "overall": 143,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 146,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 167,
+     "round": 13,
+     "overall": 146,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 167,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -811,8 +811,8 @@
    ],
    "starter_pts_board": 2034.0,
    "starter_pts_naive_vor": 2007.0,
-   "starter_pts_adp_chalk": 1938.9,
-   "board_minus_chalk": 95.1,
+   "starter_pts_adp_chalk": 1989.7,
+   "board_minus_chalk": 44.3,
    "board_minus_naive": 27.0,
    "naive_vor_picks": [
     {
@@ -867,23 +867,23 @@
     },
     {
      "round": 11,
-     "name": "Mark Andrews",
-     "pos": "TE"
-    },
-    {
-     "round": 12,
      "name": "Brenton Strange",
      "pos": "TE"
     },
     {
-     "round": 13,
+     "round": 12,
      "name": "T.J. Hockenson",
      "pos": "TE"
     },
     {
-     "round": 14,
-     "name": "Dalton Schultz",
+     "round": 13,
+     "name": "Hunter Henry",
      "pos": "TE"
+    },
+    {
+     "round": 14,
+     "name": "Jordan Love",
+     "pos": "QB"
     }
    ],
    "position_counts": {
@@ -918,7 +918,7 @@
      "overall": 22,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.2,
+     "adp": 23.4,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -928,7 +928,7 @@
      "overall": 27,
      "name": "Javonte Williams",
      "pos": "RB",
-     "adp": 33.5,
+     "adp": 32.5,
      "vor": 50.9,
      "pts": 212.0,
      "tier": 4
@@ -936,21 +936,21 @@
     {
      "round": 4,
      "overall": 46,
-     "name": "Garrett Wilson",
+     "name": "Mike Evans",
      "pos": "WR",
-     "adp": 46.4,
-     "vor": 38.7,
-     "pts": 224.9,
+     "adp": 63.7,
+     "vor": 36.0,
+     "pts": 222.2,
      "tier": 5
     },
     {
      "round": 5,
      "overall": 51,
-     "name": "Mike Evans",
+     "name": "Terry McLaurin",
      "pos": "WR",
-     "adp": 62.4,
-     "vor": 36.0,
-     "pts": 222.2,
+     "adp": 55.4,
+     "vor": 27.6,
+     "pts": 213.8,
      "tier": 5
     },
     {
@@ -958,7 +958,7 @@
      "overall": 70,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -968,7 +968,7 @@
      "overall": 75,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -978,7 +978,7 @@
      "overall": 94,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -988,7 +988,7 @@
      "overall": 99,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -998,7 +998,7 @@
      "overall": 118,
      "name": "Mark Andrews",
      "pos": "TE",
-     "adp": 128.1,
+     "adp": 125.9,
      "vor": 0.0,
      "pts": 162.5,
      "tier": 4
@@ -1008,7 +1008,7 @@
      "overall": 123,
      "name": "Jared Goff",
      "pos": "QB",
-     "adp": 131.7,
+     "adp": 131.9,
      "vor": -4.0,
      "pts": 343.5,
      "tier": 2
@@ -1016,31 +1016,31 @@
     {
      "round": 12,
      "overall": 142,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 147,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 166,
+     "round": 13,
+     "overall": 147,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 166,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -1065,15 +1065,15 @@
     },
     {
      "slot": "WR",
-     "name": "Garrett Wilson",
-     "pos": "WR",
-     "pts": 224.9
-    },
-    {
-     "slot": "WR",
      "name": "Mike Evans",
      "pos": "WR",
      "pts": 222.2
+    },
+    {
+     "slot": "WR",
+     "name": "Terry McLaurin",
+     "pos": "WR",
+     "pts": 213.8
     },
     {
      "slot": "TE",
@@ -1100,11 +1100,11 @@
      "pts": 116.0
     }
    ],
-   "starter_pts_board": 2011.2,
+   "starter_pts_board": 2000.1,
    "starter_pts_naive_vor": 1997.7,
-   "starter_pts_adp_chalk": 1832.4,
-   "board_minus_chalk": 178.8,
-   "board_minus_naive": 13.5,
+   "starter_pts_adp_chalk": 1891.3,
+   "board_minus_chalk": 108.8,
+   "board_minus_naive": 2.4,
    "naive_vor_picks": [
     {
      "round": 1,
@@ -1168,13 +1168,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Chig Okonkwo",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -1209,7 +1209,7 @@
      "overall": 20,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.2,
+     "adp": 23.4,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -1219,7 +1219,7 @@
      "overall": 29,
      "name": "Javonte Williams",
      "pos": "RB",
-     "adp": 33.5,
+     "adp": 32.5,
      "vor": 50.9,
      "pts": 212.0,
      "tier": 4
@@ -1229,7 +1229,7 @@
      "overall": 44,
      "name": "Garrett Wilson",
      "pos": "WR",
-     "adp": 46.4,
+     "adp": 45.9,
      "vor": 38.7,
      "pts": 224.9,
      "tier": 5
@@ -1239,7 +1239,7 @@
      "overall": 53,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -1249,7 +1249,7 @@
      "overall": 68,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -1259,7 +1259,7 @@
      "overall": 77,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -1269,7 +1269,7 @@
      "overall": 92,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -1279,7 +1279,7 @@
      "overall": 101,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -1289,7 +1289,7 @@
      "overall": 116,
      "name": "Mark Andrews",
      "pos": "TE",
-     "adp": 128.1,
+     "adp": 125.9,
      "vor": 0.0,
      "pts": 162.5,
      "tier": 4
@@ -1297,29 +1297,29 @@
     {
      "round": 11,
      "overall": 125,
-     "name": "Jared Goff",
-     "pos": "QB",
-     "adp": 131.7,
-     "vor": -4.0,
-     "pts": 343.5,
-     "tier": 2
+     "name": "MarShawn Lloyd",
+     "pos": "RB",
+     "adp": 137.6,
+     "vor": -12.1,
+     "pts": 149.0,
+     "tier": 5
     },
     {
      "round": 12,
      "overall": 140,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
+     "name": "Jordan Love",
+     "pos": "QB",
+     "adp": 161.4,
+     "vor": -15.0,
+     "pts": 332.5,
+     "tier": 2
     },
     {
      "round": 13,
      "overall": 149,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
@@ -1329,7 +1329,7 @@
      "overall": 164,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
      "tier": null
@@ -1393,8 +1393,8 @@
    ],
    "starter_pts_board": 2011.2,
    "starter_pts_naive_vor": 1997.7,
-   "starter_pts_adp_chalk": 1934.4,
-   "board_minus_chalk": 76.8,
+   "starter_pts_adp_chalk": 1824.2,
+   "board_minus_chalk": 187.0,
    "board_minus_naive": 13.5,
    "naive_vor_picks": [
     {
@@ -1459,13 +1459,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -1490,7 +1490,7 @@
      "overall": 6,
      "name": "Jonathan Taylor",
      "pos": "RB",
-     "adp": 7.2,
+     "adp": 7.1,
      "vor": 111.2,
      "pts": 272.3,
      "tier": 3
@@ -1500,7 +1500,7 @@
      "overall": 19,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.2,
+     "adp": 23.4,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -1510,7 +1510,7 @@
      "overall": 30,
      "name": "Javonte Williams",
      "pos": "RB",
-     "adp": 33.5,
+     "adp": 32.5,
      "vor": 50.9,
      "pts": 212.0,
      "tier": 4
@@ -1520,7 +1520,7 @@
      "overall": 43,
      "name": "Garrett Wilson",
      "pos": "WR",
-     "adp": 46.4,
+     "adp": 45.9,
      "vor": 38.7,
      "pts": 224.9,
      "tier": 5
@@ -1530,7 +1530,7 @@
      "overall": 54,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -1540,7 +1540,7 @@
      "overall": 67,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -1550,7 +1550,7 @@
      "overall": 78,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -1560,7 +1560,7 @@
      "overall": 91,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -1570,7 +1570,7 @@
      "overall": 102,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -1580,7 +1580,7 @@
      "overall": 115,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 116.5,
+     "adp": 117.9,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -1590,7 +1590,7 @@
      "overall": 126,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 152.2,
+     "adp": 161.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -1598,31 +1598,31 @@
     {
      "round": 12,
      "overall": 139,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 150,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 163,
+     "round": 13,
+     "overall": 150,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 163,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -1684,8 +1684,8 @@
    ],
    "starter_pts_board": 1992.5,
    "starter_pts_naive_vor": 1979.0,
-   "starter_pts_adp_chalk": 1828.3,
-   "board_minus_chalk": 164.2,
+   "starter_pts_adp_chalk": 1868.5,
+   "board_minus_chalk": 124.0,
    "board_minus_naive": 13.5,
    "naive_vor_picks": [
     {
@@ -1750,13 +1750,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -1781,7 +1781,7 @@
      "overall": 7,
      "name": "Jonathan Taylor",
      "pos": "RB",
-     "adp": 7.2,
+     "adp": 7.1,
      "vor": 111.2,
      "pts": 272.3,
      "tier": 3
@@ -1791,7 +1791,7 @@
      "overall": 18,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.2,
+     "adp": 23.4,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -1801,7 +1801,7 @@
      "overall": 31,
      "name": "Javonte Williams",
      "pos": "RB",
-     "adp": 33.5,
+     "adp": 32.5,
      "vor": 50.9,
      "pts": 212.0,
      "tier": 4
@@ -1809,11 +1809,11 @@
     {
      "round": 4,
      "overall": 42,
-     "name": "Garrett Wilson",
+     "name": "Zay Flowers",
      "pos": "WR",
-     "adp": 46.4,
-     "vor": 38.7,
-     "pts": 224.9,
+     "adp": 41.9,
+     "vor": 42.0,
+     "pts": 228.2,
      "tier": 5
     },
     {
@@ -1821,7 +1821,7 @@
      "overall": 55,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -1831,7 +1831,7 @@
      "overall": 66,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -1841,7 +1841,7 @@
      "overall": 79,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -1851,7 +1851,7 @@
      "overall": 90,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -1861,7 +1861,7 @@
      "overall": 103,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -1871,7 +1871,7 @@
      "overall": 114,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 116.5,
+     "adp": 117.9,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -1881,7 +1881,7 @@
      "overall": 127,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 152.2,
+     "adp": 161.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -1889,31 +1889,31 @@
     {
      "round": 12,
      "overall": 138,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 151,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 162,
+     "round": 13,
+     "overall": 151,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 162,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -1938,9 +1938,9 @@
     },
     {
      "slot": "WR",
-     "name": "Garrett Wilson",
+     "name": "Zay Flowers",
      "pos": "WR",
-     "pts": 224.9
+     "pts": 228.2
     },
     {
      "slot": "WR",
@@ -1973,11 +1973,11 @@
      "pts": 116.0
     }
    ],
-   "starter_pts_board": 1992.5,
+   "starter_pts_board": 1995.8,
    "starter_pts_naive_vor": 1979.0,
-   "starter_pts_adp_chalk": 1808.5,
-   "board_minus_chalk": 184.0,
-   "board_minus_naive": 13.5,
+   "starter_pts_adp_chalk": 1802.0,
+   "board_minus_chalk": 193.8,
+   "board_minus_naive": 16.8,
    "naive_vor_picks": [
     {
      "round": 1,
@@ -2041,13 +2041,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -2072,7 +2072,7 @@
      "overall": 8,
      "name": "James Cook",
      "pos": "RB",
-     "adp": 8.6,
+     "adp": 9.5,
      "vor": 99.7,
      "pts": 260.8,
      "tier": 3
@@ -2082,7 +2082,7 @@
      "overall": 17,
      "name": "Brock Bowers",
      "pos": "TE",
-     "adp": 23.2,
+     "adp": 23.4,
      "vor": 91.0,
      "pts": 253.5,
      "tier": 1
@@ -2092,7 +2092,7 @@
      "overall": 32,
      "name": "Javonte Williams",
      "pos": "RB",
-     "adp": 33.5,
+     "adp": 32.5,
      "vor": 50.9,
      "pts": 212.0,
      "tier": 4
@@ -2102,7 +2102,7 @@
      "overall": 41,
      "name": "Zay Flowers",
      "pos": "WR",
-     "adp": 41.8,
+     "adp": 41.9,
      "vor": 42.0,
      "pts": 228.2,
      "tier": 5
@@ -2112,7 +2112,7 @@
      "overall": 56,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -2122,7 +2122,7 @@
      "overall": 65,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -2132,7 +2132,7 @@
      "overall": 80,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -2142,7 +2142,7 @@
      "overall": 89,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -2152,7 +2152,7 @@
      "overall": 104,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -2162,7 +2162,7 @@
      "overall": 113,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 116.5,
+     "adp": 117.9,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -2172,7 +2172,7 @@
      "overall": 128,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 152.2,
+     "adp": 161.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -2180,31 +2180,31 @@
     {
      "round": 12,
      "overall": 137,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 152,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 161,
+     "round": 13,
+     "overall": 152,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 161,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -2266,8 +2266,8 @@
    ],
    "starter_pts_board": 1984.3,
    "starter_pts_naive_vor": 1967.5,
-   "starter_pts_adp_chalk": 1822.0,
-   "board_minus_chalk": 162.3,
+   "starter_pts_adp_chalk": 1830.8,
+   "board_minus_chalk": 153.5,
    "board_minus_naive": 16.8,
    "naive_vor_picks": [
     {
@@ -2332,13 +2332,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -2361,39 +2361,39 @@
     {
      "round": 1,
      "overall": 9,
-     "name": "De'Von Achane",
+     "name": "James Cook",
      "pos": "RB",
-     "adp": 13.1,
-     "vor": 96.3,
-     "pts": 257.4,
+     "adp": 9.5,
+     "vor": 99.7,
+     "pts": 260.8,
      "tier": 3
     },
     {
      "round": 2,
      "overall": 16,
-     "name": "Chase Brown",
-     "pos": "RB",
-     "adp": 16.7,
-     "vor": 94.1,
-     "pts": 255.2,
-     "tier": 3
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "adp": 23.4,
+     "vor": 91.0,
+     "pts": 253.5,
+     "tier": 1
     },
     {
      "round": 3,
      "overall": 33,
-     "name": "Colston Loveland",
-     "pos": "TE",
-     "adp": 40.5,
-     "vor": 52.9,
-     "pts": 215.4,
-     "tier": 3
+     "name": "Breece Hall",
+     "pos": "RB",
+     "adp": 34.3,
+     "vor": 49.9,
+     "pts": 211.0,
+     "tier": 4
     },
     {
      "round": 4,
      "overall": 40,
      "name": "Zay Flowers",
      "pos": "WR",
-     "adp": 41.8,
+     "adp": 41.9,
      "vor": 42.0,
      "pts": 228.2,
      "tier": 5
@@ -2403,7 +2403,7 @@
      "overall": 57,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -2413,7 +2413,7 @@
      "overall": 64,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -2423,7 +2423,7 @@
      "overall": 81,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -2433,7 +2433,7 @@
      "overall": 88,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -2443,7 +2443,7 @@
      "overall": 105,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -2453,7 +2453,7 @@
      "overall": 112,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 116.5,
+     "adp": 117.9,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -2463,7 +2463,7 @@
      "overall": 129,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 152.2,
+     "adp": 161.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -2471,31 +2471,31 @@
     {
      "round": 12,
      "overall": 136,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 153,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 160,
+     "round": 13,
+     "overall": 153,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 160,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -2508,15 +2508,15 @@
     },
     {
      "slot": "RB",
-     "name": "De'Von Achane",
+     "name": "James Cook",
      "pos": "RB",
-     "pts": 257.4
+     "pts": 260.8
     },
     {
      "slot": "RB",
-     "name": "Chase Brown",
+     "name": "Breece Hall",
      "pos": "RB",
-     "pts": 255.2
+     "pts": 211.0
     },
     {
      "slot": "WR",
@@ -2532,9 +2532,9 @@
     },
     {
      "slot": "TE",
-     "name": "Colston Loveland",
+     "name": "Brock Bowers",
      "pos": "TE",
-     "pts": 215.4
+     "pts": 253.5
     },
     {
      "slot": "FLEX",
@@ -2555,21 +2555,21 @@
      "pts": 116.0
     }
    ],
-   "starter_pts_board": 1986.0,
-   "starter_pts_naive_vor": 1965.8,
-   "starter_pts_adp_chalk": 1938.3,
-   "board_minus_chalk": 47.7,
-   "board_minus_naive": 20.2,
+   "starter_pts_board": 1983.3,
+   "starter_pts_naive_vor": 1967.5,
+   "starter_pts_adp_chalk": 1862.0,
+   "board_minus_chalk": 121.3,
+   "board_minus_naive": 15.8,
    "naive_vor_picks": [
     {
      "round": 1,
-     "name": "De'Von Achane",
+     "name": "James Cook",
      "pos": "RB"
     },
     {
      "round": 2,
-     "name": "Chase Brown",
-     "pos": "RB"
+     "name": "Brock Bowers",
+     "pos": "TE"
     },
     {
      "round": 3,
@@ -2623,13 +2623,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -2654,7 +2654,7 @@
      "overall": 10,
      "name": "De'Von Achane",
      "pos": "RB",
-     "adp": 13.1,
+     "adp": 13.3,
      "vor": 96.3,
      "pts": 257.4,
      "tier": 3
@@ -2662,29 +2662,29 @@
     {
      "round": 2,
      "overall": 15,
-     "name": "Chase Brown",
-     "pos": "RB",
-     "adp": 16.7,
-     "vor": 94.1,
-     "pts": 255.2,
-     "tier": 3
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "adp": 23.4,
+     "vor": 91.0,
+     "pts": 253.5,
+     "tier": 1
     },
     {
      "round": 3,
      "overall": 34,
-     "name": "Colston Loveland",
-     "pos": "TE",
-     "adp": 40.5,
-     "vor": 52.9,
-     "pts": 215.4,
-     "tier": 3
+     "name": "Breece Hall",
+     "pos": "RB",
+     "adp": 34.3,
+     "vor": 49.9,
+     "pts": 211.0,
+     "tier": 4
     },
     {
      "round": 4,
      "overall": 39,
      "name": "Zay Flowers",
      "pos": "WR",
-     "adp": 41.8,
+     "adp": 41.9,
      "vor": 42.0,
      "pts": 228.2,
      "tier": 5
@@ -2694,7 +2694,7 @@
      "overall": 58,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -2704,7 +2704,7 @@
      "overall": 63,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -2714,7 +2714,7 @@
      "overall": 82,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -2724,7 +2724,7 @@
      "overall": 87,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -2734,7 +2734,7 @@
      "overall": 106,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -2744,7 +2744,7 @@
      "overall": 111,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 116.5,
+     "adp": 117.9,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -2754,7 +2754,7 @@
      "overall": 130,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 152.2,
+     "adp": 161.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -2762,31 +2762,31 @@
     {
      "round": 12,
      "overall": 135,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 154,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 159,
+     "round": 13,
+     "overall": 154,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 159,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -2805,9 +2805,9 @@
     },
     {
      "slot": "RB",
-     "name": "Chase Brown",
+     "name": "Breece Hall",
      "pos": "RB",
-     "pts": 255.2
+     "pts": 211.0
     },
     {
      "slot": "WR",
@@ -2823,9 +2823,9 @@
     },
     {
      "slot": "TE",
-     "name": "Colston Loveland",
+     "name": "Brock Bowers",
      "pos": "TE",
-     "pts": 215.4
+     "pts": 253.5
     },
     {
      "slot": "FLEX",
@@ -2846,11 +2846,11 @@
      "pts": 116.0
     }
    ],
-   "starter_pts_board": 1986.0,
-   "starter_pts_naive_vor": 1965.8,
-   "starter_pts_adp_chalk": 1876.8,
-   "board_minus_chalk": 109.2,
-   "board_minus_naive": 20.2,
+   "starter_pts_board": 1979.9,
+   "starter_pts_naive_vor": 1964.1,
+   "starter_pts_adp_chalk": 1903.8,
+   "board_minus_chalk": 76.1,
+   "board_minus_naive": 15.8,
    "naive_vor_picks": [
     {
      "round": 1,
@@ -2859,8 +2859,8 @@
     },
     {
      "round": 2,
-     "name": "Chase Brown",
-     "pos": "RB"
+     "name": "Brock Bowers",
+     "pos": "TE"
     },
     {
      "round": 3,
@@ -2914,13 +2914,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -2945,7 +2945,7 @@
      "overall": 11,
      "name": "De'Von Achane",
      "pos": "RB",
-     "adp": 13.1,
+     "adp": 13.3,
      "vor": 96.3,
      "pts": 257.4,
      "tier": 3
@@ -2955,7 +2955,7 @@
      "overall": 14,
      "name": "Chase Brown",
      "pos": "RB",
-     "adp": 16.7,
+     "adp": 14.6,
      "vor": 94.1,
      "pts": 255.2,
      "tier": 3
@@ -2965,7 +2965,7 @@
      "overall": 35,
      "name": "Colston Loveland",
      "pos": "TE",
-     "adp": 40.5,
+     "adp": 39.3,
      "vor": 52.9,
      "pts": 215.4,
      "tier": 3
@@ -2975,7 +2975,7 @@
      "overall": 38,
      "name": "Zay Flowers",
      "pos": "WR",
-     "adp": 41.8,
+     "adp": 41.9,
      "vor": 42.0,
      "pts": 228.2,
      "tier": 5
@@ -2985,7 +2985,7 @@
      "overall": 59,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -2995,7 +2995,7 @@
      "overall": 62,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -3005,7 +3005,7 @@
      "overall": 83,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -3015,7 +3015,7 @@
      "overall": 86,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -3025,7 +3025,7 @@
      "overall": 107,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -3035,7 +3035,7 @@
      "overall": 110,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 116.5,
+     "adp": 117.9,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -3045,7 +3045,7 @@
      "overall": 131,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 152.2,
+     "adp": 161.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -3053,31 +3053,31 @@
     {
      "round": 12,
      "overall": 134,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 155,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 158,
+     "round": 13,
+     "overall": 155,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 158,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -3139,8 +3139,8 @@
    ],
    "starter_pts_board": 1986.0,
    "starter_pts_naive_vor": 1965.8,
-   "starter_pts_adp_chalk": 1806.6,
-   "board_minus_chalk": 179.4,
+   "starter_pts_adp_chalk": 1845.6,
+   "board_minus_chalk": 140.4,
    "board_minus_naive": 20.2,
    "naive_vor_picks": [
     {
@@ -3185,13 +3185,13 @@
     },
     {
      "round": 9,
-     "name": "Jayden Reed",
-     "pos": "WR"
+     "name": "Brandon Aubrey",
+     "pos": "K"
     },
     {
      "round": 10,
-     "name": "Brandon Aubrey",
-     "pos": "K"
+     "name": "Bo Nix",
+     "pos": "QB"
     },
     {
      "round": 11,
@@ -3205,13 +3205,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {
@@ -3236,7 +3236,7 @@
      "overall": 12,
      "name": "De'Von Achane",
      "pos": "RB",
-     "adp": 13.1,
+     "adp": 13.3,
      "vor": 96.3,
      "pts": 257.4,
      "tier": 3
@@ -3246,7 +3246,7 @@
      "overall": 13,
      "name": "Chase Brown",
      "pos": "RB",
-     "adp": 16.7,
+     "adp": 14.6,
      "vor": 94.1,
      "pts": 255.2,
      "tier": 3
@@ -3256,7 +3256,7 @@
      "overall": 36,
      "name": "Colston Loveland",
      "pos": "TE",
-     "adp": 40.5,
+     "adp": 39.3,
      "vor": 52.9,
      "pts": 215.4,
      "tier": 3
@@ -3266,7 +3266,7 @@
      "overall": 37,
      "name": "Zay Flowers",
      "pos": "WR",
-     "adp": 41.8,
+     "adp": 41.9,
      "vor": 42.0,
      "pts": 228.2,
      "tier": 5
@@ -3276,7 +3276,7 @@
      "overall": 60,
      "name": "Mike Evans",
      "pos": "WR",
-     "adp": 62.4,
+     "adp": 63.7,
      "vor": 36.0,
      "pts": 222.2,
      "tier": 5
@@ -3286,7 +3286,7 @@
      "overall": 61,
      "name": "Parker Washington",
      "pos": "WR",
-     "adp": 73.8,
+     "adp": 73.0,
      "vor": 26.2,
      "pts": 212.4,
      "tier": 5
@@ -3296,7 +3296,7 @@
      "overall": 84,
      "name": "Los Angeles Rams",
      "pos": "DEF",
-     "adp": 88.4,
+     "adp": 85.8,
      "vor": 19.0,
      "pts": 116.0,
      "tier": null
@@ -3306,7 +3306,7 @@
      "overall": 85,
      "name": "Brock Purdy",
      "pos": "QB",
-     "adp": 123.3,
+     "adp": 122.7,
      "vor": 15.7,
      "pts": 363.2,
      "tier": 2
@@ -3316,7 +3316,7 @@
      "overall": 108,
      "name": "Brandon Aubrey",
      "pos": "K",
-     "adp": 91.6,
+     "adp": 89.9,
      "vor": 11.0,
      "pts": 116.0,
      "tier": null
@@ -3326,7 +3326,7 @@
      "overall": 109,
      "name": "Bo Nix",
      "pos": "QB",
-     "adp": 116.5,
+     "adp": 117.9,
      "vor": 0.2,
      "pts": 347.7,
      "tier": 2
@@ -3336,7 +3336,7 @@
      "overall": 132,
      "name": "Brenton Strange",
      "pos": "TE",
-     "adp": 152.2,
+     "adp": 161.6,
      "vor": -1.5,
      "pts": 161.0,
      "tier": 4
@@ -3344,31 +3344,31 @@
     {
      "round": 12,
      "overall": 133,
-     "name": "MarShawn Lloyd",
-     "pos": "RB",
-     "adp": 157.8,
-     "vor": -12.1,
-     "pts": 149.0,
-     "tier": 5
-    },
-    {
-     "round": 13,
-     "overall": 156,
      "name": "Khalil Shakir",
      "pos": "WR",
-     "adp": 143.4,
+     "adp": 146.1,
      "vor": -15.5,
      "pts": 170.7,
      "tier": null
     },
     {
-     "round": 14,
-     "overall": 157,
+     "round": 13,
+     "overall": 156,
      "name": "Tyjae Spears",
      "pos": "RB",
-     "adp": 165.7,
+     "adp": 165.2,
      "vor": -46.5,
      "pts": 114.6,
+     "tier": null
+    },
+    {
+     "round": 14,
+     "overall": 157,
+     "name": "Tyrone Tracy",
+     "pos": "RB",
+     "adp": 173.2,
+     "vor": -49.8,
+     "pts": 111.3,
      "tier": null
     }
    ],
@@ -3430,8 +3430,8 @@
    ],
    "starter_pts_board": 1986.0,
    "starter_pts_naive_vor": 1965.8,
-   "starter_pts_adp_chalk": 1814.9,
-   "board_minus_chalk": 171.1,
+   "starter_pts_adp_chalk": 1820.9,
+   "board_minus_chalk": 165.1,
    "board_minus_naive": 20.2,
    "naive_vor_picks": [
     {
@@ -3496,13 +3496,13 @@
     },
     {
      "round": 13,
-     "name": "Dalton Schultz",
+     "name": "Hunter Henry",
      "pos": "TE"
     },
     {
      "round": 14,
-     "name": "MarShawn Lloyd",
-     "pos": "RB"
+     "name": "Dalton Schultz",
+     "pos": "TE"
     }
    ],
    "position_counts": {

@@ -1,6 +1,6 @@
 {
  "provenance": {
-  "generated": "2026-09-07",
+  "generated": "2026-09-08",
   "inputs": "adp.json, usage_2025.json, crosswalk.json, depth_charts.json, goalline_2025.json, history cache",
   "method": "every threshold computed (percentiles of observed 2025 usage) or verified from 2016-2025 history in this artifact; team state from current depth charts"
  },
@@ -617,7 +617,7 @@
     {
      "tag": "late_rushing_qb",
      "orientation": "target",
-     "reason": "35 rush yds/g (>= p75 23.58) at ADP round 9"
+     "reason": "35 rush yds/g (>= p75 23.58) at ADP round 8"
     }
    ]
   },

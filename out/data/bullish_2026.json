@@ -1,10 +1,10 @@
 {
  "provenance": {
-  "generated": "2026-09-07",
-  "computed_at": "2026-09-07T17:26:23+00:00",
-  "engine_generated": "2026-08-31",
-  "engine_content_sha256": "adfd9327bcb870bd96e5e64387b644f6d3c219347b1dd872cbe67fca7712aa31",
-  "inputs_content_sha256": "921a2102822d64d84c2aa6a16c0a4bdbb75ca6d1720095fa37f251ecc1f292d8",
+  "generated": "2026-09-08",
+  "computed_at": "2026-09-08T15:06:48+00:00",
+  "engine_generated": "2026-09-08",
+  "engine_content_sha256": "8432b49ed880773b9009e92460b6e2287e5e2289b46bbb2b51d33889fe7f9796",
+  "inputs_content_sha256": "d587e914786bf5d16ca2e083689a897e32769c99be4f226a57613e1edf705f4b",
   "conventions": {
    "bullish_p": 0.6,
    "watch_p": 0.35,
@@ -15,13 +15,13 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-09-07T17:25:49+00:00",
-   "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-   "snapshot_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-   "upstream_content_sha256": "c96a73e2d20dfecb8c23f906e8dd1904adc9be50bc63c8409807336ab2622870",
-   "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
+   "pulled_at": "2026-09-08T15:05:56+00:00",
+   "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+   "snapshot_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+   "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
+   "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
    "pricing_by_week_sha256": {
-    "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
+    "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -222,8 +222,8 @@
     "LAR",
     "DET",
     "BAL",
-    "SF",
-    "BUF"
+    "BUF",
+    "SF"
    ],
    "top_five_tie_policy": "higher mean, then canonical team code",
    "consumers": [
@@ -237,17 +237,17 @@
     "event": "REPRICED",
     "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+     "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+     "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
      "pricing_by_week_sha256": {
-      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+      "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
-      "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
       1,
@@ -270,12 +270,12 @@
      }
     },
     "current": {
-     "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-     "upstream_content_sha256": "c96a73e2d20dfecb8c23f906e8dd1904adc9be50bc63c8409807336ab2622870",
+     "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+     "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
+     "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
      "pricing_by_week_sha256": {
-      "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
+      "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -320,19 +320,19 @@
   "question": "what do the tags find that ADP alone does not?",
   "divergent": [
    {
+    "name": "Zay Flowers",
+    "pos": "WR",
+    "status": "BULLISH",
+    "score_rank": 4,
+    "pos_adp_rank": 19,
+    "gap": 15
+   },
+   {
     "name": "Javonte Williams",
     "pos": "RB",
     "status": "BULLISH",
     "score_rank": 1,
     "pos_adp_rank": 15,
-    "gap": 14
-   },
-   {
-    "name": "Zay Flowers",
-    "pos": "WR",
-    "status": "BULLISH",
-    "score_rank": 5,
-    "pos_adp_rank": 19,
     "gap": 14
    },
    {
@@ -344,28 +344,20 @@
     "gap": 14
    },
    {
+    "name": "Jordan Love",
+    "pos": "QB",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 19,
+    "gap": 14
+   },
+   {
     "name": "D'Andre Swift",
     "pos": "RB",
     "status": "WATCH",
     "score_rank": 9,
     "pos_adp_rank": 22,
     "gap": 13
-   },
-   {
-    "name": "Jordan Love",
-    "pos": "QB",
-    "status": "BULLISH",
-    "score_rank": 5,
-    "pos_adp_rank": 18,
-    "gap": 13
-   },
-   {
-    "name": "Derrick Henry",
-    "pos": "RB",
-    "status": "BULLISH",
-    "score_rank": 1,
-    "pos_adp_rank": 12,
-    "gap": 11
    },
    {
     "name": "Sam Darnold",
@@ -376,6 +368,14 @@
     "gap": 11
    },
    {
+    "name": "Derrick Henry",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 1,
+    "pos_adp_rank": 11,
+    "gap": 10
+   },
+   {
     "name": "Brock Purdy",
     "pos": "QB",
     "status": "BULLISH",
@@ -384,19 +384,11 @@
     "gap": 10
    },
    {
-    "name": "Chase Brown",
+    "name": "Ashton Jeanty",
     "pos": "RB",
-    "status": "BULLISH",
+    "status": "WATCH",
     "score_rank": 1,
     "pos_adp_rank": 10,
-    "gap": 9
-   },
-   {
-    "name": "Kyren Williams",
-    "pos": "RB",
-    "status": "BULLISH",
-    "score_rank": 5,
-    "pos_adp_rank": 14,
     "gap": 9
    },
    {
@@ -408,32 +400,40 @@
     "gap": 9
    },
    {
+    "name": "Chris Olave",
+    "pos": "WR",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 13,
+    "gap": 8
+   },
+   {
+    "name": "Kyren Williams",
+    "pos": "RB",
+    "status": "BULLISH",
+    "score_rank": 5,
+    "pos_adp_rank": 13,
+    "gap": 8
+   },
+   {
     "name": "Matthew Stafford",
     "pos": "QB",
     "status": "BULLISH",
     "score_rank": 2,
-    "pos_adp_rank": 11,
-    "gap": 9
+    "pos_adp_rank": 10,
+    "gap": 8
    },
    {
-    "name": "Ashton Jeanty",
+    "name": "Chase Brown",
     "pos": "RB",
-    "status": "WATCH",
+    "status": "BULLISH",
     "score_rank": 1,
     "pos_adp_rank": 8,
     "gap": 7
-   },
-   {
-    "name": "Chris Olave",
-    "pos": "WR",
-    "status": "BULLISH",
-    "score_rank": 6,
-    "pos_adp_rank": 13,
-    "gap": 7
    }
   ],
-  "spearman_score_vs_adp_tagged": 0.688,
-  "statement": "14 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.688; a value near 1.0 would mean the tag merely restates the market."
+  "spearman_score_vs_adp_tagged": 0.668,
+  "statement": "14 tagged players sit >=4 positional-ADP ranks below their tag rank - the edge candidates the market prices later than the computed criteria do. Rank correlation with ADP among tagged players is 0.668; a value near 1.0 would mean the tag merely restates the market."
  },
  "te_scarcity_adjudication": {
   "basis": "league-exact PPG, 8+ game TEs, 2023-2025",
@@ -497,7 +497,7 @@
     "name": "Trey McBride",
     "pos": "TE",
     "sleeper_id": "8130",
-    "adp": 24.3,
+    "adp": 25.5,
     "status": "BULLISH",
     "score": 90.0,
     "gate": "P(>= 2 of 2)",
@@ -508,14 +508,14 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-07T17:26:23+00:00",
+    "computed_at": "2026-09-08T15:06:48+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Tyler Warren",
     "pos": "TE",
     "sleeper_id": "12518",
-    "adp": 49.7,
+    "adp": 49.8,
     "status": "BULLISH",
     "score": 90.0,
     "gate": "P(>= 2 of 2)",
@@ -528,14 +528,14 @@
     ],
     "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-07T17:26:23+00:00",
+    "computed_at": "2026-09-08T15:06:48+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Kyle Pitts",
     "pos": "TE",
     "sleeper_id": "7553",
-    "adp": 68.6,
+    "adp": 67.3,
     "status": "BULLISH",
     "score": 90.0,
     "gate": "P(>= 2 of 2)",
@@ -546,14 +546,14 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-07T17:26:23+00:00",
+    "computed_at": "2026-09-08T15:06:48+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Travis Kelce",
     "pos": "TE",
     "sleeper_id": "1466",
-    "adp": 89.1,
+    "adp": 89.7,
     "status": "BULLISH",
     "score": 88.9,
     "gate": "P(>= 2 of 2)",
@@ -564,14 +564,14 @@
     "reasons": [],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-07T17:26:23+00:00",
+    "computed_at": "2026-09-08T15:06:48+00:00",
     "ttl_hours": 72
    },
    {
     "name": "Hunter Henry",
     "pos": "TE",
     "sleeper_id": "3214",
-    "adp": 141.6,
+    "adp": 142.7,
     "status": "WATCH",
     "score": 45.0,
     "gate": "P(>= 2 of 2)",
@@ -584,7 +584,7 @@
     ],
     "capital_tiebreak": null,
     "source": "bullish_inputs_2026.json",
-    "computed_at": "2026-09-07T17:26:23+00:00",
+    "computed_at": "2026-09-08T15:06:48+00:00",
     "ttl_hours": 72
    }
   ],
@@ -615,7 +615,7 @@
    "before": {
     "n": 44,
     "zero_n": 0,
-    "excluded_unobserved_n": 5,
+    "excluded_unobserved_n": 6,
     "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
     "percentile_method": "nearest index: round(q * (n - 1))",
     "p50": 0.5466,
@@ -626,7 +626,7 @@
    "after": {
     "n": 44,
     "zero_n": 0,
-    "excluded_unobserved_n": 5,
+    "excluded_unobserved_n": 6,
     "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
     "percentile_method": "nearest index: round(q * (n - 1))",
     "p50": 0.5135,
@@ -1478,7 +1478,7 @@
     "before_threshold": {
      "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 5,
+     "excluded_unobserved_n": 6,
      "observation_rule": "same usage_2025.json rows assigned to 2026 depth-chart teams; retained only as the retired same-build baseline",
      "percentile_method": "nearest index: round(q * (n - 1))",
      "p50": 0.5466,
@@ -1489,7 +1489,7 @@
     "after_threshold": {
      "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 5,
+     "excluded_unobserved_n": 6,
      "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
      "percentile_method": "nearest index: round(q * (n - 1))",
      "p50": 0.5465,
@@ -1591,7 +1591,7 @@
     "before_threshold": {
      "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 5,
+     "excluded_unobserved_n": 6,
      "observation_rule": "trimmed usage_2025.json player rows assigned to their stored historical team; grouping-only intermediate",
      "percentile_method": "nearest index: round(q * (n - 1))",
      "p50": 0.5465,
@@ -1602,7 +1602,7 @@
     "after_threshold": {
      "n": 44,
      "zero_n": 0,
-     "excluded_unobserved_n": 5,
+     "excluded_unobserved_n": 6,
      "observation_rule": "the untrimmed 2025 player-team carry ledger contains one positive historical team for the canonical player and that team's observed RB carry total is at least 100; observed zero is included, absence or a positive multi-team split is null",
      "percentile_method": "nearest index: round(q * (n - 1))",
      "p50": 0.5135,
@@ -1691,13 +1691,13 @@
    "source": "docs/ffopportunity/schedule_2026.csv",
    "metadata_source": "docs/ffopportunity/schedule_2026.meta.json",
    "upstream_source": "http://www.habitatring.com/games.csv",
-   "pulled_at": "2026-09-07T17:25:49+00:00",
-   "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-   "snapshot_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-   "upstream_content_sha256": "c96a73e2d20dfecb8c23f906e8dd1904adc9be50bc63c8409807336ab2622870",
-   "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
+   "pulled_at": "2026-09-08T15:05:56+00:00",
+   "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+   "snapshot_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+   "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
+   "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
    "pricing_by_week_sha256": {
-    "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
+    "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -1898,8 +1898,8 @@
     "LAR",
     "DET",
     "BAL",
-    "SF",
-    "BUF"
+    "BUF",
+    "SF"
    ],
    "top_five_tie_policy": "higher mean, then canonical team code",
    "consumers": [
@@ -1913,17 +1913,17 @@
     "event": "REPRICED",
     "attribution": "SCHEDULE_INPUT",
     "prior": {
-     "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+     "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
      "upstream_content_sha256": null,
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+     "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
      "pricing_by_week_sha256": {
-      "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+      "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-      "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
-      "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+      "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+      "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
      },
      "weeks": [
       1,
@@ -1946,12 +1946,12 @@
      }
     },
     "current": {
-     "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-     "upstream_content_sha256": "c96a73e2d20dfecb8c23f906e8dd1904adc9be50bc63c8409807336ab2622870",
+     "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+     "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
      "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-     "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
+     "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
      "pricing_by_week_sha256": {
-      "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
+      "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
       "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
       "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
       "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -2001,12 +2001,23 @@
    "Kyler Murray|QB",
    "Trevor Lawrence|QB"
   ],
-  "status_changed": [],
+  "status_changed": [
+   {
+    "player": "Ja'Marr Chase|WR",
+    "before": "BULLISH",
+    "after": "WATCH"
+   }
+  ],
   "score_changed": [
    {
     "player": "Dak Prescott|QB",
     "before": 91.7,
     "after": 75.4
+   },
+   {
+    "player": "Ja'Marr Chase|WR",
+    "before": 90.6,
+    "after": 55.7
    },
    {
     "player": "Joe Burrow|QB",
@@ -2044,19 +2055,19 @@
  "forward_vegas_delta": {
   "event": "REPRICED",
   "attribution": "SCHEDULE_INPUT",
-  "pulled_at": "2026-09-07T17:25:49+00:00",
+  "pulled_at": "2026-09-08T15:05:56+00:00",
   "prior": {
-   "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+   "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
    "upstream_content_sha256": null,
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+   "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
    "pricing_by_week_sha256": {
-    "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+    "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-    "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
-    "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+    "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+    "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
    },
    "weeks": [
     1,
@@ -2079,12 +2090,12 @@
    }
   },
   "current": {
-   "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-   "upstream_content_sha256": "c96a73e2d20dfecb8c23f906e8dd1904adc9be50bc63c8409807336ab2622870",
+   "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+   "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
    "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-   "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
+   "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
    "pricing_by_week_sha256": {
-    "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
+    "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
     "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
     "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
     "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -2126,18 +2137,7 @@
    "gained": [],
    "lost": [],
    "status_changed": [],
-   "score_changed": [
-    {
-     "player": "Brock Purdy|QB",
-     "before": 91.7,
-     "after": 75.4
-    },
-    {
-     "player": "Josh Allen|QB",
-     "before": 99.3,
-     "after": 97.4
-    }
-   ],
+   "score_changed": [],
    "rb_invariance": {
     "before_count": 10,
     "after_count": 10,
@@ -2147,19 +2147,19 @@
   "last_material_event": {
    "event": "REPRICED",
    "attribution": "SCHEDULE_INPUT",
-   "pulled_at": "2026-09-07T17:25:49+00:00",
+   "pulled_at": "2026-09-08T15:05:56+00:00",
    "prior": {
-    "source_content_sha256": "18c104a91098c566b45bfc8142f0b8c3a0f5698c3f2f7009b392103e819d0782",
+    "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
     "upstream_content_sha256": null,
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-    "decision_input_sha256": "1ac21bdf95784ec7e69101b6660e550e80abb66fe192c1eb553262b5ae72daa1",
+    "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
     "pricing_by_week_sha256": {
-     "1": "2b057273719cadf2deadd05df76c1d83ec85a8fe5a9834d639df9c29e1c49d4b",
+     "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
-     "5": "fb1592617fac0fca0417864e00c323dd971d8516262bf924fdd802325fed29e0",
-     "6": "0b7040d9480e57bdd69ba703f15534bf21e893536396f249b4ffc894db275f18"
+     "5": "1f9f6e16da01e8045ee8e1ca0f49da95d032019ece49c355d5da407873a3277f",
+     "6": "991fdba443844f0539093949a3df07d0b15e8b281c2b6cfb9e3c20b24e3dd072"
     },
     "weeks": [
      1,
@@ -2182,12 +2182,12 @@
     }
    },
    "current": {
-    "source_content_sha256": "bf2e7118b3d5baf66bb14eda2740ce72e86051be838e8a4600f79e6cabd679c7",
-    "upstream_content_sha256": "c96a73e2d20dfecb8c23f906e8dd1904adc9be50bc63c8409807336ab2622870",
+    "source_content_sha256": "9dd2b16ee2b9981d3994420b4d1d12455c08594fa591b862f4328a1f88c6d4d1",
+    "upstream_content_sha256": "4f561482ad8d6c1b2246a55b2269d08c83d49ca3029c42d09c68f67add45817a",
     "model_logic_sha256": "221bdb61324bee949ca9bae6710e7b3522a74b3f6e8df9677df4064bb58ddae4",
-    "decision_input_sha256": "7dfad90987eb16e240cdb5a6bad5dceae312dcb34b2af30efe624f61bd2143f7",
+    "decision_input_sha256": "aeafb409b09ede30a2889f9dc4172b848753fa07073ea4f21a8e89ed3a2f2d3d",
     "pricing_by_week_sha256": {
-     "1": "4f5d3c6aa6b7f6bfd9a5e6ee2daa7acf85ad4edc7f28142603ca9a115f35f4a3",
+     "1": "589e08fb91456fadb8d417c68bd64f422c7137139ec531281e7a648344be570e",
      "2": "b66f11d4fdd715740c6dc1100a407a7c41c9bc026483b5a78e85ae742a508c2b",
      "3": "50f9021f35d7f1b8ada8a271fbeb8f9dfb7f3ce128f50a27c8ede3484229c1ec",
      "4": "f766c71d592ce62458dd4ebb15e1f36cb58528d11d08eb53b86b79f5f8f40674",
@@ -2229,18 +2229,7 @@
     "gained": [],
     "lost": [],
     "status_changed": [],
-    "score_changed": [
-     {
-      "player": "Brock Purdy|QB",
-      "before": 91.7,
-      "after": 75.4
-     },
-     {
-      "player": "Josh Allen|QB",
-      "before": 99.3,
-      "after": 97.4
-     }
-    ],
+    "score_changed": [],
     "rb_invariance": {
      "before_count": 10,
      "after_count": 10,
@@ -2287,10 +2276,12 @@
   }
  },
  "delta": {
-  "previous": "2026-09-06",
+  "previous": "2026-09-07",
   "gained": [],
   "lost": [],
-  "status_changed": []
+  "status_changed": [
+   "Ja'Marr Chase|WR: BULLISH -> WATCH"
+  ]
  },
  "tags": [
   {
@@ -2311,14 +2302,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Bijan Robinson",
    "pos": "RB",
    "sleeper_id": "9509",
-   "adp": 2.2,
+   "adp": 2.3,
    "status": "WATCH",
    "score": 50.3,
    "gate": "P(>= 4 of 5)",
@@ -2334,14 +2325,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Puka Nacua",
    "pos": "WR",
    "sleeper_id": "9493",
-   "adp": 4.4,
+   "adp": 4.9,
    "status": "BULLISH",
    "score": 97.8,
    "gate": "P(>= 4 of 5)",
@@ -2357,37 +2348,38 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ja'Marr Chase",
    "pos": "WR",
    "sleeper_id": "7564",
-   "adp": 3.2,
-   "status": "BULLISH",
-   "score": 90.6,
+   "adp": 3.4,
+   "status": "WATCH",
+   "score": 55.7,
    "gate": "P(>= 4 of 5)",
    "criteria": {
     "target_earning": 0.9693,
     "yprr": 0.5,
     "first_read": 0.9436,
-    "opportunity": 0.9,
+    "opportunity": 0.2,
     "on_field_dropback_presence": 1.0
    },
    "reasons": [
+    "near-miss: gate probability in the watch band",
     "questionable - flagged, no demotion"
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jonathan Taylor",
    "pos": "RB",
    "sleeper_id": "6813",
-   "adp": 7.2,
+   "adp": 7.1,
    "status": "WATCH",
    "score": 58.2,
    "gate": "P(>= 4 of 5)",
@@ -2403,14 +2395,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jaxon Smith-Njigba",
    "pos": "WR",
    "sleeper_id": "9488",
-   "adp": 6.2,
+   "adp": 5.5,
    "status": "BULLISH",
    "score": 96.0,
    "gate": "P(>= 4 of 5)",
@@ -2424,14 +2416,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Amon-Ra St. Brown",
    "pos": "WR",
    "sleeper_id": "7547",
-   "adp": 8.8,
+   "adp": 8.2,
    "status": "BULLISH",
    "score": 97.2,
    "gate": "P(>= 4 of 5)",
@@ -2445,14 +2437,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chase Brown",
    "pos": "RB",
    "sleeper_id": "9224",
-   "adp": 16.7,
+   "adp": 14.6,
    "status": "BULLISH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -2466,14 +2458,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Derrick Henry",
    "pos": "RB",
    "sleeper_id": "3198",
-   "adp": 20.0,
+   "adp": 17.5,
    "status": "BULLISH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -2487,14 +2479,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Saquon Barkley",
    "pos": "RB",
    "sleeper_id": "4866",
-   "adp": 12.6,
+   "adp": 11.6,
    "status": "WATCH",
    "score": 58.2,
    "gate": "P(>= 4 of 5)",
@@ -2510,14 +2502,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Ashton Jeanty",
    "pos": "RB",
    "sleeper_id": "12527",
-   "adp": 14.2,
+   "adp": 16.9,
    "status": "WATCH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -2533,14 +2525,14 @@
    ],
    "capital_tiebreak": "NFL R1 2025 (years-1-2 tiebreak only)",
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Josh Allen",
    "pos": "QB",
    "sleeper_id": "4984",
-   "adp": 21.0,
+   "adp": 21.2,
    "status": "BULLISH",
    "score": 97.4,
    "gate": "P(>= 2 of 3)",
@@ -2552,14 +2544,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Javonte Williams",
    "pos": "RB",
    "sleeper_id": "7588",
-   "adp": 33.5,
+   "adp": 32.5,
    "status": "BULLISH",
    "score": 84.0,
    "gate": "P(>= 4 of 5)",
@@ -2573,14 +2565,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Chris Olave",
    "pos": "WR",
    "sleeper_id": "8144",
-   "adp": 30.1,
+   "adp": 30.0,
    "status": "BULLISH",
    "score": 63.8,
    "gate": "P(>= 4 of 5)",
@@ -2594,14 +2586,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Kyren Williams",
    "pos": "RB",
    "sleeper_id": "8150",
-   "adp": 28.5,
+   "adp": 27.6,
    "status": "BULLISH",
    "score": 69.0,
    "gate": "P(>= 4 of 5)",
@@ -2615,14 +2607,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "D'Andre Swift",
    "pos": "RB",
    "sleeper_id": "6790",
-   "adp": 52.6,
+   "adp": 50.9,
    "status": "WATCH",
    "score": 56.6,
    "gate": "P(>= 4 of 5)",
@@ -2634,18 +2626,19 @@
     "backfield_command": 0.75
    },
    "reasons": [
-    "near-miss: gate probability in the watch band"
+    "near-miss: gate probability in the watch band",
+    "questionable - flagged, no demotion"
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Zay Flowers",
    "pos": "WR",
    "sleeper_id": "9997",
-   "adp": 41.8,
+   "adp": 41.9,
    "status": "BULLISH",
    "score": 68.8,
    "gate": "P(>= 4 of 5)",
@@ -2661,14 +2654,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Lamar Jackson",
    "pos": "QB",
    "sleeper_id": "4881",
-   "adp": 31.2,
+   "adp": 31.9,
    "status": "WATCH",
    "score": 55.0,
    "gate": "P(>= 2 of 3)",
@@ -2682,14 +2675,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Drake Maye",
    "pos": "QB",
    "sleeper_id": "11564",
-   "adp": 47.1,
+   "adp": 47.4,
    "status": "WATCH",
    "score": 55.0,
    "gate": "P(>= 2 of 3)",
@@ -2703,14 +2696,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Joe Burrow",
    "pos": "QB",
    "sleeper_id": "6770",
-   "adp": 51.4,
+   "adp": 52.8,
    "status": "BULLISH",
    "score": 61.9,
    "gate": "P(>= 2 of 3)",
@@ -2722,14 +2715,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Dak Prescott",
    "pos": "QB",
    "sleeper_id": "3294",
-   "adp": 77.5,
+   "adp": 77.1,
    "status": "BULLISH",
    "score": 75.4,
    "gate": "P(>= 2 of 3)",
@@ -2741,14 +2734,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Brock Purdy",
    "pos": "QB",
    "sleeper_id": "8183",
-   "adp": 123.3,
+   "adp": 122.7,
    "status": "BULLISH",
    "score": 75.4,
    "gate": "P(>= 2 of 3)",
@@ -2760,14 +2753,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Patrick Mahomes",
    "pos": "QB",
    "sleeper_id": "4046",
-   "adp": 110.0,
+   "adp": 110.9,
    "status": "BULLISH",
    "score": 84.4,
    "gate": "P(>= 2 of 3)",
@@ -2781,14 +2774,14 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Matthew Stafford",
    "pos": "QB",
    "sleeper_id": "421",
-   "adp": 95.3,
+   "adp": 94.5,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -2800,14 +2793,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jared Goff",
    "pos": "QB",
    "sleeper_id": "3163",
-   "adp": 131.7,
+   "adp": 131.9,
    "status": "BULLISH",
    "score": 91.7,
    "gate": "P(>= 2 of 3)",
@@ -2819,14 +2812,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Jordan Love",
    "pos": "QB",
    "sleeper_id": "6804",
-   "adp": 150.7,
+   "adp": 161.4,
    "status": "BULLISH",
    "score": 75.4,
    "gate": "P(>= 2 of 3)",
@@ -2838,14 +2831,14 @@
    "reasons": [],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   },
   {
    "name": "Sam Darnold",
    "pos": "QB",
    "sleeper_id": "4943",
-   "adp": 163.0,
+   "adp": 163.5,
    "status": "WATCH",
    "score": 55.0,
    "gate": "P(>= 2 of 3)",
@@ -2859,7 +2852,7 @@
    ],
    "capital_tiebreak": null,
    "source": "bullish_inputs_2026.json",
-   "computed_at": "2026-09-07T17:26:23+00:00",
+   "computed_at": "2026-09-08T15:06:48+00:00",
    "ttl_hours": 72
   }
  ]
