@@ -15,8 +15,7 @@ from urllib.parse import quote
 F="Helvetica,Arial,sans-serif"
 LBL={"rec_yards":"Receiving Yards","pass_yards":"Passing Yards","receptions":"Receptions",
      "rush_rec_yards":"Rush + Rec Yards"}
-GAMEL={"ARI@LAC":"ARI @ LAC 4:25","GB@MIN":"GB @ MIN 4:25","WAS@PHI":"WAS @ PHI 4:25",
-       "MIA@LV":"MIA @ LV 4:25","DAL@NYG":"DAL @ NYG 8:20"}
+GAMEL={}   # filled per run by fdrender.py: "AWY@HOM" -> "AWY @ HOM 4:25"
 BLUE="#1493ff"; INK="#111318"; MUTE="#5a6070"; LINE="#dfe3ea"; GOLD="#9a6d00"
 def odds(a): return f"+{a}" if a>0 else str(a)
 def parse_ids(link):
@@ -38,9 +37,9 @@ def button(href,label,fill=BLUE,fg="#ffffff",wide=False):
 def row(i,l,last):
     bd="" if last else f"border-bottom:1px solid {LINE};"
     return (f'<tr><td style="padding:12px 0 12px;{bd}">'
-      f'<div style="font-family:{F};font-size:13px;color:{MUTE};">{i}. {l["player"]} &middot; {GAMEL[l["game"]]}</div>'
+      f'<div style="font-family:{F};font-size:13px;color:{MUTE};">{i}. {l["player"]} &middot; {GAMEL.get(l["game"], l["game"])}</div>'
       f'<div style="font-family:{F};font-size:19px;font-weight:bold;color:{INK};margin-top:2px;">'
-      f'Over {l["line"]} {LBL[l["stat"]]} <span style="color:{MUTE};font-size:14px;font-weight:normal;">{odds(l["price"])}</span></div>'
+      f'Over {l["line"]} {LBL.get(l["stat"], l["stat"])} <span style="color:{MUTE};font-size:14px;font-weight:normal;">{odds(l["price"])}</span></div>'
       f'<div style="font-family:{F};font-size:12px;color:{MUTE};margin-top:3px;">FanDuel mean {l["fd_mean"]:.0f}'
       f' &middot; cushion {l["cushion"]*100:.0f}% &middot; win {l["p"]*100:.0f}% &middot; leg EV {l["ev1"]:.2f}</div>'
       + button(l["link"],"Add this leg to FanDuel slip &rsaquo;") +
@@ -74,7 +73,7 @@ def render(meta,tickets,notes):
     cards="".join(card(t) for t in tickets)
     return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;"><tr><td align="center" style="padding:18px 12px 30px;">'
       f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">'
-      f'<tr><td style="padding-bottom:14px;border-bottom:3px solid {BLUE};"><div style="font-family:{F};font-size:23px;font-weight:bold;color:{INK};">Sunday Prop Card &middot; FanDuel</div>'
+      f'<tr><td style="padding-bottom:14px;border-bottom:3px solid {BLUE};"><div style="font-family:{F};font-size:23px;font-weight:bold;color:{INK};">{meta.get("title","Sunday Prop Card")} &middot; FanDuel</div>'
       f'<div style="font-family:{F};font-size:12px;color:{MUTE};margin-top:5px;">{meta["date"]}<br>{meta["slate"]} &middot; {meta["built"]}</div></td></tr>'
       f'<tr><td style="padding-top:18px;">{cards}</td></tr><tr><td>{notes}</td></tr>'
       f'<tr><td style="padding-top:16px;border-top:1px solid {LINE};font-family:{F};font-size:11px;color:#7a808c;line-height:1.55;">'
