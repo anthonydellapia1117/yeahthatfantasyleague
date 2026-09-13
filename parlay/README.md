@@ -151,3 +151,64 @@ total rather than independently estimated.
   from a labelled sample of this season's games.
 - Nothing here is a guarantee. A positive expected value is a statement
   about a long run of identical decisions, not about one Sunday.
+
+---
+
+## Calibration against real book prices (2026-09-13)
+
+Two real Fanatics tickets were transcribed and priced against the model.
+They are the first live prices the engine has seen and they corrected two
+things.
+
+**The hold is a total on the ticket, not a per-leg multiplier.** The
+nine-leg ticket priced at +1237 against a model-correlated fair of +1330,
+which is a 7 to 8 percent total hold. Applying that same 8 percent per leg
+would have implied an 85 percent total, and an earlier version of the
+search did exactly that, which is why it returned no viable ticket above
++1000. `book_decimal = (1 / joint_correlated) / (1 + total_hold)`.
+
+**Fanatics already prices the correlation inside a same-game parlay.**
+The offered price sits near the model's *correlated* fair and far from its
+*independent* fair:
+
+| ticket | independent fair | correlated fair | offered |
+|---|---|---|---|
+| 7-leg | +1693 | +936 | +667 |
+| 9-leg | +2864 | +1330 | +1237 |
+
+So the correlation lift documented above is **not** free money on that
+book's same-game product; it is already in the price. No ticket structure
+beats their pricing. Expected value under this model is the same for every
+ticket and equals `1 / (1 + hold)`. What structure still controls is
+robustness, not edge.
+
+**Cushion is the metric that survives.** Cushion is the distance between
+the projection and the line, as a fraction of the projection. Of the seven
+legs on the losing ticket, six had 20 to 35 percent cushion and one had 4
+percent; that one leg was a coin flip and accounts for most of the gap
+between the two tickets' prices. The optimiser now maximises the *minimum*
+cushion across a ticket subject to the payout band, which is the right
+objective when per-leg book prices are not visible.
+
+**One projection was materially wrong.** Solving for the Skattebo mean
+that reconciles both tickets to a common hold gives 86 rush-and-receiving
+yards against the model's 74, a 17 percent gap. The engine runs preseason
+projections and had not repriced the Giants for Nabers being questionable.
+In-week injury repricing is now a named limitation.
+
+## Deep links into a bet slip
+
+Researched 2026-09-13.
+
+| book | possible | mechanism |
+|---|---|---|
+| DraftKings | yes | `dksb://sb/addbet/{outcomeId}` custom scheme |
+| FanDuel | yes | `.../addToBetslip?marketId=..&selectionId=..` |
+| Fanatics | **no** | no scheme, no documented betslip link, none known |
+
+Neither working format is published by the book. Both need that book's
+internal market and selection ids, which come from a paid or free-tier odds
+feed rather than from the book itself. The Odds API returns them with
+`includeLinks=true` and `includeSids=true` on a free 500-credit tier, which
+is the cheapest route to tappable legs for DraftKings and FanDuel. Fanatics
+has no route at all.
