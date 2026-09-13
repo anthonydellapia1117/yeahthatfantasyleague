@@ -9,7 +9,7 @@ chosen=[]; used=set()
 for band,label,color in want:
     for mc,j1,a,idx in S[band]:
         legs=[lib[i] for i in idx]
-        keys={(l['player'],l['stat']) for l in legs}
+        keys={l['player'] for l in legs}
         if used and len(keys&used)/len(keys) > 0.40: continue
         # verify with the full copula
         jm=m.joint_probability([l['p'] for l in legs], B.matrix(legs), trials=250000)

@@ -22,8 +22,16 @@ simulation.
 import math
 from propmath import norm_cdf, norm_ppf
 
-# Signed factor loadings by leg kind. lam_i * lam_j reproduces the target
-# pairwise correlation inside a team block.
+# Signed factor loadings by leg kind. lam_i * lam_j approximates the pairwise
+# correlation inside a team block. A single factor cannot reproduce
+# build.CORR exactly (the quarterback-to-receiver couplings it is fit to
+# imply a receiver-receiver value above the matrix's 0.15), and opposing
+# teams in the same game are treated as independent here where build.py
+# gives them 0.12. The approximation was checked against the full copula on
+# one-leg-per-player tickets and agreed to about 4 percent, which is why the
+# search scripts use it only to rank and always verify finalists with
+# propmath.joint_probability. The FanDuel pipeline takes no correlation
+# credit at all.
 LOADING = {"QBpass": 0.72, "QBcomp": 0.74, "WRrec": 0.70,
            "TErec": 0.52, "RBrush": -0.28}
 

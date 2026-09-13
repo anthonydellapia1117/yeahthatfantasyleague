@@ -7,6 +7,7 @@ read window can load it), and subject.txt.
 """
 import json, os, datetime, zoneinfo
 import email_fd2 as E
+import propmath as m
 
 ET = zoneinfo.ZoneInfo("America/New_York")
 C = json.load(open("fdcard.json"))
@@ -67,25 +68,34 @@ for t in C:
                  "legs": lg, "why": why(t), "stake": stake, "ret": stake * t["decimal"]})
 missing = [b for b in ("HIGH", "MED", "LOW") if b not in S["bands_built"]]
 credits = META.get("credits_remaining")
+min_cush = min((t["mincush"] for t in tick), default=0) * 100
+positive = [t for t in tick if t["ev"] >= 1.0]
 rows = "".join(
     f'<tr><td>{t["name"]} expected value per $1</td><td align="right" style="color:#9a6d00;font-weight:bold;">{t["ev"]:.2f}</td></tr>'
+    f'<tr><td>{t["name"]} Kelly stake, fraction of bankroll</td><td align="right" style="font-weight:bold;">'
+    f'{max(0.0, m.kelly_fraction(t["joint"], t["ret"] / t["stake"])) * 100:.1f}%</td></tr>'
     for t in tick)
+ev_line = ("every ticket is negative expected value at posted prices, as every long parlay at a real book is"
+           if not positive else
+           f"{' and '.join(t['name'] for t in positive)} shows expected value at or above 1.0 at posted prices; "
+           "treat that as a pricing quirk on the book's ladder, not a model edge, and size it by the Kelly line above")
 notes = (
     E.note("How the links work",
            "Every leg has a blue <b>Add this leg</b> button and every ticket a green <b>Add all legs in one tap</b> button. "
-           "Both were tap-tested on 2026-09-13 and load the FanDuel slip. Prices on the slip are live and can differ from "
-           "this page; the slip total is the number to read before you place. If a one-tap link opens FanDuel with an "
-           "empty slip, use the per-leg buttons.")
+           "The link format was tap-tested on 2026-09-13 and loaded the FanDuel slip both ways. Today's links were pulled "
+           "fresh and are not individually tested. Prices on the slip are live and can differ from this page; the slip "
+           "total is the number to read before you place. If a one-tap link opens FanDuel with an empty slip, use the "
+           "per-leg buttons.")
     + E.note("Slip total vs page price",
              "The price on each ticket is the straight product of FanDuel's posted prices at build time. FanDuel groups "
              "legs from the same game into a same-game parlay and reprices them, so the slip total will usually be a "
              "little lower. Legs per game are capped to keep that repricing small.")
     + E.note("Card maths, honest version",
              '<table width="100%" cellpadding="0" cellspacing="0" border="0">' + rows +
-             '<tr><td>Kelly stake on any of them</td><td align="right" style="font-weight:bold;">zero</td></tr></table><br>'
+             '</table><br>'
              "Probabilities are FanDuel's own, read from their alternate ladders, with no credit taken for any model. "
-             "Every leg sits at least 25 percent below the book's projected mean, the three tickets share no players, "
-             "and every ticket is negative expected value at posted prices, as every long parlay at a real book is. "
+             f"Every leg sits at least {min_cush:.0f} percent below the book's projected mean, the tickets share no players, "
+             f"and {ev_line}. "
              "The structure is built for hit rate and independence, not edge. The $ figures assume a flat $25 per ticket.",
              "#9a6d00")
     + E.note("Build notes",

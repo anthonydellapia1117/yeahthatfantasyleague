@@ -84,7 +84,7 @@ a tool with a small read window), and `subject.txt`.
 
 One email, both recipients, HTML body plus the plain-text alternative:
 
-- to: anthonydellapia@gmail.com, alexaragozzino@yahoo.com
+- to: the two recipients named in the routine's prompt (addresses are never committed here)
 - subject: contents of `subject.txt`
 - htmlBody: `email_fd2.html` in full (read `part1.html` then `part2.html` and concatenate if the file cannot be read whole)
 - body: `email_fd2.txt`

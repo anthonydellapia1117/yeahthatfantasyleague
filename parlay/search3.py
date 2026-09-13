@@ -1,6 +1,6 @@
 import json, random, fastjoint as F, propmath as m, build as B
 lib=json.load(open('lib4.json'))
-HOLD=0.07   # measured against Anthony's real 9-leg Fanatics ticket
+HOLD=0.07   # measured against the owner's real 9-leg Fanatics ticket
 def price(legs):
     d=1.0
     for l in legs: d*=1.0/min(0.985,l['p']*(1+HOLD))

@@ -12,21 +12,28 @@ Per ticket there is also a single whole-parlay link in FanDuel's indexed
 share format (marketId[0]..[n], selectionId[0]..[n]).
 """
 from urllib.parse import quote
+from html import escape
 F="Helvetica,Arial,sans-serif"
+FD_PREFIX="https://sportsbook.fanduel.com/addToBetslip?"
+def safe_link(link):
+    """Only FanDuel's own bet-slip links are rendered; anything else becomes no link."""
+    return link if isinstance(link,str) and link.startswith(FD_PREFIX) and '"' not in link and "<" not in link else None
 LBL={"rec_yards":"Receiving Yards","pass_yards":"Passing Yards","receptions":"Receptions",
-     "rush_rec_yards":"Rush + Rec Yards"}
+     "rush_yards":"Rushing Yards","rush_rec_yards":"Rush + Rec Yards"}
 GAMEL={}   # filled per run by fdrender.py: "AWY@HOM" -> "AWY @ HOM 4:25"
 BLUE="#1493ff"; INK="#111318"; MUTE="#5a6070"; LINE="#dfe3ea"; GOLD="#9a6d00"
 def odds(a): return f"+{a}" if a>0 else str(a)
 def parse_ids(link):
     q=link.split("?",1)[1]; d=dict(p.split("=",1) for p in q.split("&"))
-    return d["marketId"], d["selectionId"]
+    return quote(d["marketId"],safe=""), quote(d["selectionId"],safe="")
 def bulk_link(legs):
     parts=[]
-    for i,l in enumerate(legs):
+    for l in legs:
+        if not safe_link(l.get("link")): continue
         mk,sel=parse_ids(l["link"])
+        i=len(parts)
         parts.append(f"marketId%5B{i}%5D={mk}&selectionId%5B{i}%5D={sel}")
-    return "https://sportsbook.fanduel.com/addToBetslip?"+"&".join(parts)
+    return FD_PREFIX+"&".join(parts) if parts else None
 def button(href,label,fill=BLUE,fg="#ffffff",wide=False):
     w=' width="100%"' if wide else ''
     return (f'<table cellpadding="0" cellspacing="0" border="0"{w} style="margin-top:8px;"><tr>'
@@ -36,19 +43,23 @@ def button(href,label,fill=BLUE,fg="#ffffff",wide=False):
       f'text-decoration:none;display:block;">{label}</a></td></tr></table>')
 def row(i,l,last):
     bd="" if last else f"border-bottom:1px solid {LINE};"
+    link=safe_link(l.get("link"))
+    tap=(button(link,"Add this leg to FanDuel slip &rsaquo;")
+         + f'<div style="font-family:{F};font-size:11px;color:{MUTE};margin-top:5px;word-break:break-all;">'
+           f'<a href="{link}" style="color:{BLUE};">{link}</a></div>') if link else \
+        f'<div style="font-family:{F};font-size:12px;color:{MUTE};margin-top:6px;">No bet-slip link came back for this leg; add it by hand.</div>'
     return (f'<tr><td style="padding:12px 0 12px;{bd}">'
-      f'<div style="font-family:{F};font-size:13px;color:{MUTE};">{i}. {l["player"]} &middot; {GAMEL.get(l["game"], l["game"])}</div>'
+      f'<div style="font-family:{F};font-size:13px;color:{MUTE};">{i}. {escape(str(l["player"]))} &middot; {escape(GAMEL.get(l["game"], l["game"]))}</div>'
       f'<div style="font-family:{F};font-size:19px;font-weight:bold;color:{INK};margin-top:2px;">'
-      f'Over {l["line"]} {LBL.get(l["stat"], l["stat"])} <span style="color:{MUTE};font-size:14px;font-weight:normal;">{odds(l["price"])}</span></div>'
+      f'Over {escape(str(l["line"]))} {escape(LBL.get(l["stat"], l["stat"]))} <span style="color:{MUTE};font-size:14px;font-weight:normal;">{odds(l["price"])}</span></div>'
       f'<div style="font-family:{F};font-size:12px;color:{MUTE};margin-top:3px;">FanDuel mean {l["fd_mean"]:.0f}'
       f' &middot; cushion {l["cushion"]*100:.0f}% &middot; win {l["p"]*100:.0f}% &middot; leg EV {l["ev1"]:.2f}</div>'
-      + button(l["link"],"Add this leg to FanDuel slip &rsaquo;") +
-      f'<div style="font-family:{F};font-size:11px;color:{MUTE};margin-top:5px;word-break:break-all;">'
-      f'<a href="{l["link"]}" style="color:{BLUE};">{l["link"]}</a></div>'
-      f'</td></tr>')
+      + tap + f'</td></tr>')
 def card(t):
     rows="".join(row(i+1,l,i==len(t["legs"])-1) for i,l in enumerate(t["legs"]))
     bl=bulk_link(t["legs"])
+    onetap=(button(bl,f"Add all {t['n']} legs to FanDuel slip in one tap &rsaquo;",fill="#0b8f3a",wide=True)
+            + f'<div style="font-family:{F};font-size:11px;color:{MUTE};margin-top:5px;">One-tap link uses FanDuel\'s own share-slip format. If it opens FanDuel with an empty slip, use the per-leg buttons below.</div>') if bl else ""
     return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid {LINE};border-radius:10px;margin:0 0 18px;">'
       f'<tr><td style="padding:16px 16px 6px;">'
       f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
@@ -56,8 +67,7 @@ def card(t):
       f'<div style="font-family:{F};font-size:18px;font-weight:bold;color:{INK};margin-top:4px;">{t["name"]} &middot; {t["n"]} legs</div></td>'
       f'<td valign="top" align="right" style="white-space:nowrap;"><div style="font-family:{F};font-size:28px;font-weight:bold;color:#0b8f3a;">{odds(t["american"])}</div>'
       f'<div style="font-family:{F};font-size:11px;color:{MUTE};">${t["stake"]:.0f} returns ${t["ret"]:.0f}</div></td></tr></table>'
-      + button(bl,f"Add all {t['n']} legs to FanDuel slip in one tap &rsaquo;",fill="#0b8f3a",wide=True) +
-      f'<div style="font-family:{F};font-size:11px;color:{MUTE};margin-top:5px;">One-tap link uses FanDuel\'s own share-slip format. If it opens FanDuel with an empty slip, use the per-leg buttons below.</div>'
+      + onetap +
       f'</td></tr><tr><td style="padding:4px 16px 12px;"><table width="100%" cellpadding="0" cellspacing="0" border="0">{rows}</table></td></tr>'
       f'<tr><td style="padding:0 16px 16px;"><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f3f5f8" style="background-color:#f3f5f8;border-radius:8px;"><tr>'
       f'<td style="padding:10px 12px;font-family:{F};font-size:11px;color:{MUTE};">hits<br><b style="font-size:15px;color:{INK};">{t["joint"]*100:.1f}%</b></td>'
