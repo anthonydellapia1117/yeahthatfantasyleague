@@ -12,6 +12,7 @@ import propmath as m, build as B
 STAT = {"player_receptions": "receptions", "player_receptions_alternate": "receptions",
         "player_reception_yds": "rec_yards", "player_reception_yds_alternate": "rec_yards",
         "player_pass_yds": "pass_yards", "player_pass_yds_alternate": "pass_yards",
+        "player_rush_yds": "rush_yards", "player_rush_yds_alternate": "rush_yards",
         "player_rush_reception_yds": "rush_rec_yards"}
 TEAMS = {"Arizona Cardinals": "ARI", "Atlanta Falcons": "ATL", "Baltimore Ravens": "BAL",
          "Buffalo Bills": "BUF", "Carolina Panthers": "CAR", "Chicago Bears": "CHI",
