@@ -25,3 +25,16 @@ pools2.json
 card3.json
 email3.html
 email3.txt
+# odds feed pulls and per-run outputs
+events.json
+probe.json
+ev_*.json
+hdr*.txt
+fdlegs*.json
+fdfit.json
+fdcal.json
+fdcard.json
+market_means.json
+email_fd.html
+email_fd.txt
+f.tmp

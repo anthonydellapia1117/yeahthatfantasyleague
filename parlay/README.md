@@ -212,3 +212,44 @@ feed rather than from the book itself. The Odds API returns them with
 `includeLinks=true` and `includeSids=true` on a free 500-credit tier, which
 is the cheapest route to tappable legs for DraftKings and FanDuel. Fanatics
 has no route at all.
+
+---
+
+## Real per-leg prices and bet-slip links (2026-09-13, afternoon)
+
+The Odds API (an existing key in the owner's inbox from April) returns
+FanDuel player props with `includeLinks=true` and `includeSids=true`. Every
+outcome, including every alternate rung, carries a FanDuel
+`addToBetslip?marketId=..&selectionId=..` link. Five late games returned
+1,234 priced outcomes. `fdlines.py` flattens them, `fdcal.py` measures the
+book's margins, `fdfinal.py` prices and builds, `email_fd.py` renders with
+a tappable button per leg.
+
+Three findings, in order of how much they change the picture.
+
+**FanDuel's implied outcome spreads are wider than the model's.** Fitting a
+two-parameter distribution to each alternate ladder recovers the book's own
+view: receiving-yard coefficient of variation median 0.70 against the
+model's 0.55; passing 0.35 against 0.28; receptions dispersion 1.25 against
+1.45. On yards the model was too tight, so it overstated the chance of
+clearing any deep alternate line. Every apparent per-leg edge in the first
+FanDuel build came from that error, and the optimiser found it because
+that is what optimisers do. Probabilities are now read from the book's own
+fitted curve, with no credit taken for the model.
+
+**The alternate-ladder margin is 7.1 percent, measured, not assumed.** Where
+an alternate rung sits on the same line as the two-way main line, the
+alternate's implied probability exceeds the de-vigged main by a median 3.7
+points. Two-way main-line hold is 6.1 percent.
+
+**The morning's "8 percent hold" on the owner's 9-leg Fanatics slip was
+wrong.** Re-priced with FanDuel's fitted spreads, that slip has a 4.4
+percent correlated hit rate and a fair price near +2200 against +1237 paid.
+Long alternate-line parlays are steeply negative on both books. The
+defensible play is fewer legs, wider cushion, smaller stakes, and the
+platform question is settled by building identical legs in both apps and
+comparing slip totals, not by anything on this page.
+
+`fdfinal.py` builds tickets with no correlation credit, because FanDuel
+groups same-game legs into an SGP and reprices them; the emailed price is
+the straight product of posted prices and the slip total is the real one.
