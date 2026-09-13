@@ -1,0 +1,18 @@
+# per-run artifacts, not source
+means.json
+implied.json
+legs.json
+library.json
+library_practical.json
+search.json
+pools.json
+pools2.json
+tickets.json
+optimized.json
+final.json
+card.json
+cardstats.json
+payload.json
+email.html
+email.txt
+__pycache__/
