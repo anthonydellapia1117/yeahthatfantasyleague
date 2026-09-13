@@ -20,9 +20,13 @@ probability on the card is read from FanDuel's own alternate ladders.
     ODDS_API_KEY=<key> python3 fdpull.py
 
 Lists NFL events, keeps games kicking off today (Eastern) at least 20 minutes
-out, pulls six FanDuel markets per game (receptions, receiving yards, passing
-yards, main and alternate) with bet-slip links. Writes `events.json`,
-`ev_<id>.json`, `pull_meta.json`. Six credits per game.
+out, pulls eight FanDuel markets per game (receptions, receiving yards,
+passing yards, rushing yards, main and alternate) with bet-slip links. Eight
+credits per game. If the month's remaining credits would not cover the slate
+plus a 20-credit reserve it drops the two rushing markets on its own and says
+so; `--lite` forces that. It also wipes every per-run file from the previous
+build, `exclude.txt` included, so nothing stale survives. Writes
+`events.json`, `ev_<id>.json`, `pull_meta.json`.
 
 If it prints `NO GAMES TODAY`, stop. Send nothing. Report one line.
 
@@ -61,9 +65,11 @@ between 62 and 95 percent; posted price no worse than -700 (-800 for A); line
 floors of 9.5 receiving yards, 2.5 receptions, 149.5 passing yards; ladders
 with fewer than five rungs (four for receptions) are not trusted; a rung is
 credited at most two points above its own de-vigged price so a poor fit can
-never be harvested as edge; running backs only on rush-plus-receiving yards;
-receivers must exist in the season engine. Tickets share no players. On a
-small slate the per-game cap relaxes one step at a time and the card says so.
+never be harvested as edge; running backs only on rushing-yard ladders, no
+quarterback rushing, no running-back receiving; receivers must exist in the
+season engine. Tickets share no players. On a small slate only the per-game
+cap relaxes, one step at a time, the probability and cushion gates never do,
+and the card says so.
 Writes `fdcard.json`, `fdsummary.json`.
 
 ## 5. Render
@@ -92,4 +98,4 @@ mail for today's subject prefix; if a card already went out today, stop.
 - Report expected value honestly. Every long parlay at a real book is negative; the card says so.
 - The card is model output, not advice, and the email says so.
 - Run outputs (`ev_*.json`, `fdcard.json`, `email_fd2.*`, and the rest) are gitignored. Commit nothing from a routine run unless a script needed a fix; then commit only the fix, on the working branch, with `[skip ci]` in the title.
-- Credits: 500 per month on the free plan. A full Sunday costs about 84. `pull_meta.json` carries the remaining count and the email prints it; under 120, upgrade the plan before the next Sunday.
+- Credits: 500 per month on the free plan. A full Sunday costs about 104 with rushing markets, 78 without. `pull_meta.json` carries the remaining count and the email prints it; under 120, upgrade the plan before the next Sunday.

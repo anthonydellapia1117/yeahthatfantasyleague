@@ -33,6 +33,8 @@ for name,lo,hi,ns,iters in BANDS:
         j=F.joint_one_factor(legs)
         pool.append((j*d,j,am,idx))
     pool.sort(key=lambda x:-x[0]); best[name]=pool[:25]
+    if not pool:
+        print(f"{name}: no ticket lands in the band", flush=True); continue
     print(f"{name}: {len(pool)} tickets in band | best EV {pool[0][0]:.3f} at {pool[0][2]:+d} | hit {pool[0][1]*100:.2f}%", flush=True)
 json.dump({k:[(e,j,a,list(i)) for e,j,a,i in v] for k,v in best.items()}, open('search.json','w'))
 print("DONE")

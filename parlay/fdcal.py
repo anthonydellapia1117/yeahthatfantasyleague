@@ -6,7 +6,7 @@ the alternate's implied probability minus the main line's de-vigged
 probability is the alternate margin. That measured margin replaces the 5
 percent guess and is the number that decides whether per-leg edge is real.
 """
-import json, re, glob, statistics
+import json, re, glob, statistics, sys
 import propmath as m
 STAT={"player_receptions":"receptions","player_receptions_alternate":"receptions",
       "player_reception_yds":"rec_yards","player_reception_yds_alternate":"rec_yards",
@@ -30,6 +30,8 @@ for f in glob.glob('ev_*.json'):
                     p,h=m.devig_two_way(sides['Over'],sides['Under'])
                     mains[(pl,st,pt)]=(p,h,m.american_to_implied(sides['Over']))
 holds=[h for (_,h,_) in mains.values()]
+if not holds:
+    sys.exit("cannot calibrate: the feed carried no two-way main lines (empty or partial odds response)")
 print(f"main lines: {len(mains)} two-way | median two-way hold {statistics.median(holds)*100:.2f}%  (per side ~{statistics.median(holds)*50:.2f}%)")
 diffs=[]
 for k,(p_novig,h,imp_main) in mains.items():
@@ -42,5 +44,7 @@ if diffs:
     print(f"as a multiplicative margin on p: median {statistics.median([a/p-1 for _,_,a,p,_ in diffs])*100:+.2f}%")
     for d_,k,a,p,im in sorted(diffs,key=lambda x:-abs(x[0]))[:6]:
         print(f"   {k[0]:<20}{k[1]:<12}{k[2]:>6}  alt {a:.3f}  main-novig {p:.3f}  main-implied {im:.3f}  diff {d_*100:+.1f}pts")
-json.dump({"alt_margin_mult": statistics.median([a/p-1 for _,_,a,p,_ in diffs]) if diffs else 0.05,
+if not diffs:
+    print("WARNING: no alternate rung sits on a main line today; using the 2026-09-13 measured alt margin of 7.1%")
+json.dump({"alt_margin_mult": statistics.median([a/p-1 for _,_,a,p,_ in diffs]) if diffs else 0.071,
            "main_hold_two_way": statistics.median(holds)}, open('fdcal.json','w'))

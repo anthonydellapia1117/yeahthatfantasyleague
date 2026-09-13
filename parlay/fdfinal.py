@@ -1,5 +1,9 @@
 """fdfinal.py - price legs from FanDuel's own ladder, then build the three tickets.
 
+Markets used: receptions, receiving yards and passing yards for receivers,
+tight ends and quarterbacks; rushing yards for running backs. Quarterback
+rushing and running-back receiving ladders are excluded as too thin.
+
 For each player and stat, the alternate ladder is a set of (line, implied)
 points. Fitting a two-parameter distribution to it recovers the book's own
 view of mean and spread. Each rung's hit probability is then read from that
@@ -16,7 +20,7 @@ Inputs:  ev_*.json (fdpull.py), fdcal.json (fdcal.py), optional exclude.txt
          ../out/engine_2026.json for positions and teams.
 Outputs: fdfit.json, fdlegs4.json, fdcard.json, fdsummary.json
 """
-import json, os, random, re, statistics
+import json, os, random, re, statistics, sys
 from collections import defaultdict
 import propmath as m, build as B, fdlines
 from fdlines import norm
@@ -24,7 +28,7 @@ from fdlines import norm
 ENGINE = "../out/engine_2026.json"
 STAKE = 25
 # A rung below these lines is a one-catch prop whose price is mostly margin.
-LINE_FLOOR = {"rec_yards": 9.5, "receptions": 2.5, "pass_yards": 149.5, "rush_rec_yards": 19.5}
+LINE_FLOOR = {"rec_yards": 9.5, "receptions": 2.5, "pass_yards": 149.5, "rush_yards": 19.5, "rush_rec_yards": 19.5}
 # Rungs needed before a fitted ladder is trusted.
 MIN_RUNGS = {"receptions": 4}
 DEFAULT_MIN_RUNGS = 5
@@ -36,11 +40,12 @@ P_CAP = 0.02
 CAL = json.load(open("fdcal.json"))
 ALT = CAL["alt_margin_mult"]
 legs, mains, games = fdlines.load()
+if not os.path.exists(ENGINE):
+    sys.exit(f"cannot build: {ENGINE} is missing; positions and teams come from it")
 POS, TEAM = {}, {}
-if os.path.exists(ENGINE):
-    for p in json.load(open(ENGINE))["players"]:
-        POS[norm(p["name"])] = p["pos"]
-        TEAM[norm(p["name"])] = p["team"]
+for p in json.load(open(ENGINE))["players"]:
+    POS[norm(p["name"])] = p["pos"]
+    TEAM[norm(p["name"])] = p["team"]
 EXCL = set()
 if os.path.exists("exclude.txt"):
     EXCL = {norm(x) for x in open("exclude.txt").read().splitlines()
@@ -59,11 +64,14 @@ for l in legs:
     if pos is None:
         unknown_pos.add(l["player"])
         pos = "QB" if l["stat"] == "pass_yards" else "WR"
-    if pos == "RB" and l["stat"] != "rush_rec_yards":
-        continue                                   # RB rush/receive split is not priced well enough
     if pos in ("K", "DEF"):
         continue
-    if k not in POS and l["stat"] != "pass_yards":
+    if l["stat"] in ("rush_yards", "rush_rec_yards"):
+        if pos != "RB":
+            continue                               # rushing ladders only for backs; quarterback rushing stays excluded
+    elif pos == "RB":
+        continue                                   # backs only on rushing ladders; their receiving ladders are thin
+    elif k not in POS and l["stat"] != "pass_yards":
         continue                                   # receivers outside the season engine: usage too thin to trust
     l["pos"] = pos
     g = games[l["game"]]
@@ -73,7 +81,14 @@ for l in legs:
 
 
 def fit(ls, stat):
-    pts = [(l["line"], l["q"]) for l in ls if 0.04 < l["q"] < 0.97]
+    # One observation per line. Where the main line and an alternate rung sit
+    # on the same number, keep the main line: its two-way de-vig is the better
+    # read of the book's curve. Depth is counted on distinct lines.
+    by_line = {}
+    for l in sorted(ls, key=lambda x: x["alt"]):
+        if 0.04 < l["q"] < 0.97 and l["line"] not in by_line:
+            by_line[l["line"]] = l["q"]
+    pts = sorted(by_line.items())
     if len(pts) < 3:
         return None
     top = max(x for x, _ in pts) * 2.5 + 5
@@ -122,7 +137,7 @@ for (pl, st), ls in grp.items():
         d["resid"] = l["q"] - p_fit                 # negative = rung cheap vs its own ladder
         d["ev1"] = p * l["decimal"]
         d["cushion"] = (mu - l["line"]) / mu
-        d["kind"] = {"pass_yards": "QBpass", "rush_rec_yards": "RBrush"}.get(
+        d["kind"] = {"pass_yards": "QBpass", "rush_yards": "RBrush", "rush_rec_yards": "RBrush"}.get(
             st, "TErec" if l["pos"] == "TE" else "WRrec")
         out.append(d)
 json.dump(FIT, open("fdfit.json", "w"), indent=1)
@@ -157,22 +172,20 @@ def price(ls):
     return d
 
 
-# band, min odds, max odds, leg counts to try, iterations, relaxation ladder of
-# (legs per game, min p, min cushion, price floor). The first rung is the
-# standard build; later rungs only apply when a slate is too small to fill it.
-BANDS = [("LOW", 250, 499, (3, 4, 5, 6), 160000,
-          [(2, 0.62, 0.25, -700), (3, 0.62, 0.25, -700), (4, 0.55, 0.20, -700)]),
-         ("MED", 500, 999, (5, 6, 7, 8), 220000,
-          [(2, 0.62, 0.25, -700), (3, 0.62, 0.25, -700), (4, 0.55, 0.20, -700)]),
-         ("HIGH", 1000, 2600, (8, 9, 10, 11), 320000,
-          [(3, 0.62, 0.25, -800), (4, 0.62, 0.25, -800), (5, 0.55, 0.20, -800), (6, 0.50, 0.15, -800)])]
+# Standing gates. They never relax: a small slate relaxes only the legs-per-game
+# cap, one step at a time, and a band that still cannot fill stays empty.
+P_MIN, P_MAX, CUSHION_MIN = 0.62, 0.95, 0.25
+# band, min odds, max odds, leg counts to try, iterations, price floor, legs-per-game ladder
+BANDS = [("LOW", 250, 499, (3, 4, 5, 6), 160000, -700, (2, 3, 4)),
+         ("MED", 500, 999, (5, 6, 7, 8), 220000, -700, (2, 3, 4)),
+         ("HIGH", 1000, 2600, (8, 9, 10, 11), 320000, -800, (3, 4, 5, 6))]
 rng = random.Random(2113)
 chosen, used = [], set()
-for band, lo, hi, ns, iters, ladder in BANDS:
+for band, lo, hi, ns, iters, floor, caps in BANDS:
     best, relax = None, 0
-    for cap, pmin, cmin, floor in ladder:
-        avail = [l for l in out if l["cushion"] >= cmin and pmin <= l["p"] <= 0.95 and l["link"]
-                 and l["price"] >= floor and l["player"] not in used]
+    avail = [l for l in out if l["cushion"] >= CUSHION_MIN and P_MIN <= l["p"] <= P_MAX and l["link"]
+             and l["price"] >= floor and l["player"] not in used]
+    for cap in caps:
         seen = set()
         for _ in range(iters):
             k = rng.choice(ns)

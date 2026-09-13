@@ -84,7 +84,7 @@ notes = (
              '<table width="100%" cellpadding="0" cellspacing="0" border="0">' + rows +
              '<tr><td>Kelly stake on any of them</td><td align="right" style="font-weight:bold;">zero</td></tr></table><br>'
              "Probabilities are FanDuel's own, read from their alternate ladders, with no credit taken for any model. "
-             "Every leg sits at least 20 percent below the book's projected mean, the three tickets share no players, "
+             "Every leg sits at least 25 percent below the book's projected mean, the three tickets share no players, "
              "and every ticket is negative expected value at posted prices, as every long parlay at a real book is. "
              "The structure is built for hit rate and independence, not edge. The $ figures assume a flat $25 per ticket.",
              "#9a6d00")

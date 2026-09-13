@@ -139,7 +139,7 @@ total rather than independently estimated.
 | `project.py` | season fantasy points to per-game prop means |
 | `build.py` | correlation matrix and ticket scoring |
 | `optimize.py` | searches leg combinations for best EV inside a payout band |
-| `run_sunday.py` | orchestrator: slate in, five tickets out, email sent |
+| `fdpull.py`, `fdcal.py`, `fdfinal.py`, `fdrender.py` | the weekly FanDuel pipeline, run in that order; see RUNBOOK.md |
 
 ## Honest limits
 
@@ -222,7 +222,7 @@ FanDuel player props with `includeLinks=true` and `includeSids=true`. Every
 outcome, including every alternate rung, carries a FanDuel
 `addToBetslip?marketId=..&selectionId=..` link. Five late games returned
 1,234 priced outcomes. `fdlines.py` flattens them, `fdcal.py` measures the
-book's margins, `fdfinal.py` prices and builds, `email_fd.py` renders with
+book's margins, `fdfinal.py` prices and builds, `fdrender.py` with `email_fd2.py` renders with
 a tappable button per leg.
 
 Three findings, in order of how much they change the picture.
