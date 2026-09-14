@@ -132,7 +132,7 @@ notes = (
              f"Slate: {len(S['games'])} game{'s' if len(S['games']) != 1 else ''} still ahead at build "
              f"({', '.join(windows)} ET). {S['ladders']} player ladders fitted from {S['rungs']} priced rungs. "
              + (f"Excluded on the injury report: {', '.join(S['excluded'])}. " if S["excluded"] else "No injury exclusions were supplied for this build. ")
-             + (f"Usage check on {S.get('usage_rows', 0):,} player-game rows dropped {len(S.get('fragile_dropped', []))} fragile legs"
+             + (f"Usage check on {S.get('usage_rows', 0):,} player-game rows dropped fragile lines for {len(S.get('fragile_dropped', []))} players"
                 + (f" ({', '.join(S['fragile_dropped'][:8])}{'...' if len(S['fragile_dropped']) > 8 else ''})" if S.get('fragile_dropped') else "")
                 + (f"; no usage history for {', '.join(S['no_usage_history'][:6])}{'...' if len(S['no_usage_history']) > 6 else ''}" if S.get('no_usage_history') else "")
                 + ". " if S.get("usage_rows") else "No usage logs were available for this build. ")
