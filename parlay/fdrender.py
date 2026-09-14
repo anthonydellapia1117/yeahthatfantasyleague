@@ -81,14 +81,16 @@ if prior:
     for t in lw["tickets"]:
         miss = [f"{x['player']} {x['actual']} ({x['note']})" for x in t["legs"] if x["hit"] is False]
         void = [x["player"] for x in t["legs"] if x.get("void")]
-        lines_.append(f"<b>Ticket {t['name']}</b> {'won' if t['won'] else 'lost'}, {t['legs_hit']} of {len(t['legs']) - len(void)} legs"
+        lines_.append(f"<b>Ticket {t['name']}</b> {'pushed' if t['won'] is None else ('won' if t['won'] else 'lost')}, {t['legs_hit']} of {len(t['legs']) - len(void)} legs"
                       + (f". Missed: {'; '.join(miss)}." if miss else ".")
                       + (f" Void (no stat line, verify inactives): {', '.join(void)}." if void else ""))
-    played = sum(len(r["tickets"]) for r in prior)
-    won = sum(t["won"] for r in prior for t in r["tickets"])
+    played = sum(1 for r in prior for t in r["tickets"] if t["won"] is not None)
+    won = sum(1 for r in prior for t in r["tickets"] if t["won"])
     net = 0.0
     for r_ in prior:
         for t in r_["tickets"]:
+            if t["won"] is None:
+                continue                                   # pushed: stake returned
             stake = t.get("stake", 25)
             price = t.get("settled_price") or t.get("slip_price") or t.get("page_price") or 0
             dec = 1 + price / 100 if price > 0 else (1 + 100 / -price if price else 1)

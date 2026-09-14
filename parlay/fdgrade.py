@@ -31,7 +31,8 @@ tot = hit = 0
 for t in card["tickets"]:
     legs = []
     for l in t["legs"]:
-        r = lines.get(espn.norm(l["player"]))
+        key = espn.norm(l["player"])
+        r = lines.get((l.get("team"), key)) or lines.get(key)      # team-qualified first, then name only
         if r is None:
             # ESPN box scores list only players who recorded a stat, so this is either an
             # inactive (FanDuel voids the leg and reprices the ticket) or an active player
@@ -50,7 +51,8 @@ for t in card["tickets"]:
     n_hit = sum(1 for x in legs if x["hit"])
     graded = [x for x in legs if x["hit"] is not None]
     voided = [x for x in legs if x.get("void")]
-    won = bool(graded) and all(x["hit"] for x in graded)
+    # no graded legs at all (every player void) is a push: the stake comes back
+    won = None if not graded else all(x["hit"] for x in graded)
     price = t.get("slip_price") or t.get("page_price")
     if voided and price:
         # a void leg drops out and the ticket reprices to the product of the remaining legs
@@ -64,7 +66,7 @@ for t in card["tickets"]:
                            "legs": legs, "legs_hit": n_hit, "won": won,
                            "stake": card.get("stake_per_ticket", 25)})
     tag = f" ({len(voided)} void leg{'s' if len(voided) > 1 else ''}, verify inactives; settles at {price:+d})" if voided else ""
-    print(f"Ticket {t['name']} ({t['band']}) {'WON' if won else 'lost'}: {n_hit}/{len(graded)} graded legs{tag}")
+    print(f"Ticket {t['name']} ({t['band']}) {'PUSH' if won is None else ('WON' if won else 'lost')}: {n_hit}/{len(graded)} graded legs{tag}")
     for x in legs:
         flag = "HIT " if x["hit"] else ("miss" if x["hit"] is False else "n/a ")
         print(f"   {flag} {x['player']:<20}{x['stat']:<11}over {x['line']:<6} actual {str(x['actual']):>4}   {x['note']}")
@@ -81,7 +83,8 @@ if legs:
         by.setdefault(l["stat"], []).append(l["hit"])
     print(f"\nrunning record over {len(allr)} week(s): {sum(l['hit'] for l in legs)}/{len(legs)} legs "
           f"({100*sum(l['hit'] for l in legs)/len(legs):.0f}%), tickets won "
-          f"{sum(t['won'] for r in allr for t in r['tickets'])}/{sum(len(r['tickets']) for r in allr)}")
+          f"{sum(1 for r in allr for t in r['tickets'] if t['won'])}/{sum(1 for r in allr for t in r['tickets'] if t['won'] is not None)}"
+          f" ({sum(1 for r in allr for t in r['tickets'] if t['won'] is None)} pushed)")
     for st, hs in sorted(by.items()):
         print(f"   {st:<12} {sum(hs)}/{len(hs)}")
     withp = [l for l in legs if "p" in l]
