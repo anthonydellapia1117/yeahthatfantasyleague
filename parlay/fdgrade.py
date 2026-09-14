@@ -67,7 +67,12 @@ for t in card["tickets"]:
                            "settled_price": price, "void_legs": len(voided),
                            "legs": legs, "legs_hit": n_hit, "won": won,
                            "stake": card.get("stake_per_ticket", 25)})
-    tag = f" ({len(voided)} void leg{'s' if len(voided) > 1 else ''}, verify inactives; settles at {price:+d})" if voided else ""
+    if won is None:
+        tag = " (every leg void, stake returns; verify inactives)"
+    elif voided:
+        tag = f" ({len(voided)} void leg{'s' if len(voided) > 1 else ''}, verify inactives; settles at {price:+d})"
+    else:
+        tag = ""
     print(f"Ticket {t['name']} ({t['band']}) {'PUSH' if won is None else ('WON' if won else 'lost')}: {n_hit}/{len(graded)} graded legs{tag}")
     for x in legs:
         flag = "HIT " if x["hit"] else ("miss" if x["hit"] is False else "n/a ")
