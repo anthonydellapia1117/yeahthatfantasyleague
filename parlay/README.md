@@ -253,3 +253,48 @@ comparing slip totals, not by anything on this page.
 `fdfinal.py` builds tickets with no correlation credit, because FanDuel
 groups same-game legs into an SGP and reprices them; the emailed price is
 the straight product of posted prices and the slip total is the real one.
+
+---
+
+## Week 1 post-mortem (2026-09-13) and the structural change
+
+The three tickets lost. Graded against ESPN box scores: 11 of 18 legs hit
+(61 percent against a design average near 72). Ticket A went 6 of 8, B 2
+of 6, C 3 of 4.
+
+| miss | line | actual | cause |
+|---|---|---|---|
+| Kyler Murray pass yds | 174.5 | 18 | concussion, left in the first quarter |
+| CeeDee Lamb rec yds | 59.5 | 44 on 8 targets | ordinary variance, lowest cushion on A |
+| Quentin Johnston rec | 2.5 | 2 on 6 targets | catch-rate variance on thin volume |
+| George Pickens rec | 3.5 | 3 on 6 targets | catch-rate variance on thin volume |
+| Jayden Reed rec yds | 24.5 | 20 on 7 targets | yards-per-catch variance |
+| Terry McLaurin rec yds | 39.5 | 14 on 4 targets | usage collapse |
+| Jake Ferguson rec yds | 19.5 | 6 on 2 targets | usage collapse |
+
+Two lessons, one about structure and one about selection.
+
+**Structure: fewer legs.** FanDuel's alternate-rung margin measured 7 to 8
+percent in every price band from -250 to +120, flat across the ladder. So
+joint probability times payout equals (1/1.071)^n whatever the legs are:
+each added leg costs the ticket 7 percent of its true hit rate at the same
+payout. At +1000, four legs keep 76 cents of true value per dollar and hit
+about 6.9 percent of the time; eight legs keep 58 cents and hit 5.3. The
+"many likely legs" premise was backwards: safer-looking legs do not make
+the ticket safer, they make the book's cut compound more times. The
+optimizer now maximizes joint probability inside each band, which lands on
+the fewest legs that reach it (4 to 6 for A, 3 to 5 for B, 2 to 4 for C).
+
+**Selection: usage, not cushion.** Every ticket-killing miss outside the
+injury was a usage failure, and cushion against the market's mean said
+nothing about it. `usage.py` builds expected targets and carries from
+recent game logs (`gamelogs.py`, ESPN box scores), prices each leg a second
+time from that role, takes the lower of the two probabilities, and drops
+legs whose expected targets cannot cover the line. Week two onward has
+current-season logs; last season counts only for players still on the
+same team.
+
+**Record.** Every card is saved to `cards/<date>.json` and graded the
+following week into `results/<date>.json` by `fdgrade.py`, which also
+prints running calibration by stat type. That record, not any single
+week, is what decides whether the fitted probabilities are honest.

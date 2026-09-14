@@ -44,15 +44,19 @@ NAMES = {"HIGH": ("Ticket A", "HIGH RISK / HIGH REWARD", "#e05c5c"),
 
 
 def why(t):
-    n, g, cush = len(t["legs"]), t["games"], t["mincush"] * 100
-    base = f"{n} legs across {g} game{'s' if g != 1 else ''}, every line at least {cush:.0f} percent under FanDuel's own projected mean for that player. "
+    n, g = len(t["legs"]), t["games"]
+    lo = min(l["p"] for l in t["legs"]) * 100
+    checked = sum(1 for l in t["legs"] if l.get("p_usage") is not None)
+    base = (f"{n} legs across {g} game{'s' if g != 1 else ''}, the fewest that reach this payout. Every leg is at least "
+            f"{lo:.0f} percent to hit on the lower of FanDuel's number and the player's recent usage"
+            f"{' (' + str(checked) + ' of ' + str(n) + ' usage-checked)' if checked else ''}. ")
     if t["band"] == "HIGH":
-        s = base + (f"Longest ticket on the page and the worst value: the per-leg margin compounds {n} times. "
-                    f"A round robin (5s or 6s) turns it into partial coverage if one leg misses.")
+        s = base + ("Fewer legs is the whole edge here: FanDuel takes about 7 percent on every leg, so a 4-leg +1000 "
+                    "hits about a quarter more often than an 8-leg +1000 built from safer-looking legs.")
     elif t["band"] == "MED":
-        s = base + "The middle of the card: fewer legs than A, so the margin compounds fewer times, at a price that still pays a real multiple."
+        s = base + "Middle of the card. Three or four legs at a real multiple, with the least margin compounding the band allows."
     else:
-        s = base + "The widest cushions on the card and the fewest legs. If you only place one, this is it."
+        s = base + "The shortest ticket on the page and the one most likely to cash. If you only place one, this is it."
     if t.get("relaxed"):
         s += f" Small slate: legs per game were relaxed {t['relaxed']} step{'s' if t['relaxed'] > 1 else ''} to fill the band."
     return s
@@ -67,6 +71,31 @@ for t in C:
                  "joint": t["p_ind"], "fair": t["fair"], "ev": t["ev"], "mincush": t["mincush"],
                  "legs": lg, "why": why(t), "stake": stake, "ret": stake * t["decimal"]})
 missing = [b for b in ("HIGH", "MED", "LOW") if b not in S["bands_built"]]
+# last week's scorecard and the running ledger
+import glob
+prior = [json.load(open(f)) for f in sorted(glob.glob("results/*.json")) if os.path.basename(f)[:10] < today.isoformat()]
+last_week = ""
+if prior:
+    lw = prior[-1]
+    lines_ = []
+    for t in lw["tickets"]:
+        miss = [f"{x['player']} {x['actual']} ({x['note']})" for x in t["legs"] if x["hit"] is False]
+        lines_.append(f"<b>Ticket {t['name']}</b> {'won' if t['won'] else 'lost'}, {t['legs_hit']} of {len(t['legs'])} legs"
+                      + (f". Missed: {'; '.join(miss)}." if miss else "."))
+    played = sum(len(r["tickets"]) for r in prior)
+    won = sum(t["won"] for r in prior for t in r["tickets"])
+    net = 0.0
+    for r_ in prior:
+        for t in r_["tickets"]:
+            stake = t.get("stake", 25)
+            price = t.get("slip_price") or t.get("page_price") or 0
+            dec = 1 + price / 100 if price > 0 else (1 + 100 / -price if price else 1)
+            net += stake * (dec - 1) if t["won"] else -stake
+    legs_all = [l for r_ in prior for t in r_["tickets"] for l in t["legs"] if l["hit"] is not None]
+    last_week = E.note(f"Last card, {datetime.date.fromisoformat(lw['date']).strftime('%b %-d')}",
+                       "<br>".join(lines_) + f"<br><br>Running record: {won} of {played} tickets, "
+                       f"{sum(l['hit'] for l in legs_all)} of {len(legs_all)} legs, net {'+' if net >= 0 else '-'}${abs(net):,.0f} at $25 a ticket.",
+                       "#5a6070")
 credits = META.get("credits_remaining")
 min_cush = min((t["mincush"] for t in tick), default=0) * 100
 positive = [t for t in tick if t["ev"] >= 1.0]
@@ -80,7 +109,8 @@ ev_line = ("every ticket is negative expected value at posted prices, as every l
            f"{' and '.join(t['name'] for t in positive)} shows expected value at or above 1.0 at posted prices; "
            "treat that as a pricing quirk on the book's ladder, not a model edge, and size it by the Kelly line above")
 notes = (
-    E.note("How the links work",
+    last_week
+    + E.note("How the links work",
            "Every leg has a blue <b>Add this leg</b> button and every ticket a green <b>Add all legs in one tap</b> button. "
            "The link format was tap-tested on 2026-09-13 and loaded the FanDuel slip both ways. Today's links were pulled "
            "fresh and are not individually tested. Prices on the slip are live and can differ from this page; the slip "
@@ -102,6 +132,10 @@ notes = (
              f"Slate: {len(S['games'])} game{'s' if len(S['games']) != 1 else ''} still ahead at build "
              f"({', '.join(windows)} ET). {S['ladders']} player ladders fitted from {S['rungs']} priced rungs. "
              + (f"Excluded on the injury report: {', '.join(S['excluded'])}. " if S["excluded"] else "No injury exclusions were supplied for this build. ")
+             + (f"Usage check on {S.get('usage_rows', 0):,} player-game rows dropped {len(S.get('fragile_dropped', []))} fragile legs"
+                + (f" ({', '.join(S['fragile_dropped'][:8])}{'...' if len(S['fragile_dropped']) > 8 else ''})" if S.get('fragile_dropped') else "")
+                + (f"; no usage history for {', '.join(S['no_usage_history'][:6])}{'...' if len(S['no_usage_history']) > 6 else ''}" if S.get('no_usage_history') else "")
+                + ". " if S.get("usage_rows") else "No usage logs were available for this build. ")
              + (f"Bands not filled: {', '.join(missing)}. " if missing else "")
              + (f"Odds feed credits left this month: {credits}." + (" Fewer than 120: upgrade the plan before next Sunday." if credits is not None and credits < 120 else "") if credits is not None else ""))
 )

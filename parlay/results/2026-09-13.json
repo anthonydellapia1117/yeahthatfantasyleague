@@ -1,0 +1,215 @@
+{
+ "date": "2026-09-13",
+ "tickets": [
+  {
+   "name": "A",
+   "band": "HIGH",
+   "slip_price": 899,
+   "legs": [
+    {
+     "player": "Michael Wilson",
+     "stat": "rec_yards",
+     "line": 24.5,
+     "price": -330,
+     "game": "ARI@LAC",
+     "actual": 56,
+     "hit": true,
+     "note": "5/7 tgt"
+    },
+    {
+     "player": "Trey McBride",
+     "stat": "receptions",
+     "line": 4.5,
+     "price": -330,
+     "game": "ARI@LAC",
+     "actual": 9,
+     "hit": true,
+     "note": "9/13 tgt"
+    },
+    {
+     "player": "CeeDee Lamb",
+     "stat": "rec_yards",
+     "line": 59.5,
+     "price": -240,
+     "game": "DAL@NYG",
+     "actual": 44,
+     "hit": false,
+     "note": "5/8 tgt"
+    },
+    {
+     "player": "Christian Watson",
+     "stat": "rec_yards",
+     "line": 39.5,
+     "price": -270,
+     "game": "GB@MIN",
+     "actual": 147,
+     "hit": true,
+     "note": "6/8 tgt"
+    },
+    {
+     "player": "Justin Jefferson",
+     "stat": "rec_yards",
+     "line": 59.5,
+     "price": -215,
+     "game": "GB@MIN",
+     "actual": 92,
+     "hit": true,
+     "note": "8/9 tgt"
+    },
+    {
+     "player": "Kyler Murray",
+     "stat": "pass_yards",
+     "line": 174.5,
+     "price": -330,
+     "game": "GB@MIN",
+     "actual": 18,
+     "hit": false,
+     "note": "5 att"
+    },
+    {
+     "player": "Malik Willis",
+     "stat": "pass_yards",
+     "line": 149.5,
+     "price": -270,
+     "game": "MIA@LV",
+     "actual": 220,
+     "hit": true,
+     "note": "27 att"
+    },
+    {
+     "player": "Jalen Hurts",
+     "stat": "pass_yards",
+     "line": 174.5,
+     "price": -320,
+     "game": "WAS@PHI",
+     "actual": 203,
+     "hit": true,
+     "note": "25 att"
+    }
+   ],
+   "legs_hit": 6,
+   "won": false,
+   "stake": 25
+  },
+  {
+   "name": "B",
+   "band": "MED",
+   "slip_price": 555,
+   "legs": [
+    {
+     "player": "Quentin Johnston",
+     "stat": "receptions",
+     "line": 2.5,
+     "price": -225,
+     "game": "ARI@LAC",
+     "actual": 2,
+     "hit": false,
+     "note": "2/6 tgt"
+    },
+    {
+     "player": "George Pickens",
+     "stat": "receptions",
+     "line": 3.5,
+     "price": -360,
+     "game": "DAL@NYG",
+     "actual": 3,
+     "hit": false,
+     "note": "3/6 tgt"
+    },
+    {
+     "player": "Jayden Reed",
+     "stat": "rec_yards",
+     "line": 24.5,
+     "price": -360,
+     "game": "GB@MIN",
+     "actual": 20,
+     "hit": false,
+     "note": "3/7 tgt"
+    },
+    {
+     "player": "T.J. Hockenson",
+     "stat": "rec_yards",
+     "line": 14.5,
+     "price": -290,
+     "game": "GB@MIN",
+     "actual": 36,
+     "hit": true,
+     "note": "4/5 tgt"
+    },
+    {
+     "player": "DeVonta Smith",
+     "stat": "rec_yards",
+     "line": 49.5,
+     "price": -235,
+     "game": "WAS@PHI",
+     "actual": 53,
+     "hit": true,
+     "note": "3/6 tgt"
+    },
+    {
+     "player": "Terry McLaurin",
+     "stat": "rec_yards",
+     "line": 39.5,
+     "price": -220,
+     "game": "WAS@PHI",
+     "actual": 14,
+     "hit": false,
+     "note": "2/4 tgt"
+    }
+   ],
+   "legs_hit": 2,
+   "won": false,
+   "stake": 25
+  },
+  {
+   "name": "C",
+   "band": "LOW",
+   "slip_price": 254,
+   "legs": [
+    {
+     "player": "Ladd McConkey",
+     "stat": "rec_yards",
+     "line": 39.5,
+     "price": -275,
+     "game": "ARI@LAC",
+     "actual": 82,
+     "hit": true,
+     "note": "5/7 tgt"
+    },
+    {
+     "player": "Isaiah Likely",
+     "stat": "receptions",
+     "line": 2.5,
+     "price": -280,
+     "game": "DAL@NYG",
+     "actual": 8,
+     "hit": true,
+     "note": "8/8 tgt"
+    },
+    {
+     "player": "Jake Ferguson",
+     "stat": "rec_yards",
+     "line": 19.5,
+     "price": -275,
+     "game": "DAL@NYG",
+     "actual": 6,
+     "hit": false,
+     "note": "2/2 tgt"
+    },
+    {
+     "player": "Stefon Diggs",
+     "stat": "rec_yards",
+     "line": 29.5,
+     "price": -250,
+     "game": "WAS@PHI",
+     "actual": 55,
+     "hit": true,
+     "note": "4/9 tgt"
+    }
+   ],
+   "legs_hit": 3,
+   "won": false,
+   "stake": 25
+  }
+ ]
+}
