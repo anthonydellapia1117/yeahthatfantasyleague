@@ -1,0 +1,23 @@
+{"date": "2026-09-13", "book": "FanDuel", "built_et": "14:15", "stake_per_ticket": 25,
+ "tickets": [
+  {"name": "A", "band": "HIGH", "page_price": 1032, "slip_price": 899, "legs": [
+    {"player": "Michael Wilson", "stat": "rec_yards", "line": 24.5, "price": -330, "game": "ARI@LAC"},
+    {"player": "Trey McBride", "stat": "receptions", "line": 4.5, "price": -330, "game": "ARI@LAC"},
+    {"player": "CeeDee Lamb", "stat": "rec_yards", "line": 59.5, "price": -240, "game": "DAL@NYG"},
+    {"player": "Christian Watson", "stat": "rec_yards", "line": 39.5, "price": -270, "game": "GB@MIN"},
+    {"player": "Justin Jefferson", "stat": "rec_yards", "line": 59.5, "price": -215, "game": "GB@MIN"},
+    {"player": "Kyler Murray", "stat": "pass_yards", "line": 174.5, "price": -330, "game": "GB@MIN"},
+    {"player": "Malik Willis", "stat": "pass_yards", "line": 149.5, "price": -270, "game": "MIA@LV"},
+    {"player": "Jalen Hurts", "stat": "pass_yards", "line": 174.5, "price": -320, "game": "WAS@PHI"}]},
+  {"name": "B", "band": "MED", "page_price": 558, "slip_price": 555, "legs": [
+    {"player": "Quentin Johnston", "stat": "receptions", "line": 2.5, "price": -225, "game": "ARI@LAC"},
+    {"player": "George Pickens", "stat": "receptions", "line": 3.5, "price": -360, "game": "DAL@NYG"},
+    {"player": "Jayden Reed", "stat": "rec_yards", "line": 24.5, "price": -360, "game": "GB@MIN"},
+    {"player": "T.J. Hockenson", "stat": "rec_yards", "line": 14.5, "price": -290, "game": "GB@MIN"},
+    {"player": "DeVonta Smith", "stat": "rec_yards", "line": 49.5, "price": -235, "game": "WAS@PHI"},
+    {"player": "Terry McLaurin", "stat": "rec_yards", "line": 39.5, "price": -220, "game": "WAS@PHI"}]},
+  {"name": "C", "band": "LOW", "page_price": 253, "slip_price": 254, "legs": [
+    {"player": "Ladd McConkey", "stat": "rec_yards", "line": 39.5, "price": -275, "game": "ARI@LAC"},
+    {"player": "Isaiah Likely", "stat": "receptions", "line": 2.5, "price": -280, "game": "DAL@NYG"},
+    {"player": "Jake Ferguson", "stat": "rec_yards", "line": 19.5, "price": -275, "game": "DAL@NYG"},
+    {"player": "Stefon Diggs", "stat": "rec_yards", "line": 29.5, "price": -250, "game": "WAS@PHI"}]}]}
