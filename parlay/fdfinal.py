@@ -208,6 +208,13 @@ def ok(ls, cap):
         g[l["game"]] = g.get(l["game"], 0) + 1
         if g[l["game"]] > cap:
             return False
+    # No pair that moves against itself (a back's rushing over with his own
+    # quarterback's or receiver's over). Every remaining pair is independent or
+    # positively coupled, so the independent product is a floor on the joint.
+    for i in range(len(ls)):
+        for j in range(i + 1, len(ls)):
+            if B.pair_corr(ls[i], ls[j]) < 0:
+                return False
     return True
 
 
@@ -283,8 +290,9 @@ for band, lo, hi, ns, iters, floor, caps in BANDS:
     pind, a, ls = best
     jm = m.joint_probability([l["p"] for l in ls], B.matrix(ls), trials=150000)
     d = price(ls)
-    chosen.append({"band": band, "legs": ls, "p_ind": pind, "joint": jm, "american": a, "decimal": d,
-                   "ev": pind * d, "ev_corr": jm * d, "fair": m.decimal_to_american(1 / pind),
+    p_use = min(pind, jm)                      # the reported number never exceeds either estimate
+    chosen.append({"band": band, "legs": ls, "p_ind": pind, "joint": jm, "p_use": p_use, "american": a, "decimal": d,
+                   "ev": p_use * d, "ev_corr": jm * d, "fair": m.decimal_to_american(1 / p_use),
                    "mincush": min(l["cushion"] for l in ls), "relaxed": relax,
                    "games": len({l["game"] for l in ls}), "stake": STAKE})
     used |= {l["player"] for l in ls}
@@ -309,7 +317,7 @@ os.makedirs("cards", exist_ok=True)
 KEEP = ("player", "stat", "line", "price", "game", "team", "p", "p_fit", "p_market", "p_usage", "fd_mean", "cushion", "exp_tgt")
 json.dump({"date": today, "book": "FanDuel", "stake_per_ticket": STAKE,
            "tickets": [{"name": {"HIGH": "A", "MED": "B", "LOW": "C"}[c["band"]], "band": c["band"],
-                        "page_price": c["american"], "joint": c["p_ind"],
+                        "page_price": c["american"], "joint": c["p_use"],
                         "legs": [{k: l.get(k) for k in KEEP} for l in c["legs"]]} for c in chosen]},
           open(f"cards/{today}.json", "w"), indent=1)
 print(f"card saved to cards/{today}.json")

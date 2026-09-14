@@ -68,7 +68,7 @@ for t in C:
     stake = t.get("stake", 25)
     lg = sorted(t["legs"], key=lambda x: (x["game"], x["player"]))
     tick.append({"name": nm, "tier": tier, "tiercolor": col, "n": len(lg), "american": t["american"],
-                 "joint": t["p_ind"], "fair": t["fair"], "ev": t["ev"], "mincush": t["mincush"],
+                 "joint": t.get("p_use", t["p_ind"]), "fair": t["fair"], "ev": t["ev"], "mincush": t["mincush"],
                  "legs": lg, "why": why(t), "stake": stake, "ret": stake * t["decimal"]})
 missing = [b for b in ("HIGH", "MED", "LOW") if b not in S["bands_built"]]
 # last week's scorecard and the running ledger

@@ -54,7 +54,9 @@ for t in card["tickets"]:
     # no graded legs at all (every player void) is a push: the stake comes back
     won = None if not graded else all(x["hit"] for x in graded)
     price = t.get("slip_price") or t.get("page_price")
-    if voided and price:
+    if won is None:
+        price = None                                     # push: nothing to reprice, stake returns
+    elif voided and price:
         # a void leg drops out and the ticket reprices to the product of the remaining legs
         dec = 1 + price / 100 if price > 0 else 1 + 100 / -price
         for x in voided:

@@ -16,8 +16,11 @@ probability on the card is read from FanDuel's own alternate ladders.
 
 ## 0b. Refresh usage logs and grade the last card
 
+    cd parlay
     python3 gamelogs.py 2026-09-01 <yesterday YYYY-MM-DD> data/gamelogs_2026.json
     python3 fdgrade.py cards/<date of the last card>.json
+
+Every command from here on runs inside `parlay/`.
 
 `gamelogs.py` pulls box scores from ESPN's public site API (no key) and
 merges new games into the season log; it is what the usage check in step
@@ -28,7 +31,6 @@ Skip the grade if `results/` already has that date. Both files, plus
 
 ## 1. Pull the slate
 
-    cd parlay
     ODDS_API_KEY=<key> python3 fdpull.py
 
 Lists NFL events, keeps games kicking off today (Eastern) at least 20 minutes
