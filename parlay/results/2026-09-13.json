@@ -6,6 +6,8 @@
    "band": "HIGH",
    "page_price": 1032,
    "slip_price": 899,
+   "settled_price": 899,
+   "void_legs": 0,
    "legs": [
     {
      "player": "Michael Wilson",
@@ -97,6 +99,8 @@
    "band": "MED",
    "page_price": 558,
    "slip_price": 555,
+   "settled_price": 555,
+   "void_legs": 0,
    "legs": [
     {
      "player": "Quentin Johnston",
@@ -168,6 +172,8 @@
    "band": "LOW",
    "page_price": 253,
    "slip_price": 254,
+   "settled_price": 254,
+   "void_legs": 0,
    "legs": [
     {
      "player": "Ladd McConkey",

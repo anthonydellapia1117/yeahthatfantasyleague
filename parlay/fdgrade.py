@@ -15,6 +15,10 @@ card = json.load(open(path))
 date = card["date"]
 ymd = date.replace("-", "")
 games = {g["game"]: g for g in espn.scoreboard(ymd)}
+needed = {l["game"] for t in card["tickets"] for l in t["legs"]}
+unfinished = [k for k in needed if k not in games or games[k]["status"] != "STATUS_FINAL"]
+if unfinished:
+    sys.exit(f"not graded: {', '.join(sorted(unfinished))} not final yet; run again when every game on the card is final")
 lines = {}
 for g in games.values():
     if g["status"] != "STATUS_FINAL":
@@ -27,12 +31,13 @@ tot = hit = 0
 for t in card["tickets"]:
     legs = []
     for l in t["legs"]:
-        g = games.get(l["game"])
         r = lines.get(espn.norm(l["player"]))
-        if g is None or g["status"] != "STATUS_FINAL":
-            res = {"actual": None, "hit": None, "note": "game not final"}
-        elif r is None:
-            res = {"actual": 0, "hit": False, "note": "no stat line (inactive or zero)"}
+        if r is None:
+            # ESPN box scores list only players who recorded a stat, so this is either an
+            # inactive (FanDuel voids the leg and reprices the ticket) or an active player
+            # with zero usage (a loss). Recorded as void, excluded from the ticket result,
+            # and flagged for a look at the inactives list.
+            res = {"actual": None, "hit": None, "void": True, "note": "no stat line: inactive (void) or zero usage; verify"}
         else:
             act = r.get(l["stat"], 0)
             usage = f"{r['rec']}/{r['tgt']} tgt" if l["stat"] in ("receptions", "rec_yards") else (
@@ -43,12 +48,23 @@ for t in card["tickets"]:
             tot += 1
             hit += res["hit"]
     n_hit = sum(1 for x in legs if x["hit"])
-    won = all(x["hit"] for x in legs)
+    graded = [x for x in legs if x["hit"] is not None]
+    voided = [x for x in legs if x.get("void")]
+    won = bool(graded) and all(x["hit"] for x in graded)
+    price = t.get("slip_price") or t.get("page_price")
+    if voided and price:
+        # a void leg drops out and the ticket reprices to the product of the remaining legs
+        dec = 1 + price / 100 if price > 0 else 1 + 100 / -price
+        for x in voided:
+            dec /= (1 + x["price"] / 100 if x["price"] > 0 else 1 + 100 / -x["price"])
+        price = int(round((dec - 1) * 100)) if dec >= 2 else int(round(-100 / (dec - 1)))
     out["tickets"].append({"name": t["name"], "band": t["band"],
                            "page_price": t.get("page_price"), "slip_price": t.get("slip_price") or t.get("page_price"),
+                           "settled_price": price, "void_legs": len(voided),
                            "legs": legs, "legs_hit": n_hit, "won": won,
                            "stake": card.get("stake_per_ticket", 25)})
-    print(f"Ticket {t['name']} ({t['band']}) {'WON' if won else 'lost'}: {n_hit}/{len(legs)} legs")
+    tag = f" ({len(voided)} void leg{'s' if len(voided) > 1 else ''}, verify inactives; settles at {price:+d})" if voided else ""
+    print(f"Ticket {t['name']} ({t['band']}) {'WON' if won else 'lost'}: {n_hit}/{len(graded)} graded legs{tag}")
     for x in legs:
         flag = "HIT " if x["hit"] else ("miss" if x["hit"] is False else "n/a ")
         print(f"   {flag} {x['player']:<20}{x['stat']:<11}over {x['line']:<6} actual {str(x['actual']):>4}   {x['note']}")
