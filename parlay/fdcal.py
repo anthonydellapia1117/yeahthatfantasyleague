@@ -10,7 +10,8 @@ import json, re, glob, statistics, sys
 import propmath as m
 STAT={"player_receptions":"receptions","player_receptions_alternate":"receptions",
       "player_reception_yds":"rec_yards","player_reception_yds_alternate":"rec_yards",
-      "player_pass_yds":"pass_yards","player_pass_yds_alternate":"pass_yards"}
+      "player_pass_yds":"pass_yards","player_pass_yds_alternate":"pass_yards",
+      "player_rush_yds":"rush_yards","player_rush_yds_alternate":"rush_yards"}
 mains={}; alts={}
 for f in glob.glob('ev_*.json'):
     d=json.load(open(f))

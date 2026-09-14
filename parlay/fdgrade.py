@@ -44,7 +44,8 @@ for t in card["tickets"]:
             hit += res["hit"]
     n_hit = sum(1 for x in legs if x["hit"])
     won = all(x["hit"] for x in legs)
-    out["tickets"].append({"name": t["name"], "band": t["band"], "slip_price": t.get("slip_price"),
+    out["tickets"].append({"name": t["name"], "band": t["band"],
+                           "page_price": t.get("page_price"), "slip_price": t.get("slip_price") or t.get("page_price"),
                            "legs": legs, "legs_hit": n_hit, "won": won,
                            "stake": card.get("stake_per_ticket", 25)})
     print(f"Ticket {t['name']} ({t['band']}) {'WON' if won else 'lost'}: {n_hit}/{len(legs)} legs")

@@ -86,8 +86,10 @@ whose expected targets cannot cover the line is dropped as fragile. Week
 one's ticket-killing misses were all usage failures (2, 4, 6, 6 targets).
 
 Standing gates, all enforced in code: one leg per player across the whole
-card; hit probability between 50 and 95 percent on the lower of the two
-numbers; cushion at least 10 percent; posted price no worse than -800;
+card; hit probability between 45 and 95 percent on the lower of the two
+numbers (a 4-leg +1000 needs rungs near -115, which sit at 50 percent
+before the margin cap, so a 50 floor would quietly forbid the shortest
+tickets); cushion at least 10 percent; posted price no worse than -800;
 line floors of 9.5 receiving yards, 2.5 receptions, 149.5 passing yards,
 19.5 rushing yards; ladders with fewer than five distinct lines (four for
 receptions) are not trusted; a rung is credited at most two points above

@@ -4,6 +4,7 @@
   {
    "name": "A",
    "band": "HIGH",
+   "page_price": 1032,
    "slip_price": 899,
    "legs": [
     {
@@ -94,6 +95,7 @@
   {
    "name": "B",
    "band": "MED",
+   "page_price": 558,
    "slip_price": 555,
    "legs": [
     {
@@ -164,6 +166,7 @@
   {
    "name": "C",
    "band": "LOW",
+   "page_price": 253,
    "slip_price": 254,
    "legs": [
     {
